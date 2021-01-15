@@ -1,6 +1,6 @@
 @file:Suppress("NOTHING_TO_INLINE")
 
-package com.arsvechkarev.viewdsl
+package com.arsvechkarev.vault.core.viewdsl
 
 import android.graphics.Color
 import android.graphics.PorterDuff.Mode.SRC_ATOP
@@ -14,9 +14,6 @@ import android.widget.TextView
 import androidx.annotation.DimenRes
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
-import com.arsvechkarev.vault.core.viewdsl.dimen
-import com.arsvechkarev.vault.core.viewdsl.isLayoutLeftToRight
-import com.arsvechkarev.vault.core.viewdsl.retrieveDrawable
 
 fun TextView.drawables(
   @DrawableRes start: Int = 0,

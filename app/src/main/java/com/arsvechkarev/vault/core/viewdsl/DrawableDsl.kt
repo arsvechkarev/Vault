@@ -13,7 +13,6 @@ import android.graphics.drawable.shapes.RectShape
 import android.graphics.drawable.shapes.RoundRectShape
 import android.graphics.drawable.shapes.Shape
 import android.view.View
-import com.arsvechkarev.viewdsl.background
 
 fun Drawable.applyColor(color: Int) {
   colorFilter = PorterDuffColorFilter(color, PorterDuff.Mode.SRC_ATOP)

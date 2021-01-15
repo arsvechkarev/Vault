@@ -3,7 +3,6 @@ package com.arsvechkarev.vault.core
 import android.os.Handler
 import android.os.Looper
 import androidx.annotation.CallSuper
-import com.arsvechkarev.vault.core.concurrency.Threader
 import moxy.MvpPresenter
 import moxy.MvpView
 import java.util.concurrent.Executors

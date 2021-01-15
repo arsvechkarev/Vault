@@ -1,3 +1,12 @@
 <resources>
   <string name="app_name">Vault</string>
+  <string name="text_empty"/>
+  <string name="text_create_master_password">Create master password</string>
+  <string name="text_weak">Weak</string>
+  <string name="text_medium">Medium</string>
+  <string name="text_strong">Strong</string>
+  <string name="text_very_strong">Very strong</string>
+  <string name="text_continue">Continue</string>
+  <string name="hint_enter_password">Enter password</string>
+  <string name="hint_repeat_password">Repeat password</string>
 </resources>

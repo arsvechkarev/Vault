@@ -3,11 +3,13 @@ package com.arsvechkarev.vault
 import android.os.Bundle
 import com.arsvechkarev.vault.core.BaseActivity
 import com.arsvechkarev.vault.core.navigation.NavigatorView
-import com.arsvechkarev.vault.features.list.presentation.PasswordsListScreen
-import com.arsvechkarev.viewdsl.Size.Companion.MatchParent
-import com.arsvechkarev.viewdsl.classNameTag
-import com.arsvechkarev.viewdsl.size
-import com.arsvechkarev.viewdsl.withViewBuilder
+import com.arsvechkarev.vault.core.viewbuilding.Colors
+import com.arsvechkarev.vault.core.viewdsl.Densities
+import com.arsvechkarev.vault.core.viewdsl.Size.Companion.MatchParent
+import com.arsvechkarev.vault.core.viewdsl.classNameTag
+import com.arsvechkarev.vault.core.viewdsl.size
+import com.arsvechkarev.vault.core.viewdsl.withViewBuilder
+import com.arsvechkarev.vault.features.start.StartScreen
 
 class MainActivity : BaseActivity() {
   
@@ -23,7 +25,9 @@ class MainActivity : BaseActivity() {
   
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
+    Densities.init(resources)
+    Colors.init(this)
     setContentView(mainActivityLayout)
-    navigator.navigate(PasswordsListScreen::class)
+    navigator.navigate(StartScreen::class)
   }
 }

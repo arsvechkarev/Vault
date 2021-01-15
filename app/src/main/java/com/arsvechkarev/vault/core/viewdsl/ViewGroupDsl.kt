@@ -1,4 +1,4 @@
-package com.arsvechkarev.viewdsl
+package com.arsvechkarev.vault.core.viewdsl
 
 import android.view.LayoutInflater
 import android.view.View

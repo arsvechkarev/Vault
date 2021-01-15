@@ -11,7 +11,6 @@ import androidx.annotation.AttrRes
 import androidx.annotation.ColorInt
 import androidx.annotation.DrawableRes
 import androidx.core.content.ContextCompat
-import com.arsvechkarev.viewdsl.Size
 import java.util.Locale
 
 fun dimen(dimenRes: Int) = ContextHolder.context.resources.getDimension(dimenRes)

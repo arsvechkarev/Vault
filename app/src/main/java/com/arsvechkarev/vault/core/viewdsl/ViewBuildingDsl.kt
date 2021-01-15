@@ -1,4 +1,4 @@
-package com.arsvechkarev.viewdsl
+package com.arsvechkarev.vault.core.viewdsl
 
 import android.content.Context
 import android.view.View
@@ -9,12 +9,9 @@ import android.widget.LinearLayout
 import android.widget.ScrollView
 import android.widget.TextView
 import androidx.coordinatorlayout.widget.CoordinatorLayout
-import com.arsvechkarev.vault.core.viewdsl.determineSize
-import com.arsvechkarev.vault.core.viewdsl.orientation
-import com.arsvechkarev.vault.core.viewdsl.statusBarHeight
-import com.arsvechkarev.viewdsl.Size.Companion.MatchParent
-import com.arsvechkarev.viewdsl.Size.Companion.WrapContent
-import com.arsvechkarev.viewdsl.Size.IntSize
+import com.arsvechkarev.vault.core.viewdsl.Size.Companion.MatchParent
+import com.arsvechkarev.vault.core.viewdsl.Size.Companion.WrapContent
+import com.arsvechkarev.vault.core.viewdsl.Size.IntSize
 import android.view.ViewGroup.LayoutParams as ViewGroupLayoutParams
 import android.widget.FrameLayout.LayoutParams as FrameLayoutParams
 import android.widget.LinearLayout.LayoutParams as LinearLayoutParams

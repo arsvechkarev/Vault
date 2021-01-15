@@ -1,7 +1,7 @@
 package com.arsvechkarev.vault.features.list.presentation
 
 import com.arsvechkarev.vault.core.PasswordFilesSaverImpl
-import com.arsvechkarev.vault.core.concurrency.AndroidThreader
+import com.arsvechkarev.vault.core.AndroidThreader
 import com.arsvechkarev.vault.core.extensions.moxyPresenter
 import com.arsvechkarev.vault.core.model.PasswordInfo
 import com.arsvechkarev.vault.core.navigation.Screen

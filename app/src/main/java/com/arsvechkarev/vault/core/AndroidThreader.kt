@@ -1,4 +1,4 @@
-package com.arsvechkarev.vault.core.concurrency
+package com.arsvechkarev.vault.core
 
 import android.os.Handler
 import android.os.Looper

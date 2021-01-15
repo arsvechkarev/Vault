@@ -1,4 +1,4 @@
-package com.arsvechkarev.viewdsl
+package com.arsvechkarev.vault.core.viewdsl
 
 import android.graphics.drawable.Drawable
 import android.graphics.drawable.GradientDrawable
@@ -10,12 +10,6 @@ import androidx.annotation.ColorInt
 import androidx.annotation.DimenRes
 import androidx.annotation.DrawableRes
 import androidx.coordinatorlayout.widget.CoordinatorLayout
-import com.arsvechkarev.vault.core.viewdsl.Margins
-import com.arsvechkarev.vault.core.viewdsl.createLayoutParams
-import com.arsvechkarev.vault.core.viewdsl.determineSize
-import com.arsvechkarev.vault.core.viewdsl.dimen
-import com.arsvechkarev.vault.core.viewdsl.isLayoutLeftToRight
-import com.arsvechkarev.vault.core.viewdsl.retrieveDrawable
 
 fun View.layoutAroundPoint(x: Int, y: Int) {
   layout(
@@ -111,10 +105,10 @@ fun View.marginsRes(
 }
 
 fun View.margins(
-  start: Int = 0,
-  top: Int = 0,
-  end: Int = 0,
-  bottom: Int = 0
+  start: Int = marginStart,
+  top: Int = marginTop,
+  end: Int = marginEnd,
+  bottom: Int = marginBottom
 ) {
   if (layoutParams is MarginLayoutParams) {
     val params = layoutParams as MarginLayoutParams

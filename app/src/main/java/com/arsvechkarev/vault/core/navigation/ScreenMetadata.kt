@@ -1,4 +1,4 @@
-package com.arsvechkarev.core.navigation
+package com.arsvechkarev.vault.core.navigation
 
 import android.content.Context
 import android.os.Bundle

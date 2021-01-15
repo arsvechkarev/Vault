@@ -13,10 +13,6 @@ import android.view.ViewGroup
 import android.view.animation.AccelerateDecelerateInterpolator
 import android.view.animation.OvershootInterpolator
 import androidx.interpolator.view.animation.FastOutSlowInInterpolator
-import com.arsvechkarev.viewdsl.forEachChild
-import com.arsvechkarev.viewdsl.gone
-import com.arsvechkarev.viewdsl.invisible
-import com.arsvechkarev.viewdsl.visible
 
 const val DURATION_VIBRATE_SHORT = 10L
 const val DURATION_SHORT = 170L

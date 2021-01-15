@@ -1,8 +1,6 @@
 @file:Suppress("ObjectPropertyName")
 
-package com.arsvechkarev.viewdsl
-
-import com.arsvechkarev.vault.core.viewdsl.Densities
+package com.arsvechkarev.vault.core.viewdsl
 
 object Floats {
   inline val Int.dp: Float get() = Densities.density * this

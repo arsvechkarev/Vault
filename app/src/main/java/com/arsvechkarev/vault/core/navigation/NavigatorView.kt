@@ -13,7 +13,7 @@ import com.arsvechkarev.vault.core.viewdsl.animateGone
 import com.arsvechkarev.vault.core.viewdsl.animateSlideFromRight
 import com.arsvechkarev.vault.core.viewdsl.animateSlideToRight
 import com.arsvechkarev.vault.core.viewdsl.animateVisible
-import com.arsvechkarev.viewdsl.invisible
+import com.arsvechkarev.vault.core.viewdsl.invisible
 import timber.log.Timber
 import kotlin.reflect.KClass
 

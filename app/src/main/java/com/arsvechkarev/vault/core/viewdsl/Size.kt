@@ -1,4 +1,4 @@
-package com.arsvechkarev.viewdsl
+package com.arsvechkarev.vault.core.viewdsl
 
 @Suppress("ClassName")
 sealed class Size {

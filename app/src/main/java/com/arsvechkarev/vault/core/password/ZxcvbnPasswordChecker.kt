@@ -1,5 +1,6 @@
 package com.arsvechkarev.vault.core.password
 
+import com.arsvechkarev.vault.core.MIN_PASSWORD_LENGTH
 import com.arsvechkarev.vault.core.extensions.hasLowercaseLetters
 import com.arsvechkarev.vault.core.extensions.hasNumbers
 import com.arsvechkarev.vault.core.extensions.hasSpecialSymbols
@@ -23,5 +24,18 @@ class ZxcvbnPasswordChecker(
       8 -> PasswordStrength.VERY_STRONG
       else -> PasswordStrength.WEAK
     }
+  }
+  
+  override fun validate(password: String): PasswordStatus {
+    if (password.isBlank()) {
+      return PasswordStatus.EMPTY
+    }
+    if (password.length < MIN_PASSWORD_LENGTH) {
+      return PasswordStatus.TOO_SHORT
+    }
+    if (check(password) == PasswordStrength.WEAK) {
+      return PasswordStatus.TOO_WEAK
+    }
+    return PasswordStatus.OK
   }
 }

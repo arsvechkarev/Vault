@@ -33,7 +33,7 @@ class PasswordStrengthMeter(context: Context) : View(context) {
     }
   }
   
-  fun setStrength(strength: PasswordStrength?) {
+  fun setStrength(strength: PasswordStrength?, animate: Boolean = true) {
     if (this.strength == strength) return
     this.strength = strength
     val resultPair = when (strength) {
@@ -43,11 +43,17 @@ class PasswordStrengthMeter(context: Context) : View(context) {
       PasswordStrength.VERY_STRONG -> Pair(1f, Colors.PasswordVeryStrong)
       null -> Pair(0f, Colors.Transparent)
     }
-    percentageAnimator.setFloatValues(percentage, resultPair.first)
-    percentageAnimator.start()
-    colorAnimator.setIntValues(paint.color, resultPair.second)
-    colorAnimator.setEvaluator(ArgbEvaluator())
-    colorAnimator.start()
+    if (animate) {
+      percentageAnimator.setFloatValues(percentage, resultPair.first)
+      percentageAnimator.start()
+      colorAnimator.setIntValues(paint.color, resultPair.second)
+      colorAnimator.setEvaluator(ArgbEvaluator())
+      colorAnimator.start()
+    } else {
+      percentage = resultPair.first
+      paint.color = resultPair.second
+      invalidate()
+    }
   }
   
   override fun onDraw(canvas: Canvas) {

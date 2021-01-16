@@ -8,4 +8,5 @@
   <dimen name="text_h4">18sp</dimen>
   <dimen name="text_h5">16sp</dimen>
   <dimen name="text_h6">14sp</dimen>
+  <dimen name="icon_default_size">24dp</dimen>
 </resources>

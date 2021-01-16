@@ -30,4 +30,10 @@ class MainActivity : BaseActivity() {
     setContentView(mainActivityLayout)
     navigator.navigate(StartScreen::class)
   }
+  
+  override fun onBackPressed() {
+    if (!navigator.handleGoBack()) {
+      super.onBackPressed()
+    }
+  }
 }

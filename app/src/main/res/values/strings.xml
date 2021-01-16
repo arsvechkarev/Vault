@@ -7,6 +7,11 @@
   <string name="text_strong">Strong</string>
   <string name="text_very_strong">Very strong</string>
   <string name="text_continue">Continue</string>
+  <string name="text_password_cannot_be_empty">Password cannot be empty</string>
+  <string name="text_password_min_length">Password should be at least %1$d characters long</string>
+  <string name="text_password_is_too_weak">Password is too weak</string>
+  <string name="text_passwords_dont_match">Passwords don\'t match</string>
+  <string name="text_repeat_password">Repeat password</string>
   <string name="hint_enter_password">Enter password</string>
   <string name="hint_repeat_password">Repeat password</string>
 </resources>

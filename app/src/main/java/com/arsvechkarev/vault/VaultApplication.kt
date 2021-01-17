@@ -1,9 +1,9 @@
 package com.arsvechkarev.vault
 
 import android.app.Application
-import com.arsvechkarev.vault.core.viewbuilding.Colors
-import com.arsvechkarev.vault.core.viewbuilding.Fonts
-import com.arsvechkarev.vault.core.viewdsl.ContextHolder
+import com.arsvechkarev.vault.core.Singletons
+import com.arsvechkarev.vault.viewbuilding.Fonts
+import com.arsvechkarev.vault.viewdsl.ContextHolder
 
 class VaultApplication : Application() {
   
@@ -11,5 +11,6 @@ class VaultApplication : Application() {
     super.onCreate()
     ContextHolder.init(applicationContext)
     Fonts.init(applicationContext)
+    Singletons.init(applicationContext)
   }
 }

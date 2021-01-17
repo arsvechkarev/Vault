@@ -5,5 +5,5 @@ package com.arsvechkarev.vault.core.navigation
  */
 interface Navigator {
   
-  fun popCurrentScreen(notifyBackPress: Boolean = true)
+  fun goToPasswordsListScreen()
 }

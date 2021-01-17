@@ -7,10 +7,10 @@ import android.graphics.Canvas
 import android.view.View
 import com.arsvechkarev.vault.core.extensions.Paint
 import com.arsvechkarev.vault.core.extensions.f
-import com.arsvechkarev.vault.core.password.PasswordStrength
-import com.arsvechkarev.vault.core.viewbuilding.Colors
-import com.arsvechkarev.vault.core.viewdsl.AccelerateDecelerateInterpolator
-import com.arsvechkarev.vault.core.viewdsl.DURATION_DEFAULT
+import com.arsvechkarev.vault.password.PasswordStrength
+import com.arsvechkarev.vault.viewbuilding.Colors
+import com.arsvechkarev.vault.viewdsl.AccelerateDecelerateInterpolator
+import com.arsvechkarev.vault.viewdsl.DURATION_DEFAULT
 
 class PasswordStrengthMeter(context: Context) : View(context) {
   

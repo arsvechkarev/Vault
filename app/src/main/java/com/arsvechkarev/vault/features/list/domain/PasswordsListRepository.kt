@@ -1,9 +1,9 @@
 package com.arsvechkarev.vault.features.list.domain
 
-import com.arsvechkarev.vault.core.PasswordFilesSaver
+import com.arsvechkarev.vault.password.PasswordsSaver
 import org.json.JSONArray
 
-class PasswordsListRepository(private val saver: PasswordFilesSaver) {
+class PasswordsListRepository(private val saver: PasswordsSaver) {
   
   fun getAllPasswords(masterPassword: String): JSONArray {
     return saver.getDecryptedPasswordsList(masterPassword)

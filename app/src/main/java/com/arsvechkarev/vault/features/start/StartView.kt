@@ -1,7 +1,7 @@
 package com.arsvechkarev.vault.features.start
 
-import com.arsvechkarev.vault.core.password.PasswordStatus
-import com.arsvechkarev.vault.core.password.PasswordStrength
+import com.arsvechkarev.vault.password.PasswordStatus
+import com.arsvechkarev.vault.password.PasswordStrength
 import moxy.MvpView
 import moxy.viewstate.strategy.AddToEndSingleStrategy
 import moxy.viewstate.strategy.StateStrategyType
@@ -20,4 +20,6 @@ interface StartView : MvpView {
   fun showPasswordRepeatedCorrectly()
   
   fun showPasswordsDontMatch()
+
+  fun goToPasswordsList()
 }

@@ -8,12 +8,12 @@ import android.view.WindowInsets
 import android.widget.FrameLayout
 import com.arsvechkarev.core.navigation.Options
 import com.arsvechkarev.vault.core.extensions.ifNotNull
-import com.arsvechkarev.vault.core.viewdsl.DURATION_SHORT
-import com.arsvechkarev.vault.core.viewdsl.animateGone
-import com.arsvechkarev.vault.core.viewdsl.animateSlideFromRight
-import com.arsvechkarev.vault.core.viewdsl.animateSlideToRight
-import com.arsvechkarev.vault.core.viewdsl.animateVisible
-import com.arsvechkarev.vault.core.viewdsl.invisible
+import com.arsvechkarev.vault.viewdsl.DURATION_SHORT
+import com.arsvechkarev.vault.viewdsl.animateGone
+import com.arsvechkarev.vault.viewdsl.animateSlideFromRight
+import com.arsvechkarev.vault.viewdsl.animateSlideToRight
+import com.arsvechkarev.vault.viewdsl.animateVisible
+import com.arsvechkarev.vault.viewdsl.invisible
 import timber.log.Timber
 import kotlin.reflect.KClass
 

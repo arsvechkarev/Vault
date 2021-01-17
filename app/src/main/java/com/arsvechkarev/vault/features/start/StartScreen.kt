@@ -7,46 +7,57 @@ import android.widget.ViewSwitcher
 import com.arsvechkarev.vault.R
 import com.arsvechkarev.vault.core.AndroidThreader
 import com.arsvechkarev.vault.core.MIN_PASSWORD_LENGTH
+import com.arsvechkarev.vault.core.Singletons.masterPasswordChecker
+import com.arsvechkarev.vault.core.Singletons.masterPasswordSaver
+import com.arsvechkarev.vault.core.Singletons.userAuthSaver
 import com.arsvechkarev.vault.core.extensions.BaseTextWatcher
 import com.arsvechkarev.vault.core.extensions.moxyPresenter
 import com.arsvechkarev.vault.core.navigation.Screen
-import com.arsvechkarev.vault.core.password.PasswordStatus
-import com.arsvechkarev.vault.core.password.PasswordStrength
-import com.arsvechkarev.vault.core.password.PasswordStrength.MEDIUM
-import com.arsvechkarev.vault.core.password.PasswordStrength.STRONG
-import com.arsvechkarev.vault.core.password.PasswordStrength.VERY_STRONG
-import com.arsvechkarev.vault.core.password.PasswordStrength.WEAK
-import com.arsvechkarev.vault.core.password.ZxcvbnPasswordChecker
-import com.arsvechkarev.vault.core.viewbuilding.Colors
-import com.arsvechkarev.vault.core.viewbuilding.Fonts
-import com.arsvechkarev.vault.core.viewbuilding.Styles.BaseTextView
-import com.arsvechkarev.vault.core.viewbuilding.Styles.BoldTextView
-import com.arsvechkarev.vault.core.viewbuilding.Styles.ClickableButton
-import com.arsvechkarev.vault.core.viewbuilding.TextSizes
-import com.arsvechkarev.vault.core.viewdsl.Ints.dp
-import com.arsvechkarev.vault.core.viewdsl.Size.Companion.MatchParent
-import com.arsvechkarev.vault.core.viewdsl.Size.Companion.WrapContent
-import com.arsvechkarev.vault.core.viewdsl.Size.IntSize
-import com.arsvechkarev.vault.core.viewdsl.animateInvisible
-import com.arsvechkarev.vault.core.viewdsl.animateVisible
-import com.arsvechkarev.vault.core.viewdsl.circleRippleBackground
-import com.arsvechkarev.vault.core.viewdsl.classNameTag
-import com.arsvechkarev.vault.core.viewdsl.font
-import com.arsvechkarev.vault.core.viewdsl.gravity
-import com.arsvechkarev.vault.core.viewdsl.image
-import com.arsvechkarev.vault.core.viewdsl.invisible
-import com.arsvechkarev.vault.core.viewdsl.layoutGravity
-import com.arsvechkarev.vault.core.viewdsl.marginHorizontal
-import com.arsvechkarev.vault.core.viewdsl.margins
-import com.arsvechkarev.vault.core.viewdsl.onClick
-import com.arsvechkarev.vault.core.viewdsl.padding
-import com.arsvechkarev.vault.core.viewdsl.size
-import com.arsvechkarev.vault.core.viewdsl.tag
-import com.arsvechkarev.vault.core.viewdsl.text
-import com.arsvechkarev.vault.core.viewdsl.textColor
-import com.arsvechkarev.vault.core.viewdsl.textSize
-import com.arsvechkarev.vault.core.viewdsl.visible
+import com.arsvechkarev.vault.password.PasswordStatus
+import com.arsvechkarev.vault.password.PasswordStrength
+import com.arsvechkarev.vault.password.PasswordStrength.MEDIUM
+import com.arsvechkarev.vault.password.PasswordStrength.STRONG
+import com.arsvechkarev.vault.password.PasswordStrength.VERY_STRONG
+import com.arsvechkarev.vault.password.PasswordStrength.WEAK
+import com.arsvechkarev.vault.password.ZxcvbnPasswordVerifier
+import com.arsvechkarev.vault.viewbuilding.Colors
+import com.arsvechkarev.vault.viewbuilding.Colors.CorrectRipple
+import com.arsvechkarev.vault.viewbuilding.Colors.Dialog
+import com.arsvechkarev.vault.viewbuilding.Colors.ErrorRipple
+import com.arsvechkarev.vault.viewbuilding.Fonts
+import com.arsvechkarev.vault.viewbuilding.Styles.BaseTextView
+import com.arsvechkarev.vault.viewbuilding.Styles.BoldTextView
+import com.arsvechkarev.vault.viewbuilding.Styles.ClickableButton
+import com.arsvechkarev.vault.viewbuilding.Styles.ClickableTextView
+import com.arsvechkarev.vault.viewbuilding.TextSizes
+import com.arsvechkarev.vault.viewdsl.Ints.dp
+import com.arsvechkarev.vault.viewdsl.Size.Companion.MatchParent
+import com.arsvechkarev.vault.viewdsl.Size.Companion.WrapContent
+import com.arsvechkarev.vault.viewdsl.Size.IntSize
+import com.arsvechkarev.vault.viewdsl.animateInvisible
+import com.arsvechkarev.vault.viewdsl.animateVisible
+import com.arsvechkarev.vault.viewdsl.backgroundRoundRect
+import com.arsvechkarev.vault.viewdsl.circleRippleBackground
+import com.arsvechkarev.vault.viewdsl.classNameTag
+import com.arsvechkarev.vault.viewdsl.font
+import com.arsvechkarev.vault.viewdsl.gravity
+import com.arsvechkarev.vault.viewdsl.image
+import com.arsvechkarev.vault.viewdsl.invisible
+import com.arsvechkarev.vault.viewdsl.layoutGravity
+import com.arsvechkarev.vault.viewdsl.marginHorizontal
+import com.arsvechkarev.vault.viewdsl.margins
+import com.arsvechkarev.vault.viewdsl.onClick
+import com.arsvechkarev.vault.viewdsl.padding
+import com.arsvechkarev.vault.viewdsl.paddingHorizontal
+import com.arsvechkarev.vault.viewdsl.paddingVertical
+import com.arsvechkarev.vault.viewdsl.size
+import com.arsvechkarev.vault.viewdsl.tag
+import com.arsvechkarev.vault.viewdsl.text
+import com.arsvechkarev.vault.viewdsl.textColor
+import com.arsvechkarev.vault.viewdsl.textSize
+import com.arsvechkarev.vault.viewdsl.visible
 import com.arsvechkarev.vault.views.PasswordStrengthMeter
+import com.arsvechkarev.vault.views.SimpleDialog
 import com.nulabinc.zxcvbn.Zxcvbn
 
 class StartScreen : Screen(), StartView {
@@ -126,6 +137,41 @@ class StartScreen : Screen(), StartView {
         text(R.string.text_continue)
         margins(start = 16.dp, end = 16.dp, bottom = 16.dp)
       }
+      child<SimpleDialog>(MatchParent, MatchParent) {
+        classNameTag()
+        VerticalLayout(WrapContent, WrapContent) {
+          marginHorizontal(30.dp)
+          paddingHorizontal(16.dp)
+          paddingVertical(24.dp)
+          backgroundRoundRect(8.dp, Dialog)
+          TextView(WrapContent, WrapContent, style = BoldTextView) {
+            gravity(Gravity.CENTER)
+            textSize(TextSizes.H3)
+            text(getString(R.string.text_do_you_want_to_save_password))
+          }
+          TextView(WrapContent, WrapContent, style = BaseTextView) {
+            margins(top = 16.dp)
+            layoutGravity(Gravity.CENTER)
+            text(getString(R.string.text_save_password_or_not))
+          }
+          TextView(WrapContent, WrapContent, ClickableTextView(CorrectRipple)) {
+            margins(top = 16.dp)
+            textColor(Colors.Correct)
+            layoutGravity(Gravity.CENTER)
+            gravity(Gravity.CENTER)
+            text(getString(R.string.text_save_password))
+            onClick { presenter.savePasswordLocally() }
+          }
+          TextView(WrapContent, WrapContent, ClickableTextView(ErrorRipple)) {
+            margins(top = 16.dp)
+            textColor(Colors.Error)
+            layoutGravity(Gravity.CENTER)
+            gravity(Gravity.CENTER)
+            text(getString(R.string.text_do_not_save_password))
+            onClick { presenter.doNotSavePasswordLocally() }
+          }
+        }
+      }
     }
   }
   
@@ -144,7 +190,13 @@ class StartScreen : Screen(), StartView {
   }
   
   private val presenter by moxyPresenter {
-    StartPresenter(AndroidThreader, ZxcvbnPasswordChecker(Zxcvbn()))
+    StartPresenter(
+      AndroidThreader,
+      ZxcvbnPasswordVerifier(Zxcvbn()),
+      masterPasswordSaver,
+      masterPasswordChecker,
+      userAuthSaver
+    )
   }
   
   override fun onInit() {
@@ -223,11 +275,16 @@ class StartScreen : Screen(), StartView {
   }
   
   override fun showPasswordRepeatedCorrectly() {
-    textView(TextError).text("Passwords match")
+    viewAs<SimpleDialog>().show()
+    hideKeyboard()
   }
   
   override fun showPasswordsDontMatch() {
     textView(TextError).text(R.string.text_passwords_dont_match)
+  }
+  
+  override fun goToPasswordsList() {
+    navigator.goToPasswordsListScreen()
   }
   
   companion object {

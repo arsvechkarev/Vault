@@ -9,9 +9,9 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
-import com.arsvechkarev.vault.core.viewdsl.ViewBuilder
-import com.arsvechkarev.vault.core.viewdsl.childView
-import com.arsvechkarev.vault.core.viewdsl.withViewBuilder
+import com.arsvechkarev.vault.viewdsl.ViewBuilder
+import com.arsvechkarev.vault.viewdsl.childView
+import com.arsvechkarev.vault.viewdsl.withViewBuilder
 import moxy.MvpDelegate
 import moxy.MvpDelegateHolder
 import moxy.MvpView

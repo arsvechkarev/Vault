@@ -4,7 +4,7 @@ import android.view.View
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
-import com.arsvechkarev.vault.core.viewdsl.childView
+import com.arsvechkarev.vault.viewdsl.childView
 import moxy.MvpAppCompatActivity
 
 abstract class BaseActivity : MvpAppCompatActivity() {

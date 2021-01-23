@@ -15,7 +15,7 @@ abstract class BasePresenter<V : MvpView>(
   private val ioWorker = Executors.newFixedThreadPool(4)
   private val handler = Handler(Looper.getMainLooper())
   
-  protected fun onBackground(block: () -> Unit) {
+  protected fun onBackgroundThread(block: () -> Unit) {
     backgroundWorker.submit(block)
   }
   
@@ -28,7 +28,7 @@ abstract class BasePresenter<V : MvpView>(
   }
   
   protected fun updateViewState(block: V.() -> Unit) {
-    viewState.apply(block)
+    handler.post { viewState.apply(block) }
   }
   
   @CallSuper

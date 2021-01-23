@@ -20,6 +20,8 @@ interface StartView : MvpView {
   fun showPasswordRepeatedCorrectly()
   
   fun showPasswordsDontMatch()
-
+  
+  fun showFinishingAuthorization()
+  
   fun goToPasswordsList()
 }

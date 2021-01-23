@@ -24,6 +24,7 @@ import com.arsvechkarev.vault.viewbuilding.Colors
 import com.arsvechkarev.vault.viewbuilding.Colors.CorrectRipple
 import com.arsvechkarev.vault.viewbuilding.Colors.Dialog
 import com.arsvechkarev.vault.viewbuilding.Colors.ErrorRipple
+import com.arsvechkarev.vault.viewbuilding.Dimens.ProgressBarSizeBig
 import com.arsvechkarev.vault.viewbuilding.Fonts
 import com.arsvechkarev.vault.viewbuilding.Styles.BaseTextView
 import com.arsvechkarev.vault.viewbuilding.Styles.BoldTextView
@@ -34,6 +35,7 @@ import com.arsvechkarev.vault.viewdsl.Ints.dp
 import com.arsvechkarev.vault.viewdsl.Size.Companion.MatchParent
 import com.arsvechkarev.vault.viewdsl.Size.Companion.WrapContent
 import com.arsvechkarev.vault.viewdsl.Size.IntSize
+import com.arsvechkarev.vault.viewdsl.addView
 import com.arsvechkarev.vault.viewdsl.animateInvisible
 import com.arsvechkarev.vault.viewdsl.animateVisible
 import com.arsvechkarev.vault.viewdsl.backgroundRoundRect
@@ -56,6 +58,7 @@ import com.arsvechkarev.vault.viewdsl.text
 import com.arsvechkarev.vault.viewdsl.textColor
 import com.arsvechkarev.vault.viewdsl.textSize
 import com.arsvechkarev.vault.viewdsl.visible
+import com.arsvechkarev.vault.views.MaterialProgressBar
 import com.arsvechkarev.vault.views.PasswordStrengthMeter
 import com.arsvechkarev.vault.views.SimpleDialog
 import com.nulabinc.zxcvbn.Zxcvbn
@@ -138,7 +141,7 @@ class StartScreen : Screen(), StartView {
         margins(start = 16.dp, end = 16.dp, bottom = 16.dp)
       }
       child<SimpleDialog>(MatchParent, MatchParent) {
-        classNameTag()
+        tag(DialogSavePasswordOrNot)
         VerticalLayout(WrapContent, WrapContent) {
           marginHorizontal(30.dp)
           paddingHorizontal(16.dp)
@@ -169,6 +172,14 @@ class StartScreen : Screen(), StartView {
             gravity(Gravity.CENTER)
             text(getString(R.string.text_do_not_save_password))
             onClick { presenter.doNotSavePasswordLocally() }
+          }
+        }
+      }
+      child<SimpleDialog>(MatchParent, MatchParent) {
+        tag(DialogProgressBar)
+        addView {
+          MaterialProgressBar(context).apply {
+            size(ProgressBarSizeBig, ProgressBarSizeBig)
           }
         }
       }
@@ -275,12 +286,16 @@ class StartScreen : Screen(), StartView {
   }
   
   override fun showPasswordRepeatedCorrectly() {
-    viewAs<SimpleDialog>().show()
+    viewAs<SimpleDialog>(DialogSavePasswordOrNot).show()
     hideKeyboard()
   }
   
   override fun showPasswordsDontMatch() {
     textView(TextError).text(R.string.text_passwords_dont_match)
+  }
+  
+  override fun showFinishingAuthorization() {
+    viewAs<SimpleDialog>(DialogProgressBar).show()
   }
   
   override fun goToPasswordsList() {
@@ -297,5 +312,7 @@ class StartScreen : Screen(), StartView {
     const val RepeatPasswordLayout = "RepeatPasswordLayout"
     const val EditTextEnterPassword = "EditTextEnterPassword"
     const val EditTextRepeatPassword = "EditTextRepeatPassword"
+    const val DialogProgressBar = "DialogProgressBar"
+    const val DialogSavePasswordOrNot = "DialogSavePasswordOrNot"
   }
 }

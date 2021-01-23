@@ -30,6 +30,7 @@ object Styles {
   }
   
   val BoldTextView: TextView.() -> Unit = {
+    apply(BaseTextView)
     font(Fonts.SegoeUiBold)
     textColor(Colors.TextPrimary)
   }

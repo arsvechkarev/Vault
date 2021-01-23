@@ -11,6 +11,8 @@ import androidx.annotation.ColorInt
 import androidx.annotation.DimenRes
 import androidx.annotation.DrawableRes
 import androidx.coordinatorlayout.widget.CoordinatorLayout
+import androidx.recyclerview.widget.RecyclerView
+import com.arsvechkarev.vault.core.extensions.ifNotNull
 
 operator fun View.contains(event: MotionEvent): Boolean {
   val x = event.x

@@ -6,4 +6,6 @@ package com.arsvechkarev.vault.core.navigation
 interface Navigator {
   
   fun goToPasswordsListScreen()
+  
+  fun goToNewPasswordScreen()
 }

@@ -7,6 +7,7 @@ import com.arsvechkarev.vault.core.extensions.assertThat
 import com.arsvechkarev.vault.features.start.StartScreenState.ENTERING_PASSWORD
 import com.arsvechkarev.vault.features.start.StartScreenState.REPEATING_PASSWORD
 import com.arsvechkarev.vault.password.MasterPasswordChecker
+import com.arsvechkarev.vault.password.MasterPasswordHolder
 import com.arsvechkarev.vault.password.MasterPasswordSaver
 import com.arsvechkarev.vault.password.PasswordStatus.OK
 import com.arsvechkarev.vault.password.PasswordVerifier
@@ -75,8 +76,12 @@ class StartPresenter(
   }
   
   private fun finishAuthorization() {
-    viewState.goToPasswordsList()
-    userAuthSaver.setUserIsAuthorized(true)
-    masterPasswordChecker.encodeSecretPhrase(previouslyEnteredPassword)
+    updateViewState { showFinishingAuthorization() }
+    onBackgroundThread {
+      userAuthSaver.setUserIsAuthorized(true)
+      MasterPasswordHolder.setMasterPassword(previouslyEnteredPassword)
+      masterPasswordChecker.encodeSecretPhrase(previouslyEnteredPassword)
+      updateViewState { goToPasswordsList() }
+    }
   }
 }

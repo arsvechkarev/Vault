@@ -8,9 +8,11 @@ import com.arsvechkarev.vault.core.Singletons.masterPasswordSaver
 import com.arsvechkarev.vault.core.Singletons.userAuthSaver
 import com.arsvechkarev.vault.core.navigation.Navigator
 import com.arsvechkarev.vault.core.navigation.NavigatorView
+import com.arsvechkarev.vault.features.info.InfoScreen
 import com.arsvechkarev.vault.features.list.presentation.PasswordsListScreen
 import com.arsvechkarev.vault.features.password.PasswordCheckingDialog
 import com.arsvechkarev.vault.features.start.StartScreen
+import com.arsvechkarev.vault.password.MasterPasswordHolder
 import com.arsvechkarev.vault.viewbuilding.Colors
 import com.arsvechkarev.vault.viewdsl.Densities
 import com.arsvechkarev.vault.viewdsl.Size.Companion.MatchParent
@@ -49,7 +51,8 @@ class MainActivity : BaseActivity(), Navigator {
       if (masterPasswordSaver.getSavedMasterPassword() != null) {
         navigator.navigate(PasswordsListScreen::class)
       } else {
-        viewAs<PasswordCheckingDialog>().initiatePasswordCheck(onSuccess = {
+        viewAs<PasswordCheckingDialog>().initiatePasswordCheck(onSuccess = { password ->
+          MasterPasswordHolder.setMasterPassword(password)
           navigator.navigate(PasswordsListScreen::class)
         })
       }
@@ -66,5 +69,9 @@ class MainActivity : BaseActivity(), Navigator {
   
   override fun goToPasswordsListScreen() {
     navigator.navigate(PasswordsListScreen::class)
+  }
+  
+  override fun goToNewPasswordScreen() {
+    navigator.navigate(InfoScreen::class)
   }
 }

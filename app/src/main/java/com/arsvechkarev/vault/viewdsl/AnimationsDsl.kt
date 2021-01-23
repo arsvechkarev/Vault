@@ -49,10 +49,6 @@ fun Animator.doOnEnd(block: () -> Unit) {
 }
 
 fun View.animateVisible(andThen: () -> Unit = {}, duration: Long = DURATION_DEFAULT) {
-  if (alpha == 1f && visibility == View.VISIBLE) {
-    andThen()
-    return
-  }
   alpha = 0f
   visible()
   animate().alpha(1f).setDuration(duration)

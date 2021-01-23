@@ -8,6 +8,8 @@ import moxy.viewstate.strategy.StateStrategyType
 @StateStrategyType(AddToEndSingleStrategy::class)
 interface PasswordsListView : MvpView {
   
+  fun showLoading()
+  
   fun showNoPasswords()
   
   fun showPasswordsList(list: List<PasswordInfo>)

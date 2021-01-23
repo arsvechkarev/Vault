@@ -13,30 +13,21 @@ class PasswordsListPresenter(
   private val passwordsListRepository: PasswordsListRepository
 ) : BasePresenter<PasswordsListView>(threader) {
   
-  private val masterPassword = "thisismypassword"
-  
-  fun loadPasswords() {
+  fun loadPasswords(masterPassword: String) {
     onIoThread {
-      try {
-        val passwords = passwordsListRepository.getAllPasswords(masterPassword)
-        if (passwords.length() == 0) {
-          updateViewState { showNoPasswords() }
-        } else {
-          val list = passwords.transformToList { jsonObject ->
-            PasswordInfo(
-              jsonObject.getString(JSON_SERVICE_NAME),
-              jsonObject.getString(JSON_SERVICE_PASSWORD),
-            )
-          }
-          updateViewState { showPasswordsList(list) }
+      updateViewState { showLoading() }
+      val passwords = passwordsListRepository.getAllPasswords(masterPassword)
+      if (passwords.length() == 0) {
+        updateViewState { showNoPasswords() }
+      } else {
+        val list = passwords.transformToList { jsonObject ->
+          PasswordInfo(
+            jsonObject.getString(JSON_SERVICE_NAME),
+            jsonObject.getString(JSON_SERVICE_PASSWORD),
+          )
         }
-      } catch (e: Throwable) {
-        e.printStackTrace()
+        updateViewState { showPasswordsList(list) }
       }
     }
-  }
-  
-  fun savePassword(s: String, s1: String) {
-    passwordsListRepository.savePassword(masterPassword, s, s1)
   }
 }

@@ -3,12 +3,14 @@ package com.arsvechkarev.vault.viewdsl
 import android.content.Context
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
 import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.ScrollView
 import android.widget.TextView
 import androidx.coordinatorlayout.widget.CoordinatorLayout
+import androidx.recyclerview.widget.RecyclerView
 import com.arsvechkarev.vault.viewdsl.Size.Companion.MatchParent
 import com.arsvechkarev.vault.viewdsl.Size.Companion.WrapContent
 import com.arsvechkarev.vault.viewdsl.Size.IntSize
@@ -96,6 +98,18 @@ class ViewBuilder(val context: Context) {
     width: Int, height: Int, style: T.() -> Unit = {}, block: T.() -> Unit,
   ) = child<T, CoordLayoutParams>(IntSize(width), IntSize(height), style, block)
   
+  fun ViewGroup.View(
+    width: Size,
+    height: Size,
+    style: View.() -> Unit = {},
+    block: View.() -> Unit,
+  ) = when (this) {
+    is FrameLayout -> child<View, FrameLayoutParams>(width, height, style, block)
+    is LinearLayout -> child<View, LinearLayoutParams>(width, height, style, block)
+    is CoordinatorLayout -> child<View, CoordLayoutParams>(width, height, style, block)
+    else -> child<View, ViewGroupLayoutParams>(width, height, style, block)
+  }
+  
   fun ViewGroup.TextView(
     width: Size,
     height: Size,
@@ -108,16 +122,28 @@ class ViewBuilder(val context: Context) {
     else -> child<TextView, ViewGroupLayoutParams>(width, height, style, block)
   }
   
-  fun ViewGroup.View(
+  fun ViewGroup.EditText(
     width: Size,
     height: Size,
-    style: View.() -> Unit = {},
-    block: View.() -> Unit,
+    style: EditText.() -> Unit = {},
+    block: EditText.() -> Unit,
   ) = when (this) {
-    is FrameLayout -> child<View, FrameLayoutParams>(width, height, style, block)
-    is LinearLayout -> child<View, LinearLayoutParams>(width, height, style, block)
-    is CoordinatorLayout -> child<View, CoordLayoutParams>(width, height, style, block)
-    else -> child<View, ViewGroupLayoutParams>(width, height, style, block)
+    is FrameLayout -> child<EditText, FrameLayoutParams>(width, height, style, block)
+    is LinearLayout -> child<EditText, LinearLayoutParams>(width, height, style, block)
+    is CoordinatorLayout -> child<EditText, CoordLayoutParams>(width, height, style, block)
+    else -> child<EditText, ViewGroupLayoutParams>(width, height, style, block)
+  }
+  
+  fun ViewGroup.RecyclerView(
+    width: Size,
+    height: Size,
+    style: RecyclerView.() -> Unit = {},
+    block: RecyclerView.() -> Unit,
+  ) = when (this) {
+    is FrameLayout -> child<RecyclerView, FrameLayoutParams>(width, height, style, block)
+    is LinearLayout -> child<RecyclerView, LinearLayoutParams>(width, height, style, block)
+    is CoordinatorLayout -> child<RecyclerView, CoordLayoutParams>(width, height, style, block)
+    else -> child<RecyclerView, ViewGroupLayoutParams>(width, height, style, block)
   }
   
   fun ViewGroup.ImageView(

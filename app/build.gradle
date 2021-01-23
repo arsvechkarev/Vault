@@ -31,6 +31,7 @@ android {
 }
 
 dependencies {
+  implementation 'androidx.recyclerview:recyclerview:1.1.0'
   def moxy_version = '2.2.0'
   def app_compat_version = '1.2.0'
   def timber_version = '4.7.1'

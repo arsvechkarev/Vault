@@ -68,10 +68,10 @@ class NavigatorView(context: Context) : FrameLayout(context) {
   /**
    * Returns true if there are screens in the stack or screen handled back press
    */
-  fun handleGoBack(notifyBackPress: Boolean = true): Boolean {
+  fun handleGoBack(): Boolean {
     if (screens.isEmpty()) return false
     val lastScreen = screens.last()
-    if (notifyBackPress && !lastScreen.allowBackPress()) {
+    if (!lastScreen.allowBackPress()) {
       return true
     }
     if (screens.size == 1) {

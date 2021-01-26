@@ -4,8 +4,11 @@ import com.arsvechkarev.vault.viewdsl.Ints.dp
 
 object Dimens {
   
-  val ImageServiceItemSize get() = 24.dp
-  val ImageBackSize get() = 40.dp
+  val PaddingDefault get() = 8.dp
+  val MarginDefault get() = 16.dp
+  val IconSize get() = 24.dp
+  val IconPadding get() = 6.dp
+  val ImageBackMargin get() = 16.dp
   val DefaultCornerRadius get() = 6.dp
   val DividerHeight get() = 1.dp
   val DividerMargin get() = 12.dp

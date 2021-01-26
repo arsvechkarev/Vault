@@ -1,0 +1,75 @@
+package com.arsvechkarev.vault.views
+
+import android.content.Context
+import android.view.ViewGroup
+import com.arsvechkarev.vault.R
+import com.arsvechkarev.vault.viewbuilding.TextSizes
+import com.arsvechkarev.vault.viewdsl.children
+import com.arsvechkarev.vault.viewdsl.onClick
+import com.arsvechkarev.vault.viewdsl.size
+
+class PasswordActionsView(context: Context) : ViewGroup(context) {
+  
+  private var maxItemHeight = 0
+  private var isPasswordShown = false
+  
+  var onTogglePassword: (isPasswordShown: Boolean) -> Unit = {}
+  
+  init {
+    val buildMenuItem = { iconRes: Int, titleRes: Int ->
+      TextWithImageView(context, iconRes, TextSizes.H4, context.getString(titleRes))
+    }
+    addView(buildMenuItem(R.drawable.ic_copy, R.string.text_copy))
+    addView(buildMenuItem(R.drawable.ic_launch, R.string.text_overlay))
+    addView(buildMenuItem(R.drawable.ic_edit, R.string.text_edit))
+    addView(buildMenuItem(R.drawable.ic_eye_opened, R.string.text_show))
+    val showHideView = getChildAt(3) as TextWithImageView
+    showHideView.onClick {
+      isPasswordShown = !isPasswordShown
+      onTogglePassword(isPasswordShown)
+      if (isPasswordShown) {
+        showHideView.setImage(R.drawable.ic_eye_closed)
+        showHideView.setText(R.string.text_hide)
+      } else {
+        showHideView.setImage(R.drawable.ic_eye_opened)
+        showHideView.setText(R.string.text_show)
+      }
+    }
+  }
+  
+  fun onLogOutClick(block: () -> Unit) {
+    getChildAt(0).onClick(block)
+  }
+  
+  fun onShareClick(block: () -> Unit) {
+    getChildAt(1).onClick(block)
+  }
+  
+  fun onSourceCodeClick(block: () -> Unit) {
+    getChildAt(2).onClick(block)
+  }
+  
+  fun onShowHideClick(block: () -> Unit) {
+    getChildAt(3).onClick(block)
+  }
+  
+  override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
+    children.forEach { child ->
+      child.measure(widthMeasureSpec, heightMeasureSpec)
+      maxItemHeight = maxOf(maxItemHeight, child.measuredHeight)
+    }
+    setMeasuredDimension(
+      resolveSize(widthMeasureSpec.size, widthMeasureSpec),
+      resolveSize(maxItemHeight, heightMeasureSpec)
+    )
+  }
+  
+  override fun onLayout(changed: Boolean, l: Int, t: Int, r: Int, b: Int) {
+    val childWidth = width / childCount
+    var left = 0
+    for (child in children) {
+      child.layout(left, 0, left + childWidth, child.measuredHeight)
+      left = child.right
+    }
+  }
+}

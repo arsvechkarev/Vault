@@ -1,11 +1,11 @@
 package com.arsvechkarev.vault.features.list.presentation
 
 import android.view.Gravity
-import com.arsvechkarev.vault.core.model.PasswordInfo
+import com.arsvechkarev.vault.core.model.ServiceInfo
 import com.arsvechkarev.vault.recycler.ListAdapter
 import com.arsvechkarev.vault.recycler.delegate
 import com.arsvechkarev.vault.viewbuilding.Colors
-import com.arsvechkarev.vault.viewbuilding.Dimens.ImageServiceItemSize
+import com.arsvechkarev.vault.viewbuilding.Dimens.IconSize
 import com.arsvechkarev.vault.viewbuilding.Styles
 import com.arsvechkarev.vault.viewdsl.Ints.dp
 import com.arsvechkarev.vault.viewdsl.Size.Companion.WrapContent
@@ -16,16 +16,16 @@ import com.arsvechkarev.vault.viewdsl.rippleBackground
 import com.arsvechkarev.vault.viewdsl.tag
 
 class PasswordsListAdapter(
-  private val onItemClick: (PasswordInfo) -> Unit
+  private val onItemClick: (ServiceInfo) -> Unit
 ) : ListAdapter() {
   
   init {
     addDelegates(
-      delegate<PasswordInfo> {
+      delegate<ServiceInfo> {
         buildView {
           RootHorizontalLayout {
             rippleBackground(Colors.Ripple)
-            ImageView(ImageServiceItemSize, ImageServiceItemSize) {
+            ImageView(IconSize, IconSize) {
               tag("ImagePasswordItem")
               layoutGravity(Gravity.CENTER)
               margins(16.dp)

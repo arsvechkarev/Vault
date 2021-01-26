@@ -7,5 +7,7 @@ interface Navigator {
   
   fun goToPasswordsListScreen()
   
-  fun goToNewPasswordScreen()
+  fun goToNewPasswordScreen(serviceName: String)
+  
+  fun popCurrentScreen()
 }

@@ -7,13 +7,13 @@ import com.arsvechkarev.vault.R
 import com.arsvechkarev.vault.core.AndroidThreader
 import com.arsvechkarev.vault.core.extensions.ifTrue
 import com.arsvechkarev.vault.core.extensions.moxyPresenter
-import com.arsvechkarev.vault.core.model.PasswordInfo
+import com.arsvechkarev.vault.core.model.ServiceInfo
 import com.arsvechkarev.vault.core.navigation.Screen
 import com.arsvechkarev.vault.features.list.domain.PasswordsListRepository
 import com.arsvechkarev.vault.password.MasterPasswordHolder
 import com.arsvechkarev.vault.password.PasswordsSaverImpl
 import com.arsvechkarev.vault.viewbuilding.Colors
-import com.arsvechkarev.vault.viewbuilding.Dimens
+import com.arsvechkarev.vault.viewbuilding.Dimens.FabSize
 import com.arsvechkarev.vault.viewbuilding.Dimens.ProgressBarSizeBig
 import com.arsvechkarev.vault.viewbuilding.Styles.BoldTextView
 import com.arsvechkarev.vault.viewbuilding.TextSizes
@@ -80,13 +80,18 @@ class PasswordsListScreen : Screen(), PasswordsListView {
           text("No passwords saved")
         }
       }
-      ImageView(Dimens.FabSize, Dimens.FabSize) {
+      ImageView(FabSize, FabSize) {
         margin(16.dp)
         padding(6.dp)
         image(R.drawable.ic_plus)
         layoutGravity(Gravity.BOTTOM or Gravity.END)
-        rippleBackground(Colors.Ripple, Colors.Accent, Dimens.FabSize)
-        onClick { navigator.goToNewPasswordScreen() }
+        rippleBackground(Colors.Ripple, Colors.Accent, FabSize)
+        onClick { presenter.onNewServiceButtonClick() }
+      }
+      addView {
+        EnterServiceNameDialog(context, AndroidThreader).apply {
+          classNameTag()
+        }
       }
     }
   }
@@ -118,9 +123,16 @@ class PasswordsListScreen : Screen(), PasswordsListView {
     showView(view(LayoutNoPasswords))
   }
   
-  override fun showPasswordsList(list: List<PasswordInfo>) {
+  override fun showPasswordsList(list: List<ServiceInfo>) {
     showView(viewAs<RecyclerView>())
     adapter.submitList(list)
+  }
+  
+  override fun showEnterServiceNameDialog(servicesInfoList: List<ServiceInfo>) {
+    viewAs<EnterServiceNameDialog>().showEnterServiceName(servicesInfoList,
+      onReady = { newServiceName ->
+        navigator.goToNewPasswordScreen(newServiceName)
+      })
   }
   
   private fun showView(layout: View) {

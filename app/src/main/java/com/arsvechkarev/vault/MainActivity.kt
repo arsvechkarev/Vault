@@ -1,6 +1,7 @@
 package com.arsvechkarev.vault
 
 import android.os.Bundle
+import com.arsvechkarev.core.navigation.Options
 import com.arsvechkarev.vault.core.AndroidThreader
 import com.arsvechkarev.vault.core.BaseActivity
 import com.arsvechkarev.vault.core.Singletons.masterPasswordChecker
@@ -51,10 +52,12 @@ class MainActivity : BaseActivity(), Navigator {
       if (masterPasswordSaver.getSavedMasterPassword() != null) {
         navigator.navigate(PasswordsListScreen::class)
       } else {
-        viewAs<PasswordCheckingDialog>().initiatePasswordCheck(onSuccess = { password ->
-          MasterPasswordHolder.setMasterPassword(password)
-          navigator.navigate(PasswordsListScreen::class)
-        })
+        MasterPasswordHolder.setMasterPassword("qwerty//123")
+        navigator.navigate(PasswordsListScreen::class)
+        //        viewAs<PasswordCheckingDialog>().initiatePasswordCheck(onSuccess = { password ->
+        //          MasterPasswordHolder.setMasterPassword(password)
+        //          navigator.navigate(PasswordsListScreen::class)
+        //        })
       }
     } else {
       navigator.navigate(StartScreen::class)
@@ -71,7 +74,14 @@ class MainActivity : BaseActivity(), Navigator {
     navigator.navigate(PasswordsListScreen::class)
   }
   
-  override fun goToNewPasswordScreen() {
-    navigator.navigate(InfoScreen::class)
+  override fun goToNewPasswordScreen(serviceName: String) {
+    navigator.navigate(InfoScreen::class, options = Options(
+      arguments = Bundle().apply {
+        putString(InfoScreen.KEY_SERVICE_NAME, serviceName)
+      }))
+  }
+  
+  override fun popCurrentScreen() {
+    navigator.handleGoBack()
   }
 }

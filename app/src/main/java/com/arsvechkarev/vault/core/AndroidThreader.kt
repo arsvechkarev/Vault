@@ -12,7 +12,7 @@ object AndroidThreader : Threader {
   
   private val handler = Handler(Looper.getMainLooper())
   
-  override fun onBackground(block: () -> Unit): Future<*> {
+  override fun onBackgroundThread(block: () -> Unit): Future<*> {
     return backgroundWorker.submit(block)
   }
   

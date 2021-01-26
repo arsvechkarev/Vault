@@ -12,7 +12,7 @@ interface Threader {
   /**
    * Executes [block] on a background thread and returns a future that represents that task
    */
-  fun onBackground(block: () -> Unit): Future<*>
+  fun onBackgroundThread(block: () -> Unit): Future<*>
   
   /**
    * Executes [block] on a dedicated IO thread and returns a future that represents that task

@@ -109,7 +109,7 @@ abstract class ListAdapter(
   }
   
   private fun applyChanges(callback: DiffUtil.Callback) {
-    threader.onBackground {
+    threader.onBackgroundThread {
       val diffResult = DiffUtil.calculateDiff(callback)
       threader.onMainThread {
         diffResult.dispatchUpdatesTo(this)

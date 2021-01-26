@@ -27,7 +27,7 @@ object Fonts {
     }
   
   fun init(context: Context) {
-    AndroidThreader.onBackground {
+    AndroidThreader.onBackgroundThread {
       segoeUi = ResourcesCompat.getFont(context, R.font.segoe_ui)
       segoeUiBold = ResourcesCompat.getFont(context, R.font.segoe_ui_bold)
       initializationLatch.countDown()

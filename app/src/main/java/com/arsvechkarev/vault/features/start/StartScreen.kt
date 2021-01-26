@@ -2,7 +2,6 @@ package com.arsvechkarev.vault.features.start
 
 import android.view.Gravity
 import android.view.animation.AnimationUtils
-import android.widget.EditText
 import android.widget.ViewSwitcher
 import com.arsvechkarev.vault.R
 import com.arsvechkarev.vault.core.AndroidThreader
@@ -14,6 +13,10 @@ import com.arsvechkarev.vault.core.extensions.BaseTextWatcher
 import com.arsvechkarev.vault.core.extensions.moxyPresenter
 import com.arsvechkarev.vault.core.navigation.Screen
 import com.arsvechkarev.vault.password.PasswordStatus
+import com.arsvechkarev.vault.password.PasswordStatus.EMPTY
+import com.arsvechkarev.vault.password.PasswordStatus.OK
+import com.arsvechkarev.vault.password.PasswordStatus.TOO_SHORT
+import com.arsvechkarev.vault.password.PasswordStatus.TOO_WEAK
 import com.arsvechkarev.vault.password.PasswordStrength
 import com.arsvechkarev.vault.password.PasswordStrength.MEDIUM
 import com.arsvechkarev.vault.password.PasswordStrength.STRONG
@@ -30,6 +33,7 @@ import com.arsvechkarev.vault.viewbuilding.Styles.BaseTextView
 import com.arsvechkarev.vault.viewbuilding.Styles.BoldTextView
 import com.arsvechkarev.vault.viewbuilding.Styles.ClickableButton
 import com.arsvechkarev.vault.viewbuilding.Styles.ClickableTextView
+import com.arsvechkarev.vault.viewbuilding.Styles.ImageBack
 import com.arsvechkarev.vault.viewbuilding.TextSizes
 import com.arsvechkarev.vault.viewdsl.Ints.dp
 import com.arsvechkarev.vault.viewdsl.Size.Companion.MatchParent
@@ -39,11 +43,9 @@ import com.arsvechkarev.vault.viewdsl.addView
 import com.arsvechkarev.vault.viewdsl.animateInvisible
 import com.arsvechkarev.vault.viewdsl.animateVisible
 import com.arsvechkarev.vault.viewdsl.backgroundRoundRect
-import com.arsvechkarev.vault.viewdsl.circleRippleBackground
 import com.arsvechkarev.vault.viewdsl.classNameTag
 import com.arsvechkarev.vault.viewdsl.font
 import com.arsvechkarev.vault.viewdsl.gravity
-import com.arsvechkarev.vault.viewdsl.image
 import com.arsvechkarev.vault.viewdsl.invisible
 import com.arsvechkarev.vault.viewdsl.layoutGravity
 import com.arsvechkarev.vault.viewdsl.marginHorizontal
@@ -70,12 +72,8 @@ class StartScreen : Screen(), StartView {
       HorizontalLayout(MatchParent, WrapContent) {
         tag(RepeatPasswordLayout)
         invisible()
-        margins(start = 16.dp, end = 16.dp, top = 24.dp)
-        ImageView(WrapContent, WrapContent) {
-          tag(ImageBack)
-          padding(8.dp)
-          circleRippleBackground(Colors.Ripple)
-          image(R.drawable.ic_back)
+        margins(start = 16.dp, end = 16.dp, top = 16.dp)
+        ImageView(WrapContent, WrapContent, style = ImageBack) {
           onClick { presenter.onBackButtonClick() }
         }
         TextView(WrapContent, WrapContent, style = BoldTextView) {
@@ -107,8 +105,7 @@ class StartScreen : Screen(), StartView {
           classNameTag()
           inAnimation = AnimationUtils.loadAnimation(contextNonNull, R.anim.slide_out_left)
           outAnimation = AnimationUtils.loadAnimation(contextNonNull, R.anim.slide_in_right)
-          addView(EditText(context).apply {
-            size(MatchParent, WrapContent)
+          EditText(MatchParent, WrapContent) {
             tag(EditTextEnterPassword)
             marginHorizontal(12.dp)
             font(Fonts.SegoeUi)
@@ -116,9 +113,8 @@ class StartScreen : Screen(), StartView {
             padding(8.dp)
             setHint(R.string.hint_enter_password)
             setSingleLine()
-          })
-          addView(EditText(context).apply {
-            size(MatchParent, WrapContent)
+          }
+          EditText(MatchParent, WrapContent) {
             tag(EditTextRepeatPassword)
             marginHorizontal(12.dp)
             font(Fonts.SegoeUi)
@@ -126,7 +122,7 @@ class StartScreen : Screen(), StartView {
             padding(8.dp)
             setHint(R.string.hint_repeat_password)
             setSingleLine()
-          })
+          }
         }
         TextView(MatchParent, WrapContent, style = BaseTextView) {
           tag(TextError)
@@ -231,10 +227,10 @@ class StartScreen : Screen(), StartView {
   
   override fun showPasswordProblem(passwordStatus: PasswordStatus) {
     val text = when (passwordStatus) {
-      PasswordStatus.EMPTY -> getString(R.string.text_password_cannot_be_empty)
-      PasswordStatus.TOO_SHORT -> getString(R.string.text_password_min_length, MIN_PASSWORD_LENGTH)
-      PasswordStatus.TOO_WEAK -> getString(R.string.text_password_is_too_weak)
-      PasswordStatus.OK -> getString(R.string.text_empty)
+      EMPTY -> getString(R.string.text_password_cannot_be_empty)
+      TOO_SHORT -> getString(R.string.text_password_min_length, MIN_PASSWORD_LENGTH)
+      TOO_WEAK -> getString(R.string.text_password_is_too_weak)
+      OK -> getString(R.string.text_empty)
     }
     textView(TextError).text(text)
   }
@@ -308,7 +304,6 @@ class StartScreen : Screen(), StartView {
     const val TextError = "TextError"
     const val TextTitle = "TextTitle"
     const val TextContinue = "TextContinue"
-    const val ImageBack = "ImageBack"
     const val RepeatPasswordLayout = "RepeatPasswordLayout"
     const val EditTextEnterPassword = "EditTextEnterPassword"
     const val EditTextRepeatPassword = "EditTextRepeatPassword"

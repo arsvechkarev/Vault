@@ -1,6 +1,5 @@
-package com.arsvechkarev.vault.features.password
+package com.arsvechkarev.vault.features.list.presentation
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.widget.EditText
 import android.widget.TextView
@@ -8,17 +7,15 @@ import com.arsvechkarev.vault.R
 import com.arsvechkarev.vault.core.Threader
 import com.arsvechkarev.vault.core.extensions.BaseTextWatcher
 import com.arsvechkarev.vault.core.extensions.hideKeyboard
-import com.arsvechkarev.vault.password.MasterPasswordChecker
+import com.arsvechkarev.vault.core.extensions.showKeyboard
+import com.arsvechkarev.vault.core.model.ServiceInfo
 import com.arsvechkarev.vault.viewbuilding.Colors
-import com.arsvechkarev.vault.viewbuilding.Dimens.ProgressBarSize
 import com.arsvechkarev.vault.viewbuilding.Fonts
 import com.arsvechkarev.vault.viewbuilding.Styles
 import com.arsvechkarev.vault.viewbuilding.TextSizes
 import com.arsvechkarev.vault.viewdsl.Ints.dp
 import com.arsvechkarev.vault.viewdsl.Size.Companion.MatchParent
 import com.arsvechkarev.vault.viewdsl.Size.Companion.WrapContent
-import com.arsvechkarev.vault.viewdsl.animateInvisible
-import com.arsvechkarev.vault.viewdsl.animateVisible
 import com.arsvechkarev.vault.viewdsl.backgroundRoundRect
 import com.arsvechkarev.vault.viewdsl.childViewAs
 import com.arsvechkarev.vault.viewdsl.font
@@ -35,20 +32,17 @@ import com.arsvechkarev.vault.viewdsl.text
 import com.arsvechkarev.vault.viewdsl.textColor
 import com.arsvechkarev.vault.viewdsl.textSize
 import com.arsvechkarev.vault.viewdsl.withViewBuilder
-import com.arsvechkarev.vault.views.MaterialProgressBar
 import com.arsvechkarev.vault.views.SimpleDialog
 
-@SuppressLint("ViewConstructor")
-class PasswordCheckingDialog(
+class EnterServiceNameDialog(
   context: Context,
   private val threader: Threader,
-  private val masterPasswordChecker: MasterPasswordChecker
 ) : SimpleDialog(context) {
   
-  private val editText get() = childViewAs<EditText>(PasswordCheckingEditText)
-  private val textError get() = childViewAs<TextView>(PasswordCheckingTextError)
-  private val progressBar get() = childViewAs<MaterialProgressBar>(PasswordCheckingProgressBar)
-  private var onSuccess: (masterPassword: String) -> Unit = {}
+  private val editText get() = childViewAs<EditText>(EnterServiceNameEditText)
+  private val textError get() = childViewAs<TextView>(EnterServiceNameTextError)
+  private var servicesInfoList: List<ServiceInfo>? = null
+  private var onReady: (serviceName: String) -> Unit = {}
   
   private val passwordTextWatcher = object : BaseTextWatcher {
     
@@ -56,8 +50,13 @@ class PasswordCheckingDialog(
   }
   
   init {
+    onHide = {
+      editText.text.clear()
+      context.hideKeyboard(editText)
+      textError.text("")
+    }
     withViewBuilder {
-      tag(PasswordCheckingDialog)
+      tag(EnterServiceNameDialog)
       size(MatchParent, MatchParent)
       VerticalLayout(MatchParent, WrapContent) {
         marginHorizontal(30.dp)
@@ -67,43 +66,38 @@ class PasswordCheckingDialog(
         TextView(WrapContent, WrapContent, style = Styles.BoldTextView) {
           marginHorizontal(8.dp)
           textSize(TextSizes.H3)
-          text(context.getString(R.string.text_enter_master_password))
+          text(context.getString(R.string.text_enter_service_name))
         }
         EditText(MatchParent, WrapContent) {
-          tag(PasswordCheckingEditText)
+          tag(EnterServiceNameEditText)
           margins(top = 42.dp)
           font(Fonts.SegoeUi)
           textSize(TextSizes.H3)
           padding(8.dp)
-          setHint(R.string.hint_password)
+          setHint(R.string.text_service_name)
           setSingleLine()
         }
-        FrameLayout(WrapContent, WrapContent) {
-          TextView(WrapContent, WrapContent, style = Styles.BaseTextView) {
-            tag(PasswordCheckingTextError)
-            invisible()
-            margins(start = 8.dp, end = 8.dp, top = 8.dp, bottom = 32.dp)
-            textColor(Colors.Error)
-          }
-          addView(MaterialProgressBar(context).apply {
-            size(ProgressBarSize, ProgressBarSize)
-            tag(PasswordCheckingProgressBar)
-            invisible()
-          })
+        TextView(WrapContent, WrapContent, style = Styles.BaseTextView) {
+          tag(EnterServiceNameTextError)
+          invisible()
+          margins(start = 8.dp, end = 8.dp, top = 8.dp, bottom = 32.dp)
+          textColor(Colors.Error)
         }
         TextView(MatchParent, WrapContent, style = Styles.ClickableButton()) {
-          tag(PasswordCheckingContinueButton)
-          text(R.string.text_continue)
+          tag(EnterServiceNameContinueButton)
+          text(R.string.text_next)
           marginHorizontal(16.dp)
-          onClick(::checkPassword)
+          onClick(::checkServiceName)
         }
       }
     }
   }
   
-  fun initiatePasswordCheck(onSuccess: (masterPassword: String) -> Unit) {
-    this.onSuccess = onSuccess
+  fun showEnterServiceName(serviceNamesList: List<ServiceInfo>, onReady: (serviceName: String) -> Unit) {
+    this.servicesInfoList = serviceNamesList
+    this.onReady = onReady
     show()
+    context.showKeyboard()
     editText.requestFocus()
   }
   
@@ -114,40 +108,36 @@ class PasswordCheckingDialog(
   
   override fun onDetachedFromWindow() {
     editText.removeTextChangedListener(passwordTextWatcher)
-    onSuccess = {}
+    onReady = {}
     super.onDetachedFromWindow()
   }
   
-  private fun checkPassword() {
-    val password = editText.text.toString()
-    if (password.isBlank()) return
-    progressBar.animateVisible()
-    textError.animateInvisible()
+  private fun checkServiceName() {
+    val serviceName = editText.text.toString()
+    if (serviceName.isBlank()) {
+      textError.text(context.getString(R.string.text_name_cannot_be_blank))
+      return
+    }
     threader.onBackgroundThread {
-      val isCorrect = masterPasswordChecker.isCorrect(password)
-      if (isCorrect) {
-        threader.onMainThread {
-          progressBar.animateInvisible()
-          onSuccess(password)
-          hide()
-          context.hideKeyboard(editText)
+      for (serviceInfo in servicesInfoList!!) {
+        if (serviceInfo.serviceName == serviceName) {
+          textError.text(context.getString(R.string.text_service_already_exists))
+          return@onBackgroundThread
         }
-      } else {
-        threader.onMainThread {
-          progressBar.animateInvisible()
-          textError.animateVisible()
-          textError.text(R.string.text_password_is_incorrect)
-        }
+      }
+      threader.onMainThread {
+        hide()
+        context.hideKeyboard(editText)
+        onReady(serviceName)
       }
     }
   }
   
   companion object {
     
-    const val PasswordCheckingDialog = "PasswordCheckingDialog"
-    const val PasswordCheckingTextError = "PasswordCheckingTextError"
-    const val PasswordCheckingEditText = "PasswordCheckingEditText"
-    const val PasswordCheckingProgressBar = "PasswordCheckingProgressBar"
-    const val PasswordCheckingContinueButton = "PasswordCheckingContinueButton"
+    const val EnterServiceNameDialog = "EnterServiceNameDialog"
+    const val EnterServiceNameTextError = "EnterServiceNameTextError"
+    const val EnterServiceNameEditText = "EnterServiceNameEditText"
+    const val EnterServiceNameContinueButton = "EnterServiceNameContinueButton"
   }
 }

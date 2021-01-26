@@ -5,13 +5,15 @@ import com.arsvechkarev.vault.core.JSON_SERVICE_NAME
 import com.arsvechkarev.vault.core.JSON_SERVICE_PASSWORD
 import com.arsvechkarev.vault.core.Threader
 import com.arsvechkarev.vault.core.extensions.transformToList
-import com.arsvechkarev.vault.core.model.PasswordInfo
+import com.arsvechkarev.vault.core.model.ServiceInfo
 import com.arsvechkarev.vault.features.list.domain.PasswordsListRepository
 
 class PasswordsListPresenter(
   threader: Threader,
   private val passwordsListRepository: PasswordsListRepository
 ) : BasePresenter<PasswordsListView>(threader) {
+  
+  private var servicesInfoList: List<ServiceInfo> = ArrayList()
   
   fun loadPasswords(masterPassword: String) {
     onIoThread {
@@ -20,14 +22,18 @@ class PasswordsListPresenter(
       if (passwords.length() == 0) {
         updateViewState { showNoPasswords() }
       } else {
-        val list = passwords.transformToList { jsonObject ->
-          PasswordInfo(
+        servicesInfoList = passwords.transformToList { jsonObject ->
+          ServiceInfo(
             jsonObject.getString(JSON_SERVICE_NAME),
             jsonObject.getString(JSON_SERVICE_PASSWORD),
           )
         }
-        updateViewState { showPasswordsList(list) }
+        updateViewState { showPasswordsList(servicesInfoList!!) }
       }
     }
+  }
+  
+  fun onNewServiceButtonClick() {
+    viewState.showEnterServiceNameDialog(servicesInfoList)
   }
 }

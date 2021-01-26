@@ -41,6 +41,7 @@ open class SimpleDialog(context: Context) : FrameLayout(context) {
   }
   
   var onShadowFractionChangedListener: ((Float) -> Unit)? = null
+  var onHide = {}
   
   var isOpened = false
     private set
@@ -89,7 +90,7 @@ open class SimpleDialog(context: Context) : FrameLayout(context) {
         .scaleY(SCALE_FACTOR)
         .setDuration(DURATION_SHORT)
         .setInterpolator(AccelerateDecelerateInterpolator)
-        .withEndAction(::gone)
+        .withEndAction { gone(); onHide() }
         .start()
   }
   
@@ -112,6 +113,11 @@ open class SimpleDialog(context: Context) : FrameLayout(context) {
       }
     }
     return super.onTouchEvent(event)
+  }
+  
+  override fun onDetachedFromWindow() {
+    onHide = {}
+    super.onDetachedFromWindow()
   }
   
   companion object {

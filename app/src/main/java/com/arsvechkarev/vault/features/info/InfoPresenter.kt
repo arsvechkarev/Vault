@@ -5,6 +5,7 @@ import com.arsvechkarev.vault.core.Threader
 import com.arsvechkarev.vault.core.model.ServiceInfo
 import com.arsvechkarev.vault.cryptography.MasterPasswordHolder.masterPassword
 import com.arsvechkarev.vault.features.common.PasswordsListCachingRepository
+import timber.log.Timber
 
 class InfoPresenter(
   private val passwordsListCachingRepository: PasswordsListCachingRepository,
@@ -43,8 +44,7 @@ class InfoPresenter(
     isEditingSomethingNow = false
     if (serviceInfo.name == serviceName) return
     viewState.showLoading()
-    serviceInfo = ServiceInfo(serviceInfo.id, serviceName, serviceInfo.password,
-      serviceInfo.password)
+    serviceInfo = ServiceInfo(serviceInfo.id, serviceName, serviceInfo.email, serviceInfo.password)
     viewState.showServiceName(serviceName)
     viewState.showLetterChange(serviceName[0].toString())
     onIoThread {

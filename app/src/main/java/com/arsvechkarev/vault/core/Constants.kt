@@ -1,9 +1,9 @@
 package com.arsvechkarev.vault.core
 
-const val JSON_SERVICE_ID = "service_id"
-const val JSON_SERVICE_NAME = "service_name"
-const val JSON_SERVICE_EMAIL = "service_email"
-const val JSON_SERVICE_PASSWORD = "service_password"
+const val JSON_SERVICE_ID = "id"
+const val JSON_SERVICE_NAME = "name"
+const val JSON_SERVICE_EMAIL = "email"
+const val JSON_SERVICE_PASSWORD = "password"
 const val PASSWORDS_FILENAME = "passwords.vault"
 
 const val SPECIAL_SYMBOLS_STRING = "!@#\$%^&*\"()_\\-=+/.><?,'"

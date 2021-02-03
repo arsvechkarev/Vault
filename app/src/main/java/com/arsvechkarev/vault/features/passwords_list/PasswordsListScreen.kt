@@ -46,7 +46,6 @@ import com.arsvechkarev.vault.views.MaterialProgressBar
 import com.arsvechkarev.vault.views.behaviors.HeaderBehavior
 import com.arsvechkarev.vault.views.behaviors.ScrollingRecyclerBehavior
 import com.arsvechkarev.vault.views.behaviors.ViewUnderHeaderBehavior
-import timber.log.Timber
 
 class PasswordsListScreen : Screen(), PasswordsListView {
   
@@ -97,7 +96,6 @@ class PasswordsListScreen : Screen(), PasswordsListView {
   }
   
   private val adapter = PasswordsListAdapter(onItemClick = { passwordInfo ->
-    Timber.d("passwordInfo = $passwordInfo")
     navigator.goToSavedServiceInfoScreen(passwordInfo)
   })
   
@@ -122,7 +120,6 @@ class PasswordsListScreen : Screen(), PasswordsListView {
   }
   
   override fun showPasswordsList(list: List<ServiceInfo>) {
-    Timber.d("list = $list")
     showView(viewAs<RecyclerView>())
     adapter.submitList(list)
   }

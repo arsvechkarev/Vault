@@ -5,7 +5,6 @@ import com.arsvechkarev.vault.core.Threader
 import com.arsvechkarev.vault.core.model.ServiceInfo
 import com.arsvechkarev.vault.cryptography.MasterPasswordHolder.masterPassword
 import com.arsvechkarev.vault.features.common.PasswordsListCachingRepository
-import timber.log.Timber
 
 class InfoPresenter(
   private val passwordsListCachingRepository: PasswordsListCachingRepository,
@@ -49,17 +48,15 @@ class InfoPresenter(
     viewState.showLetterChange(serviceName[0].toString())
     onIoThread {
       passwordsListCachingRepository.updateServiceInfo(masterPassword, serviceInfo)
-      onMainThread {
-        viewState.showFinishLoading()
-      }
+      updateViewState { viewState.showFinishLoading() }
     }
   }
   
   fun saveEmail(email: String) {
     isEditingSomethingNow = false
     viewState.showLoading()
-    serviceInfo = ServiceInfo(serviceInfo.id, serviceInfo.name, email, serviceInfo.password)
-    viewState.showEmail(email)
+    serviceInfo = ServiceInfo(serviceInfo.id, serviceInfo.name, email.trim(), serviceInfo.password)
+    if (email.isBlank()) viewState.showNoEmail() else viewState.showEmail(email)
     onIoThread {
       passwordsListCachingRepository.updateServiceInfo(masterPassword, serviceInfo)
       updateViewState { showFinishLoading() }

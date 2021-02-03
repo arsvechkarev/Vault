@@ -89,6 +89,7 @@ class InfoScreen : Screen(), InfoView {
         child<EditableTextInfoViewGroup>(MatchParent, WrapContent) {
           tag(EditableTextInfoEmail)
           apply(editableCommonBlock)
+          allowSavingWhenEmpty = true
           whenPresenterReady { onTextSaved = presenter::saveEmail }
         }
         View(MatchParent, IntSize(DividerHeight)) {
@@ -110,7 +111,7 @@ class InfoScreen : Screen(), InfoView {
             layoutGravity(CENTER)
             gravity(CENTER)
             textSize(TextSizes.H1)
-            textColor(Colors.Accent)
+            textColor(Colors.AccentLight)
           }
           TextView(WrapContent, WrapContent, style = BoldTextView) {
             tag(TextPasswordStub)

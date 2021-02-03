@@ -37,20 +37,8 @@ class PasswordActionsView(context: Context) : ViewGroup(context) {
     }
   }
   
-  fun onLogOutClick(block: () -> Unit) {
-    getChildAt(0).onClick(block)
-  }
-  
-  fun onShareClick(block: () -> Unit) {
-    getChildAt(1).onClick(block)
-  }
-  
-  fun onSourceCodeClick(block: () -> Unit) {
+  fun onEditClick(block: () -> Unit) {
     getChildAt(2).onClick(block)
-  }
-  
-  fun onShowHideClick(block: () -> Unit) {
-    getChildAt(3).onClick(block)
   }
   
   override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {

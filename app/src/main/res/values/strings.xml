@@ -7,7 +7,7 @@
   <string name="text_weak">Weak</string>
   <string name="text_medium">Medium</string>
   <string name="text_strong">Strong</string>
-  <string name="text_very_strong">Very strong</string>
+  <string name="text_secure">Secure</string>
   <string name="text_continue">Continue</string>
   <string name="text_next">Next</string>
   <string name="text_password_cannot_be_empty">Password cannot be empty</string>
@@ -20,24 +20,40 @@
   <string name="hint_enter_password">Enter password</string>
   <string name="hint_repeat_password">Repeat password</string>
   <string name="text_service_name">Service name</string>
-  <string name="text_do_you_want_to_save_password">Do you want to save password locally?</string>
+  <string name="text_new_service">New service</string>
+  <string name="text_do_you_want_to_save_password_locally">Do you want to save password locally?</string>
   <string name="text_save_password_or_not">
     You can either save master password locally, which is less safe, because everybody who has access to
     your phone can open the app, or you can enter the password every time you open the app, which is safer,
     but less convenient. You can change your option later in settings
   </string>
   <string name="text_do_not_save_password">No, I will enter password every time I open the app, although it is less convenient</string>
-  <string name="text_save_password">Yes, I want password to be saved locally, although it is less safe</string>
+  <string name="text_save_password_locally">Yes, I want password to be saved locally, although it is less safe</string>
   <string name="text_enter_master_password">Enter master password</string>
   <string name="text_enter_service_name">Enter service name</string>
   <string name="text_name_cannot_be_blank">Name cannot be blank</string>
-  <string name="text_service_already_exists">Service with this name already exists</string>
   <string name="text_no_email">No email</string>
   <string name="text_email_optional">Email (Optional)</string>
-  <string name="text_password_stub">•••••••••••••</string>
+  <string name="text_password_stub">•••••••••••</string>
   <string name="text_copy">Copy</string>
   <string name="text_overlay">Overlay</string>
   <string name="text_show">Show</string>
   <string name="text_hide">Hide</string>
   <string name="text_edit">Edit</string>
+  <string name="text_edit_password">Edit password</string>
+  <string name="text_new_password">New password</string>
+  <string name="text_password_length">Length: %1$d</string>
+  <string name="text_generate_password">Generate password</string>
+  <string name="text_save_password">Save password</string>
+  <string name="text_uppercase_symbols">Uppercase symbols</string>
+  <string name="text_numbers">Numbers</string>
+  <string name="text_special_symbols">Special symbols</string>
+  <string name="text_ok">OK</string>
+  <string name="text_yes">YES</string>
+  <string name="text_oops">Oops</string>
+  <string name="text_saving_password">Saving password</string>
+  <string name="text_exit">Exit</string>
+  <string name="text_do_you_want_to_leave">Do you want to leave without saving anything?</string>
+  <string name="text_do_you_want_to_save_password">Do you want to save password?</string>
+  <string name="text_service_already_exists">Service with name %1$s already exists</string>
 </resources>

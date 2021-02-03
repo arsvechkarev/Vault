@@ -7,7 +7,7 @@ object TextSizes {
   
   private val textSizes = FloatArray(8) { 0f }
   
-  val Header: Float get() = textSizes[0]
+  val PasswordStub: Float get() = textSizes[0]
   val H0: Float get() = textSizes[1]
   val H1: Float get() = textSizes[2]
   val H2: Float get() = textSizes[3]
@@ -17,7 +17,7 @@ object TextSizes {
   val H6: Float get() = textSizes[7]
   
   init {
-    textSizes[0] = dimen(R.dimen.text_header)
+    textSizes[0] = dimen(R.dimen.text_password_stub)
     textSizes[1] = dimen(R.dimen.text_h0)
     textSizes[2] = dimen(R.dimen.text_h1)
     textSizes[3] = dimen(R.dimen.text_h2)

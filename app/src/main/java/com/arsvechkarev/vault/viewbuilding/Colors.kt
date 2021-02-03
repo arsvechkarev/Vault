@@ -9,7 +9,7 @@ object Colors {
   
   const val Transparent = Color.TRANSPARENT
   
-  private val colors = IntArray(27) { 0 }
+  private val colors = IntArray(24) { 0 }
   
   val Background get() = colors[0]
   val Surface get() = colors[1]

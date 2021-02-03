@@ -13,7 +13,7 @@ import com.arsvechkarev.vault.core.extensions.showKeyboard
 import com.arsvechkarev.vault.viewbuilding.Dimens.IconPadding
 import com.arsvechkarev.vault.viewbuilding.Dimens.IconSize
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginDefault
-import com.arsvechkarev.vault.viewbuilding.Dimens.PaddingDefault
+import com.arsvechkarev.vault.viewbuilding.Dimens.MarginSmall
 import com.arsvechkarev.vault.viewbuilding.Fonts
 import com.arsvechkarev.vault.viewbuilding.Styles.BaseEditText
 import com.arsvechkarev.vault.viewbuilding.Styles.BoldTextView
@@ -22,6 +22,7 @@ import com.arsvechkarev.vault.viewdsl.Size.Companion.MatchParent
 import com.arsvechkarev.vault.viewdsl.Size.Companion.WrapContent
 import com.arsvechkarev.vault.viewdsl.animateInvisible
 import com.arsvechkarev.vault.viewdsl.animateVisible
+import com.arsvechkarev.vault.viewdsl.background
 import com.arsvechkarev.vault.viewdsl.circleRippleBackground
 import com.arsvechkarev.vault.viewdsl.exactly
 import com.arsvechkarev.vault.viewdsl.font
@@ -50,14 +51,17 @@ class EditableTextInfoViewGroup(context: Context) : ViewGroup(context) {
   private var mode = SHOWING
   
   var transferTextToEditTextWhenSwitching = true
+  var allowSavingWhenEmpty = false
   var onEditClickAllowed: () -> Boolean = { true }
+  var onSaveClickAllowed: (String) -> Boolean = { true }
   var onSwitchToEditMode: () -> Unit = {}
-  var onSaveClicked: (newName: String) -> Unit = {}
+  var onTextSaved: (String) -> Unit = {}
   
   init {
     withViewBuilder {
       EditText(MatchParent, WrapContent, style = BaseEditText) {
         invisible()
+        background(null)
         gravity(CENTER)
         textSize(TextSizes.H2)
         font(Fonts.SegoeUiBold)
@@ -88,9 +92,47 @@ class EditableTextInfoViewGroup(context: Context) : ViewGroup(context) {
     textView.text(text)
   }
   
+  fun setTextFromTextView() {
+    editText.text(textView.text)
+  }
+  
+  fun changeModeToEditing() {
+    if (mode == EDITING) return
+    if (!onEditClickAllowed()) return
+    mode = EDITING
+    if (transferTextToEditTextWhenSwitching) {
+      editText.text(textView.text)
+    } else {
+      editText.text.clear()
+    }
+    onSwitchToEditMode()
+    editText.setSelection(editText.text.length)
+    editText.visible()
+    textView.invisible()
+    editText.requestFocus()
+    context.showKeyboard()
+    imageSave.animateVisible()
+    imageEdit.animateInvisible()
+  }
+  
+  fun changeModeToShowing() {
+    if (mode == SHOWING) return
+    val text = editText.text.toString().trim()
+    if (editText.text.isBlank() && !allowSavingWhenEmpty) return
+    if (!onSaveClickAllowed(text)) return
+    onTextSaved(text)
+    mode = SHOWING
+    editText.invisible()
+    textView.visible()
+    editText.clearFocus()
+    context.hideKeyboard(editText)
+    imageSave.animateInvisible()
+    imageEdit.animateVisible()
+  }
+  
   override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
     val widthSize = widthMeasureSpec.size
-    val maxTextWidth = widthSize - IconSize * 2 - PaddingDefault * 2 - MarginDefault
+    val maxTextWidth = widthSize - IconSize * 2 - MarginSmall * 2 - MarginDefault
     imageEdit.measure(unspecified(), unspecified())
     imageSave.measure(unspecified(), unspecified())
     textView.measure(exactly(maxTextWidth), unspecified())
@@ -114,7 +156,7 @@ class EditableTextInfoViewGroup(context: Context) : ViewGroup(context) {
       width / 2 - editText.measuredWidth / 2,
       height / 2 - editText.measuredHeight / 2
     )
-    val left = width - imageWidth - PaddingDefault
+    val left = width - imageWidth - MarginSmall
     val top = height / 2 - imageHeight / 2
     imageEdit.layoutLeftTop(left, top)
     imageSave.layoutLeftTop(left, top)
@@ -124,44 +166,12 @@ class EditableTextInfoViewGroup(context: Context) : ViewGroup(context) {
     if (mode == SHOWING) {
       changeModeToEditing()
     } else {
+      assertThat(mode == EDITING)
       changeModeToShowing()
     }
   }
   
-  private fun changeModeToEditing() {
-    if (!onEditClickAllowed()) return
-    mode = EDITING
-    if (transferTextToEditTextWhenSwitching) {
-      editText.text(textView.text)
-    } else {
-      editText.text.clear()
-    }
-    onSwitchToEditMode()
-    editText.setSelection(editText.text.length)
-    editText.visible()
-    textView.invisible()
-    editText.requestFocus()
-    context.showKeyboard()
-    imageSave.animateVisible()
-    imageEdit.animateInvisible()
-  }
-  
-  private fun changeModeToShowing() {
-    assertThat(mode == EDITING)
-    if (editText.text.isBlank()) return
-    val text = editText.text.toString().trim()
-    mode = SHOWING
-    editText.invisible()
-    textView.visible()
-    editText.clearFocus()
-    textView.text(text)
-    context.hideKeyboard(editText)
-    imageSave.animateInvisible()
-    imageEdit.animateVisible()
-    onSaveClicked(text)
-  }
-  
-  enum class ShowingMode {
+  private enum class ShowingMode {
     SHOWING, EDITING
   }
 }

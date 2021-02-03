@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <integer name="checkmark_appear_and_disappear">300</integer>
+</resources>

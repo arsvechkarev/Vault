@@ -7,7 +7,7 @@ import android.graphics.Canvas
 import android.view.View
 import com.arsvechkarev.vault.core.extensions.Paint
 import com.arsvechkarev.vault.core.extensions.f
-import com.arsvechkarev.vault.password.PasswordStrength
+import com.arsvechkarev.vault.cryptography.PasswordStrength
 import com.arsvechkarev.vault.viewbuilding.Colors
 import com.arsvechkarev.vault.viewdsl.AccelerateDecelerateInterpolator
 import com.arsvechkarev.vault.viewdsl.DURATION_DEFAULT

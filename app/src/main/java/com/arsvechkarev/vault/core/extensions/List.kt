@@ -14,3 +14,9 @@ fun <T> JSONArray.transformToList(mapper: (JSONObject) -> T): List<T> {
   forEachObject { list.add(mapper(it)) }
   return list
 }
+
+fun <T> JSONArray.transformToArrayList(mapper: (JSONObject) -> T): ArrayList<T> {
+  val list = ArrayList<T>()
+  forEachObject { list.add(mapper(it)) }
+  return list
+}

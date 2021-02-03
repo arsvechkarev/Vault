@@ -4,6 +4,7 @@ import android.R.attr.state_checked
 import android.content.res.ColorStateList
 import android.graphics.drawable.Drawable
 import android.widget.ImageView
+import android.widget.SeekBar
 import androidx.annotation.DrawableRes
 import androidx.appcompat.widget.SwitchCompat
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -38,6 +39,21 @@ fun ImageView.image(@DrawableRes resId: Int) {
 
 fun ImageView.image(drawable: Drawable) {
   setImageDrawable(drawable)
+}
+
+inline fun SeekBar.onProgressChanged(crossinline block: (progress: Int) -> Unit) {
+  setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+    override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
+      block(progress)
+    }
+  
+    override fun onStartTrackingTouch(seekBar: SeekBar?) {
+    }
+  
+    override fun onStopTrackingTouch(seekBar: SeekBar?) {
+    }
+  
+  })
 }
 
 fun SwitchCompat.setColors(

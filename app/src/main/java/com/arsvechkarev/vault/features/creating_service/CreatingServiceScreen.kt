@@ -1,0 +1,146 @@
+package com.arsvechkarev.vault.features.creating_service
+
+import android.view.Gravity.BOTTOM
+import android.view.Gravity.CENTER
+import android.view.Gravity.CENTER_VERTICAL
+import com.arsvechkarev.vault.R
+import com.arsvechkarev.vault.core.AndroidThreader
+import com.arsvechkarev.vault.core.Singletons.passwordCreatingPresenter
+import com.arsvechkarev.vault.core.Singletons.passwordsListCachingRepository
+import com.arsvechkarev.vault.core.extensions.hideKeyboard
+import com.arsvechkarev.vault.core.extensions.moxyPresenter
+import com.arsvechkarev.vault.core.navigation.Screen
+import com.arsvechkarev.vault.features.creating_password.PasswordCreatingDialog
+import com.arsvechkarev.vault.viewbuilding.Colors.Error
+import com.arsvechkarev.vault.viewbuilding.Dimens.IconPadding
+import com.arsvechkarev.vault.viewbuilding.Dimens.MarginDefault
+import com.arsvechkarev.vault.viewbuilding.Dimens.MarginSmall
+import com.arsvechkarev.vault.viewbuilding.Dimens.ProgressBarSizeBig
+import com.arsvechkarev.vault.viewbuilding.Styles.BaseEditText
+import com.arsvechkarev.vault.viewbuilding.Styles.BaseTextView
+import com.arsvechkarev.vault.viewbuilding.Styles.BoldTextView
+import com.arsvechkarev.vault.viewbuilding.Styles.ClickableButton
+import com.arsvechkarev.vault.viewbuilding.TextSizes
+import com.arsvechkarev.vault.viewdsl.Size.Companion.MatchParent
+import com.arsvechkarev.vault.viewdsl.Size.Companion.WrapContent
+import com.arsvechkarev.vault.viewdsl.addView
+import com.arsvechkarev.vault.viewdsl.circleRippleBackground
+import com.arsvechkarev.vault.viewdsl.classNameTag
+import com.arsvechkarev.vault.viewdsl.gravity
+import com.arsvechkarev.vault.viewdsl.image
+import com.arsvechkarev.vault.viewdsl.layoutGravity
+import com.arsvechkarev.vault.viewdsl.margin
+import com.arsvechkarev.vault.viewdsl.margins
+import com.arsvechkarev.vault.viewdsl.onClick
+import com.arsvechkarev.vault.viewdsl.padding
+import com.arsvechkarev.vault.viewdsl.size
+import com.arsvechkarev.vault.viewdsl.tag
+import com.arsvechkarev.vault.viewdsl.text
+import com.arsvechkarev.vault.viewdsl.textColor
+import com.arsvechkarev.vault.viewdsl.textSize
+import com.arsvechkarev.vault.views.MaterialProgressBar
+import com.arsvechkarev.vault.views.SimpleDialog
+
+class CreatingServiceScreen : Screen(), CreatingServiceView {
+  
+  override fun buildLayout() = withViewBuilder {
+    RootCoordinatorLayout(MatchParent, MatchParent) {
+      HorizontalLayout(MatchParent, WrapContent) {
+        ImageView(WrapContent, WrapContent) {
+          image(R.drawable.ic_back)
+          margin(MarginDefault)
+          gravity(CENTER_VERTICAL)
+          padding(IconPadding)
+          circleRippleBackground()
+        }
+        TextView(WrapContent, WrapContent, style = BoldTextView) {
+          layoutGravity(CENTER)
+          text(R.string.text_new_service)
+          textSize(TextSizes.H1)
+        }
+      }
+      VerticalLayout(MatchParent, WrapContent) {
+        layoutGravity(CENTER)
+        TextView(WrapContent, WrapContent, style = BaseTextView) {
+          tag(TextError)
+          textColor(Error)
+          margins(start = MarginDefault + MarginSmall)
+        }
+        EditText(MatchParent, WrapContent, style = BaseEditText) {
+          tag(EditTextServiceName)
+          margins(top = MarginDefault, start = MarginDefault, end = MarginDefault)
+          setHint(R.string.text_service_name)
+        }
+        EditText(MatchParent, WrapContent, style = BaseEditText) {
+          tag(EditTextEmail)
+          margins(top = MarginDefault, start = MarginDefault, end = MarginDefault)
+          setHint(R.string.text_email_optional)
+        }
+      }
+      TextView(MatchParent, WrapContent, style = ClickableButton()) {
+        tag(TextContinue)
+        layoutGravity(BOTTOM)
+        text(R.string.text_continue)
+        margins(start = MarginDefault, end = MarginDefault, bottom = MarginDefault)
+        onClick { continueWithCreating() }
+      }
+      addView {
+        PasswordCreatingDialog(context, passwordCreatingPresenter).apply {
+          size(MatchParent, MatchParent)
+          classNameTag()
+        }
+      }
+      child<SimpleDialog>(MatchParent, MatchParent) {
+        tag(DialogProgressBar)
+        addView {
+          MaterialProgressBar(context).apply {
+            size(ProgressBarSizeBig, ProgressBarSizeBig)
+          }
+        }
+      }
+    }
+  }
+  
+  private val presenter by moxyPresenter {
+    CreatingServicePresenter(passwordsListCachingRepository, AndroidThreader)
+  }
+  
+  override fun onInit() {
+    editText(EditTextServiceName).requestFocus()
+    showKeyboard()
+  }
+  
+  override fun showServiceNameAlreadyExists() {
+    textView(TextError).text(getString(R.string.text_service_already_exists))
+  }
+  
+  override fun showPasswordCreatingDialog() {
+    viewAs<PasswordCreatingDialog>().initiatePasswordCreation(onPasswordCreated = { password ->
+      presenter.onPasswordEntered(password)
+    })
+    contextNonNull.hideKeyboard(editText(EditTextServiceName))
+  }
+  
+  override fun showLoadingCreation() {
+    simpleDialog(DialogProgressBar).show()
+  }
+  
+  override fun showServiceInfoCreated() {
+    navigator.popCurrentScreen()
+  }
+  
+  private fun continueWithCreating() {
+    val serviceName = editText(EditTextServiceName).text.toString()
+    val email = editText(EditTextEmail).text.toString()
+    presenter.onContinueClicked(serviceName, email)
+  }
+  
+  companion object {
+    
+    const val TextError = "TextError"
+    const val TextContinue = "TextContinue"
+    const val EditTextServiceName = "EditTextServiceName"
+    const val EditTextEmail = "EditTextEmail"
+    const val DialogProgressBar = "DialogProgressBar"
+  }
+}

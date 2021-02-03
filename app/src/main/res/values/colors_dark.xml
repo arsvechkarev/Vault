@@ -14,7 +14,7 @@
   <color name="dark_error">#D5301E</color>
   <color name="dark_error_ripple">#70E64545</color>
   <color name="dark_text_primary">#FFFFFF</color>
-  <color name="dark_text_secondary">#C6C6C6</color>
+  <color name="dark_text_secondary">#A3A3A3</color>
   <color name="dark_password_weak">#C80505</color>
   <color name="dark_password_medium">#DA6314</color>
   <color name="dark_password_strong">#DAAF14</color>

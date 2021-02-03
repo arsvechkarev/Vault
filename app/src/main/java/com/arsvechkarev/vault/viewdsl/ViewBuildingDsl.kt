@@ -214,7 +214,7 @@ class ViewBuilder(val context: Context) {
       else -> child<ScrollView, ViewGroupLayoutParams>(width, height, {}, {})
     }
     return layout.apply {
-      child<LinearLayout>(MatchParent, WrapContent, style, block).apply {
+      child(MatchParent, WrapContent, style, block).apply {
         orientation(LinearLayout.VERTICAL)
       }
     }
@@ -242,8 +242,8 @@ class ViewBuilder(val context: Context) {
     block: T.() -> Unit
   ): T {
     val viewGroupParams = ViewGroupLayoutParams(
-      context.determineSize(width),
-      context.determineSize(height)
+      determineSize(context, width),
+      determineSize(context, height)
     )
     val viewConstrictor = T::class.java.getDeclaredConstructor(Context::class.java)
     val paramsConstructor = P::class.java.getDeclaredConstructor(ViewGroupLayoutParams::class.java)

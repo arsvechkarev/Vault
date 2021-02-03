@@ -1,5 +1,6 @@
 package com.arsvechkarev.vault.viewdsl
 
+import android.view.View
 import android.widget.LinearLayout
 
 fun LinearLayout.orientation(orientation: Int) {
@@ -8,4 +9,8 @@ fun LinearLayout.orientation(orientation: Int) {
 
 fun LinearLayout.gravity(gravity: Int) {
   setGravity(gravity)
+}
+
+fun View.weight(weight: Float) {
+  (layoutParams as LinearLayout.LayoutParams).weight = weight
 }

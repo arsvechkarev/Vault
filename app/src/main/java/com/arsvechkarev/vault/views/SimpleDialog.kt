@@ -28,6 +28,7 @@ open class SimpleDialog(context: Context) : FrameLayout(context) {
   private var latestX = 0f
   private var latestY = 0f
   private var currentShadowFraction = 0f
+  private var shadowColor = Colors.Shadow
   private val dialogView get() = getChildAt(0)
   private val shadowAnimator = ValueAnimator().apply {
     interpolator = AccelerateDecelerateInterpolator
@@ -35,12 +36,13 @@ open class SimpleDialog(context: Context) : FrameLayout(context) {
     addUpdateListener {
       currentShadowFraction = it.animatedValue as Float
       onShadowFractionChangedListener?.invoke(currentShadowFraction)
-      val color = ColorUtils.blendARGB(Color.TRANSPARENT, Colors.Shadow, currentShadowFraction)
+      val color = ColorUtils.blendARGB(Color.TRANSPARENT, shadowColor, currentShadowFraction)
       setBackgroundColor(color)
     }
   }
   
   var onShadowFractionChangedListener: ((Float) -> Unit)? = null
+  var onShown = {}
   var onHide = {}
   
   var isOpened = false
@@ -50,31 +52,39 @@ open class SimpleDialog(context: Context) : FrameLayout(context) {
     invisible()
   }
   
-  override fun onViewAdded(child: View) {
-    if (child === dialogView) {
-      dialogView.layoutGravity(Gravity.CENTER)
-      dialogView.scaleX = SCALE_FACTOR
-      dialogView.scaleY = SCALE_FACTOR
-    }
+  fun setShadowColor(color: Int) {
+    shadowColor = color
   }
   
-  fun show() {
+  fun show(animate: Boolean = true) {
     if (isOpened) return
     isOpened = true
-    visible()
-    dialogView.alpha = 0f
-    dialogView.visible()
-    shadowAnimator.cancelIfRunning()
-    shadowAnimator.setFloatValues(currentShadowFraction, 1f)
-    shadowAnimator.start()
-    dialogView.animate()
-        .withLayer()
-        .scaleX(1f)
-        .scaleY(1f)
-        .alpha(1f)
-        .setDuration(DURATION_SHORT)
-        .setInterpolator(AccelerateDecelerateInterpolator)
-        .start()
+    if (animate) {
+      visible()
+      dialogView.alpha = 0f
+      dialogView.visible()
+      shadowAnimator.cancelIfRunning()
+      shadowAnimator.setFloatValues(currentShadowFraction, 1f)
+      shadowAnimator.start()
+      dialogView.animate()
+          .withLayer()
+          .scaleX(1f)
+          .scaleY(1f)
+          .alpha(1f)
+          .setDuration(DURATION_SHORT)
+          .withEndAction(onShown)
+          .setInterpolator(AccelerateDecelerateInterpolator)
+          .start()
+    } else {
+      visible()
+      setBackgroundColor(shadowColor)
+      dialogView.visible()
+      dialogView.alpha = 1f
+      dialogView.scaleX = 1f
+      dialogView.scaleY = 1f
+      currentShadowFraction = 1f
+      onShown()
+    }
   }
   
   fun hide() {
@@ -92,6 +102,14 @@ open class SimpleDialog(context: Context) : FrameLayout(context) {
         .setInterpolator(AccelerateDecelerateInterpolator)
         .withEndAction { gone(); onHide() }
         .start()
+  }
+  
+  override fun onViewAdded(child: View) {
+    if (child === dialogView) {
+      dialogView.layoutGravity(Gravity.CENTER)
+      dialogView.scaleX = SCALE_FACTOR
+      dialogView.scaleY = SCALE_FACTOR
+    }
   }
   
   override fun onTouchEvent(event: MotionEvent): Boolean {

@@ -49,8 +49,8 @@ fun Context.createLayoutParams(
   height: Size,
   margins: Margins = Margins()
 ): ViewGroup.LayoutParams {
-  val widthValue: Int = determineSize(width)
-  val heightValue: Int = determineSize(height)
+  val widthValue: Int = determineSize(this, width)
+  val heightValue: Int = determineSize(this, height)
   val layoutParams = ViewGroup.MarginLayoutParams(widthValue, heightValue)
   layoutParams.setMargins(
     margins.left,
@@ -61,9 +61,9 @@ fun Context.createLayoutParams(
   return layoutParams
 }
 
-fun Context.determineSize(size: Size) = when (size) {
+fun determineSize(context: Context, size: Size) = when (size) {
   Size.MATCH_PARENT -> ViewGroup.LayoutParams.MATCH_PARENT
   Size.WRAP_CONTENT -> ViewGroup.LayoutParams.WRAP_CONTENT
   is Size.IntSize -> size.size
-  is Size.Dimen -> resources.getDimension(size.dimenRes).toInt()
+  is Size.Dimen -> context.resources.getDimension(size.dimenRes).toInt()
 }

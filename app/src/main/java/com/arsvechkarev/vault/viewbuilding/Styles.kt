@@ -6,6 +6,7 @@ import android.graphics.drawable.GradientDrawable
 import android.graphics.drawable.RippleDrawable
 import android.graphics.drawable.ShapeDrawable
 import android.graphics.drawable.shapes.RoundRectShape
+import android.text.InputType
 import android.text.TextUtils
 import android.view.Gravity
 import android.widget.EditText
@@ -40,7 +41,6 @@ object Styles {
   val BoldTextView: TextView.() -> Unit = {
     apply(BaseTextView)
     font(Fonts.SegoeUiBold)
-    textColor(Colors.TextPrimary)
     textSize(TextSizes.H3)
   }
   
@@ -91,7 +91,8 @@ object Styles {
   val BaseEditText: EditText.() -> Unit = {
     font(Fonts.SegoeUi)
     textSize(TextSizes.H3)
-    padding(8.dp)
+    paddingVertical(8.dp)
     setSingleLine()
+    inputType = InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD
   }
 }

@@ -9,9 +9,11 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
+import com.arsvechkarev.vault.core.extensions.showKeyboard
 import com.arsvechkarev.vault.viewdsl.ViewBuilder
 import com.arsvechkarev.vault.viewdsl.childView
 import com.arsvechkarev.vault.viewdsl.withViewBuilder
+import com.arsvechkarev.vault.views.SimpleDialog
 import moxy.MvpDelegate
 import moxy.MvpDelegateHolder
 import moxy.MvpView
@@ -20,7 +22,9 @@ import moxy.MvpView
 abstract class Screen : MvpDelegateHolder, MvpView {
   
   @PublishedApi
-  internal val viewsCache = HashMap<String, View>()
+  internal val viewsCache = HashMap<Any, View>()
+  
+  private val onInitPresenterList = ArrayList<(() -> Unit)>()
   
   private var _mvpDelegate: MvpDelegate<out Screen>? = null
   
@@ -51,6 +55,7 @@ abstract class Screen : MvpDelegateHolder, MvpView {
   
   internal fun onInitDelegate() {
     mvpDelegate.onCreate()
+    onInitPresenterList.forEach { it() }
   }
   
   internal fun onAppearedOnScreenDelegate() {
@@ -83,6 +88,14 @@ abstract class Screen : MvpDelegateHolder, MvpView {
   
   open fun onRelease() = Unit
   
+  fun whenPresenterReady(block: () -> Unit) {
+    onInitPresenterList.add(block)
+  }
+  
+  fun showKeyboard() {
+    contextNonNull.showKeyboard()
+  }
+  
   fun hideKeyboard() {
     val imm = contextNonNull.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
     imm.hideSoftInputFromWindow(viewNonNull.windowToken, 0)
@@ -97,7 +110,7 @@ abstract class Screen : MvpDelegateHolder, MvpView {
   }
   
   @Suppress("UNCHECKED_CAST")
-  fun view(tag: String): View {
+  fun view(tag: Any): View {
     if (viewsCache[tag] == null) {
       viewsCache[tag] = viewNonNull.childView(tag)
     }
@@ -105,7 +118,7 @@ abstract class Screen : MvpDelegateHolder, MvpView {
   }
   
   @Suppress("UNCHECKED_CAST")
-  inline fun <reified T : View> viewAs(tag: String = T::class.java.name): T {
+  inline fun <reified T : View> viewAs(tag: Any = T::class.java.name): T {
     return view(tag) as T
   }
   
@@ -114,4 +127,6 @@ abstract class Screen : MvpDelegateHolder, MvpView {
   fun textView(tag: String) = viewAs<TextView>(tag)
   
   fun editText(tag: String) = viewAs<EditText>(tag)
+  
+  fun simpleDialog(tag: String = SimpleDialog::class.java.name) = viewAs<SimpleDialog>(tag)
 }

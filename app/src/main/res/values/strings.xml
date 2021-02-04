@@ -55,6 +55,7 @@
   <string name="text_saving_password">Saving password</string>
   <string name="text_exit">Exit</string>
   <string name="text_do_you_want_to_leave">Do you want to leave without saving anything?</string>
+  <string name="text_password_is_the_same">You did not changedPassword has not changed</string>
   <string name="text_do_you_want_to_save_password">Do you want to accept the password?</string>
   <string name="text_service_already_exists1">Service with name %1$s already exists</string>
   <string name="text_service_already_exists2">Service with this name already exists</string>

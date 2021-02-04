@@ -7,8 +7,6 @@ import moxy.viewstate.strategy.StateStrategyType
 @StateStrategyType(AddToEndSingleStrategy::class)
 interface InfoView : MvpView {
   
-  fun showPasswordEditingDialog(password: String)
-  
   fun showLetterChange(letter: String)
   
   fun showServiceName(serviceName: String)
@@ -19,17 +17,23 @@ interface InfoView : MvpView {
   
   fun showErrorSavingServiceName(errorText: String)
   
+  fun hideErrorSavingServiceName()
+  
   fun setPassword(password: String)
   
   fun showPassword(password: String)
   
   fun hidePassword()
   
-  fun switchFromEditingMode()
-  
   fun showLoading()
   
   fun showFinishLoading()
   
-  fun closePasswordDialog()
+  fun showPasswordEditingDialog(password: String)
+  
+  fun hidePasswordEditingDialog()
+  
+  fun showAcceptPasswordDialog()
+  
+  fun hideAcceptPasswordDialog()
 }

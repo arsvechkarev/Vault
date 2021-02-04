@@ -5,9 +5,9 @@ import com.arsvechkarev.vault.core.Threader
 import com.arsvechkarev.vault.core.model.ServiceInfo
 import com.arsvechkarev.vault.cryptography.MasterPasswordHolder.masterPassword
 import com.arsvechkarev.vault.features.common.PasswordsListRepository
-import com.arsvechkarev.vault.features.creating_service.CreatingServiceState.DIALOG_SAVE_PASSWORD
-import com.arsvechkarev.vault.features.creating_service.CreatingServiceState.INITIAL
-import com.arsvechkarev.vault.features.creating_service.CreatingServiceState.PASSWORD_SCREEN
+import com.arsvechkarev.vault.features.creating_service.CreatingServiceScreenState.DIALOG_SAVE_PASSWORD
+import com.arsvechkarev.vault.features.creating_service.CreatingServiceScreenState.INITIAL
+import com.arsvechkarev.vault.features.creating_service.CreatingServiceScreenState.PASSWORD_SCREEN
 import java.util.UUID
 
 class CreatingServicePresenter(

@@ -92,10 +92,6 @@ class EditableTextInfoViewGroup(context: Context) : ViewGroup(context) {
     textView.text(text)
   }
   
-  fun setTextFromTextView() {
-    editText.text(textView.text)
-  }
-  
   fun changeModeToEditing() {
     if (mode == EDITING) return
     if (!onEditClickAllowed()) return

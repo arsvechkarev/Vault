@@ -150,12 +150,6 @@ class InfoScreen : Screen(), InfoView {
     presenter.performSetup(mode)
   }
   
-  override fun showPasswordEditingDialog(password: String) {
-    passwordEditingDialog().initiatePasswordEditing(password, onSavePasswordClick = { newPassword ->
-      presenter.acceptNewPassword(newPassword)
-    })
-  }
-  
   override fun showLetterChange(letter: String) {
     val image = imageView(ImageServiceName)
     if (image.drawable is LetterInCircleDrawable) {
@@ -190,6 +184,10 @@ class InfoScreen : Screen(), InfoView {
     )
   }
   
+  override fun hideErrorSavingServiceName() {
+    infoDialog().hide()
+  }
+  
   override fun setPassword(password: String) {
     textView(TextPassword).text(password)
   }
@@ -205,10 +203,6 @@ class InfoScreen : Screen(), InfoView {
     textView(TextPasswordStub).animateVisible()
   }
   
-  override fun switchFromEditingMode() {
-    viewAs<EditableTextInfoViewGroup>(EditableTextInfoEmail).setTextFromTextView()
-  }
-  
   override fun showLoading() {
     loadingDialog().show()
   }
@@ -217,8 +211,29 @@ class InfoScreen : Screen(), InfoView {
     loadingDialog().hide()
   }
   
-  override fun closePasswordDialog() {
+  override fun showPasswordEditingDialog(password: String) {
+    passwordEditingDialog().initiatePasswordEditing(password, onSavePasswordClick = { newPassword ->
+      presenter.onSaveNewPasswordClicked(newPassword)
+    })
+  }
+  
+  override fun hidePasswordEditingDialog() {
     passwordEditingDialog().hide()
+  }
+  
+  override fun showAcceptPasswordDialog() {
+    infoDialog().show(
+      R.string.text_saving_password,
+      R.string.text_do_you_want_to_save_password,
+      R.string.text_yes,
+      onOkClicked = {
+        presenter.acceptPassword()
+      }
+    )
+  }
+  
+  override fun hideAcceptPasswordDialog() {
+    infoDialog().hide()
   }
   
   override fun allowBackPress(): Boolean {

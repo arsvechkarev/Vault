@@ -53,6 +53,7 @@ class CreatingServiceScreen : Screen(), CreatingServiceView {
           gravity(CENTER_VERTICAL)
           padding(IconPadding)
           circleRippleBackground()
+          onClick { navigator.popCurrentScreen() }
         }
         TextView(WrapContent, WrapContent, style = BoldTextView) {
           layoutGravity(CENTER)
@@ -114,6 +115,7 @@ class CreatingServiceScreen : Screen(), CreatingServiceView {
   
   override fun onRelease() {
     editText(EditTextEmail).removeTextChangedListener(passwordTextWatcher)
+    hideKeyboard()
     contextNonNull.setSoftInputMode(SOFT_INPUT_ADJUST_RESIZE)
   }
   

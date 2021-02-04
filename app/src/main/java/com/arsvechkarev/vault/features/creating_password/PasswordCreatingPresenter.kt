@@ -42,7 +42,7 @@ class PasswordCreatingPresenter(
   }
   
   fun onPasswordChanged(password: String) {
-    this.password = password
+    this.password = password.trim()
     showPasswordInfo()
   }
   

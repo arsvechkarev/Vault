@@ -78,7 +78,7 @@ class MainActivity : BaseActivity(), Navigator {
     navigator.navigate(PasswordsListScreen::class)
   }
   
-  override fun goToNewPasswordScreen() {
+  override fun goToNewServiceScreen() {
     navigator.navigate(CreatingServiceScreen::class, options = Options(removeOnExit = true))
   }
   

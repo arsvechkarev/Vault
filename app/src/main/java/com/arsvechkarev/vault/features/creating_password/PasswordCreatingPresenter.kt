@@ -66,13 +66,8 @@ class PasswordCreatingPresenter(
       EMPTY -> view?.showPasswordIsEmpty()
       TOO_SHORT -> view?.showPasswordIsTooShort()
       TOO_WEAK -> view?.showPasswordIsTooWeak()
-      OK -> view?.showDialogAcceptNewPassword()
+      OK -> view?.showSavePasswordClicked(password)
     }
-  }
-  
-  fun acceptNewPassword() {
-    // TODO (1/28/2021): Add saving password
-    view?.showNewPasswordIsSaved(password)
   }
   
   fun detachView() {

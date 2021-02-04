@@ -19,7 +19,5 @@ interface PasswordCreatingView {
   
   fun showPasswordIsTooShort()
   
-  fun showDialogAcceptNewPassword()
-  
-  fun showNewPasswordIsSaved(password: String)
+  fun showSavePasswordClicked(password: String)
 }

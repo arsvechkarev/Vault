@@ -11,7 +11,7 @@ import com.arsvechkarev.vault.cryptography.PasswordsStorageImpl
 import com.arsvechkarev.vault.cryptography.ZxcvbnPasswordChecker
 import com.arsvechkarev.vault.cryptography.generator.PasswordGenerator
 import com.arsvechkarev.vault.cryptography.generator.PasswordGeneratorImpl
-import com.arsvechkarev.vault.features.common.PasswordsListCachingRepository
+import com.arsvechkarev.vault.features.common.PasswordsListRepository
 import com.arsvechkarev.vault.features.creating_password.PasswordCreatingPresenter
 import com.nulabinc.zxcvbn.Zxcvbn
 import java.security.SecureRandom
@@ -24,7 +24,7 @@ object Singletons {
   private var _masterPasswordSaver: MasterPasswordSaver? = null
   private var _userAuthSaver: UserAuthSaver? = null
   private var _masterPasswordChecker: MasterPasswordChecker? = null
-  private var _passwordsListCachingRepository: PasswordsListCachingRepository? = null
+  private var _passwordsListRepository: PasswordsListRepository? = null
   private var _masterKey: MasterKey? = null
   
   val passwordChecker: PasswordChecker = ZxcvbnPasswordChecker(Zxcvbn())
@@ -39,8 +39,8 @@ object Singletons {
   val masterPasswordChecker: MasterPasswordChecker
     get() = _masterPasswordChecker!!
   
-  val passwordsListCachingRepository: PasswordsListCachingRepository
-    get() = _passwordsListCachingRepository!!
+  val passwordsListRepository: PasswordsListRepository
+    get() = _passwordsListRepository!!
   
   val masterKey: MasterKey
     get() = _masterKey!!
@@ -49,7 +49,8 @@ object Singletons {
     _masterPasswordSaver = MasterPasswordSaverImpl(context)
     _userAuthSaver = UserAuthSaverImpl(context)
     _masterPasswordChecker = MasterPasswordCheckerImpl(context)
-    _passwordsListCachingRepository = PasswordsListCachingRepository(PasswordsStorageImpl(context))
+    _passwordsListRepository = PasswordsListRepository(PasswordsStorageImpl(context),
+      AndroidThreader)
     _masterKey = MasterKey.Builder(context)
         .setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
         .build()

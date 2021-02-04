@@ -5,6 +5,7 @@ import android.view.Gravity
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.TextView
+import com.arsvechkarev.vault.core.navigation.Screen
 import com.arsvechkarev.vault.viewbuilding.Colors
 import com.arsvechkarev.vault.viewbuilding.Colors.Dialog
 import com.arsvechkarev.vault.viewbuilding.Dimens.DefaultCornerRadius
@@ -24,6 +25,7 @@ import com.arsvechkarev.vault.viewdsl.marginHorizontal
 import com.arsvechkarev.vault.viewdsl.margins
 import com.arsvechkarev.vault.viewdsl.onClick
 import com.arsvechkarev.vault.viewdsl.padding
+import com.arsvechkarev.vault.viewdsl.size
 import com.arsvechkarev.vault.viewdsl.tag
 import com.arsvechkarev.vault.viewdsl.text
 import com.arsvechkarev.vault.viewdsl.textColor
@@ -84,10 +86,19 @@ class InfoDialog(
     childViewAs<TextView>(dialogInfoTextOk).onClick(onOkClicked)
   }
   
+  fun hide() {
+    childViewAs<SimpleDialog>(dialogInfo).hide()
+  }
+  
   companion object {
+    
+    fun Screen.infoDialog() = viewAs<InfoDialog>()
+    
+    fun ViewGroup.infoDialog() = childViewAs<InfoDialog>()
     
     fun ViewGroup.InfoDialog(tagPrefix: String, block: InfoDialog.() -> Unit) = withViewBuilder {
       val infoDialog = InfoDialog(context, tagPrefix)
+      infoDialog.size(MatchParent, MatchParent)
       addView(infoDialog)
       infoDialog.apply(block)
     }

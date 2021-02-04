@@ -87,7 +87,7 @@ class EditableTextInfoViewGroup(context: Context) : ViewGroup(context) {
     }
   }
   
-  fun setText(text: String) {
+  fun setText(text: CharSequence) {
     editText.text(text)
     textView.text(text)
   }

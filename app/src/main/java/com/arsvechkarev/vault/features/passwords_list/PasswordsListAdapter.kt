@@ -4,6 +4,7 @@ import android.view.Gravity.CENTER
 import android.widget.ImageView
 import android.widget.TextView
 import com.arsvechkarev.vault.core.model.ServiceInfo
+import com.arsvechkarev.vault.recycler.CallbackType.ALWAYS_FALSE
 import com.arsvechkarev.vault.recycler.ListAdapter
 import com.arsvechkarev.vault.recycler.delegate
 import com.arsvechkarev.vault.viewbuilding.Colors
@@ -26,7 +27,7 @@ import com.arsvechkarev.vault.views.drawables.LetterInCircleDrawable
 
 class PasswordsListAdapter(
   private val onItemClick: (ServiceInfo) -> Unit
-) : ListAdapter() {
+) : ListAdapter(callbackType = ALWAYS_FALSE) {
   
   init {
     addDelegates(

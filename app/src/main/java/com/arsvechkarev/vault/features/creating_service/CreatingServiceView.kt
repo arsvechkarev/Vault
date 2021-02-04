@@ -7,11 +7,19 @@ import moxy.viewstate.strategy.StateStrategyType
 @StateStrategyType(AddToEndSingleStrategy::class)
 interface CreatingServiceView : MvpView {
   
+  fun showServiceNameCannotBeEmpty()
+  
   fun showServiceNameAlreadyExists()
   
   fun showPasswordCreatingDialog()
   
   fun showLoadingCreation()
   
-  fun showServiceInfoCreated()
+  fun showDialogSavePassword()
+  
+  fun hidePasswordEditingDialog()
+  
+  fun hideSavePasswordDialog()
+  
+  fun showExite()
 }

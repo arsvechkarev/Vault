@@ -4,14 +4,15 @@ import android.os.Bundle
 import android.view.Gravity.CENTER
 import android.view.Gravity.CENTER_HORIZONTAL
 import android.view.Gravity.NO_GRAVITY
-import android.view.WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE
 import com.arsvechkarev.vault.R
 import com.arsvechkarev.vault.core.AndroidThreader
-import com.arsvechkarev.vault.core.Singletons.passwordsListCachingRepository
+import com.arsvechkarev.vault.core.Singletons.passwordCreatingPresenter
+import com.arsvechkarev.vault.core.Singletons.passwordsListRepository
 import com.arsvechkarev.vault.core.extensions.moxyPresenter
-import com.arsvechkarev.vault.core.extensions.setSoftInputMode
 import com.arsvechkarev.vault.core.model.ServiceInfo
 import com.arsvechkarev.vault.core.navigation.Screen
+import com.arsvechkarev.vault.features.creating_password.PasswordEditingDialog.Companion.PasswordEditingDialog
+import com.arsvechkarev.vault.features.creating_password.PasswordEditingDialog.Companion.passwordEditingDialog
 import com.arsvechkarev.vault.viewbuilding.Colors
 import com.arsvechkarev.vault.viewbuilding.Dimens.DividerHeight
 import com.arsvechkarev.vault.viewbuilding.Dimens.ImageServiceNameSize
@@ -43,6 +44,8 @@ import com.arsvechkarev.vault.viewdsl.textColor
 import com.arsvechkarev.vault.viewdsl.textSize
 import com.arsvechkarev.vault.views.EditableTextInfoViewGroup
 import com.arsvechkarev.vault.views.PasswordActionsView
+import com.arsvechkarev.vault.views.dialogs.InfoDialog.Companion.InfoDialog
+import com.arsvechkarev.vault.views.dialogs.InfoDialog.Companion.infoDialog
 import com.arsvechkarev.vault.views.dialogs.LoadingDialog
 import com.arsvechkarev.vault.views.dialogs.loadingDialog
 import com.arsvechkarev.vault.views.drawables.LetterInCircleDrawable
@@ -67,7 +70,7 @@ class InfoScreen : Screen(), InfoView {
         }
         val editableCommonBlock: EditableTextInfoViewGroup.() -> Unit = {
           marginHorizontal(MarginDefault)
-          onEditClickAllowed = { !presenter.isEditingSomethingNow }
+          onEditClickAllowed = { !presenter.isEditingNameOrEmailNow }
           onSwitchToEditMode = { presenter.switchToEditingMode() }
         }
         child<EditableTextInfoViewGroup>(MatchParent, WrapContent) {
@@ -128,12 +131,18 @@ class InfoScreen : Screen(), InfoView {
           whenPresenterReady { onTogglePassword = presenter::onTogglePassword }
         }
       }
+      PasswordEditingDialog(passwordCreatingPresenter) {
+        classNameTag()
+      }
       LoadingDialog()
+      InfoDialog(InfoScreen::class.java.name) {
+        classNameTag()
+      }
     }
   }
   
   private val presenter by moxyPresenter {
-    InfoPresenter(passwordsListCachingRepository, AndroidThreader)
+    InfoPresenter(passwordsListRepository, AndroidThreader)
   }
   
   override fun onInit(arguments: Bundle) {
@@ -141,12 +150,10 @@ class InfoScreen : Screen(), InfoView {
     presenter.performSetup(mode)
   }
   
-  override fun onRelease() {
-    contextNonNull.setSoftInputMode(SOFT_INPUT_ADJUST_RESIZE)
-  }
-  
-  override fun showPasswordEditingDialog() {
-  
+  override fun showPasswordEditingDialog(password: String) {
+    passwordEditingDialog().initiatePasswordEditing(password, onSavePasswordClick = { newPassword ->
+      presenter.acceptNewPassword(newPassword)
+    })
   }
   
   override fun showLetterChange(letter: String) {
@@ -171,11 +178,16 @@ class InfoScreen : Screen(), InfoView {
   
   override fun showNoEmail() {
     val editableEmail = viewAs<EditableTextInfoViewGroup>(EditableTextInfoEmail)
-    editableEmail.setText(contextNonNull.getString(R.string.text_no_email))
+    editableEmail.setText(getString(R.string.text_no_email))
     editableEmail.transferTextToEditTextWhenSwitching = false
   }
   
   override fun showErrorSavingServiceName(errorText: String) {
+    infoDialog().show(
+      R.string.text_error,
+      R.string.text_service_already_exists2,
+      R.string.text_ok
+    )
   }
   
   override fun setPassword(password: String) {
@@ -203,6 +215,10 @@ class InfoScreen : Screen(), InfoView {
   
   override fun showFinishLoading() {
     loadingDialog().hide()
+  }
+  
+  override fun closePasswordDialog() {
+    passwordEditingDialog().hide()
   }
   
   override fun allowBackPress(): Boolean {

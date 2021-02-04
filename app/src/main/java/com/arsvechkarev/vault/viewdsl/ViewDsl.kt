@@ -203,7 +203,7 @@ fun View.onLongClick(block: () -> Unit) {
   setOnLongClickListener { block(); true }
 }
 
-fun View.tag(tag: String) {
+fun View.tag(tag: Any) {
   this.tag = tag
 }
 

@@ -135,6 +135,11 @@ class StartScreen : Screen(), StartView {
         layoutGravity(Gravity.BOTTOM)
         text(R.string.text_continue)
         margins(start = 16.dp, end = 16.dp, bottom = 16.dp)
+        whenPresenterReady {
+          onClick {
+            presenter.onEnteredPassword(editText(EditTextEnterPassword).text.toString())
+          }
+        }
       }
       child<SimpleDialog>(MatchParent, MatchParent) {
         tag(DialogSavePasswordOrNot)
@@ -205,9 +210,6 @@ class StartScreen : Screen(), StartView {
     editText(EditTextEnterPassword).addTextChangedListener(passwordTextWatcher)
     editText(EditTextEnterPassword).addTextChangedListener(clearErrorTextWatcher)
     editText(EditTextRepeatPassword).addTextChangedListener(clearErrorTextWatcher)
-    textView(TextContinue).onClick {
-      presenter.onEnteredPassword(editText(EditTextEnterPassword).text.toString())
-    }
   }
   
   override fun allowBackPress(): Boolean {

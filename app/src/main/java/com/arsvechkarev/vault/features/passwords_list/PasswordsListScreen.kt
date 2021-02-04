@@ -7,12 +7,12 @@ import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import com.arsvechkarev.vault.R
 import com.arsvechkarev.vault.core.AndroidThreader
-import com.arsvechkarev.vault.core.Singletons.passwordsListCachingRepository
+import com.arsvechkarev.vault.core.Singletons.passwordsListRepository
 import com.arsvechkarev.vault.core.extensions.ifTrue
 import com.arsvechkarev.vault.core.extensions.moxyPresenter
 import com.arsvechkarev.vault.core.model.ServiceInfo
 import com.arsvechkarev.vault.core.navigation.Screen
-import com.arsvechkarev.vault.cryptography.MasterPasswordHolder
+import com.arsvechkarev.vault.cryptography.MasterPasswordHolder.masterPassword
 import com.arsvechkarev.vault.viewbuilding.Colors
 import com.arsvechkarev.vault.viewbuilding.Dimens.FabSize
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginDefault
@@ -90,7 +90,7 @@ class PasswordsListScreen : Screen(), PasswordsListView {
         image(R.drawable.ic_plus)
         layoutGravity(BOTTOM or END)
         rippleBackground(Colors.Ripple, Colors.Accent, FabSize)
-        onClick { presenter.onNewServiceButtonClick() }
+        onClick { navigator.goToNewServiceScreen() }
       }
     }
   }
@@ -100,15 +100,12 @@ class PasswordsListScreen : Screen(), PasswordsListView {
   })
   
   private val presenter by moxyPresenter {
-    PasswordsListPresenter(AndroidThreader, passwordsListCachingRepository)
+    PasswordsListPresenter(AndroidThreader, passwordsListRepository)
   }
   
   override fun onInit() {
     viewAs<RecyclerView>().setupWith(adapter)
-  }
-  
-  override fun onAppearedOnScreen() {
-    presenter.loadPasswords(MasterPasswordHolder.masterPassword)
+    presenter.loadPasswords(masterPassword)
   }
   
   override fun showLoading() {
@@ -121,11 +118,11 @@ class PasswordsListScreen : Screen(), PasswordsListView {
   
   override fun showPasswordsList(list: List<ServiceInfo>) {
     showView(viewAs<RecyclerView>())
-    adapter.submitList(list)
+    adapter.changeListWithoutAnimation(list)
   }
   
   override fun showEnterServiceNameDialog() {
-    navigator.goToNewPasswordScreen()
+    navigator.goToNewServiceScreen()
   }
   
   private fun showView(layout: View) {

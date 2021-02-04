@@ -10,6 +10,7 @@
   <string name="text_secure">Secure</string>
   <string name="text_continue">Continue</string>
   <string name="text_next">Next</string>
+  <string name="text_error">Error</string>
   <string name="text_password_cannot_be_empty">Password cannot be empty</string>
   <string name="text_password_min_length">Password should be at least %1$d characters long</string>
   <string name="text_password_is_incorrect">Password is incorrect</string>
@@ -31,7 +32,7 @@
   <string name="text_save_password_locally">Yes, I want password to be saved locally, although it is less safe</string>
   <string name="text_enter_master_password">Enter master password</string>
   <string name="text_enter_service_name">Enter service name</string>
-  <string name="text_name_cannot_be_blank">Name cannot be blank</string>
+  <string name="text_service_name_cannot_be_empty">Service name cannot be empty</string>
   <string name="text_no_email">No email</string>
   <string name="text_email_optional">Email (Optional)</string>
   <string name="text_password_stub">•••••••••••</string>
@@ -54,6 +55,7 @@
   <string name="text_saving_password">Saving password</string>
   <string name="text_exit">Exit</string>
   <string name="text_do_you_want_to_leave">Do you want to leave without saving anything?</string>
-  <string name="text_do_you_want_to_save_password">Do you want to save password?</string>
-  <string name="text_service_already_exists">Service with name %1$s already exists</string>
+  <string name="text_do_you_want_to_save_password">Do you want to accept the password?</string>
+  <string name="text_service_already_exists1">Service with name %1$s already exists</string>
+  <string name="text_service_already_exists2">Service with this name already exists</string>
 </resources>

@@ -9,7 +9,7 @@ interface Navigator {
   
   fun goToPasswordsListScreen()
   
-  fun goToNewPasswordScreen()
+  fun goToNewServiceScreen()
   
   fun goToSavedServiceInfoScreen(serviceInfo: ServiceInfo)
   

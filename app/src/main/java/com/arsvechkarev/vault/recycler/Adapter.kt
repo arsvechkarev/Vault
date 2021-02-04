@@ -6,20 +6,16 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import kotlin.reflect.KClass
 
-abstract class Adapter(
-  private val delegates: List<AdapterDelegate<out DisplayableItem>>
-) : RecyclerView.Adapter<ViewHolder>() {
+abstract class Adapter : RecyclerView.Adapter<ViewHolder>() {
   
   protected var data: List<DisplayableItem> = ArrayList()
   
   private val classesToViewTypes = HashMap<KClass<*>, Int>()
   private val delegatesSparseArray = SparseArrayCompat<AdapterDelegate<out DisplayableItem>>()
+  private val delegates = ArrayList<AdapterDelegate<out DisplayableItem>>()
   
-  constructor(
-    delegate: AdapterDelegate<out DisplayableItem>,
-  ) : this(listOf(delegate))
-  
-  init {
+  protected fun addDelegates(vararg delegates: AdapterDelegate<out DifferentiableItem>) {
+    this.delegates.addAll(delegates)
     delegates.forEachIndexed { i, delegate ->
       classesToViewTypes[delegate.modelClass] = i
       delegatesSparseArray.put(i, delegate)

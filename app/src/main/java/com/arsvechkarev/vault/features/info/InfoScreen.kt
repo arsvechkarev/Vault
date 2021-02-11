@@ -76,8 +76,8 @@ class InfoScreen : Screen(), InfoView {
         child<EditableTextInfoViewGroup>(MatchParent, WrapContent) {
           tag(EditableTextInfoServiceName)
           apply(editableCommonBlock)
-          whenPresenterReady { onSaveClickAllowed = presenter::onServiceNameSavingAllowed }
-          whenPresenterReady { onTextSaved = presenter::saveServiceName }
+          whenPresenterIsReady { onSaveClickAllowed = presenter::onServiceNameSavingAllowed }
+          whenPresenterIsReady { onTextSaved = presenter::saveServiceName }
         }
         View(MatchParent, IntSize(DividerHeight)) {
           backgroundColor(Colors.Divider)
@@ -93,7 +93,7 @@ class InfoScreen : Screen(), InfoView {
           tag(EditableTextInfoEmail)
           apply(editableCommonBlock)
           allowSavingWhenEmpty = true
-          whenPresenterReady { onTextSaved = presenter::saveEmail }
+          whenPresenterIsReady { onTextSaved = presenter::saveEmail }
         }
         View(MatchParent, IntSize(DividerHeight)) {
           backgroundColor(Colors.Divider)
@@ -128,10 +128,12 @@ class InfoScreen : Screen(), InfoView {
           classNameTag()
           margins(top = MarginMedium)
           onEditClick { presenter.onEditPasswordIconClicked() }
-          whenPresenterReady { onTogglePassword = presenter::onTogglePassword }
+          whenPresenterIsReady { onTogglePassword = presenter::onTogglePassword }
         }
       }
-      PasswordEditingDialog(passwordCreatingPresenter)
+      PasswordEditingDialog(passwordCreatingPresenter) {
+        onCloseClicked = { presenter.closePasswordScreen() }
+      }
       LoadingDialog()
       InfoDialog()
     }

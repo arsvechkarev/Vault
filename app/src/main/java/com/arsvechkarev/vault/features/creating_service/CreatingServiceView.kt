@@ -21,5 +21,9 @@ interface CreatingServiceView : MvpView {
   
   fun hideSavePasswordDialog()
   
+  fun showLetterInCircleIcon(letter: String)
+  
+  fun hideLetterInCircleIcon()
+  
   fun showExit()
 }

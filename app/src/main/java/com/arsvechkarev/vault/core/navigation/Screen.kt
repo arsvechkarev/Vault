@@ -11,7 +11,6 @@ import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
 import com.arsvechkarev.vault.core.extensions.showKeyboard
 import com.arsvechkarev.vault.viewdsl.ViewBuilder
-import com.arsvechkarev.vault.viewdsl.childView
 import com.arsvechkarev.vault.viewdsl.withViewBuilder
 import com.arsvechkarev.vault.views.SimpleDialog
 import moxy.MvpDelegate
@@ -88,7 +87,7 @@ abstract class Screen : MvpDelegateHolder, MvpView {
   
   open fun onRelease() = Unit
   
-  fun whenPresenterReady(block: () -> Unit) {
+  fun whenPresenterIsReady(block: () -> Unit) {
     onInitPresenterList.add(block)
   }
   
@@ -112,7 +111,11 @@ abstract class Screen : MvpDelegateHolder, MvpView {
   @Suppress("UNCHECKED_CAST")
   fun view(tag: Any): View {
     if (viewsCache[tag] == null) {
-      viewsCache[tag] = viewNonNull.childView(tag)
+      if (tag is Int) {
+        viewsCache[tag] = viewNonNull.findViewById(tag)
+      } else {
+        viewsCache[tag] = viewNonNull.findViewWithTag(tag)
+      }
     }
     return viewsCache.getValue(tag)
   }
@@ -122,11 +125,11 @@ abstract class Screen : MvpDelegateHolder, MvpView {
     return view(tag) as T
   }
   
-  fun imageView(tag: String) = viewAs<ImageView>(tag)
+  fun imageView(tag: Any) = viewAs<ImageView>(tag)
   
-  fun textView(tag: String) = viewAs<TextView>(tag)
+  fun textView(tag: Any) = viewAs<TextView>(tag)
   
-  fun editText(tag: String) = viewAs<EditText>(tag)
+  fun editText(tag: Any) = viewAs<EditText>(tag)
   
-  fun simpleDialog(tag: String = SimpleDialog::class.java.name) = viewAs<SimpleDialog>(tag)
+  fun simpleDialog(tag: Any = SimpleDialog::class.java.name) = viewAs<SimpleDialog>(tag)
 }

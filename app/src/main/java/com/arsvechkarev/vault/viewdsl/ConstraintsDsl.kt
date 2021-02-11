@@ -45,6 +45,10 @@ class ConstraintsDsl(
     constraintSet.connect(viewId, TOP, id, BOTTOM)
   }
   
+  fun bottomToTopOf(id: Int) {
+    constraintSet.connect(viewId, BOTTOM, id, TOP)
+  }
+  
   fun centeredWithin(id: Int) {
     topToTopOf(id)
     startToStartOf(id)

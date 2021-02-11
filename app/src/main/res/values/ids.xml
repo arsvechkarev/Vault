@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <item name="creating_service_constraint_layout" type="id"/>
   <item name="creating_service_toolbar" type="id"/>
   <item name="creating_service_edit_texts_layout" type="id"/>
   <item name="creating_service_image" type="id"/>

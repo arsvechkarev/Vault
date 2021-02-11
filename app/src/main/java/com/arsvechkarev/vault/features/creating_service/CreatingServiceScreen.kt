@@ -15,6 +15,7 @@ import com.arsvechkarev.vault.features.creating_password.PasswordEditingDialog.C
 import com.arsvechkarev.vault.features.creating_password.PasswordEditingDialog.Companion.passwordEditingDialog
 import com.arsvechkarev.vault.viewbuilding.Colors.Error
 import com.arsvechkarev.vault.viewbuilding.Dimens.IconPadding
+import com.arsvechkarev.vault.viewbuilding.Dimens.ImageServiceNameSize
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginDefault
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginSmall
 import com.arsvechkarev.vault.viewbuilding.Styles.BaseEditText
@@ -25,6 +26,7 @@ import com.arsvechkarev.vault.viewbuilding.TextSizes
 import com.arsvechkarev.vault.viewdsl.Size.Companion.MatchParent
 import com.arsvechkarev.vault.viewdsl.Size.Companion.WrapContent
 import com.arsvechkarev.vault.viewdsl.circleRippleBackground
+import com.arsvechkarev.vault.viewdsl.clearImage
 import com.arsvechkarev.vault.viewdsl.constraints
 import com.arsvechkarev.vault.viewdsl.gravity
 import com.arsvechkarev.vault.viewdsl.id
@@ -33,6 +35,7 @@ import com.arsvechkarev.vault.viewdsl.layoutGravity
 import com.arsvechkarev.vault.viewdsl.margin
 import com.arsvechkarev.vault.viewdsl.margins
 import com.arsvechkarev.vault.viewdsl.onClick
+import com.arsvechkarev.vault.viewdsl.onTextChanged
 import com.arsvechkarev.vault.viewdsl.padding
 import com.arsvechkarev.vault.viewdsl.tag
 import com.arsvechkarev.vault.viewdsl.text
@@ -41,6 +44,7 @@ import com.arsvechkarev.vault.viewdsl.textSize
 import com.arsvechkarev.vault.views.dialogs.InfoDialog.Companion.InfoDialog
 import com.arsvechkarev.vault.views.dialogs.InfoDialog.Companion.infoDialog
 import com.arsvechkarev.vault.views.dialogs.LoadingDialog
+import com.arsvechkarev.vault.views.drawables.LetterInCircleDrawable.Companion.setLetterDrawable
 
 class CreatingServiceScreen : Screen(), CreatingServiceView {
   
@@ -65,6 +69,15 @@ class CreatingServiceScreen : Screen(), CreatingServiceView {
           textSize(TextSizes.H1)
         }
       }
+      ImageView(ImageServiceNameSize, ImageServiceNameSize) {
+        id(R.id.creating_service_image)
+        constraints {
+          startToStartOf(parent)
+          endToEndOf(parent)
+          topToBottomOf(R.id.creating_service_toolbar)
+          bottomToTopOf(R.id.creating_service_edit_texts_layout)
+        }
+      }
       VerticalLayout(MatchParent, WrapContent) {
         id(R.id.creating_service_edit_texts_layout)
         constraints {
@@ -77,8 +90,9 @@ class CreatingServiceScreen : Screen(), CreatingServiceView {
         }
         EditText(MatchParent, WrapContent, style = BaseEditText) {
           tag(EditTextServiceName)
-          margins(top = MarginDefault, start = MarginDefault, end = MarginDefault)
+          margins(top = MarginSmall, start = MarginDefault, end = MarginDefault)
           setHint(R.string.text_service_name)
+          whenPresenterIsReady { onTextChanged(presenter::onServiceNameChanged) }
         }
         EditText(MatchParent, WrapContent, style = BaseEditText) {
           tag(EditTextEmail)
@@ -167,6 +181,14 @@ class CreatingServiceScreen : Screen(), CreatingServiceView {
   
   override fun hideSavePasswordDialog() {
     infoDialog().hide()
+  }
+  
+  override fun showLetterInCircleIcon(letter: String) {
+    imageView(R.id.creating_service_image).setLetterDrawable(letter)
+  }
+  
+  override fun hideLetterInCircleIcon() {
+    imageView(R.id.creating_service_image).clearImage()
   }
   
   override fun showExit() {

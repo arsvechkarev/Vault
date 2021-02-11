@@ -135,7 +135,7 @@ class StartScreen : Screen(), StartView {
         layoutGravity(Gravity.BOTTOM)
         text(R.string.text_continue)
         margins(start = 16.dp, end = 16.dp, bottom = 16.dp)
-        whenPresenterReady {
+        whenPresenterIsReady {
           onClick {
             presenter.onEnteredPassword(editText(EditTextEnterPassword).text.toString())
           }

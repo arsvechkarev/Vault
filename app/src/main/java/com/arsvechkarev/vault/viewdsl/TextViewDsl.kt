@@ -14,6 +14,7 @@ import android.widget.TextView
 import androidx.annotation.DimenRes
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
+import com.arsvechkarev.vault.core.extensions.BaseTextWatcher
 
 fun TextView.drawables(
   @DrawableRes start: Int = 0,
@@ -77,4 +78,12 @@ inline fun EditText.setMaxLength(max: Int) {
   val filterArray = arrayOfNulls<InputFilter>(1)
   filterArray[0] = LengthFilter(max)
   filters = filterArray
+}
+
+fun EditText.onTextChanged(block: (text: String) -> Unit) {
+  addTextChangedListener(object : BaseTextWatcher {
+    override fun onTextChange(text: String) {
+      block(text)
+    }
+  })
 }

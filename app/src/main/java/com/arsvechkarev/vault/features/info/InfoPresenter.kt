@@ -117,6 +117,11 @@ class InfoPresenter(
     }
   }
   
+  fun closePasswordScreen() {
+    state = INITIAL
+    viewState.hidePasswordEditingDialog()
+  }
+  
   fun allowBackPress(): Boolean {
     return when (state) {
       INITIAL -> true

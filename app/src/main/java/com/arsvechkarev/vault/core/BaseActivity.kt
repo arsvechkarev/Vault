@@ -4,7 +4,6 @@ import android.view.View
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
-import com.arsvechkarev.vault.viewdsl.childView
 import moxy.MvpAppCompatActivity
 
 abstract class BaseActivity : MvpAppCompatActivity() {
@@ -15,7 +14,7 @@ abstract class BaseActivity : MvpAppCompatActivity() {
   @Suppress("UNCHECKED_CAST")
   fun view(tag: String): View {
     if (viewsCache[tag] == null) {
-      viewsCache[tag] = window.decorView.childView(tag)
+      viewsCache[tag] = window.decorView.findViewWithTag(tag)
     }
     return viewsCache.getValue(tag)
   }

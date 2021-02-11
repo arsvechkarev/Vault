@@ -245,10 +245,6 @@ inline fun <reified T : CoordinatorLayout.Behavior<*>> View.hasBehavior(): Boole
   return (layoutParams as? CoordinatorLayout.LayoutParams)?.behavior as? T != null
 }
 
-fun View.childView(tag: Any): View {
-  return findViewWithTag(tag)
-}
-
 @Suppress("UNCHECKED_CAST")
 inline fun <reified T : View> View.childViewAs(tag: Any = T::class.java.name): T {
   return findViewWithTag(tag)

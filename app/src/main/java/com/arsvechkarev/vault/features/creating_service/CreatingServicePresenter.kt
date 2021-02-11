@@ -20,6 +20,14 @@ class CreatingServicePresenter(
   private var email: String = ""
   private var password: String = ""
   
+  fun onServiceNameChanged(text: String) {
+    if (text.isNotBlank()) {
+      viewState.showLetterInCircleIcon(text[0].toString())
+    } else {
+      viewState.hideLetterInCircleIcon()
+    }
+  }
+  
   fun onContinueClicked(serviceName: String, email: String) {
     if (serviceName.isBlank()) {
       viewState.showServiceNameCannotBeEmpty()

@@ -1,11 +1,10 @@
 package com.arsvechkarev.vault.features.creating_password
 
 import android.content.Context
-import android.view.Gravity
 import android.view.Gravity.BOTTOM
 import android.view.Gravity.CENTER
+import android.view.Gravity.CENTER_HORIZONTAL
 import android.view.Gravity.END
-import android.view.Gravity.START
 import android.view.ViewGroup
 import android.view.WindowManager
 import android.view.WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE
@@ -40,13 +39,13 @@ import com.arsvechkarev.vault.viewbuilding.Dimens.MarginBig
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginDefault
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginSmall
 import com.arsvechkarev.vault.viewbuilding.Styles
+import com.arsvechkarev.vault.viewbuilding.Styles.BaseEditText
 import com.arsvechkarev.vault.viewbuilding.Styles.BaseTextView
 import com.arsvechkarev.vault.viewbuilding.Styles.BoldTextView
 import com.arsvechkarev.vault.viewbuilding.Styles.ClickableTextView
 import com.arsvechkarev.vault.viewbuilding.TextSizes
 import com.arsvechkarev.vault.viewdsl.Size.Companion.MatchParent
 import com.arsvechkarev.vault.viewdsl.Size.Companion.WrapContent
-import com.arsvechkarev.vault.viewdsl.childView
 import com.arsvechkarev.vault.viewdsl.childViewAs
 import com.arsvechkarev.vault.viewdsl.circleRippleBackground
 import com.arsvechkarev.vault.viewdsl.classNameTag
@@ -54,7 +53,6 @@ import com.arsvechkarev.vault.viewdsl.drawablePadding
 import com.arsvechkarev.vault.viewdsl.drawables
 import com.arsvechkarev.vault.viewdsl.gravity
 import com.arsvechkarev.vault.viewdsl.image
-import com.arsvechkarev.vault.viewdsl.invisible
 import com.arsvechkarev.vault.viewdsl.layoutGravity
 import com.arsvechkarev.vault.viewdsl.margin
 import com.arsvechkarev.vault.viewdsl.marginHorizontal
@@ -69,7 +67,6 @@ import com.arsvechkarev.vault.viewdsl.tag
 import com.arsvechkarev.vault.viewdsl.text
 import com.arsvechkarev.vault.viewdsl.textColor
 import com.arsvechkarev.vault.viewdsl.textSize
-import com.arsvechkarev.vault.viewdsl.visible
 import com.arsvechkarev.vault.viewdsl.withViewBuilder
 import com.arsvechkarev.vault.views.CheckmarkAndTextViewGroup
 import com.arsvechkarev.vault.views.CheckmarkAndTextViewGroup.Companion.CheckmarkAndTextViewGroup
@@ -95,17 +92,6 @@ class PasswordEditingDialog(
           VerticalLayout(MatchParent, MatchParent) {
             FrameLayout(MatchParent, WrapContent) {
               margins(top = MarginSmall)
-              ImageView(WrapContent, WrapContent) {
-                tag(R.drawable.ic_back)
-                image(R.drawable.ic_back)
-                circleRippleBackground()
-                margins(start = ImageBackMargin, top = MarginSmall, bottom = MarginSmall)
-                layoutGravity(CENTER or START)
-                padding(IconPadding)
-                onClick {
-                  this@PasswordEditingDialog.childViewAs<SimpleDialog>(DialogPassword).hide()
-                }
-              }
               TextView(WrapContent, WrapContent, style = BoldTextView) {
                 tag(DialogPasswordTitle)
                 textSize(TextSizes.H1)
@@ -118,17 +104,15 @@ class PasswordEditingDialog(
                 margins(end = ImageBackMargin, top = MarginSmall, bottom = MarginSmall)
                 layoutGravity(CENTER or END)
                 padding(IconPadding)
-                onClick {
-                  this@PasswordEditingDialog.childViewAs<SimpleDialog>(DialogPassword).hide()
-                }
+                onClick { onCloseClicked() }
               }
             }
             TextView(WrapContent, WrapContent, style = BaseTextView) {
               tag(DialogPasswordErrorText)
-              layoutGravity(Gravity.CENTER_HORIZONTAL)
+              layoutGravity(CENTER_HORIZONTAL)
               textColor(Colors.Error)
             }
-            EditText(MatchParent, WrapContent, style = Styles.BaseEditText) {
+            EditText(MatchParent, WrapContent, style = BaseEditText) {
               tag(DialogPasswordEditText)
               gravity(CENTER)
               margin(MarginSmall)
@@ -168,7 +152,7 @@ class PasswordEditingDialog(
             }
             TextView(WrapContent, WrapContent, style = ClickableTextView()) {
               margins(top = MarginDefault)
-              layoutGravity(Gravity.CENTER_HORIZONTAL)
+              layoutGravity(CENTER_HORIZONTAL)
               drawables(start = R.drawable.ic_generate, color = Colors.AccentLight)
               drawablePadding(MarginSmall)
               textColor(Colors.AccentLight)
@@ -188,6 +172,8 @@ class PasswordEditingDialog(
     }
   }
   
+  var onCloseClicked = {}
+  
   private var onSavePasswordClick: (String) -> Unit = {}
   
   private val passwordTextWatcher = object : BaseTextWatcher {
@@ -200,17 +186,13 @@ class PasswordEditingDialog(
   
   fun initiatePasswordCreation(onSavePasswordClick: (String) -> Unit) {
     this.onSavePasswordClick = onSavePasswordClick
-    childView(R.drawable.ic_back).visible()
-    childView(R.drawable.ic_cross).invisible()
-    childViewAs<TextView>(DialogPasswordTitle).text(R.string.text_new_password)
+    childViewAs<TextView>(DialogPasswordTitle).text(R.string.text_password)
     childViewAs<SimpleDialog>(DialogPassword).show()
     presenter.showInitialGeneratedPassword()
   }
   
   fun initiatePasswordEditing(currentPassword: String, onSavePasswordClick: (String) -> Unit) {
     this.onSavePasswordClick = onSavePasswordClick
-    childView(R.drawable.ic_back).invisible()
-    childView(R.drawable.ic_cross).visible()
     childViewAs<TextView>(DialogPasswordTitle).text(R.string.text_edit_password)
     childViewAs<EditText>(DialogPasswordEditText).text(currentPassword)
     childViewAs<SimpleDialog>(DialogPassword).show()

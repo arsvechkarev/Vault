@@ -10,6 +10,8 @@ import android.widget.LinearLayout
 import androidx.annotation.ColorInt
 import androidx.annotation.DimenRes
 import androidx.annotation.DrawableRes
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.constraintlayout.widget.ConstraintSet
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 
 operator fun View.contains(event: MotionEvent): Boolean {
@@ -250,4 +252,13 @@ fun View.childView(tag: Any): View {
 @Suppress("UNCHECKED_CAST")
 inline fun <reified T : View> View.childViewAs(tag: Any = T::class.java.name): T {
   return findViewWithTag(tag)
+}
+
+fun View.connect(startSide: Int, endSide: Int, id: Int) {
+  val constraintSet = ConstraintSet()
+  constraintSet.connect(this.id, startSide, id, endSide)
+  constraintSet.applyTo(parent as ConstraintLayout)
+}
+
+fun View.topToTopOf(id: Int) {
 }

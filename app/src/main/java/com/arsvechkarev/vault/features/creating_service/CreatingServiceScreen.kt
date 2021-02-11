@@ -1,6 +1,5 @@
 package com.arsvechkarev.vault.features.creating_service
 
-import android.view.Gravity.BOTTOM
 import android.view.Gravity.CENTER
 import android.view.Gravity.CENTER_VERTICAL
 import android.view.WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE
@@ -26,7 +25,9 @@ import com.arsvechkarev.vault.viewbuilding.TextSizes
 import com.arsvechkarev.vault.viewdsl.Size.Companion.MatchParent
 import com.arsvechkarev.vault.viewdsl.Size.Companion.WrapContent
 import com.arsvechkarev.vault.viewdsl.circleRippleBackground
+import com.arsvechkarev.vault.viewdsl.constraints
 import com.arsvechkarev.vault.viewdsl.gravity
+import com.arsvechkarev.vault.viewdsl.id
 import com.arsvechkarev.vault.viewdsl.image
 import com.arsvechkarev.vault.viewdsl.layoutGravity
 import com.arsvechkarev.vault.viewdsl.margin
@@ -44,8 +45,12 @@ import com.arsvechkarev.vault.views.dialogs.LoadingDialog
 class CreatingServiceScreen : Screen(), CreatingServiceView {
   
   override fun buildLayout() = withViewBuilder {
-    RootCoordinatorLayout(MatchParent, MatchParent) {
+    RootConstraintLayout {
       HorizontalLayout(MatchParent, WrapContent) {
+        id(R.id.creating_service_toolbar)
+        constraints {
+          topToTopOf(parent)
+        }
         ImageView(WrapContent, WrapContent) {
           image(R.drawable.ic_back)
           margin(MarginDefault)
@@ -61,7 +66,10 @@ class CreatingServiceScreen : Screen(), CreatingServiceView {
         }
       }
       VerticalLayout(MatchParent, WrapContent) {
-        layoutGravity(CENTER)
+        id(R.id.creating_service_edit_texts_layout)
+        constraints {
+          centeredWithin(parent)
+        }
         TextView(WrapContent, WrapContent, style = BaseTextView) {
           tag(TextError)
           textColor(Error)
@@ -79,13 +87,20 @@ class CreatingServiceScreen : Screen(), CreatingServiceView {
         }
       }
       TextView(MatchParent, WrapContent, style = ClickableButton()) {
+        id(R.id.creating_service_continue_button)
         tag(TextContinue)
-        layoutGravity(BOTTOM)
-        text(R.string.text_continue)
         margins(start = MarginDefault, end = MarginDefault, bottom = MarginDefault)
+        constraints {
+          startToStartOf(parent)
+          endToEndOf(parent)
+          bottomToBottomOf(parent)
+        }
+        text(R.string.text_continue)
         onClick { continueWithCreating() }
       }
-      PasswordEditingDialog(passwordCreatingPresenter)
+      PasswordEditingDialog(passwordCreatingPresenter) {
+        onCloseClicked = { presenter.closePasswordEditingDialog() }
+      }
       InfoDialog()
       LoadingDialog()
     }
@@ -123,8 +138,8 @@ class CreatingServiceScreen : Screen(), CreatingServiceView {
   }
   
   override fun showPasswordCreatingDialog() {
-    editText(EditTextServiceName).isFocusable = false
-    editText(EditTextEmail).isFocusable = false
+    editText(EditTextServiceName).isEnabled = false
+    editText(EditTextEmail).isEnabled = false
     passwordEditingDialog().initiatePasswordCreation(onSavePasswordClick = { password ->
       presenter.onPasswordEntered(password)
     })
@@ -145,8 +160,8 @@ class CreatingServiceScreen : Screen(), CreatingServiceView {
   }
   
   override fun hidePasswordEditingDialog() {
-    editText(EditTextServiceName).isFocusable = true
-    editText(EditTextEmail).isFocusable = true
+    editText(EditTextServiceName).isEnabled = true
+    editText(EditTextEmail).isEnabled = true
     passwordEditingDialog().hide()
   }
   

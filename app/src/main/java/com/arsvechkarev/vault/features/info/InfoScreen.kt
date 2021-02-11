@@ -1,5 +1,6 @@
 package com.arsvechkarev.vault.features.info
 
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.Gravity.CENTER
 import android.view.Gravity.CENTER_HORIZONTAL
@@ -48,7 +49,7 @@ import com.arsvechkarev.vault.views.dialogs.InfoDialog.Companion.InfoDialog
 import com.arsvechkarev.vault.views.dialogs.InfoDialog.Companion.infoDialog
 import com.arsvechkarev.vault.views.dialogs.LoadingDialog
 import com.arsvechkarev.vault.views.dialogs.loadingDialog
-import com.arsvechkarev.vault.views.drawables.LetterInCircleDrawable
+import com.arsvechkarev.vault.views.drawables.LetterInCircleDrawable.Companion.setLetterDrawable
 
 class InfoScreen : Screen(), InfoView {
   
@@ -76,6 +77,7 @@ class InfoScreen : Screen(), InfoView {
         child<EditableTextInfoViewGroup>(MatchParent, WrapContent) {
           tag(EditableTextInfoServiceName)
           apply(editableCommonBlock)
+          whenPresenterIsReady { onEditTextChanged(presenter::onServiceNameChanged) }
           whenPresenterIsReady { onSaveClickAllowed = presenter::onServiceNameSavingAllowed }
           whenPresenterIsReady { onTextSaved = presenter::saveServiceName }
         }
@@ -148,14 +150,12 @@ class InfoScreen : Screen(), InfoView {
     presenter.performSetup(mode)
   }
   
-  override fun showLetterChange(letter: String) {
-    val image = imageView(ImageServiceName)
-    if (image.drawable is LetterInCircleDrawable) {
-      (image.drawable as LetterInCircleDrawable).setLetter(letter)
-    } else {
-      val drawable = LetterInCircleDrawable(letter)
-      image.image(drawable)
-    }
+  override fun showLetterInCircleIcon(letter: String) {
+    imageView(ImageServiceName).setLetterDrawable(letter)
+  }
+  
+  override fun showIconFromResources(icon: Drawable) {
+    imageView(ImageServiceName).image(icon)
   }
   
   override fun showServiceName(serviceName: String) {

@@ -5,6 +5,7 @@ import com.arsvechkarev.vault.core.Threader
 import com.arsvechkarev.vault.core.model.ServiceInfo
 import com.arsvechkarev.vault.cryptography.MasterPasswordHolder.masterPassword
 import com.arsvechkarev.vault.features.common.PasswordsListRepository
+import com.arsvechkarev.vault.features.common.getIconForServiceName
 import com.arsvechkarev.vault.features.creating_service.CreatingServiceScreenState.DIALOG_SAVE_PASSWORD
 import com.arsvechkarev.vault.features.creating_service.CreatingServiceScreenState.INITIAL
 import com.arsvechkarev.vault.features.creating_service.CreatingServiceScreenState.PASSWORD_SCREEN
@@ -22,7 +23,12 @@ class CreatingServicePresenter(
   
   fun onServiceNameChanged(text: String) {
     if (text.isNotBlank()) {
-      viewState.showLetterInCircleIcon(text[0].toString())
+      val icon = getIconForServiceName(text)
+      if (icon != null) {
+        viewState.showIconFromResources(icon)
+      } else {
+        viewState.showLetterInCircleIcon(text[0].toString())
+      }
     } else {
       viewState.hideLetterInCircleIcon()
     }

@@ -1,5 +1,6 @@
 package com.arsvechkarev.vault.features.creating_service
 
+import android.graphics.drawable.Drawable
 import moxy.MvpView
 import moxy.viewstate.strategy.AddToEndSingleStrategy
 import moxy.viewstate.strategy.StateStrategyType
@@ -22,6 +23,8 @@ interface CreatingServiceView : MvpView {
   fun hideSavePasswordDialog()
   
   fun showLetterInCircleIcon(letter: String)
+  
+  fun showIconFromResources(icon: Drawable)
   
   fun hideLetterInCircleIcon()
   

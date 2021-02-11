@@ -41,7 +41,7 @@ class LetterInCircleDrawable(
     textPaint.textSize = TextSizes.H4
     while (true) {
       val textHeight = textPaint.getTextHeight()
-      if (textHeight > bounds.height() * 0.3f) {
+      if (textHeight > bounds.height() * 0.4f) {
         break
       }
       textPaint.textSize++

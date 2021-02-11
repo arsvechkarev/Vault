@@ -31,6 +31,7 @@ import com.arsvechkarev.vault.viewdsl.image
 import com.arsvechkarev.vault.viewdsl.invisible
 import com.arsvechkarev.vault.viewdsl.layoutLeftTop
 import com.arsvechkarev.vault.viewdsl.onClick
+import com.arsvechkarev.vault.viewdsl.onTextChanged
 import com.arsvechkarev.vault.viewdsl.padding
 import com.arsvechkarev.vault.viewdsl.size
 import com.arsvechkarev.vault.viewdsl.text
@@ -85,6 +86,10 @@ class EditableTextInfoViewGroup(context: Context) : ViewGroup(context) {
         onClick { changeModeIfPossible() }
       }
     }
+  }
+  
+  fun onEditTextChanged(block: (String) -> Unit) {
+    editText.onTextChanged(block)
   }
   
   fun setText(text: CharSequence) {

@@ -5,6 +5,7 @@ import com.arsvechkarev.vault.core.Threader
 import com.arsvechkarev.vault.core.model.ServiceInfo
 import com.arsvechkarev.vault.cryptography.MasterPasswordHolder.masterPassword
 import com.arsvechkarev.vault.features.common.PasswordsListRepository
+import com.arsvechkarev.vault.features.common.getIconForServiceName
 import com.arsvechkarev.vault.features.info.InfoScreenState.EDITING_NAME_OR_EMAIL
 import com.arsvechkarev.vault.features.info.InfoScreenState.ERROR_EDITING_NAME
 import com.arsvechkarev.vault.features.info.InfoScreenState.INITIAL
@@ -18,19 +19,24 @@ class InfoPresenter(
 ) : BasePresenter<InfoView>(threader) {
   
   private lateinit var serviceInfo: ServiceInfo
+  
   private var password: String = ""
   private var state = INITIAL
-  
   val isEditingNameOrEmailNow get() = state == EDITING_NAME_OR_EMAIL
   
   fun performSetup(serviceInfo: ServiceInfo) {
     this.serviceInfo = serviceInfo
     password = serviceInfo.password
-    viewState.showLetterChange(serviceInfo.name[0].toString())
+    updateServiceIcon(serviceInfo.name)
     viewState.showServiceName(serviceInfo.name)
     viewState.setPassword(serviceInfo.password)
     val email = serviceInfo.email
     if (email.isEmpty()) viewState.showNoEmail() else viewState.showEmail(email)
+  }
+  
+  fun onServiceNameChanged(text: String) {
+    if (text.isBlank()) return
+    updateServiceIcon(text)
   }
   
   fun onServiceNameSavingAllowed(serviceName: String): Boolean {
@@ -51,7 +57,7 @@ class InfoPresenter(
     state = LOADING
     serviceInfo = ServiceInfo(serviceInfo.id, serviceName, serviceInfo.email, serviceInfo.password)
     viewState.showServiceName(serviceName)
-    viewState.showLetterChange(serviceName[0].toString())
+    updateServiceIcon(serviceName)
     onIoThread {
       passwordsListRepository.updateServiceInfo(masterPassword, serviceInfo)
       state = INITIAL
@@ -141,6 +147,15 @@ class InfoPresenter(
         state = PASSWORD_EDITING_DIALOG
         false
       }
+    }
+  }
+  
+  private fun updateServiceIcon(serviceName: String) {
+    val icon = getIconForServiceName(serviceName)
+    if (icon != null) {
+      viewState.showIconFromResources(icon)
+    } else {
+      viewState.showLetterInCircleIcon(serviceName[0].toString())
     }
   }
 }

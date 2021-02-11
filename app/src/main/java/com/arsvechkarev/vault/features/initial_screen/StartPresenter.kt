@@ -2,7 +2,7 @@ package com.arsvechkarev.vault.features.initial_screen
 
 import com.arsvechkarev.vault.core.BasePresenter
 import com.arsvechkarev.vault.core.Threader
-import com.arsvechkarev.vault.core.UserAuthSaver
+import com.arsvechkarev.vault.features.common.UserAuthSaver
 import com.arsvechkarev.vault.core.extensions.assertThat
 import com.arsvechkarev.vault.features.initial_screen.StartScreenState.ENTERING_PASSWORD
 import com.arsvechkarev.vault.features.initial_screen.StartScreenState.REPEATING_PASSWORD

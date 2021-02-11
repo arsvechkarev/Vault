@@ -1,4 +1,4 @@
-package com.arsvechkarev.vault.core
+package com.arsvechkarev.vault.features.common
 
 interface UserAuthSaver {
   

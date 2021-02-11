@@ -11,6 +11,8 @@ import com.arsvechkarev.vault.cryptography.PasswordsStorageImpl
 import com.arsvechkarev.vault.cryptography.ZxcvbnPasswordChecker
 import com.arsvechkarev.vault.cryptography.generator.PasswordGenerator
 import com.arsvechkarev.vault.cryptography.generator.PasswordGeneratorImpl
+import com.arsvechkarev.vault.features.common.UserAuthSaver
+import com.arsvechkarev.vault.features.common.UserAuthSaverImpl
 import com.arsvechkarev.vault.features.common.PasswordsListRepository
 import com.arsvechkarev.vault.features.creating_password.PasswordCreatingPresenter
 import com.nulabinc.zxcvbn.Zxcvbn

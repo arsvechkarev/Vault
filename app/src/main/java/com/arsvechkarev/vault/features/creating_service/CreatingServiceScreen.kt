@@ -1,8 +1,10 @@
 package com.arsvechkarev.vault.features.creating_service
 
+import android.graphics.drawable.Drawable
 import android.view.Gravity.CENTER
 import android.view.Gravity.CENTER_VERTICAL
 import android.view.WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE
+import android.widget.ImageView.ScaleType.FIT_XY
 import com.arsvechkarev.vault.R
 import com.arsvechkarev.vault.core.AndroidThreader
 import com.arsvechkarev.vault.core.Singletons.passwordCreatingPresenter
@@ -71,6 +73,7 @@ class CreatingServiceScreen : Screen(), CreatingServiceView {
       }
       ImageView(ImageServiceNameSize, ImageServiceNameSize) {
         id(R.id.creating_service_image)
+        scaleType = FIT_XY
         constraints {
           startToStartOf(parent)
           endToEndOf(parent)
@@ -181,6 +184,10 @@ class CreatingServiceScreen : Screen(), CreatingServiceView {
   
   override fun hideSavePasswordDialog() {
     infoDialog().hide()
+  }
+  
+  override fun showIconFromResources(icon: Drawable) {
+    imageView(R.id.creating_service_image).image(icon)
   }
   
   override fun showLetterInCircleIcon(letter: String) {

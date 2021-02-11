@@ -51,7 +51,7 @@ class CreatingServicePresenter(
     onIoThread {
       val serviceInfo = ServiceInfo(UUID.randomUUID().toString(), serviceName, email, password)
       passwordsListRepository.saveServiceInfo(masterPassword, serviceInfo)
-      updateViewState { showExite() }
+      updateViewState { showExit() }
     }
   }
   

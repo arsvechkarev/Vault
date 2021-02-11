@@ -131,13 +131,9 @@ class InfoScreen : Screen(), InfoView {
           whenPresenterReady { onTogglePassword = presenter::onTogglePassword }
         }
       }
-      PasswordEditingDialog(passwordCreatingPresenter) {
-        classNameTag()
-      }
+      PasswordEditingDialog(passwordCreatingPresenter)
       LoadingDialog()
-      InfoDialog(InfoScreen::class.java.name) {
-        classNameTag()
-      }
+      InfoDialog()
     }
   }
   

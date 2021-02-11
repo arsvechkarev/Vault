@@ -21,5 +21,5 @@ interface CreatingServiceView : MvpView {
   
   fun hideSavePasswordDialog()
   
-  fun showExite()
+  fun showExit()
 }

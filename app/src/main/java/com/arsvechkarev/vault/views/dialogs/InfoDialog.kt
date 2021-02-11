@@ -20,6 +20,7 @@ import com.arsvechkarev.vault.viewdsl.Size.Companion.MatchParent
 import com.arsvechkarev.vault.viewdsl.Size.Companion.WrapContent
 import com.arsvechkarev.vault.viewdsl.backgroundRoundRect
 import com.arsvechkarev.vault.viewdsl.childViewAs
+import com.arsvechkarev.vault.viewdsl.classNameTag
 import com.arsvechkarev.vault.viewdsl.layoutGravity
 import com.arsvechkarev.vault.viewdsl.marginHorizontal
 import com.arsvechkarev.vault.viewdsl.margins
@@ -96,9 +97,10 @@ class InfoDialog(
     
     fun ViewGroup.infoDialog() = childViewAs<InfoDialog>()
     
-    fun ViewGroup.InfoDialog(tagPrefix: String, block: InfoDialog.() -> Unit) = withViewBuilder {
+    fun ViewGroup.InfoDialog(tagPrefix: String = "", block: InfoDialog.() -> Unit = {}) = withViewBuilder {
       val infoDialog = InfoDialog(context, tagPrefix)
       infoDialog.size(MatchParent, MatchParent)
+      infoDialog.classNameTag()
       addView(infoDialog)
       infoDialog.apply(block)
     }

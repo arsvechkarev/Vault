@@ -26,7 +26,6 @@ import com.arsvechkarev.vault.viewbuilding.TextSizes
 import com.arsvechkarev.vault.viewdsl.Size.Companion.MatchParent
 import com.arsvechkarev.vault.viewdsl.Size.Companion.WrapContent
 import com.arsvechkarev.vault.viewdsl.circleRippleBackground
-import com.arsvechkarev.vault.viewdsl.classNameTag
 import com.arsvechkarev.vault.viewdsl.gravity
 import com.arsvechkarev.vault.viewdsl.image
 import com.arsvechkarev.vault.viewdsl.layoutGravity
@@ -86,12 +85,8 @@ class CreatingServiceScreen : Screen(), CreatingServiceView {
         margins(start = MarginDefault, end = MarginDefault, bottom = MarginDefault)
         onClick { continueWithCreating() }
       }
-      PasswordEditingDialog(passwordCreatingPresenter) {
-        classNameTag()
-      }
-      InfoDialog(CreatingServiceScreen::class.java.name) {
-        classNameTag()
-      }
+      PasswordEditingDialog(passwordCreatingPresenter)
+      InfoDialog()
       LoadingDialog()
     }
   }
@@ -159,7 +154,7 @@ class CreatingServiceScreen : Screen(), CreatingServiceView {
     infoDialog().hide()
   }
   
-  override fun showExite() {
+  override fun showExit() {
     navigator.popCurrentScreen()
   }
   

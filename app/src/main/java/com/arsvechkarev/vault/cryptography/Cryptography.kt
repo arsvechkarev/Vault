@@ -16,8 +16,8 @@ private const val SHA_224 = "SHA-224"
 private const val SHA_256 = "SHA-256"
 private const val SECRET_KEY_LENGTH = 256
 private const val SECRET_KEY_ITERATIONS = 45928
-private const val SALT_ITERATIONS = 89
-private const val IV_ITERATIONS = 131
+private const val SALT_ITERATIONS = 11879
+private const val IV_ITERATIONS = 13275
 
 private val cipher: Cipher = Cipher.getInstance(CIPHER_TRANSFORMATION)
 private val secretKeyFactory: SecretKeyFactory = SecretKeyFactory.getInstance(SECRET_KEY_ALGORITHM)

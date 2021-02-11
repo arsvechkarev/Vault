@@ -11,13 +11,12 @@ import com.arsvechkarev.vault.core.extensions.bundle
 import com.arsvechkarev.vault.core.model.ServiceInfo
 import com.arsvechkarev.vault.core.navigation.Navigator
 import com.arsvechkarev.vault.core.navigation.NavigatorView
-import com.arsvechkarev.vault.views.dialogs.PasswordCheckingDialog
+import com.arsvechkarev.vault.cryptography.MasterPasswordHolder
 import com.arsvechkarev.vault.features.creating_service.CreatingServiceScreen
 import com.arsvechkarev.vault.features.info.InfoScreen
 import com.arsvechkarev.vault.features.info.InfoScreen.Companion.SERVICE_INFO
 import com.arsvechkarev.vault.features.initial_screen.StartScreen
 import com.arsvechkarev.vault.features.passwords_list.PasswordsListScreen
-import com.arsvechkarev.vault.cryptography.MasterPasswordHolder
 import com.arsvechkarev.vault.viewbuilding.Colors
 import com.arsvechkarev.vault.viewdsl.Densities
 import com.arsvechkarev.vault.viewdsl.Size.Companion.MatchParent
@@ -25,6 +24,7 @@ import com.arsvechkarev.vault.viewdsl.addView
 import com.arsvechkarev.vault.viewdsl.classNameTag
 import com.arsvechkarev.vault.viewdsl.size
 import com.arsvechkarev.vault.viewdsl.withViewBuilder
+import com.arsvechkarev.vault.views.dialogs.PasswordCheckingDialog
 
 class MainActivity : BaseActivity(), Navigator {
   
@@ -56,12 +56,12 @@ class MainActivity : BaseActivity(), Navigator {
       if (masterPasswordSaver.getSavedMasterPassword() != null) {
         navigator.navigate(PasswordsListScreen::class)
       } else {
-        MasterPasswordHolder.setMasterPassword("qwerty//123")
-        navigator.navigate(PasswordsListScreen::class)
-        //        viewAs<PasswordCheckingDialog>().initiatePasswordCheck(onSuccess = { password ->
-        //          MasterPasswordHolder.setMasterPassword(password)
-        //          navigator.navigate(PasswordsListScreen::class)
-        //        })
+        //        MasterPasswordHolder.setMasterPassword("qwerty//123")
+        //        navigator.navigate(PasswordsListScreen::class)
+        viewAs<PasswordCheckingDialog>().initiatePasswordCheck(onSuccess = { password ->
+          MasterPasswordHolder.setMasterPassword(password)
+          navigator.navigate(PasswordsListScreen::class)
+        })
       }
     } else {
       navigator.navigate(StartScreen::class)

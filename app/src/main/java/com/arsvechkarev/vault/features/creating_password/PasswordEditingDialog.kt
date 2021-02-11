@@ -291,10 +291,11 @@ class PasswordEditingDialog(
     
     fun ViewGroup.PasswordEditingDialog(
       presenter: PasswordCreatingPresenter,
-      block: PasswordEditingDialog.() -> Unit
+      block: PasswordEditingDialog.() -> Unit = {}
     ) = withViewBuilder {
       val dialog = PasswordEditingDialog(context, presenter)
       dialog.size(MatchParent, MatchParent)
+      dialog.classNameTag()
       addView(dialog)
       dialog.apply(block)
     }

@@ -7,7 +7,6 @@ import com.arsvechkarev.vault.R
 import com.arsvechkarev.vault.core.AndroidThreader
 import com.arsvechkarev.vault.core.MIN_PASSWORD_LENGTH
 import com.arsvechkarev.vault.core.Singletons.masterPasswordChecker
-import com.arsvechkarev.vault.core.Singletons.masterPasswordSaver
 import com.arsvechkarev.vault.core.Singletons.passwordChecker
 import com.arsvechkarev.vault.core.Singletons.userAuthSaver
 import com.arsvechkarev.vault.core.extensions.BaseTextWatcher
@@ -24,46 +23,39 @@ import com.arsvechkarev.vault.cryptography.PasswordStrength.STRONG
 import com.arsvechkarev.vault.cryptography.PasswordStrength.VERY_STRONG
 import com.arsvechkarev.vault.cryptography.PasswordStrength.WEAK
 import com.arsvechkarev.vault.viewbuilding.Colors
-import com.arsvechkarev.vault.viewbuilding.Colors.CorrectRipple
-import com.arsvechkarev.vault.viewbuilding.Colors.Dialog
-import com.arsvechkarev.vault.viewbuilding.Colors.ErrorRipple
+import com.arsvechkarev.vault.viewbuilding.Dimens.MarginDefault
+import com.arsvechkarev.vault.viewbuilding.Dimens.MarginMedium
+import com.arsvechkarev.vault.viewbuilding.Dimens.MarginSmall
 import com.arsvechkarev.vault.viewbuilding.Dimens.PasswordStrengthMeterHeight
-import com.arsvechkarev.vault.viewbuilding.Dimens.ProgressBarSizeBig
 import com.arsvechkarev.vault.viewbuilding.Fonts
 import com.arsvechkarev.vault.viewbuilding.Styles.BaseTextView
 import com.arsvechkarev.vault.viewbuilding.Styles.BoldTextView
 import com.arsvechkarev.vault.viewbuilding.Styles.ClickableButton
-import com.arsvechkarev.vault.viewbuilding.Styles.ClickableTextView
 import com.arsvechkarev.vault.viewbuilding.Styles.ImageBack
 import com.arsvechkarev.vault.viewbuilding.TextSizes
-import com.arsvechkarev.vault.viewdsl.Ints.dp
 import com.arsvechkarev.vault.viewdsl.Size.Companion.MatchParent
 import com.arsvechkarev.vault.viewdsl.Size.Companion.WrapContent
 import com.arsvechkarev.vault.viewdsl.Size.IntSize
-import com.arsvechkarev.vault.viewdsl.addView
 import com.arsvechkarev.vault.viewdsl.animateInvisible
 import com.arsvechkarev.vault.viewdsl.animateVisible
-import com.arsvechkarev.vault.viewdsl.backgroundRoundRect
 import com.arsvechkarev.vault.viewdsl.classNameTag
 import com.arsvechkarev.vault.viewdsl.font
 import com.arsvechkarev.vault.viewdsl.gravity
+import com.arsvechkarev.vault.viewdsl.id
 import com.arsvechkarev.vault.viewdsl.invisible
 import com.arsvechkarev.vault.viewdsl.layoutGravity
 import com.arsvechkarev.vault.viewdsl.marginHorizontal
 import com.arsvechkarev.vault.viewdsl.margins
 import com.arsvechkarev.vault.viewdsl.onClick
 import com.arsvechkarev.vault.viewdsl.padding
-import com.arsvechkarev.vault.viewdsl.paddingHorizontal
-import com.arsvechkarev.vault.viewdsl.paddingVertical
-import com.arsvechkarev.vault.viewdsl.size
 import com.arsvechkarev.vault.viewdsl.tag
 import com.arsvechkarev.vault.viewdsl.text
 import com.arsvechkarev.vault.viewdsl.textColor
 import com.arsvechkarev.vault.viewdsl.textSize
 import com.arsvechkarev.vault.viewdsl.visible
-import com.arsvechkarev.vault.views.MaterialProgressBar
 import com.arsvechkarev.vault.views.PasswordStrengthMeter
-import com.arsvechkarev.vault.views.SimpleDialog
+import com.arsvechkarev.vault.views.dialogs.LoadingDialog
+import com.arsvechkarev.vault.views.dialogs.loadingDialog
 
 class StartScreen : Screen(), StartView {
   
@@ -72,34 +64,36 @@ class StartScreen : Screen(), StartView {
       HorizontalLayout(MatchParent, WrapContent) {
         tag(RepeatPasswordLayout)
         invisible()
-        margins(start = 16.dp, end = 16.dp, top = 16.dp)
+        margins(top = MarginDefault, start = MarginDefault, end = MarginDefault)
         ImageView(WrapContent, WrapContent, style = ImageBack) {
           onClick { presenter.onBackButtonClick() }
         }
         TextView(WrapContent, WrapContent, style = BoldTextView) {
           layoutGravity(Gravity.CENTER)
           text(R.string.text_repeat_password)
-          margins(start = 24.dp, end = 24.dp)
+          margins(start = MarginMedium, end = MarginMedium)
           gravity(Gravity.CENTER)
-          textSize(TextSizes.H0)
+          textSize(TextSizes.H1)
         }
       }
       TextView(MatchParent, WrapContent, style = BoldTextView) {
+        id(R.id.start_screen_create_password)
         tag(TextTitle)
         text(R.string.text_create_master_password)
-        margins(start = 24.dp, end = 24.dp, top = 24.dp)
+        margins(start = MarginDefault, end = MarginDefault, top = MarginMedium)
         gravity(Gravity.CENTER)
-        textSize(TextSizes.H0)
+        textSize(TextSizes.H1)
       }
       VerticalLayout(MatchParent, WrapContent) {
         layoutGravity(Gravity.CENTER)
         TextView(WrapContent, WrapContent, style = BaseTextView) {
           tag(TextPasswordStrength)
-          margins(start = 16.dp)
+          margins(start = MarginDefault)
         }
         child<PasswordStrengthMeter>(MatchParent, IntSize(PasswordStrengthMeterHeight)) {
           classNameTag()
-          margins(top = 16.dp, start = 16.dp, end = 16.dp, bottom = 24.dp)
+          margins(top = MarginDefault, start = MarginDefault,
+            end = MarginDefault, bottom = MarginMedium)
         }
         child<ViewSwitcher>(MatchParent, WrapContent) {
           classNameTag()
@@ -107,19 +101,19 @@ class StartScreen : Screen(), StartView {
           outAnimation = AnimationUtils.loadAnimation(contextNonNull, R.anim.slide_in_right)
           EditText(MatchParent, WrapContent) {
             tag(EditTextEnterPassword)
-            marginHorizontal(12.dp)
+            marginHorizontal(MarginDefault)
             font(Fonts.SegoeUi)
             textSize(TextSizes.H3)
-            padding(8.dp)
+            padding(MarginSmall)
             setHint(R.string.hint_enter_password)
             setSingleLine()
           }
           EditText(MatchParent, WrapContent) {
             tag(EditTextRepeatPassword)
-            marginHorizontal(12.dp)
+            marginHorizontal(MarginDefault)
             font(Fonts.SegoeUi)
             textSize(TextSizes.H3)
-            padding(8.dp)
+            padding(MarginSmall)
             setHint(R.string.hint_repeat_password)
             setSingleLine()
           }
@@ -127,63 +121,22 @@ class StartScreen : Screen(), StartView {
         TextView(MatchParent, WrapContent, style = BaseTextView) {
           tag(TextError)
           textColor(Colors.Error)
-          margins(start = 16.dp, end = 16.dp, top = 16.dp)
+          margins(start = MarginDefault, end = MarginDefault, top = MarginDefault)
         }
       }
       TextView(MatchParent, WrapContent, style = ClickableButton()) {
+        id(R.id.start_screen_continue)
         tag(TextContinue)
         layoutGravity(Gravity.BOTTOM)
         text(R.string.text_continue)
-        margins(start = 16.dp, end = 16.dp, bottom = 16.dp)
+        margins(start = MarginDefault, end = MarginDefault, bottom = MarginDefault)
         whenPresenterIsReady {
           onClick {
             presenter.onEnteredPassword(editText(EditTextEnterPassword).text.toString())
           }
         }
       }
-      child<SimpleDialog>(MatchParent, MatchParent) {
-        tag(DialogSavePasswordOrNot)
-        VerticalLayout(WrapContent, WrapContent) {
-          marginHorizontal(30.dp)
-          paddingHorizontal(16.dp)
-          paddingVertical(24.dp)
-          backgroundRoundRect(8.dp, Dialog)
-          TextView(WrapContent, WrapContent, style = BoldTextView) {
-            gravity(Gravity.CENTER)
-            textSize(TextSizes.H3)
-            text(getString(R.string.text_do_you_want_to_save_password_locally))
-          }
-          TextView(WrapContent, WrapContent, style = BaseTextView) {
-            margins(top = 16.dp)
-            layoutGravity(Gravity.CENTER)
-            text(getString(R.string.text_save_password_or_not))
-          }
-          TextView(WrapContent, WrapContent, ClickableTextView(CorrectRipple)) {
-            margins(top = 16.dp)
-            textColor(Colors.Correct)
-            layoutGravity(Gravity.CENTER)
-            gravity(Gravity.CENTER)
-            text(getString(R.string.text_save_password_locally))
-            onClick { presenter.savePasswordLocally() }
-          }
-          TextView(WrapContent, WrapContent, ClickableTextView(ErrorRipple)) {
-            margins(top = 16.dp)
-            textColor(Colors.Error)
-            layoutGravity(Gravity.CENTER)
-            gravity(Gravity.CENTER)
-            text(getString(R.string.text_do_not_save_password))
-            onClick { presenter.doNotSavePasswordLocally() }
-          }
-        }
-      }
-      child<SimpleDialog>(MatchParent, MatchParent) {
-        tag(DialogProgressBar)
-        addView {
-          MaterialProgressBar(context).apply {
-            size(ProgressBarSizeBig, ProgressBarSizeBig)
-          }
-        }
-      }
+      LoadingDialog()
     }
   }
   
@@ -202,8 +155,8 @@ class StartScreen : Screen(), StartView {
   }
   
   private val presenter by moxyPresenter {
-    StartPresenter(AndroidThreader, passwordChecker, masterPasswordSaver,
-      masterPasswordChecker, userAuthSaver)
+    StartPresenter(AndroidThreader, passwordChecker, masterPasswordChecker,
+      userAuthSaver)
   }
   
   override fun onInit() {
@@ -278,17 +231,13 @@ class StartScreen : Screen(), StartView {
     }
   }
   
-  override fun showPasswordRepeatedCorrectly() {
-    simpleDialog(DialogSavePasswordOrNot).show()
-    hideKeyboard()
-  }
-  
   override fun showPasswordsDontMatch() {
     textView(TextError).text(R.string.text_passwords_dont_match)
   }
   
   override fun showFinishingAuthorization() {
-    simpleDialog(DialogProgressBar).show()
+    hideKeyboard()
+    loadingDialog().show()
   }
   
   override fun goToPasswordsList() {
@@ -304,7 +253,5 @@ class StartScreen : Screen(), StartView {
     const val RepeatPasswordLayout = "RepeatPasswordLayout"
     const val EditTextEnterPassword = "EditTextEnterPassword"
     const val EditTextRepeatPassword = "EditTextRepeatPassword"
-    const val DialogProgressBar = "DialogProgressBar"
-    const val DialogSavePasswordOrNot = "DialogSavePasswordOrNot"
   }
 }

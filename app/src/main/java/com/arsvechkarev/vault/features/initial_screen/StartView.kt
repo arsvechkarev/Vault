@@ -17,8 +17,6 @@ interface StartView : MvpView {
   
   fun switchToRepeatPasswordState()
   
-  fun showPasswordRepeatedCorrectly()
-  
   fun showPasswordsDontMatch()
   
   fun showFinishingAuthorization()

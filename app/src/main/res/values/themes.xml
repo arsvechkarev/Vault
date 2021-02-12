@@ -13,7 +13,6 @@
     <item name="colorRipple">@color/dark_ripple</item>
     <item name="colorAccent">@color/dark_accent</item>
     <item name="colorAccentLight">@color/dark_accent_light</item>
-    <item name="colorOnAccent">@color/dark_on_accent</item>
     <item name="colorAccentRipple">@color/dark_accent_ripple</item>
     <item name="colorCorrect">@color/dark_correct</item>
     <item name="colorCorrectRipple">@color/dark_correct_ripple</item>

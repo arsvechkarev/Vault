@@ -13,14 +13,12 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import com.arsvechkarev.vault.R
-import com.arsvechkarev.vault.viewbuilding.Dimens.ImageBackMargin
 import com.arsvechkarev.vault.viewdsl.Ints.dp
 import com.arsvechkarev.vault.viewdsl.background
 import com.arsvechkarev.vault.viewdsl.circleRippleBackground
 import com.arsvechkarev.vault.viewdsl.font
 import com.arsvechkarev.vault.viewdsl.gravity
 import com.arsvechkarev.vault.viewdsl.image
-import com.arsvechkarev.vault.viewdsl.margins
 import com.arsvechkarev.vault.viewdsl.padding
 import com.arsvechkarev.vault.viewdsl.paddingHorizontal
 import com.arsvechkarev.vault.viewdsl.paddingVertical
@@ -83,7 +81,6 @@ object Styles {
   
   val ImageBack: ImageView.() -> Unit = {
     image(R.drawable.ic_back)
-    margins(top = ImageBackMargin, start = ImageBackMargin)
     padding(Dimens.IconPadding)
     circleRippleBackground()
   }

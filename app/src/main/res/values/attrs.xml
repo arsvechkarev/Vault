@@ -7,7 +7,6 @@
   <attr name="colorRipple" format="color"/>
   <attr name="colorAccent" format="color"/>
   <attr name="colorAccentLight" format="color"/>
-  <attr name="colorOnAccent" format="color"/>
   <attr name="colorAccentRipple" format="color"/>
   <attr name="colorCorrect" format="color"/>
   <attr name="colorCorrectRipple" format="color"/>

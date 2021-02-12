@@ -16,6 +16,7 @@ import com.arsvechkarev.vault.features.creating_password.PasswordEditingDialog.C
 import com.arsvechkarev.vault.features.creating_password.PasswordEditingDialog.Companion.passwordEditingDialog
 import com.arsvechkarev.vault.viewbuilding.Colors
 import com.arsvechkarev.vault.viewbuilding.Dimens.DividerHeight
+import com.arsvechkarev.vault.viewbuilding.Dimens.ImageBackMargin
 import com.arsvechkarev.vault.viewbuilding.Dimens.ImageServiceNameSize
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginBig
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginDefault
@@ -59,6 +60,7 @@ class InfoScreen : Screen(), InfoView {
         gravity(CENTER_HORIZONTAL)
         ImageView(WrapContent, WrapContent, style = ImageBack) {
           layoutGravity(NO_GRAVITY)
+          margins(top = ImageBackMargin, start = ImageBackMargin)
           onClick { navigator.popCurrentScreen() }
         }
         ImageView(ImageServiceNameSize, ImageServiceNameSize) {

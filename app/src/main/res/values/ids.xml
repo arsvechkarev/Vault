@@ -4,4 +4,9 @@
   <item name="creating_service_edit_texts_layout" type="id"/>
   <item name="creating_service_image" type="id"/>
   <item name="creating_service_continue_button" type="id"/>
+  <item name="start_screen_create_password" type="id"/>
+  <item name="start_screen_repeat_password" type="id"/>
+  <item name="start_screen_content" type="id"/>
+  <item name="start_screen_continue" type="id"/>
+  <item name="start_screen_logo" type="id"/>
 </resources>

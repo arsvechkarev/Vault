@@ -18,7 +18,6 @@ object Colors {
   val Ripple get() = colors[4]
   val Accent get() = colors[5]
   val AccentLight get() = colors[6]
-  val OnAccent get() = colors[7]
   val AccentRipple get() = colors[8]
   val Correct get() = colors[9]
   val CorrectRipple get() = colors[10]
@@ -42,7 +41,6 @@ object Colors {
     colors[4] = context.getAttrColor(R.attr.colorRipple)
     colors[5] = context.getAttrColor(R.attr.colorAccent)
     colors[6] = context.getAttrColor(R.attr.colorAccentLight)
-    colors[7] = context.getAttrColor(R.attr.colorOnAccent)
     colors[8] = context.getAttrColor(R.attr.colorAccentRipple)
     colors[9] = context.getAttrColor(R.attr.colorCorrect)
     colors[10] = context.getAttrColor(R.attr.colorCorrectRipple)

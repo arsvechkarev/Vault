@@ -8,14 +8,12 @@ import com.arsvechkarev.vault.features.initial_screen.StartScreenState.ENTERING_
 import com.arsvechkarev.vault.features.initial_screen.StartScreenState.REPEATING_PASSWORD
 import com.arsvechkarev.vault.cryptography.MasterPasswordChecker
 import com.arsvechkarev.vault.cryptography.MasterPasswordHolder
-import com.arsvechkarev.vault.cryptography.MasterPasswordSaver
 import com.arsvechkarev.vault.cryptography.PasswordStatus.OK
 import com.arsvechkarev.vault.cryptography.PasswordChecker
 
 class StartPresenter(
   threader: Threader,
   private val passwordChecker: PasswordChecker,
-  private val masterPasswordSaver: MasterPasswordSaver,
   private val masterPasswordChecker: MasterPasswordChecker,
   private val userAuthSaver: UserAuthSaver
 ) : BasePresenter<StartView>(threader) {
@@ -59,20 +57,10 @@ class StartPresenter(
   fun onRepeatedPassword(password: String) {
     assertThat(state == REPEATING_PASSWORD)
     if (previouslyEnteredPassword != "" && password == previouslyEnteredPassword) {
-      viewState.showPasswordRepeatedCorrectly()
+      finishAuthorization()
     } else {
       viewState.showPasswordsDontMatch()
     }
-  }
-  
-  fun savePasswordLocally() {
-    assertThat(previouslyEnteredPassword != "")
-    masterPasswordSaver.saveMasterPassword(previouslyEnteredPassword)
-    finishAuthorization()
-  }
-  
-  fun doNotSavePasswordLocally() {
-    finishAuthorization()
   }
   
   private fun finishAuthorization() {

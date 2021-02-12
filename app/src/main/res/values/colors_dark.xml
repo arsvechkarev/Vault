@@ -1,14 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <color name="dark_background">#000000</color>
+  <color name="dark_background">#0E1621</color>
   <color name="dark_surface">#383838</color>
-  <color name="dark_dialog">#232930</color>
+  <color name="dark_dialog">#17212B</color>
   <color name="dark_icon">#FFFFFF</color>
   <color name="dark_ripple">#C6FFFFFF</color>
-  <color name="dark_accent">#286AC3</color>
-  <color name="dark_accent_light">#5195F1</color>
-  <color name="dark_on_accent">#174075</color>
-  <color name="dark_accent_ripple">#70286AC3</color>
+  <color name="dark_accent">#3C80AE</color>
+  <color name="dark_accent_light">#69ACD8</color>
+  <color name="dark_accent_ripple">#70307FB5</color>
   <color name="dark_correct">#29B500</color>
   <color name="dark_correct_ripple">#70249802</color>
   <color name="dark_error">#D5301E</color>
@@ -21,5 +20,5 @@
   <color name="dark_password_very_strong">#069A15</color>
   <color name="dark_disabled">@color/dark_divider</color>
   <color name="dark_divider">#AFAFAF</color>
-  <color name="dark_shadow">#A3000000</color>
+  <color name="dark_shadow">#61000000</color>
 </resources>

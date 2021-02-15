@@ -18,6 +18,7 @@ val Screen.loadingDialog get() = viewAs<SimpleDialog>(DialogProgressBar)
 fun ViewGroup.LoadingDialog() = withViewBuilder {
   addView {
     SimpleDialog(context).apply {
+      isCancellable = false
       size(MatchParent, MatchParent)
       tag(DialogProgressBar)
       addView {

@@ -9,7 +9,6 @@ import com.arsvechkarev.vault.R
 import com.arsvechkarev.vault.core.AndroidThreader
 import com.arsvechkarev.vault.core.Singletons.passwordCreatingPresenter
 import com.arsvechkarev.vault.core.Singletons.passwordsListRepository
-import com.arsvechkarev.vault.core.extensions.BaseTextWatcher
 import com.arsvechkarev.vault.core.extensions.moxyPresenter
 import com.arsvechkarev.vault.core.extensions.setSoftInputMode
 import com.arsvechkarev.vault.core.navigation.Screen
@@ -25,6 +24,7 @@ import com.arsvechkarev.vault.viewbuilding.Styles.BaseTextView
 import com.arsvechkarev.vault.viewbuilding.Styles.BoldTextView
 import com.arsvechkarev.vault.viewbuilding.Styles.ClickableButton
 import com.arsvechkarev.vault.viewbuilding.TextSizes
+import com.arsvechkarev.vault.viewdsl.BaseTextWatcher
 import com.arsvechkarev.vault.viewdsl.Size.Companion.MatchParent
 import com.arsvechkarev.vault.viewdsl.Size.Companion.WrapContent
 import com.arsvechkarev.vault.viewdsl.circleRippleBackground
@@ -37,6 +37,7 @@ import com.arsvechkarev.vault.viewdsl.layoutGravity
 import com.arsvechkarev.vault.viewdsl.margin
 import com.arsvechkarev.vault.viewdsl.margins
 import com.arsvechkarev.vault.viewdsl.onClick
+import com.arsvechkarev.vault.viewdsl.onSubmit
 import com.arsvechkarev.vault.viewdsl.onTextChanged
 import com.arsvechkarev.vault.viewdsl.padding
 import com.arsvechkarev.vault.viewdsl.tag
@@ -97,11 +98,13 @@ class CreatingServiceScreen : Screen(), CreatingServiceView {
           margins(top = MarginSmall, start = MarginDefault, end = MarginDefault)
           setHint(R.string.text_service_name)
           whenPresenterIsReady { onTextChanged(presenter::onServiceNameChanged) }
+          onSubmit { editText(EditTextEmail).requestFocus() }
         }
         EditText(MatchParent, WrapContent, style = BaseEditText) {
           tag(EditTextEmail)
           margins(top = MarginDefault, start = MarginDefault, end = MarginDefault)
           setHint(R.string.text_email_optional)
+          onSubmit { continueWithCreating() }
         }
       }
       TextView(MatchParent, WrapContent, style = ClickableButton()) {

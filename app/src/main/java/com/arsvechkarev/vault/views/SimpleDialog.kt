@@ -42,6 +42,7 @@ open class SimpleDialog(context: Context) : FrameLayout(context) {
   }
   
   var onShadowFractionChangedListener: ((Float) -> Unit)? = null
+  var isCancellable = true
   var onShown = {}
   var onHide = {}
   
@@ -125,7 +126,7 @@ open class SimpleDialog(context: Context) : FrameLayout(context) {
         val dx = abs(event.x - latestX)
         val dy = abs(event.y - latestY)
         val scaledTouchSlop = ViewConfiguration.get(context).scaledTouchSlop
-        if (hypot(dx, dy) < scaledTouchSlop) {
+        if (hypot(dx, dy) < scaledTouchSlop && isCancellable) {
           hide()
         }
       }

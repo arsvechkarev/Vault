@@ -6,9 +6,11 @@ import android.graphics.drawable.GradientDrawable
 import android.graphics.drawable.RippleDrawable
 import android.graphics.drawable.ShapeDrawable
 import android.graphics.drawable.shapes.RoundRectShape
-import android.text.InputType
+import android.text.InputType.TYPE_CLASS_NUMBER
+import android.text.InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS
 import android.text.TextUtils
 import android.view.Gravity
+import android.view.inputmethod.EditorInfo
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
@@ -91,6 +93,7 @@ object Styles {
     textSize(TextSizes.H3)
     paddingVertical(MarginSmall)
     setSingleLine()
-    inputType = InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD
+    inputType = TYPE_TEXT_FLAG_NO_SUGGESTIONS
+    imeOptions = EditorInfo.IME_ACTION_DONE
   }
 }

@@ -28,6 +28,7 @@ import com.arsvechkarev.vault.viewdsl.margin
 import com.arsvechkarev.vault.viewdsl.marginHorizontal
 import com.arsvechkarev.vault.viewdsl.margins
 import com.arsvechkarev.vault.viewdsl.onClick
+import com.arsvechkarev.vault.viewdsl.onSubmit
 import com.arsvechkarev.vault.viewdsl.onTextChanged
 import com.arsvechkarev.vault.viewdsl.text
 import com.arsvechkarev.vault.viewdsl.textColor
@@ -73,6 +74,7 @@ class StartScreen : Screen(), StartView {
           marginHorizontal(MarginDefault)
           setHint(R.string.hint_enter_password)
           onTextChanged { textView(start_screen_error_text).text("") }
+          onSubmit { presenter.onEnteredPassword(this.text.toString()) }
         }
       }
       TextView(MatchParent, WrapContent, style = ClickableButton()) {

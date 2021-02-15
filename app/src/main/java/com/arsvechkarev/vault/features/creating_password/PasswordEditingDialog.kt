@@ -18,7 +18,6 @@ import com.arsvechkarev.vault.R.string.text_uppercase_symbols
 import com.arsvechkarev.vault.core.DEFAULT_PASSWORD_LENGTH
 import com.arsvechkarev.vault.core.MAX_PASSWORD_LENGTH
 import com.arsvechkarev.vault.core.MIN_PASSWORD_LENGTH
-import com.arsvechkarev.vault.core.extensions.BaseTextWatcher
 import com.arsvechkarev.vault.core.extensions.hideKeyboard
 import com.arsvechkarev.vault.core.extensions.setSoftInputMode
 import com.arsvechkarev.vault.core.model.PasswordCharacteristics
@@ -43,6 +42,7 @@ import com.arsvechkarev.vault.viewbuilding.Styles.BaseTextView
 import com.arsvechkarev.vault.viewbuilding.Styles.BoldTextView
 import com.arsvechkarev.vault.viewbuilding.Styles.ClickableTextView
 import com.arsvechkarev.vault.viewbuilding.TextSizes
+import com.arsvechkarev.vault.viewdsl.BaseTextWatcher
 import com.arsvechkarev.vault.viewdsl.Size.Companion.MatchParent
 import com.arsvechkarev.vault.viewdsl.Size.Companion.WrapContent
 import com.arsvechkarev.vault.viewdsl.circleRippleBackground
@@ -59,6 +59,7 @@ import com.arsvechkarev.vault.viewdsl.marginVertical
 import com.arsvechkarev.vault.viewdsl.margins
 import com.arsvechkarev.vault.viewdsl.onClick
 import com.arsvechkarev.vault.viewdsl.onProgressChanged
+import com.arsvechkarev.vault.viewdsl.onSubmit
 import com.arsvechkarev.vault.viewdsl.padding
 import com.arsvechkarev.vault.viewdsl.setMaxLength
 import com.arsvechkarev.vault.viewdsl.size
@@ -119,6 +120,7 @@ class PasswordEditingDialog(
               margin(MarginSmall)
               setMaxLength(MAX_PASSWORD_LENGTH)
               isSingleLine = false
+              onSubmit { presenter.onSavePasswordClicked() }
             }
             child<PasswordStrengthMeterWithText>(MatchParent, WrapContent) {
               classNameTag()
@@ -198,6 +200,7 @@ class PasswordEditingDialog(
     this.onSavePasswordClick = onSavePasswordClick
     textView(DialogPasswordTitle).text(R.string.text_edit_password)
     editText(DialogPasswordEditText).text(currentPassword)
+    editText(DialogPasswordEditText).setSelection(currentPassword.length)
     viewAs<SeekBar>().progress = currentPassword.length - MIN_PASSWORD_LENGTH
     viewAs<SimpleDialog>(DialogPassword).show()
     presenter.onPasswordChanged(currentPassword)
@@ -246,6 +249,7 @@ class PasswordEditingDialog(
     context.hideKeyboard(viewAs(DialogPasswordEditText))
     editText(DialogPasswordEditText).clearFocus()
     editText(DialogPasswordEditText).text(password)
+    editText(DialogPasswordEditText).setSelection(password.length)
   }
   
   override fun showPasswordIsEmpty() {
@@ -262,6 +266,7 @@ class PasswordEditingDialog(
   }
   
   override fun showSavePasswordClicked(password: String) {
+    context.hideKeyboard(editText(DialogPasswordEditText))
     onSavePasswordClick(password)
   }
   

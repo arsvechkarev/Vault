@@ -10,7 +10,6 @@ import com.arsvechkarev.vault.core.MIN_PASSWORD_LENGTH
 import com.arsvechkarev.vault.core.Singletons.masterPasswordChecker
 import com.arsvechkarev.vault.core.Singletons.passwordChecker
 import com.arsvechkarev.vault.core.Singletons.userAuthSaver
-import com.arsvechkarev.vault.core.extensions.BaseTextWatcher
 import com.arsvechkarev.vault.core.extensions.moxyPresenter
 import com.arsvechkarev.vault.core.navigation.Screen
 import com.arsvechkarev.vault.cryptography.PasswordStatus
@@ -26,28 +25,26 @@ import com.arsvechkarev.vault.cryptography.PasswordStrength.WEAK
 import com.arsvechkarev.vault.viewbuilding.Colors
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginDefault
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginMedium
-import com.arsvechkarev.vault.viewbuilding.Dimens.MarginSmall
 import com.arsvechkarev.vault.viewbuilding.Dimens.PasswordStrengthMeterHeight
-import com.arsvechkarev.vault.viewbuilding.Fonts
+import com.arsvechkarev.vault.viewbuilding.Styles.BaseEditText
 import com.arsvechkarev.vault.viewbuilding.Styles.BaseTextView
 import com.arsvechkarev.vault.viewbuilding.Styles.BoldTextView
 import com.arsvechkarev.vault.viewbuilding.Styles.ClickableButton
 import com.arsvechkarev.vault.viewbuilding.Styles.ImageBack
 import com.arsvechkarev.vault.viewbuilding.TextSizes
+import com.arsvechkarev.vault.viewdsl.BaseTextWatcher
 import com.arsvechkarev.vault.viewdsl.Size.Companion.MatchParent
 import com.arsvechkarev.vault.viewdsl.Size.Companion.WrapContent
 import com.arsvechkarev.vault.viewdsl.Size.IntSize
 import com.arsvechkarev.vault.viewdsl.animateInvisible
 import com.arsvechkarev.vault.viewdsl.animateVisible
 import com.arsvechkarev.vault.viewdsl.classNameTag
-import com.arsvechkarev.vault.viewdsl.font
 import com.arsvechkarev.vault.viewdsl.gravity
 import com.arsvechkarev.vault.viewdsl.invisible
 import com.arsvechkarev.vault.viewdsl.layoutGravity
 import com.arsvechkarev.vault.viewdsl.marginHorizontal
 import com.arsvechkarev.vault.viewdsl.margins
 import com.arsvechkarev.vault.viewdsl.onClick
-import com.arsvechkarev.vault.viewdsl.padding
 import com.arsvechkarev.vault.viewdsl.tag
 import com.arsvechkarev.vault.viewdsl.text
 import com.arsvechkarev.vault.viewdsl.textColor
@@ -98,23 +95,15 @@ class CreateMasterPasswordScreen : Screen(), CreateMasterPasswordView {
           classNameTag()
           inAnimation = AnimationUtils.loadAnimation(contextNonNull, R.anim.slide_out_left)
           outAnimation = AnimationUtils.loadAnimation(contextNonNull, R.anim.slide_in_right)
-          EditText(MatchParent, WrapContent) {
+          EditText(MatchParent, WrapContent, style = BaseEditText) {
             tag(EditTextEnterPassword)
             marginHorizontal(MarginDefault)
-            font(Fonts.SegoeUi)
-            textSize(TextSizes.H3)
-            padding(MarginSmall)
             setHint(R.string.hint_enter_password)
-            setSingleLine()
           }
-          EditText(MatchParent, WrapContent) {
+          EditText(MatchParent, WrapContent, style = BaseEditText) {
             tag(EditTextRepeatPassword)
             marginHorizontal(MarginDefault)
-            font(Fonts.SegoeUi)
-            textSize(TextSizes.H3)
-            padding(MarginSmall)
             setHint(R.string.hint_repeat_password)
-            setSingleLine()
           }
         }
         TextView(MatchParent, WrapContent, style = BaseTextView) {

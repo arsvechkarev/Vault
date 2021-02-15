@@ -31,6 +31,7 @@ import com.arsvechkarev.vault.viewdsl.image
 import com.arsvechkarev.vault.viewdsl.invisible
 import com.arsvechkarev.vault.viewdsl.layoutLeftTop
 import com.arsvechkarev.vault.viewdsl.onClick
+import com.arsvechkarev.vault.viewdsl.onSubmit
 import com.arsvechkarev.vault.viewdsl.onTextChanged
 import com.arsvechkarev.vault.viewdsl.padding
 import com.arsvechkarev.vault.viewdsl.size
@@ -66,6 +67,7 @@ class EditableTextInfoViewGroup(context: Context) : ViewGroup(context) {
         textSize(TextSizes.H2)
         font(Fonts.SegoeUiBold)
         isSingleLine = false
+        onSubmit { changeModeToShowing() }
       }
       TextView(WrapContent, WrapContent, style = BoldTextView) {
         gravity(CENTER)

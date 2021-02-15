@@ -6,7 +6,6 @@ import android.graphics.drawable.GradientDrawable
 import android.graphics.drawable.RippleDrawable
 import android.graphics.drawable.ShapeDrawable
 import android.graphics.drawable.shapes.RoundRectShape
-import android.text.InputType.TYPE_CLASS_NUMBER
 import android.text.InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS
 import android.text.TextUtils
 import android.view.Gravity
@@ -33,7 +32,7 @@ import com.arsvechkarev.vault.viewdsl.textSize
 object Styles {
   
   val BaseTextView: TextView.() -> Unit = {
-    textSize(TextSizes.H4)
+    textSize(TextSizes.H5)
     font(Fonts.SegoeUi)
     textColor(Colors.TextPrimary)
     ellipsize = TextUtils.TruncateAt.END
@@ -42,19 +41,23 @@ object Styles {
   val BoldTextView: TextView.() -> Unit = {
     apply(BaseTextView)
     font(Fonts.SegoeUiBold)
-    textSize(TextSizes.H3)
+    textSize(TextSizes.H4)
   }
   
   fun ClickableTextView(
     rippleColor: Int = Colors.AccentRipple,
   ): TextView.() -> Unit = {
-    textColor(Colors.TextPrimary)
-    textSize(TextSizes.H4)
+    textSize(TextSizes.H5)
     font(Typeface.DEFAULT_BOLD)
     paddingVertical(6.dp)
     textColor(Colors.AccentLight)
     paddingHorizontal(12.dp)
     rippleBackground(rippleColor, Colors.Transparent, 4.dp)
+  }
+  
+  val ClickableErrorTextView: TextView.() -> Unit = {
+    apply(ClickableTextView(Colors.ErrorRipple))
+    textColor(Colors.Error)
   }
   
   fun ClickableButton(

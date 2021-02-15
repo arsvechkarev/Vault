@@ -18,8 +18,6 @@ interface InfoView : MvpView {
   
   fun showNoEmail()
   
-  fun showErrorSavingServiceName(errorText: String)
-  
   fun hideErrorSavingServiceName()
   
   fun setPassword(password: String)

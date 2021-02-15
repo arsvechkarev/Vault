@@ -13,7 +13,6 @@ import com.arsvechkarev.vault.recycler.CallbackType.TWO_LISTS
 import kotlin.reflect.KClass
 
 abstract class ListAdapter(
-  private val callbackType: CallbackType = TWO_LISTS,
   private val threader: Threader = AndroidThreader,
   private var onReadyToLoadNextPage: (() -> Unit)? = null
 ) : RecyclerView.Adapter<ViewHolder>() {
@@ -26,15 +25,6 @@ abstract class ListAdapter(
   private val classesToViewTypes = HashMap<KClass<*>, Int>()
   private val delegatesSparseArray = SparseArrayCompat<ListAdapterDelegate<out DifferentiableItem>>()
   private val delegates = ArrayList<ListAdapterDelegate<out DifferentiableItem>>()
-  
-  constructor(
-    vararg delegates: ListAdapterDelegate<out DifferentiableItem>,
-    callbackType: CallbackType = TWO_LISTS,
-    threader: Threader = AndroidThreader,
-    onReadyToLoadNextPage: () -> Unit = {}
-  ) : this(callbackType, threader, onReadyToLoadNextPage) {
-    addDelegates(*delegates)
-  }
   
   fun addItem(item: DifferentiableItem) {
     data.add(item)
@@ -53,7 +43,7 @@ abstract class ListAdapter(
     notifyDataSetChanged()
   }
   
-  fun submitList(list: List<DifferentiableItem>) {
+  fun submitList(list: List<DifferentiableItem>, callbackType: CallbackType) {
     val callback = when (callbackType) {
       APPENDED_LIST -> AppendedListDiffCallbacks(list, data.size)
       TWO_LISTS -> TwoListsDiffCallBack(data, list)
@@ -110,7 +100,7 @@ abstract class ListAdapter(
   
   private fun applyChanges(callback: DiffUtil.Callback) {
     threader.onBackgroundThread {
-      val diffResult = DiffUtil.calculateDiff(callback)
+      val diffResult = DiffUtil.calculateDiff(callback, false)
       threader.onMainThread {
         diffResult.dispatchUpdatesTo(this)
       }

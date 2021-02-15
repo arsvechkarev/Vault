@@ -8,6 +8,7 @@ import com.arsvechkarev.vault.core.Threader
 import com.arsvechkarev.vault.core.extensions.transformToArrayList
 import com.arsvechkarev.vault.core.model.ServiceInfo
 import com.arsvechkarev.vault.cryptography.PasswordsStorage
+import java.util.Locale
 
 class PasswordsListRepository(
   private val storage: PasswordsStorage,
@@ -36,7 +37,7 @@ class PasswordsListRepository(
               jsonObject.getString(JSON_SERVICE_PASSWORD),
             )
           }
-      servicesList.sortBy { it.name }
+      sortList()
     }
     return servicesList
   }
@@ -44,6 +45,7 @@ class PasswordsListRepository(
   fun saveServiceInfo(masterPassword: String, serviceInfo: ServiceInfo) {
     storage.saveServiceInfo(masterPassword, serviceInfo)
     servicesList.add(serviceInfo)
+    sortList()
     notifyListeners()
   }
   
@@ -56,6 +58,7 @@ class PasswordsListRepository(
         break
       }
     }
+    sortList()
     notifyListeners()
   }
   
@@ -66,9 +69,15 @@ class PasswordsListRepository(
   }
   
   private fun notifyListeners() {
-    servicesList.sortBy { it.name }
     threader.onMainThread {
       changeListeners.forEach { it.invoke(servicesList) }
     }
+  }
+  
+  private fun sortList() {
+    servicesList.sortWith(Comparator { o1, o2 ->
+      return@Comparator o1.name.toLowerCase(Locale.getDefault())
+          .compareTo(o2.name.toLowerCase(Locale.getDefault()))
+    })
   }
 }

@@ -178,16 +178,8 @@ class InfoScreen : Screen(), InfoView {
     editableEmail.transferTextToEditTextWhenSwitching = false
   }
   
-  override fun showErrorSavingServiceName(errorText: String) {
-    infoDialog().show(
-      R.string.text_error,
-      R.string.text_service_already_exists,
-      R.string.text_ok
-    )
-  }
-  
   override fun hideErrorSavingServiceName() {
-    infoDialog().hide()
+    infoDialog.hide()
   }
   
   override fun setPassword(password: String) {
@@ -225,7 +217,7 @@ class InfoScreen : Screen(), InfoView {
   }
   
   override fun showAcceptPasswordDialog() {
-    infoDialog().show(
+    infoDialog.showWithOkOption(
       R.string.text_saving_password,
       R.string.text_do_you_want_to_save_password,
       R.string.text_yes,
@@ -236,7 +228,7 @@ class InfoScreen : Screen(), InfoView {
   }
   
   override fun hideSavePasswordDialog() {
-    infoDialog().hide()
+    infoDialog.hide()
   }
   
   override fun allowBackPress(): Boolean {

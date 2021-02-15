@@ -3,6 +3,7 @@ package com.arsvechkarev.vault.features.passwords_list
 import com.arsvechkarev.vault.core.BasePresenter
 import com.arsvechkarev.vault.core.Threader
 import com.arsvechkarev.vault.core.model.ServiceInfo
+import com.arsvechkarev.vault.cryptography.MasterPasswordHolder.masterPassword
 import com.arsvechkarev.vault.features.common.PasswordsListRepository
 
 class PasswordsListPresenter(
@@ -18,7 +19,7 @@ class PasswordsListPresenter(
     passwordsListRepository.addChangeListener(listChangeListener)
   }
   
-  fun loadPasswords(masterPassword: String) {
+  fun startLoadingPasswords() {
     onIoThread {
       updateViewState { showLoading() }
       val passwords = passwordsListRepository.getAllServicesInfo(masterPassword)
@@ -27,6 +28,18 @@ class PasswordsListPresenter(
       } else {
         updateViewState { showPasswordsList(passwords) }
       }
+    }
+  }
+  
+  fun onLongClick(serviceInfo: ServiceInfo) {
+    viewState.showDeleteDialog(serviceInfo)
+  }
+  
+  fun deleteService(serviceInfo: ServiceInfo) {
+    viewState.showLoadingDeletingService()
+    onIoThread {
+      passwordsListRepository.deleteServiceInfo(masterPassword, serviceInfo)
+      updateViewState { showDeletedService(serviceInfo) }
     }
   }
 }

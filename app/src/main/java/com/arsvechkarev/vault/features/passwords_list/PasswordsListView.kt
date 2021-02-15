@@ -14,5 +14,9 @@ interface PasswordsListView : MvpView {
   
   fun showPasswordsList(list: List<ServiceInfo>)
   
-  fun showEnterServiceNameDialog()
+  fun showDeleteDialog(serviceInfo: ServiceInfo)
+  
+  fun showLoadingDeletingService()
+  
+  fun showDeletedService(serviceInfo: ServiceInfo)
 }

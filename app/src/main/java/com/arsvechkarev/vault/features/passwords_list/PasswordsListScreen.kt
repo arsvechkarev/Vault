@@ -1,5 +1,6 @@
 package com.arsvechkarev.vault.features.passwords_list
 
+import android.text.SpannableString
 import android.view.Gravity.BOTTOM
 import android.view.Gravity.CENTER
 import android.view.Gravity.END
@@ -8,17 +9,18 @@ import androidx.recyclerview.widget.RecyclerView
 import com.arsvechkarev.vault.R
 import com.arsvechkarev.vault.core.AndroidThreader
 import com.arsvechkarev.vault.core.Singletons.passwordsListRepository
+import com.arsvechkarev.vault.core.TypefaceSpan
 import com.arsvechkarev.vault.core.extensions.ifTrue
 import com.arsvechkarev.vault.core.extensions.moxyPresenter
 import com.arsvechkarev.vault.core.model.ServiceInfo
 import com.arsvechkarev.vault.core.navigation.Screen
-import com.arsvechkarev.vault.cryptography.MasterPasswordHolder.masterPassword
 import com.arsvechkarev.vault.viewbuilding.Colors
 import com.arsvechkarev.vault.viewbuilding.Dimens.FabSize
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginDefault
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginMedium
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginSmall
 import com.arsvechkarev.vault.viewbuilding.Dimens.ProgressBarSizeBig
+import com.arsvechkarev.vault.viewbuilding.Fonts
 import com.arsvechkarev.vault.viewbuilding.Styles.BoldTextView
 import com.arsvechkarev.vault.viewbuilding.TextSizes
 import com.arsvechkarev.vault.viewdsl.Size.Companion.MatchParent
@@ -46,6 +48,10 @@ import com.arsvechkarev.vault.views.MaterialProgressBar
 import com.arsvechkarev.vault.views.behaviors.HeaderBehavior
 import com.arsvechkarev.vault.views.behaviors.ScrollingRecyclerBehavior
 import com.arsvechkarev.vault.views.behaviors.ViewUnderHeaderBehavior
+import com.arsvechkarev.vault.views.dialogs.InfoDialog.Companion.InfoDialog
+import com.arsvechkarev.vault.views.dialogs.InfoDialog.Companion.infoDialog
+import com.arsvechkarev.vault.views.dialogs.LoadingDialog
+import com.arsvechkarev.vault.views.dialogs.loadingDialog
 
 class PasswordsListScreen : Screen(), PasswordsListView {
   
@@ -93,12 +99,17 @@ class PasswordsListScreen : Screen(), PasswordsListView {
         rippleBackground(Colors.Ripple, Colors.Accent, FabSize)
         onClick { navigator.goToNewServiceScreen() }
       }
+      InfoDialog()
+      LoadingDialog()
     }
   }
   
-  private val adapter = PasswordsListAdapter(onItemClick = { passwordInfo ->
-    navigator.goToSavedServiceInfoScreen(passwordInfo)
-  })
+  private val adapter by lazy {
+    PasswordsListAdapter(
+      onItemClick = navigator::goToSavedServiceInfoScreen,
+      onItemLongClick = presenter::onLongClick
+    )
+  }
   
   private val presenter by moxyPresenter {
     PasswordsListPresenter(AndroidThreader, passwordsListRepository)
@@ -106,7 +117,7 @@ class PasswordsListScreen : Screen(), PasswordsListView {
   
   override fun onInit() {
     viewAs<RecyclerView>().setupWith(adapter)
-    presenter.loadPasswords(masterPassword)
+    presenter.startLoadingPasswords()
   }
   
   override fun showLoading() {
@@ -122,8 +133,26 @@ class PasswordsListScreen : Screen(), PasswordsListView {
     adapter.changeListWithoutAnimation(list)
   }
   
-  override fun showEnterServiceNameDialog() {
-    navigator.goToNewServiceScreen()
+  override fun showDeleteDialog(serviceInfo: ServiceInfo) {
+    val questionPrefixLength = getString(R.string.text_delete_service_question_prefix).length
+    val questionString = getString(R.string.text_delete_service_question, serviceInfo.name)
+    val stringBuilder = SpannableString(questionString)
+    stringBuilder.setSpan(TypefaceSpan(Fonts.SegoeUiBold), questionPrefixLength + 1,
+      questionString.length - 1, 0)
+    infoDialog.showWithDeleteAndCancelOption(
+      R.string.text_delete_service, stringBuilder,
+      onDeleteClicked = { presenter.deleteService(serviceInfo) }
+    )
+  }
+  
+  override fun showLoadingDeletingService() {
+    infoDialog.hide()
+    loadingDialog.show()
+  }
+  
+  override fun showDeletedService(serviceInfo: ServiceInfo) {
+    adapter.removeItem(serviceInfo)
+    loadingDialog.hide()
   }
   
   private fun showView(layout: View) {

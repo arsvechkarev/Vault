@@ -168,7 +168,7 @@ class CreatingServiceScreen : Screen(), CreatingServiceView {
   }
   
   override fun showDialogSavePassword() {
-    infoDialog().show(
+    infoDialog.showWithOkOption(
       R.string.text_saving_password,
       R.string.text_do_you_want_to_save_password,
       R.string.text_yes,
@@ -183,7 +183,7 @@ class CreatingServiceScreen : Screen(), CreatingServiceView {
   }
   
   override fun hideSavePasswordDialog() {
-    infoDialog().hide()
+    infoDialog.hide()
   }
   
   override fun showIconFromResources(icon: Drawable) {

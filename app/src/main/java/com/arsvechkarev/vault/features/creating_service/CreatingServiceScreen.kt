@@ -54,6 +54,7 @@ class CreatingServiceScreen : Screen(), CreatingServiceView {
     RootConstraintLayout {
       HorizontalLayout(MatchParent, WrapContent) {
         id(R.id.creating_service_toolbar)
+        margins(top = StatusBarHeight)
         constraints {
           topToTopOf(parent)
         }
@@ -148,10 +149,6 @@ class CreatingServiceScreen : Screen(), CreatingServiceView {
   
   override fun showServiceNameCannotBeEmpty() {
     textView(TextError).text(R.string.text_service_name_cannot_be_empty)
-  }
-  
-  override fun showServiceNameAlreadyExists() {
-    textView(TextError).text(getString(R.string.text_service_already_exists1))
   }
   
   override fun showPasswordCreatingDialog() {

@@ -20,5 +20,5 @@
   <color name="dark_password_very_strong">#069A15</color>
   <color name="dark_disabled">@color/dark_divider</color>
   <color name="dark_divider">#AFAFAF</color>
-  <color name="dark_shadow">#61000000</color>
+  <color name="dark_shadow">#9A000000</color>
 </resources>

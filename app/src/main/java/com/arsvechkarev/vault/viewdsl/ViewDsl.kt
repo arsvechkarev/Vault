@@ -5,13 +5,14 @@ import android.graphics.drawable.GradientDrawable
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup.MarginLayoutParams
+import android.widget.EditText
 import android.widget.FrameLayout
+import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.annotation.ColorInt
 import androidx.annotation.DimenRes
 import androidx.annotation.DrawableRes
-import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.constraintlayout.widget.ConstraintSet
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 
 operator fun View.contains(event: MotionEvent): Boolean {
@@ -246,15 +247,10 @@ inline fun <reified T : CoordinatorLayout.Behavior<*>> View.hasBehavior(): Boole
 }
 
 @Suppress("UNCHECKED_CAST")
-inline fun <reified T : View> View.childViewAs(tag: Any = T::class.java.name): T {
-  return findViewWithTag(tag)
-}
+inline fun <reified T : View> View.viewAs(tag: Any = T::class.java.name): T = findViewWithTag(tag)
 
-fun View.connect(startSide: Int, endSide: Int, id: Int) {
-  val constraintSet = ConstraintSet()
-  constraintSet.connect(this.id, startSide, id, endSide)
-  constraintSet.applyTo(parent as ConstraintLayout)
-}
+fun View.textView(tag: Any): TextView = findViewWithTag(tag)
 
-fun View.topToTopOf(id: Int) {
-}
+fun View.editText(tag: Any): EditText = findViewWithTag(tag)
+
+fun View.imageView(tag: Any): ImageView = findViewWithTag(tag)

@@ -8,7 +8,6 @@ import android.view.Gravity.END
 import android.view.ViewGroup
 import android.view.WindowManager
 import android.view.WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE
-import android.widget.EditText
 import android.widget.FrameLayout
 import android.widget.SeekBar
 import android.widget.TextView
@@ -46,11 +45,11 @@ import com.arsvechkarev.vault.viewbuilding.Styles.ClickableTextView
 import com.arsvechkarev.vault.viewbuilding.TextSizes
 import com.arsvechkarev.vault.viewdsl.Size.Companion.MatchParent
 import com.arsvechkarev.vault.viewdsl.Size.Companion.WrapContent
-import com.arsvechkarev.vault.viewdsl.childViewAs
 import com.arsvechkarev.vault.viewdsl.circleRippleBackground
 import com.arsvechkarev.vault.viewdsl.classNameTag
 import com.arsvechkarev.vault.viewdsl.drawablePadding
 import com.arsvechkarev.vault.viewdsl.drawables
+import com.arsvechkarev.vault.viewdsl.editText
 import com.arsvechkarev.vault.viewdsl.gravity
 import com.arsvechkarev.vault.viewdsl.image
 import com.arsvechkarev.vault.viewdsl.layoutGravity
@@ -67,6 +66,8 @@ import com.arsvechkarev.vault.viewdsl.tag
 import com.arsvechkarev.vault.viewdsl.text
 import com.arsvechkarev.vault.viewdsl.textColor
 import com.arsvechkarev.vault.viewdsl.textSize
+import com.arsvechkarev.vault.viewdsl.textView
+import com.arsvechkarev.vault.viewdsl.viewAs
 import com.arsvechkarev.vault.viewdsl.withViewBuilder
 import com.arsvechkarev.vault.views.CheckmarkAndTextViewGroup
 import com.arsvechkarev.vault.views.CheckmarkAndTextViewGroup.Companion.CheckmarkAndTextViewGroup
@@ -86,12 +87,12 @@ class PasswordEditingDialog(
         onShown = { context.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING) }
         onHide = {
           context.setSoftInputMode(SOFT_INPUT_ADJUST_RESIZE)
-          context.hideKeyboard(childViewAs(DialogPasswordEditText))
+          context.hideKeyboard(viewAs(DialogPasswordEditText))
         }
         FrameLayout(MatchParent, MatchParent) {
           VerticalLayout(MatchParent, MatchParent) {
             FrameLayout(MatchParent, WrapContent) {
-              margins(top = MarginSmall)
+              margins(top = MarginSmall + StatusBarHeight)
               TextView(WrapContent, WrapContent, style = BoldTextView) {
                 tag(DialogPasswordTitle)
                 textSize(TextSizes.H1)
@@ -144,6 +145,7 @@ class PasswordEditingDialog(
               text(context.getString(R.string.text_password_length, DEFAULT_PASSWORD_LENGTH))
             }
             child<SeekBar>(MatchParent, WrapContent) {
+              classNameTag()
               marginHorizontal(MarginBig)
               marginVertical(MarginDefault)
               max = MAX_PASSWORD_LENGTH - MIN_PASSWORD_LENGTH
@@ -179,45 +181,47 @@ class PasswordEditingDialog(
   private val passwordTextWatcher = object : BaseTextWatcher {
     
     override fun onTextChange(text: String) {
-      childViewAs<TextView>(DialogPasswordErrorText).text("")
+      viewAs<TextView>(DialogPasswordErrorText).text("")
       presenter.onPasswordChanged(text)
     }
   }
   
   fun initiatePasswordCreation(onSavePasswordClick: (String) -> Unit) {
     this.onSavePasswordClick = onSavePasswordClick
-    childViewAs<TextView>(DialogPasswordTitle).text(R.string.text_password)
-    childViewAs<SimpleDialog>(DialogPassword).show()
+    viewAs<TextView>(DialogPasswordTitle).text(R.string.text_password)
+    viewAs<SeekBar>().progress = DEFAULT_PASSWORD_LENGTH - MIN_PASSWORD_LENGTH
+    viewAs<SimpleDialog>(DialogPassword).show()
     presenter.showInitialGeneratedPassword()
   }
   
   fun initiatePasswordEditing(currentPassword: String, onSavePasswordClick: (String) -> Unit) {
     this.onSavePasswordClick = onSavePasswordClick
-    childViewAs<TextView>(DialogPasswordTitle).text(R.string.text_edit_password)
-    childViewAs<EditText>(DialogPasswordEditText).text(currentPassword)
-    childViewAs<SimpleDialog>(DialogPassword).show()
+    textView(DialogPasswordTitle).text(R.string.text_edit_password)
+    editText(DialogPasswordEditText).text(currentPassword)
+    viewAs<SeekBar>().progress = currentPassword.length - MIN_PASSWORD_LENGTH
+    viewAs<SimpleDialog>(DialogPassword).show()
     presenter.onPasswordChanged(currentPassword)
   }
   
   fun hide() {
-    childViewAs<SimpleDialog>(DialogPassword).hide()
+    viewAs<SimpleDialog>(DialogPassword).hide()
   }
   
   override fun onAttachedToWindow() {
     super.onAttachedToWindow()
     presenter.attachView(this)
-    childViewAs<EditText>(DialogPasswordEditText).addTextChangedListener(passwordTextWatcher)
+    editText(DialogPasswordEditText).addTextChangedListener(passwordTextWatcher)
   }
   
   override fun onDetachedFromWindow() {
     super.onDetachedFromWindow()
     presenter.detachView()
-    childViewAs<EditText>(DialogPasswordEditText).removeTextChangedListener(passwordTextWatcher)
+    editText(DialogPasswordEditText).removeTextChangedListener(passwordTextWatcher)
   }
   
   override fun showChangePasswordLength(progress: Int) {
     val text = context.getString(R.string.text_password_length, progress)
-    childViewAs<TextView>(DialogPasswordTextLength).text(text)
+    textView(DialogPasswordTextLength).text(text)
   }
   
   override fun showPasswordStrength(strength: PasswordStrength?) {
@@ -227,34 +231,34 @@ class PasswordEditingDialog(
       STRONG -> R.string.text_strong
       VERY_STRONG -> R.string.text_secure
     }
-    childViewAs<PasswordStrengthMeterWithText>().setText(textResId)
-    childViewAs<PasswordStrengthMeterWithText>().setStrength(strength ?: WEAK)
+    viewAs<PasswordStrengthMeterWithText>().setText(textResId)
+    viewAs<PasswordStrengthMeterWithText>().setStrength(strength ?: WEAK)
   }
   
   override fun showPasswordCharacteristics(characteristics: Collection<PasswordCharacteristics>) {
-    val checkmark: (Int) -> CheckmarkAndTextViewGroup = { textResId -> childViewAs(textResId) }
+    val checkmark: (Int) -> CheckmarkAndTextViewGroup = { textResId -> viewAs(textResId) }
     checkmark(text_uppercase_symbols).isChecked = characteristics.contains(UPPERCASE_SYMBOLS)
     checkmark(text_numbers).isChecked = characteristics.contains(NUMBERS)
     checkmark(text_special_symbols).isChecked = characteristics.contains(SPECIAL_SYMBOLS)
   }
   
   override fun showGeneratedPassword(password: String) {
-    context.hideKeyboard(childViewAs(DialogPasswordEditText))
-    childViewAs<EditText>(DialogPasswordEditText).clearFocus()
-    childViewAs<EditText>(DialogPasswordEditText).text(password)
+    context.hideKeyboard(viewAs(DialogPasswordEditText))
+    editText(DialogPasswordEditText).clearFocus()
+    editText(DialogPasswordEditText).text(password)
   }
   
   override fun showPasswordIsEmpty() {
-    childViewAs<TextView>(DialogPasswordErrorText).text(R.string.text_password_cannot_be_empty)
+    textView(DialogPasswordErrorText).text(R.string.text_password_cannot_be_empty)
   }
   
   override fun showPasswordIsTooWeak() {
-    childViewAs<TextView>(DialogPasswordErrorText).text(R.string.text_password_is_too_weak)
+    textView(DialogPasswordErrorText).text(R.string.text_password_is_too_weak)
   }
   
   override fun showPasswordIsTooShort() {
     val text = context.getString(R.string.text_password_min_length, MIN_PASSWORD_LENGTH)
-    childViewAs<TextView>(DialogPasswordErrorText).text(text)
+    textView(DialogPasswordErrorText).text(text)
   }
   
   override fun showSavePasswordClicked(password: String) {

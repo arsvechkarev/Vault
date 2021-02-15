@@ -13,7 +13,7 @@ import com.arsvechkarev.vault.views.SimpleDialog
 
 const val DialogProgressBar = "DialogProgressBar"
 
-fun Screen.loadingDialog() = viewAs<SimpleDialog>(DialogProgressBar)
+val Screen.loadingDialog get() = viewAs<SimpleDialog>(DialogProgressBar)
 
 fun ViewGroup.LoadingDialog() = withViewBuilder {
   addView {

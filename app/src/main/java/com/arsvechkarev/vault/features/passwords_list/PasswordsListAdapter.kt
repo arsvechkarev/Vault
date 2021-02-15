@@ -15,7 +15,7 @@ import com.arsvechkarev.vault.viewbuilding.Dimens.MarginSmall
 import com.arsvechkarev.vault.viewbuilding.Styles.BoldTextView
 import com.arsvechkarev.vault.viewdsl.Size.Companion.MatchParent
 import com.arsvechkarev.vault.viewdsl.Size.Companion.WrapContent
-import com.arsvechkarev.vault.viewdsl.childViewAs
+import com.arsvechkarev.vault.viewdsl.viewAs
 import com.arsvechkarev.vault.viewdsl.image
 import com.arsvechkarev.vault.viewdsl.layoutGravity
 import com.arsvechkarev.vault.viewdsl.margins
@@ -55,12 +55,12 @@ class PasswordsListAdapter(
         onBind {
           val icon = getIconForServiceName(item.name)
           if (icon != null) {
-            itemView.childViewAs<ImageView>(ItemServiceInfoImage).image(icon)
+            itemView.viewAs<ImageView>(ItemServiceInfoImage).image(icon)
           } else {
             val letter = item.name[0].toString()
-            itemView.childViewAs<ImageView>(ItemServiceInfoImage).setLetterDrawable(letter)
+            itemView.viewAs<ImageView>(ItemServiceInfoImage).setLetterDrawable(letter)
           }
-          itemView.childViewAs<TextView>(ItemServiceInfoTextServiceName).text(item.name)
+          itemView.viewAs<TextView>(ItemServiceInfoTextServiceName).text(item.name)
         }
       }
     )

@@ -1,22 +1,22 @@
-package com.arsvechkarev.vault.features.initial_screen
+package com.arsvechkarev.vault.features.creating_master_password
 
 import com.arsvechkarev.vault.core.BasePresenter
 import com.arsvechkarev.vault.core.Threader
 import com.arsvechkarev.vault.features.common.UserAuthSaver
 import com.arsvechkarev.vault.core.extensions.assertThat
-import com.arsvechkarev.vault.features.initial_screen.StartScreenState.ENTERING_PASSWORD
-import com.arsvechkarev.vault.features.initial_screen.StartScreenState.REPEATING_PASSWORD
+import com.arsvechkarev.vault.features.creating_master_password.CreateMasterPasswordScreenState.ENTERING_PASSWORD
+import com.arsvechkarev.vault.features.creating_master_password.CreateMasterPasswordScreenState.REPEATING_PASSWORD
 import com.arsvechkarev.vault.cryptography.MasterPasswordChecker
 import com.arsvechkarev.vault.cryptography.MasterPasswordHolder
 import com.arsvechkarev.vault.cryptography.PasswordStatus.OK
 import com.arsvechkarev.vault.cryptography.PasswordChecker
 
-class StartPresenter(
+class CreateMasterPasswordPresenter(
   threader: Threader,
   private val passwordChecker: PasswordChecker,
   private val masterPasswordChecker: MasterPasswordChecker,
   private val userAuthSaver: UserAuthSaver
-) : BasePresenter<StartView>(threader) {
+) : BasePresenter<CreateMasterPasswordView>(threader) {
   
   private var state = ENTERING_PASSWORD
   private var previouslyEnteredPassword: String = ""

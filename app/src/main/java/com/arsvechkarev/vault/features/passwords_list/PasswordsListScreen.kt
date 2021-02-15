@@ -53,7 +53,8 @@ class PasswordsListScreen : Screen(), PasswordsListView {
     val viewUnderHeaderBehavior = ViewUnderHeaderBehavior()
     RootCoordinatorLayout {
       TextView(MatchParent, WrapContent, style = BoldTextView) {
-        paddings(start = MarginMedium, top = MarginDefault, bottom = MarginSmall)
+        paddings(top = MarginDefault + StatusBarHeight, bottom = MarginDefault,
+          start = MarginMedium)
         textSize(TextSizes.H0)
         behavior(HeaderBehavior())
         text(getString(R.string.text_passwords))

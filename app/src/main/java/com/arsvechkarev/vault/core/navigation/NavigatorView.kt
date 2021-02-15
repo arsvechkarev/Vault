@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.view.WindowInsets
 import android.widget.FrameLayout
-import com.arsvechkarev.core.navigation.Options
 import com.arsvechkarev.vault.core.extensions.ifNotNull
 import com.arsvechkarev.vault.viewdsl.DURATION_SHORT
 import com.arsvechkarev.vault.viewdsl.animateGone
@@ -40,7 +39,12 @@ class NavigatorView(context: Context) : FrameLayout(context) {
       screens.clear()
       removeAllViews()
     }
-    val screen = getOrCreateScreen(screenClass, options)
+    val screen = getOrCreateScreen(screenClass)
+    if (screen.metadata._context == null) {
+      screen.metadata._context = context
+    }
+    screen.metadata._arguments = options.arguments
+    screen.metadata.removeWhenBackClicked = options.removeWhenBackClicked
     val view = getOrBuildScreenView(screen)
     view.invisible() // Make view invisible so that we can animate it later
     _currentScreen.ifNotNull {
@@ -82,7 +86,7 @@ class NavigatorView(context: Context) : FrameLayout(context) {
       return false
     }
     hideScreen(lastScreen, animateSlideToRight = true)
-    if (lastScreen.metadata.removeOnExit) {
+    if (lastScreen.metadata.removeWhenBackClicked) {
       lastScreen.view.ifNotNull { view ->
         view.apply(screenHidingAnimation)
         postDelayed({ performRemoveView(view) }, (ANIMATION_DURATION * 1.2f).toLong())
@@ -113,16 +117,12 @@ class NavigatorView(context: Context) : FrameLayout(context) {
   }
   
   private fun getOrCreateScreen(
-    screenClass: KClass<out Screen>,
-    options: Options
+    screenClass: KClass<out Screen>
   ) = screenClassesToScreens[screenClass.java.name] ?: run {
     val constructor = screenClass.java.getConstructor()
     val instance = constructor.newInstance()
     val className = instance::class.java.name
     screenClassesToScreens[className] = instance
-    instance.metadata._context = context
-    instance.metadata._arguments = options.arguments
-    instance.metadata.removeOnExit = options.removeOnExit
     instance
   }
   
@@ -142,7 +142,11 @@ class NavigatorView(context: Context) : FrameLayout(context) {
       screen.view?.apply(screenReappearanceAnimation)
     }
     screen.onAppearedOnScreenDelegate()
-    screen.onAppearedOnScreen()
+    if (screen.metadata._arguments != null) {
+      screen.onAppearedOnScreen(screen.metadata._arguments!!)
+    } else {
+      screen.onAppearedOnScreen()
+    }
     checkForOrientation(screen, context.resources.configuration)
   }
   

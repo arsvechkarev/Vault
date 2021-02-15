@@ -1,4 +1,4 @@
-@file:Suppress("ObjectPropertyName")
+@file:Suppress("ObjectPropertyName", "StaticFieldLeak")
 
 package com.arsvechkarev.vault.viewdsl
 

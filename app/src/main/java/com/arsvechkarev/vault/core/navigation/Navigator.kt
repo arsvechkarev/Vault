@@ -13,7 +13,5 @@ interface Navigator {
   
   fun goToSavedServiceInfoScreen(serviceInfo: ServiceInfo)
   
-  fun showNewServiceSaved()
-  
   fun popCurrentScreen()
 }

@@ -58,6 +58,7 @@ class InfoScreen : Screen(), InfoView {
     RootCoordinatorLayout {
       ScrollableVerticalLayout {
         gravity(CENTER_HORIZONTAL)
+        margins(top = StatusBarHeight)
         ImageView(WrapContent, WrapContent, style = ImageBack) {
           layoutGravity(NO_GRAVITY)
           margins(top = ImageBackMargin, start = ImageBackMargin)
@@ -80,7 +81,6 @@ class InfoScreen : Screen(), InfoView {
           tag(EditableTextInfoServiceName)
           apply(editableCommonBlock)
           whenPresenterIsReady { onEditTextChanged(presenter::onServiceNameChanged) }
-          whenPresenterIsReady { onSaveClickAllowed = presenter::onServiceNameSavingAllowed }
           whenPresenterIsReady { onTextSaved = presenter::saveServiceName }
         }
         View(MatchParent, IntSize(DividerHeight)) {
@@ -139,7 +139,9 @@ class InfoScreen : Screen(), InfoView {
         onCloseClicked = { presenter.closePasswordScreen() }
       }
       LoadingDialog()
-      InfoDialog()
+      InfoDialog {
+        onHide = { presenter.onHideAcceptPasswordDialog() }
+      }
     }
   }
   
@@ -147,9 +149,9 @@ class InfoScreen : Screen(), InfoView {
     InfoPresenter(passwordsListRepository, AndroidThreader)
   }
   
-  override fun onInit(arguments: Bundle) {
-    val mode = arguments.getParcelable<ServiceInfo>(SERVICE_INFO) as ServiceInfo
-    presenter.performSetup(mode)
+  override fun onAppearedOnScreen(arguments: Bundle) {
+    val serviceInfo = arguments.getParcelable<ServiceInfo>(SERVICE_INFO) as ServiceInfo
+    presenter.performSetup(serviceInfo)
   }
   
   override fun showLetterInCircleIcon(letter: String) {
@@ -179,7 +181,7 @@ class InfoScreen : Screen(), InfoView {
   override fun showErrorSavingServiceName(errorText: String) {
     infoDialog().show(
       R.string.text_error,
-      R.string.text_service_already_exists2,
+      R.string.text_service_already_exists,
       R.string.text_ok
     )
   }
@@ -204,11 +206,12 @@ class InfoScreen : Screen(), InfoView {
   }
   
   override fun showLoading() {
-    loadingDialog().show()
+    loadingDialog.onShadowFractionChangedListener = null
+    loadingDialog.show()
   }
   
   override fun showFinishLoading() {
-    loadingDialog().hide()
+    loadingDialog.hide()
   }
   
   override fun showPasswordEditingDialog(password: String) {
@@ -232,7 +235,7 @@ class InfoScreen : Screen(), InfoView {
     )
   }
   
-  override fun hideAcceptPasswordDialog() {
+  override fun hideSavePasswordDialog() {
     infoDialog().hide()
   }
   

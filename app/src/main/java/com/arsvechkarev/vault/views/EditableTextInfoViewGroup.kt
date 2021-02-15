@@ -54,7 +54,6 @@ class EditableTextInfoViewGroup(context: Context) : ViewGroup(context) {
   var transferTextToEditTextWhenSwitching = true
   var allowSavingWhenEmpty = false
   var onEditClickAllowed: () -> Boolean = { true }
-  var onSaveClickAllowed: (String) -> Boolean = { true }
   var onSwitchToEditMode: () -> Unit = {}
   var onTextSaved: (String) -> Unit = {}
   
@@ -120,7 +119,6 @@ class EditableTextInfoViewGroup(context: Context) : ViewGroup(context) {
     if (mode == SHOWING) return
     val text = editText.text.toString().trim()
     if (editText.text.isBlank() && !allowSavingWhenEmpty) return
-    if (!onSaveClickAllowed(text)) return
     onTextSaved(text)
     mode = SHOWING
     editText.invisible()

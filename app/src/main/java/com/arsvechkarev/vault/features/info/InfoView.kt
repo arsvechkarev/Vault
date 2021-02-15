@@ -38,5 +38,5 @@ interface InfoView : MvpView {
   
   fun showAcceptPasswordDialog()
   
-  fun hideAcceptPasswordDialog()
+  fun hideSavePasswordDialog()
 }

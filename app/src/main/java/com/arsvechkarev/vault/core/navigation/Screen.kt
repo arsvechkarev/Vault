@@ -79,6 +79,8 @@ abstract class Screen : MvpDelegateHolder, MvpView {
   
   open fun onAppearedOnScreen() = Unit
   
+  open fun onAppearedOnScreen(arguments: Bundle) = Unit
+  
   open fun onNetworkAvailable() = Unit
   
   open fun onOrientationBecamePortrait() = Unit

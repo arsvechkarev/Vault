@@ -40,13 +40,6 @@ class CreatingServicePresenter(
       return
     }
     state = PASSWORD_SCREEN
-    val passwords = passwordsListRepository.getAllServicesInfo(masterPassword)
-    for (serviceInfo in passwords) {
-      if (serviceInfo.name == serviceName) {
-        viewState.showServiceNameAlreadyExists()
-        return
-      }
-    }
     this.serviceName = serviceName.trim()
     this.email = email.trim()
     viewState.showPasswordCreatingDialog()

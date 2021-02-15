@@ -1,6 +1,7 @@
-package com.arsvechkarev.vault.features.initial_screen
+package com.arsvechkarev.vault.features.creating_master_password
 
 import android.view.Gravity
+import android.view.Gravity.CENTER
 import android.view.animation.AnimationUtils
 import android.widget.ViewSwitcher
 import com.arsvechkarev.vault.R
@@ -41,7 +42,6 @@ import com.arsvechkarev.vault.viewdsl.animateVisible
 import com.arsvechkarev.vault.viewdsl.classNameTag
 import com.arsvechkarev.vault.viewdsl.font
 import com.arsvechkarev.vault.viewdsl.gravity
-import com.arsvechkarev.vault.viewdsl.id
 import com.arsvechkarev.vault.viewdsl.invisible
 import com.arsvechkarev.vault.viewdsl.layoutGravity
 import com.arsvechkarev.vault.viewdsl.marginHorizontal
@@ -57,35 +57,34 @@ import com.arsvechkarev.vault.views.PasswordStrengthMeter
 import com.arsvechkarev.vault.views.dialogs.LoadingDialog
 import com.arsvechkarev.vault.views.dialogs.loadingDialog
 
-class StartScreen : Screen(), StartView {
+class CreateMasterPasswordScreen : Screen(), CreateMasterPasswordView {
   
   override fun buildLayout() = withViewBuilder {
     RootCoordinatorLayout(MatchParent, MatchParent) {
       HorizontalLayout(MatchParent, WrapContent) {
         tag(RepeatPasswordLayout)
         invisible()
-        margins(top = MarginDefault, start = MarginDefault, end = MarginDefault)
+        margins(top = MarginDefault + StatusBarHeight, start = MarginDefault, end = MarginDefault)
         ImageView(WrapContent, WrapContent, style = ImageBack) {
           onClick { presenter.onBackButtonClick() }
         }
         TextView(WrapContent, WrapContent, style = BoldTextView) {
-          layoutGravity(Gravity.CENTER)
+          layoutGravity(CENTER)
           text(R.string.text_repeat_password)
           margins(start = MarginMedium, end = MarginMedium)
-          gravity(Gravity.CENTER)
+          gravity(CENTER)
           textSize(TextSizes.H1)
         }
       }
       TextView(MatchParent, WrapContent, style = BoldTextView) {
-        id(R.id.start_screen_create_password)
         tag(TextTitle)
         text(R.string.text_create_master_password)
-        margins(start = MarginDefault, end = MarginDefault, top = MarginMedium)
-        gravity(Gravity.CENTER)
+        margins(top = MarginDefault + StatusBarHeight, start = MarginDefault, end = MarginDefault)
+        gravity(CENTER)
         textSize(TextSizes.H1)
       }
       VerticalLayout(MatchParent, WrapContent) {
-        layoutGravity(Gravity.CENTER)
+        layoutGravity(CENTER)
         TextView(WrapContent, WrapContent, style = BaseTextView) {
           tag(TextPasswordStrength)
           margins(start = MarginDefault)
@@ -125,7 +124,6 @@ class StartScreen : Screen(), StartView {
         }
       }
       TextView(MatchParent, WrapContent, style = ClickableButton()) {
-        id(R.id.start_screen_continue)
         tag(TextContinue)
         layoutGravity(Gravity.BOTTOM)
         text(R.string.text_continue)
@@ -155,7 +153,7 @@ class StartScreen : Screen(), StartView {
   }
   
   private val presenter by moxyPresenter {
-    StartPresenter(AndroidThreader, passwordChecker, masterPasswordChecker,
+    CreateMasterPasswordPresenter(AndroidThreader, passwordChecker, masterPasswordChecker,
       userAuthSaver)
   }
   
@@ -237,7 +235,7 @@ class StartScreen : Screen(), StartView {
   
   override fun showFinishingAuthorization() {
     hideKeyboard()
-    loadingDialog().show()
+    loadingDialog.show()
   }
   
   override fun goToPasswordsList() {

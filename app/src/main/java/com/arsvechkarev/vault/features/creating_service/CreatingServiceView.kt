@@ -10,8 +10,6 @@ interface CreatingServiceView : MvpView {
   
   fun showServiceNameCannotBeEmpty()
   
-  fun showServiceNameAlreadyExists()
-  
   fun showPasswordCreatingDialog()
   
   fun showLoadingCreation()

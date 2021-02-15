@@ -19,7 +19,6 @@ import com.arsvechkarev.vault.viewbuilding.TextSizes
 import com.arsvechkarev.vault.viewdsl.Size.Companion.MatchParent
 import com.arsvechkarev.vault.viewdsl.Size.Companion.WrapContent
 import com.arsvechkarev.vault.viewdsl.backgroundRoundRect
-import com.arsvechkarev.vault.viewdsl.childViewAs
 import com.arsvechkarev.vault.viewdsl.classNameTag
 import com.arsvechkarev.vault.viewdsl.layoutGravity
 import com.arsvechkarev.vault.viewdsl.marginHorizontal
@@ -31,6 +30,7 @@ import com.arsvechkarev.vault.viewdsl.tag
 import com.arsvechkarev.vault.viewdsl.text
 import com.arsvechkarev.vault.viewdsl.textColor
 import com.arsvechkarev.vault.viewdsl.textSize
+import com.arsvechkarev.vault.viewdsl.viewAs
 import com.arsvechkarev.vault.viewdsl.withViewBuilder
 import com.arsvechkarev.vault.views.SimpleDialog
 
@@ -48,6 +48,7 @@ class InfoDialog(
     withViewBuilder {
       child<SimpleDialog>(MatchParent, MatchParent) {
         tag(dialogInfo)
+        onHide = { this@InfoDialog.onHide() }
         VerticalLayout(WrapContent, WrapContent) {
           layoutGravity(Gravity.CENTER)
           padding(MarginDefault)
@@ -74,28 +75,30 @@ class InfoDialog(
     }
   }
   
+  var onHide = {}
+  
   fun show(
     titleRes: Int,
     messageRes: Int,
     textOkRes: Int,
-    onOkClicked: () -> Unit = { this@InfoDialog.childViewAs<SimpleDialog>(dialogInfo).hide() }
+    onOkClicked: () -> Unit = { this@InfoDialog.viewAs<SimpleDialog>(dialogInfo).hide() }
   ) {
-    childViewAs<SimpleDialog>(dialogInfo).show()
-    childViewAs<TextView>(dialogInfoTitle).text(titleRes)
-    childViewAs<TextView>(dialogInfoMessage).text(messageRes)
-    childViewAs<TextView>(dialogInfoTextOk).text(textOkRes)
-    childViewAs<TextView>(dialogInfoTextOk).onClick(onOkClicked)
+    viewAs<SimpleDialog>(dialogInfo).show()
+    viewAs<TextView>(dialogInfoTitle).text(titleRes)
+    viewAs<TextView>(dialogInfoMessage).text(messageRes)
+    viewAs<TextView>(dialogInfoTextOk).text(textOkRes)
+    viewAs<TextView>(dialogInfoTextOk).onClick(onOkClicked)
   }
   
   fun hide() {
-    childViewAs<SimpleDialog>(dialogInfo).hide()
+    viewAs<SimpleDialog>(dialogInfo).hide()
   }
   
   companion object {
     
     fun Screen.infoDialog() = viewAs<InfoDialog>()
     
-    fun ViewGroup.infoDialog() = childViewAs<InfoDialog>()
+    fun ViewGroup.infoDialog() = viewAs<InfoDialog>()
     
     fun ViewGroup.InfoDialog(tagPrefix: String = "", block: InfoDialog.() -> Unit = {}) = withViewBuilder {
       val infoDialog = InfoDialog(context, tagPrefix)

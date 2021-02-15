@@ -8,5 +8,5 @@ class ScreenMetadata {
   var _arguments: Bundle? = null
   var _view: View? = null
   var _context: Context? = null
-  var removeOnExit: Boolean = false
+  var removeWhenBackClicked: Boolean = false
 }

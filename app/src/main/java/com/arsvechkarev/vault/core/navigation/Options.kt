@@ -1,4 +1,4 @@
-package com.arsvechkarev.core.navigation
+package com.arsvechkarev.vault.core.navigation
 
 import android.os.Bundle
 
@@ -8,6 +8,6 @@ import android.os.Bundle
 class Options(
   val clearAllOtherScreens: Boolean = false,
   val arguments: Bundle? = null,
-  val removeOnExit: Boolean = false,
+  val removeWhenBackClicked: Boolean = false,
   val removeCurrentScreen: Boolean = false,
 )

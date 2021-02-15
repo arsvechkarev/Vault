@@ -13,6 +13,7 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import com.arsvechkarev.vault.R
+import com.arsvechkarev.vault.viewbuilding.Dimens.MarginSmall
 import com.arsvechkarev.vault.viewdsl.Ints.dp
 import com.arsvechkarev.vault.viewdsl.background
 import com.arsvechkarev.vault.viewdsl.circleRippleBackground
@@ -88,7 +89,7 @@ object Styles {
   val BaseEditText: EditText.() -> Unit = {
     font(Fonts.SegoeUi)
     textSize(TextSizes.H3)
-    paddingVertical(8.dp)
+    paddingVertical(MarginSmall)
     setSingleLine()
     inputType = InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD
   }

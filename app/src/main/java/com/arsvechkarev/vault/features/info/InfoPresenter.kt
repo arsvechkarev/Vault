@@ -22,6 +22,7 @@ class InfoPresenter(
   
   private var password: String = ""
   private var state = INITIAL
+  
   val isEditingNameOrEmailNow get() = state == EDITING_NAME_OR_EMAIL
   
   fun performSetup(serviceInfo: ServiceInfo) {
@@ -37,17 +38,6 @@ class InfoPresenter(
   fun onServiceNameChanged(text: String) {
     if (text.isBlank()) return
     updateServiceIcon(text)
-  }
-  
-  fun onServiceNameSavingAllowed(serviceName: String): Boolean {
-    if (serviceName == serviceInfo.name) return true
-    val servicesInfo = passwordsListRepository.getAllServicesInfo(masterPassword)
-    if (servicesInfo.find { it.name == serviceName } != null) {
-      state = ERROR_EDITING_NAME
-      viewState.showErrorSavingServiceName(serviceName)
-      return false
-    }
-    return true
   }
   
   fun saveServiceName(serviceName: String) {
@@ -102,6 +92,10 @@ class InfoPresenter(
       viewState.hidePasswordEditingDialog()
       return
     }
+    if (this.password.isEmpty()) {
+      // Password was cleared after user closed save password dialog
+      this.password = password
+    }
     this.password = password
     state = SAVE_PASSWORD_DIALOG
     viewState.showAcceptPasswordDialog()
@@ -110,7 +104,7 @@ class InfoPresenter(
   fun acceptPassword() {
     state = LOADING
     viewState.showLoading()
-    viewState.hideAcceptPasswordDialog()
+    viewState.hideSavePasswordDialog()
     serviceInfo = ServiceInfo(serviceInfo.id, serviceInfo.name, serviceInfo.email, password)
     onIoThread {
       passwordsListRepository.updateServiceInfo(masterPassword, serviceInfo)
@@ -128,6 +122,12 @@ class InfoPresenter(
     viewState.hidePasswordEditingDialog()
   }
   
+  fun onHideAcceptPasswordDialog() {
+    password = ""
+    state = PASSWORD_EDITING_DIALOG
+    viewState.hideSavePasswordDialog()
+  }
+  
   fun allowBackPress(): Boolean {
     return when (state) {
       INITIAL -> true
@@ -143,7 +143,7 @@ class InfoPresenter(
         false
       }
       SAVE_PASSWORD_DIALOG -> {
-        viewState.hideAcceptPasswordDialog()
+        viewState.hideSavePasswordDialog()
         state = PASSWORD_EDITING_DIALOG
         false
       }

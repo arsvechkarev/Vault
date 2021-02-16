@@ -18,17 +18,15 @@ interface InfoView : MvpView {
   
   fun showNoEmail()
   
-  fun hideErrorSavingServiceName()
-  
   fun setPassword(password: String)
   
   fun showPassword(password: String)
   
   fun hidePassword()
   
-  fun showLoading()
+  fun showDeleteDialog(serviceName: String)
   
-  fun showFinishLoading()
+  fun hideDeleteDialog()
   
   fun showPasswordEditingDialog(password: String)
   
@@ -37,4 +35,10 @@ interface InfoView : MvpView {
   fun showAcceptPasswordDialog()
   
   fun hideSavePasswordDialog()
+  
+  fun showLoading()
+  
+  fun showFinishLoading()
+  
+  fun showExit()
 }

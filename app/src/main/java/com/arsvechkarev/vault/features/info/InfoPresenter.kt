@@ -6,8 +6,8 @@ import com.arsvechkarev.vault.core.model.ServiceInfo
 import com.arsvechkarev.vault.cryptography.MasterPasswordHolder.masterPassword
 import com.arsvechkarev.vault.features.common.PasswordsListRepository
 import com.arsvechkarev.vault.features.common.getIconForServiceName
+import com.arsvechkarev.vault.features.info.InfoScreenState.DELETING_DIALOG
 import com.arsvechkarev.vault.features.info.InfoScreenState.EDITING_NAME_OR_EMAIL
-import com.arsvechkarev.vault.features.info.InfoScreenState.ERROR_EDITING_NAME
 import com.arsvechkarev.vault.features.info.InfoScreenState.INITIAL
 import com.arsvechkarev.vault.features.info.InfoScreenState.LOADING
 import com.arsvechkarev.vault.features.info.InfoScreenState.PASSWORD_EDITING_DIALOG
@@ -27,6 +27,7 @@ class InfoPresenter(
   
   fun performSetup(serviceInfo: ServiceInfo) {
     this.serviceInfo = serviceInfo
+    state = INITIAL
     password = serviceInfo.password
     updateServiceIcon(serviceInfo.name)
     viewState.showServiceName(serviceInfo.name)
@@ -81,6 +82,26 @@ class InfoPresenter(
     state = EDITING_NAME_OR_EMAIL
   }
   
+  fun onDeleteClicked() {
+    state = DELETING_DIALOG
+    viewState.showDeleteDialog(serviceInfo.name)
+  }
+  
+  fun onHideDeleteDialog() {
+    state = INITIAL
+    viewState.hideDeleteDialog()
+  }
+  
+  fun agreeToDeleteService() {
+    viewState.hideDeleteDialog()
+    viewState.showLoading()
+    onIoThread {
+      passwordsListRepository.deleteServiceInfo(masterPassword, serviceInfo)
+      state = INITIAL
+      updateViewState { showExit() }
+    }
+  }
+  
   fun onEditPasswordIconClicked() {
     state = PASSWORD_EDITING_DIALOG
     viewState.showPasswordEditingDialog(serviceInfo.password)
@@ -132,9 +153,9 @@ class InfoPresenter(
     return when (state) {
       INITIAL -> true
       LOADING, EDITING_NAME_OR_EMAIL -> false
-      ERROR_EDITING_NAME -> {
-        viewState.hideErrorSavingServiceName()
-        state = EDITING_NAME_OR_EMAIL
+      DELETING_DIALOG -> {
+        viewState.hideDeleteDialog()
+        state = INITIAL
         false
       }
       PASSWORD_EDITING_DIALOG -> {

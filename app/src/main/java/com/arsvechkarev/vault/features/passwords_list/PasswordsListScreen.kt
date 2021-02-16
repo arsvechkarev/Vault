@@ -1,6 +1,5 @@
 package com.arsvechkarev.vault.features.passwords_list
 
-import android.text.SpannableString
 import android.view.Gravity.BOTTOM
 import android.view.Gravity.CENTER
 import android.view.Gravity.END
@@ -9,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.arsvechkarev.vault.R
 import com.arsvechkarev.vault.core.AndroidThreader
 import com.arsvechkarev.vault.core.Singletons.passwordsListRepository
-import com.arsvechkarev.vault.core.TypefaceSpan
+import com.arsvechkarev.vault.core.extensions.getDeleteMessageText
 import com.arsvechkarev.vault.core.extensions.ifTrue
 import com.arsvechkarev.vault.core.extensions.moxyPresenter
 import com.arsvechkarev.vault.core.model.ServiceInfo
@@ -20,7 +19,6 @@ import com.arsvechkarev.vault.viewbuilding.Dimens.MarginDefault
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginMedium
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginSmall
 import com.arsvechkarev.vault.viewbuilding.Dimens.ProgressBarSizeBig
-import com.arsvechkarev.vault.viewbuilding.Fonts
 import com.arsvechkarev.vault.viewbuilding.Styles.BoldTextView
 import com.arsvechkarev.vault.viewbuilding.TextSizes
 import com.arsvechkarev.vault.viewdsl.Size.Companion.MatchParent
@@ -134,13 +132,8 @@ class PasswordsListScreen : Screen(), PasswordsListView {
   }
   
   override fun showDeleteDialog(serviceInfo: ServiceInfo) {
-    val questionPrefixLength = getString(R.string.text_delete_service_question_prefix).length
-    val questionString = getString(R.string.text_delete_service_question, serviceInfo.name)
-    val stringBuilder = SpannableString(questionString)
-    stringBuilder.setSpan(TypefaceSpan(Fonts.SegoeUiBold), questionPrefixLength + 1,
-      questionString.length - 1, 0)
     infoDialog.showWithDeleteAndCancelOption(
-      R.string.text_delete_service, stringBuilder,
+      R.string.text_delete_service, getDeleteMessageText(serviceInfo.name),
       onDeleteClicked = { presenter.deleteService(serviceInfo) }
     )
   }

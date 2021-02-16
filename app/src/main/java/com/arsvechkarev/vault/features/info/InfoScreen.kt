@@ -4,17 +4,19 @@ import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.Gravity.CENTER
 import android.view.Gravity.CENTER_HORIZONTAL
-import android.view.Gravity.NO_GRAVITY
+import android.view.Gravity.END
 import com.arsvechkarev.vault.R
 import com.arsvechkarev.vault.core.AndroidThreader
 import com.arsvechkarev.vault.core.Singletons.passwordCreatingPresenter
 import com.arsvechkarev.vault.core.Singletons.passwordsListRepository
+import com.arsvechkarev.vault.core.extensions.getDeleteMessageText
 import com.arsvechkarev.vault.core.extensions.moxyPresenter
 import com.arsvechkarev.vault.core.model.ServiceInfo
 import com.arsvechkarev.vault.core.navigation.Screen
 import com.arsvechkarev.vault.features.creating_password.PasswordEditingDialog.Companion.PasswordEditingDialog
 import com.arsvechkarev.vault.features.creating_password.PasswordEditingDialog.Companion.passwordEditingDialog
 import com.arsvechkarev.vault.viewbuilding.Colors
+import com.arsvechkarev.vault.viewbuilding.Dimens
 import com.arsvechkarev.vault.viewbuilding.Dimens.DividerHeight
 import com.arsvechkarev.vault.viewbuilding.Dimens.ImageBackMargin
 import com.arsvechkarev.vault.viewbuilding.Dimens.ImageServiceNameSize
@@ -32,6 +34,7 @@ import com.arsvechkarev.vault.viewdsl.Size.IntSize
 import com.arsvechkarev.vault.viewdsl.animateInvisible
 import com.arsvechkarev.vault.viewdsl.animateVisible
 import com.arsvechkarev.vault.viewdsl.backgroundColor
+import com.arsvechkarev.vault.viewdsl.circleRippleBackground
 import com.arsvechkarev.vault.viewdsl.classNameTag
 import com.arsvechkarev.vault.viewdsl.gravity
 import com.arsvechkarev.vault.viewdsl.image
@@ -40,6 +43,7 @@ import com.arsvechkarev.vault.viewdsl.layoutGravity
 import com.arsvechkarev.vault.viewdsl.marginHorizontal
 import com.arsvechkarev.vault.viewdsl.margins
 import com.arsvechkarev.vault.viewdsl.onClick
+import com.arsvechkarev.vault.viewdsl.padding
 import com.arsvechkarev.vault.viewdsl.tag
 import com.arsvechkarev.vault.viewdsl.text
 import com.arsvechkarev.vault.viewdsl.textColor
@@ -59,10 +63,18 @@ class InfoScreen : Screen(), InfoView {
       ScrollableVerticalLayout {
         gravity(CENTER_HORIZONTAL)
         margins(top = StatusBarHeight)
-        ImageView(WrapContent, WrapContent, style = ImageBack) {
-          layoutGravity(NO_GRAVITY)
-          margins(top = ImageBackMargin, start = ImageBackMargin)
-          onClick { navigator.popCurrentScreen() }
+        FrameLayout(MatchParent, WrapContent) {
+          margins(top = ImageBackMargin, start = ImageBackMargin, end = ImageBackMargin)
+          ImageView(WrapContent, WrapContent, style = ImageBack) {
+            onClick { navigator.popCurrentScreen() }
+          }
+          ImageView(WrapContent, WrapContent) {
+            image(R.drawable.ic_delete)
+            padding(Dimens.IconPadding)
+            circleRippleBackground()
+            layoutGravity(END)
+            onClick { presenter.onDeleteClicked() }
+          }
         }
         ImageView(ImageServiceNameSize, ImageServiceNameSize) {
           tag(ImageServiceName)
@@ -139,9 +151,7 @@ class InfoScreen : Screen(), InfoView {
         onCloseClicked = { presenter.closePasswordScreen() }
       }
       LoadingDialog()
-      InfoDialog {
-        onHide = { presenter.onHideAcceptPasswordDialog() }
-      }
+      InfoDialog()
     }
   }
   
@@ -178,10 +188,6 @@ class InfoScreen : Screen(), InfoView {
     editableEmail.transferTextToEditTextWhenSwitching = false
   }
   
-  override fun hideErrorSavingServiceName() {
-    infoDialog.hide()
-  }
-  
   override fun setPassword(password: String) {
     textView(TextPassword).text(password)
   }
@@ -197,13 +203,17 @@ class InfoScreen : Screen(), InfoView {
     textView(TextPasswordStub).animateVisible()
   }
   
-  override fun showLoading() {
-    loadingDialog.onShadowFractionChangedListener = null
-    loadingDialog.show()
+  override fun showDeleteDialog(serviceName: String) {
+    infoDialog.onHide = { presenter.onHideDeleteDialog() }
+    infoDialog.showWithDeleteAndCancelOption(
+      R.string.text_delete_service, getDeleteMessageText(serviceName),
+      onDeleteClicked = { presenter.agreeToDeleteService() }
+    )
   }
   
-  override fun showFinishLoading() {
-    loadingDialog.hide()
+  override fun hideDeleteDialog() {
+    infoDialog.onHide = {}
+    infoDialog.hide()
   }
   
   override fun showPasswordEditingDialog(password: String) {
@@ -217,6 +227,7 @@ class InfoScreen : Screen(), InfoView {
   }
   
   override fun showAcceptPasswordDialog() {
+    infoDialog.onHide = { presenter.onHideAcceptPasswordDialog() }
     infoDialog.showWithOkOption(
       R.string.text_saving_password,
       R.string.text_do_you_want_to_save_password,
@@ -228,7 +239,21 @@ class InfoScreen : Screen(), InfoView {
   }
   
   override fun hideSavePasswordDialog() {
+    infoDialog.onHide = {}
     infoDialog.hide()
+  }
+  
+  override fun showLoading() {
+    loadingDialog.show()
+  }
+  
+  override fun showFinishLoading() {
+    loadingDialog.hide()
+  }
+  
+  override fun showExit() {
+    loadingDialog.hide()
+    navigator.popCurrentScreen()
   }
   
   override fun allowBackPress(): Boolean {

@@ -58,7 +58,7 @@
   <string name="text_password_is_the_same">You did not changedPassword has not changed</string>
   <string name="text_do_you_want_to_save_password">Do you want to accept the password?</string>
   <string name="text_service_already_exists">Service with this name already exists</string>
-  <string name="text_delete_service">Delete password</string>
+  <string name="text_delete_service">Delete service</string>
   <string name="text_delete_service_question">Do you want to delete %1$s?</string>
   <string name="text_delete_service_question_prefix">Do you want to delete</string>
   <string name="text_cancel">CANCEL</string>

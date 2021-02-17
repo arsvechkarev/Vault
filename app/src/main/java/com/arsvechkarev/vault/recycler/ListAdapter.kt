@@ -39,7 +39,7 @@ abstract class ListAdapter(
   }
   
   fun changeListWithoutAnimation(list: List<DifferentiableItem>) {
-    data = list as MutableList<DifferentiableItem>
+    data = ArrayList(list)
     notifyDataSetChanged()
   }
   

@@ -25,7 +25,6 @@ import com.arsvechkarev.vault.viewdsl.layoutGravity
 import com.arsvechkarev.vault.viewdsl.marginHorizontal
 import com.arsvechkarev.vault.viewdsl.margins
 import com.arsvechkarev.vault.viewdsl.onClick
-import com.arsvechkarev.vault.viewdsl.padding
 import com.arsvechkarev.vault.viewdsl.size
 import com.arsvechkarev.vault.viewdsl.tag
 import com.arsvechkarev.vault.viewdsl.text
@@ -53,22 +52,22 @@ class InfoDialog(
         onHide = { this@InfoDialog.onHide() }
         VerticalLayout(WrapContent, WrapContent) {
           layoutGravity(Gravity.CENTER)
-          padding(MarginDefault)
           marginHorizontal(MarginBig)
           backgroundRoundRect(DefaultCornerRadius, Dialog)
           TextView(WrapContent, WrapContent, style = BoldTextView) {
+            margins(top = MarginDefault, start = MarginDefault)
             tag(dialogInfoTitle)
           }
           TextView(WrapContent, WrapContent, style = BaseTextView) {
             tag(dialogInfoMessage)
-            margins(top = MarginMedium)
+            margins(top = MarginMedium, start = MarginDefault, end = MarginDefault)
           }
           HorizontalLayout(WrapContent, WrapContent) {
             layoutGravity(Gravity.END)
-            margins(top = MarginMedium)
+            margins(top = MarginMedium, bottom = MarginDefault, start = MarginSmall,
+              end = MarginSmall)
             TextView(WrapContent, WrapContent, style = ClickableTextView()) {
               tag(dialogInfoText1)
-              margins(end = MarginSmall)
             }
             TextView(WrapContent, WrapContent, style = ClickableTextView()) {
               tag(dialogInfoText2)

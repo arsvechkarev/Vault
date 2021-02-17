@@ -38,7 +38,8 @@ class PasswordsListPresenter(
   fun deleteService(serviceInfo: ServiceInfo) {
     viewState.showLoadingDeletingService()
     onIoThread {
-      passwordsListRepository.deleteServiceInfo(masterPassword, serviceInfo)
+      passwordsListRepository.deleteServiceInfo(masterPassword, serviceInfo,
+        notifyListeners = false)
       updateViewState { showDeletedService(serviceInfo) }
     }
   }

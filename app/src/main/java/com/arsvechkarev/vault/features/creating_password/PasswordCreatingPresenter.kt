@@ -32,6 +32,8 @@ class PasswordCreatingPresenter(
   }
   
   fun showInitialGeneratedPassword() {
+    passwordLength = DEFAULT_PASSWORD_LENGTH
+    passwordCharacteristics.clear()
     onGeneratePasswordClicked()
   }
   

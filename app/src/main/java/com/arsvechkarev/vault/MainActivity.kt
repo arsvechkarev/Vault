@@ -57,7 +57,8 @@ class MainActivity : BaseActivity(), Navigator {
   }
   
   override fun goToNewServiceScreen() {
-    navigator.navigate(CreatingServiceScreen::class, options = Options(removeWhenBackClicked = true))
+    navigator.navigate(CreatingServiceScreen::class,
+      options = Options(removeWhenBackClicked = true))
   }
   
   override fun goToSavedServiceInfoScreen(serviceInfo: ServiceInfo) {

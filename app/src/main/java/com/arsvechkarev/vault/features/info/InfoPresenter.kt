@@ -96,7 +96,7 @@ class InfoPresenter(
     viewState.hideDeleteDialog()
     viewState.showLoading()
     onIoThread {
-      passwordsListRepository.deleteServiceInfo(masterPassword, serviceInfo)
+      passwordsListRepository.deleteServiceInfo(masterPassword, serviceInfo, notifyListeners = true)
       state = INITIAL
       updateViewState { showExit() }
     }

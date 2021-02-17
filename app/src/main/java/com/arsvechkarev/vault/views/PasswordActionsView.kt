@@ -1,6 +1,7 @@
 package com.arsvechkarev.vault.views
 
 import android.content.Context
+import android.view.MotionEvent
 import android.view.ViewGroup
 import com.arsvechkarev.vault.R
 import com.arsvechkarev.vault.viewbuilding.TextSizes
@@ -14,6 +15,7 @@ class PasswordActionsView(context: Context) : ViewGroup(context) {
   private var isPasswordShown = false
   
   var onTogglePassword: (isPasswordShown: Boolean) -> Unit = {}
+  var reactToClicks: () -> Boolean = { true }
   
   init {
     val buildMenuItem = { iconRes: Int, titleRes: Int ->
@@ -35,6 +37,14 @@ class PasswordActionsView(context: Context) : ViewGroup(context) {
         showHideView.setText(R.string.text_show)
       }
     }
+  }
+  
+  fun onCopyClick(block: () -> Unit) {
+    getChildAt(0).onClick(block)
+  }
+  
+  fun onOverlayClick(block: () -> Unit) {
+    getChildAt(1).onClick(block)
   }
   
   fun onEditClick(block: () -> Unit) {
@@ -59,5 +69,9 @@ class PasswordActionsView(context: Context) : ViewGroup(context) {
       child.layout(left, 0, left + childWidth, child.measuredHeight)
       left = child.right
     }
+  }
+  
+  override fun dispatchTouchEvent(ev: MotionEvent): Boolean {
+    return reactToClicks() && super.dispatchTouchEvent(ev)
   }
 }

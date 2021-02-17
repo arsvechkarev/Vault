@@ -1,5 +1,6 @@
 package com.arsvechkarev.vault.features.info
 
+import android.content.res.ColorStateList
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.Gravity.CENTER
@@ -66,14 +67,15 @@ class InfoScreen : Screen(), InfoView {
         FrameLayout(MatchParent, WrapContent) {
           margins(top = ImageBackMargin, start = ImageBackMargin, end = ImageBackMargin)
           ImageView(WrapContent, WrapContent, style = ImageBack) {
-            onClick { navigator.popCurrentScreen() }
+            onClick { if (!presenter.isEditingNameOrEmailNow) navigator.popCurrentScreen() }
           }
           ImageView(WrapContent, WrapContent) {
             image(R.drawable.ic_delete)
+            imageTintList = ColorStateList.valueOf(Colors.Error)
             padding(Dimens.IconPadding)
-            circleRippleBackground()
+            circleRippleBackground(Colors.ErrorRipple)
             layoutGravity(END)
-            onClick { presenter.onDeleteClicked() }
+            onClick { if (!presenter.isEditingNameOrEmailNow) presenter.onDeleteClicked() }
           }
         }
         ImageView(ImageServiceNameSize, ImageServiceNameSize) {
@@ -144,7 +146,10 @@ class InfoScreen : Screen(), InfoView {
           classNameTag()
           margins(top = MarginMedium)
           onEditClick { presenter.onEditPasswordIconClicked() }
-          whenPresenterIsReady { onTogglePassword = presenter::onTogglePassword }
+          whenPresenterIsReady {
+            onTogglePassword = presenter::onTogglePassword
+            reactToClicks = { !presenter.isEditingNameOrEmailNow }
+          }
         }
       }
       PasswordEditingDialog(passwordCreatingPresenter) {

@@ -62,10 +62,12 @@ class PasswordsListRepository(
     notifyListeners()
   }
   
-  fun deleteServiceInfo(masterPassword: String, serviceInfo: ServiceInfo) {
+  fun deleteServiceInfo(masterPassword: String, serviceInfo: ServiceInfo, notifyListeners: Boolean) {
     storage.deleteServiceInfo(masterPassword, serviceInfo)
     servicesList.remove(serviceInfo)
-    notifyListeners()
+    if (notifyListeners) {
+      notifyListeners()
+    }
   }
   
   private fun notifyListeners() {

@@ -14,6 +14,10 @@ interface InfoView : MvpView {
   
   fun showServiceName(serviceName: String)
   
+  fun showUsername(username: String)
+  
+  fun showNoUsername()
+  
   fun showEmail(email: String)
   
   fun showNoEmail()

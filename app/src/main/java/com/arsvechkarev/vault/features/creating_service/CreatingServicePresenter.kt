@@ -18,6 +18,7 @@ class CreatingServicePresenter(
   
   private var state = INITIAL
   private var serviceName: String = ""
+  private var username: String = ""
   private var email: String = ""
   private var password: String = ""
   
@@ -34,13 +35,14 @@ class CreatingServicePresenter(
     }
   }
   
-  fun onContinueClicked(serviceName: String, email: String) {
+  fun onContinueClicked(serviceName: String, username: String, email: String) {
     if (serviceName.isBlank()) {
       viewState.showServiceNameCannotBeEmpty()
       return
     }
     state = PASSWORD_SCREEN
     this.serviceName = serviceName.trim()
+    this.username = username.trim()
     this.email = email.trim()
     viewState.showPasswordCreatingDialog()
   }
@@ -56,7 +58,8 @@ class CreatingServicePresenter(
     viewState.showLoadingCreation()
     viewState.hideSavePasswordDialog()
     onIoThread {
-      val serviceInfo = ServiceInfo(UUID.randomUUID().toString(), serviceName, email, password)
+      val serviceInfo = ServiceInfo(UUID.randomUUID().toString(), serviceName,
+        username, email, password)
       passwordsListRepository.saveServiceInfo(masterPassword, serviceInfo)
       updateViewState { showExit() }
     }

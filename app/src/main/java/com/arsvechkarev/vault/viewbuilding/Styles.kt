@@ -14,7 +14,9 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import com.arsvechkarev.vault.R
+import com.arsvechkarev.vault.viewbuilding.Dimens.MarginDefault
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginSmall
+import com.arsvechkarev.vault.viewbuilding.Dimens.MarginVerySmall
 import com.arsvechkarev.vault.viewdsl.Ints.dp
 import com.arsvechkarev.vault.viewdsl.background
 import com.arsvechkarev.vault.viewdsl.circleRippleBackground
@@ -77,8 +79,8 @@ object Styles {
     }
     val colorStateList = ColorStateList.valueOf(Colors.Ripple)
     background(RippleDrawable(colorStateList, gradientDrawable, maskRect))
-    paddingVertical(6.dp)
-    paddingHorizontal(20.dp)
+    paddingVertical(MarginVerySmall)
+    paddingHorizontal(MarginDefault)
     textSize(TextSizes.H3)
     gravity(Gravity.CENTER)
     isClickable = true

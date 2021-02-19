@@ -64,14 +64,14 @@ class EditableTextInfoViewGroup(context: Context) : ViewGroup(context) {
         invisible()
         background(null)
         gravity(CENTER)
-        textSize(TextSizes.H2)
+        textSize(TextSizes.H3)
         font(Fonts.SegoeUiBold)
         isSingleLine = false
         onSubmit { changeModeToShowing() }
       }
       TextView(WrapContent, WrapContent, style = BoldTextView) {
         gravity(CENTER)
-        textSize(TextSizes.H2)
+        textSize(TextSizes.H3)
       }
       ImageView(WrapContent, WrapContent) {
         padding(IconPadding)

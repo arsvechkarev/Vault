@@ -5,6 +5,7 @@ import com.arsvechkarev.vault.core.JSON_SERVICE_EMAIL
 import com.arsvechkarev.vault.core.JSON_SERVICE_ID
 import com.arsvechkarev.vault.core.JSON_SERVICE_NAME
 import com.arsvechkarev.vault.core.JSON_SERVICE_PASSWORD
+import com.arsvechkarev.vault.core.JSON_SERVICE_USERNAME
 import com.arsvechkarev.vault.core.PASSWORDS_FILENAME
 import com.arsvechkarev.vault.core.model.ServiceInfo
 import org.json.JSONArray
@@ -23,7 +24,8 @@ class PasswordsStorageImpl(private val context: Context) : PasswordsStorage {
     val passwords = getServicesInfoList(masterPassword)
     val obj = JSONObject(mapOf(
       JSON_SERVICE_ID to serviceInfo.id,
-      JSON_SERVICE_NAME to serviceInfo.name,
+      JSON_SERVICE_NAME to serviceInfo.serviceName,
+      JSON_SERVICE_USERNAME to serviceInfo.username,
       JSON_SERVICE_EMAIL to serviceInfo.email,
       JSON_SERVICE_PASSWORD to serviceInfo.password
     ))
@@ -37,7 +39,8 @@ class PasswordsStorageImpl(private val context: Context) : PasswordsStorage {
     val passwords = getServicesInfoList(masterPassword)
     val obj = JSONObject(mapOf(
       JSON_SERVICE_ID to serviceInfo.id,
-      JSON_SERVICE_NAME to serviceInfo.name,
+      JSON_SERVICE_NAME to serviceInfo.serviceName,
+      JSON_SERVICE_USERNAME to serviceInfo.username,
       JSON_SERVICE_EMAIL to serviceInfo.email,
       JSON_SERVICE_PASSWORD to serviceInfo.password
     ))

@@ -7,7 +7,7 @@ import com.arsvechkarev.vault.cryptography.MasterPasswordHolder.masterPassword
 import com.arsvechkarev.vault.features.common.PasswordsListRepository
 import com.arsvechkarev.vault.features.common.getIconForServiceName
 import com.arsvechkarev.vault.features.info.InfoScreenState.DELETING_DIALOG
-import com.arsvechkarev.vault.features.info.InfoScreenState.EDITING_NAME_OR_EMAIL
+import com.arsvechkarev.vault.features.info.InfoScreenState.EDITING_NAME_OR_USERNAME_OR_EMAIL
 import com.arsvechkarev.vault.features.info.InfoScreenState.INITIAL
 import com.arsvechkarev.vault.features.info.InfoScreenState.LOADING
 import com.arsvechkarev.vault.features.info.InfoScreenState.PASSWORD_EDITING_DIALOG
@@ -23,15 +23,17 @@ class InfoPresenter(
   private var password: String = ""
   private var state = INITIAL
   
-  val isEditingNameOrEmailNow get() = state == EDITING_NAME_OR_EMAIL
+  val isEditingNameOrEmailNow get() = state == EDITING_NAME_OR_USERNAME_OR_EMAIL
   
   fun performSetup(serviceInfo: ServiceInfo) {
     this.serviceInfo = serviceInfo
     state = INITIAL
     password = serviceInfo.password
-    updateServiceIcon(serviceInfo.name)
-    viewState.showServiceName(serviceInfo.name)
+    updateServiceIcon(serviceInfo.serviceName)
+    viewState.showServiceName(serviceInfo.serviceName)
     viewState.setPassword(serviceInfo.password)
+    val username = serviceInfo.username
+    if (username.isEmpty()) viewState.showNoUsername() else viewState.showUsername(username)
     val email = serviceInfo.email
     if (email.isEmpty()) viewState.showNoEmail() else viewState.showEmail(email)
   }
@@ -43,12 +45,28 @@ class InfoPresenter(
   
   fun saveServiceName(serviceName: String) {
     state = INITIAL
-    if (serviceInfo.name == serviceName) return
+    if (serviceInfo.serviceName == serviceName) return
     viewState.showLoading()
     state = LOADING
-    serviceInfo = ServiceInfo(serviceInfo.id, serviceName, serviceInfo.email, serviceInfo.password)
+    serviceInfo = ServiceInfo(serviceInfo.id, serviceName, serviceInfo.username,
+      serviceInfo.email, serviceInfo.password)
     viewState.showServiceName(serviceName)
     updateServiceIcon(serviceName)
+    onIoThread {
+      passwordsListRepository.updateServiceInfo(masterPassword, serviceInfo)
+      state = INITIAL
+      updateViewState { showFinishLoading() }
+    }
+  }
+  
+  fun saveUsername(username: String) {
+    state = INITIAL
+    if (serviceInfo.username == username) return
+    viewState.showLoading()
+    state = LOADING
+    serviceInfo = ServiceInfo(serviceInfo.id, serviceInfo.serviceName, username,
+      serviceInfo.email, serviceInfo.password)
+    if (username.isBlank()) viewState.showNoUsername() else viewState.showUsername(username)
     onIoThread {
       passwordsListRepository.updateServiceInfo(masterPassword, serviceInfo)
       state = INITIAL
@@ -61,7 +79,8 @@ class InfoPresenter(
     if (serviceInfo.email == email) return
     viewState.showLoading()
     state = LOADING
-    serviceInfo = ServiceInfo(serviceInfo.id, serviceInfo.name, email, serviceInfo.password)
+    serviceInfo = ServiceInfo(serviceInfo.id, serviceInfo.serviceName, serviceInfo.username,
+      email, serviceInfo.password)
     if (email.isBlank()) viewState.showNoEmail() else viewState.showEmail(email)
     onIoThread {
       passwordsListRepository.updateServiceInfo(masterPassword, serviceInfo)
@@ -79,12 +98,12 @@ class InfoPresenter(
   }
   
   fun switchToEditingMode() {
-    state = EDITING_NAME_OR_EMAIL
+    state = EDITING_NAME_OR_USERNAME_OR_EMAIL
   }
   
   fun onDeleteClicked() {
     state = DELETING_DIALOG
-    viewState.showDeleteDialog(serviceInfo.name)
+    viewState.showDeleteDialog(serviceInfo.serviceName)
   }
   
   fun onHideDeleteDialog() {
@@ -126,7 +145,8 @@ class InfoPresenter(
     state = LOADING
     viewState.showLoading()
     viewState.hideSavePasswordDialog()
-    serviceInfo = ServiceInfo(serviceInfo.id, serviceInfo.name, serviceInfo.email, password)
+    serviceInfo = ServiceInfo(serviceInfo.id, serviceInfo.serviceName, serviceInfo.username,
+      serviceInfo.email, password)
     onIoThread {
       passwordsListRepository.updateServiceInfo(masterPassword, serviceInfo)
       state = INITIAL
@@ -152,7 +172,7 @@ class InfoPresenter(
   fun allowBackPress(): Boolean {
     return when (state) {
       INITIAL -> true
-      LOADING, EDITING_NAME_OR_EMAIL -> false
+      LOADING, EDITING_NAME_OR_USERNAME_OR_EMAIL -> false
       DELETING_DIALOG -> {
         viewState.hideDeleteDialog()
         state = INITIAL

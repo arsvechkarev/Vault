@@ -16,9 +16,9 @@ import com.arsvechkarev.vault.core.navigation.Screen
 import com.arsvechkarev.vault.viewbuilding.Colors
 import com.arsvechkarev.vault.viewbuilding.Dimens.FabSize
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginDefault
-import com.arsvechkarev.vault.viewbuilding.Dimens.MarginMedium
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginSmall
 import com.arsvechkarev.vault.viewbuilding.Dimens.ProgressBarSizeBig
+import com.arsvechkarev.vault.viewbuilding.Dimens.VerticalMarginSmall
 import com.arsvechkarev.vault.viewbuilding.Styles.BoldTextView
 import com.arsvechkarev.vault.viewbuilding.TextSizes
 import com.arsvechkarev.vault.viewdsl.Size.Companion.MatchParent
@@ -57,8 +57,8 @@ class PasswordsListScreen : Screen(), PasswordsListView {
     val viewUnderHeaderBehavior = ViewUnderHeaderBehavior()
     RootCoordinatorLayout {
       TextView(MatchParent, WrapContent, style = BoldTextView) {
-        paddings(top = MarginDefault + StatusBarHeight, bottom = MarginDefault,
-          start = MarginMedium)
+        paddings(top = VerticalMarginSmall + StatusBarHeight, bottom = MarginSmall,
+          start = MarginDefault)
         textSize(TextSizes.H0)
         behavior(HeaderBehavior())
         text(getString(R.string.text_passwords))
@@ -133,7 +133,7 @@ class PasswordsListScreen : Screen(), PasswordsListView {
   
   override fun showDeleteDialog(serviceInfo: ServiceInfo) {
     infoDialog.showWithDeleteAndCancelOption(
-      R.string.text_delete_service, getDeleteMessageText(serviceInfo.name),
+      R.string.text_delete_service, getDeleteMessageText(serviceInfo.serviceName),
       onDeleteClicked = { presenter.deleteService(serviceInfo) }
     )
   }

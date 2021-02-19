@@ -33,6 +33,7 @@ import com.arsvechkarev.vault.viewdsl.constraints
 import com.arsvechkarev.vault.viewdsl.gravity
 import com.arsvechkarev.vault.viewdsl.id
 import com.arsvechkarev.vault.viewdsl.image
+import com.arsvechkarev.vault.viewdsl.invisible
 import com.arsvechkarev.vault.viewdsl.layoutGravity
 import com.arsvechkarev.vault.viewdsl.margin
 import com.arsvechkarev.vault.viewdsl.margins
@@ -44,15 +45,20 @@ import com.arsvechkarev.vault.viewdsl.tag
 import com.arsvechkarev.vault.viewdsl.text
 import com.arsvechkarev.vault.viewdsl.textColor
 import com.arsvechkarev.vault.viewdsl.textSize
+import com.arsvechkarev.vault.viewdsl.visible
 import com.arsvechkarev.vault.views.dialogs.InfoDialog.Companion.InfoDialog
 import com.arsvechkarev.vault.views.dialogs.InfoDialog.Companion.infoDialog
 import com.arsvechkarev.vault.views.dialogs.LoadingDialog
 import com.arsvechkarev.vault.views.drawables.LetterInCircleDrawable.Companion.setLetterDrawable
+import kotlin.math.abs
 
 class CreatingServiceScreen : Screen(), CreatingServiceView {
   
   override fun buildLayout() = withViewBuilder {
     RootConstraintLayout {
+      addOnLayoutChangeListener { v, _, _, _, _, _, _, _, _ ->
+        showOrHideImageBasedOnLayout()
+      }
       HorizontalLayout(MatchParent, WrapContent) {
         id(R.id.creating_service_toolbar)
         margins(top = StatusBarHeight)
@@ -91,13 +97,19 @@ class CreatingServiceScreen : Screen(), CreatingServiceView {
         TextView(WrapContent, WrapContent, style = BaseTextView) {
           tag(TextError)
           textColor(Error)
-          margins(start = MarginDefault + MarginSmall)
+          margins(start = MarginDefault)
         }
         EditText(MatchParent, WrapContent, style = BaseEditText) {
           tag(EditTextServiceName)
           margins(top = MarginSmall, start = MarginDefault, end = MarginDefault)
           setHint(R.string.text_service_name)
           whenPresenterIsReady { onTextChanged(presenter::onServiceNameChanged) }
+          onSubmit { editText(EditTextUsername).requestFocus() }
+        }
+        EditText(MatchParent, WrapContent, style = BaseEditText) {
+          tag(EditTextUsername)
+          margins(top = MarginDefault, start = MarginDefault, end = MarginDefault)
+          setHint(R.string.text_username_optional)
           onSubmit { editText(EditTextEmail).requestFocus() }
         }
         EditText(MatchParent, WrapContent, style = BaseEditText) {
@@ -140,12 +152,12 @@ class CreatingServiceScreen : Screen(), CreatingServiceView {
   
   override fun onInit() {
     editText(EditTextServiceName).requestFocus()
-    editText(EditTextEmail).addTextChangedListener(passwordTextWatcher)
+    editText(EditTextServiceName).addTextChangedListener(passwordTextWatcher)
     showKeyboard()
   }
   
   override fun onRelease() {
-    editText(EditTextEmail).removeTextChangedListener(passwordTextWatcher)
+    editText(EditTextServiceName).removeTextChangedListener(passwordTextWatcher)
     hideKeyboard()
     contextNonNull.setSoftInputMode(SOFT_INPUT_ADJUST_RESIZE)
   }
@@ -187,14 +199,17 @@ class CreatingServiceScreen : Screen(), CreatingServiceView {
   }
   
   override fun showIconFromResources(icon: Drawable) {
+    showOrHideImageBasedOnLayout()
     imageView(R.id.creating_service_image).image(icon)
   }
   
   override fun showLetterInCircleIcon(letter: String) {
+    showOrHideImageBasedOnLayout()
     imageView(R.id.creating_service_image).setLetterDrawable(letter)
   }
   
   override fun hideLetterInCircleIcon() {
+    showOrHideImageBasedOnLayout()
     imageView(R.id.creating_service_image).clearImage()
   }
   
@@ -206,10 +221,22 @@ class CreatingServiceScreen : Screen(), CreatingServiceView {
     return presenter.allowBackPress()
   }
   
+  private fun showOrHideImageBasedOnLayout() {
+    val imageHeight = imageView(R.id.creating_service_image).height
+    val spaceForImage = abs(
+      view(TextError).top - view(R.id.creating_service_toolbar).bottom)
+    if (spaceForImage < imageHeight) {
+      imageView(R.id.creating_service_image).invisible()
+    } else {
+      imageView(R.id.creating_service_image).visible()
+    }
+  }
+  
   private fun continueWithCreating() {
     val serviceName = editText(EditTextServiceName).text.toString()
+    val username = editText(EditTextUsername).text.toString()
     val email = editText(EditTextEmail).text.toString()
-    presenter.onContinueClicked(serviceName, email)
+    presenter.onContinueClicked(serviceName, username, email)
   }
   
   companion object {
@@ -217,6 +244,7 @@ class CreatingServiceScreen : Screen(), CreatingServiceView {
     const val TextError = "TextError"
     const val TextContinue = "TextContinue"
     const val EditTextServiceName = "EditTextServiceName"
+    const val EditTextUsername = "EditTextUsername"
     const val EditTextEmail = "EditTextEmail"
     const val DialogProgressBar = "DialogProgressBar"
   }

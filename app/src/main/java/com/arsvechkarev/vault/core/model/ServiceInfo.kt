@@ -7,7 +7,8 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 data class ServiceInfo(
   override val id: String,
-  val name: String,
+  val serviceName: String,
+  val username: String,
   val email: String,
   val password: String,
 ) : DifferentiableItem, Parcelable

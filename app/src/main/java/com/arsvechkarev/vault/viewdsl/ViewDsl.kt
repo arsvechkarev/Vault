@@ -99,11 +99,11 @@ fun View.margin(value: Int) {
 }
 
 fun View.marginVertical(value: Int) {
-  margins(0, value, 0, value)
+  margins(marginStart, value, marginEnd, value)
 }
 
 fun View.marginHorizontal(value: Int) {
-  margins(value, 0, value, 0)
+  margins(value, marginTop, value, marginBottom)
 }
 
 fun View.marginsRes(

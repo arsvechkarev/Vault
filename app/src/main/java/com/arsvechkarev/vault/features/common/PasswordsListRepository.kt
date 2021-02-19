@@ -4,6 +4,7 @@ import com.arsvechkarev.vault.core.JSON_SERVICE_EMAIL
 import com.arsvechkarev.vault.core.JSON_SERVICE_ID
 import com.arsvechkarev.vault.core.JSON_SERVICE_NAME
 import com.arsvechkarev.vault.core.JSON_SERVICE_PASSWORD
+import com.arsvechkarev.vault.core.JSON_SERVICE_USERNAME
 import com.arsvechkarev.vault.core.Threader
 import com.arsvechkarev.vault.core.extensions.transformToArrayList
 import com.arsvechkarev.vault.core.model.ServiceInfo
@@ -33,6 +34,7 @@ class PasswordsListRepository(
             ServiceInfo(
               jsonObject.getString(JSON_SERVICE_ID),
               jsonObject.getString(JSON_SERVICE_NAME),
+              jsonObject.getString(JSON_SERVICE_USERNAME),
               jsonObject.getString(JSON_SERVICE_EMAIL),
               jsonObject.getString(JSON_SERVICE_PASSWORD),
             )
@@ -78,8 +80,8 @@ class PasswordsListRepository(
   
   private fun sortList() {
     servicesList.sortWith(Comparator { o1, o2 ->
-      return@Comparator o1.name.toLowerCase(Locale.getDefault())
-          .compareTo(o2.name.toLowerCase(Locale.getDefault()))
+      return@Comparator o1.serviceName.toLowerCase(Locale.getDefault())
+          .compareTo(o2.serviceName.toLowerCase(Locale.getDefault()))
     })
   }
 }

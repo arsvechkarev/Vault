@@ -36,10 +36,10 @@ import com.arsvechkarev.vault.viewbuilding.Dimens.ImageBackMargin
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginBig
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginDefault
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginSmall
-import com.arsvechkarev.vault.viewbuilding.Styles
 import com.arsvechkarev.vault.viewbuilding.Styles.BaseEditText
 import com.arsvechkarev.vault.viewbuilding.Styles.BaseTextView
 import com.arsvechkarev.vault.viewbuilding.Styles.BoldTextView
+import com.arsvechkarev.vault.viewbuilding.Styles.ClickableButton
 import com.arsvechkarev.vault.viewbuilding.Styles.ClickableTextView
 import com.arsvechkarev.vault.viewbuilding.TextSizes
 import com.arsvechkarev.vault.viewdsl.BaseTextWatcher
@@ -54,8 +54,6 @@ import com.arsvechkarev.vault.viewdsl.gravity
 import com.arsvechkarev.vault.viewdsl.image
 import com.arsvechkarev.vault.viewdsl.layoutGravity
 import com.arsvechkarev.vault.viewdsl.margin
-import com.arsvechkarev.vault.viewdsl.marginHorizontal
-import com.arsvechkarev.vault.viewdsl.marginVertical
 import com.arsvechkarev.vault.viewdsl.margins
 import com.arsvechkarev.vault.viewdsl.onClick
 import com.arsvechkarev.vault.viewdsl.onProgressChanged
@@ -148,8 +146,7 @@ class PasswordEditingDialog(
             }
             child<SeekBar>(MatchParent, WrapContent) {
               classNameTag()
-              marginHorizontal(MarginBig)
-              marginVertical(MarginDefault)
+              margin(MarginDefault)
               max = MAX_PASSWORD_LENGTH - MIN_PASSWORD_LENGTH
               progress = DEFAULT_PASSWORD_LENGTH - MIN_PASSWORD_LENGTH
               onProgressChanged(presenter::onPasswordLengthChanged)
@@ -157,6 +154,7 @@ class PasswordEditingDialog(
             TextView(WrapContent, WrapContent, style = ClickableTextView()) {
               margins(top = MarginDefault)
               layoutGravity(CENTER_HORIZONTAL)
+              gravity(CENTER)
               drawables(start = R.drawable.ic_generate, color = Colors.AccentLight)
               drawablePadding(MarginSmall)
               textColor(Colors.AccentLight)
@@ -164,7 +162,7 @@ class PasswordEditingDialog(
               onClick { presenter.onGeneratePasswordClicked() }
             }
           }
-          TextView(WrapContent, WrapContent, style = Styles.ClickableButton()) {
+          TextView(WrapContent, WrapContent, style = ClickableButton()) {
             layoutGravity(CENTER or BOTTOM)
             margin(MarginDefault)
             textSize(TextSizes.H3)

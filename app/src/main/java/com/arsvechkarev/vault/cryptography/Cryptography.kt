@@ -15,9 +15,9 @@ private const val CIPHER_TRANSFORMATION = "AES/CBC/PKCS5Padding"
 private const val SHA_224 = "SHA-224"
 private const val SHA_256 = "SHA-256"
 private const val SECRET_KEY_LENGTH = 256
-private const val SECRET_KEY_ITERATIONS = 45928
-private const val SALT_ITERATIONS = 11879
-private const val IV_ITERATIONS = 13275
+private const val SECRET_KEY_ITERATIONS = 64938
+private const val SALT_ITERATIONS = 22713
+private const val IV_ITERATIONS = 31279
 
 private val cipher: Cipher = Cipher.getInstance(CIPHER_TRANSFORMATION)
 private val secretKeyFactory: SecretKeyFactory = SecretKeyFactory.getInstance(SECRET_KEY_ALGORITHM)
@@ -46,14 +46,14 @@ private fun getKeyFromPassword(password: String, salt: ByteArray): SecretKey {
 }
 
 private fun getSaltFromPassword(passwordByteArray: ByteArray): ByteArray {
-  var buff = sha256.digest(passwordByteArray)
-  repeat(SALT_ITERATIONS) { buff = sha256.digest(buff) }
-  return buff
+  var bytes = sha256.digest(passwordByteArray)
+  repeat(SALT_ITERATIONS) { bytes = sha256.digest(bytes) }
+  return bytes
 }
 
 private fun getIvFromPassword(passwordByteArray: ByteArray): IvParameterSpec {
-  var buff = sha224.digest(passwordByteArray)
-  repeat(IV_ITERATIONS) { buff = sha224.digest(buff) }
-  val ivBuffer = ByteArray(16) { i -> buff[i] }
+  var bytes = sha224.digest(passwordByteArray)
+  repeat(IV_ITERATIONS) { bytes = sha224.digest(bytes) }
+  val ivBuffer = ByteArray(16) { i -> bytes[i] }
   return IvParameterSpec(ivBuffer)
 }

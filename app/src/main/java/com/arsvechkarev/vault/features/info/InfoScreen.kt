@@ -19,12 +19,12 @@ import com.arsvechkarev.vault.features.creating_password.PasswordEditingDialog.C
 import com.arsvechkarev.vault.viewbuilding.Colors
 import com.arsvechkarev.vault.viewbuilding.Dimens
 import com.arsvechkarev.vault.viewbuilding.Dimens.DividerHeight
-import com.arsvechkarev.vault.viewbuilding.Dimens.ImageBackMargin
+import com.arsvechkarev.vault.viewbuilding.Dimens.HorizontalMarginPasswordsActionView
+import com.arsvechkarev.vault.viewbuilding.Dimens.HorizontalMarginSmall
 import com.arsvechkarev.vault.viewbuilding.Dimens.ImageServiceNameSize
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginBig
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginDefault
-import com.arsvechkarev.vault.viewbuilding.Dimens.MarginMedium
-import com.arsvechkarev.vault.viewbuilding.Dimens.MarginSmall
+import com.arsvechkarev.vault.viewbuilding.Dimens.VerticalMarginSmall
 import com.arsvechkarev.vault.viewbuilding.Styles.BaseTextView
 import com.arsvechkarev.vault.viewbuilding.Styles.BoldTextView
 import com.arsvechkarev.vault.viewbuilding.Styles.ImageBack
@@ -65,7 +65,7 @@ class InfoScreen : Screen(), InfoView {
         gravity(CENTER_HORIZONTAL)
         margins(top = StatusBarHeight)
         FrameLayout(MatchParent, WrapContent) {
-          margins(top = ImageBackMargin, start = ImageBackMargin, end = ImageBackMargin)
+          margins(top = MarginDefault, start = MarginDefault, end = MarginDefault)
           ImageView(WrapContent, WrapContent, style = ImageBack) {
             onClick { if (!presenter.isEditingNameOrEmailNow) navigator.popCurrentScreen() }
           }
@@ -87,7 +87,7 @@ class InfoScreen : Screen(), InfoView {
           textColor(Colors.TextSecondary)
         }
         val editableCommonBlock: EditableTextInfoViewGroup.() -> Unit = {
-          marginHorizontal(MarginDefault)
+          marginHorizontal(HorizontalMarginPasswordsActionView)
           onEditClickAllowed = { !presenter.isEditingNameOrEmailNow }
           onSwitchToEditMode = { presenter.switchToEditingMode() }
         }
@@ -99,11 +99,27 @@ class InfoScreen : Screen(), InfoView {
         }
         View(MatchParent, IntSize(DividerHeight)) {
           backgroundColor(Colors.Divider)
-          marginHorizontal(MarginSmall)
-          margins(top = MarginDefault)
+          marginHorizontal(HorizontalMarginSmall)
+          margins(top = VerticalMarginSmall)
         }
         TextView(WrapContent, WrapContent, style = BaseTextView) {
-          margins(top = MarginDefault)
+          margins(top = VerticalMarginSmall)
+          textColor(Colors.TextSecondary)
+          text(R.string.text_username_optional)
+        }
+        child<EditableTextInfoViewGroup>(MatchParent, WrapContent) {
+          tag(EditableTextInfoUsername)
+          apply(editableCommonBlock)
+          allowSavingWhenEmpty = true
+          whenPresenterIsReady { onTextSaved = presenter::saveUsername }
+        }
+        View(MatchParent, IntSize(DividerHeight)) {
+          backgroundColor(Colors.Divider)
+          marginHorizontal(HorizontalMarginSmall)
+          margins(top = VerticalMarginSmall)
+        }
+        TextView(WrapContent, WrapContent, style = BaseTextView) {
+          margins(top = VerticalMarginSmall)
           textColor(Colors.TextSecondary)
           text(R.string.text_email_optional)
         }
@@ -115,17 +131,17 @@ class InfoScreen : Screen(), InfoView {
         }
         View(MatchParent, IntSize(DividerHeight)) {
           backgroundColor(Colors.Divider)
-          marginHorizontal(MarginSmall)
-          margins(top = MarginDefault)
+          marginHorizontal(HorizontalMarginSmall)
+          margins(top = VerticalMarginSmall)
         }
         TextView(WrapContent, WrapContent, style = BaseTextView) {
           text(R.string.text_password)
-          margins(top = MarginDefault)
+          margins(top = VerticalMarginSmall)
           textColor(Colors.TextSecondary)
-          textSize(TextSizes.H2)
+          textSize(TextSizes.H4)
         }
         FrameLayout(WrapContent, WrapContent) {
-          margins(top = MarginSmall, start = MarginDefault, end = MarginDefault)
+          marginHorizontal(VerticalMarginSmall)
           TextView(WrapContent, WrapContent, style = BoldTextView) {
             tag(TextPassword)
             invisible()
@@ -144,7 +160,8 @@ class InfoScreen : Screen(), InfoView {
         }
         child<PasswordActionsView>(MatchParent, WrapContent) {
           classNameTag()
-          margins(top = MarginMedium)
+          margins(top = VerticalMarginSmall, start = HorizontalMarginPasswordsActionView,
+            end = HorizontalMarginPasswordsActionView)
           onEditClick { presenter.onEditPasswordIconClicked() }
           whenPresenterIsReady {
             onTogglePassword = presenter::onTogglePassword
@@ -179,6 +196,18 @@ class InfoScreen : Screen(), InfoView {
   
   override fun showServiceName(serviceName: String) {
     viewAs<EditableTextInfoViewGroup>(EditableTextInfoServiceName).setText(serviceName)
+  }
+  
+  override fun showUsername(username: String) {
+    val editableUsername = viewAs<EditableTextInfoViewGroup>(EditableTextInfoUsername)
+    editableUsername.setText(username)
+    editableUsername.transferTextToEditTextWhenSwitching = true
+  }
+  
+  override fun showNoUsername() {
+    val editableUsername = viewAs<EditableTextInfoViewGroup>(EditableTextInfoUsername)
+    editableUsername.setText(getString(R.string.text_no_username))
+    editableUsername.transferTextToEditTextWhenSwitching = false
   }
   
   override fun showEmail(email: String) {
@@ -271,6 +300,7 @@ class InfoScreen : Screen(), InfoView {
     
     const val ImageServiceName = "ImageServiceName"
     const val EditableTextInfoServiceName = "EditableTextInfoServiceName"
+    const val EditableTextInfoUsername = "EditableTextInfoUsername"
     const val EditableTextInfoEmail = "EditableTextInfoEmail"
     const val TextPassword = "TextPassword"
     const val TextPasswordStub = "TextPasswordStub"

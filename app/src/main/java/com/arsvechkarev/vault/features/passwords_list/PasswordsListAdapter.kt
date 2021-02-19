@@ -9,6 +9,7 @@ import com.arsvechkarev.vault.recycler.CallbackType
 import com.arsvechkarev.vault.recycler.ListAdapter
 import com.arsvechkarev.vault.recycler.delegate
 import com.arsvechkarev.vault.viewbuilding.Colors
+import com.arsvechkarev.vault.viewbuilding.Dimens.HorizontalMarginSmall
 import com.arsvechkarev.vault.viewbuilding.Dimens.ItemServiceInfoImageSize
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginDefault
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginSmall
@@ -20,7 +21,8 @@ import com.arsvechkarev.vault.viewdsl.layoutGravity
 import com.arsvechkarev.vault.viewdsl.margins
 import com.arsvechkarev.vault.viewdsl.onClick
 import com.arsvechkarev.vault.viewdsl.onLongClick
-import com.arsvechkarev.vault.viewdsl.padding
+import com.arsvechkarev.vault.viewdsl.paddingHorizontal
+import com.arsvechkarev.vault.viewdsl.paddingVertical
 import com.arsvechkarev.vault.viewdsl.rippleBackground
 import com.arsvechkarev.vault.viewdsl.tag
 import com.arsvechkarev.vault.viewdsl.text
@@ -38,15 +40,15 @@ class PasswordsListAdapter(
         buildView {
           RootHorizontalLayout(MatchParent, WrapContent) {
             rippleBackground(Colors.Ripple)
-            padding(MarginSmall)
+            paddingHorizontal(HorizontalMarginSmall)
+            paddingVertical(MarginSmall)
             ImageView(ItemServiceInfoImageSize, ItemServiceInfoImageSize) {
               tag(ItemServiceInfoImage)
               layoutGravity(CENTER)
-              margins(MarginDefault)
+              margins(start = MarginDefault, end = MarginDefault)
             }
             TextView(WrapContent, WrapContent, style = BoldTextView) {
               tag(ItemServiceInfoTextServiceName)
-              margins(MarginDefault)
               layoutGravity(CENTER)
             }
           }
@@ -56,14 +58,14 @@ class PasswordsListAdapter(
           itemView.onLongClick { onItemLongClick(item) }
         }
         onBind {
-          val icon = getIconForServiceName(item.name)
+          val icon = getIconForServiceName(item.serviceName)
           if (icon != null) {
             itemView.viewAs<ImageView>(ItemServiceInfoImage).image(icon)
           } else {
-            val letter = item.name[0].toString()
+            val letter = item.serviceName[0].toString()
             itemView.viewAs<ImageView>(ItemServiceInfoImage).setLetterDrawable(letter)
           }
-          itemView.viewAs<TextView>(ItemServiceInfoTextServiceName).text(item.name)
+          itemView.viewAs<TextView>(ItemServiceInfoTextServiceName).text(item.serviceName)
         }
       }
     )

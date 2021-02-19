@@ -13,6 +13,7 @@ import com.arsvechkarev.vault.viewbuilding.Dimens.ImageLogoSize
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginBig
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginDefault
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginSmall
+import com.arsvechkarev.vault.viewbuilding.Dimens.MarginVerySmall
 import com.arsvechkarev.vault.viewbuilding.Styles.BaseEditText
 import com.arsvechkarev.vault.viewbuilding.Styles.BaseTextView
 import com.arsvechkarev.vault.viewbuilding.Styles.BoldTextView
@@ -66,7 +67,7 @@ class StartScreen : Screen(), StartView {
         }
         TextView(MatchParent, WrapContent, style = BaseTextView) {
           id(start_screen_error_text)
-          margins(start = MarginDefault + MarginSmall, end = MarginDefault, bottom = MarginSmall)
+          margins(start = MarginDefault + MarginVerySmall, bottom = MarginSmall)
           textColor(Colors.Error)
         }
         EditText(MatchParent, WrapContent, style = BaseEditText) {

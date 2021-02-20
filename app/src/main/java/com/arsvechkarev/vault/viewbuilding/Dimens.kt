@@ -27,6 +27,7 @@ object Dimens {
   val CheckmarkSize get() = adjust(20.dp)
   val IconPadding get() = adjust(6.dp)
   val ImageLogoSize get() = adjust(70.dp)
+  val ImageNoServicesSize get() = adjust(100.dp)
   val ImageServiceNameSize get() = adjust(45.dp)
   val ImageBackMargin get() = adjust(16.dp)
   val DefaultCornerRadius get() = (6.dp)

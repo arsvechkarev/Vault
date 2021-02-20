@@ -24,6 +24,7 @@ import com.arsvechkarev.vault.viewbuilding.Dimens.HorizontalMarginSmall
 import com.arsvechkarev.vault.viewbuilding.Dimens.ImageServiceNameSize
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginBig
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginDefault
+import com.arsvechkarev.vault.viewbuilding.Dimens.MarginVerySmall
 import com.arsvechkarev.vault.viewbuilding.Dimens.VerticalMarginSmall
 import com.arsvechkarev.vault.viewbuilding.Styles.BaseTextView
 import com.arsvechkarev.vault.viewbuilding.Styles.BoldTextView
@@ -136,18 +137,18 @@ class InfoScreen : Screen(), InfoView {
         }
         TextView(WrapContent, WrapContent, style = BaseTextView) {
           text(R.string.text_password)
-          margins(top = VerticalMarginSmall)
+          margins(top = VerticalMarginSmall, bottom = MarginVerySmall)
           textColor(Colors.TextSecondary)
           textSize(TextSizes.H4)
         }
         FrameLayout(WrapContent, WrapContent) {
-          marginHorizontal(VerticalMarginSmall)
+          marginHorizontal(HorizontalMarginSmall)
           TextView(WrapContent, WrapContent, style = BoldTextView) {
             tag(TextPassword)
             invisible()
             layoutGravity(CENTER)
             gravity(CENTER)
-            textSize(TextSizes.H1)
+            textSize(TextSizes.H3)
             textColor(Colors.AccentLight)
           }
           TextView(WrapContent, WrapContent, style = BoldTextView) {

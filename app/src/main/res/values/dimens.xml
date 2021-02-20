@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <dimen name="text_password_stub">42sp</dimen>
+  <dimen name="text_password_stub">36sp</dimen>
   <dimen name="text_h0">30sp</dimen>
   <dimen name="text_h1">24sp</dimen>
   <dimen name="text_h2">22sp</dimen>

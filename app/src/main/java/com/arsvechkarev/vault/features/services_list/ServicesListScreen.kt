@@ -1,5 +1,7 @@
 package com.arsvechkarev.vault.features.services_list
 
+import android.text.SpannableString
+import android.text.style.RelativeSizeSpan
 import android.view.Gravity.BOTTOM
 import android.view.Gravity.CENTER
 import android.view.Gravity.END
@@ -8,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.arsvechkarev.vault.R
 import com.arsvechkarev.vault.core.AndroidThreader
 import com.arsvechkarev.vault.core.Singletons.servicesRepository
+import com.arsvechkarev.vault.core.TypefaceSpan
 import com.arsvechkarev.vault.core.extensions.getDeleteMessageText
 import com.arsvechkarev.vault.core.extensions.ifTrue
 import com.arsvechkarev.vault.core.extensions.moxyPresenter
@@ -15,10 +18,14 @@ import com.arsvechkarev.vault.core.model.Service
 import com.arsvechkarev.vault.core.navigation.Screen
 import com.arsvechkarev.vault.viewbuilding.Colors
 import com.arsvechkarev.vault.viewbuilding.Dimens.FabSize
+import com.arsvechkarev.vault.viewbuilding.Dimens.ImageNoServicesSize
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginDefault
+import com.arsvechkarev.vault.viewbuilding.Dimens.MarginMedium
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginSmall
 import com.arsvechkarev.vault.viewbuilding.Dimens.ProgressBarSizeBig
 import com.arsvechkarev.vault.viewbuilding.Dimens.VerticalMarginSmall
+import com.arsvechkarev.vault.viewbuilding.Fonts
+import com.arsvechkarev.vault.viewbuilding.Styles.BaseTextView
 import com.arsvechkarev.vault.viewbuilding.Styles.BoldTextView
 import com.arsvechkarev.vault.viewbuilding.TextSizes
 import com.arsvechkarev.vault.viewdsl.Size.Companion.MatchParent
@@ -33,6 +40,7 @@ import com.arsvechkarev.vault.viewdsl.image
 import com.arsvechkarev.vault.viewdsl.invisible
 import com.arsvechkarev.vault.viewdsl.layoutGravity
 import com.arsvechkarev.vault.viewdsl.margin
+import com.arsvechkarev.vault.viewdsl.marginHorizontal
 import com.arsvechkarev.vault.viewdsl.onClick
 import com.arsvechkarev.vault.viewdsl.padding
 import com.arsvechkarev.vault.viewdsl.paddings
@@ -82,11 +90,28 @@ class ServicesListScreen : Screen(), ServicesListView {
       VerticalLayout(MatchParent, MatchParent) {
         tag(LayoutNoPasswords)
         invisible()
+        marginHorizontal(MarginMedium)
         behavior(viewUnderHeaderBehavior)
         layoutGravity(CENTER)
         gravity(CENTER)
+        ImageView(ImageNoServicesSize, ImageNoServicesSize) {
+          image(R.drawable.ic_lists)
+          margin(MarginDefault)
+        }
         TextView(WrapContent, WrapContent, style = BoldTextView) {
-          text("No passwords saved")
+          marginHorizontal(MarginDefault)
+          textSize(TextSizes.H3)
+          text(R.string.text_no_passwords)
+        }
+        TextView(WrapContent, WrapContent, style = BaseTextView) {
+          textSize(TextSizes.H4)
+          margin(MarginDefault)
+          gravity(CENTER)
+          val spannableString = SpannableString(getString(R.string.text_click_plus))
+          val index = spannableString.indexOf('+')
+          spannableString.setSpan(TypefaceSpan(Fonts.SegoeUiBold), index, index + 1, 0)
+          spannableString.setSpan(RelativeSizeSpan(1.3f), index, index + 1, 0)
+          text(spannableString)
         }
       }
       ImageView(FabSize, FabSize) {
@@ -94,7 +119,7 @@ class ServicesListScreen : Screen(), ServicesListView {
         padding(MarginSmall)
         image(R.drawable.ic_plus)
         layoutGravity(BOTTOM or END)
-        rippleBackground(Colors.Ripple, Colors.Accent, FabSize)
+        rippleBackground(Colors.Ripple, Colors.Accent, cornerRadius = FabSize)
         onClick { navigator.goToNewServiceScreen() }
       }
       InfoDialog()

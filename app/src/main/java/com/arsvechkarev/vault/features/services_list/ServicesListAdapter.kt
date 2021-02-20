@@ -1,4 +1,4 @@
-package com.arsvechkarev.vault.features.passwords_list
+package com.arsvechkarev.vault.features.services_list
 
 import android.view.Gravity.CENTER
 import android.widget.ImageView
@@ -29,7 +29,7 @@ import com.arsvechkarev.vault.viewdsl.text
 import com.arsvechkarev.vault.viewdsl.viewAs
 import com.arsvechkarev.vault.views.drawables.LetterInCircleDrawable.Companion.setLetterDrawable
 
-class PasswordsListAdapter(
+class ServicesListAdapter(
   private val onItemClick: (Service) -> Unit,
   private val onItemLongClick: (Service) -> Unit
 ) : ListAdapter() {

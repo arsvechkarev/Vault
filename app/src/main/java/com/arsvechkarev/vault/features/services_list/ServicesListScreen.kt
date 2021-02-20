@@ -1,4 +1,4 @@
-package com.arsvechkarev.vault.features.passwords_list
+package com.arsvechkarev.vault.features.services_list
 
 import android.view.Gravity.BOTTOM
 import android.view.Gravity.CENTER
@@ -51,7 +51,7 @@ import com.arsvechkarev.vault.views.dialogs.InfoDialog.Companion.infoDialog
 import com.arsvechkarev.vault.views.dialogs.LoadingDialog
 import com.arsvechkarev.vault.views.dialogs.loadingDialog
 
-class PasswordsListScreen : Screen(), PasswordsListView {
+class ServicesListScreen : Screen(), ServicesListView {
   
   override fun buildLayout() = withViewBuilder {
     val viewUnderHeaderBehavior = ViewUnderHeaderBehavior()
@@ -103,14 +103,14 @@ class PasswordsListScreen : Screen(), PasswordsListView {
   }
   
   private val adapter by lazy {
-    PasswordsListAdapter(
+    ServicesListAdapter(
       onItemClick = navigator::goToSavedServiceInfoScreen,
       onItemLongClick = presenter::onLongClick
     )
   }
   
   private val presenter by moxyPresenter {
-    PasswordsListPresenter(AndroidThreader, servicesRepository)
+    ServicesListPresenter(AndroidThreader, servicesRepository)
   }
   
   override fun onInit() {

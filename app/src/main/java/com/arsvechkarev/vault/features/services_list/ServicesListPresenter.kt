@@ -1,4 +1,4 @@
-package com.arsvechkarev.vault.features.passwords_list
+package com.arsvechkarev.vault.features.services_list
 
 import com.arsvechkarev.vault.core.BasePresenter
 import com.arsvechkarev.vault.core.Threader
@@ -6,10 +6,10 @@ import com.arsvechkarev.vault.core.model.Service
 import com.arsvechkarev.vault.cryptography.MasterPasswordHolder.masterPassword
 import com.arsvechkarev.vault.features.common.ServicesRepository
 
-class PasswordsListPresenter(
+class ServicesListPresenter(
   threader: Threader,
   private val servicesRepository: ServicesRepository
-) : BasePresenter<PasswordsListView>(threader) {
+) : BasePresenter<ServicesListView>(threader) {
   
   private val listChangeListener: (List<Service>) -> Unit = { list ->
     viewState.showPasswordsList(list)

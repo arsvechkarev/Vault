@@ -14,7 +14,7 @@ import com.arsvechkarev.vault.features.creating_master_password.CreateMasterPass
 import com.arsvechkarev.vault.features.creating_service.CreatingServiceScreen
 import com.arsvechkarev.vault.features.info.InfoScreen
 import com.arsvechkarev.vault.features.info.InfoScreen.Companion.SERVICE_INFO
-import com.arsvechkarev.vault.features.passwords_list.PasswordsListScreen
+import com.arsvechkarev.vault.features.services_list.ServicesListScreen
 import com.arsvechkarev.vault.features.start.StartScreen
 import com.arsvechkarev.vault.viewbuilding.Colors
 import com.arsvechkarev.vault.viewdsl.Densities
@@ -53,7 +53,7 @@ class MainActivity : BaseActivity(), Navigator {
   }
   
   override fun goToPasswordsListScreen() {
-    navigator.navigate(PasswordsListScreen::class, options = Options(removeCurrentScreen = true))
+    navigator.navigate(ServicesListScreen::class, options = Options(removeCurrentScreen = true))
   }
   
   override fun goToNewServiceScreen() {

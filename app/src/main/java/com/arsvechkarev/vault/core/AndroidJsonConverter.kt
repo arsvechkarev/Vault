@@ -2,6 +2,7 @@ package com.arsvechkarev.vault.core
 
 import com.arsvechkarev.vault.core.extensions.transformToList
 import org.json.JSONArray
+import org.json.JSONObject
 
 object AndroidJsonConverter : JsonConverter {
   
@@ -19,7 +20,7 @@ object AndroidJsonConverter : JsonConverter {
   override fun <T> convertToString(list: List<T>, converter: (element: T) -> Map<String, String>): String {
     val jsonArray = JSONArray()
     list.forEach { element ->
-      jsonArray.put(converter(element))
+      jsonArray.put(JSONObject(converter(element)))
     }
     return jsonArray.toString()
   }

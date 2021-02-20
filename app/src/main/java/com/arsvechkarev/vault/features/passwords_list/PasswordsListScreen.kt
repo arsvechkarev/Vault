@@ -7,11 +7,11 @@ import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import com.arsvechkarev.vault.R
 import com.arsvechkarev.vault.core.AndroidThreader
-import com.arsvechkarev.vault.core.Singletons.passwordsListRepository
+import com.arsvechkarev.vault.core.Singletons.servicesRepository
 import com.arsvechkarev.vault.core.extensions.getDeleteMessageText
 import com.arsvechkarev.vault.core.extensions.ifTrue
 import com.arsvechkarev.vault.core.extensions.moxyPresenter
-import com.arsvechkarev.vault.core.model.ServiceInfo
+import com.arsvechkarev.vault.core.model.Service
 import com.arsvechkarev.vault.core.navigation.Screen
 import com.arsvechkarev.vault.viewbuilding.Colors
 import com.arsvechkarev.vault.viewbuilding.Dimens.FabSize
@@ -110,7 +110,7 @@ class PasswordsListScreen : Screen(), PasswordsListView {
   }
   
   private val presenter by moxyPresenter {
-    PasswordsListPresenter(AndroidThreader, passwordsListRepository)
+    PasswordsListPresenter(AndroidThreader, servicesRepository)
   }
   
   override fun onInit() {
@@ -126,15 +126,15 @@ class PasswordsListScreen : Screen(), PasswordsListView {
     showView(view(LayoutNoPasswords))
   }
   
-  override fun showPasswordsList(list: List<ServiceInfo>) {
+  override fun showPasswordsList(list: List<Service>) {
     showView(viewAs<RecyclerView>())
     adapter.changeListWithoutAnimation(list)
   }
   
-  override fun showDeleteDialog(serviceInfo: ServiceInfo) {
+  override fun showDeleteDialog(service: Service) {
     infoDialog.showWithDeleteAndCancelOption(
-      R.string.text_delete_service, getDeleteMessageText(serviceInfo.serviceName),
-      onDeleteClicked = { presenter.deleteService(serviceInfo) }
+      R.string.text_delete_service, getDeleteMessageText(service.serviceName),
+      onDeleteClicked = { presenter.deleteService(service) }
     )
   }
   
@@ -143,8 +143,8 @@ class PasswordsListScreen : Screen(), PasswordsListView {
     loadingDialog.show()
   }
   
-  override fun showDeletedService(serviceInfo: ServiceInfo) {
-    adapter.removeItem(serviceInfo)
+  override fun showDeletedService(service: Service) {
+    adapter.removeItem(service)
     loadingDialog.hide()
   }
   

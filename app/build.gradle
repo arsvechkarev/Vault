@@ -41,6 +41,7 @@ dependencies {
   def crypto_version = '1.1.0-alpha03'
   def recycler_version = '1.1.0'
   def constraint_layout_version = '2.0.4'
+  def junit_version = '4.13.2'
 
   implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
   implementation "androidx.appcompat:appcompat:$app_compat_version"
@@ -55,4 +56,6 @@ dependencies {
   kapt "com.github.moxy-community:moxy-compiler:$moxy_version"
 
   coreLibraryDesugaring "com.android.tools:desugar_jdk_libs:$desugaring_version"
+  testImplementation "junit:junit:$junit_version"
+  testImplementation "com.google.code.gson:gson:2.8.6"
 }

@@ -1,6 +1,6 @@
 package com.arsvechkarev.vault.features.passwords_list
 
-import com.arsvechkarev.vault.core.model.ServiceInfo
+import com.arsvechkarev.vault.core.model.Service
 import moxy.MvpView
 import moxy.viewstate.strategy.AddToEndSingleStrategy
 import moxy.viewstate.strategy.StateStrategyType
@@ -12,11 +12,11 @@ interface PasswordsListView : MvpView {
   
   fun showNoPasswords()
   
-  fun showPasswordsList(list: List<ServiceInfo>)
+  fun showPasswordsList(list: List<Service>)
   
-  fun showDeleteDialog(serviceInfo: ServiceInfo)
+  fun showDeleteDialog(service: Service)
   
   fun showLoadingDeletingService()
   
-  fun showDeletedService(serviceInfo: ServiceInfo)
+  fun showDeletedService(service: Service)
 }

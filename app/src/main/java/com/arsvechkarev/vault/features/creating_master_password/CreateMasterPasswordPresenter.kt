@@ -2,14 +2,14 @@ package com.arsvechkarev.vault.features.creating_master_password
 
 import com.arsvechkarev.vault.core.BasePresenter
 import com.arsvechkarev.vault.core.Threader
-import com.arsvechkarev.vault.features.common.UserAuthSaver
 import com.arsvechkarev.vault.core.extensions.assertThat
-import com.arsvechkarev.vault.features.creating_master_password.CreateMasterPasswordScreenState.ENTERING_PASSWORD
-import com.arsvechkarev.vault.features.creating_master_password.CreateMasterPasswordScreenState.REPEATING_PASSWORD
 import com.arsvechkarev.vault.cryptography.MasterPasswordChecker
 import com.arsvechkarev.vault.cryptography.MasterPasswordHolder
-import com.arsvechkarev.vault.cryptography.PasswordStatus.OK
 import com.arsvechkarev.vault.cryptography.PasswordChecker
+import com.arsvechkarev.vault.cryptography.PasswordStatus.OK
+import com.arsvechkarev.vault.features.common.UserAuthSaver
+import com.arsvechkarev.vault.features.creating_master_password.CreateMasterPasswordScreenState.ENTERING_PASSWORD
+import com.arsvechkarev.vault.features.creating_master_password.CreateMasterPasswordScreenState.REPEATING_PASSWORD
 
 class CreateMasterPasswordPresenter(
   threader: Threader,
@@ -67,8 +67,8 @@ class CreateMasterPasswordPresenter(
     updateViewState { showFinishingAuthorization() }
     onBackgroundThread {
       userAuthSaver.setUserIsAuthorized(true)
+      masterPasswordChecker.initializeEncryptedFile(previouslyEnteredPassword)
       MasterPasswordHolder.setMasterPassword(previouslyEnteredPassword)
-      masterPasswordChecker.encodeSecretPhrase(previouslyEnteredPassword)
       updateViewState { goToPasswordsList() }
     }
   }

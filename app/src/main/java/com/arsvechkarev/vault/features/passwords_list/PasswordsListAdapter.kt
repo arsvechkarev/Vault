@@ -3,7 +3,7 @@ package com.arsvechkarev.vault.features.passwords_list
 import android.view.Gravity.CENTER
 import android.widget.ImageView
 import android.widget.TextView
-import com.arsvechkarev.vault.core.model.ServiceInfo
+import com.arsvechkarev.vault.core.model.Service
 import com.arsvechkarev.vault.features.common.getIconForServiceName
 import com.arsvechkarev.vault.recycler.CallbackType
 import com.arsvechkarev.vault.recycler.ListAdapter
@@ -30,13 +30,13 @@ import com.arsvechkarev.vault.viewdsl.viewAs
 import com.arsvechkarev.vault.views.drawables.LetterInCircleDrawable.Companion.setLetterDrawable
 
 class PasswordsListAdapter(
-  private val onItemClick: (ServiceInfo) -> Unit,
-  private val onItemLongClick: (ServiceInfo) -> Unit
+  private val onItemClick: (Service) -> Unit,
+  private val onItemLongClick: (Service) -> Unit
 ) : ListAdapter() {
   
   init {
     addDelegates(
-      delegate<ServiceInfo> {
+      delegate<Service> {
         buildView {
           RootHorizontalLayout(MatchParent, WrapContent) {
             rippleBackground(Colors.Ripple)
@@ -71,9 +71,9 @@ class PasswordsListAdapter(
     )
   }
   
-  fun removeItem(serviceInfo: ServiceInfo) {
+  fun removeItem(service: Service) {
     val list = ArrayList(data)
-    list.remove(serviceInfo)
+    list.remove(service)
     submitList(list, CallbackType.TWO_LISTS)
   }
   

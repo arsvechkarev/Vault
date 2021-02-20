@@ -1,15 +1,16 @@
-package com.arsvechkarev.vault.cryptography
+package com.arsvechkarev.vault.core
 
 import android.content.Context
 import androidx.security.crypto.EncryptedFile
-import com.arsvechkarev.vault.core.Singletons.masterKey
 import java.io.File
 
-object EncryptedFileUtils {
+class EncryptionFileSaver(
+  private val context: Context
+) : FileSaver {
   
   private val charset = Charsets.UTF_8
   
-  fun saveTextToFile(context: Context, filename: String, text: String) {
+  override fun saveTextToFile(filename: String, text: String) {
     val file = File(context.filesDir, filename)
     file.delete()
     val encryptedFile = getEncryptedFile(context, file)
@@ -19,7 +20,7 @@ object EncryptedFileUtils {
     }
   }
   
-  fun readTextFromFile(context: Context, filename: String): String {
+  override fun readTextFromFile(filename: String): String {
     val file = context.getFileStreamPath(filename)
     if (!file.exists()) {
       return ""
@@ -31,6 +32,6 @@ object EncryptedFileUtils {
   
   private fun getEncryptedFile(context: Context, file: File): EncryptedFile {
     val encryptionScheme = EncryptedFile.FileEncryptionScheme.AES256_GCM_HKDF_4KB
-    return EncryptedFile.Builder(context, file, masterKey, encryptionScheme).build()
+    return EncryptedFile.Builder(context, file, Singletons.masterKey, encryptionScheme).build()
   }
 }

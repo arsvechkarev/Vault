@@ -2,9 +2,9 @@ package com.arsvechkarev.vault.features.info
 
 import com.arsvechkarev.vault.core.BasePresenter
 import com.arsvechkarev.vault.core.Threader
-import com.arsvechkarev.vault.core.model.ServiceInfo
+import com.arsvechkarev.vault.core.model.Service
 import com.arsvechkarev.vault.cryptography.MasterPasswordHolder.masterPassword
-import com.arsvechkarev.vault.features.common.PasswordsListRepository
+import com.arsvechkarev.vault.features.common.ServicesRepository
 import com.arsvechkarev.vault.features.common.getIconForServiceName
 import com.arsvechkarev.vault.features.info.InfoScreenState.DELETING_DIALOG
 import com.arsvechkarev.vault.features.info.InfoScreenState.EDITING_NAME_OR_USERNAME_OR_EMAIL
@@ -14,27 +14,27 @@ import com.arsvechkarev.vault.features.info.InfoScreenState.PASSWORD_EDITING_DIA
 import com.arsvechkarev.vault.features.info.InfoScreenState.SAVE_PASSWORD_DIALOG
 
 class InfoPresenter(
-  private val passwordsListRepository: PasswordsListRepository,
+  private val servicesRepository: ServicesRepository,
   threader: Threader
 ) : BasePresenter<InfoView>(threader) {
   
-  private lateinit var serviceInfo: ServiceInfo
+  private lateinit var service: Service
   
   private var password: String = ""
   private var state = INITIAL
   
   val isEditingNameOrEmailNow get() = state == EDITING_NAME_OR_USERNAME_OR_EMAIL
   
-  fun performSetup(serviceInfo: ServiceInfo) {
-    this.serviceInfo = serviceInfo
+  fun performSetup(service: Service) {
+    this.service = service
     state = INITIAL
-    password = serviceInfo.password
-    updateServiceIcon(serviceInfo.serviceName)
-    viewState.showServiceName(serviceInfo.serviceName)
-    viewState.setPassword(serviceInfo.password)
-    val username = serviceInfo.username
+    password = service.password
+    updateServiceIcon(service.serviceName)
+    viewState.showServiceName(service.serviceName)
+    viewState.setPassword(service.password)
+    val username = service.username
     if (username.isEmpty()) viewState.showNoUsername() else viewState.showUsername(username)
-    val email = serviceInfo.email
+    val email = service.email
     if (email.isEmpty()) viewState.showNoEmail() else viewState.showEmail(email)
   }
   
@@ -45,15 +45,15 @@ class InfoPresenter(
   
   fun saveServiceName(serviceName: String) {
     state = INITIAL
-    if (serviceInfo.serviceName == serviceName) return
+    if (service.serviceName == serviceName) return
     viewState.showLoading()
     state = LOADING
-    serviceInfo = ServiceInfo(serviceInfo.id, serviceName, serviceInfo.username,
-      serviceInfo.email, serviceInfo.password)
+    service = Service(service.id, serviceName, service.username,
+      service.email, service.password)
     viewState.showServiceName(serviceName)
     updateServiceIcon(serviceName)
     onIoThread {
-      passwordsListRepository.updateServiceInfo(masterPassword, serviceInfo)
+      servicesRepository.updateService(masterPassword, service)
       state = INITIAL
       updateViewState { showFinishLoading() }
     }
@@ -61,14 +61,14 @@ class InfoPresenter(
   
   fun saveUsername(username: String) {
     state = INITIAL
-    if (serviceInfo.username == username) return
+    if (service.username == username) return
     viewState.showLoading()
     state = LOADING
-    serviceInfo = ServiceInfo(serviceInfo.id, serviceInfo.serviceName, username,
-      serviceInfo.email, serviceInfo.password)
+    service = Service(service.id, service.serviceName, username,
+      service.email, service.password)
     if (username.isBlank()) viewState.showNoUsername() else viewState.showUsername(username)
     onIoThread {
-      passwordsListRepository.updateServiceInfo(masterPassword, serviceInfo)
+      servicesRepository.updateService(masterPassword, service)
       state = INITIAL
       updateViewState { showFinishLoading() }
     }
@@ -76,14 +76,14 @@ class InfoPresenter(
   
   fun saveEmail(email: String) {
     state = INITIAL
-    if (serviceInfo.email == email) return
+    if (service.email == email) return
     viewState.showLoading()
     state = LOADING
-    serviceInfo = ServiceInfo(serviceInfo.id, serviceInfo.serviceName, serviceInfo.username,
-      email, serviceInfo.password)
+    service = Service(service.id, service.serviceName, service.username,
+      email, service.password)
     if (email.isBlank()) viewState.showNoEmail() else viewState.showEmail(email)
     onIoThread {
-      passwordsListRepository.updateServiceInfo(masterPassword, serviceInfo)
+      servicesRepository.updateService(masterPassword, service)
       state = INITIAL
       updateViewState { showFinishLoading() }
     }
@@ -91,7 +91,7 @@ class InfoPresenter(
   
   fun onTogglePassword(isPasswordShown: Boolean) {
     if (isPasswordShown) {
-      viewState.showPassword(serviceInfo.password)
+      viewState.showPassword(service.password)
     } else {
       viewState.hidePassword()
     }
@@ -103,7 +103,7 @@ class InfoPresenter(
   
   fun onDeleteClicked() {
     state = DELETING_DIALOG
-    viewState.showDeleteDialog(serviceInfo.serviceName)
+    viewState.showDeleteDialog(service.serviceName)
   }
   
   fun onHideDeleteDialog() {
@@ -115,7 +115,7 @@ class InfoPresenter(
     viewState.hideDeleteDialog()
     viewState.showLoading()
     onIoThread {
-      passwordsListRepository.deleteServiceInfo(masterPassword, serviceInfo, notifyListeners = true)
+      servicesRepository.deleteService(masterPassword, service, notifyListeners = true)
       state = INITIAL
       updateViewState { showExit() }
     }
@@ -123,7 +123,7 @@ class InfoPresenter(
   
   fun onEditPasswordIconClicked() {
     state = PASSWORD_EDITING_DIALOG
-    viewState.showPasswordEditingDialog(serviceInfo.password)
+    viewState.showPasswordEditingDialog(service.password)
   }
   
   fun onSaveNewPasswordClicked(password: String) {
@@ -145,10 +145,10 @@ class InfoPresenter(
     state = LOADING
     viewState.showLoading()
     viewState.hideSavePasswordDialog()
-    serviceInfo = ServiceInfo(serviceInfo.id, serviceInfo.serviceName, serviceInfo.username,
-      serviceInfo.email, password)
+    service = Service(service.id, service.serviceName, service.username,
+      service.email, password)
     onIoThread {
-      passwordsListRepository.updateServiceInfo(masterPassword, serviceInfo)
+      servicesRepository.updateService(masterPassword, service)
       state = INITIAL
       updateViewState {
         setPassword(password)

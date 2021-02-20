@@ -9,10 +9,10 @@ import android.view.Gravity.END
 import com.arsvechkarev.vault.R
 import com.arsvechkarev.vault.core.AndroidThreader
 import com.arsvechkarev.vault.core.Singletons.passwordCreatingPresenter
-import com.arsvechkarev.vault.core.Singletons.passwordsListRepository
+import com.arsvechkarev.vault.core.Singletons.servicesRepository
 import com.arsvechkarev.vault.core.extensions.getDeleteMessageText
 import com.arsvechkarev.vault.core.extensions.moxyPresenter
-import com.arsvechkarev.vault.core.model.ServiceInfo
+import com.arsvechkarev.vault.core.model.Service
 import com.arsvechkarev.vault.core.navigation.Screen
 import com.arsvechkarev.vault.features.creating_password.PasswordEditingDialog.Companion.PasswordEditingDialog
 import com.arsvechkarev.vault.features.creating_password.PasswordEditingDialog.Companion.passwordEditingDialog
@@ -178,11 +178,11 @@ class InfoScreen : Screen(), InfoView {
   }
   
   private val presenter by moxyPresenter {
-    InfoPresenter(passwordsListRepository, AndroidThreader)
+    InfoPresenter(servicesRepository, AndroidThreader)
   }
   
   override fun onAppearedOnScreen(arguments: Bundle) {
-    val serviceInfo = arguments.getParcelable<ServiceInfo>(SERVICE_INFO) as ServiceInfo
+    val serviceInfo = arguments.getParcelable<Service>(SERVICE_INFO) as Service
     presenter.performSetup(serviceInfo)
   }
   

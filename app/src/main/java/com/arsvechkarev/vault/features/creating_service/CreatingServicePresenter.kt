@@ -2,9 +2,9 @@ package com.arsvechkarev.vault.features.creating_service
 
 import com.arsvechkarev.vault.core.BasePresenter
 import com.arsvechkarev.vault.core.Threader
-import com.arsvechkarev.vault.core.model.ServiceInfo
+import com.arsvechkarev.vault.core.model.Service
 import com.arsvechkarev.vault.cryptography.MasterPasswordHolder.masterPassword
-import com.arsvechkarev.vault.features.common.PasswordsListRepository
+import com.arsvechkarev.vault.features.common.ServicesRepository
 import com.arsvechkarev.vault.features.common.getIconForServiceName
 import com.arsvechkarev.vault.features.creating_service.CreatingServiceScreenState.DIALOG_SAVE_PASSWORD
 import com.arsvechkarev.vault.features.creating_service.CreatingServiceScreenState.INITIAL
@@ -12,7 +12,7 @@ import com.arsvechkarev.vault.features.creating_service.CreatingServiceScreenSta
 import java.util.UUID
 
 class CreatingServicePresenter(
-  private val passwordsListRepository: PasswordsListRepository,
+  private val servicesRepository: ServicesRepository,
   threader: Threader
 ) : BasePresenter<CreatingServiceView>(threader) {
   
@@ -58,9 +58,9 @@ class CreatingServicePresenter(
     viewState.showLoadingCreation()
     viewState.hideSavePasswordDialog()
     onIoThread {
-      val serviceInfo = ServiceInfo(UUID.randomUUID().toString(), serviceName,
+      val serviceInfo = Service(UUID.randomUUID().toString(), serviceName,
         username, email, password)
-      passwordsListRepository.saveServiceInfo(masterPassword, serviceInfo)
+      servicesRepository.saveService(masterPassword, serviceInfo)
       updateViewState { showExit() }
     }
   }

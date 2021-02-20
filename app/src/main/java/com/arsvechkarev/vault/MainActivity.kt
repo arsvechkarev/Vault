@@ -6,7 +6,7 @@ import android.view.View.SYSTEM_UI_FLAG_LAYOUT_STABLE
 import com.arsvechkarev.vault.core.BaseActivity
 import com.arsvechkarev.vault.core.Singletons.userAuthSaver
 import com.arsvechkarev.vault.core.extensions.bundle
-import com.arsvechkarev.vault.core.model.ServiceInfo
+import com.arsvechkarev.vault.core.model.Service
 import com.arsvechkarev.vault.core.navigation.Navigator
 import com.arsvechkarev.vault.core.navigation.NavigatorView
 import com.arsvechkarev.vault.core.navigation.Options
@@ -61,9 +61,9 @@ class MainActivity : BaseActivity(), Navigator {
       options = Options(removeWhenBackClicked = true))
   }
   
-  override fun goToSavedServiceInfoScreen(serviceInfo: ServiceInfo) {
+  override fun goToSavedServiceInfoScreen(service: Service) {
     navigator.navigate(InfoScreen::class, options = Options(
-      arguments = bundle(SERVICE_INFO to serviceInfo)
+      arguments = bundle(SERVICE_INFO to service)
     ))
   }
   

@@ -8,7 +8,7 @@ import android.widget.ImageView.ScaleType.FIT_XY
 import com.arsvechkarev.vault.R
 import com.arsvechkarev.vault.core.AndroidThreader
 import com.arsvechkarev.vault.core.Singletons.passwordCreatingPresenter
-import com.arsvechkarev.vault.core.Singletons.passwordsListRepository
+import com.arsvechkarev.vault.core.Singletons.servicesRepository
 import com.arsvechkarev.vault.core.extensions.moxyPresenter
 import com.arsvechkarev.vault.core.extensions.setSoftInputMode
 import com.arsvechkarev.vault.core.navigation.Screen
@@ -140,7 +140,7 @@ class CreatingServiceScreen : Screen(), CreatingServiceView {
   }
   
   private val presenter by moxyPresenter {
-    CreatingServicePresenter(passwordsListRepository, AndroidThreader)
+    CreatingServicePresenter(servicesRepository, AndroidThreader)
   }
   
   private val passwordTextWatcher = object : BaseTextWatcher {

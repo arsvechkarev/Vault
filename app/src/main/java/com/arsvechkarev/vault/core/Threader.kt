@@ -1,7 +1,5 @@
 package com.arsvechkarev.vault.core
 
-import java.util.concurrent.Future
-
 /**
  * Executes a given lambda on a specified thread
  *
@@ -10,14 +8,14 @@ import java.util.concurrent.Future
 interface Threader {
   
   /**
-   * Executes [block] on a background thread and returns a future that represents that task
+   * Executes [block] on a background thread
    */
-  fun onBackgroundThread(block: () -> Unit): Future<*>
+  fun onBackgroundThread(block: () -> Unit)
   
   /**
-   * Executes [block] on a dedicated IO thread and returns a future that represents that task
+   * Executes [block] on a dedicated IO thread
    */
-  fun onIoThread(block: () -> Unit): Future<*>
+  fun onIoThread(block: () -> Unit)
   
   /**
    * Executes [block] on the Android main thread

@@ -71,7 +71,7 @@ class ServicesListScreen : Screen(), ServicesListView {
         behavior(HeaderBehavior())
         text(getString(R.string.text_passwords))
       }
-      RecyclerView(MatchParent, MatchParent) {
+      RecyclerView(MatchParent, WrapContent) {
         classNameTag()
         behavior(ScrollingRecyclerBehavior())
       }

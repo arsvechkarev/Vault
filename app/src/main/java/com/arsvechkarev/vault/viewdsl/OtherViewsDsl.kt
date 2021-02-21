@@ -9,24 +9,6 @@ import androidx.annotation.DrawableRes
 import androidx.appcompat.widget.SwitchCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.arsvechkarev.vault.core.extensions.ifNotNull
-
-fun RecyclerView.allowRecyclerScrolling(): Boolean {
-  adapter.ifNotNull { adapter ->
-    var pos = -1
-    for (i in 0 until childCount) {
-      val view = getChildAt(i)
-      if (view.bottom > height) {
-        pos = i
-      }
-    }
-    if (pos == -1) {
-      return false
-    }
-    return pos < adapter.itemCount
-  }
-  return false
-}
 
 fun RecyclerView.setupWith(adapter: RecyclerView.Adapter<*>) {
   layoutManager = LinearLayoutManager(context)

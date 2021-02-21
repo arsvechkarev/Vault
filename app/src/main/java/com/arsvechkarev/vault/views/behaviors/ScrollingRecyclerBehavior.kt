@@ -3,9 +3,10 @@ package com.arsvechkarev.vault.views.behaviors
 import android.view.View
 import android.view.View.MeasureSpec
 import androidx.coordinatorlayout.widget.CoordinatorLayout
+import androidx.core.view.ViewCompat
 import androidx.recyclerview.widget.RecyclerView
+import com.arsvechkarev.vault.viewdsl.atMost
 import com.arsvechkarev.vault.viewdsl.hasBehavior
-import com.arsvechkarev.vault.views.behaviors.HeaderBehavior.Companion.asHeader
 
 class ScrollingRecyclerBehavior : CoordinatorLayout.Behavior<RecyclerView>() {
   
@@ -14,7 +15,8 @@ class ScrollingRecyclerBehavior : CoordinatorLayout.Behavior<RecyclerView>() {
   }
   
   override fun onDependentViewChanged(parent: CoordinatorLayout, child: RecyclerView, dependency: View): Boolean {
-    child.top = dependency.bottom
+    val offset = dependency.bottom - child.top
+    ViewCompat.offsetTopAndBottom(child, offset)
     return true
   }
   
@@ -27,11 +29,7 @@ class ScrollingRecyclerBehavior : CoordinatorLayout.Behavior<RecyclerView>() {
     heightUsed: Int
   ): Boolean {
     val heightSize = MeasureSpec.getSize(parentHeightMeasureSpec)
-    val header = findHeader(parent).asHeader
-    val height = heightSize - header.minHeight
-    val heightSpec = MeasureSpec.makeMeasureSpec(height, MeasureSpec.EXACTLY)
-    parent.onMeasureChild(child, parentWidthMeasureSpec, widthUsed, heightSpec,
-      heightUsed)
+    parent.onMeasureChild(child, parentWidthMeasureSpec, widthUsed, atMost(heightSize), heightUsed)
     return true
   }
   
@@ -50,4 +48,4 @@ class ScrollingRecyclerBehavior : CoordinatorLayout.Behavior<RecyclerView>() {
     }
     throw IllegalStateException()
   }
-} 
+}

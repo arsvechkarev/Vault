@@ -14,7 +14,6 @@ import com.arsvechkarev.vault.viewbuilding.Dimens.MarginBig
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginDefault
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginSmall
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginVerySmall
-import com.arsvechkarev.vault.viewbuilding.Styles.BaseEditText
 import com.arsvechkarev.vault.viewbuilding.Styles.BaseTextView
 import com.arsvechkarev.vault.viewbuilding.Styles.BoldTextView
 import com.arsvechkarev.vault.viewbuilding.Styles.ClickableButton
@@ -29,11 +28,10 @@ import com.arsvechkarev.vault.viewdsl.margin
 import com.arsvechkarev.vault.viewdsl.marginHorizontal
 import com.arsvechkarev.vault.viewdsl.margins
 import com.arsvechkarev.vault.viewdsl.onClick
-import com.arsvechkarev.vault.viewdsl.onSubmit
-import com.arsvechkarev.vault.viewdsl.onTextChanged
 import com.arsvechkarev.vault.viewdsl.text
 import com.arsvechkarev.vault.viewdsl.textColor
 import com.arsvechkarev.vault.viewdsl.textSize
+import com.arsvechkarev.vault.views.EditTextPassword
 import com.arsvechkarev.vault.views.dialogs.LoadingDialog
 import com.arsvechkarev.vault.views.dialogs.loadingDialog
 
@@ -70,12 +68,12 @@ class StartScreen : Screen(), StartView {
           margins(start = MarginDefault + MarginVerySmall, bottom = MarginSmall)
           textColor(Colors.Error)
         }
-        EditText(MatchParent, WrapContent, style = BaseEditText) {
+        child<EditTextPassword>(MatchParent, WrapContent) {
           id(start_screen_enter_password)
           marginHorizontal(MarginDefault)
           setHint(R.string.hint_enter_password)
           onTextChanged { textView(start_screen_error_text).text("") }
-          onSubmit { presenter.onEnteredPassword(this.text.toString()) }
+          onSubmit { text -> presenter.onEnteredPassword(text) }
         }
       }
       TextView(MatchParent, WrapContent, style = ClickableButton()) {
@@ -88,7 +86,7 @@ class StartScreen : Screen(), StartView {
           bottomToBottomOf(parent)
         }
         onClick {
-          val text = editText(start_screen_enter_password).text.toString()
+          val text = viewAs<EditTextPassword>(start_screen_enter_password).getText()
           presenter.onEnteredPassword(text)
         }
       }
@@ -101,7 +99,7 @@ class StartScreen : Screen(), StartView {
   }
   
   override fun onInit() {
-    editText(start_screen_enter_password).requestFocus()
+    viewAs<EditTextPassword>(start_screen_enter_password).requestEditTextFocus()
     showKeyboard()
   }
   

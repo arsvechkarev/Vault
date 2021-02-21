@@ -92,8 +92,6 @@ val View.marginEnd get() = (layoutParams as? MarginLayoutParams)?.marginEnd ?: 0
 
 val View.marginBottom get() = (layoutParams as? MarginLayoutParams)?.bottomMargin ?: 0
 
-val View.heightWithMargins get() = measuredHeight + marginTop + marginBottom
-
 fun View.margin(value: Int) {
   margins(value, value, value, value)
 }
@@ -155,25 +153,11 @@ fun View.paddingHorizontal(value: Int) {
   paddings(value, paddingTop, value, paddingBottom)
 }
 
-fun View.paddingsRes(
-  @DimenRes start: Int = 0,
-  @DimenRes top: Int = 0,
-  @DimenRes end: Int = 0,
-  @DimenRes bottom: Int = 0
-) {
-  paddings(
-    if (start == 0) 0 else dimen(start).toInt(),
-    if (start == 0) 0 else dimen(top).toInt(),
-    if (start == 0) 0 else dimen(end).toInt(),
-    if (start == 0) 0 else dimen(bottom).toInt()
-  )
-}
-
 fun View.paddings(
-  start: Int = 0,
-  top: Int = 0,
-  end: Int = 0,
-  bottom: Int = 0
+  start: Int = paddingStart,
+  top: Int = paddingTop,
+  end: Int = paddingEnd,
+  bottom: Int = paddingBottom
 ) {
   if (isLayoutLeftToRight) {
     setPadding(start, top, end, bottom)
@@ -188,10 +172,6 @@ fun View.string(stringRes: Int): String {
 
 fun onClick(vararg views: View, action: (View) -> Unit) {
   views.forEach { it.setOnClickListener(action) }
-}
-
-fun setEnabled(isEnabled: Boolean, vararg views: View) {
-  views.forEach { it.isEnabled = isEnabled }
 }
 
 fun setClickable(isClickable: Boolean, vararg views: View) {

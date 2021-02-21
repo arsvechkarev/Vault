@@ -6,7 +6,7 @@ import android.graphics.drawable.GradientDrawable
 import android.graphics.drawable.RippleDrawable
 import android.graphics.drawable.ShapeDrawable
 import android.graphics.drawable.shapes.RoundRectShape
-import android.text.InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS
+import android.text.InputType.TYPE_TEXT_VARIATION_PASSWORD
 import android.text.TextUtils
 import android.view.Gravity
 import android.view.inputmethod.EditorInfo
@@ -98,7 +98,7 @@ object Styles {
     textSize(TextSizes.H3)
     paddingVertical(MarginSmall)
     setSingleLine()
-    inputType = TYPE_TEXT_FLAG_NO_SUGGESTIONS
+    inputType = TYPE_TEXT_VARIATION_PASSWORD
     imeOptions = EditorInfo.IME_ACTION_DONE
   }
 }

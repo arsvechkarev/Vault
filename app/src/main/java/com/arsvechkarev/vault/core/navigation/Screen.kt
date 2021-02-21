@@ -12,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.arsvechkarev.vault.core.extensions.showKeyboard
 import com.arsvechkarev.vault.viewdsl.ViewBuilder
 import com.arsvechkarev.vault.viewdsl.withViewBuilder
+import com.arsvechkarev.vault.views.EditTextPassword
 import com.arsvechkarev.vault.views.SimpleDialog
 import moxy.MvpDelegate
 import moxy.MvpDelegateHolder
@@ -132,6 +133,8 @@ abstract class Screen : MvpDelegateHolder, MvpView {
   fun textView(tag: Any) = viewAs<TextView>(tag)
   
   fun editText(tag: Any) = viewAs<EditText>(tag)
+  
+  fun editTextPassword(tag: Any) = viewAs<EditTextPassword>(tag)
   
   fun simpleDialog(tag: Any = SimpleDialog::class.java.name) = viewAs<SimpleDialog>(tag)
 }

@@ -26,7 +26,6 @@ import com.arsvechkarev.vault.viewbuilding.Colors
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginDefault
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginMedium
 import com.arsvechkarev.vault.viewbuilding.Dimens.PasswordStrengthMeterHeight
-import com.arsvechkarev.vault.viewbuilding.Styles.BaseEditText
 import com.arsvechkarev.vault.viewbuilding.Styles.BaseTextView
 import com.arsvechkarev.vault.viewbuilding.Styles.BoldTextView
 import com.arsvechkarev.vault.viewbuilding.Styles.ClickableButton
@@ -50,6 +49,7 @@ import com.arsvechkarev.vault.viewdsl.text
 import com.arsvechkarev.vault.viewdsl.textColor
 import com.arsvechkarev.vault.viewdsl.textSize
 import com.arsvechkarev.vault.viewdsl.visible
+import com.arsvechkarev.vault.views.EditTextPassword
 import com.arsvechkarev.vault.views.PasswordStrengthMeter
 import com.arsvechkarev.vault.views.dialogs.LoadingDialog
 import com.arsvechkarev.vault.views.dialogs.loadingDialog
@@ -95,12 +95,12 @@ class CreateMasterPasswordScreen : Screen(), CreateMasterPasswordView {
           classNameTag()
           inAnimation = AnimationUtils.loadAnimation(contextNonNull, R.anim.slide_out_left)
           outAnimation = AnimationUtils.loadAnimation(contextNonNull, R.anim.slide_in_right)
-          EditText(MatchParent, WrapContent, style = BaseEditText) {
+          child<EditTextPassword>(MatchParent, WrapContent) {
             tag(EditTextEnterPassword)
             marginHorizontal(MarginDefault)
             setHint(R.string.hint_enter_password)
           }
-          EditText(MatchParent, WrapContent, style = BaseEditText) {
+          child<EditTextPassword>(MatchParent, WrapContent) {
             tag(EditTextRepeatPassword)
             marginHorizontal(MarginDefault)
             setHint(R.string.hint_repeat_password)
@@ -119,7 +119,7 @@ class CreateMasterPasswordScreen : Screen(), CreateMasterPasswordView {
         margins(start = MarginDefault, end = MarginDefault, bottom = MarginDefault)
         whenPresenterIsReady {
           onClick {
-            presenter.onEnteredPassword(editText(EditTextEnterPassword).text.toString())
+            presenter.onEnteredPassword(editTextPassword(EditTextEnterPassword).getText())
           }
         }
       }
@@ -147,9 +147,10 @@ class CreateMasterPasswordScreen : Screen(), CreateMasterPasswordView {
   }
   
   override fun onInit() {
-    editText(EditTextEnterPassword).addTextChangedListener(passwordTextWatcher)
-    editText(EditTextEnterPassword).addTextChangedListener(clearErrorTextWatcher)
-    editText(EditTextRepeatPassword).addTextChangedListener(clearErrorTextWatcher)
+    editTextPassword(EditTextEnterPassword).addTextChangedListener(passwordTextWatcher)
+    editTextPassword(EditTextEnterPassword).addTextChangedListener(clearErrorTextWatcher)
+    editTextPassword(EditTextRepeatPassword).addTextChangedListener(clearErrorTextWatcher)
+    editTextPassword(EditTextEnterPassword).requestEditTextFocus()
   }
   
   override fun allowBackPress(): Boolean {
@@ -157,9 +158,9 @@ class CreateMasterPasswordScreen : Screen(), CreateMasterPasswordView {
   }
   
   override fun onRelease() {
-    editText(EditTextRepeatPassword).removeTextChangedListener(passwordTextWatcher)
-    editText(EditTextEnterPassword).removeTextChangedListener(clearErrorTextWatcher)
-    editText(EditTextRepeatPassword).removeTextChangedListener(clearErrorTextWatcher)
+    editTextPassword(EditTextRepeatPassword).removeTextChangedListener(passwordTextWatcher)
+    editTextPassword(EditTextEnterPassword).removeTextChangedListener(clearErrorTextWatcher)
+    editTextPassword(EditTextRepeatPassword).removeTextChangedListener(clearErrorTextWatcher)
   }
   
   override fun showPasswordProblem(passwordStatus: PasswordStatus) {
@@ -203,9 +204,9 @@ class CreateMasterPasswordScreen : Screen(), CreateMasterPasswordView {
   
   override fun switchToRepeatPasswordState() {
     textView(TextContinue).onClick {
-      presenter.onRepeatedPassword(editText(EditTextRepeatPassword).text.toString())
+      presenter.onRepeatedPassword(editTextPassword(EditTextRepeatPassword).getText())
     }
-    editText(EditTextRepeatPassword).text("")
+    editTextPassword(EditTextRepeatPassword).text("")
     textView(TextError).text("")
     textView(TextPasswordStrength).text("")
     view(TextTitle).animateInvisible()

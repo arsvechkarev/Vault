@@ -33,7 +33,7 @@ object TextSizes {
   }
   
   private fun adjustToScreenSize(textSize: Float): Float {
-    return when (ContextHolder.context.resources.getInteger(R.integer.screen_type)) {
+    return when (ContextHolder.applicationContext.resources.getInteger(R.integer.screen_type)) {
       0 -> textSize
       1 -> textSize * 1.1f
       2 -> textSize * 1.4f
@@ -44,7 +44,7 @@ object TextSizes {
   
   private fun adjustTextToDpi(textResId: Int): Float {
     val textSize = dimen(textResId)
-    val densityDpi = ContextHolder.context.resources.displayMetrics.densityDpi
+    val densityDpi = ContextHolder.applicationContext.resources.displayMetrics.densityDpi
     return when {
       densityDpi <= 120 -> textSize * 0.75f
       densityDpi <= 160 -> textSize * 0.80f

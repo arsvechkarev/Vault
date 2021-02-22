@@ -147,11 +147,11 @@ class ServicesListScreen : Screen(), ServicesListView {
     showView(view(LayoutLoading))
   }
   
-  override fun showNoPasswords() {
+  override fun showNoServices() {
     showView(view(LayoutNoPasswords))
   }
   
-  override fun showPasswordsList(list: List<Service>) {
+  override fun showServicesList(list: List<Service>) {
     showView(viewAs<RecyclerView>())
     adapter.changeListWithoutAnimation(list)
   }

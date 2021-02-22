@@ -8,7 +8,7 @@ object ContextHolder {
   
   private lateinit var _context: Context
   
-  val context: Context
+  val applicationContext: Context
     get() = _context
   
   fun init(context: Context) {

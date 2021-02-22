@@ -24,6 +24,8 @@ interface InfoView : MvpView {
   
   fun setPassword(password: String)
   
+  fun restoreInitialData()
+  
   fun showPassword(password: String)
   
   fun hidePassword()
@@ -42,7 +44,9 @@ interface InfoView : MvpView {
   
   fun showLoading()
   
-  fun showFinishLoading()
+  fun hideLoading()
+  
+  fun showCopiedPassword()
   
   fun showExit()
 }

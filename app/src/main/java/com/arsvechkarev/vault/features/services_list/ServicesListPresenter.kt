@@ -12,7 +12,11 @@ class ServicesListPresenter(
 ) : BasePresenter<ServicesListView>(threader) {
   
   private val listChangeListener: (List<Service>) -> Unit = { list ->
-    viewState.showPasswordsList(list)
+    if (list.isNotEmpty()) {
+      viewState.showServicesList(list)
+    } else {
+      viewState.showNoServices()
+    }
   }
   
   override fun onFirstViewAttach() {
@@ -22,11 +26,11 @@ class ServicesListPresenter(
   fun startLoadingPasswords() {
     onIoThread {
       updateViewState { showLoading() }
-      val passwords = servicesRepository.getServices(masterPassword)
-      if (passwords.isEmpty()) {
-        updateViewState { showNoPasswords() }
+      val services = servicesRepository.getServices(masterPassword)
+      if (services.isNotEmpty()) {
+        updateViewState { showServicesList(services) }
       } else {
-        updateViewState { showPasswordsList(passwords) }
+        updateViewState { showNoServices() }
       }
     }
   }

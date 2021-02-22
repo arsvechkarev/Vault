@@ -1,6 +1,7 @@
 package com.arsvechkarev.vault.features.info
 
 import com.arsvechkarev.vault.core.BasePresenter
+import com.arsvechkarev.vault.core.Clipboard
 import com.arsvechkarev.vault.core.Threader
 import com.arsvechkarev.vault.core.model.Service
 import com.arsvechkarev.vault.cryptography.MasterPasswordHolder.masterPassword
@@ -15,6 +16,7 @@ import com.arsvechkarev.vault.features.info.InfoScreenState.SAVE_PASSWORD_DIALOG
 
 class InfoPresenter(
   private val servicesRepository: ServicesRepository,
+  private val clipboard: Clipboard,
   threader: Threader
 ) : BasePresenter<InfoView>(threader) {
   
@@ -55,7 +57,7 @@ class InfoPresenter(
     onIoThread {
       servicesRepository.updateService(masterPassword, service)
       state = INITIAL
-      updateViewState { showFinishLoading() }
+      updateViewState { hideLoading() }
     }
   }
   
@@ -70,7 +72,7 @@ class InfoPresenter(
     onIoThread {
       servicesRepository.updateService(masterPassword, service)
       state = INITIAL
-      updateViewState { showFinishLoading() }
+      updateViewState { hideLoading() }
     }
   }
   
@@ -85,7 +87,7 @@ class InfoPresenter(
     onIoThread {
       servicesRepository.updateService(masterPassword, service)
       state = INITIAL
-      updateViewState { showFinishLoading() }
+      updateViewState { hideLoading() }
     }
   }
   
@@ -121,6 +123,11 @@ class InfoPresenter(
     }
   }
   
+  fun onCopyClicked() {
+    clipboard.copyPassword(service.password)
+    viewState.showCopiedPassword()
+  }
+  
   fun onEditPasswordIconClicked() {
     state = PASSWORD_EDITING_DIALOG
     viewState.showPasswordEditingDialog(service.password)
@@ -153,7 +160,7 @@ class InfoPresenter(
       updateViewState {
         setPassword(password)
         hidePasswordEditingDialog()
-        showFinishLoading()
+        hideLoading()
       }
     }
   }
@@ -172,7 +179,12 @@ class InfoPresenter(
   fun allowBackPress(): Boolean {
     return when (state) {
       INITIAL -> true
-      LOADING, EDITING_NAME_OR_USERNAME_OR_EMAIL -> false
+      LOADING -> false
+      EDITING_NAME_OR_USERNAME_OR_EMAIL -> {
+        viewState.restoreInitialData()
+        state = INITIAL
+        false
+      }
       DELETING_DIALOG -> {
         viewState.hideDeleteDialog()
         state = INITIAL

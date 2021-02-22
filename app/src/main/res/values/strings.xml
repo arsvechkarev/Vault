@@ -66,4 +66,6 @@
   <string name="text_click_plus">Click on the + button below to create new password</string>
   <string name="text_cancel">CANCEL</string>
   <string name="text_delete">DELETE</string>
+  <string name="text_password_copied">Password successfully copied!</string>
+  <string name="clipboard_label_password">password</string>
 </resources>

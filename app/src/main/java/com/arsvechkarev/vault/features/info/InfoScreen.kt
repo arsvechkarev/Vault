@@ -3,10 +3,12 @@ package com.arsvechkarev.vault.features.info
 import android.content.res.ColorStateList
 import android.graphics.drawable.Drawable
 import android.os.Bundle
+import android.view.Gravity.BOTTOM
 import android.view.Gravity.CENTER
 import android.view.Gravity.CENTER_HORIZONTAL
 import android.view.Gravity.END
 import com.arsvechkarev.vault.R
+import com.arsvechkarev.vault.core.AndroidClipboard
 import com.arsvechkarev.vault.core.AndroidThreader
 import com.arsvechkarev.vault.core.Singletons.passwordCreatingPresenter
 import com.arsvechkarev.vault.core.Singletons.servicesRepository
@@ -42,6 +44,7 @@ import com.arsvechkarev.vault.viewdsl.gravity
 import com.arsvechkarev.vault.viewdsl.image
 import com.arsvechkarev.vault.viewdsl.invisible
 import com.arsvechkarev.vault.viewdsl.layoutGravity
+import com.arsvechkarev.vault.viewdsl.margin
 import com.arsvechkarev.vault.viewdsl.marginHorizontal
 import com.arsvechkarev.vault.viewdsl.margins
 import com.arsvechkarev.vault.viewdsl.onClick
@@ -52,6 +55,7 @@ import com.arsvechkarev.vault.viewdsl.textColor
 import com.arsvechkarev.vault.viewdsl.textSize
 import com.arsvechkarev.vault.views.EditableTextInfoViewGroup
 import com.arsvechkarev.vault.views.PasswordActionsView
+import com.arsvechkarev.vault.views.Snackbar
 import com.arsvechkarev.vault.views.dialogs.InfoDialog.Companion.InfoDialog
 import com.arsvechkarev.vault.views.dialogs.InfoDialog.Companion.infoDialog
 import com.arsvechkarev.vault.views.dialogs.LoadingDialog
@@ -68,7 +72,7 @@ class InfoScreen : Screen(), InfoView {
         FrameLayout(MatchParent, WrapContent) {
           margins(top = MarginDefault, start = MarginDefault, end = MarginDefault)
           ImageView(WrapContent, WrapContent, style = ImageBack) {
-            onClick { if (!presenter.isEditingNameOrEmailNow) navigator.popCurrentScreen() }
+            onClick { if (presenter.allowBackPress()) navigator.popCurrentScreen() }
           }
           ImageView(WrapContent, WrapContent) {
             image(R.drawable.ic_delete)
@@ -163,8 +167,8 @@ class InfoScreen : Screen(), InfoView {
           classNameTag()
           margins(top = VerticalMarginSmall, start = HorizontalMarginPasswordsActionView,
             end = HorizontalMarginPasswordsActionView)
-          onCopyClick { }
-          onEditClick { presenter.onEditPasswordIconClicked() }
+          onCopyClicked { presenter.onCopyClicked() }
+          onEditClicked { presenter.onEditPasswordIconClicked() }
           whenPresenterIsReady {
             onTogglePassword = presenter::onTogglePassword
             reactToClicks = { !presenter.isEditingNameOrEmailNow }
@@ -176,11 +180,16 @@ class InfoScreen : Screen(), InfoView {
       }
       LoadingDialog()
       InfoDialog()
+      child<Snackbar>(MatchParent, WrapContent) {
+        classNameTag()
+        layoutGravity(BOTTOM)
+        margin(MarginDefault)
+      }
     }
   }
   
   private val presenter by moxyPresenter {
-    InfoPresenter(servicesRepository, AndroidThreader)
+    InfoPresenter(servicesRepository, AndroidClipboard, AndroidThreader)
   }
   
   override fun onAppearedOnScreen(arguments: Bundle) {
@@ -226,6 +235,12 @@ class InfoScreen : Screen(), InfoView {
   
   override fun setPassword(password: String) {
     textView(TextPassword).text(password)
+  }
+  
+  override fun restoreInitialData() {
+    viewAs<EditableTextInfoViewGroup>(EditableTextInfoServiceName).cancelEditing()
+    viewAs<EditableTextInfoViewGroup>(EditableTextInfoUsername).cancelEditing()
+    viewAs<EditableTextInfoViewGroup>(EditableTextInfoEmail).cancelEditing()
   }
   
   override fun showPassword(password: String) {
@@ -283,8 +298,12 @@ class InfoScreen : Screen(), InfoView {
     loadingDialog.show()
   }
   
-  override fun showFinishLoading() {
+  override fun hideLoading() {
     loadingDialog.hide()
+  }
+  
+  override fun showCopiedPassword() {
+    viewAs<Snackbar>().show(R.string.text_password_copied)
   }
   
   override fun showExit() {

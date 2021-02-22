@@ -37,11 +37,11 @@ class PasswordActionsView(context: Context) : ViewGroup(context) {
     }
   }
   
-  fun onCopyClick(block: () -> Unit) {
+  fun onCopyClicked(block: () -> Unit) {
     getChildAt(0).onClick(block)
   }
   
-  fun onEditClick(block: () -> Unit) {
+  fun onEditClicked(block: () -> Unit) {
     getChildAt(1).onClick(block)
   }
   

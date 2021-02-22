@@ -1,5 +1,6 @@
 package com.arsvechkarev.vault.viewdsl
 
+import android.app.Activity
 import android.content.Context
 import android.content.res.Configuration
 import android.graphics.drawable.Drawable
@@ -7,20 +8,28 @@ import android.text.TextUtils
 import android.util.TypedValue
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
+import android.widget.EditText
 import androidx.annotation.AttrRes
 import androidx.annotation.ColorInt
 import androidx.annotation.DrawableRes
 import androidx.core.content.ContextCompat
 import java.util.Locale
 
-fun dimen(dimenRes: Int) = ContextHolder.context.resources.getDimension(dimenRes)
+fun dimen(dimenRes: Int) = ContextHolder.applicationContext.resources.getDimension(dimenRes)
 
 val isOrientationPortrait: Boolean
-  get() = ContextHolder.context.resources.configuration.orientation ==
+  get() = ContextHolder.applicationContext.resources.configuration.orientation ==
       Configuration.ORIENTATION_PORTRAIT
 
 val isLayoutLeftToRight: Boolean
   get() = TextUtils.getLayoutDirectionFromLocale(Locale.getDefault()) == View.LAYOUT_DIRECTION_LTR
+
+val Context.screenWidth: Int
+  get() = resources.displayMetrics.widthPixels
+
+val Context.screenHeight: Int
+  get() = resources.displayMetrics.heightPixels
 
 val Context.statusBarHeight: Int
   get() {
@@ -32,6 +41,22 @@ val Context.statusBarHeight: Int
     return result
   }
 
+fun Context.showKeyboard() {
+  val inputMethodManager =
+      getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager?
+  inputMethodManager!!.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0)
+}
+
+fun Context.setSoftInputMode(mode: Int) {
+  (this as Activity).window.setSoftInputMode(mode)
+}
+
+fun Context.hideKeyboard(editText: EditText) {
+  val inputMethodManager =
+      getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager?
+  inputMethodManager!!.hideSoftInputFromWindow(editText.windowToken, 0)
+}
+
 @ColorInt
 fun Context.getAttrColor(@AttrRes resId: Int): Int {
   val typedValue = TypedValue()
@@ -42,6 +67,10 @@ fun Context.getAttrColor(@AttrRes resId: Int): Int {
 
 fun Context.retrieveDrawable(@DrawableRes resId: Int): Drawable {
   return ContextCompat.getDrawable(this, resId)!!
+}
+
+inline fun <reified T> Context.getSystemService(): T {
+  return ContextCompat.getSystemService(this, T::class.java)!!
 }
 
 fun Context.createLayoutParams(

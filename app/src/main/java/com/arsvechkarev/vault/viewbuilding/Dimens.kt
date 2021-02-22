@@ -2,10 +2,10 @@ package com.arsvechkarev.vault.viewbuilding
 
 import com.arsvechkarev.vault.R
 import com.arsvechkarev.vault.core.extensions.i
-import com.arsvechkarev.vault.core.extensions.screenHeight
-import com.arsvechkarev.vault.core.extensions.screenWidth
 import com.arsvechkarev.vault.viewdsl.ContextHolder
 import com.arsvechkarev.vault.viewdsl.Ints.dp
+import com.arsvechkarev.vault.viewdsl.screenHeight
+import com.arsvechkarev.vault.viewdsl.screenWidth
 
 object Dimens {
   
@@ -39,7 +39,7 @@ object Dimens {
   val HorizontalMarginPasswordsActionView get() = adjustHorizontal(24.dp)
   
   private fun adjust(size: Int): Int {
-    val type = ContextHolder.context.resources.getInteger(R.integer.screen_type)
+    val type = ContextHolder.applicationContext.resources.getInteger(R.integer.screen_type)
     if (type == SCREEN_TYPE_SMALL) return size
     if (type == SCREEN_TYPE_MEDIUM) return (size * 1.5f).i
     if (type == SCREEN_TYPE_LARGE) return (size * 1.75f).i
@@ -48,7 +48,7 @@ object Dimens {
   }
   
   private fun adjustVertical(size: Int): Int {
-    val height = maxOf(ContextHolder.context.screenHeight, ContextHolder.context.screenWidth)
+    val height = maxOf(ContextHolder.applicationContext.screenHeight, ContextHolder.applicationContext.screenWidth)
     if (height < 1200) return size
     if (height < 1800) return (size * 1.6f).i
     if (height < 2400) return (size * 2f).i
@@ -56,7 +56,7 @@ object Dimens {
   }
   
   private fun adjustDivider(size: Int): Int {
-    val type = ContextHolder.context.resources.getInteger(R.integer.screen_type)
+    val type = ContextHolder.applicationContext.resources.getInteger(R.integer.screen_type)
     if (type == SCREEN_TYPE_SMALL) return size / 2
     if (type == SCREEN_TYPE_MEDIUM) return size
     if (type == SCREEN_TYPE_LARGE) return (size * 1.5f).i
@@ -65,7 +65,7 @@ object Dimens {
   }
   
   private fun adjustHorizontal(size: Int): Int {
-    val type = ContextHolder.context.resources.getInteger(R.integer.screen_type)
+    val type = ContextHolder.applicationContext.resources.getInteger(R.integer.screen_type)
     if (type == SCREEN_TYPE_SMALL) return size
     if (type == SCREEN_TYPE_MEDIUM) return (size * 1.5f).i
     if (type == SCREEN_TYPE_LARGE) return (size * 2f).i

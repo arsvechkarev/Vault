@@ -8,8 +8,6 @@ import android.widget.ImageView
 import android.widget.TextView
 import com.arsvechkarev.vault.R
 import com.arsvechkarev.vault.core.extensions.assertThat
-import com.arsvechkarev.vault.core.extensions.hideKeyboard
-import com.arsvechkarev.vault.core.extensions.showKeyboard
 import com.arsvechkarev.vault.viewbuilding.Dimens.IconPadding
 import com.arsvechkarev.vault.viewbuilding.Dimens.IconSize
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginDefault
@@ -27,6 +25,7 @@ import com.arsvechkarev.vault.viewdsl.circleRippleBackground
 import com.arsvechkarev.vault.viewdsl.exactly
 import com.arsvechkarev.vault.viewdsl.font
 import com.arsvechkarev.vault.viewdsl.gravity
+import com.arsvechkarev.vault.viewdsl.hideKeyboard
 import com.arsvechkarev.vault.viewdsl.image
 import com.arsvechkarev.vault.viewdsl.invisible
 import com.arsvechkarev.vault.viewdsl.layoutLeftTop
@@ -34,6 +33,7 @@ import com.arsvechkarev.vault.viewdsl.onClick
 import com.arsvechkarev.vault.viewdsl.onSubmit
 import com.arsvechkarev.vault.viewdsl.onTextChanged
 import com.arsvechkarev.vault.viewdsl.padding
+import com.arsvechkarev.vault.viewdsl.showKeyboard
 import com.arsvechkarev.vault.viewdsl.size
 import com.arsvechkarev.vault.viewdsl.text
 import com.arsvechkarev.vault.viewdsl.textSize
@@ -98,7 +98,19 @@ class EditableTextInfoViewGroup(context: Context) : ViewGroup(context) {
     textView.text(text)
   }
   
-  fun changeModeToEditing() {
+  fun cancelEditing() {
+    if (mode == SHOWING) return
+    mode = SHOWING
+    editText.text(textView.text)
+    editText.invisible()
+    textView.visible()
+    editText.clearFocus()
+    context.hideKeyboard(editText)
+    imageSave.animateInvisible()
+    imageEdit.animateVisible()
+  }
+  
+  private fun changeModeToEditing() {
     if (mode == EDITING) return
     if (!onEditClickAllowed()) return
     mode = EDITING
@@ -117,7 +129,7 @@ class EditableTextInfoViewGroup(context: Context) : ViewGroup(context) {
     imageEdit.animateInvisible()
   }
   
-  fun changeModeToShowing() {
+  private fun changeModeToShowing() {
     if (mode == SHOWING) return
     val text = editText.text.toString().trim()
     if (editText.text.isBlank() && !allowSavingWhenEmpty) return

@@ -23,8 +23,8 @@ import kotlin.math.abs
 class BottomSheetBehavior : CoordinatorLayout.Behavior<View>() {
   
   private val maxFlingVelocity = ViewConfiguration.get(
-    ContextHolder.context).scaledMaximumFlingVelocity
-  private val touchSlop = ViewConfiguration.get(ContextHolder.context).scaledTouchSlop
+    ContextHolder.applicationContext).scaledMaximumFlingVelocity
+  private val touchSlop = ViewConfiguration.get(ContextHolder.applicationContext).scaledTouchSlop
   private var isBeingDragged = false
   private var latestY = -1
   private var velocityTracker: VelocityTracker? = null

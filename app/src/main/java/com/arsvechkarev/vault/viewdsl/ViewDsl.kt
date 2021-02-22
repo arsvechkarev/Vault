@@ -11,7 +11,6 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.annotation.ColorInt
-import androidx.annotation.DimenRes
 import androidx.annotation.DrawableRes
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 
@@ -102,19 +101,6 @@ fun View.marginVertical(value: Int) {
 
 fun View.marginHorizontal(value: Int) {
   margins(value, marginTop, value, marginBottom)
-}
-
-fun View.marginsRes(
-  @DimenRes start: Int = 0,
-  @DimenRes top: Int = 0,
-  @DimenRes end: Int = 0,
-  @DimenRes bottom: Int = 0) {
-  margins(
-    if (start == 0) 0 else dimen(start).toInt(),
-    if (top == 0) 0 else dimen(top).toInt(),
-    if (end == 0) 0 else dimen(end).toInt(),
-    if (bottom == 0) 0 else dimen(bottom).toInt()
-  )
 }
 
 fun View.margins(

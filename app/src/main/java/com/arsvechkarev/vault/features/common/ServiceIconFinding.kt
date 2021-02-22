@@ -23,7 +23,7 @@ private const val GITHUB = "github"
 fun getIconForServiceName(inputText: String): Drawable? {
   val text = inputText.trim()
   if (text.isBlank()) return null
-  val drawable: (Int) -> Drawable = { ContextHolder.context.retrieveDrawable(it) }
+  val drawable: (Int) -> Drawable = { ContextHolder.applicationContext.retrieveDrawable(it) }
   return when {
     text has AMAZON -> drawable(R.drawable.icon_amazon)
     text has GOOGLE -> drawable(R.drawable.icon_google)

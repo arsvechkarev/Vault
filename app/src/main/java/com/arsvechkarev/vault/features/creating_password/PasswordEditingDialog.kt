@@ -18,8 +18,6 @@ import com.arsvechkarev.vault.R.string.text_uppercase_symbols
 import com.arsvechkarev.vault.core.DEFAULT_PASSWORD_LENGTH
 import com.arsvechkarev.vault.core.MAX_PASSWORD_LENGTH
 import com.arsvechkarev.vault.core.MIN_PASSWORD_LENGTH
-import com.arsvechkarev.vault.core.extensions.hideKeyboard
-import com.arsvechkarev.vault.core.extensions.setSoftInputMode
 import com.arsvechkarev.vault.core.model.PasswordCharacteristics
 import com.arsvechkarev.vault.core.model.PasswordCharacteristics.NUMBERS
 import com.arsvechkarev.vault.core.model.PasswordCharacteristics.SPECIAL_SYMBOLS
@@ -51,6 +49,7 @@ import com.arsvechkarev.vault.viewdsl.drawablePadding
 import com.arsvechkarev.vault.viewdsl.drawables
 import com.arsvechkarev.vault.viewdsl.editText
 import com.arsvechkarev.vault.viewdsl.gravity
+import com.arsvechkarev.vault.viewdsl.hideKeyboard
 import com.arsvechkarev.vault.viewdsl.image
 import com.arsvechkarev.vault.viewdsl.layoutGravity
 import com.arsvechkarev.vault.viewdsl.margin
@@ -60,6 +59,7 @@ import com.arsvechkarev.vault.viewdsl.onProgressChanged
 import com.arsvechkarev.vault.viewdsl.onSubmit
 import com.arsvechkarev.vault.viewdsl.padding
 import com.arsvechkarev.vault.viewdsl.setMaxLength
+import com.arsvechkarev.vault.viewdsl.setSoftInputMode
 import com.arsvechkarev.vault.viewdsl.size
 import com.arsvechkarev.vault.viewdsl.tag
 import com.arsvechkarev.vault.viewdsl.text

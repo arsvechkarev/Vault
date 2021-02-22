@@ -10,9 +10,9 @@ interface ServicesListView : MvpView {
   
   fun showLoading()
   
-  fun showNoPasswords()
+  fun showNoServices()
   
-  fun showPasswordsList(list: List<Service>)
+  fun showServicesList(list: List<Service>)
   
   fun showDeleteDialog(service: Service)
   

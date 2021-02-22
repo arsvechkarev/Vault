@@ -10,12 +10,12 @@ import com.arsvechkarev.vault.core.model.Service
 import com.arsvechkarev.vault.core.navigation.Navigator
 import com.arsvechkarev.vault.core.navigation.NavigatorView
 import com.arsvechkarev.vault.core.navigation.Options
+import com.arsvechkarev.vault.cryptography.MasterPasswordHolder
 import com.arsvechkarev.vault.features.creating_master_password.CreateMasterPasswordScreen
 import com.arsvechkarev.vault.features.creating_service.CreatingServiceScreen
 import com.arsvechkarev.vault.features.info.InfoScreen
 import com.arsvechkarev.vault.features.info.InfoScreen.Companion.SERVICE_INFO
 import com.arsvechkarev.vault.features.services_list.ServicesListScreen
-import com.arsvechkarev.vault.features.start.StartScreen
 import com.arsvechkarev.vault.viewbuilding.Colors
 import com.arsvechkarev.vault.viewdsl.Densities
 import com.arsvechkarev.vault.viewdsl.Size.Companion.MatchParent
@@ -40,7 +40,8 @@ class MainActivity : BaseActivity(), Navigator {
         or SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN)
     setContentView(mainActivityLayout)
     if (userAuthSaver.isUserAuthorized()) {
-      navigator.navigate(StartScreen::class)
+      MasterPasswordHolder.setMasterPassword("qwerty//123")
+      navigator.navigate(ServicesListScreen::class)
     } else {
       navigator.navigate(CreateMasterPasswordScreen::class)
     }

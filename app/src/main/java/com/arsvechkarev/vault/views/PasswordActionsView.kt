@@ -7,11 +7,10 @@ import com.arsvechkarev.vault.R
 import com.arsvechkarev.vault.viewbuilding.TextSizes
 import com.arsvechkarev.vault.viewdsl.children
 import com.arsvechkarev.vault.viewdsl.onClick
-import com.arsvechkarev.vault.viewdsl.size
 
 class PasswordActionsView(context: Context) : ViewGroup(context) {
   
-  private var maxItemHeight = 0
+  private var maxItemWidth = 0
   private var isPasswordShown = false
   
   var onTogglePassword: (isPasswordShown: Boolean) -> Unit = {}
@@ -22,10 +21,9 @@ class PasswordActionsView(context: Context) : ViewGroup(context) {
       TextWithImageView(context, iconRes, TextSizes.H4, context.getString(titleRes))
     }
     addView(buildMenuItem(R.drawable.ic_copy, R.string.text_copy))
-    addView(buildMenuItem(R.drawable.ic_launch, R.string.text_overlay))
     addView(buildMenuItem(R.drawable.ic_edit, R.string.text_edit))
     addView(buildMenuItem(R.drawable.ic_eye_opened, R.string.text_show))
-    val showHideView = getChildAt(3) as TextWithImageView
+    val showHideView = getChildAt(2) as TextWithImageView
     showHideView.onClick {
       isPasswordShown = !isPasswordShown
       onTogglePassword(isPasswordShown)
@@ -43,21 +41,19 @@ class PasswordActionsView(context: Context) : ViewGroup(context) {
     getChildAt(0).onClick(block)
   }
   
-  fun onOverlayClick(block: () -> Unit) {
+  fun onEditClick(block: () -> Unit) {
     getChildAt(1).onClick(block)
   }
   
-  fun onEditClick(block: () -> Unit) {
-    getChildAt(2).onClick(block)
-  }
-  
   override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
+    var maxItemHeight = 0
     children.forEach { child ->
       child.measure(widthMeasureSpec, heightMeasureSpec)
       maxItemHeight = maxOf(maxItemHeight, child.measuredHeight)
+      maxItemWidth = maxOf(maxItemWidth, child.measuredWidth)
     }
     setMeasuredDimension(
-      resolveSize(widthMeasureSpec.size, widthMeasureSpec),
+      resolveSize(maxItemWidth * childCount, widthMeasureSpec),
       resolveSize(maxItemHeight, heightMeasureSpec)
     )
   }

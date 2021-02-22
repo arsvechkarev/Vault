@@ -159,10 +159,11 @@ class InfoScreen : Screen(), InfoView {
             text(R.string.text_password_stub)
           }
         }
-        child<PasswordActionsView>(MatchParent, WrapContent) {
+        child<PasswordActionsView>(WrapContent, WrapContent) {
           classNameTag()
           margins(top = VerticalMarginSmall, start = HorizontalMarginPasswordsActionView,
             end = HorizontalMarginPasswordsActionView)
+          onCopyClick { }
           onEditClick { presenter.onEditPasswordIconClicked() }
           whenPresenterIsReady {
             onTogglePassword = presenter::onTogglePassword

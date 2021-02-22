@@ -10,8 +10,11 @@ import com.arsvechkarev.vault.core.extensions.getTextHeight
 import com.arsvechkarev.vault.core.extensions.i
 import com.arsvechkarev.vault.viewbuilding.Colors
 import com.arsvechkarev.vault.viewbuilding.Dimens
+import com.arsvechkarev.vault.viewbuilding.Dimens.MarginMedium
+import com.arsvechkarev.vault.viewbuilding.Dimens.MarginVerySmall
+import com.arsvechkarev.vault.viewbuilding.Dimens.PasswordActionsViewImageSize
 import com.arsvechkarev.vault.viewbuilding.Fonts
-import com.arsvechkarev.vault.viewdsl.Ints.dp
+import com.arsvechkarev.vault.viewdsl.paddings
 import com.arsvechkarev.vault.viewdsl.retrieveDrawable
 import com.arsvechkarev.vault.viewdsl.rippleBackground
 
@@ -25,12 +28,12 @@ class TextWithImageView(
   private var icon = context.retrieveDrawable(iconRes)
   private val textPaint = TextPaint(textSize, font = Fonts.SegoeUiBold)
   
-  private val iconSize = 35.dp
+  private val iconSize = PasswordActionsViewImageSize
   
   init {
     rippleBackground(Colors.Ripple, Colors.Transparent, Dimens.DefaultCornerRadius)
-    val padding = 4.dp
-    setPadding(padding, padding, padding, padding)
+    paddings(start = MarginMedium, top = MarginVerySmall,
+      end = MarginMedium, bottom = MarginVerySmall)
   }
   
   fun setText(textRes: Int) {

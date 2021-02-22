@@ -37,7 +37,7 @@ class Snackbar(context: Context) : ViewGroup(context) {
   
   init {
     clipToPadding = false
-    backgroundRoundRect(Dimens.DefaultCornerRadius, Colors.Dialog)
+    backgroundRoundRect(Dimens.CornerRadiusDefault, Colors.Dialog)
     paddings(start = MarginDefault, end = MarginDefault, top = MarginSmall, bottom = MarginSmall)
     addView(TextView(context).apply(BaseTextView).apply {
       textSize(TextSizes.H4)

@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import com.arsvechkarev.vault.R
 import com.arsvechkarev.vault.core.navigation.Screen
 import com.arsvechkarev.vault.viewbuilding.Colors.Dialog
-import com.arsvechkarev.vault.viewbuilding.Dimens.DefaultCornerRadius
+import com.arsvechkarev.vault.viewbuilding.Dimens.CornerRadiusDefault
 import com.arsvechkarev.vault.viewbuilding.Dimens.HorizontalMarginVerySmall
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginBig
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginDefault
@@ -40,7 +40,7 @@ class InfoDialog(context: Context) : SimpleDialog(context) {
       VerticalLayout(WrapContent, WrapContent) {
         layoutGravity(Gravity.CENTER)
         marginHorizontal(MarginBig)
-        backgroundRoundRect(DefaultCornerRadius, Dialog)
+        backgroundRoundRect(CornerRadiusDefault, Dialog)
         TextView(WrapContent, WrapContent, style = BoldTextView) {
           margins(top = MarginDefault, start = MarginDefault)
           tag(DialogInfoTitle)

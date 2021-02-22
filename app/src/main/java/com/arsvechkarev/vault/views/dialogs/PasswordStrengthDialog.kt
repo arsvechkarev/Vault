@@ -8,7 +8,7 @@ import android.widget.TextView
 import com.arsvechkarev.vault.R
 import com.arsvechkarev.vault.core.navigation.Screen
 import com.arsvechkarev.vault.viewbuilding.Colors
-import com.arsvechkarev.vault.viewbuilding.Dimens.DefaultCornerRadius
+import com.arsvechkarev.vault.viewbuilding.Dimens.CornerRadiusDefault
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginBig
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginDefault
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginMedium
@@ -38,7 +38,7 @@ class PasswordStrengthDialog(context: Context) : SimpleDialog(context) {
       VerticalLayout(WrapContent, WrapContent) {
         layoutGravity(CENTER)
         marginHorizontal(MarginBig)
-        backgroundRoundRect(DefaultCornerRadius, Colors.Dialog)
+        backgroundRoundRect(CornerRadiusDefault, Colors.Dialog)
         TextView(WrapContent, WrapContent, style = BoldTextView) {
           margins(top = MarginDefault, start = MarginDefault)
           text(R.string.text_password_strength)

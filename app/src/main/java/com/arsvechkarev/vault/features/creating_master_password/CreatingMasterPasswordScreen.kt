@@ -38,6 +38,7 @@ import com.arsvechkarev.vault.viewdsl.Size.IntSize
 import com.arsvechkarev.vault.viewdsl.animateInvisible
 import com.arsvechkarev.vault.viewdsl.animateVisible
 import com.arsvechkarev.vault.viewdsl.classNameTag
+import com.arsvechkarev.vault.viewdsl.clearOnClick
 import com.arsvechkarev.vault.viewdsl.drawablePadding
 import com.arsvechkarev.vault.viewdsl.drawables
 import com.arsvechkarev.vault.viewdsl.gravity
@@ -141,9 +142,8 @@ class CreatingMasterPasswordScreen : Screen(), CreatingMasterPasswordView {
   private val clearErrorTextWatcher = object : BaseTextWatcher {
     
     override fun onTextChange(text: String) {
-      textView(TextError).onClick {}
-      textView(TextError).drawables(end = R.drawable.ic_question, color = Colors.Background)
-      textView(TextError).text("")
+      textView(TextError).clearOnClick()
+      textView(TextError).invisible()
     }
   }
   
@@ -187,6 +187,7 @@ class CreatingMasterPasswordScreen : Screen(), CreatingMasterPasswordView {
       TOO_WEAK -> getString(R.string.text_password_is_too_weak)
       OK -> getString(R.string.text_empty)
     }
+    textView(TextError).visible()
     if (passwordStatus == TOO_WEAK) {
       textView(TextError).drawables(end = R.drawable.ic_question, color = Colors.Error)
       textView(TextError).onClick { presenter.onShowPasswordStrengthDialog() }

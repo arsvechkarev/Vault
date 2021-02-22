@@ -14,12 +14,13 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import com.arsvechkarev.vault.R
+import com.arsvechkarev.vault.viewbuilding.Dimens.CornerRadiusSmall
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginDefault
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginSmall
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginVerySmall
-import com.arsvechkarev.vault.viewdsl.Ints.dp
 import com.arsvechkarev.vault.viewdsl.background
 import com.arsvechkarev.vault.viewdsl.circleRippleBackground
+import com.arsvechkarev.vault.viewdsl.dp
 import com.arsvechkarev.vault.viewdsl.font
 import com.arsvechkarev.vault.viewdsl.gravity
 import com.arsvechkarev.vault.viewdsl.image
@@ -51,10 +52,10 @@ object Styles {
   ): TextView.() -> Unit = {
     textSize(TextSizes.H5)
     font(Typeface.DEFAULT_BOLD)
-    paddingVertical(6.dp)
+    paddingVertical(MarginSmall)
     textColor(Colors.AccentLight)
-    paddingHorizontal(12.dp)
-    rippleBackground(rippleColor, Colors.Transparent, 4.dp)
+    paddingHorizontal(MarginDefault)
+    rippleBackground(rippleColor, Colors.Transparent, CornerRadiusSmall)
   }
   
   val ClickableErrorTextView: TextView.() -> Unit = {

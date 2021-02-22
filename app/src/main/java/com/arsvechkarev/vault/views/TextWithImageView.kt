@@ -31,7 +31,7 @@ class TextWithImageView(
   private val iconSize = PasswordActionsViewImageSize
   
   init {
-    rippleBackground(Colors.Ripple, Colors.Transparent, Dimens.DefaultCornerRadius)
+    rippleBackground(Colors.Ripple, Colors.Transparent, Dimens.CornerRadiusDefault)
     paddings(start = MarginMedium, top = MarginVerySmall,
       end = MarginMedium, bottom = MarginVerySmall)
   }

@@ -45,6 +45,7 @@ import com.arsvechkarev.vault.viewdsl.Size.Companion.MatchParent
 import com.arsvechkarev.vault.viewdsl.Size.Companion.WrapContent
 import com.arsvechkarev.vault.viewdsl.circleRippleBackground
 import com.arsvechkarev.vault.viewdsl.classNameTag
+import com.arsvechkarev.vault.viewdsl.clearCompoundDrawables
 import com.arsvechkarev.vault.viewdsl.clearOnClick
 import com.arsvechkarev.vault.viewdsl.drawablePadding
 import com.arsvechkarev.vault.viewdsl.drawables
@@ -111,10 +112,9 @@ class PasswordEditingDialog(
             }
             TextView(WrapContent, WrapContent, style = BaseTextView) {
               tag(DialogPasswordTextError)
-              layoutGravity(CENTER_HORIZONTAL)
+              layoutGravity(CENTER)
               gravity(CENTER)
               drawablePadding(MarginDefault)
-              drawables(end = R.drawable.ic_question, color = backgroundColor)
               textColor(Colors.Error)
             }
             EditText(MatchParent, WrapContent, style = BaseEditText) {
@@ -187,10 +187,10 @@ class PasswordEditingDialog(
   private val passwordTextWatcher = object : BaseTextWatcher {
     
     override fun onTextChange(text: String) {
-      val textError = viewAs<TextView>(DialogPasswordTextError)
+      val textError = textView(DialogPasswordTextError)
       textError.text("")
       textError.clearOnClick()
-      textError.drawables(end = R.drawable.ic_question, color = backgroundColor)
+      textError.clearCompoundDrawables()
       presenter.onPasswordChanged(text)
     }
   }

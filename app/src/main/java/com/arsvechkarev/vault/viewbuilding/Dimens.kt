@@ -3,7 +3,7 @@ package com.arsvechkarev.vault.viewbuilding
 import com.arsvechkarev.vault.R
 import com.arsvechkarev.vault.core.extensions.i
 import com.arsvechkarev.vault.viewdsl.ContextHolder
-import com.arsvechkarev.vault.viewdsl.Ints.dp
+import com.arsvechkarev.vault.viewdsl.dp
 import com.arsvechkarev.vault.viewdsl.screenHeight
 import com.arsvechkarev.vault.viewdsl.screenWidth
 
@@ -31,7 +31,8 @@ object Dimens {
   val ImageNoServicesSize get() = adjust(100.dp)
   val ImageServiceNameSize get() = adjust(45.dp)
   val ImageBackMargin get() = adjust(16.dp)
-  val DefaultCornerRadius get() = (6.dp)
+  val CornerRadiusSmall get() = (4.dp)
+  val CornerRadiusDefault get() = (6.dp)
   val DividerHeight get() = adjustDivider(1.dp)
   val PasswordStrengthMeterHeight get() = adjust(6.dp)
   val ProgressBarSizeBig get() = adjust(60.dp)
@@ -48,7 +49,8 @@ object Dimens {
   }
   
   private fun adjustVertical(size: Int): Int {
-    val height = maxOf(ContextHolder.applicationContext.screenHeight, ContextHolder.applicationContext.screenWidth)
+    val height = maxOf(ContextHolder.applicationContext.screenHeight,
+      ContextHolder.applicationContext.screenWidth)
     if (height < 1200) return size
     if (height < 1800) return (size * 1.6f).i
     if (height < 2400) return (size * 2f).i
@@ -71,6 +73,5 @@ object Dimens {
     if (type == SCREEN_TYPE_LARGE) return (size * 2f).i
     if (type == SCREEN_TYPE_XLARGE) return (size * 2.5f).i
     return size
-    
   }
 }

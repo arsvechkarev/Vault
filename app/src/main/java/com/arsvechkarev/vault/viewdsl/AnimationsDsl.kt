@@ -4,21 +4,16 @@ package com.arsvechkarev.vault.viewdsl
 
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
-import android.animation.ArgbEvaluator
-import android.animation.ObjectAnimator
 import android.graphics.drawable.Animatable
 import android.view.View
 import android.view.View.GONE
-import android.view.ViewGroup
 import android.view.animation.AccelerateDecelerateInterpolator
 import android.view.animation.OvershootInterpolator
-import androidx.interpolator.view.animation.FastOutSlowInInterpolator
 
-const val DURATION_VIBRATE_SHORT = 10L
 const val DURATION_SHORT = 170L
 const val DURATION_DEFAULT = 300L
 const val DURATION_MEDIUM = 500L
-const val DURATION_LONG = 800L
+const val DURATION_LONG = 1000L
 
 val AccelerateDecelerateInterpolator = AccelerateDecelerateInterpolator()
 val OvershootInterpolator = OvershootInterpolator()
@@ -111,42 +106,18 @@ fun View.animateSlideToRight(duration: Long = DURATION_SHORT) {
       .start()
 }
 
-fun animateVisible(vararg views: View, andThen: () -> Unit = {}) {
-  var andThenPosted = false
-  for (view in views) {
-    if (!andThenPosted) {
-      view.animateVisible(andThen)
-      andThenPosted = true
-    } else {
-      view.animateVisible()
-    }
+fun View.rotate() {
+  if (tag == "isRotating") {
+    return
   }
+  tag = "isRotating"
+  animate().rotation(540f)
+      .withLayer()
+      .setDuration(DURATION_LONG)
+      .setInterpolator(AccelerateDecelerateInterpolator)
+      .withEndAction {
+        tag("isNotRotating")
+        rotation = 0f
+      }
+      .start()
 }
-
-fun animateInvisible(vararg views: View, andThen: () -> Unit = {}) {
-  var andThenPosted = false
-  for (view in views) {
-    if (!andThenPosted) {
-      view.animateInvisible(andThen)
-      andThenPosted = true
-    } else {
-      view.animateInvisible()
-    }
-  }
-}
-
-fun View.animateColor(startColor: Int, endColor: Int, andThen: () -> Unit = {}) {
-  ObjectAnimator.ofObject(this,
-    "backgroundColor", ArgbEvaluator(), startColor, endColor).apply {
-    duration = DURATION_DEFAULT
-    interpolator = FastOutSlowInInterpolator()
-    if (andThen != {}) {
-      doOnEnd(andThen)
-    }
-    start()
-  }
-}
-
-fun ViewGroup.animateChildrenVisible() = forEachChild { it.animateVisible() }
-
-fun ViewGroup.animateChildrenInvisible() = forEachChild { it.animateInvisible() }

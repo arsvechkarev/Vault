@@ -15,6 +15,7 @@ import com.arsvechkarev.vault.features.creating_master_password.CreatingMasterPa
 import com.arsvechkarev.vault.features.creating_service.CreatingServiceScreen
 import com.arsvechkarev.vault.features.info.InfoScreen
 import com.arsvechkarev.vault.features.info.InfoScreen.Companion.SERVICE_INFO
+import com.arsvechkarev.vault.features.initial_screen.InitialScreen
 import com.arsvechkarev.vault.features.services_list.ServicesListScreen
 import com.arsvechkarev.vault.viewbuilding.Colors
 import com.arsvechkarev.vault.viewdsl.Densities
@@ -43,7 +44,7 @@ class MainActivity : BaseActivity(), Navigator {
       MasterPasswordHolder.setMasterPassword("qwerty//123")
       navigator.navigate(ServicesListScreen::class)
     } else {
-      navigator.navigate(CreatingMasterPasswordScreen::class)
+      navigator.navigate(InitialScreen::class)
     }
   }
   

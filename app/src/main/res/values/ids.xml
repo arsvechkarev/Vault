@@ -9,4 +9,8 @@
   <item name="start_screen_error_text" type="id"/>
   <item name="start_screen_enter_password" type="id"/>
   <item name="start_screen_continue" type="id"/>
+  <item name="initial_screen_welcome" type="id"/>
+  <item name="initial_screen_logo" type="id"/>
+  <item name="initial_screen_content_layout" type="id"/>
+  <item name="initial_screen_continue" type="id"/>
 </resources>

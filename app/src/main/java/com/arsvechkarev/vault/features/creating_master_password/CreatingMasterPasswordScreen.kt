@@ -163,6 +163,10 @@ class CreatingMasterPasswordScreen : Screen(), CreatingMasterPasswordView {
     editTextPassword(EditTextEnterPassword).addTextChangedListener(passwordTextWatcher)
     editTextPassword(EditTextEnterPassword).addTextChangedListener(clearErrorTextWatcher)
     editTextPassword(EditTextRepeatPassword).addTextChangedListener(clearErrorTextWatcher)
+  }
+  
+  override fun onAppearedOnScreen() {
+    showKeyboard()
     editTextPassword(EditTextEnterPassword).requestEditTextFocus()
   }
   

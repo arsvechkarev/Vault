@@ -11,7 +11,7 @@ import com.arsvechkarev.vault.core.navigation.Navigator
 import com.arsvechkarev.vault.core.navigation.NavigatorView
 import com.arsvechkarev.vault.core.navigation.Options
 import com.arsvechkarev.vault.cryptography.MasterPasswordHolder
-import com.arsvechkarev.vault.features.creating_master_password.CreateMasterPasswordScreen
+import com.arsvechkarev.vault.features.creating_master_password.CreatingMasterPasswordScreen
 import com.arsvechkarev.vault.features.creating_service.CreatingServiceScreen
 import com.arsvechkarev.vault.features.info.InfoScreen
 import com.arsvechkarev.vault.features.info.InfoScreen.Companion.SERVICE_INFO
@@ -43,7 +43,7 @@ class MainActivity : BaseActivity(), Navigator {
       MasterPasswordHolder.setMasterPassword("qwerty//123")
       navigator.navigate(ServicesListScreen::class)
     } else {
-      navigator.navigate(CreateMasterPasswordScreen::class)
+      navigator.navigate(CreatingMasterPasswordScreen::class)
     }
   }
   
@@ -53,7 +53,11 @@ class MainActivity : BaseActivity(), Navigator {
     }
   }
   
-  override fun goToPasswordsListScreen() {
+  override fun goToCreatingMasterPasswordScreen() {
+    navigator.navigate(CreatingMasterPasswordScreen::class)
+  }
+  
+  override fun goToServicesListScreen() {
     navigator.navigate(ServicesListScreen::class, options = Options(removeCurrentScreen = true))
   }
   
@@ -62,7 +66,7 @@ class MainActivity : BaseActivity(), Navigator {
       options = Options(removeWhenBackClicked = true))
   }
   
-  override fun goToSavedServiceInfoScreen(service: Service) {
+  override fun goToInfoScreen(service: Service) {
     navigator.navigate(InfoScreen::class, options = Options(
       arguments = bundle(SERVICE_INFO to service)
     ))

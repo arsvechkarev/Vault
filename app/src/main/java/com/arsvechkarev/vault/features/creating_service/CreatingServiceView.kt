@@ -12,11 +12,13 @@ interface CreatingServiceView : MvpView {
   
   fun showPasswordCreatingDialog()
   
-  fun showLoadingCreation()
+  fun hidePasswordCreatingDialog()
   
-  fun showDialogSavePassword()
+  fun showPasswordStrengthDialog()
   
-  fun hidePasswordEditingDialog()
+  fun hidePasswordStrengthDialog()
+  
+  fun showSavePasswordDialog()
   
   fun hideSavePasswordDialog()
   
@@ -25,6 +27,8 @@ interface CreatingServiceView : MvpView {
   fun showIconFromResources(icon: Drawable)
   
   fun hideLetterInCircleIcon()
+  
+  fun showLoadingCreation()
   
   fun showExit()
 }

@@ -38,6 +38,10 @@ interface InfoView : MvpView {
   
   fun hidePasswordEditingDialog()
   
+  fun showPasswordStrengthDialog()
+  
+  fun hidePasswordStrengthDialog()
+  
   fun showAcceptPasswordDialog()
   
   fun hideSavePasswordDialog()

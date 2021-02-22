@@ -164,6 +164,10 @@ fun setClickable(isClickable: Boolean, vararg views: View) {
   views.forEach { it.isClickable = isClickable }
 }
 
+fun View.clearOnClick() {
+  setOnClickListener(null)
+}
+
 fun View.onClick(block: () -> Unit) {
   setOnClickListener { block() }
 }

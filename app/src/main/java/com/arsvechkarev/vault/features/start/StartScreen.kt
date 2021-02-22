@@ -114,6 +114,6 @@ class StartScreen : Screen(), StartView {
   
   override fun showSuccess() {
     hideKeyboard()
-    navigator.goToPasswordsListScreen()
+    navigator.goToServicesListScreen()
   }
 }

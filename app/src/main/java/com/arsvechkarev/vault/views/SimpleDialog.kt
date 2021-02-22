@@ -57,35 +57,24 @@ open class SimpleDialog(context: Context) : FrameLayout(context) {
     shadowColor = color
   }
   
-  fun show(animate: Boolean = true) {
+  fun show() {
     if (isOpened) return
     isOpened = true
-    if (animate) {
-      visible()
-      dialogView.alpha = 0f
-      dialogView.visible()
-      shadowAnimator.cancelIfRunning()
-      shadowAnimator.setFloatValues(currentShadowFraction, 1f)
-      shadowAnimator.start()
-      dialogView.animate()
-          .withLayer()
-          .scaleX(1f)
-          .scaleY(1f)
-          .alpha(1f)
-          .setDuration(DURATION_SHORT)
-          .withEndAction(onShown)
-          .setInterpolator(AccelerateDecelerateInterpolator)
-          .start()
-    } else {
-      visible()
-      setBackgroundColor(shadowColor)
-      dialogView.visible()
-      dialogView.alpha = 1f
-      dialogView.scaleX = 1f
-      dialogView.scaleY = 1f
-      currentShadowFraction = 1f
-      onShown()
-    }
+    visible()
+    dialogView.alpha = 0f
+    dialogView.visible()
+    shadowAnimator.cancelIfRunning()
+    shadowAnimator.setFloatValues(currentShadowFraction, 1f)
+    shadowAnimator.start()
+    dialogView.animate()
+        .withLayer()
+        .scaleX(1f)
+        .scaleY(1f)
+        .alpha(1f)
+        .setDuration(DURATION_SHORT)
+        .withEndAction(onShown)
+        .setInterpolator(AccelerateDecelerateInterpolator)
+        .start()
   }
   
   fun hide() {

@@ -6,6 +6,7 @@ import com.arsvechkarev.vault.core.model.Service
 import com.arsvechkarev.vault.cryptography.MasterPasswordHolder.masterPassword
 import com.arsvechkarev.vault.features.common.ServicesRepository
 import com.arsvechkarev.vault.features.common.getIconForServiceName
+import com.arsvechkarev.vault.features.creating_service.CreatingServiceScreenState.DIALOG_PASSWORD_STRENGTH
 import com.arsvechkarev.vault.features.creating_service.CreatingServiceScreenState.DIALOG_SAVE_PASSWORD
 import com.arsvechkarev.vault.features.creating_service.CreatingServiceScreenState.INITIAL
 import com.arsvechkarev.vault.features.creating_service.CreatingServiceScreenState.PASSWORD_SCREEN
@@ -50,7 +51,17 @@ class CreatingServicePresenter(
   fun onPasswordEntered(password: String) {
     this.password = password
     state = DIALOG_SAVE_PASSWORD
-    viewState.showDialogSavePassword()
+    viewState.showSavePasswordDialog()
+  }
+  
+  fun onPasswordIsTooWeakClicked() {
+    state = DIALOG_PASSWORD_STRENGTH
+    viewState.showPasswordStrengthDialog()
+  }
+  
+  fun onHidePasswordStrengthDialog() {
+    state = PASSWORD_SCREEN
+    viewState.hidePasswordStrengthDialog()
   }
   
   fun acceptNewPassword() {
@@ -67,7 +78,7 @@ class CreatingServicePresenter(
   
   fun closePasswordEditingDialog() {
     state = INITIAL
-    viewState.hidePasswordEditingDialog()
+    viewState.hidePasswordCreatingDialog()
   }
   
   fun allowBackPress(): Boolean {
@@ -77,7 +88,12 @@ class CreatingServicePresenter(
       }
       PASSWORD_SCREEN -> {
         state = INITIAL
-        viewState.hidePasswordEditingDialog()
+        viewState.hidePasswordCreatingDialog()
+        false
+      }
+      DIALOG_PASSWORD_STRENGTH -> {
+        state = PASSWORD_SCREEN
+        viewState.hidePasswordStrengthDialog()
         false
       }
       DIALOG_SAVE_PASSWORD -> {

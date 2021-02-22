@@ -59,6 +59,8 @@ import com.arsvechkarev.vault.views.Snackbar
 import com.arsvechkarev.vault.views.dialogs.InfoDialog.Companion.InfoDialog
 import com.arsvechkarev.vault.views.dialogs.InfoDialog.Companion.infoDialog
 import com.arsvechkarev.vault.views.dialogs.LoadingDialog
+import com.arsvechkarev.vault.views.dialogs.PasswordStrengthDialog.Companion.PasswordStrengthDialog
+import com.arsvechkarev.vault.views.dialogs.PasswordStrengthDialog.Companion.passwordStrengthDialog
 import com.arsvechkarev.vault.views.dialogs.loadingDialog
 import com.arsvechkarev.vault.views.drawables.LetterInCircleDrawable.Companion.setLetterDrawable
 
@@ -177,9 +179,14 @@ class InfoScreen : Screen(), InfoView {
       }
       PasswordEditingDialog(passwordCreatingPresenter) {
         onCloseClicked = { presenter.closePasswordScreen() }
+        onPasswordIsTooWeakClicked = { presenter.onShowPasswordStrengthDialog() }
       }
       LoadingDialog()
       InfoDialog()
+      PasswordStrengthDialog {
+        onHide = { presenter.onHidePasswordStrengthDialog() }
+        onGotItClicked { presenter.onHidePasswordStrengthDialog() }
+      }
       child<Snackbar>(MatchParent, WrapContent) {
         classNameTag()
         layoutGravity(BOTTOM)
@@ -275,6 +282,15 @@ class InfoScreen : Screen(), InfoView {
   
   override fun hidePasswordEditingDialog() {
     passwordEditingDialog().hide()
+  }
+  
+  override fun showPasswordStrengthDialog() {
+    hideKeyboard()
+    passwordStrengthDialog.show()
+  }
+  
+  override fun hidePasswordStrengthDialog() {
+    passwordStrengthDialog.hide()
   }
   
   override fun showAcceptPasswordDialog() {

@@ -129,7 +129,7 @@ class ServicesListScreen : Screen(), ServicesListView {
   
   private val adapter by lazy {
     ServicesListAdapter(
-      onItemClick = navigator::goToSavedServiceInfoScreen,
+      onItemClick = navigator::goToInfoScreen,
       onItemLongClick = presenter::onLongClick
     )
   }

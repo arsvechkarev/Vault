@@ -7,11 +7,13 @@ import com.arsvechkarev.vault.core.model.Service
  */
 interface Navigator {
   
-  fun goToPasswordsListScreen()
+  fun goToCreatingMasterPasswordScreen()
+  
+  fun goToServicesListScreen()
   
   fun goToNewServiceScreen()
   
-  fun goToSavedServiceInfoScreen(service: Service)
+  fun goToInfoScreen(service: Service)
   
   fun popCurrentScreen()
 }

@@ -2,21 +2,22 @@ package com.arsvechkarev.vault.features.creating_master_password
 
 import com.arsvechkarev.vault.core.BasePresenter
 import com.arsvechkarev.vault.core.Threader
+import com.arsvechkarev.vault.core.UserAuthSaver
 import com.arsvechkarev.vault.core.extensions.assertThat
 import com.arsvechkarev.vault.cryptography.MasterPasswordChecker
 import com.arsvechkarev.vault.cryptography.MasterPasswordHolder
 import com.arsvechkarev.vault.cryptography.PasswordChecker
 import com.arsvechkarev.vault.cryptography.PasswordStatus.OK
-import com.arsvechkarev.vault.features.common.UserAuthSaver
-import com.arsvechkarev.vault.features.creating_master_password.CreateMasterPasswordScreenState.ENTERING_PASSWORD
-import com.arsvechkarev.vault.features.creating_master_password.CreateMasterPasswordScreenState.REPEATING_PASSWORD
+import com.arsvechkarev.vault.features.creating_master_password.CreatingMasterPasswordScreenState.DIALOG_PASSWORD_STRENGTH
+import com.arsvechkarev.vault.features.creating_master_password.CreatingMasterPasswordScreenState.ENTERING_PASSWORD
+import com.arsvechkarev.vault.features.creating_master_password.CreatingMasterPasswordScreenState.REPEATING_PASSWORD
 
-class CreateMasterPasswordPresenter(
+class CreatingMasterPasswordPresenter(
   threader: Threader,
   private val passwordChecker: PasswordChecker,
   private val masterPasswordChecker: MasterPasswordChecker,
   private val userAuthSaver: UserAuthSaver
-) : BasePresenter<CreateMasterPasswordView>(threader) {
+) : BasePresenter<CreatingMasterPasswordView>(threader) {
   
   private var state = ENTERING_PASSWORD
   private var previouslyEnteredPassword: String = ""
@@ -26,13 +27,30 @@ class CreateMasterPasswordPresenter(
     viewState.showPasswordStrength(strength)
   }
   
+  fun onShowPasswordStrengthDialog() {
+    viewState.showPasswordStrengthDialog()
+    state = DIALOG_PASSWORD_STRENGTH
+  }
+  
+  fun onHidePasswordStrengthDialog() {
+    viewState.hidePasswordStrengthDialog()
+    state = ENTERING_PASSWORD
+  }
+  
   fun allowBackPress(): Boolean {
-    if (state == REPEATING_PASSWORD) {
-      state = ENTERING_PASSWORD
-      viewState.switchToEnterPasswordState()
-      return false
+    return when (state) {
+      ENTERING_PASSWORD -> true
+      DIALOG_PASSWORD_STRENGTH -> {
+        viewState.hidePasswordStrengthDialog()
+        state = ENTERING_PASSWORD
+        false
+      }
+      REPEATING_PASSWORD -> {
+        viewState.switchToEnterPasswordState()
+        state = ENTERING_PASSWORD
+        false
+      }
     }
-    return true
   }
   
   fun onBackButtonClick() {

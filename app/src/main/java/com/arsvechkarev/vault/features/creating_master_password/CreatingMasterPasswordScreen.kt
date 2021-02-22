@@ -38,6 +38,8 @@ import com.arsvechkarev.vault.viewdsl.Size.IntSize
 import com.arsvechkarev.vault.viewdsl.animateInvisible
 import com.arsvechkarev.vault.viewdsl.animateVisible
 import com.arsvechkarev.vault.viewdsl.classNameTag
+import com.arsvechkarev.vault.viewdsl.drawablePadding
+import com.arsvechkarev.vault.viewdsl.drawables
 import com.arsvechkarev.vault.viewdsl.gravity
 import com.arsvechkarev.vault.viewdsl.invisible
 import com.arsvechkarev.vault.viewdsl.layoutGravity
@@ -52,9 +54,11 @@ import com.arsvechkarev.vault.viewdsl.visible
 import com.arsvechkarev.vault.views.EditTextPassword
 import com.arsvechkarev.vault.views.PasswordStrengthMeter
 import com.arsvechkarev.vault.views.dialogs.LoadingDialog
+import com.arsvechkarev.vault.views.dialogs.PasswordStrengthDialog.Companion.PasswordStrengthDialog
+import com.arsvechkarev.vault.views.dialogs.PasswordStrengthDialog.Companion.passwordStrengthDialog
 import com.arsvechkarev.vault.views.dialogs.loadingDialog
 
-class CreateMasterPasswordScreen : Screen(), CreateMasterPasswordView {
+class CreatingMasterPasswordScreen : Screen(), CreatingMasterPasswordView {
   
   override fun buildLayout() = withViewBuilder {
     RootCoordinatorLayout(MatchParent, MatchParent) {
@@ -106,8 +110,11 @@ class CreateMasterPasswordScreen : Screen(), CreateMasterPasswordView {
             setHint(R.string.hint_repeat_password)
           }
         }
-        TextView(MatchParent, WrapContent, style = BaseTextView) {
+        TextView(WrapContent, WrapContent, style = BaseTextView) {
           tag(TextError)
+          gravity(CENTER)
+          drawablePadding(MarginDefault)
+          drawables(end = R.drawable.ic_question, color = Colors.Background)
           textColor(Colors.Error)
           margins(start = MarginDefault, end = MarginDefault, top = MarginDefault)
         }
@@ -124,12 +131,18 @@ class CreateMasterPasswordScreen : Screen(), CreateMasterPasswordView {
         }
       }
       LoadingDialog()
+      PasswordStrengthDialog {
+        onHide = { presenter.onHidePasswordStrengthDialog() }
+        onGotItClicked { presenter.onHidePasswordStrengthDialog() }
+      }
     }
   }
   
   private val clearErrorTextWatcher = object : BaseTextWatcher {
     
     override fun onTextChange(text: String) {
+      textView(TextError).onClick {}
+      textView(TextError).drawables(end = R.drawable.ic_question, color = Colors.Background)
       textView(TextError).text("")
     }
   }
@@ -142,7 +155,7 @@ class CreateMasterPasswordScreen : Screen(), CreateMasterPasswordView {
   }
   
   private val presenter by moxyPresenter {
-    CreateMasterPasswordPresenter(AndroidThreader, passwordChecker, masterPasswordChecker,
+    CreatingMasterPasswordPresenter(AndroidThreader, passwordChecker, masterPasswordChecker,
       userAuthSaver)
   }
   
@@ -170,6 +183,13 @@ class CreateMasterPasswordScreen : Screen(), CreateMasterPasswordView {
       TOO_WEAK -> getString(R.string.text_password_is_too_weak)
       OK -> getString(R.string.text_empty)
     }
+    if (passwordStatus == TOO_WEAK) {
+      textView(TextError).drawables(end = R.drawable.ic_question, color = Colors.Error)
+      textView(TextError).onClick { presenter.onShowPasswordStrengthDialog() }
+    } else {
+      textView(TextError).drawables(end = R.drawable.ic_question, color = Colors.Background)
+      textView(TextError).onClick {}
+    }
     textView(TextError).text(text)
   }
   
@@ -185,9 +205,17 @@ class CreateMasterPasswordScreen : Screen(), CreateMasterPasswordView {
     textView(TextPasswordStrength).text(textResId)
   }
   
+  override fun showPasswordStrengthDialog() {
+    passwordStrengthDialog.show()
+  }
+  
+  override fun hidePasswordStrengthDialog() {
+    passwordStrengthDialog.hide()
+  }
+  
   override fun switchToEnterPasswordState() {
     textView(TextContinue).onClick {
-      presenter.onEnteredPassword(editText(EditTextEnterPassword).text.toString())
+      presenter.onEnteredPassword(editTextPassword(EditTextEnterPassword).getText())
     }
     viewAs<PasswordStrengthMeter>().setStrength(null, animate = false)
     textView(TextError).text("")
@@ -229,7 +257,7 @@ class CreateMasterPasswordScreen : Screen(), CreateMasterPasswordView {
   }
   
   override fun goToPasswordsList() {
-    navigator.goToPasswordsListScreen()
+    navigator.goToServicesListScreen()
   }
   
   companion object {

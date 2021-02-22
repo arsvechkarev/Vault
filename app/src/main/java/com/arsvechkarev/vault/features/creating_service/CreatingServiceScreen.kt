@@ -49,6 +49,8 @@ import com.arsvechkarev.vault.viewdsl.visible
 import com.arsvechkarev.vault.views.dialogs.InfoDialog.Companion.InfoDialog
 import com.arsvechkarev.vault.views.dialogs.InfoDialog.Companion.infoDialog
 import com.arsvechkarev.vault.views.dialogs.LoadingDialog
+import com.arsvechkarev.vault.views.dialogs.PasswordStrengthDialog.Companion.PasswordStrengthDialog
+import com.arsvechkarev.vault.views.dialogs.PasswordStrengthDialog.Companion.passwordStrengthDialog
 import com.arsvechkarev.vault.views.drawables.LetterInCircleDrawable.Companion.setLetterDrawable
 import kotlin.math.abs
 
@@ -56,7 +58,7 @@ class CreatingServiceScreen : Screen(), CreatingServiceView {
   
   override fun buildLayout() = withViewBuilder {
     RootConstraintLayout {
-      addOnLayoutChangeListener { v, _, _, _, _, _, _, _, _ ->
+      addOnLayoutChangeListener { _, _, _, _, _, _, _, _, _ ->
         showOrHideImageBasedOnLayout()
       }
       HorizontalLayout(MatchParent, WrapContent) {
@@ -133,9 +135,14 @@ class CreatingServiceScreen : Screen(), CreatingServiceView {
       }
       PasswordEditingDialog(passwordCreatingPresenter) {
         onCloseClicked = { presenter.closePasswordEditingDialog() }
+        onPasswordIsTooWeakClicked = { presenter.onPasswordIsTooWeakClicked() }
       }
       InfoDialog()
       LoadingDialog()
+      PasswordStrengthDialog {
+        onHide = { presenter.onHidePasswordStrengthDialog() }
+        onGotItClicked { presenter.onHidePasswordStrengthDialog() }
+      }
     }
   }
   
@@ -175,23 +182,28 @@ class CreatingServiceScreen : Screen(), CreatingServiceView {
     hideKeyboard()
   }
   
-  override fun showLoadingCreation() {
-    simpleDialog(DialogProgressBar).show()
+  override fun hidePasswordCreatingDialog() {
+    editText(EditTextServiceName).isEnabled = true
+    editText(EditTextEmail).isEnabled = true
+    passwordEditingDialog().hide()
   }
   
-  override fun showDialogSavePassword() {
+  override fun showPasswordStrengthDialog() {
+    hideKeyboard()
+    passwordStrengthDialog.show()
+  }
+  
+  override fun hidePasswordStrengthDialog() {
+    passwordStrengthDialog.hide()
+  }
+  
+  override fun showSavePasswordDialog() {
     infoDialog.showWithOkOption(
       R.string.text_saving_password,
       R.string.text_do_you_want_to_save_password,
       R.string.text_yes,
       onOkClicked = { presenter.acceptNewPassword() }
     )
-  }
-  
-  override fun hidePasswordEditingDialog() {
-    editText(EditTextServiceName).isEnabled = true
-    editText(EditTextEmail).isEnabled = true
-    passwordEditingDialog().hide()
   }
   
   override fun hideSavePasswordDialog() {
@@ -211,6 +223,10 @@ class CreatingServiceScreen : Screen(), CreatingServiceView {
   override fun hideLetterInCircleIcon() {
     showOrHideImageBasedOnLayout()
     imageView(R.id.creating_service_image).clearImage()
+  }
+  
+  override fun showLoadingCreation() {
+    simpleDialog(DialogProgressBar).show()
   }
   
   override fun showExit() {

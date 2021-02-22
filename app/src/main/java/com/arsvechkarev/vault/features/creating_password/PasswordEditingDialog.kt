@@ -45,6 +45,7 @@ import com.arsvechkarev.vault.viewdsl.Size.Companion.MatchParent
 import com.arsvechkarev.vault.viewdsl.Size.Companion.WrapContent
 import com.arsvechkarev.vault.viewdsl.circleRippleBackground
 import com.arsvechkarev.vault.viewdsl.classNameTag
+import com.arsvechkarev.vault.viewdsl.clearOnClick
 import com.arsvechkarev.vault.viewdsl.drawablePadding
 import com.arsvechkarev.vault.viewdsl.drawables
 import com.arsvechkarev.vault.viewdsl.editText
@@ -78,11 +79,13 @@ class PasswordEditingDialog(
   private val presenter: PasswordCreatingPresenter
 ) : FrameLayout(context), PasswordCreatingView {
   
+  private val backgroundColor = Colors.Background
+  
   init {
     withViewBuilder {
       child<SimpleDialog>(MatchParent, MatchParent) {
         tag(DialogPassword)
-        setShadowColor(Colors.Background)
+        setShadowColor(backgroundColor)
         onShown = { context.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING) }
         onHide = {
           context.setSoftInputMode(SOFT_INPUT_ADJUST_RESIZE)
@@ -98,7 +101,6 @@ class PasswordEditingDialog(
                 layoutGravity(CENTER)
               }
               ImageView(WrapContent, WrapContent) {
-                tag(R.drawable.ic_cross)
                 image(R.drawable.ic_cross)
                 circleRippleBackground()
                 margins(end = ImageBackMargin, top = MarginSmall, bottom = MarginSmall)
@@ -108,8 +110,11 @@ class PasswordEditingDialog(
               }
             }
             TextView(WrapContent, WrapContent, style = BaseTextView) {
-              tag(DialogPasswordErrorText)
+              tag(DialogPasswordTextError)
               layoutGravity(CENTER_HORIZONTAL)
+              gravity(CENTER)
+              drawablePadding(MarginDefault)
+              drawables(end = R.drawable.ic_question, color = backgroundColor)
               textColor(Colors.Error)
             }
             EditText(MatchParent, WrapContent, style = BaseEditText) {
@@ -175,13 +180,17 @@ class PasswordEditingDialog(
   }
   
   var onCloseClicked = {}
+  var onPasswordIsTooWeakClicked = {}
   
   private var onSavePasswordClick: (String) -> Unit = {}
   
   private val passwordTextWatcher = object : BaseTextWatcher {
     
     override fun onTextChange(text: String) {
-      viewAs<TextView>(DialogPasswordErrorText).text("")
+      val textError = viewAs<TextView>(DialogPasswordTextError)
+      textError.text("")
+      textError.clearOnClick()
+      textError.drawables(end = R.drawable.ic_question, color = backgroundColor)
       presenter.onPasswordChanged(text)
     }
   }
@@ -251,16 +260,18 @@ class PasswordEditingDialog(
   }
   
   override fun showPasswordIsEmpty() {
-    textView(DialogPasswordErrorText).text(R.string.text_password_cannot_be_empty)
+    textView(DialogPasswordTextError).text(R.string.text_password_cannot_be_empty)
   }
   
   override fun showPasswordIsTooWeak() {
-    textView(DialogPasswordErrorText).text(R.string.text_password_is_too_weak)
+    textView(DialogPasswordTextError).text(R.string.text_password_is_too_weak)
+    textView(DialogPasswordTextError).onClick(onPasswordIsTooWeakClicked)
+    textView(DialogPasswordTextError).drawables(end = R.drawable.ic_question, color = Colors.Error)
   }
   
   override fun showPasswordIsTooShort() {
     val text = context.getString(R.string.text_password_min_length, MIN_PASSWORD_LENGTH)
-    textView(DialogPasswordErrorText).text(text)
+    textView(DialogPasswordTextError).text(text)
   }
   
   override fun showSavePasswordClicked(password: String) {
@@ -273,7 +284,7 @@ class PasswordEditingDialog(
     const val DialogPassword = "DialogPassword"
     const val DialogPasswordTextLength = "DialogPasswordTextLength"
     const val DialogPasswordTitle = "DialogPasswordTitle"
-    const val DialogPasswordErrorText = "DialogPasswordErrorText"
+    const val DialogPasswordTextError = "DialogPasswordTextError"
     const val DialogPasswordEditText = "DialogPasswordEditText"
     
     fun Screen.passwordEditingDialog() = viewAs<PasswordEditingDialog>()

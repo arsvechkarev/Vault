@@ -12,6 +12,7 @@ import com.arsvechkarev.vault.features.info.InfoScreenState.EDITING_NAME_OR_USER
 import com.arsvechkarev.vault.features.info.InfoScreenState.INITIAL
 import com.arsvechkarev.vault.features.info.InfoScreenState.LOADING
 import com.arsvechkarev.vault.features.info.InfoScreenState.PASSWORD_EDITING_DIALOG
+import com.arsvechkarev.vault.features.info.InfoScreenState.PASSWORD_STRENGTH_DIALOG
 import com.arsvechkarev.vault.features.info.InfoScreenState.SAVE_PASSWORD_DIALOG
 
 class InfoPresenter(
@@ -133,6 +134,16 @@ class InfoPresenter(
     viewState.showPasswordEditingDialog(service.password)
   }
   
+  fun onShowPasswordStrengthDialog() {
+    state = PASSWORD_STRENGTH_DIALOG
+    viewState.showPasswordStrengthDialog()
+  }
+  
+  fun onHidePasswordStrengthDialog() {
+    state = PASSWORD_EDITING_DIALOG
+    viewState.hidePasswordStrengthDialog()
+  }
+  
   fun onSaveNewPasswordClicked(password: String) {
     if (this.password == password) {
       state = INITIAL
@@ -193,6 +204,11 @@ class InfoPresenter(
       PASSWORD_EDITING_DIALOG -> {
         viewState.hidePasswordEditingDialog()
         state = INITIAL
+        false
+      }
+      PASSWORD_STRENGTH_DIALOG -> {
+        viewState.hidePasswordStrengthDialog()
+        state = PASSWORD_EDITING_DIALOG
         false
       }
       SAVE_PASSWORD_DIALOG -> {

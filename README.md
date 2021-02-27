@@ -5,14 +5,11 @@
 ### Screenshots:
 
 <p float="left">
-  <img src="screenshots/screenshot_welcome.png" width="300" />
-  <img src="screenshots/screenshot_create_master_password.png" width="300" /> 
-  <img src="screenshots/screenshot_passwords_list.png" width="300" />
-</p>
-
-<p float="left">
-  <img src="screenshots/screenshot_service_info.png" width="300" /> 
-  <img src="screenshots/screenshot_password_edit.png" width="300" />
+  <img src="screenshots/screenshot_welcome.png" width="150" />
+  <img src="screenshots/screenshot_create_master_password.png" width="150" /> 
+  <img src="screenshots/screenshot_passwords_list.png" width="150" />
+  <img src="screenshots/screenshot_service_info.png" width="150" /> 
+  <img src="screenshots/screenshot_password_edit.png" width="150" />
 </p>
 
 ### Progress:

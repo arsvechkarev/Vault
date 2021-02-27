@@ -1,8 +1,15 @@
 # Vault
 
-## An android-based, simple, and secure password manager
+### An android-based, simple, and secure password manager
 
-### Screenshots:
+#### Technology stack:
+- Kotlin
+- MVP (Moxy)
+- Unit testing (junit)
+- Custom navigation
+- Custom UI library
+
+#### Screenshots:
 
 <p float="left">
   <img src="screenshots/screenshot_welcome.png" width="150" />
@@ -12,7 +19,7 @@
   <img src="screenshots/screenshot_password_edit.png" width="150" />
 </p>
 
-### Progress:
+#### Progress:
 - [x] Start screen
 - [x] Creating master password screen
 - [x] Cryptography algorithm
@@ -21,7 +28,7 @@
 - [x] Creating service screen
 - [x] Password editing screen
 
-### Additional features:
+#### Additional features:
 - [ ] Light theme
 - [ ] Sharing secret file
 - [x] Unit-tests for cryptohraphy

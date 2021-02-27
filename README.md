@@ -2,13 +2,6 @@
 
 ### An android-based, simple, and secure password manager
 
-#### Technology stack:
-- Kotlin
-- MVP (Moxy)
-- Unit testing (junit)
-- Custom navigation
-- Custom UI library
-
 #### Screenshots:
 
 <p float="left">
@@ -18,6 +11,13 @@
   <img src="screenshots/screenshot_service_info.png" width="150" /> 
   <img src="screenshots/screenshot_password_edit.png" width="150" />
 </p>
+
+#### Technology stack:
+- Kotlin
+- MVP (Moxy)
+- Unit testing (junit)
+- Custom navigation
+- Custom UI library
 
 #### Progress:
 - [x] Start screen

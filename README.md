@@ -2,6 +2,9 @@
 
 ## An android-based, simple, and secure password manager
 
+### Screenshots:
+![Welcome screen](screenshots/screenshot_1.png "Welcome screen")
+
 ### Progress:
 - [x] Start screen
 - [x] Creating master password screen

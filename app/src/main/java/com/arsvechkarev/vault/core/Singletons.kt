@@ -8,7 +8,7 @@ import com.arsvechkarev.vault.cryptography.MasterPasswordChecker
 import com.arsvechkarev.vault.cryptography.MasterPasswordCheckerImpl
 import com.arsvechkarev.vault.cryptography.PasswordChecker
 import com.arsvechkarev.vault.cryptography.SeedRandomGeneratorImpl
-import com.arsvechkarev.vault.cryptography.ServicesInfoStorageImpl
+import com.arsvechkarev.vault.cryptography.ServicesStorageImpl
 import com.arsvechkarev.vault.cryptography.ZxcvbnPasswordChecker
 import com.arsvechkarev.vault.cryptography.generator.PasswordGenerator
 import com.arsvechkarev.vault.cryptography.generator.PasswordGeneratorImpl
@@ -36,7 +36,7 @@ object Singletons {
   fun init(context: Context) {
     val cryptography = Cryptography(JavaBase64Coder, SeedRandomGeneratorImpl)
     val fileSaver = EncryptionFileSaver(context)
-    val storage = ServicesInfoStorageImpl(cryptography, fileSaver, AndroidJsonConverter)
+    val storage = ServicesStorageImpl(cryptography, fileSaver, AndroidJsonConverter)
     _userAuthSaver = UserAuthSaverImpl(context)
     _masterPasswordChecker = MasterPasswordCheckerImpl(cryptography, fileSaver)
     _servicesRepository = ServicesRepository(storage, AndroidThreader)

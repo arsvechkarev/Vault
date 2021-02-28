@@ -3,6 +3,7 @@ package com.arsvechkarev.vault.features.info
 import com.arsvechkarev.vault.core.BasePresenter
 import com.arsvechkarev.vault.core.Clipboard
 import com.arsvechkarev.vault.core.Threader
+import com.arsvechkarev.vault.core.di.FeatureScope
 import com.arsvechkarev.vault.core.model.Service
 import com.arsvechkarev.vault.cryptography.MasterPasswordHolder.masterPassword
 import com.arsvechkarev.vault.features.common.ServicesRepository
@@ -14,8 +15,10 @@ import com.arsvechkarev.vault.features.info.InfoScreenState.LOADING
 import com.arsvechkarev.vault.features.info.InfoScreenState.PASSWORD_EDITING_DIALOG
 import com.arsvechkarev.vault.features.info.InfoScreenState.PASSWORD_STRENGTH_DIALOG
 import com.arsvechkarev.vault.features.info.InfoScreenState.SAVE_PASSWORD_DIALOG
+import javax.inject.Inject
 
-class InfoPresenter(
+@FeatureScope
+class InfoPresenter @Inject constructor(
   private val servicesRepository: ServicesRepository,
   private val clipboard: Clipboard,
   threader: Threader

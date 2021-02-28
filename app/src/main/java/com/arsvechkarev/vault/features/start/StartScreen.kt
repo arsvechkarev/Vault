@@ -4,8 +4,7 @@ import android.view.Gravity.CENTER
 import com.arsvechkarev.vault.R
 import com.arsvechkarev.vault.R.id.start_screen_enter_password
 import com.arsvechkarev.vault.R.id.start_screen_error_text
-import com.arsvechkarev.vault.core.AndroidThreader
-import com.arsvechkarev.vault.core.Singletons.masterPasswordChecker
+import com.arsvechkarev.vault.core.di.CoreDi
 import com.arsvechkarev.vault.core.extensions.moxyPresenter
 import com.arsvechkarev.vault.core.navigation.Screen
 import com.arsvechkarev.vault.viewbuilding.Colors
@@ -95,7 +94,7 @@ class StartScreen : Screen(), StartView {
   }
   
   private val presenter by moxyPresenter {
-    StartPresenter(masterPasswordChecker, AndroidThreader)
+    CoreDi.coreComponent.getStartComponent().create().providePresenter()
   }
   
   override fun onInit() {

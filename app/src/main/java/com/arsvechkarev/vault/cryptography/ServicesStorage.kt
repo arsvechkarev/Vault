@@ -2,7 +2,7 @@ package com.arsvechkarev.vault.cryptography
 
 import com.arsvechkarev.vault.core.model.Service
 
-interface ServicesInfoStorage {
+interface ServicesStorage {
   
   fun getServices(password: String): List<Service>
   

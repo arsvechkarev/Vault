@@ -7,7 +7,7 @@ import com.arsvechkarev.vault.core.model.Service
 import com.arsvechkarev.vault.cryptography.Cryptography
 import com.arsvechkarev.vault.cryptography.JavaBase64Coder
 import com.arsvechkarev.vault.cryptography.SeedRandomGeneratorImpl
-import com.arsvechkarev.vault.cryptography.ServicesInfoStorageImpl
+import com.arsvechkarev.vault.cryptography.ServicesStorageImpl
 import com.arsvechkarev.vault.features.common.ServicesRepository
 import org.junit.After
 import org.junit.Assert.assertTrue
@@ -20,7 +20,7 @@ class ServicesRepositoryTest {
   private val testFileName = "testFileName"
   private val testPassword = "pAsSw0rd"
   private val cryptography = Cryptography(JavaBase64Coder, SeedRandomGeneratorImpl)
-  private val storage = ServicesInfoStorageImpl(cryptography, testFileSaver, GsonJsonConverter)
+  private val storage = ServicesStorageImpl(cryptography, testFileSaver, GsonJsonConverter)
   private val repository = ServicesRepository(storage, FakeThreader)
   
   @Before

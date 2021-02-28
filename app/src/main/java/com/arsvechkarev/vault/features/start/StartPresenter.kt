@@ -2,10 +2,13 @@ package com.arsvechkarev.vault.features.start
 
 import com.arsvechkarev.vault.core.BasePresenter
 import com.arsvechkarev.vault.core.Threader
+import com.arsvechkarev.vault.core.di.FeatureScope
 import com.arsvechkarev.vault.cryptography.MasterPasswordChecker
 import com.arsvechkarev.vault.cryptography.MasterPasswordHolder
+import javax.inject.Inject
 
-class StartPresenter(
+@FeatureScope
+class StartPresenter @Inject constructor(
   private val masterPasswordChecker: MasterPasswordChecker,
   threader: Threader,
 ) : BasePresenter<StartView>(threader) {

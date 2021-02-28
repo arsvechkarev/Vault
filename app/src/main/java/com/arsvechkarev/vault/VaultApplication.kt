@@ -2,6 +2,7 @@ package com.arsvechkarev.vault
 
 import android.app.Application
 import com.arsvechkarev.vault.core.Singletons
+import com.arsvechkarev.vault.core.di.CoreDi
 import com.arsvechkarev.vault.viewbuilding.Fonts
 import com.arsvechkarev.vault.viewdsl.ContextHolder
 import timber.log.Timber
@@ -14,5 +15,6 @@ class VaultApplication : Application() {
     ContextHolder.init(applicationContext)
     Fonts.init(applicationContext)
     Singletons.init(applicationContext)
+    CoreDi.init(applicationContext)
   }
 }

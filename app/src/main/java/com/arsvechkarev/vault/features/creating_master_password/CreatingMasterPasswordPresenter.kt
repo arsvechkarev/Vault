@@ -3,6 +3,7 @@ package com.arsvechkarev.vault.features.creating_master_password
 import com.arsvechkarev.vault.core.BasePresenter
 import com.arsvechkarev.vault.core.Threader
 import com.arsvechkarev.vault.core.UserAuthSaver
+import com.arsvechkarev.vault.core.di.FeatureScope
 import com.arsvechkarev.vault.core.extensions.assertThat
 import com.arsvechkarev.vault.cryptography.MasterPasswordChecker
 import com.arsvechkarev.vault.cryptography.MasterPasswordHolder
@@ -11,8 +12,10 @@ import com.arsvechkarev.vault.cryptography.PasswordStatus.OK
 import com.arsvechkarev.vault.features.creating_master_password.CreatingMasterPasswordScreenState.DIALOG_PASSWORD_STRENGTH
 import com.arsvechkarev.vault.features.creating_master_password.CreatingMasterPasswordScreenState.ENTERING_PASSWORD
 import com.arsvechkarev.vault.features.creating_master_password.CreatingMasterPasswordScreenState.REPEATING_PASSWORD
+import javax.inject.Inject
 
-class CreatingMasterPasswordPresenter(
+@FeatureScope
+class CreatingMasterPasswordPresenter @Inject constructor(
   threader: Threader,
   private val passwordChecker: PasswordChecker,
   private val masterPasswordChecker: MasterPasswordChecker,

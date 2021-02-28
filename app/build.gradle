@@ -32,6 +32,7 @@ dependencies {
   def crypto_version = '1.1.0-alpha03'
   def recycler_version = '1.1.0'
   def constraint_layout_version = '2.0.4'
+  def dagger_version = '2.33'
 
   implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
   implementation "androidx.appcompat:appcompat:$app_compat_version"
@@ -43,7 +44,9 @@ dependencies {
   implementation "androidx.security:security-crypto:$crypto_version"
   implementation "androidx.recyclerview:recyclerview:$recycler_version"
   implementation "androidx.constraintlayout:constraintlayout:$constraint_layout_version"
+  implementation "com.google.dagger:dagger:$dagger_version"
   kapt "com.github.moxy-community:moxy-compiler:$moxy_version"
+  kapt "com.google.dagger:dagger-compiler:$dagger_version"
 
   def junit_version = '4.13.2'
   def gson_version = '2.8.6'

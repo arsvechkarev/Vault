@@ -11,11 +11,11 @@ import com.arsvechkarev.vault.core.PASSWORDS_FILENAME
 import com.arsvechkarev.vault.core.extensions.assertThat
 import com.arsvechkarev.vault.core.model.Service
 
-class ServicesInfoStorageImpl(
+class ServicesStorageImpl(
   private val cryptography: Cryptography,
   private val fileSaver: FileSaver,
   private val jsonConverter: JsonConverter
-) : ServicesInfoStorage {
+) : ServicesStorage {
   
   override fun getServices(password: String): List<Service> {
     val ciphertext = fileSaver.readTextFromFile(PASSWORDS_FILENAME)

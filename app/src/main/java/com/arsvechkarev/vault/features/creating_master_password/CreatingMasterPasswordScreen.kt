@@ -5,11 +5,8 @@ import android.view.Gravity.CENTER
 import android.view.animation.AnimationUtils
 import android.widget.ViewSwitcher
 import com.arsvechkarev.vault.R
-import com.arsvechkarev.vault.core.AndroidThreader
 import com.arsvechkarev.vault.core.MIN_PASSWORD_LENGTH
-import com.arsvechkarev.vault.core.Singletons.masterPasswordChecker
-import com.arsvechkarev.vault.core.Singletons.passwordChecker
-import com.arsvechkarev.vault.core.Singletons.userAuthSaver
+import com.arsvechkarev.vault.core.di.CoreDi
 import com.arsvechkarev.vault.core.extensions.moxyPresenter
 import com.arsvechkarev.vault.core.navigation.Screen
 import com.arsvechkarev.vault.cryptography.PasswordStatus
@@ -155,8 +152,7 @@ class CreatingMasterPasswordScreen : Screen(), CreatingMasterPasswordView {
   }
   
   private val presenter by moxyPresenter {
-    CreatingMasterPasswordPresenter(AndroidThreader, passwordChecker, masterPasswordChecker,
-      userAuthSaver)
+    CoreDi.coreComponent.getCreatingMasterPasswordComponent().create().providePresenter()
   }
   
   override fun onInit() {

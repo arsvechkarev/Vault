@@ -2,11 +2,14 @@ package com.arsvechkarev.vault.features.services_list
 
 import com.arsvechkarev.vault.core.BasePresenter
 import com.arsvechkarev.vault.core.Threader
+import com.arsvechkarev.vault.core.di.FeatureScope
 import com.arsvechkarev.vault.core.model.Service
 import com.arsvechkarev.vault.cryptography.MasterPasswordHolder.masterPassword
 import com.arsvechkarev.vault.features.common.ServicesRepository
+import javax.inject.Inject
 
-class ServicesListPresenter(
+@FeatureScope
+class ServicesListPresenter @Inject constructor(
   threader: Threader,
   private val servicesRepository: ServicesRepository
 ) : BasePresenter<ServicesListView>(threader) {

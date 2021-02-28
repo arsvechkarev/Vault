@@ -8,9 +8,8 @@ import android.view.Gravity.END
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import com.arsvechkarev.vault.R
-import com.arsvechkarev.vault.core.AndroidThreader
-import com.arsvechkarev.vault.core.Singletons.servicesRepository
 import com.arsvechkarev.vault.core.TypefaceSpan
+import com.arsvechkarev.vault.core.di.CoreDi
 import com.arsvechkarev.vault.core.extensions.getDeleteMessageText
 import com.arsvechkarev.vault.core.extensions.ifTrue
 import com.arsvechkarev.vault.core.extensions.moxyPresenter
@@ -135,7 +134,7 @@ class ServicesListScreen : Screen(), ServicesListView {
   }
   
   private val presenter by moxyPresenter {
-    ServicesListPresenter(AndroidThreader, servicesRepository)
+    CoreDi.coreComponent.getServicesListComponent().create().providePresenter()
   }
   
   override fun onInit() {

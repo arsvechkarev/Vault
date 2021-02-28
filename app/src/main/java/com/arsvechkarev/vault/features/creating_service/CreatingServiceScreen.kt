@@ -6,9 +6,8 @@ import android.view.Gravity.CENTER_VERTICAL
 import android.view.WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE
 import android.widget.ImageView.ScaleType.FIT_XY
 import com.arsvechkarev.vault.R
-import com.arsvechkarev.vault.core.AndroidThreader
 import com.arsvechkarev.vault.core.Singletons.passwordCreatingPresenter
-import com.arsvechkarev.vault.core.Singletons.servicesRepository
+import com.arsvechkarev.vault.core.di.CoreDi
 import com.arsvechkarev.vault.core.extensions.moxyPresenter
 import com.arsvechkarev.vault.core.navigation.Screen
 import com.arsvechkarev.vault.features.creating_password.PasswordEditingDialog.Companion.PasswordEditingDialog
@@ -147,7 +146,7 @@ class CreatingServiceScreen : Screen(), CreatingServiceView {
   }
   
   private val presenter by moxyPresenter {
-    CreatingServicePresenter(servicesRepository, AndroidThreader)
+    CoreDi.coreComponent.getCreatingServiceComponent().create().providePresenter()
   }
   
   private val passwordTextWatcher = object : BaseTextWatcher {

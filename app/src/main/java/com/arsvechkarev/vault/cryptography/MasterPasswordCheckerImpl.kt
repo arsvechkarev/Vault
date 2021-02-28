@@ -3,8 +3,11 @@ package com.arsvechkarev.vault.cryptography
 import android.annotation.SuppressLint
 import com.arsvechkarev.vault.core.FileSaver
 import com.arsvechkarev.vault.core.PASSWORDS_FILENAME
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class MasterPasswordCheckerImpl(
+@Singleton
+class MasterPasswordCheckerImpl @Inject constructor(
   private val cryptography: Cryptography,
   private val fileSaver: FileSaver
 ) : MasterPasswordChecker {

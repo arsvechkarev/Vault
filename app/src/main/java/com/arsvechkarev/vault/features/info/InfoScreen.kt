@@ -8,10 +8,8 @@ import android.view.Gravity.CENTER
 import android.view.Gravity.CENTER_HORIZONTAL
 import android.view.Gravity.END
 import com.arsvechkarev.vault.R
-import com.arsvechkarev.vault.core.AndroidClipboard
-import com.arsvechkarev.vault.core.AndroidThreader
 import com.arsvechkarev.vault.core.Singletons.passwordCreatingPresenter
-import com.arsvechkarev.vault.core.Singletons.servicesRepository
+import com.arsvechkarev.vault.core.di.CoreDi
 import com.arsvechkarev.vault.core.extensions.getDeleteMessageText
 import com.arsvechkarev.vault.core.extensions.moxyPresenter
 import com.arsvechkarev.vault.core.model.Service
@@ -196,7 +194,7 @@ class InfoScreen : Screen(), InfoView {
   }
   
   private val presenter by moxyPresenter {
-    InfoPresenter(servicesRepository, AndroidClipboard, AndroidThreader)
+    CoreDi.coreComponent.getInfoComponent().create().providePresenter()
   }
   
   override fun onAppearedOnScreen(arguments: Bundle) {

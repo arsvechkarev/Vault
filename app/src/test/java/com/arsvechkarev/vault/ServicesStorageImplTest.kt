@@ -4,22 +4,21 @@ import com.arsvechkarev.vault.common.GsonJsonConverter
 import com.arsvechkarev.vault.common.TestFileSaver
 import com.arsvechkarev.vault.core.model.Service
 import com.arsvechkarev.vault.cryptography.Cryptography
-import com.arsvechkarev.vault.cryptography.JavaBase64Coder
 import com.arsvechkarev.vault.cryptography.SeedRandomGeneratorImpl
-import com.arsvechkarev.vault.cryptography.ServicesInfoStorageImpl
+import com.arsvechkarev.vault.cryptography.ServicesStorageImpl
 import org.junit.After
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 
-class ServicesInfoStorageImplTest {
+class ServicesStorageImplTest {
   
   private val testFileSaver = TestFileSaver()
   private val testFileName = "testFileName"
   private val testPassword = "pAsSw0rd"
   
   private val cryptography = Cryptography(JavaBase64Coder, SeedRandomGeneratorImpl)
-  private val storage = ServicesInfoStorageImpl(cryptography, testFileSaver, GsonJsonConverter)
+  private val storage = ServicesStorageImpl(cryptography, testFileSaver, GsonJsonConverter)
   
   @Before
   fun setUp() {

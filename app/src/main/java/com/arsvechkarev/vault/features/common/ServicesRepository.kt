@@ -2,18 +2,26 @@ package com.arsvechkarev.vault.features.common
 
 import com.arsvechkarev.vault.core.Threader
 import com.arsvechkarev.vault.core.model.Service
-import com.arsvechkarev.vault.cryptography.ServicesInfoStorage
+import com.arsvechkarev.vault.cryptography.ServicesStorage
 import java.util.Locale
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class ServicesRepository(
-  private val storage: ServicesInfoStorage,
+@Singleton
+class ServicesRepository @Inject constructor(
+  private val storage: ServicesStorage,
   private val threader: Threader
 ) {
+  
+  init {
+    println("qwerty $this")
+  }
   
   private var servicesList: MutableList<Service> = ArrayList()
   private var changeListeners = ArrayList<((list: List<Service>) -> Unit)>()
   
   fun addChangeListener(listener: (list: List<Service>) -> Unit) {
+    println("qwerty-addChangeListener = $this")
     changeListeners.add(listener)
   }
   
@@ -22,6 +30,7 @@ class ServicesRepository(
   }
   
   fun getServices(password: String): List<Service> {
+    println("qwerty-getServices = $this")
     if (servicesList.isEmpty()) {
       servicesList = storage.getServices(password).toMutableList()
       sortList()
@@ -30,6 +39,7 @@ class ServicesRepository(
   }
   
   fun saveService(password: String, service: Service) {
+    println("qwerty-saveService = $this")
     storage.saveService(password, service)
     servicesList.add(service)
     sortList()
@@ -37,6 +47,7 @@ class ServicesRepository(
   }
   
   fun updateService(password: String, service: Service) {
+    println("qwerty-updateService = $this")
     storage.updateService(password, service)
     for (i in 0 until servicesList.size) {
       val currentServiceInfo = servicesList[i]

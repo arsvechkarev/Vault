@@ -1,7 +1,6 @@
 package com.arsvechkarev.vault
 
 import com.arsvechkarev.vault.cryptography.Cryptography
-import com.arsvechkarev.vault.cryptography.JavaBase64Coder
 import com.arsvechkarev.vault.cryptography.SeedRandomGeneratorImpl
 import org.junit.Assert.assertEquals
 import org.junit.Test

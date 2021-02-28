@@ -3,8 +3,11 @@ package com.arsvechkarev.vault.core
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Context.MODE_PRIVATE
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class UserAuthSaverImpl(context: Context) : UserAuthSaver {
+@Singleton
+class UserAuthSaverImpl @Inject constructor(context: Context) : UserAuthSaver {
   
   private val sharedPreferences = context.getSharedPreferences(USER_AUTH_FILENAME, MODE_PRIVATE)
   

@@ -11,8 +11,9 @@ import com.arsvechkarev.vault.features.creating_service.CreatingServiceScreenSta
 import com.arsvechkarev.vault.features.creating_service.CreatingServiceScreenState.INITIAL
 import com.arsvechkarev.vault.features.creating_service.CreatingServiceScreenState.PASSWORD_SCREEN
 import java.util.UUID
+import javax.inject.Inject
 
-class CreatingServicePresenter(
+class CreatingServicePresenter @Inject constructor(
   private val servicesRepository: ServicesRepository,
   threader: Threader
 ) : BasePresenter<CreatingServiceView>(threader) {

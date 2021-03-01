@@ -29,7 +29,8 @@
 - [x] Password editing screen
 
 #### Additional features:
+- [x] Unit-tests for cryptohraphy
+- [x] Dagger 2
 - [ ] Light theme
 - [ ] Sharing secret file
-- [x] Unit-tests for cryptohraphy
 - [ ] UI tests

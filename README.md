@@ -19,7 +19,7 @@
 - Custom navigation
 - Custom UI library
 
-#### Progress:
+#### Main features:
 - [x] Start screen
 - [x] Creating master password screen
 - [x] Cryptography algorithm

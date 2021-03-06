@@ -14,6 +14,7 @@ import androidx.annotation.AttrRes
 import androidx.annotation.ColorInt
 import androidx.annotation.DrawableRes
 import androidx.core.content.ContextCompat
+import com.arsvechkarev.vault.views.NavigatorRootView
 import java.util.Locale
 
 fun dimen(dimenRes: Int) = ContextHolder.applicationContext.resources.getDimension(dimenRes)
@@ -33,6 +34,9 @@ val Context.screenHeight: Int
 
 val Context.statusBarHeight: Int
   get() {
+    if (NavigatorRootView.statusBarHeightFromInsets != 0) {
+      return NavigatorRootView.statusBarHeightFromInsets
+    }
     var result = 0
     val resourceId = resources.getIdentifier("status_bar_height", "dimen", "android")
     if (resourceId > 0) {

@@ -17,6 +17,7 @@ interface StartComponent {
   
   @Subcomponent.Factory
   interface Factory {
+    
     fun create(): StartComponent
   }
   

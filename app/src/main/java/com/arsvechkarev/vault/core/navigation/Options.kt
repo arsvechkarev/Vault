@@ -1,13 +1,10 @@
 package com.arsvechkarev.vault.core.navigation
 
-import android.os.Bundle
-
-/**
- * Options for navigating
- */
-class Options(
-  val clearAllOtherScreens: Boolean = false,
-  val arguments: Bundle? = null,
-  val removeWhenBackClicked: Boolean = false,
-  val removeCurrentScreen: Boolean = false,
+class ForwardOptions(
+  val arguments: Map<String, Any> = emptyMap(),
+  val replaceCurrentScreen: Boolean = false
 )
+
+class BackwardOptions(val removeCurrentScreen: Boolean = false)
+
+class BackwardToOptions(val removeAllLeftScreens: Boolean = false)

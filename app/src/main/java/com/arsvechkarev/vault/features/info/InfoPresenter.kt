@@ -38,6 +38,7 @@ class InfoPresenter @Inject constructor(
     updateServiceIcon(service.serviceName)
     viewState.showServiceName(service.serviceName)
     viewState.setPassword(service.password)
+    viewState.hidePassword()
     val username = service.username
     if (username.isEmpty()) viewState.showNoUsername() else viewState.showUsername(username)
     val email = service.email

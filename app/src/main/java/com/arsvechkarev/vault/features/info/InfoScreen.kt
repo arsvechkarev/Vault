@@ -2,18 +2,16 @@ package com.arsvechkarev.vault.features.info
 
 import android.content.res.ColorStateList
 import android.graphics.drawable.Drawable
-import android.os.Bundle
 import android.view.Gravity.BOTTOM
 import android.view.Gravity.CENTER
 import android.view.Gravity.CENTER_HORIZONTAL
 import android.view.Gravity.END
 import com.arsvechkarev.vault.R
-import com.arsvechkarev.vault.core.Singletons.passwordCreatingPresenter
-import com.arsvechkarev.vault.core.di.CoreDi
+import com.arsvechkarev.vault.core.di.CoreComponent
 import com.arsvechkarev.vault.core.extensions.getDeleteMessageText
 import com.arsvechkarev.vault.core.extensions.moxyPresenter
 import com.arsvechkarev.vault.core.model.Service
-import com.arsvechkarev.vault.core.navigation.Screen
+import com.arsvechkarev.vault.core.navigation.ViewScreen
 import com.arsvechkarev.vault.features.creating_password.PasswordEditingDialog.Companion.PasswordEditingDialog
 import com.arsvechkarev.vault.features.creating_password.PasswordEditingDialog.Companion.passwordEditingDialog
 import com.arsvechkarev.vault.viewbuilding.Colors
@@ -62,7 +60,7 @@ import com.arsvechkarev.vault.views.dialogs.PasswordStrengthDialog.Companion.pas
 import com.arsvechkarev.vault.views.dialogs.loadingDialog
 import com.arsvechkarev.vault.views.drawables.LetterInCircleDrawable.Companion.setLetterDrawable
 
-class InfoScreen : Screen(), InfoView {
+class InfoScreen : ViewScreen(), InfoView {
   
   override fun buildLayout() = withViewBuilder {
     RootCoordinatorLayout {
@@ -175,7 +173,7 @@ class InfoScreen : Screen(), InfoView {
           }
         }
       }
-      PasswordEditingDialog(passwordCreatingPresenter) {
+      PasswordEditingDialog {
         onCloseClicked = { presenter.closePasswordScreen() }
         onPasswordIsTooWeakClicked = { presenter.onShowPasswordStrengthDialog() }
       }
@@ -194,11 +192,12 @@ class InfoScreen : Screen(), InfoView {
   }
   
   private val presenter by moxyPresenter {
-    CoreDi.coreComponent.getInfoComponent().create().providePresenter()
+    CoreComponent.instance.getInfoComponent().create().providePresenter()
   }
   
-  override fun onAppearedOnScreen(arguments: Bundle) {
-    val serviceInfo = arguments.getParcelable<Service>(SERVICE_INFO) as Service
+  override fun onAppearedOnScreen(arguments: Map<String, Any>) {
+    super.onAppearedOnScreen(arguments)
+    val serviceInfo = arguments[SERVICE_INFO] as Service
     presenter.performSetup(serviceInfo)
   }
   
@@ -255,6 +254,7 @@ class InfoScreen : Screen(), InfoView {
   }
   
   override fun hidePassword() {
+    viewAs<PasswordActionsView>().showOpenedEye()
     textView(TextPassword).animateInvisible()
     textView(TextPasswordStub).animateVisible()
   }

@@ -1,19 +1,94 @@
 package com.arsvechkarev.vault.core.navigation
 
-import com.arsvechkarev.vault.core.model.Service
+import kotlin.reflect.KClass
 
 /**
- * Host activity with necessary methods to be accessed from fragment
+ * Represents an app navigator
  */
 interface Navigator {
   
-  fun goToCreatingMasterPasswordScreen()
+  /**
+   * Navigates to [screenClass] with [options]:
+   *
+   * ---------------- Example 1 ----------------
+   *
+   *                    current
+   *                       |
+   * Before stack: [1] -> [2]
+   *
+   * goBackTo(3, operation = Operation.ADD)
+   *
+   *                          current
+   *                             |
+   * After stack: [1] -> [2] -> [3]
+   *
+   *
+   *
+   * ---------------- Example 2 ----------------
+   *
+   *                    current
+   *                       |
+   * Before stack: [1] -> [2]
+   *
+   * goBackTo(3, operation = Operation.REPLACE)
+   *
+   *                   current
+   *                      |
+   * After stack: [1] -> [3]
+   */
+  fun goTo(screenClass: KClass<out Screen>, options: ForwardOptions = ForwardOptions())
   
-  fun goToServicesListScreen()
+  /**
+   * Pops current screen with [options]
+   */
+  fun goBack(options: BackwardOptions = BackwardOptions())
   
-  fun goToNewServiceScreen()
+  /**
+   * Navigates back to a screen in stack with [screenClass] and [options]
+   *
+   * ---------------- Example 1 ----------------
+   *                                  current
+   *                                     |
+   * Before stack: [1] -> [2] -> [3] -> [4]
+   *
+   * goBackTo(2, removeCurrentScreen = false)
+   *
+   *                   current
+   *                      |
+   * After stack: [1] -> [2]
+   *
+   *
+   *
+   * ---------------- Example 2 ----------------
+   *
+   *                                  current
+   *                                     |
+   * Before stack: [1] -> [2] -> [3] -> [4]
+   *
+   * goBackTo(2, removeCurrentScreen = true)
+   *
+   *                   current
+   *                      |
+   * After stack: [1] -> [2] -> [3] -> [4]
+   */
+  fun goBackTo(screenClass: KClass<out Screen>, options: BackwardToOptions = BackwardToOptions())
   
-  fun goToInfoScreen(service: Service)
+  /**
+   * Handles going back in stack. Returns true, if there was any screens in stack to be removed
+   * (and removes them), or if current screen handled back interaction. Returns false otherwise
+   */
+  fun handleGoBack(): Boolean
   
-  fun popCurrentScreen()
+  /**
+   * Switches to new navigation root
+   *
+   * Example:
+   *
+   * Before stack: [1] -> [2] -> [3]
+   *
+   * switchToNewRoot(4)
+   *
+   * After stack: [4]
+   */
+  fun switchToNewRoot(screenClass: KClass<out Screen>)
 }

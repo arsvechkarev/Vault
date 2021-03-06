@@ -13,15 +13,10 @@ class ServicesRepository @Inject constructor(
   private val threader: Threader
 ) {
   
-  init {
-    println("qwerty $this")
-  }
-  
   private var servicesList: MutableList<Service> = ArrayList()
   private var changeListeners = ArrayList<((list: List<Service>) -> Unit)>()
   
   fun addChangeListener(listener: (list: List<Service>) -> Unit) {
-    println("qwerty-addChangeListener = $this")
     changeListeners.add(listener)
   }
   
@@ -30,7 +25,6 @@ class ServicesRepository @Inject constructor(
   }
   
   fun getServices(password: String): List<Service> {
-    println("qwerty-getServices = $this")
     if (servicesList.isEmpty()) {
       servicesList = storage.getServices(password).toMutableList()
       sortList()
@@ -39,7 +33,6 @@ class ServicesRepository @Inject constructor(
   }
   
   fun saveService(password: String, service: Service) {
-    println("qwerty-saveService = $this")
     storage.saveService(password, service)
     servicesList.add(service)
     sortList()
@@ -47,7 +40,6 @@ class ServicesRepository @Inject constructor(
   }
   
   fun updateService(password: String, service: Service) {
-    println("qwerty-updateService = $this")
     storage.updateService(password, service)
     for (i in 0 until servicesList.size) {
       val currentServiceInfo = servicesList[i]

@@ -1,7 +1,7 @@
 package com.arsvechkarev.vault.views.dialogs
 
 import android.view.ViewGroup
-import com.arsvechkarev.vault.core.navigation.Screen
+import com.arsvechkarev.vault.core.navigation.ViewScreen
 import com.arsvechkarev.vault.viewbuilding.Dimens.ProgressBarSizeBig
 import com.arsvechkarev.vault.viewdsl.Size.Companion.MatchParent
 import com.arsvechkarev.vault.viewdsl.addView
@@ -13,7 +13,7 @@ import com.arsvechkarev.vault.views.SimpleDialog
 
 const val DialogProgressBar = "DialogProgressBar"
 
-val Screen.loadingDialog get() = viewAs<SimpleDialog>(DialogProgressBar)
+val ViewScreen.loadingDialog get() = viewAs<SimpleDialog>(DialogProgressBar)
 
 fun ViewGroup.LoadingDialog() = withViewBuilder {
   addView {

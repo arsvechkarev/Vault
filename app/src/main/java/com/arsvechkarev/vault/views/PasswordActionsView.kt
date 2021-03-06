@@ -37,6 +37,13 @@ class PasswordActionsView(context: Context) : ViewGroup(context) {
     }
   }
   
+  fun showOpenedEye() {
+    isPasswordShown = false
+    val showHideView = getChildAt(2) as TextWithImageView
+    showHideView.setImage(R.drawable.ic_eye_opened)
+    showHideView.setText(R.string.text_show)
+  }
+  
   fun onCopyClicked(block: () -> Unit) {
     getChildAt(0).onClick(block)
   }

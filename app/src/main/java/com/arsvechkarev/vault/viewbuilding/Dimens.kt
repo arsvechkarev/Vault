@@ -31,7 +31,7 @@ object Dimens {
   val ImageNoServicesSize get() = adjust(100.dp)
   val ImageServiceNameSize get() = adjust(45.dp)
   val ImageBackMargin get() = adjust(16.dp)
-  val CornerRadiusSmall get() = (4.dp)
+  val CornerRadiusSmall get() = (3.dp)
   val CornerRadiusDefault get() = (6.dp)
   val DividerHeight get() = adjustDivider(1.dp)
   val PasswordStrengthMeterHeight get() = adjust(6.dp)

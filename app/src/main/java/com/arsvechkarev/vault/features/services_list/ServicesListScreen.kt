@@ -9,12 +9,12 @@ import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import com.arsvechkarev.vault.R
 import com.arsvechkarev.vault.core.TypefaceSpan
-import com.arsvechkarev.vault.core.di.CoreDi
+import com.arsvechkarev.vault.core.di.CoreComponent
 import com.arsvechkarev.vault.core.extensions.getDeleteMessageText
 import com.arsvechkarev.vault.core.extensions.ifTrue
 import com.arsvechkarev.vault.core.extensions.moxyPresenter
 import com.arsvechkarev.vault.core.model.Service
-import com.arsvechkarev.vault.core.navigation.Screen
+import com.arsvechkarev.vault.core.navigation.ViewScreen
 import com.arsvechkarev.vault.viewbuilding.Colors
 import com.arsvechkarev.vault.viewbuilding.Dimens.FabSize
 import com.arsvechkarev.vault.viewbuilding.Dimens.ImageNoServicesSize
@@ -58,7 +58,7 @@ import com.arsvechkarev.vault.views.dialogs.InfoDialog.Companion.infoDialog
 import com.arsvechkarev.vault.views.dialogs.LoadingDialog
 import com.arsvechkarev.vault.views.dialogs.loadingDialog
 
-class ServicesListScreen : Screen(), ServicesListView {
+class ServicesListScreen : ViewScreen(), ServicesListView {
   
   override fun buildLayout() = withViewBuilder {
     val viewUnderHeaderBehavior = ViewUnderHeaderBehavior()
@@ -134,10 +134,11 @@ class ServicesListScreen : Screen(), ServicesListView {
   }
   
   private val presenter by moxyPresenter {
-    CoreDi.coreComponent.getServicesListComponent().create().providePresenter()
+    CoreComponent.instance.getServicesListComponent().create().providePresenter()
   }
   
-  override fun onInit() {
+  override fun onInit(arguments: Map<String, Any>) {
+    super.onInit(arguments)
     viewAs<RecyclerView>().setupWith(adapter)
     presenter.startLoadingPasswords()
   }

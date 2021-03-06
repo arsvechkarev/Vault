@@ -19,7 +19,7 @@
 - Custom navigation
 - Custom UI library
 
-#### Progress:
+#### Main features:
 - [x] Start screen
 - [x] Creating master password screen
 - [x] Cryptography algorithm
@@ -29,7 +29,8 @@
 - [x] Password editing screen
 
 #### Additional features:
+- [x] Unit-tests for cryptohraphy
+- [x] Dagger 2
 - [ ] Light theme
 - [ ] Sharing secret file
-- [x] Unit-tests for cryptohraphy
 - [ ] UI tests

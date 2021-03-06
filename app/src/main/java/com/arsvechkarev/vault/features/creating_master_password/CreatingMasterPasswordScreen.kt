@@ -6,9 +6,9 @@ import android.view.animation.AnimationUtils
 import android.widget.ViewSwitcher
 import com.arsvechkarev.vault.R
 import com.arsvechkarev.vault.core.MIN_PASSWORD_LENGTH
-import com.arsvechkarev.vault.core.di.CoreDi
+import com.arsvechkarev.vault.core.di.CoreComponent
 import com.arsvechkarev.vault.core.extensions.moxyPresenter
-import com.arsvechkarev.vault.core.navigation.Screen
+import com.arsvechkarev.vault.core.navigation.ViewScreen
 import com.arsvechkarev.vault.cryptography.PasswordStatus
 import com.arsvechkarev.vault.cryptography.PasswordStatus.EMPTY
 import com.arsvechkarev.vault.cryptography.PasswordStatus.OK
@@ -56,7 +56,7 @@ import com.arsvechkarev.vault.views.dialogs.PasswordStrengthDialog.Companion.Pas
 import com.arsvechkarev.vault.views.dialogs.PasswordStrengthDialog.Companion.passwordStrengthDialog
 import com.arsvechkarev.vault.views.dialogs.loadingDialog
 
-class CreatingMasterPasswordScreen : Screen(), CreatingMasterPasswordView {
+class CreatingMasterPasswordScreen : ViewScreen(), CreatingMasterPasswordView {
   
   override fun buildLayout() = withViewBuilder {
     RootCoordinatorLayout(MatchParent, MatchParent) {
@@ -152,16 +152,18 @@ class CreatingMasterPasswordScreen : Screen(), CreatingMasterPasswordView {
   }
   
   private val presenter by moxyPresenter {
-    CoreDi.coreComponent.getCreatingMasterPasswordComponent().create().providePresenter()
+    CoreComponent.instance.getCreatingMasterPasswordComponent().create().providePresenter()
   }
   
-  override fun onInit() {
+  override fun onInit(arguments: Map<String, Any>) {
+    super.onInit(arguments)
     editTextPassword(EditTextEnterPassword).addTextChangedListener(passwordTextWatcher)
     editTextPassword(EditTextEnterPassword).addTextChangedListener(clearErrorTextWatcher)
     editTextPassword(EditTextRepeatPassword).addTextChangedListener(clearErrorTextWatcher)
   }
   
-  override fun onAppearedOnScreen() {
+  override fun onAppearedOnScreen(arguments: Map<String, Any>) {
+    super.onAppearedOnScreen(arguments)
     showKeyboard()
     editTextPassword(EditTextEnterPassword).requestEditTextFocus()
   }
@@ -171,6 +173,7 @@ class CreatingMasterPasswordScreen : Screen(), CreatingMasterPasswordView {
   }
   
   override fun onRelease() {
+    super.onRelease()
     editTextPassword(EditTextRepeatPassword).removeTextChangedListener(passwordTextWatcher)
     editTextPassword(EditTextEnterPassword).removeTextChangedListener(clearErrorTextWatcher)
     editTextPassword(EditTextRepeatPassword).removeTextChangedListener(clearErrorTextWatcher)

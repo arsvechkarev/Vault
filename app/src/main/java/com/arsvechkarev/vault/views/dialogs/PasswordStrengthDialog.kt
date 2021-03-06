@@ -6,7 +6,7 @@ import android.view.Gravity.CENTER
 import android.view.ViewGroup
 import android.widget.TextView
 import com.arsvechkarev.vault.R
-import com.arsvechkarev.vault.core.navigation.Screen
+import com.arsvechkarev.vault.core.navigation.ViewScreen
 import com.arsvechkarev.vault.viewbuilding.Colors
 import com.arsvechkarev.vault.viewbuilding.Dimens.CornerRadiusDefault
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginBig
@@ -66,7 +66,7 @@ class PasswordStrengthDialog(context: Context) : SimpleDialog(context) {
   
   companion object {
     
-    val Screen.passwordStrengthDialog get() = viewAs<PasswordStrengthDialog>()
+    val ViewScreen.passwordStrengthDialog get() = viewAs<PasswordStrengthDialog>()
     
     fun ViewGroup.PasswordStrengthDialog(block: PasswordStrengthDialog.() -> Unit = {}) = withViewBuilder {
       child<PasswordStrengthDialog, ViewGroup.LayoutParams>(MatchParent, MatchParent, block) {

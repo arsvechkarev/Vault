@@ -18,11 +18,12 @@ import com.arsvechkarev.vault.R.string.text_uppercase_symbols
 import com.arsvechkarev.vault.core.DEFAULT_PASSWORD_LENGTH
 import com.arsvechkarev.vault.core.MAX_PASSWORD_LENGTH
 import com.arsvechkarev.vault.core.MIN_PASSWORD_LENGTH
+import com.arsvechkarev.vault.core.di.CoreComponent
 import com.arsvechkarev.vault.core.model.PasswordCharacteristics
 import com.arsvechkarev.vault.core.model.PasswordCharacteristics.NUMBERS
 import com.arsvechkarev.vault.core.model.PasswordCharacteristics.SPECIAL_SYMBOLS
 import com.arsvechkarev.vault.core.model.PasswordCharacteristics.UPPERCASE_SYMBOLS
-import com.arsvechkarev.vault.core.navigation.Screen
+import com.arsvechkarev.vault.core.navigation.ViewScreen
 import com.arsvechkarev.vault.cryptography.PasswordStrength
 import com.arsvechkarev.vault.cryptography.PasswordStrength.MEDIUM
 import com.arsvechkarev.vault.cryptography.PasswordStrength.STRONG
@@ -287,12 +288,12 @@ class PasswordEditingDialog(
     const val DialogPasswordTextError = "DialogPasswordTextError"
     const val DialogPasswordEditText = "DialogPasswordEditText"
     
-    fun Screen.passwordEditingDialog() = viewAs<PasswordEditingDialog>()
+    fun ViewScreen.passwordEditingDialog() = viewAs<PasswordEditingDialog>()
     
     fun ViewGroup.PasswordEditingDialog(
-      presenter: PasswordCreatingPresenter,
       block: PasswordEditingDialog.() -> Unit = {}
     ) = withViewBuilder {
+      val presenter = CoreComponent.instance.getPasswordCreatingComponent().create().getPresenter()
       val dialog = PasswordEditingDialog(context, presenter)
       dialog.size(MatchParent, MatchParent)
       dialog.classNameTag()

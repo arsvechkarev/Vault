@@ -27,7 +27,7 @@ import com.arsvechkarev.vault.views.AnimatableCheckmark.Companion.CHECKMARK_DELA
 
 class Snackbar(context: Context) : ViewGroup(context) {
   
-  private val innerPadding = Dimens.MarginSmall
+  private val innerPadding = MarginSmall
   private var opened = false
   
   val textInfo get() = getChildAt(0) as TextView
@@ -37,7 +37,7 @@ class Snackbar(context: Context) : ViewGroup(context) {
   
   init {
     clipToPadding = false
-    backgroundRoundRect(Dimens.CornerRadiusDefault, Colors.Dialog)
+    backgroundRoundRect(Dimens.CornerRadiusSmall, Colors.Dialog)
     paddings(start = MarginDefault, end = MarginDefault, top = MarginSmall, bottom = MarginSmall)
     addView(TextView(context).apply(BaseTextView).apply {
       textSize(TextSizes.H4)

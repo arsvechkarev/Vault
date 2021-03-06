@@ -3,7 +3,7 @@ package com.arsvechkarev.vault.features.initial_screen
 import android.view.Gravity.BOTTOM
 import android.view.Gravity.CENTER
 import com.arsvechkarev.vault.R
-import com.arsvechkarev.vault.core.navigation.Screen
+import com.arsvechkarev.vault.core.navigation.ViewScreen
 import com.arsvechkarev.vault.viewbuilding.Dimens.ImageLogoSize
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginBig
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginDefault
@@ -23,7 +23,7 @@ import com.arsvechkarev.vault.viewdsl.rotate
 import com.arsvechkarev.vault.viewdsl.text
 import com.arsvechkarev.vault.viewdsl.textSize
 
-class InitialScreen : Screen() {
+class InitialScreen : ViewScreen() {
   
   override fun buildLayout() = withViewBuilder {
     RootFrameLayout {

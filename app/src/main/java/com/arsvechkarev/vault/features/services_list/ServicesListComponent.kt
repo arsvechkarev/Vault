@@ -13,6 +13,7 @@ interface ServicesListComponent {
   
   @Subcomponent.Factory
   interface Factory {
+    
     fun create(): ServicesListComponent
   }
   

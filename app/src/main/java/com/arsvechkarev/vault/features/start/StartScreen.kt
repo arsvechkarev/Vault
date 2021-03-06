@@ -4,9 +4,9 @@ import android.view.Gravity.CENTER
 import com.arsvechkarev.vault.R
 import com.arsvechkarev.vault.R.id.start_screen_enter_password
 import com.arsvechkarev.vault.R.id.start_screen_error_text
-import com.arsvechkarev.vault.core.di.CoreDi
+import com.arsvechkarev.vault.core.di.CoreComponent
 import com.arsvechkarev.vault.core.extensions.moxyPresenter
-import com.arsvechkarev.vault.core.navigation.Screen
+import com.arsvechkarev.vault.core.navigation.ViewScreen
 import com.arsvechkarev.vault.viewbuilding.Colors
 import com.arsvechkarev.vault.viewbuilding.Dimens.ImageLogoSize
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginBig
@@ -34,7 +34,7 @@ import com.arsvechkarev.vault.views.EditTextPassword
 import com.arsvechkarev.vault.views.dialogs.LoadingDialog
 import com.arsvechkarev.vault.views.dialogs.loadingDialog
 
-class StartScreen : Screen(), StartView {
+class StartScreen : ViewScreen(), StartView {
   
   override fun buildLayout() = withViewBuilder {
     RootConstraintLayout {
@@ -94,10 +94,11 @@ class StartScreen : Screen(), StartView {
   }
   
   private val presenter by moxyPresenter {
-    CoreDi.coreComponent.getStartComponent().create().providePresenter()
+    CoreComponent.instance.getStartComponent().create().providePresenter()
   }
   
-  override fun onInit() {
+  override fun onInit(arguments: Map<String, Any>) {
+    super.onInit(arguments)
     viewAs<EditTextPassword>(start_screen_enter_password).requestEditTextFocus()
     showKeyboard()
   }

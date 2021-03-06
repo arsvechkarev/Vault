@@ -30,6 +30,7 @@ interface CreatingMasterPasswordComponent {
   
   @Subcomponent.Factory
   interface Factory {
+    
     fun create(): CreatingMasterPasswordComponent
   }
   

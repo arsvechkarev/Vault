@@ -11,6 +11,7 @@ interface CreatingServiceComponent {
   
   @Subcomponent.Factory
   interface Factory {
+    
     fun create(): CreatingServiceComponent
   }
   

@@ -6,10 +6,9 @@ import android.view.Gravity.CENTER_VERTICAL
 import android.view.WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE
 import android.widget.ImageView.ScaleType.FIT_XY
 import com.arsvechkarev.vault.R
-import com.arsvechkarev.vault.core.Singletons.passwordCreatingPresenter
-import com.arsvechkarev.vault.core.di.CoreDi
+import com.arsvechkarev.vault.core.di.CoreComponent
 import com.arsvechkarev.vault.core.extensions.moxyPresenter
-import com.arsvechkarev.vault.core.navigation.Screen
+import com.arsvechkarev.vault.core.navigation.ViewScreen
 import com.arsvechkarev.vault.features.creating_password.PasswordEditingDialog.Companion.PasswordEditingDialog
 import com.arsvechkarev.vault.features.creating_password.PasswordEditingDialog.Companion.passwordEditingDialog
 import com.arsvechkarev.vault.viewbuilding.Colors.Error
@@ -53,7 +52,7 @@ import com.arsvechkarev.vault.views.dialogs.PasswordStrengthDialog.Companion.pas
 import com.arsvechkarev.vault.views.drawables.LetterInCircleDrawable.Companion.setLetterDrawable
 import kotlin.math.abs
 
-class CreatingServiceScreen : Screen(), CreatingServiceView {
+class CreatingServiceScreen : ViewScreen(), CreatingServiceView {
   
   override fun buildLayout() = withViewBuilder {
     RootConstraintLayout {
@@ -132,7 +131,7 @@ class CreatingServiceScreen : Screen(), CreatingServiceView {
         text(R.string.text_continue)
         onClick { continueWithCreating() }
       }
-      PasswordEditingDialog(passwordCreatingPresenter) {
+      PasswordEditingDialog {
         onCloseClicked = { presenter.closePasswordEditingDialog() }
         onPasswordIsTooWeakClicked = { presenter.onPasswordIsTooWeakClicked() }
       }
@@ -146,7 +145,7 @@ class CreatingServiceScreen : Screen(), CreatingServiceView {
   }
   
   private val presenter by moxyPresenter {
-    CoreDi.coreComponent.getCreatingServiceComponent().create().providePresenter()
+    CoreComponent.instance.getCreatingServiceComponent().create().providePresenter()
   }
   
   private val passwordTextWatcher = object : BaseTextWatcher {
@@ -156,13 +155,15 @@ class CreatingServiceScreen : Screen(), CreatingServiceView {
     }
   }
   
-  override fun onInit() {
+  override fun onInit(arguments: Map<String, Any>) {
+    super.onInit(arguments)
     editText(EditTextServiceName).requestFocus()
     editText(EditTextServiceName).addTextChangedListener(passwordTextWatcher)
     showKeyboard()
   }
   
   override fun onRelease() {
+    super.onRelease()
     editText(EditTextServiceName).removeTextChangedListener(passwordTextWatcher)
     hideKeyboard()
     contextNonNull.setSoftInputMode(SOFT_INPUT_ADJUST_RESIZE)

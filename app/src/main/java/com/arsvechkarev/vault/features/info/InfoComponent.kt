@@ -28,6 +28,7 @@ interface InfoComponent {
   
   @Subcomponent.Factory
   interface Factory {
+    
     fun create(): InfoComponent
   }
   

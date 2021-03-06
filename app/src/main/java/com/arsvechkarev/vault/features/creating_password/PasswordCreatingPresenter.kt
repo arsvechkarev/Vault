@@ -2,6 +2,7 @@ package com.arsvechkarev.vault.features.creating_password
 
 import com.arsvechkarev.vault.core.DEFAULT_PASSWORD_LENGTH
 import com.arsvechkarev.vault.core.MIN_PASSWORD_LENGTH
+import com.arsvechkarev.vault.core.di.FeatureScope
 import com.arsvechkarev.vault.core.extensions.hasNumbers
 import com.arsvechkarev.vault.core.extensions.hasSpecialSymbols
 import com.arsvechkarev.vault.core.extensions.hasUppercaseLetters
@@ -15,8 +16,10 @@ import com.arsvechkarev.vault.cryptography.PasswordStatus.OK
 import com.arsvechkarev.vault.cryptography.PasswordStatus.TOO_SHORT
 import com.arsvechkarev.vault.cryptography.PasswordStatus.TOO_WEAK
 import com.arsvechkarev.vault.cryptography.generator.PasswordGenerator
+import javax.inject.Inject
 
-class PasswordCreatingPresenter(
+@FeatureScope
+class PasswordCreatingPresenter @Inject constructor(
   private val passwordChecker: PasswordChecker,
   private val passwordGenerator: PasswordGenerator
 ) {

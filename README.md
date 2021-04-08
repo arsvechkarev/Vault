@@ -28,7 +28,7 @@
 - [x] Creating service screen
 - [x] Password editing screen
 
-#### Additional features:
+#### In progress:
 - [x] Unit-tests for cryptohraphy
 - [x] Dagger 2
 - [ ] Light theme

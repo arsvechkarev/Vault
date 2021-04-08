@@ -2,6 +2,8 @@
 
 ### An android-based, simple, and secure password manager
 
+### [Download apk](apk/app-debug.apk)
+
 #### Screenshots:
 
 <p float="left">

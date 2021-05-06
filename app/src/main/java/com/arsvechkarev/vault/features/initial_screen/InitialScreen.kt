@@ -24,8 +24,7 @@ import com.arsvechkarev.vault.viewdsl.text
 import com.arsvechkarev.vault.viewdsl.textSize
 
 class InitialScreen : ViewScreen() {
-
-  // whatever
+  
   override fun buildLayout() = withViewBuilder {
     RootFrameLayout {
       VerticalLayout(MatchParent, WrapContent) {

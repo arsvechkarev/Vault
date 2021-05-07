@@ -1,24 +1,25 @@
 package com.arsvechkarev.vault.features.main
 
-import android.content.Context
-import android.view.View
 import android.widget.FrameLayout
-import com.arsvechkarev.vault.core.navigation.Navigator
-import com.arsvechkarev.vault.core.navigation.NavigatorImpl
-import com.arsvechkarev.vault.core.navigation.Screen
-import com.arsvechkarev.vault.core.navigation.ScreenHandler
-import com.arsvechkarev.vault.core.navigation.ScreenHandlerFactory
-import com.arsvechkarev.vault.core.navigation.ViewNavigationHost
-import com.arsvechkarev.vault.core.navigation.ViewScreen
-import com.arsvechkarev.vault.core.navigation.ViewScreenHandler
+import com.arsvechkarev.vault.core.di.FeatureScope
 import dagger.BindsInstance
 import dagger.Module
 import dagger.Provides
 import dagger.Subcomponent
+import moxy.MvpAppCompatActivity
+import navigation.BaseScreen
+import navigation.ExtendedNavigator
+import navigation.ExtendedNavigatorImpl
+import navigation.MvpViewScreenHandler
+import navigation.OfClassNameFactory
+import navigation.ScreenHandler
+import navigation.ScreenHandlerFactory
+import navigation.ViewNavigationHost
 
 @Module(subcomponents = [MainComponent::class])
 object MainModule
 
+@FeatureScope
 @Subcomponent(modules = [NavigationModule::class])
 interface MainComponent {
   
@@ -28,31 +29,28 @@ interface MainComponent {
   interface Builder {
     
     @BindsInstance
-    fun navigationRoot(rootView: FrameLayout): Builder
+    fun activity(activity: MvpAppCompatActivity): Builder
+    
+    @BindsInstance
+    fun rootViewId(rootViewId: Int): Builder
     
     fun build(): MainComponent
   }
 }
 
 @Module
-class NavigationModule {
-  
-  private var _context: Context? = null
-  
-  private val factory = object : ScreenHandlerFactory {
-    override fun createScreenHandler(screen: Screen): ScreenHandler {
-      return ViewScreenHandler(screen as ViewScreen, _context!!)
-    }
-  }
-  
-  private val converter: (ScreenHandler) -> View = { handler ->
-    (handler as ViewScreenHandler).view
-  }
+object NavigationModule {
   
   @Provides
-  fun provideNavigator(rootView: FrameLayout): Navigator {
-    _context = rootView.context
-    val host = ViewNavigationHost(rootView, converter)
-    return NavigatorImpl(host, factory)
+  @JvmStatic
+  fun provideNavigator(activity: MvpAppCompatActivity, rootViewId: Int): ExtendedNavigator {
+    val rootView = activity.findViewById<FrameLayout>(rootViewId)
+    val screenHandlerViewProvider = { handler: ScreenHandler -> (handler as MvpViewScreenHandler).view }
+    val navHost = ViewNavigationHost(rootView, screenHandlerViewProvider)
+    val screenHandlerFactory = ScreenHandlerFactory { screenKey, screen ->
+      MvpViewScreenHandler(screen as BaseScreen, screenKey.toString(),
+        activity.mvpDelegate, activity)
+    }
+    return ExtendedNavigatorImpl(navHost, OfClassNameFactory, screenHandlerFactory)
   }
 }

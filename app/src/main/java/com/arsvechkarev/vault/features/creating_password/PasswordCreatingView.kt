@@ -2,8 +2,12 @@ package com.arsvechkarev.vault.features.creating_password
 
 import com.arsvechkarev.vault.core.model.PasswordCharacteristics
 import com.arsvechkarev.vault.cryptography.PasswordStrength
+import moxy.MvpView
+import moxy.viewstate.strategy.AddToEndSingleStrategy
+import moxy.viewstate.strategy.StateStrategyType
 
-interface PasswordCreatingView {
+@StateStrategyType(AddToEndSingleStrategy::class)
+interface PasswordCreatingView : MvpView {
   
   fun showChangePasswordLength(progress: Int)
   

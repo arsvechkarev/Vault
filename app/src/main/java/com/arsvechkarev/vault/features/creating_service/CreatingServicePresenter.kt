@@ -10,11 +10,13 @@ import com.arsvechkarev.vault.features.creating_service.CreatingServiceScreenSta
 import com.arsvechkarev.vault.features.creating_service.CreatingServiceScreenState.DIALOG_SAVE_PASSWORD
 import com.arsvechkarev.vault.features.creating_service.CreatingServiceScreenState.INITIAL
 import com.arsvechkarev.vault.features.creating_service.CreatingServiceScreenState.PASSWORD_SCREEN
+import navigation.Router
 import java.util.UUID
 import javax.inject.Inject
 
 class CreatingServicePresenter @Inject constructor(
   private val servicesRepository: ServicesRepository,
+  private val router: Router,
   threader: Threader
 ) : BasePresenter<CreatingServiceView>(threader) {
   
@@ -73,7 +75,7 @@ class CreatingServicePresenter @Inject constructor(
       val serviceInfo = Service(UUID.randomUUID().toString(), serviceName,
         username, email, password)
       servicesRepository.saveService(masterPassword, serviceInfo)
-      updateViewState { showExit() }
+      onMainThread { router.goBack() }
     }
   }
   
@@ -82,25 +84,29 @@ class CreatingServicePresenter @Inject constructor(
     viewState.hidePasswordCreatingDialog()
   }
   
-  fun allowBackPress(): Boolean {
+  fun onBackClicked() {
+  
+  }
+  
+  fun handleBackPress(): Boolean {
     return when (state) {
       INITIAL -> {
-        true
+        false
       }
       PASSWORD_SCREEN -> {
         state = INITIAL
         viewState.hidePasswordCreatingDialog()
-        false
+        true
       }
       DIALOG_PASSWORD_STRENGTH -> {
         state = PASSWORD_SCREEN
         viewState.hidePasswordStrengthDialog()
-        false
+        true
       }
       DIALOG_SAVE_PASSWORD -> {
         state = PASSWORD_SCREEN
         viewState.hideSavePasswordDialog()
-        false
+        true
       }
     }
   }

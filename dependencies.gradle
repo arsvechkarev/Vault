@@ -4,18 +4,21 @@ ext {
   dagger_version = '2.30'
 
   applicationDependencies = [
-      kotlin            : "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version",
-      appCompat         : "androidx.appcompat:appcompat:1.2.0",
-      cicerone          : "com.github.terrakok:cicerone:6.6",
-      moxy              : "com.github.moxy-community:moxy:$moxy_version",
-      moxyCompiler      : "com.github.moxy-community:moxy-compiler:$moxy_version",
-      moxyAndroidx      : "com.github.moxy-community:moxy-androidx:$moxy_version",
-      timber            : "com.jakewharton.timber:timber:4.7.1",
-      constraintLayout  : "androidx.constraintlayout:constraintlayout:2.0.4",
-      coordinatorLayout : "androidx.coordinatorlayout:coordinatorlayout:1.1.0",
-      recyclerView      : "androidx.recyclerview:recyclerview:1.1.0",
-      dagger            : "com.google.dagger:dagger:$dagger_version",
-      daggerCompiler    : "com.google.dagger:dagger-compiler:$dagger_version",
+      kotlin           : "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version",
+      appCompat        : "androidx.appcompat:appcompat:1.2.0",
+      coordinatorLayout: "androidx.coordinatorlayout:coordinatorlayout:1.1.0",
+      constraintLayout : "androidx.constraintlayout:constraintlayout:2.0.4",
+      recyclerView     : "androidx.recyclerview:recyclerview:1.1.0",
+      cicerone         : "com.github.terrakok:cicerone:6.6",
+      moxy             : "com.github.moxy-community:moxy:$moxy_version",
+      moxyCompiler     : "com.github.moxy-community:moxy-compiler:$moxy_version",
+      moxyAndroidx     : "com.github.moxy-community:moxy-androidx:$moxy_version",
+      dagger           : "com.google.dagger:dagger:$dagger_version",
+      daggerCompiler   : "com.google.dagger:dagger-compiler:$dagger_version",
+      zxcvbn           : "com.nulab-inc:zxcvbn:1.3.1",
+      androidSecurity  : "androidx.security:security-crypto:1.1.0-alpha03",
+      timber           : "com.jakewharton.timber:timber:4.7.1",
+      leakCanary       : "com.squareup.leakcanary:leakcanary-android:2.7"
   ]
 
   espresso_version = '3.2.0'
@@ -25,6 +28,7 @@ ext {
       junit            : "junit:junit:4.12",
       mockk            : "io.mockk:mockk:1.9.3",
       kakao            : "com.agoda.kakao:kakao:2.2.0",
+      gson             : "com.google.code.gson:gson:2.8.6",
       espresso         : "androidx.test.espresso:espresso-com.arsvechkarev.core:$espresso_version",
       espressoContrib  : "androidx.test.espresso:espresso-contrib:$espresso_version",
       androidTestRunner: "androidx.test:runner:$androidTest_version",

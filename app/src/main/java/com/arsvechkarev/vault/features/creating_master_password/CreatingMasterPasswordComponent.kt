@@ -4,7 +4,7 @@ import android.content.Context
 import com.arsvechkarev.vault.core.UserAuthSaver
 import com.arsvechkarev.vault.core.UserAuthSaverImpl
 import com.arsvechkarev.vault.core.di.FeatureScope
-import com.arsvechkarev.vault.core.di.PasswordActionsModule
+import com.arsvechkarev.vault.core.di.modules.PasswordActionsModule
 import dagger.Module
 import dagger.Provides
 import dagger.Subcomponent

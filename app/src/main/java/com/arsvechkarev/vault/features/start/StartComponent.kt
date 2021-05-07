@@ -1,7 +1,7 @@
 package com.arsvechkarev.vault.features.start
 
 import com.arsvechkarev.vault.core.di.FeatureScope
-import com.arsvechkarev.vault.core.di.PasswordActionsModule
+import com.arsvechkarev.vault.core.di.modules.PasswordActionsModule
 import dagger.Module
 import dagger.Subcomponent
 

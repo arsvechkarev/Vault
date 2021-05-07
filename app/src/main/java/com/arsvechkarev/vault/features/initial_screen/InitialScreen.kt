@@ -1,9 +1,11 @@
 package com.arsvechkarev.vault.features.initial_screen
 
+import android.content.Context
 import android.view.Gravity.BOTTOM
 import android.view.Gravity.CENTER
 import com.arsvechkarev.vault.R
-import com.arsvechkarev.vault.core.navigation.ViewScreen
+import com.arsvechkarev.vault.core.Screens
+import com.arsvechkarev.vault.core.di.CoreComponent
 import com.arsvechkarev.vault.viewbuilding.Dimens.ImageLogoSize
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginBig
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginDefault
@@ -22,10 +24,17 @@ import com.arsvechkarev.vault.viewdsl.onClick
 import com.arsvechkarev.vault.viewdsl.rotate
 import com.arsvechkarev.vault.viewdsl.text
 import com.arsvechkarev.vault.viewdsl.textSize
+import com.arsvechkarev.vault.viewdsl.withViewBuilder
+import navigation.BaseScreen
+import navigation.Router
+import javax.inject.Inject
 
-class InitialScreen : ViewScreen() {
+class InitialScreen : BaseScreen() {
   
-  override fun buildLayout() = withViewBuilder {
+  @Inject
+  lateinit var router: Router
+  
+  override fun buildLayout(context: Context) = context.withViewBuilder {
     RootFrameLayout {
       VerticalLayout(MatchParent, WrapContent) {
         layoutGravity(CENTER)
@@ -50,8 +59,12 @@ class InitialScreen : ViewScreen() {
         margin(MarginDefault)
         layoutGravity(BOTTOM)
         text(R.string.text_create_master_password)
-        onClick { navigator.goToCreatingMasterPasswordScreen() }
+        onClick { router.goForward(Screens.CreateMasterPasswordScreen) }
       }
     }
+  }
+  
+  override fun onInit() {
+    CoreComponent.instance.getInitialComponentFactory().create().inject(this)
   }
 }

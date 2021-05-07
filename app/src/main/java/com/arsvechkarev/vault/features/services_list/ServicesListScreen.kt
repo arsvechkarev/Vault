@@ -1,5 +1,6 @@
 package com.arsvechkarev.vault.features.services_list
 
+import android.content.Context
 import android.text.SpannableString
 import android.text.style.RelativeSizeSpan
 import android.view.Gravity.BOTTOM
@@ -14,7 +15,6 @@ import com.arsvechkarev.vault.core.extensions.getDeleteMessageText
 import com.arsvechkarev.vault.core.extensions.ifTrue
 import com.arsvechkarev.vault.core.extensions.moxyPresenter
 import com.arsvechkarev.vault.core.model.Service
-import com.arsvechkarev.vault.core.navigation.ViewScreen
 import com.arsvechkarev.vault.viewbuilding.Colors
 import com.arsvechkarev.vault.viewbuilding.Dimens.FabSize
 import com.arsvechkarev.vault.viewbuilding.Dimens.ImageNoServicesSize
@@ -49,6 +49,7 @@ import com.arsvechkarev.vault.viewdsl.size
 import com.arsvechkarev.vault.viewdsl.tag
 import com.arsvechkarev.vault.viewdsl.text
 import com.arsvechkarev.vault.viewdsl.textSize
+import com.arsvechkarev.vault.viewdsl.withViewBuilder
 import com.arsvechkarev.vault.views.MaterialProgressBar
 import com.arsvechkarev.vault.views.behaviors.HeaderBehavior
 import com.arsvechkarev.vault.views.behaviors.ScrollingRecyclerBehavior
@@ -57,10 +58,11 @@ import com.arsvechkarev.vault.views.dialogs.InfoDialog.Companion.InfoDialog
 import com.arsvechkarev.vault.views.dialogs.InfoDialog.Companion.infoDialog
 import com.arsvechkarev.vault.views.dialogs.LoadingDialog
 import com.arsvechkarev.vault.views.dialogs.loadingDialog
+import navigation.BaseScreen
 
-class ServicesListScreen : ViewScreen(), ServicesListView {
+class ServicesListScreen : BaseScreen(), ServicesListView {
   
-  override fun buildLayout() = withViewBuilder {
+  override fun buildLayout(context: Context) = context.withViewBuilder {
     val viewUnderHeaderBehavior = ViewUnderHeaderBehavior()
     RootCoordinatorLayout {
       TextView(MatchParent, WrapContent, style = BoldTextView) {
@@ -68,7 +70,7 @@ class ServicesListScreen : ViewScreen(), ServicesListView {
           start = MarginDefault)
         textSize(TextSizes.H0)
         behavior(HeaderBehavior())
-        text(getString(R.string.text_passwords))
+        text(context.getString(R.string.text_passwords))
       }
       RecyclerView(MatchParent, WrapContent) {
         classNameTag()
@@ -106,7 +108,7 @@ class ServicesListScreen : ViewScreen(), ServicesListView {
           textSize(TextSizes.H4)
           margin(MarginDefault)
           gravity(CENTER)
-          val spannableString = SpannableString(getString(R.string.text_click_plus))
+          val spannableString = SpannableString(context.getString(R.string.text_click_plus))
           val index = spannableString.indexOf('+')
           spannableString.setSpan(TypefaceSpan(Fonts.SegoeUiBold), index, index + 1, 0)
           spannableString.setSpan(RelativeSizeSpan(1.3f), index, index + 1, 0)
@@ -119,7 +121,7 @@ class ServicesListScreen : ViewScreen(), ServicesListView {
         image(R.drawable.ic_plus)
         layoutGravity(BOTTOM or END)
         rippleBackground(Colors.Ripple, Colors.Accent, cornerRadius = FabSize)
-        onClick { navigator.goToNewServiceScreen() }
+        onClick { presenter.onNewServiceClicked() }
       }
       InfoDialog()
       LoadingDialog()
@@ -128,19 +130,17 @@ class ServicesListScreen : ViewScreen(), ServicesListView {
   
   private val adapter by lazy {
     ServicesListAdapter(
-      onItemClick = navigator::goToInfoScreen,
-      onItemLongClick = presenter::onLongClick
+      onItemClick = { presenter.onServiceItemClicked(it) },
+      onItemLongClick = { presenter.onServiceLongItemClicked(it) }
     )
   }
   
   private val presenter by moxyPresenter {
-    CoreComponent.instance.getServicesListComponent().create().providePresenter()
+    CoreComponent.instance.getServicesListComponentFactory().create().providePresenter()
   }
   
-  override fun onInit(arguments: Map<String, Any>) {
-    super.onInit(arguments)
+  override fun onInit() {
     viewAs<RecyclerView>().setupWith(adapter)
-    presenter.startLoadingPasswords()
   }
   
   override fun showLoading() {

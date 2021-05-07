@@ -68,6 +68,7 @@ class InfoScreen : BaseScreen(), InfoView {
   override fun buildLayout(context: Context) = context.withViewBuilder {
     RootCoordinatorLayout {
       ScrollableVerticalLayout {
+        backgroundColor(Colors.Background)
         gravity(CENTER_HORIZONTAL)
         margins(top = StatusBarHeight)
         FrameLayout(MatchParent, WrapContent) {

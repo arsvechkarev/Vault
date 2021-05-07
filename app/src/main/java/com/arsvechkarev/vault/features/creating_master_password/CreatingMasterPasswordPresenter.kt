@@ -88,7 +88,7 @@ class CreatingMasterPasswordPresenter @Inject constructor(
   }
   
   private fun finishAuthorization() {
-    updateViewState { showFinishingAuthorization() }
+    viewState.showFinishingAuthorization()
     onBackgroundThread {
       userAuthSaver.setUserIsAuthorized(true)
       masterPasswordChecker.initializeEncryptedFile(previouslyEnteredPassword)

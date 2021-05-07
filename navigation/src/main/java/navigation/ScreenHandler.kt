@@ -8,10 +8,10 @@ import android.os.Bundle
 interface ScreenHandler {
   
   /**
-   * Duration of screen's hide animation. Navigator uses this to remove screen only after particular
-   * period of time
+   * Duration of screen's hide/show animation. Navigator uses this to remove screen only after
+   * particular period of time
    */
-  val hideAnimationDuration: Long get() = 0
+  val animationDuration: Long get() = 0
   
   /**
    * Sets arguments for this screen

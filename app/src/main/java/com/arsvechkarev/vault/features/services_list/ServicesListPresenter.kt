@@ -32,12 +32,12 @@ class ServicesListPresenter @Inject constructor(
   
   private fun startLoadingPasswords() {
     onIoThread {
-      updateViewState { showLoading() }
+      onMainThread { viewState.showLoading() }
       val services = servicesRepository.getServices(masterPassword)
       if (services.isNotEmpty()) {
-        updateViewState { showServicesList(services) }
+        onMainThread { viewState.showServicesList(services) }
       } else {
-        updateViewState { showNoServices() }
+        onMainThread { viewState.showNoServices() }
       }
     }
   }
@@ -57,9 +57,8 @@ class ServicesListPresenter @Inject constructor(
   fun deleteService(service: Service) {
     viewState.showLoadingDeletingService()
     onIoThread {
-      servicesRepository.deleteService(masterPassword, service,
-        notifyListeners = false)
-      updateViewState { showDeletedService(service) }
+      servicesRepository.deleteService(masterPassword, service, notifyListeners = false)
+      onMainThread { viewState.showDeletedService(service) }
     }
   }
 }

@@ -30,6 +30,11 @@ interface Screen {
   fun onAppearedOnScreen() = Unit
   
   /**
+   * Called whenever the screen is brought to front to user and screen animation is completed
+   */
+  fun onAppearedOnScreenAfterAnimation() = Unit
+  
+  /**
    * Called whenever the screen is disappeared
    */
   fun onDisappearedFromScreen() = Unit

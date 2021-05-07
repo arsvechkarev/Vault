@@ -185,7 +185,7 @@ class ExtendedNavigatorImpl(
   private fun removeScreenView(screenKey: ScreenKey) {
     val screenHandler = screenHandlersCache.getValue(screenKey)
     screenHandler.performHide(ANIMATION_FORWARD)
-    host.removeScreenHandlerAfterDelay(screenHandler, screenHandler.hideAnimationDuration,
+    host.removeScreenHandlerAfterDelay(screenHandler, screenHandler.animationDuration,
       afterDelay = { screenHandler.performOnlyViewRemoval() })
   }
   
@@ -197,7 +197,7 @@ class ExtendedNavigatorImpl(
     val screenHandler = screenHandlersCache[screenKey]
     screenHandler?.performHide(animationType)
     if (releaseAfterwards && screenHandler != null) {
-      host.removeScreenHandlerAfterDelay(screenHandler, screenHandler.hideAnimationDuration,
+      host.removeScreenHandlerAfterDelay(screenHandler, screenHandler.animationDuration,
         afterDelay = { screenHandler.performFullRelease() })
       screenHandlersCache.remove(screenKey)
     }

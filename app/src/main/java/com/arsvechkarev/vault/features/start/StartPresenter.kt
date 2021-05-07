@@ -23,10 +23,12 @@ class StartPresenter @Inject constructor(
       val isCorrect = masterPasswordChecker.isCorrect(password)
       if (isCorrect) {
         MasterPasswordHolder.setMasterPassword(password)
-        updateViewState { showSuccess() }
-        onMainThread { router.switchToNewRoot(Screens.ServicesListScreen) }
+        onMainThread {
+          viewState.showSuccess()
+          router.switchToNewRoot(Screens.ServicesListScreen)
+        }
       } else {
-        updateViewState { showError() }
+        onMainThread { viewState.showError() }
       }
     }
   }

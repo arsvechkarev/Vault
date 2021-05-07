@@ -64,7 +64,7 @@ class InfoPresenter @Inject constructor(
     onIoThread {
       servicesRepository.updateService(masterPassword, service)
       state = INITIAL
-      updateViewState { hideLoading() }
+      onMainThread { viewState.hideLoading() }
     }
   }
   
@@ -79,7 +79,7 @@ class InfoPresenter @Inject constructor(
     onIoThread {
       servicesRepository.updateService(masterPassword, service)
       state = INITIAL
-      updateViewState { hideLoading() }
+      onMainThread { viewState.hideLoading() }
     }
   }
   
@@ -94,7 +94,7 @@ class InfoPresenter @Inject constructor(
     onIoThread {
       servicesRepository.updateService(masterPassword, service)
       state = INITIAL
-      updateViewState { hideLoading() }
+      onMainThread { viewState.hideLoading() }
     }
   }
   
@@ -126,7 +126,10 @@ class InfoPresenter @Inject constructor(
     onIoThread {
       servicesRepository.deleteService(masterPassword, service, notifyListeners = true)
       state = INITIAL
-      updateViewState { showExit() }
+      onMainThread {
+        viewState.showExit()
+        router.goBack(releaseCurrentScreen = false)
+      }
     }
   }
   
@@ -157,7 +160,7 @@ class InfoPresenter @Inject constructor(
       return
     }
     if (this.password.isEmpty()) {
-      // Password was cleared after user closed save password dialog
+      // Password was cleared after user closed SavePasswordDialog
       this.password = password
     }
     this.password = password
@@ -174,10 +177,10 @@ class InfoPresenter @Inject constructor(
     onIoThread {
       servicesRepository.updateService(masterPassword, service)
       state = INITIAL
-      updateViewState {
-        setPassword(password)
-        hidePasswordEditingDialog()
-        hideLoading()
+      onMainThread {
+        viewState.setPassword(password)
+        viewState.hidePasswordEditingDialog()
+        viewState.hideLoading()
       }
     }
   }

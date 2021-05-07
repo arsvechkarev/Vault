@@ -24,7 +24,7 @@ class MvpViewScreenHandler(
   
   val view: View? get() = screen._view
   
-  override val hideAnimationDuration = DurationsConfigurator.DurationShort
+  override val animationDuration = DurationsConfigurator.DurationShort
   
   override fun setupArguments(bundle: Bundle) {
     screen._arguments = bundle
@@ -54,6 +54,9 @@ class MvpViewScreenHandler(
       ANIMATION_BACKWARD -> view.apply(appearanceAsGoingBackward)
     }
     screen.onAppearedOnScreen()
+    screen.viewNonNull.postDelayed({
+      if (screen._view != null) screen.onAppearedOnScreenAfterAnimation()
+    }, animationDuration)
   }
   
   override fun performHide(type: AnimationType) {

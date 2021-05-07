@@ -15,7 +15,7 @@ class FakeScreenHandler(private val fakeScreen: FakeViewHavingScreen) : ScreenHa
   
   val screen: Screen get() = fakeScreen
   
-  override val hideAnimationDuration: Long = 400
+  override val animationDuration: Long = 400
   
   override fun setupArguments(bundle: Bundle) {
   }

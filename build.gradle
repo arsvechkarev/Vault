@@ -1,3 +1,6 @@
+apply from: 'project-configs.gradle'
+apply from: 'dependencies.gradle'
+
 buildscript {
   ext {
     kotlin_version = "1.4.32"
@@ -7,7 +10,7 @@ buildscript {
     jcenter()
   }
   dependencies {
-    classpath 'com.android.tools.build:gradle:4.2.0-rc01'
+    classpath 'com.android.tools.build:gradle:4.2.0'
     classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
   }
 }

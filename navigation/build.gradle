@@ -1,0 +1,39 @@
+plugins {
+  id 'com.android.library'
+  id 'kotlin-android'
+}
+
+android {
+  compileSdkVersion rootProject.ext.compileSdkVersion
+  defaultConfig {
+    minSdkVersion rootProject.ext.minSdkVersion
+  }
+  compileOptions {
+    sourceCompatibility JavaVersion.VERSION_1_8
+    targetCompatibility JavaVersion.VERSION_1_8
+  }
+  buildTypes {
+    mock {
+      initWith debug
+    }
+  }
+  kotlinOptions {
+    jvmTarget = "1.8"
+  }
+}
+
+dependencies {
+  implementation project(":config")
+
+  def dependencies = rootProject.ext.applicationDependencies
+
+  api dependencies.cicerone
+
+  implementation dependencies.kotlin
+  implementation dependencies.appCompat
+  implementation dependencies.cicerone
+  implementation dependencies.moxy
+
+  def testDependencies = rootProject.ext.testDependencies
+  testImplementation testDependencies.junit
+}

@@ -3,7 +3,7 @@ package com.arsvechkarev.vault.features.info
 import android.content.Context
 import com.arsvechkarev.vault.core.AndroidClipboard
 import com.arsvechkarev.vault.core.Clipboard
-import com.arsvechkarev.vault.core.di.CoreModule
+import com.arsvechkarev.vault.core.di.modules.CoreModule
 import com.arsvechkarev.vault.core.di.FeatureScope
 import dagger.Module
 import dagger.Provides

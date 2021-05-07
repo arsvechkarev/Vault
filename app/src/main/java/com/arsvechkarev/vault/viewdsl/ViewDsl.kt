@@ -184,8 +184,8 @@ fun <T : View> T.classNameTag() {
   this.tag = javaClass.name
 }
 
-fun View.id(idRes: Int) {
-  id = idRes
+fun View.id(id: Int) {
+  this.id = id
 }
 
 fun View.background(drawable: Drawable?) {

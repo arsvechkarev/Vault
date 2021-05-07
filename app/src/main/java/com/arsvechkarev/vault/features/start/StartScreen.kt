@@ -1,12 +1,12 @@
 package com.arsvechkarev.vault.features.start
 
+import android.content.Context
 import android.view.Gravity.CENTER
 import com.arsvechkarev.vault.R
 import com.arsvechkarev.vault.R.id.start_screen_enter_password
 import com.arsvechkarev.vault.R.id.start_screen_error_text
 import com.arsvechkarev.vault.core.di.CoreComponent
 import com.arsvechkarev.vault.core.extensions.moxyPresenter
-import com.arsvechkarev.vault.core.navigation.ViewScreen
 import com.arsvechkarev.vault.viewbuilding.Colors
 import com.arsvechkarev.vault.viewbuilding.Dimens.ImageLogoSize
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginBig
@@ -21,22 +21,26 @@ import com.arsvechkarev.vault.viewdsl.Size.Companion.MatchParent
 import com.arsvechkarev.vault.viewdsl.Size.Companion.WrapContent
 import com.arsvechkarev.vault.viewdsl.constraints
 import com.arsvechkarev.vault.viewdsl.gravity
+import com.arsvechkarev.vault.viewdsl.hideKeyboard
 import com.arsvechkarev.vault.viewdsl.id
 import com.arsvechkarev.vault.viewdsl.image
 import com.arsvechkarev.vault.viewdsl.margin
 import com.arsvechkarev.vault.viewdsl.marginHorizontal
 import com.arsvechkarev.vault.viewdsl.margins
 import com.arsvechkarev.vault.viewdsl.onClick
+import com.arsvechkarev.vault.viewdsl.showKeyboard
 import com.arsvechkarev.vault.viewdsl.text
 import com.arsvechkarev.vault.viewdsl.textColor
 import com.arsvechkarev.vault.viewdsl.textSize
+import com.arsvechkarev.vault.viewdsl.withViewBuilder
 import com.arsvechkarev.vault.views.EditTextPassword
 import com.arsvechkarev.vault.views.dialogs.LoadingDialog
 import com.arsvechkarev.vault.views.dialogs.loadingDialog
+import navigation.BaseScreen
 
-class StartScreen : ViewScreen(), StartView {
+class StartScreen : BaseScreen(), StartView {
   
-  override fun buildLayout() = withViewBuilder {
+  override fun buildLayout(context: Context) = context.withViewBuilder {
     RootConstraintLayout {
       VerticalLayout(WrapContent, WrapContent) {
         id(R.id.start_screen_logo_layout)
@@ -94,13 +98,12 @@ class StartScreen : ViewScreen(), StartView {
   }
   
   private val presenter by moxyPresenter {
-    CoreComponent.instance.getStartComponent().create().providePresenter()
+    CoreComponent.instance.getStartComponentFactory().create().providePresenter()
   }
   
-  override fun onInit(arguments: Map<String, Any>) {
-    super.onInit(arguments)
+  override fun onInit() {
     viewAs<EditTextPassword>(start_screen_enter_password).requestEditTextFocus()
-    showKeyboard()
+    contextNonNull.showKeyboard()
   }
   
   override fun showLoading() {
@@ -113,7 +116,6 @@ class StartScreen : ViewScreen(), StartView {
   }
   
   override fun showSuccess() {
-    hideKeyboard()
-    navigator.goToServicesListScreen()
+    contextNonNull.hideKeyboard()
   }
 }

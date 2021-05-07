@@ -6,54 +6,65 @@ plugins {
 }
 
 android {
-  compileSdkVersion 30
+  signingConfigs {
+    Properties properties = new Properties()
+    properties.load(new FileInputStream(file("../local.properties")))
+    release {
+      storeFile file(properties["storeFile"])
+      storePassword properties["storePassword"]
+      keyAlias properties["keyAlias"]
+      keyPassword properties["keyPassword"]
+    }
+  }
+  def ext = rootProject.ext
+  compileSdkVersion ext.compileSdkVersion
   defaultConfig {
-    applicationId "com.arsvechkarev.vault"
-    minSdkVersion 21
-    targetSdkVersion 30
-    versionCode 1
-    versionName "1.0"
-    testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    applicationId ext.applicationId
+    minSdkVersion ext.minSdkVersion
+    targetSdkVersion ext.targetSdkVersion
+    versionCode ext.versionCode
+    versionName ext.versionName
+    testInstrumentationRunner ext.testInstrumentationRunner
+    signingConfig signingConfigs.release
   }
   buildTypes {
     release {
-      minifyEnabled true
-      proguardFiles (getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro')
+      minifyEnabled ext.minifyEnabled
+      shrinkResources ext.shrinkResources
+      proguardFiles(getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro')
     }
+    mock {
+      initWith debug
+    }
+  }
+  kotlinOptions {
+    jvmTarget = "1.8"
   }
 }
 
 dependencies {
-  def moxy_version = '2.2.0'
-  def app_compat_version = '1.2.0'
-  def timber_version = '4.7.1'
-  def coordinator_version = '1.1.0'
-  def zxcvbn_version = '1.3.1'
-  def crypto_version = '1.1.0-alpha03'
-  def recycler_version = '1.1.0'
-  def constraint_layout_version = '2.0.4'
-  def dagger_version = '2.33'
 
-  implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
-  implementation "androidx.appcompat:appcompat:$app_compat_version"
-  implementation "com.jakewharton.timber:timber:$timber_version"
-  implementation "com.github.moxy-community:moxy:$moxy_version"
-  implementation "com.github.moxy-community:moxy-androidx:$moxy_version"
-  implementation "androidx.coordinatorlayout:coordinatorlayout:$coordinator_version"
-  implementation "com.nulab-inc:zxcvbn:$zxcvbn_version"
-  implementation "androidx.security:security-crypto:$crypto_version"
-  implementation "androidx.recyclerview:recyclerview:$recycler_version"
-  implementation "androidx.constraintlayout:constraintlayout:$constraint_layout_version"
-  implementation "com.google.dagger:dagger:$dagger_version"
-  kapt "com.github.moxy-community:moxy-compiler:$moxy_version"
-  kapt "com.google.dagger:dagger-compiler:$dagger_version"
+  implementation project(':navigation')
 
-  def junit_version = '4.13.2'
-  def gson_version = '2.8.6'
+  def appDependencies = rootProject.ext.applicationDependencies
+  implementation appDependencies.kotlin
+  implementation appDependencies.appCompat
+  implementation appDependencies.coordinatorLayout
+  implementation appDependencies.constraintLayout
+  implementation appDependencies.recyclerView
+  implementation appDependencies.cicerone
+  implementation appDependencies.moxy
+  implementation appDependencies.moxyAndroidx
+  implementation appDependencies.dagger
+  implementation appDependencies.zxcvbn
+  implementation appDependencies.androidSecurity
+  implementation appDependencies.timber
+  kapt appDependencies.daggerCompiler
+  kapt appDependencies.moxyCompiler
 
-  testImplementation "junit:junit:$junit_version"
-  testImplementation "com.google.code.gson:gson:$gson_version"
+  def testDependencies = rootProject.ext.testDependencies
+  testImplementation testDependencies.junit
+  testImplementation testDependencies.gson
 
-  def leak_version = '2.6'
-  debugImplementation "com.squareup.leakcanary:leakcanary-android:$leak_version"
+  debugImplementation appDependencies.leakCanary
 }

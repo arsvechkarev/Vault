@@ -1,6 +1,11 @@
 package com.arsvechkarev.vault.core.di
 
 import android.content.Context
+import com.arsvechkarev.vault.core.di.modules.CoreModule
+import com.arsvechkarev.vault.core.di.modules.CryptographyModule
+import com.arsvechkarev.vault.core.di.modules.FileSaverModule
+import com.arsvechkarev.vault.core.di.modules.RouterModule
+import com.arsvechkarev.vault.core.di.modules.ServicesModule
 import com.arsvechkarev.vault.features.creating_master_password.CreatingMasterPasswordComponent
 import com.arsvechkarev.vault.features.creating_master_password.CreatingMasterPasswordModule
 import com.arsvechkarev.vault.features.creating_password.PasswordCreatingComponent
@@ -9,8 +14,9 @@ import com.arsvechkarev.vault.features.creating_service.CreatingServiceComponent
 import com.arsvechkarev.vault.features.creating_service.CreatingServiceModule
 import com.arsvechkarev.vault.features.info.InfoComponent
 import com.arsvechkarev.vault.features.info.InfoModule
+import com.arsvechkarev.vault.features.initial_screen.InitialComponent
 import com.arsvechkarev.vault.features.main.MainComponent
-import com.arsvechkarev.vault.features.main.MainModule
+import com.arsvechkarev.vault.features.main.NavigationModule
 import com.arsvechkarev.vault.features.services_list.ServicesListComponent
 import com.arsvechkarev.vault.features.services_list.ServicesListModule
 import com.arsvechkarev.vault.features.start.StartComponent
@@ -22,6 +28,7 @@ import javax.inject.Singleton
 @Component(
   modules = [
     CoreModule::class,
+    RouterModule::class,
     CryptographyModule::class,
     FileSaverModule::class,
     ServicesModule::class,
@@ -31,24 +38,26 @@ import javax.inject.Singleton
     ServicesListModule::class,
     StartModule::class,
     PasswordCreatingModule::class,
-    MainModule::class
+    NavigationModule::class
   ]
 )
 interface CoreComponent {
   
   fun getMainComponentBuilder(): MainComponent.Builder
   
-  fun getCreatingMasterPasswordComponent(): CreatingMasterPasswordComponent.Factory
+  fun getInitialComponentFactory(): InitialComponent.Factory
   
-  fun getPasswordCreatingComponent(): PasswordCreatingComponent.Factory
+  fun getCreatingMasterPasswordComponentFactory(): CreatingMasterPasswordComponent.Factory
   
-  fun getCreatingServiceComponent(): CreatingServiceComponent.Factory
+  fun getPasswordCreatingComponentFactory(): PasswordCreatingComponent.Factory
   
-  fun getInfoComponent(): InfoComponent.Factory
+  fun getCreatingServiceComponentFactory(): CreatingServiceComponent.Factory
   
-  fun getServicesListComponent(): ServicesListComponent.Factory
+  fun getInfoComponentFactory(): InfoComponent.Factory
   
-  fun getStartComponent(): StartComponent.Factory
+  fun getServicesListComponentFactory(): ServicesListComponent.Factory
+  
+  fun getStartComponentFactory(): StartComponent.Factory
   
   @Component.Builder
   interface Builder {

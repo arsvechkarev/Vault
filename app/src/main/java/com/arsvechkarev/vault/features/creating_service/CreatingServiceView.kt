@@ -29,6 +29,4 @@ interface CreatingServiceView : MvpView {
   fun hideLetterInCircleIcon()
   
   fun showLoadingCreation()
-  
-  fun showExit()
 }

@@ -1,6 +1,7 @@
 package com.arsvechkarev.vault.features.creating_master_password
 
 import com.arsvechkarev.vault.core.BasePresenter
+import com.arsvechkarev.vault.core.Screens
 import com.arsvechkarev.vault.core.Threader
 import com.arsvechkarev.vault.core.UserAuthSaver
 import com.arsvechkarev.vault.core.di.FeatureScope
@@ -12,14 +13,16 @@ import com.arsvechkarev.vault.cryptography.PasswordStatus.OK
 import com.arsvechkarev.vault.features.creating_master_password.CreatingMasterPasswordScreenState.DIALOG_PASSWORD_STRENGTH
 import com.arsvechkarev.vault.features.creating_master_password.CreatingMasterPasswordScreenState.ENTERING_PASSWORD
 import com.arsvechkarev.vault.features.creating_master_password.CreatingMasterPasswordScreenState.REPEATING_PASSWORD
+import navigation.Router
 import javax.inject.Inject
 
 @FeatureScope
 class CreatingMasterPasswordPresenter @Inject constructor(
-  threader: Threader,
   private val passwordChecker: PasswordChecker,
   private val masterPasswordChecker: MasterPasswordChecker,
-  private val userAuthSaver: UserAuthSaver
+  private val userAuthSaver: UserAuthSaver,
+  private val router: Router,
+  threader: Threader
 ) : BasePresenter<CreatingMasterPasswordView>(threader) {
   
   private var state = ENTERING_PASSWORD
@@ -40,18 +43,18 @@ class CreatingMasterPasswordPresenter @Inject constructor(
     state = ENTERING_PASSWORD
   }
   
-  fun allowBackPress(): Boolean {
+  fun handleBackPress(): Boolean {
     return when (state) {
-      ENTERING_PASSWORD -> true
+      ENTERING_PASSWORD -> false
       DIALOG_PASSWORD_STRENGTH -> {
         viewState.hidePasswordStrengthDialog()
         state = ENTERING_PASSWORD
-        false
+        true
       }
       REPEATING_PASSWORD -> {
         viewState.switchToEnterPasswordState()
         state = ENTERING_PASSWORD
-        false
+        true
       }
     }
   }
@@ -85,12 +88,12 @@ class CreatingMasterPasswordPresenter @Inject constructor(
   }
   
   private fun finishAuthorization() {
-    updateViewState { showFinishingAuthorization() }
+    viewState.showFinishingAuthorization()
     onBackgroundThread {
       userAuthSaver.setUserIsAuthorized(true)
       masterPasswordChecker.initializeEncryptedFile(previouslyEnteredPassword)
       MasterPasswordHolder.setMasterPassword(previouslyEnteredPassword)
-      updateViewState { goToPasswordsList() }
+      onMainThread { router.switchToNewRoot(Screens.ServicesListScreen) }
     }
   }
 }

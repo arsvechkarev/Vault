@@ -1,5 +1,6 @@
 package com.arsvechkarev.vault.features.creating_service
 
+import android.content.Context
 import android.graphics.drawable.Drawable
 import android.view.Gravity.CENTER
 import android.view.Gravity.CENTER_VERTICAL
@@ -8,7 +9,6 @@ import android.widget.ImageView.ScaleType.FIT_XY
 import com.arsvechkarev.vault.R
 import com.arsvechkarev.vault.core.di.CoreComponent
 import com.arsvechkarev.vault.core.extensions.moxyPresenter
-import com.arsvechkarev.vault.core.navigation.ViewScreen
 import com.arsvechkarev.vault.features.creating_password.PasswordEditingDialog.Companion.PasswordEditingDialog
 import com.arsvechkarev.vault.features.creating_password.PasswordEditingDialog.Companion.passwordEditingDialog
 import com.arsvechkarev.vault.viewbuilding.Colors.Error
@@ -28,6 +28,7 @@ import com.arsvechkarev.vault.viewdsl.circleRippleBackground
 import com.arsvechkarev.vault.viewdsl.clearImage
 import com.arsvechkarev.vault.viewdsl.constraints
 import com.arsvechkarev.vault.viewdsl.gravity
+import com.arsvechkarev.vault.viewdsl.hideKeyboard
 import com.arsvechkarev.vault.viewdsl.id
 import com.arsvechkarev.vault.viewdsl.image
 import com.arsvechkarev.vault.viewdsl.invisible
@@ -39,22 +40,26 @@ import com.arsvechkarev.vault.viewdsl.onSubmit
 import com.arsvechkarev.vault.viewdsl.onTextChanged
 import com.arsvechkarev.vault.viewdsl.padding
 import com.arsvechkarev.vault.viewdsl.setSoftInputMode
+import com.arsvechkarev.vault.viewdsl.showKeyboard
 import com.arsvechkarev.vault.viewdsl.tag
 import com.arsvechkarev.vault.viewdsl.text
 import com.arsvechkarev.vault.viewdsl.textColor
 import com.arsvechkarev.vault.viewdsl.textSize
 import com.arsvechkarev.vault.viewdsl.visible
+import com.arsvechkarev.vault.viewdsl.withViewBuilder
+import com.arsvechkarev.vault.views.SimpleDialog
 import com.arsvechkarev.vault.views.dialogs.InfoDialog.Companion.InfoDialog
 import com.arsvechkarev.vault.views.dialogs.InfoDialog.Companion.infoDialog
 import com.arsvechkarev.vault.views.dialogs.LoadingDialog
 import com.arsvechkarev.vault.views.dialogs.PasswordStrengthDialog.Companion.PasswordStrengthDialog
 import com.arsvechkarev.vault.views.dialogs.PasswordStrengthDialog.Companion.passwordStrengthDialog
 import com.arsvechkarev.vault.views.drawables.LetterInCircleDrawable.Companion.setLetterDrawable
+import navigation.BaseScreen
 import kotlin.math.abs
 
-class CreatingServiceScreen : ViewScreen(), CreatingServiceView {
+class CreatingServiceScreen : BaseScreen(), CreatingServiceView {
   
-  override fun buildLayout() = withViewBuilder {
+  override fun buildLayout(context: Context) = context.withViewBuilder {
     RootConstraintLayout {
       addOnLayoutChangeListener { _, _, _, _, _, _, _, _, _ ->
         showOrHideImageBasedOnLayout()
@@ -71,7 +76,7 @@ class CreatingServiceScreen : ViewScreen(), CreatingServiceView {
           gravity(CENTER_VERTICAL)
           padding(IconPadding)
           circleRippleBackground()
-          onClick { navigator.popCurrentScreen() }
+          onClick { presenter.onBackClicked() }
         }
         TextView(WrapContent, WrapContent, style = BoldTextView) {
           layoutGravity(CENTER)
@@ -103,7 +108,7 @@ class CreatingServiceScreen : ViewScreen(), CreatingServiceView {
           tag(EditTextServiceName)
           margins(top = MarginSmall, start = MarginDefault, end = MarginDefault)
           setHint(R.string.text_service_name)
-          whenPresenterIsReady { onTextChanged(presenter::onServiceNameChanged) }
+          onTextChanged { presenter.onServiceNameChanged(it) }
           onSubmit { editText(EditTextUsername).requestFocus() }
         }
         EditText(MatchParent, WrapContent, style = BaseEditText) {
@@ -145,7 +150,7 @@ class CreatingServiceScreen : ViewScreen(), CreatingServiceView {
   }
   
   private val presenter by moxyPresenter {
-    CoreComponent.instance.getCreatingServiceComponent().create().providePresenter()
+    CoreComponent.instance.getCreatingServiceComponentFactory().create().providePresenter()
   }
   
   private val passwordTextWatcher = object : BaseTextWatcher {
@@ -155,17 +160,16 @@ class CreatingServiceScreen : ViewScreen(), CreatingServiceView {
     }
   }
   
-  override fun onInit(arguments: Map<String, Any>) {
-    super.onInit(arguments)
+  override fun onInit() {
     editText(EditTextServiceName).requestFocus()
     editText(EditTextServiceName).addTextChangedListener(passwordTextWatcher)
-    showKeyboard()
+    contextNonNull.showKeyboard()
   }
   
   override fun onRelease() {
     super.onRelease()
     editText(EditTextServiceName).removeTextChangedListener(passwordTextWatcher)
-    hideKeyboard()
+    contextNonNull.hideKeyboard()
     contextNonNull.setSoftInputMode(SOFT_INPUT_ADJUST_RESIZE)
   }
   
@@ -179,7 +183,7 @@ class CreatingServiceScreen : ViewScreen(), CreatingServiceView {
     passwordEditingDialog().initiatePasswordCreation(onSavePasswordClick = { password ->
       presenter.onPasswordEntered(password)
     })
-    hideKeyboard()
+    contextNonNull.hideKeyboard()
   }
   
   override fun hidePasswordCreatingDialog() {
@@ -189,7 +193,7 @@ class CreatingServiceScreen : ViewScreen(), CreatingServiceView {
   }
   
   override fun showPasswordStrengthDialog() {
-    hideKeyboard()
+    contextNonNull.hideKeyboard()
     passwordStrengthDialog.show()
   }
   
@@ -226,15 +230,11 @@ class CreatingServiceScreen : ViewScreen(), CreatingServiceView {
   }
   
   override fun showLoadingCreation() {
-    simpleDialog(DialogProgressBar).show()
+    viewAs<SimpleDialog>(DialogProgressBar).show()
   }
   
-  override fun showExit() {
-    navigator.popCurrentScreen()
-  }
-  
-  override fun allowBackPress(): Boolean {
-    return presenter.allowBackPress()
+  override fun handleBackPress(): Boolean {
+    return presenter.handleBackPress()
   }
   
   private fun showOrHideImageBasedOnLayout() {

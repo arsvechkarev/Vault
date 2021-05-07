@@ -21,9 +21,19 @@ android {
       proguardFiles (getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro')
     }
   }
+  buildTypes {
+    mock {
+      initWith debug
+    }
+  }
+  kotlinOptions {
+    jvmTarget = "1.8"
+  }
 }
 
 dependencies {
+  implementation project(':navigation')
+
   def moxy_version = '2.2.0'
   def app_compat_version = '1.2.0'
   def timber_version = '4.7.1'

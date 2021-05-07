@@ -9,12 +9,11 @@ import android.util.TypedValue
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
-import android.widget.EditText
 import androidx.annotation.AttrRes
 import androidx.annotation.ColorInt
 import androidx.annotation.DrawableRes
 import androidx.core.content.ContextCompat
-import com.arsvechkarev.vault.views.NavigatorRootView
+import com.arsvechkarev.vault.views.RootView
 import java.util.Locale
 
 fun dimen(dimenRes: Int) = ContextHolder.applicationContext.resources.getDimension(dimenRes)
@@ -34,8 +33,8 @@ val Context.screenHeight: Int
 
 val Context.statusBarHeight: Int
   get() {
-    if (NavigatorRootView.statusBarHeightFromInsets != 0) {
-      return NavigatorRootView.statusBarHeightFromInsets
+    if (RootView.statusBarHeightFromInsets != 0) {
+      return RootView.statusBarHeightFromInsets
     }
     var result = 0
     val resourceId = resources.getIdentifier("status_bar_height", "dimen", "android")
@@ -55,10 +54,12 @@ fun Context.setSoftInputMode(mode: Int) {
   (this as Activity).window.setSoftInputMode(mode)
 }
 
-fun Context.hideKeyboard(editText: EditText) {
+fun Context.hideKeyboard(view: View? = null) {
   val inputMethodManager =
       getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager?
-  inputMethodManager!!.hideSoftInputFromWindow(editText.windowToken, 0)
+  val token = view?.windowToken ?: (this as? Activity)?.window?.decorView?.windowToken ?: View(
+    this).windowToken
+  inputMethodManager!!.hideSoftInputFromWindow(token, 0)
 }
 
 @ColorInt

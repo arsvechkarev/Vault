@@ -4,7 +4,6 @@ import android.content.Context
 import android.view.Gravity
 import android.view.ViewGroup
 import com.arsvechkarev.vault.R
-import com.arsvechkarev.vault.core.navigation.ViewScreen
 import com.arsvechkarev.vault.viewbuilding.Colors.Dialog
 import com.arsvechkarev.vault.viewbuilding.Dimens.CornerRadiusDefault
 import com.arsvechkarev.vault.viewbuilding.Dimens.HorizontalMarginVerySmall
@@ -32,6 +31,7 @@ import com.arsvechkarev.vault.viewdsl.textView
 import com.arsvechkarev.vault.viewdsl.visible
 import com.arsvechkarev.vault.viewdsl.withViewBuilder
 import com.arsvechkarev.vault.views.SimpleDialog
+import navigation.BaseScreen
 
 class InfoDialog(context: Context) : SimpleDialog(context) {
   
@@ -104,7 +104,7 @@ class InfoDialog(context: Context) : SimpleDialog(context) {
     private const val DialogInfoText2 = "DialogErrorText2"
     private const val DialogInfoMessage = "DialogInfoMessage"
     
-    val ViewScreen.infoDialog get() = viewAs<InfoDialog>()
+    val BaseScreen.infoDialog get() = viewAs<InfoDialog>()
     
     fun ViewGroup.InfoDialog(block: InfoDialog.() -> Unit = {}) = withViewBuilder {
       val infoDialog = InfoDialog(context)

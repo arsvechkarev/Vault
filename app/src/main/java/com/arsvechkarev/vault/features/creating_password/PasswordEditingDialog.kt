@@ -23,7 +23,6 @@ import com.arsvechkarev.vault.core.model.PasswordCharacteristics
 import com.arsvechkarev.vault.core.model.PasswordCharacteristics.NUMBERS
 import com.arsvechkarev.vault.core.model.PasswordCharacteristics.SPECIAL_SYMBOLS
 import com.arsvechkarev.vault.core.model.PasswordCharacteristics.UPPERCASE_SYMBOLS
-import com.arsvechkarev.vault.core.navigation.ViewScreen
 import com.arsvechkarev.vault.cryptography.PasswordStrength
 import com.arsvechkarev.vault.cryptography.PasswordStrength.MEDIUM
 import com.arsvechkarev.vault.cryptography.PasswordStrength.STRONG
@@ -75,6 +74,7 @@ import com.arsvechkarev.vault.views.CheckmarkAndTextViewGroup
 import com.arsvechkarev.vault.views.CheckmarkAndTextViewGroup.Companion.CheckmarkAndTextViewGroup
 import com.arsvechkarev.vault.views.PasswordStrengthMeterWithText
 import com.arsvechkarev.vault.views.SimpleDialog
+import navigation.BaseScreen
 
 class PasswordEditingDialog(
   context: Context,
@@ -226,7 +226,7 @@ class PasswordEditingDialog(
   
   override fun onDetachedFromWindow() {
     super.onDetachedFromWindow()
-    presenter.detachView()
+    presenter.detachView(this)
     editText(DialogPasswordEditText).removeTextChangedListener(passwordTextWatcher)
   }
   
@@ -288,12 +288,13 @@ class PasswordEditingDialog(
     const val DialogPasswordTextError = "DialogPasswordTextError"
     const val DialogPasswordEditText = "DialogPasswordEditText"
     
-    fun ViewScreen.passwordEditingDialog() = viewAs<PasswordEditingDialog>()
+    fun BaseScreen.passwordEditingDialog() = viewAs<PasswordEditingDialog>()
     
     fun ViewGroup.PasswordEditingDialog(
       block: PasswordEditingDialog.() -> Unit = {}
     ) = withViewBuilder {
-      val presenter = CoreComponent.instance.getPasswordCreatingComponent().create().getPresenter()
+      val presenter = CoreComponent.instance.getPasswordCreatingComponentFactory().create()
+          .getPresenter()
       val dialog = PasswordEditingDialog(context, presenter)
       dialog.size(MatchParent, MatchParent)
       dialog.classNameTag()

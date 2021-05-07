@@ -1,2 +1,4 @@
 rootProject.name = "Vault"
 include ':app'
+include ':config'
+include ':navigation'

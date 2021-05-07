@@ -27,7 +27,7 @@ object Singletons {
   private var _masterKey: MasterKey? = null
   
   val passwordChecker: PasswordChecker = ZxcvbnPasswordChecker(Zxcvbn())
-  val passwordCreatingPresenter = PasswordCreatingPresenter(passwordChecker, passwordGenerator)
+  val passwordCreatingPresenter = PasswordCreatingPresenter(passwordChecker, passwordGenerator, AndroidThreader)
   val userAuthSaver: UserAuthSaver get() = _userAuthSaver!!
   val masterPasswordChecker: MasterPasswordChecker get() = _masterPasswordChecker!!
   val servicesRepository: ServicesRepository get() = _servicesRepository!!

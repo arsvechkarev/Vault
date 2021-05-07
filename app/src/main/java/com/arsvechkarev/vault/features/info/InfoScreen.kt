@@ -1,5 +1,6 @@
 package com.arsvechkarev.vault.features.info
 
+import android.content.Context
 import android.content.res.ColorStateList
 import android.graphics.drawable.Drawable
 import android.view.Gravity.BOTTOM
@@ -11,7 +12,6 @@ import com.arsvechkarev.vault.core.di.CoreComponent
 import com.arsvechkarev.vault.core.extensions.getDeleteMessageText
 import com.arsvechkarev.vault.core.extensions.moxyPresenter
 import com.arsvechkarev.vault.core.model.Service
-import com.arsvechkarev.vault.core.navigation.ViewScreen
 import com.arsvechkarev.vault.features.creating_password.PasswordEditingDialog.Companion.PasswordEditingDialog
 import com.arsvechkarev.vault.features.creating_password.PasswordEditingDialog.Companion.passwordEditingDialog
 import com.arsvechkarev.vault.viewbuilding.Colors
@@ -37,6 +37,7 @@ import com.arsvechkarev.vault.viewdsl.backgroundColor
 import com.arsvechkarev.vault.viewdsl.circleRippleBackground
 import com.arsvechkarev.vault.viewdsl.classNameTag
 import com.arsvechkarev.vault.viewdsl.gravity
+import com.arsvechkarev.vault.viewdsl.hideKeyboard
 import com.arsvechkarev.vault.viewdsl.image
 import com.arsvechkarev.vault.viewdsl.invisible
 import com.arsvechkarev.vault.viewdsl.layoutGravity
@@ -49,6 +50,7 @@ import com.arsvechkarev.vault.viewdsl.tag
 import com.arsvechkarev.vault.viewdsl.text
 import com.arsvechkarev.vault.viewdsl.textColor
 import com.arsvechkarev.vault.viewdsl.textSize
+import com.arsvechkarev.vault.viewdsl.withViewBuilder
 import com.arsvechkarev.vault.views.EditableTextInfoViewGroup
 import com.arsvechkarev.vault.views.PasswordActionsView
 import com.arsvechkarev.vault.views.Snackbar
@@ -59,18 +61,20 @@ import com.arsvechkarev.vault.views.dialogs.PasswordStrengthDialog.Companion.Pas
 import com.arsvechkarev.vault.views.dialogs.PasswordStrengthDialog.Companion.passwordStrengthDialog
 import com.arsvechkarev.vault.views.dialogs.loadingDialog
 import com.arsvechkarev.vault.views.drawables.LetterInCircleDrawable.Companion.setLetterDrawable
+import navigation.BaseScreen
 
-class InfoScreen : ViewScreen(), InfoView {
+class InfoScreen : BaseScreen(), InfoView {
   
-  override fun buildLayout() = withViewBuilder {
+  override fun buildLayout(context: Context) = context.withViewBuilder {
     RootCoordinatorLayout {
       ScrollableVerticalLayout {
+        backgroundColor(Colors.Background)
         gravity(CENTER_HORIZONTAL)
         margins(top = StatusBarHeight)
         FrameLayout(MatchParent, WrapContent) {
           margins(top = MarginDefault, start = MarginDefault, end = MarginDefault)
           ImageView(WrapContent, WrapContent, style = ImageBack) {
-            onClick { if (presenter.allowBackPress()) navigator.popCurrentScreen() }
+            onClick { presenter.onBackClicked() }
           }
           ImageView(WrapContent, WrapContent) {
             image(R.drawable.ic_delete)
@@ -97,8 +101,8 @@ class InfoScreen : ViewScreen(), InfoView {
         child<EditableTextInfoViewGroup>(MatchParent, WrapContent) {
           tag(EditableTextInfoServiceName)
           apply(editableCommonBlock)
-          whenPresenterIsReady { onEditTextChanged(presenter::onServiceNameChanged) }
-          whenPresenterIsReady { onTextSaved = presenter::saveServiceName }
+          onEditTextChanged { presenter.onServiceNameChanged(it) }
+          onTextSaved = { presenter.saveServiceName(it) }
         }
         View(MatchParent, IntSize(DividerHeight)) {
           backgroundColor(Colors.Divider)
@@ -114,7 +118,7 @@ class InfoScreen : ViewScreen(), InfoView {
           tag(EditableTextInfoUsername)
           apply(editableCommonBlock)
           allowSavingWhenEmpty = true
-          whenPresenterIsReady { onTextSaved = presenter::saveUsername }
+          onTextSaved = { presenter.saveUsername(it) }
         }
         View(MatchParent, IntSize(DividerHeight)) {
           backgroundColor(Colors.Divider)
@@ -130,7 +134,7 @@ class InfoScreen : ViewScreen(), InfoView {
           tag(EditableTextInfoEmail)
           apply(editableCommonBlock)
           allowSavingWhenEmpty = true
-          whenPresenterIsReady { onTextSaved = presenter::saveEmail }
+          onTextSaved = { presenter.saveEmail(it) }
         }
         View(MatchParent, IntSize(DividerHeight)) {
           backgroundColor(Colors.Divider)
@@ -167,10 +171,8 @@ class InfoScreen : ViewScreen(), InfoView {
             end = HorizontalMarginPasswordsActionView)
           onCopyClicked { presenter.onCopyClicked() }
           onEditClicked { presenter.onEditPasswordIconClicked() }
-          whenPresenterIsReady {
-            onTogglePassword = presenter::onTogglePassword
-            reactToClicks = { !presenter.isEditingNameOrEmailNow }
-          }
+          onTogglePassword = { presenter.onTogglePassword(it) }
+          reactToClicks = { !presenter.isEditingNameOrEmailNow }
         }
       }
       PasswordEditingDialog {
@@ -192,11 +194,10 @@ class InfoScreen : ViewScreen(), InfoView {
   }
   
   private val presenter by moxyPresenter {
-    CoreComponent.instance.getInfoComponent().create().providePresenter()
+    CoreComponent.instance.getInfoComponentFactory().create().providePresenter()
   }
   
-  override fun onAppearedOnScreen(arguments: Map<String, Any>) {
-    super.onAppearedOnScreen(arguments)
+  override fun onAppearedOnScreen() {
     val serviceInfo = arguments[SERVICE_INFO] as Service
     presenter.performSetup(serviceInfo)
   }
@@ -221,7 +222,7 @@ class InfoScreen : ViewScreen(), InfoView {
   
   override fun showNoUsername() {
     val editableUsername = viewAs<EditableTextInfoViewGroup>(EditableTextInfoUsername)
-    editableUsername.setText(getString(R.string.text_no_username))
+    editableUsername.setText(contextNonNull.getString(R.string.text_no_username))
     editableUsername.transferTextToEditTextWhenSwitching = false
   }
   
@@ -233,7 +234,7 @@ class InfoScreen : ViewScreen(), InfoView {
   
   override fun showNoEmail() {
     val editableEmail = viewAs<EditableTextInfoViewGroup>(EditableTextInfoEmail)
-    editableEmail.setText(getString(R.string.text_no_email))
+    editableEmail.setText(contextNonNull.getString(R.string.text_no_email))
     editableEmail.transferTextToEditTextWhenSwitching = false
   }
   
@@ -283,7 +284,7 @@ class InfoScreen : ViewScreen(), InfoView {
   }
   
   override fun showPasswordStrengthDialog() {
-    hideKeyboard()
+    contextNonNull.hideKeyboard()
     passwordStrengthDialog.show()
   }
   
@@ -322,11 +323,10 @@ class InfoScreen : ViewScreen(), InfoView {
   
   override fun showExit() {
     loadingDialog.hide()
-    navigator.popCurrentScreen()
   }
   
-  override fun allowBackPress(): Boolean {
-    return presenter.allowBackPress()
+  override fun handleBackPress(): Boolean {
+    return presenter.handleBackPress()
   }
   
   companion object {

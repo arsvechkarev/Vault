@@ -24,6 +24,4 @@ interface CreatingMasterPasswordView : MvpView {
   fun showPasswordsDontMatch()
   
   fun showFinishingAuthorization()
-  
-  fun goToPasswordsList()
 }

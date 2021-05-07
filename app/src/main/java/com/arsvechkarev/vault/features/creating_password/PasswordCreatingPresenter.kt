@@ -1,7 +1,9 @@
 package com.arsvechkarev.vault.features.creating_password
 
+import com.arsvechkarev.vault.core.BasePresenter
 import com.arsvechkarev.vault.core.DEFAULT_PASSWORD_LENGTH
 import com.arsvechkarev.vault.core.MIN_PASSWORD_LENGTH
+import com.arsvechkarev.vault.core.Threader
 import com.arsvechkarev.vault.core.di.FeatureScope
 import com.arsvechkarev.vault.core.extensions.hasNumbers
 import com.arsvechkarev.vault.core.extensions.hasSpecialSymbols
@@ -12,27 +14,19 @@ import com.arsvechkarev.vault.core.model.PasswordCharacteristics.SPECIAL_SYMBOLS
 import com.arsvechkarev.vault.core.model.PasswordCharacteristics.UPPERCASE_SYMBOLS
 import com.arsvechkarev.vault.cryptography.PasswordChecker
 import com.arsvechkarev.vault.cryptography.PasswordStatus.EMPTY
-import com.arsvechkarev.vault.cryptography.PasswordStatus.OK
-import com.arsvechkarev.vault.cryptography.PasswordStatus.TOO_SHORT
-import com.arsvechkarev.vault.cryptography.PasswordStatus.TOO_WEAK
 import com.arsvechkarev.vault.cryptography.generator.PasswordGenerator
 import javax.inject.Inject
 
 @FeatureScope
 class PasswordCreatingPresenter @Inject constructor(
   private val passwordChecker: PasswordChecker,
-  private val passwordGenerator: PasswordGenerator
-) {
-  
-  private var view: PasswordCreatingView? = null
+  private val passwordGenerator: PasswordGenerator,
+  threader: Threader
+) : BasePresenter<PasswordCreatingView>(threader) {
   
   private var passwordCharacteristics = HashSet<PasswordCharacteristics>()
   private var passwordLength = DEFAULT_PASSWORD_LENGTH
   private var password = ""
-  
-  fun attachView(view: PasswordCreatingView) {
-    this.view = view
-  }
   
   fun showInitialGeneratedPassword() {
     passwordLength = DEFAULT_PASSWORD_LENGTH
@@ -43,7 +37,7 @@ class PasswordCreatingPresenter @Inject constructor(
   fun onGeneratePasswordClicked() {
     password = passwordGenerator.generatePassword(passwordLength, passwordCharacteristics)
     showPasswordInfo()
-    view?.showGeneratedPassword(password)
+    viewState.showGeneratedPassword(password)
   }
   
   fun onPasswordChanged(password: String) {
@@ -54,7 +48,7 @@ class PasswordCreatingPresenter @Inject constructor(
   fun onPasswordLengthChanged(seekBarProgress: Int) {
     val length = seekBarProgress + MIN_PASSWORD_LENGTH
     passwordLength = length
-    view?.showChangePasswordLength(length)
+    viewState.showChangePasswordLength(length)
   }
   
   fun onCheckmarkClicked(characteristics: PasswordCharacteristics) {
@@ -63,26 +57,20 @@ class PasswordCreatingPresenter @Inject constructor(
     } else {
       passwordCharacteristics.add(characteristics)
     }
-    view?.showPasswordCharacteristics(passwordCharacteristics)
+    viewState.showPasswordCharacteristics(passwordCharacteristics)
   }
   
   fun onSavePasswordClicked() {
     when (passwordChecker.validate(password)) {
-      EMPTY -> view?.showPasswordIsEmpty()
-      TOO_SHORT -> view?.showPasswordIsTooShort()
-      TOO_WEAK -> view?.showPasswordIsTooWeak()
-      OK -> view?.showSavePasswordClicked(password)
+      EMPTY -> viewState.showPasswordIsEmpty()
+      else -> viewState.showSavePasswordClicked(password)
     }
-  }
-  
-  fun detachView() {
-    view = null
   }
   
   private fun showPasswordInfo() {
     fillPasswordCharacteristics()
-    view?.showPasswordCharacteristics(passwordCharacteristics)
-    view?.showPasswordStrength(passwordChecker.checkStrength(password))
+    viewState.showPasswordCharacteristics(passwordCharacteristics)
+    viewState.showPasswordStrength(passwordChecker.checkStrength(password))
   }
   
   private fun fillPasswordCharacteristics() {
@@ -90,5 +78,9 @@ class PasswordCreatingPresenter @Inject constructor(
     if (password.hasUppercaseLetters) passwordCharacteristics.add(UPPERCASE_SYMBOLS)
     if (password.hasNumbers) passwordCharacteristics.add(NUMBERS)
     if (password.hasSpecialSymbols) passwordCharacteristics.add(SPECIAL_SYMBOLS)
+  }
+  
+  fun onCloseClicked() {
+  
   }
 }

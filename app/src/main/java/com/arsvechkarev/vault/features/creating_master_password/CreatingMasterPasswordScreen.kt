@@ -1,5 +1,6 @@
 package com.arsvechkarev.vault.features.creating_master_password
 
+import android.content.Context
 import android.view.Gravity
 import android.view.Gravity.CENTER
 import android.view.animation.AnimationUtils
@@ -8,7 +9,6 @@ import com.arsvechkarev.vault.R
 import com.arsvechkarev.vault.core.MIN_PASSWORD_LENGTH
 import com.arsvechkarev.vault.core.di.CoreComponent
 import com.arsvechkarev.vault.core.extensions.moxyPresenter
-import com.arsvechkarev.vault.core.navigation.ViewScreen
 import com.arsvechkarev.vault.cryptography.PasswordStatus
 import com.arsvechkarev.vault.cryptography.PasswordStatus.EMPTY
 import com.arsvechkarev.vault.cryptography.PasswordStatus.OK
@@ -34,32 +34,38 @@ import com.arsvechkarev.vault.viewdsl.Size.Companion.WrapContent
 import com.arsvechkarev.vault.viewdsl.Size.IntSize
 import com.arsvechkarev.vault.viewdsl.animateInvisible
 import com.arsvechkarev.vault.viewdsl.animateVisible
+import com.arsvechkarev.vault.viewdsl.backgroundColor
 import com.arsvechkarev.vault.viewdsl.classNameTag
 import com.arsvechkarev.vault.viewdsl.clearOnClick
 import com.arsvechkarev.vault.viewdsl.drawablePadding
 import com.arsvechkarev.vault.viewdsl.drawables
 import com.arsvechkarev.vault.viewdsl.gravity
+import com.arsvechkarev.vault.viewdsl.hideKeyboard
 import com.arsvechkarev.vault.viewdsl.invisible
 import com.arsvechkarev.vault.viewdsl.layoutGravity
 import com.arsvechkarev.vault.viewdsl.marginHorizontal
 import com.arsvechkarev.vault.viewdsl.margins
 import com.arsvechkarev.vault.viewdsl.onClick
+import com.arsvechkarev.vault.viewdsl.showKeyboard
 import com.arsvechkarev.vault.viewdsl.tag
 import com.arsvechkarev.vault.viewdsl.text
 import com.arsvechkarev.vault.viewdsl.textColor
 import com.arsvechkarev.vault.viewdsl.textSize
 import com.arsvechkarev.vault.viewdsl.visible
+import com.arsvechkarev.vault.viewdsl.withViewBuilder
 import com.arsvechkarev.vault.views.EditTextPassword
 import com.arsvechkarev.vault.views.PasswordStrengthMeter
 import com.arsvechkarev.vault.views.dialogs.LoadingDialog
 import com.arsvechkarev.vault.views.dialogs.PasswordStrengthDialog.Companion.PasswordStrengthDialog
 import com.arsvechkarev.vault.views.dialogs.PasswordStrengthDialog.Companion.passwordStrengthDialog
 import com.arsvechkarev.vault.views.dialogs.loadingDialog
+import navigation.BaseScreen
 
-class CreatingMasterPasswordScreen : ViewScreen(), CreatingMasterPasswordView {
+class CreatingMasterPasswordScreen : BaseScreen(), CreatingMasterPasswordView {
   
-  override fun buildLayout() = withViewBuilder {
+  override fun buildLayout(context: Context) = context.withViewBuilder {
     RootCoordinatorLayout(MatchParent, MatchParent) {
+      backgroundColor(Colors.Background)
       HorizontalLayout(MatchParent, WrapContent) {
         tag(RepeatPasswordLayout)
         invisible()
@@ -95,8 +101,8 @@ class CreatingMasterPasswordScreen : ViewScreen(), CreatingMasterPasswordView {
         }
         child<ViewSwitcher>(MatchParent, WrapContent) {
           classNameTag()
-          inAnimation = AnimationUtils.loadAnimation(contextNonNull, R.anim.slide_out_left)
-          outAnimation = AnimationUtils.loadAnimation(contextNonNull, R.anim.slide_in_right)
+          inAnimation = AnimationUtils.loadAnimation(context, R.anim.slide_out_left)
+          outAnimation = AnimationUtils.loadAnimation(context, R.anim.slide_in_right)
           child<EditTextPassword>(MatchParent, WrapContent) {
             tag(EditTextEnterPassword)
             marginHorizontal(MarginDefault)
@@ -122,10 +128,8 @@ class CreatingMasterPasswordScreen : ViewScreen(), CreatingMasterPasswordView {
         layoutGravity(Gravity.BOTTOM)
         text(R.string.text_continue)
         margins(start = MarginDefault, end = MarginDefault, bottom = MarginDefault)
-        whenPresenterIsReady {
-          onClick {
-            presenter.onEnteredPassword(editTextPassword(EditTextEnterPassword).getText())
-          }
+        onClick {
+          presenter.onEnteredPassword(viewAs<EditTextPassword>(EditTextEnterPassword).getText())
         }
       }
       LoadingDialog()
@@ -152,39 +156,38 @@ class CreatingMasterPasswordScreen : ViewScreen(), CreatingMasterPasswordView {
   }
   
   private val presenter by moxyPresenter {
-    CoreComponent.instance.getCreatingMasterPasswordComponent().create().providePresenter()
+    CoreComponent.instance.getCreatingMasterPasswordComponentFactory().create().providePresenter()
   }
   
-  override fun onInit(arguments: Map<String, Any>) {
-    super.onInit(arguments)
-    editTextPassword(EditTextEnterPassword).addTextChangedListener(passwordTextWatcher)
-    editTextPassword(EditTextEnterPassword).addTextChangedListener(clearErrorTextWatcher)
-    editTextPassword(EditTextRepeatPassword).addTextChangedListener(clearErrorTextWatcher)
+  override fun onInit() {
+    viewAs<EditTextPassword>(EditTextEnterPassword).addTextChangedListener(passwordTextWatcher)
+    viewAs<EditTextPassword>(EditTextEnterPassword).addTextChangedListener(clearErrorTextWatcher)
+    viewAs<EditTextPassword>(EditTextRepeatPassword).addTextChangedListener(clearErrorTextWatcher)
   }
   
-  override fun onAppearedOnScreen(arguments: Map<String, Any>) {
-    super.onAppearedOnScreen(arguments)
-    showKeyboard()
-    editTextPassword(EditTextEnterPassword).requestEditTextFocus()
+  override fun onAppearedOnScreenAfterAnimation() {
+    contextNonNull.showKeyboard()
+    viewAs<EditTextPassword>(EditTextEnterPassword).requestEditTextFocus()
   }
   
-  override fun allowBackPress(): Boolean {
-    return presenter.allowBackPress()
+  override fun handleBackPress(): Boolean {
+    return presenter.handleBackPress()
   }
   
   override fun onRelease() {
     super.onRelease()
-    editTextPassword(EditTextRepeatPassword).removeTextChangedListener(passwordTextWatcher)
-    editTextPassword(EditTextEnterPassword).removeTextChangedListener(clearErrorTextWatcher)
-    editTextPassword(EditTextRepeatPassword).removeTextChangedListener(clearErrorTextWatcher)
+    viewAs<EditTextPassword>(EditTextRepeatPassword).removeTextChangedListener(passwordTextWatcher)
+    viewAs<EditTextPassword>(EditTextEnterPassword).removeTextChangedListener(clearErrorTextWatcher)
+    viewAs<EditTextPassword>(EditTextRepeatPassword).removeTextChangedListener(
+      clearErrorTextWatcher)
   }
   
   override fun showPasswordProblem(passwordStatus: PasswordStatus) {
     val text = when (passwordStatus) {
-      EMPTY -> getString(R.string.text_password_cannot_be_empty)
-      TOO_SHORT -> getString(R.string.text_password_min_length, MIN_PASSWORD_LENGTH)
-      TOO_WEAK -> getString(R.string.text_password_is_too_weak)
-      OK -> getString(R.string.text_empty)
+      EMPTY -> contextNonNull.getString(R.string.text_password_cannot_be_empty)
+      TOO_SHORT -> contextNonNull.getString(R.string.text_password_min_length, MIN_PASSWORD_LENGTH)
+      TOO_WEAK -> contextNonNull.getString(R.string.text_password_is_too_weak)
+      OK -> contextNonNull.getString(R.string.text_empty)
     }
     textView(TextError).visible()
     if (passwordStatus == TOO_WEAK) {
@@ -219,7 +222,7 @@ class CreatingMasterPasswordScreen : ViewScreen(), CreatingMasterPasswordView {
   
   override fun switchToEnterPasswordState() {
     textView(TextContinue).onClick {
-      presenter.onEnteredPassword(editTextPassword(EditTextEnterPassword).getText())
+      presenter.onEnteredPassword(viewAs<EditTextPassword>(EditTextEnterPassword).getText())
     }
     viewAs<PasswordStrengthMeter>().setStrength(null, animate = false)
     textView(TextError).text("")
@@ -236,9 +239,9 @@ class CreatingMasterPasswordScreen : ViewScreen(), CreatingMasterPasswordView {
   
   override fun switchToRepeatPasswordState() {
     textView(TextContinue).onClick {
-      presenter.onRepeatedPassword(editTextPassword(EditTextRepeatPassword).getText())
+      presenter.onRepeatedPassword(viewAs<EditTextPassword>(EditTextRepeatPassword).getText())
     }
-    editTextPassword(EditTextRepeatPassword).text("")
+    viewAs<EditTextPassword>(EditTextRepeatPassword).text("")
     textView(TextError).text("")
     textView(TextPasswordStrength).text("")
     view(TextTitle).animateInvisible()
@@ -256,12 +259,8 @@ class CreatingMasterPasswordScreen : ViewScreen(), CreatingMasterPasswordView {
   }
   
   override fun showFinishingAuthorization() {
-    hideKeyboard()
+    contextNonNull.hideKeyboard()
     loadingDialog.show()
-  }
-  
-  override fun goToPasswordsList() {
-    navigator.goToServicesListScreen()
   }
   
   companion object {

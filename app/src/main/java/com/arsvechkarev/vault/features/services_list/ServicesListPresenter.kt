@@ -1,17 +1,20 @@
 package com.arsvechkarev.vault.features.services_list
 
 import com.arsvechkarev.vault.core.BasePresenter
+import com.arsvechkarev.vault.core.Screens
 import com.arsvechkarev.vault.core.Threader
 import com.arsvechkarev.vault.core.di.FeatureScope
 import com.arsvechkarev.vault.core.model.Service
 import com.arsvechkarev.vault.cryptography.MasterPasswordHolder.masterPassword
 import com.arsvechkarev.vault.features.common.ServicesRepository
+import navigation.Router
 import javax.inject.Inject
 
 @FeatureScope
 class ServicesListPresenter @Inject constructor(
-  threader: Threader,
-  private val servicesRepository: ServicesRepository
+  private val servicesRepository: ServicesRepository,
+  private val router: Router,
+  threader: Threader
 ) : BasePresenter<ServicesListView>(threader) {
   
   private val listChangeListener: (List<Service>) -> Unit = { list ->
@@ -24,30 +27,38 @@ class ServicesListPresenter @Inject constructor(
   
   override fun onFirstViewAttach() {
     servicesRepository.addChangeListener(listChangeListener)
+    startLoadingPasswords()
   }
   
-  fun startLoadingPasswords() {
+  private fun startLoadingPasswords() {
     onIoThread {
-      updateViewState { showLoading() }
+      onMainThread { viewState.showLoading() }
       val services = servicesRepository.getServices(masterPassword)
       if (services.isNotEmpty()) {
-        updateViewState { showServicesList(services) }
+        onMainThread { viewState.showServicesList(services) }
       } else {
-        updateViewState { showNoServices() }
+        onMainThread { viewState.showNoServices() }
       }
     }
   }
   
-  fun onLongClick(service: Service) {
+  fun onServiceItemClicked(service: Service) {
+    router.goForward(Screens.InfoScreen(service))
+  }
+  
+  fun onNewServiceClicked() {
+    router.goForward(Screens.CreateServiceScreen)
+  }
+  
+  fun onServiceLongItemClicked(service: Service) {
     viewState.showDeleteDialog(service)
   }
   
   fun deleteService(service: Service) {
     viewState.showLoadingDeletingService()
     onIoThread {
-      servicesRepository.deleteService(masterPassword, service,
-        notifyListeners = false)
-      updateViewState { showDeletedService(service) }
+      servicesRepository.deleteService(masterPassword, service, notifyListeners = false)
+      onMainThread { viewState.showDeletedService(service) }
     }
   }
 }

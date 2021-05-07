@@ -15,12 +15,14 @@ import com.arsvechkarev.vault.features.info.InfoScreenState.LOADING
 import com.arsvechkarev.vault.features.info.InfoScreenState.PASSWORD_EDITING_DIALOG
 import com.arsvechkarev.vault.features.info.InfoScreenState.PASSWORD_STRENGTH_DIALOG
 import com.arsvechkarev.vault.features.info.InfoScreenState.SAVE_PASSWORD_DIALOG
+import navigation.Router
 import javax.inject.Inject
 
 @FeatureScope
 class InfoPresenter @Inject constructor(
   private val servicesRepository: ServicesRepository,
   private val clipboard: Clipboard,
+  private val router: Router,
   threader: Threader
 ) : BasePresenter<InfoView>(threader) {
   
@@ -62,7 +64,7 @@ class InfoPresenter @Inject constructor(
     onIoThread {
       servicesRepository.updateService(masterPassword, service)
       state = INITIAL
-      updateViewState { hideLoading() }
+      onMainThread { viewState.hideLoading() }
     }
   }
   
@@ -77,7 +79,7 @@ class InfoPresenter @Inject constructor(
     onIoThread {
       servicesRepository.updateService(masterPassword, service)
       state = INITIAL
-      updateViewState { hideLoading() }
+      onMainThread { viewState.hideLoading() }
     }
   }
   
@@ -92,7 +94,7 @@ class InfoPresenter @Inject constructor(
     onIoThread {
       servicesRepository.updateService(masterPassword, service)
       state = INITIAL
-      updateViewState { hideLoading() }
+      onMainThread { viewState.hideLoading() }
     }
   }
   
@@ -124,7 +126,10 @@ class InfoPresenter @Inject constructor(
     onIoThread {
       servicesRepository.deleteService(masterPassword, service, notifyListeners = true)
       state = INITIAL
-      updateViewState { showExit() }
+      onMainThread {
+        viewState.showExit()
+        router.goBack(releaseCurrentScreen = false)
+      }
     }
   }
   
@@ -155,7 +160,7 @@ class InfoPresenter @Inject constructor(
       return
     }
     if (this.password.isEmpty()) {
-      // Password was cleared after user closed save password dialog
+      // Password was cleared after user closed SavePasswordDialog
       this.password = password
     }
     this.password = password
@@ -172,10 +177,10 @@ class InfoPresenter @Inject constructor(
     onIoThread {
       servicesRepository.updateService(masterPassword, service)
       state = INITIAL
-      updateViewState {
-        setPassword(password)
-        hidePasswordEditingDialog()
-        hideLoading()
+      onMainThread {
+        viewState.setPassword(password)
+        viewState.hidePasswordEditingDialog()
+        viewState.hideLoading()
       }
     }
   }
@@ -191,34 +196,38 @@ class InfoPresenter @Inject constructor(
     viewState.hideSavePasswordDialog()
   }
   
-  fun allowBackPress(): Boolean {
+  fun onBackClicked() {
+    if (!handleBackPress()) router.goBack(releaseCurrentScreen = false)
+  }
+  
+  fun handleBackPress(): Boolean {
     return when (state) {
-      INITIAL -> true
-      LOADING -> false
+      INITIAL -> false
+      LOADING -> true
       EDITING_NAME_OR_USERNAME_OR_EMAIL -> {
         viewState.restoreInitialData()
         state = INITIAL
-        false
+        true
       }
       DELETING_DIALOG -> {
         viewState.hideDeleteDialog()
         state = INITIAL
-        false
+        true
       }
       PASSWORD_EDITING_DIALOG -> {
         viewState.hidePasswordEditingDialog()
         state = INITIAL
-        false
+        true
       }
       PASSWORD_STRENGTH_DIALOG -> {
         viewState.hidePasswordStrengthDialog()
         state = PASSWORD_EDITING_DIALOG
-        false
+        true
       }
       SAVE_PASSWORD_DIALOG -> {
         viewState.hideSavePasswordDialog()
         state = PASSWORD_EDITING_DIALOG
-        false
+        true
       }
     }
   }

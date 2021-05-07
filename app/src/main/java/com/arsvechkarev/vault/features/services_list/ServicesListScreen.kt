@@ -32,6 +32,7 @@ import com.arsvechkarev.vault.viewdsl.Size.Companion.WrapContent
 import com.arsvechkarev.vault.viewdsl.addView
 import com.arsvechkarev.vault.viewdsl.animateInvisible
 import com.arsvechkarev.vault.viewdsl.animateVisible
+import com.arsvechkarev.vault.viewdsl.backgroundColor
 import com.arsvechkarev.vault.viewdsl.behavior
 import com.arsvechkarev.vault.viewdsl.classNameTag
 import com.arsvechkarev.vault.viewdsl.gravity
@@ -65,6 +66,7 @@ class ServicesListScreen : BaseScreen(), ServicesListView {
   override fun buildLayout(context: Context) = context.withViewBuilder {
     val viewUnderHeaderBehavior = ViewUnderHeaderBehavior()
     RootCoordinatorLayout {
+      backgroundColor(Colors.Background)
       TextView(MatchParent, WrapContent, style = BoldTextView) {
         paddings(top = VerticalMarginSmall + StatusBarHeight, bottom = MarginSmall,
           start = MarginDefault)

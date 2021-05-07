@@ -11,6 +11,7 @@ import com.arsvechkarev.vault.core.di.CoreComponent
 import com.arsvechkarev.vault.core.extensions.moxyPresenter
 import com.arsvechkarev.vault.features.creating_password.PasswordEditingDialog.Companion.PasswordEditingDialog
 import com.arsvechkarev.vault.features.creating_password.PasswordEditingDialog.Companion.passwordEditingDialog
+import com.arsvechkarev.vault.viewbuilding.Colors
 import com.arsvechkarev.vault.viewbuilding.Colors.Error
 import com.arsvechkarev.vault.viewbuilding.Dimens.IconPadding
 import com.arsvechkarev.vault.viewbuilding.Dimens.ImageServiceNameSize
@@ -24,6 +25,7 @@ import com.arsvechkarev.vault.viewbuilding.TextSizes
 import com.arsvechkarev.vault.viewdsl.BaseTextWatcher
 import com.arsvechkarev.vault.viewdsl.Size.Companion.MatchParent
 import com.arsvechkarev.vault.viewdsl.Size.Companion.WrapContent
+import com.arsvechkarev.vault.viewdsl.backgroundColor
 import com.arsvechkarev.vault.viewdsl.circleRippleBackground
 import com.arsvechkarev.vault.viewdsl.clearImage
 import com.arsvechkarev.vault.viewdsl.constraints
@@ -61,6 +63,7 @@ class CreatingServiceScreen : BaseScreen(), CreatingServiceView {
   
   override fun buildLayout(context: Context) = context.withViewBuilder {
     RootConstraintLayout {
+      backgroundColor(Colors.Background)
       addOnLayoutChangeListener { _, _, _, _, _, _, _, _, _ ->
         showOrHideImageBasedOnLayout()
       }
@@ -161,8 +164,11 @@ class CreatingServiceScreen : BaseScreen(), CreatingServiceView {
   }
   
   override fun onInit() {
-    editText(EditTextServiceName).requestFocus()
     editText(EditTextServiceName).addTextChangedListener(passwordTextWatcher)
+  }
+  
+  override fun onAppearedOnScreenAfterAnimation() {
+    editText(EditTextServiceName).requestFocus()
     contextNonNull.showKeyboard()
   }
   

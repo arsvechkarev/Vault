@@ -34,6 +34,7 @@ import com.arsvechkarev.vault.viewdsl.Size.Companion.WrapContent
 import com.arsvechkarev.vault.viewdsl.Size.IntSize
 import com.arsvechkarev.vault.viewdsl.animateInvisible
 import com.arsvechkarev.vault.viewdsl.animateVisible
+import com.arsvechkarev.vault.viewdsl.backgroundColor
 import com.arsvechkarev.vault.viewdsl.classNameTag
 import com.arsvechkarev.vault.viewdsl.clearOnClick
 import com.arsvechkarev.vault.viewdsl.drawablePadding
@@ -64,6 +65,7 @@ class CreatingMasterPasswordScreen : BaseScreen(), CreatingMasterPasswordView {
   
   override fun buildLayout(context: Context) = context.withViewBuilder {
     RootCoordinatorLayout(MatchParent, MatchParent) {
+      backgroundColor(Colors.Background)
       HorizontalLayout(MatchParent, WrapContent) {
         tag(RepeatPasswordLayout)
         invisible()
@@ -163,7 +165,7 @@ class CreatingMasterPasswordScreen : BaseScreen(), CreatingMasterPasswordView {
     viewAs<EditTextPassword>(EditTextRepeatPassword).addTextChangedListener(clearErrorTextWatcher)
   }
   
-  override fun onAppearedOnScreen() {
+  override fun onAppearedOnScreenAfterAnimation() {
     contextNonNull.showKeyboard()
     viewAs<EditTextPassword>(EditTextEnterPassword).requestEditTextFocus()
   }

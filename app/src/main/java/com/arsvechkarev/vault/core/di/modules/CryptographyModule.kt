@@ -1,11 +1,13 @@
 package com.arsvechkarev.vault.core.di.modules
 
-import com.arsvechkarev.vault.cryptography.Base64Coder
-import com.arsvechkarev.vault.cryptography.JavaBase64Coder
-import com.arsvechkarev.vault.cryptography.SeedRandomGenerator
-import com.arsvechkarev.vault.cryptography.SeedRandomGeneratorImpl
+import buisnesslogic.Cryptography
+import buisnesslogic.base64.Base64Coder
+import buisnesslogic.base64.JavaBase64Coder
+import buisnesslogic.random.SeedRandomGenerator
+import buisnesslogic.random.SeedRandomGeneratorImpl
 import dagger.Module
 import dagger.Provides
+import javax.inject.Singleton
 
 @Module
 object CryptographyModule {
@@ -17,4 +19,14 @@ object CryptographyModule {
   @Provides
   @JvmStatic
   fun provideSeedRandomGenerator(): SeedRandomGenerator = SeedRandomGeneratorImpl
+  
+  @Provides
+  @JvmStatic
+  @Singleton
+  fun provideCryptography(
+    base64Coder: Base64Coder,
+    seedRandomGenerator: SeedRandomGenerator
+  ): Cryptography {
+    return Cryptography(base64Coder, seedRandomGenerator)
+  }
 }

@@ -8,7 +8,6 @@ import com.arsvechkarev.vault.core.BaseActivity
 import com.arsvechkarev.vault.core.Screens
 import com.arsvechkarev.vault.core.UserAuthSaver
 import com.arsvechkarev.vault.core.di.CoreComponent
-import com.arsvechkarev.vault.cryptography.MasterPasswordHolder
 import com.arsvechkarev.vault.viewbuilding.Colors
 import com.arsvechkarev.vault.viewdsl.Densities
 import com.arsvechkarev.vault.viewdsl.Size.Companion.MatchParent
@@ -65,11 +64,9 @@ class MainActivity : BaseActivity() {
       return
     }
     if (userAuthSaver.isUserAuthorized()) {
-      MasterPasswordHolder.setMasterPassword("qwerty??123")
-      router.goForward(Screens.ServicesListScreen)
-      //      router.goForward(Screens.StartScreen)
+      router.goForward(Screens.StartScreen)
     } else {
-      //      router.goForward(Screens.InitialScreen)
+      router.goForward(Screens.InitialScreen)
     }
   }
   

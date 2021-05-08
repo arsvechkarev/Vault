@@ -1,16 +1,16 @@
 package com.arsvechkarev.vault.common
 
-import com.arsvechkarev.vault.core.FileSaver
+import buisnesslogic.FileSaver
 
 class TestFileSaver : FileSaver {
   
   private var text: String = ""
   
-  override fun saveTextToFile(filename: String, text: String) {
+  override fun saveTextToFile(text: String) {
     this.text = text
   }
   
-  override fun readTextFromFile(filename: String): String {
+  override fun readTextFromFile(): String {
     return text
   }
 }

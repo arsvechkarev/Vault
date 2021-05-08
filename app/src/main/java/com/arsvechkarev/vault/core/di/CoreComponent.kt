@@ -5,6 +5,7 @@ import com.arsvechkarev.vault.core.di.modules.CommunicatorsModule
 import com.arsvechkarev.vault.core.di.modules.CoreModule
 import com.arsvechkarev.vault.core.di.modules.CryptographyModule
 import com.arsvechkarev.vault.core.di.modules.FileSaverModule
+import com.arsvechkarev.vault.core.di.modules.MasterKeyModule
 import com.arsvechkarev.vault.core.di.modules.RouterModule
 import com.arsvechkarev.vault.core.di.modules.ServicesModule
 import com.arsvechkarev.vault.features.creating_master_password.CreatingMasterPasswordComponent
@@ -32,6 +33,7 @@ import javax.inject.Singleton
     CommunicatorsModule::class,
     RouterModule::class,
     CryptographyModule::class,
+    MasterKeyModule::class,
     FileSaverModule::class,
     ServicesModule::class,
     CreatingMasterPasswordModule::class,

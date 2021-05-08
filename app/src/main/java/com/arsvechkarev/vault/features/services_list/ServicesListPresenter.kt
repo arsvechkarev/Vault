@@ -47,7 +47,7 @@ class ServicesListPresenter @Inject constructor(
   }
   
   fun onNewServiceClicked() {
-    router.goForward(Screens.CreateServiceScreen)
+    router.goForward(Screens.CreatingServiceScreen)
   }
   
   fun onServiceLongItemClicked(service: Service) {

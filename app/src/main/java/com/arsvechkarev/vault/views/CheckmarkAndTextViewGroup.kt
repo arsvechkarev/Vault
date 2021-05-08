@@ -61,7 +61,7 @@ class CheckmarkAndTextViewGroup(
     fun ViewGroup.CheckmarkAndTextViewGroup(textResId: Int, block: CheckmarkAndTextViewGroup.() -> Unit) {
       val text = context.getString(textResId)
       val view = CheckmarkAndTextViewGroup(context, text)
-      view.tag = textResId
+      view.id = textResId
       view.apply(block)
       addView(view, ViewGroup.LayoutParams(MATCH_PARENT, WRAP_CONTENT))
     }

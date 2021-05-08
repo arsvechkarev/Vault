@@ -4,6 +4,7 @@ import com.arsvechkarev.vault.common.GsonJsonConverter
 import com.arsvechkarev.vault.common.TestFileSaver
 import com.arsvechkarev.vault.core.model.Service
 import com.arsvechkarev.vault.cryptography.Cryptography
+import com.arsvechkarev.vault.cryptography.JavaBase64Coder
 import com.arsvechkarev.vault.cryptography.SeedRandomGeneratorImpl
 import com.arsvechkarev.vault.cryptography.ServicesStorageImpl
 import org.junit.After

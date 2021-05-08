@@ -1,11 +1,11 @@
 package com.arsvechkarev.vault.features.creating_service
 
+import buisnesslogic.MasterPasswordHolder.masterPassword
 import com.arsvechkarev.vault.core.BasePresenterWithChannels
 import com.arsvechkarev.vault.core.Screens
 import com.arsvechkarev.vault.core.Threader
 import com.arsvechkarev.vault.core.communicators.Communicator
-import com.arsvechkarev.vault.core.model.Service
-import com.arsvechkarev.vault.cryptography.MasterPasswordHolder.masterPassword
+import com.arsvechkarev.vault.core.model.ServiceModel
 import com.arsvechkarev.vault.features.common.ServicesRepository
 import com.arsvechkarev.vault.features.common.getIconForServiceName
 import com.arsvechkarev.vault.features.creating_password.PasswordCreatingActions.ConfigureMode.NewPassword
@@ -76,7 +76,7 @@ class CreatingServicePresenter @Inject constructor(
     viewState.showLoadingCreation()
     passwordCreatingCommunicator.send(ShowLoading)
     onIoThread {
-      val serviceInfo = Service(UUID.randomUUID().toString(), serviceName,
+      val serviceInfo = ServiceModel(UUID.randomUUID().toString(), serviceName,
         username, email, password)
       servicesRepository.saveService(masterPassword, serviceInfo)
       onMainThread {

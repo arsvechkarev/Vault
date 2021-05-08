@@ -3,9 +3,9 @@ package com.arsvechkarev.vault.views
 import android.content.Context
 import android.widget.FrameLayout
 import android.widget.TextView
+import buisnesslogic.PasswordStrength
 import com.arsvechkarev.vault.R
 import com.arsvechkarev.vault.core.extensions.i
-import com.arsvechkarev.vault.cryptography.PasswordStrength
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginDefault
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginMedium
 import com.arsvechkarev.vault.viewbuilding.Dimens.PasswordStrengthMeterHeight

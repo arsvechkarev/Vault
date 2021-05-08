@@ -7,7 +7,6 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import com.arsvechkarev.vault.R
-import com.arsvechkarev.vault.core.extensions.assertThat
 import com.arsvechkarev.vault.viewbuilding.Dimens.IconPadding
 import com.arsvechkarev.vault.viewbuilding.Dimens.IconSize
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginDefault
@@ -179,7 +178,7 @@ class EditableTextInfoViewGroup(context: Context) : ViewGroup(context) {
     if (mode == SHOWING) {
       changeModeToEditing()
     } else {
-      assertThat(mode == EDITING)
+      require(mode == EDITING)
       changeModeToShowing()
     }
   }

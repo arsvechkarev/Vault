@@ -7,10 +7,9 @@ import androidx.constraintlayout.widget.ConstraintSet.BOTTOM
 import androidx.constraintlayout.widget.ConstraintSet.END
 import androidx.constraintlayout.widget.ConstraintSet.START
 import androidx.constraintlayout.widget.ConstraintSet.TOP
-import com.arsvechkarev.vault.core.extensions.assertThat
 
 fun View.constraints(block: ConstraintsDsl.() -> Unit) {
-  assertThat(layoutParams is ConstraintLayout.LayoutParams)
+  require(layoutParams is ConstraintLayout.LayoutParams)
   val constraintsDsl = ConstraintsDsl(id, parent as ConstraintLayout)
   constraintsDsl.apply(block)
   constraintsDsl.applyToLayout()

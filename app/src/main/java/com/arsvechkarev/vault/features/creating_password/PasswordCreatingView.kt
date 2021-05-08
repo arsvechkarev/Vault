@@ -9,6 +9,10 @@ import moxy.viewstate.strategy.StateStrategyType
 @StateStrategyType(AddToEndSingleStrategy::class)
 interface PasswordCreatingView : MvpView {
   
+  fun showCreatingPasswordMode()
+  
+  fun showEditingPasswordMode(password: String)
+  
   fun showChangePasswordLength(progress: Int)
   
   fun showPasswordStrength(strength: PasswordStrength?)
@@ -19,9 +23,11 @@ interface PasswordCreatingView : MvpView {
   
   fun showPasswordIsEmpty()
   
-  fun showPasswordIsTooWeak()
+  fun showPasswordAcceptingDialog()
   
-  fun showPasswordIsTooShort()
+  fun hidePasswordAcceptingDialog()
   
-  fun showSavePasswordClicked(password: String)
+  fun showLoadingDialog()
+  
+  fun hideLoadingDialog()
 }

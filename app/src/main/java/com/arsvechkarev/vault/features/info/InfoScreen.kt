@@ -12,8 +12,6 @@ import com.arsvechkarev.vault.core.di.CoreComponent
 import com.arsvechkarev.vault.core.extensions.getDeleteMessageText
 import com.arsvechkarev.vault.core.extensions.moxyPresenter
 import com.arsvechkarev.vault.core.model.Service
-import com.arsvechkarev.vault.features.creating_password.PasswordEditingDialog.Companion.PasswordEditingDialog
-import com.arsvechkarev.vault.features.creating_password.PasswordEditingDialog.Companion.passwordEditingDialog
 import com.arsvechkarev.vault.viewbuilding.Colors
 import com.arsvechkarev.vault.viewbuilding.Dimens
 import com.arsvechkarev.vault.viewbuilding.Dimens.DividerHeight
@@ -37,7 +35,6 @@ import com.arsvechkarev.vault.viewdsl.backgroundColor
 import com.arsvechkarev.vault.viewdsl.circleRippleBackground
 import com.arsvechkarev.vault.viewdsl.classNameTag
 import com.arsvechkarev.vault.viewdsl.gravity
-import com.arsvechkarev.vault.viewdsl.hideKeyboard
 import com.arsvechkarev.vault.viewdsl.image
 import com.arsvechkarev.vault.viewdsl.invisible
 import com.arsvechkarev.vault.viewdsl.layoutGravity
@@ -57,8 +54,6 @@ import com.arsvechkarev.vault.views.Snackbar
 import com.arsvechkarev.vault.views.dialogs.InfoDialog.Companion.InfoDialog
 import com.arsvechkarev.vault.views.dialogs.InfoDialog.Companion.infoDialog
 import com.arsvechkarev.vault.views.dialogs.LoadingDialog
-import com.arsvechkarev.vault.views.dialogs.PasswordStrengthDialog.Companion.PasswordStrengthDialog
-import com.arsvechkarev.vault.views.dialogs.PasswordStrengthDialog.Companion.passwordStrengthDialog
 import com.arsvechkarev.vault.views.dialogs.loadingDialog
 import com.arsvechkarev.vault.views.drawables.LetterInCircleDrawable.Companion.setLetterDrawable
 import navigation.BaseScreen
@@ -175,16 +170,8 @@ class InfoScreen : BaseScreen(), InfoView {
           reactToClicks = { !presenter.isEditingNameOrEmailNow }
         }
       }
-      PasswordEditingDialog {
-        onCloseClicked = { presenter.closePasswordScreen() }
-        onPasswordIsTooWeakClicked = { presenter.onShowPasswordStrengthDialog() }
-      }
       LoadingDialog()
       InfoDialog()
-      PasswordStrengthDialog {
-        onHide = { presenter.onHidePasswordStrengthDialog() }
-        onGotItClicked { presenter.onHidePasswordStrengthDialog() }
-      }
       child<Snackbar>(MatchParent, WrapContent) {
         classNameTag()
         layoutGravity(BOTTOM)
@@ -197,8 +184,8 @@ class InfoScreen : BaseScreen(), InfoView {
     CoreComponent.instance.getInfoComponentFactory().create().providePresenter()
   }
   
-  override fun onAppearedOnScreen() {
-    val serviceInfo = arguments[SERVICE_INFO] as Service
+  override fun onAppearedOnScreenGoingForward() {
+    val serviceInfo = arguments[SERVICE] as Service
     presenter.performSetup(serviceInfo)
   }
   
@@ -273,42 +260,6 @@ class InfoScreen : BaseScreen(), InfoView {
     infoDialog.hide()
   }
   
-  override fun showPasswordEditingDialog(password: String) {
-    passwordEditingDialog().initiatePasswordEditing(password, onSavePasswordClick = { newPassword ->
-      presenter.onSaveNewPasswordClicked(newPassword)
-    })
-  }
-  
-  override fun hidePasswordEditingDialog() {
-    passwordEditingDialog().hide()
-  }
-  
-  override fun showPasswordStrengthDialog() {
-    contextNonNull.hideKeyboard()
-    passwordStrengthDialog.show()
-  }
-  
-  override fun hidePasswordStrengthDialog() {
-    passwordStrengthDialog.hide()
-  }
-  
-  override fun showAcceptPasswordDialog() {
-    infoDialog.onHide = { presenter.onHideAcceptPasswordDialog() }
-    infoDialog.showWithOkOption(
-      R.string.text_saving_password,
-      R.string.text_do_you_want_to_save_password,
-      R.string.text_yes,
-      onOkClicked = {
-        presenter.acceptPassword()
-      }
-    )
-  }
-  
-  override fun hideSavePasswordDialog() {
-    infoDialog.onHide = {}
-    infoDialog.hide()
-  }
-  
   override fun showLoading() {
     loadingDialog.show()
   }
@@ -330,8 +281,8 @@ class InfoScreen : BaseScreen(), InfoView {
   }
   
   companion object {
-    
-    const val SERVICE_INFO = "SERVICE_INFO"
+  
+    const val SERVICE = "SERVICE"
     
     const val ImageServiceName = "ImageServiceName"
     const val EditableTextInfoServiceName = "EditableTextInfoServiceName"

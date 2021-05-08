@@ -1,9 +1,9 @@
-package com.arsvechkarev.vault.core.channels
+package com.arsvechkarev.vault.core.communicators
 
 /**
- * Channel that behaves like PublishSubject in RxJava: notifies all current listeners about event
+ * Communicator that behaves like PublishSubject in RxJava: notifies all current listeners about event
  */
-class PublishChannel<E> : Channel<E> {
+class PublishCommunicator<E> : Communicator<E> {
   
   private val subscribers = ArrayList<(E) -> Unit>()
   

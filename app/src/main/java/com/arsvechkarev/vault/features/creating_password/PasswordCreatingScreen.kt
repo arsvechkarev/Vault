@@ -26,6 +26,7 @@ import com.arsvechkarev.vault.viewbuilding.Styles.BoldTextView
 import com.arsvechkarev.vault.viewbuilding.TextSizes
 import com.arsvechkarev.vault.viewdsl.Size.Companion.MatchParent
 import com.arsvechkarev.vault.viewdsl.Size.Companion.WrapContent
+import com.arsvechkarev.vault.viewdsl.backgroundColor
 import com.arsvechkarev.vault.viewdsl.circleRippleBackground
 import com.arsvechkarev.vault.viewdsl.classNameTag
 import com.arsvechkarev.vault.viewdsl.drawablePadding
@@ -39,6 +40,7 @@ import com.arsvechkarev.vault.viewdsl.margins
 import com.arsvechkarev.vault.viewdsl.onClick
 import com.arsvechkarev.vault.viewdsl.onProgressChanged
 import com.arsvechkarev.vault.viewdsl.onSubmit
+import com.arsvechkarev.vault.viewdsl.onTextChanged
 import com.arsvechkarev.vault.viewdsl.padding
 import com.arsvechkarev.vault.viewdsl.setMaxLength
 import com.arsvechkarev.vault.viewdsl.setSoftInputMode
@@ -61,6 +63,7 @@ class PasswordCreatingScreen : BaseScreen(), PasswordCreatingView {
   override fun buildLayout(context: Context) = context.withViewBuilder {
     RootFrameLayout {
       tag(DialogPassword)
+      backgroundColor(Colors.Background)
       VerticalLayout(MatchParent, MatchParent) {
         FrameLayout(MatchParent, WrapContent) {
           margins(top = MarginSmall + StatusBarHeight)
@@ -151,14 +154,21 @@ class PasswordCreatingScreen : BaseScreen(), PasswordCreatingView {
     CoreComponent.instance.getPasswordCreatingComponentFactory().create().getPresenter()
   }
   
+  override fun onInit() {
+    editText(DialogPasswordEditText).onTextChanged { presenter.onPasswordChanged(it) }
+  }
+  
   override fun onAppearedOnScreenAfterAnimation() {
     contextNonNull.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING)
     contextNonNull.hideKeyboard()
   }
   
   override fun onDisappearedFromScreen() {
-    contextNonNull.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
     contextNonNull.hideKeyboard()
+  }
+  
+  override fun onDisappearedFromScreenAfterAnimation() {
+    contextNonNull.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
   }
   
   override fun showCreatingPasswordMode() {
@@ -199,7 +209,7 @@ class PasswordCreatingScreen : BaseScreen(), PasswordCreatingView {
   }
   
   override fun showGeneratedPassword(password: String) {
-    contextNonNull.hideKeyboard(viewAs(DialogPasswordEditText))
+    contextNonNull.hideKeyboard()
     editText(DialogPasswordEditText).clearFocus()
     editText(DialogPasswordEditText).text(password)
     editText(DialogPasswordEditText).setSelection(password.length)
@@ -210,6 +220,7 @@ class PasswordCreatingScreen : BaseScreen(), PasswordCreatingView {
   }
   
   override fun showPasswordAcceptingDialog() {
+    contextNonNull.hideKeyboard()
     infoDialog.onHide = { presenter.onHideAcceptPasswordDialog() }
     infoDialog.showWithOkOption(
       R.string.text_saving_password,

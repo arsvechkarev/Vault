@@ -4,7 +4,7 @@ import com.arsvechkarev.vault.core.BasePresenterWithChannels
 import com.arsvechkarev.vault.core.Clipboard
 import com.arsvechkarev.vault.core.Screens
 import com.arsvechkarev.vault.core.Threader
-import com.arsvechkarev.vault.core.channels.Communicator
+import com.arsvechkarev.vault.core.communicators.Communicator
 import com.arsvechkarev.vault.core.di.FeatureScope
 import com.arsvechkarev.vault.core.model.Service
 import com.arsvechkarev.vault.cryptography.MasterPasswordHolder.masterPassword
@@ -28,10 +28,10 @@ import javax.inject.Named
 
 @FeatureScope
 class InfoPresenter @Inject constructor(
+  @Named(PasswordCreatingTag)
+  private val passwordCreatingCommunicator: Communicator<PasswordCreatingEvents>,
   private val servicesRepository: ServicesRepository,
   private val clipboard: Clipboard,
-  @Named(
-    PasswordCreatingTag) private val passwordCreatingCommunicator: Communicator<PasswordCreatingEvents>,
   private val router: Router,
   threader: Threader
 ) : BasePresenterWithChannels<InfoView>(threader) {

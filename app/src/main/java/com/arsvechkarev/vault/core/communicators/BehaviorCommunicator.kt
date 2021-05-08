@@ -1,4 +1,4 @@
-package com.arsvechkarev.vault.core.channels
+package com.arsvechkarev.vault.core.communicators
 
 /**
  * Communicator that behaves like BehaviorSubject in RxJava: when new subscriber is added, it receives

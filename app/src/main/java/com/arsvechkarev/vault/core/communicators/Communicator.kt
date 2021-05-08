@@ -1,4 +1,4 @@
-package com.arsvechkarev.vault.core.channels
+package com.arsvechkarev.vault.core.communicators
 
 /**
  * Communicator for sending and receiving events. **NOT THREAD SAFE**

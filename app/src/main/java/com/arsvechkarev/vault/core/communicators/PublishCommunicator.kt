@@ -1,4 +1,4 @@
-package com.arsvechkarev.vault.core.channels
+package com.arsvechkarev.vault.core.communicators
 
 /**
  * Communicator that behaves like PublishSubject in RxJava: notifies all current listeners about event

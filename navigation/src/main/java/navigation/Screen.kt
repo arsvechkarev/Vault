@@ -51,6 +51,11 @@ interface Screen {
   fun onDisappearedFromScreen() = Unit
   
   /**
+   * Called whenever the screen is disappeared and animation is completed
+   */
+  fun onDisappearedFromScreenAfterAnimation() = Unit
+  
+  /**
    * Called when orientation became portrait
    */
   fun onOrientationBecamePortrait() = Unit

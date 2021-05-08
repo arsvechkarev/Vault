@@ -3,7 +3,7 @@ package com.arsvechkarev.vault.features.creating_service
 import com.arsvechkarev.vault.core.BasePresenterWithChannels
 import com.arsvechkarev.vault.core.Screens
 import com.arsvechkarev.vault.core.Threader
-import com.arsvechkarev.vault.core.channels.Communicator
+import com.arsvechkarev.vault.core.communicators.Communicator
 import com.arsvechkarev.vault.core.model.Service
 import com.arsvechkarev.vault.cryptography.MasterPasswordHolder.masterPassword
 import com.arsvechkarev.vault.features.common.ServicesRepository
@@ -22,9 +22,9 @@ import javax.inject.Inject
 import javax.inject.Named
 
 class CreatingServicePresenter @Inject constructor(
+  @Named(PasswordCreatingTag)
+  private val passwordCreatingCommunicator: Communicator<PasswordCreatingEvents>,
   private val servicesRepository: ServicesRepository,
-  @Named(
-    PasswordCreatingTag) private val passwordCreatingCommunicator: Communicator<PasswordCreatingEvents>,
   private val router: Router,
   threader: Threader
 ) : BasePresenterWithChannels<CreatingServiceView>(threader) {

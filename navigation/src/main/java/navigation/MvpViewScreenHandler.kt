@@ -71,6 +71,9 @@ class MvpViewScreenHandler(
       ANIMATION_BACKWARD -> view.apply(disappearanceAsGoingBackward)
     }
     screen.onDisappearedFromScreen()
+    screen.viewNonNull.postDelayed({
+      if (screen._view != null) screen.onDisappearedFromScreenAfterAnimation()
+    }, animationDuration)
   }
   
   override fun performSaveInstanceState(bundle: Bundle) {

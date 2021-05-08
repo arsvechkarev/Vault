@@ -4,7 +4,7 @@ import com.arsvechkarev.vault.core.BasePresenterWithChannels
 import com.arsvechkarev.vault.core.DEFAULT_PASSWORD_LENGTH
 import com.arsvechkarev.vault.core.MIN_PASSWORD_LENGTH
 import com.arsvechkarev.vault.core.Threader
-import com.arsvechkarev.vault.core.channels.Communicator
+import com.arsvechkarev.vault.core.communicators.Communicator
 import com.arsvechkarev.vault.core.di.FeatureScope
 import com.arsvechkarev.vault.core.extensions.hasNumbers
 import com.arsvechkarev.vault.core.extensions.hasSpecialSymbols
@@ -32,10 +32,10 @@ import javax.inject.Named
 
 @FeatureScope
 class PasswordCreatingPresenter @Inject constructor(
+  @Named(PasswordCreatingTag)
+  private val passwordCreatingCommunicator: Communicator<PasswordCreatingEvents>,
   private val passwordChecker: PasswordChecker,
   private val passwordGenerator: PasswordGenerator,
-  @Named(
-    PasswordCreatingTag) private val passwordCreatingCommunicator: Communicator<PasswordCreatingEvents>,
   private val router: Router,
   threader: Threader
 ) : BasePresenterWithChannels<PasswordCreatingView>(threader) {

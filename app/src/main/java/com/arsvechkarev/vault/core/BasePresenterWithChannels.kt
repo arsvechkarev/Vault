@@ -1,7 +1,7 @@
 package com.arsvechkarev.vault.core
 
 import androidx.annotation.CallSuper
-import com.arsvechkarev.vault.core.channels.Communicator
+import com.arsvechkarev.vault.core.communicators.Communicator
 import moxy.MvpView
 
 abstract class BasePresenterWithChannels<V : MvpView>(threader: Threader) :

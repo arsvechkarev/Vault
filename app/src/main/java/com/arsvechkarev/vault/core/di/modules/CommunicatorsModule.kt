@@ -1,7 +1,7 @@
 package com.arsvechkarev.vault.core.di.modules
 
-import com.arsvechkarev.vault.core.channels.BehaviorCommunicator
-import com.arsvechkarev.vault.core.channels.Communicator
+import com.arsvechkarev.vault.core.communicators.BehaviorCommunicator
+import com.arsvechkarev.vault.core.communicators.Communicator
 import com.arsvechkarev.vault.features.creating_password.PasswordCreatingEvents
 import com.arsvechkarev.vault.features.creating_password.PasswordCreatingTag
 import dagger.Module

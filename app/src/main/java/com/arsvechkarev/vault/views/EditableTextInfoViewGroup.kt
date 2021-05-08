@@ -105,7 +105,7 @@ class EditableTextInfoViewGroup(context: Context) : ViewGroup(context) {
     editText.invisible()
     textView.visible()
     editText.clearFocus()
-    context.hideKeyboard(editText)
+    context.hideKeyboard()
     imageSave.animateInvisible()
     imageEdit.animateVisible()
   }
@@ -138,7 +138,7 @@ class EditableTextInfoViewGroup(context: Context) : ViewGroup(context) {
     editText.invisible()
     textView.visible()
     editText.clearFocus()
-    context.hideKeyboard(editText)
+    context.hideKeyboard()
     imageSave.animateInvisible()
     imageEdit.animateVisible()
   }

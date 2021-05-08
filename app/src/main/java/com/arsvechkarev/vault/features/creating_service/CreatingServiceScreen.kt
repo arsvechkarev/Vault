@@ -9,8 +9,6 @@ import android.widget.ImageView.ScaleType.FIT_XY
 import com.arsvechkarev.vault.R
 import com.arsvechkarev.vault.core.di.CoreComponent
 import com.arsvechkarev.vault.core.extensions.moxyPresenter
-import com.arsvechkarev.vault.features.creating_password.PasswordEditingDialog.Companion.PasswordEditingDialog
-import com.arsvechkarev.vault.features.creating_password.PasswordEditingDialog.Companion.passwordEditingDialog
 import com.arsvechkarev.vault.viewbuilding.Colors
 import com.arsvechkarev.vault.viewbuilding.Colors.Error
 import com.arsvechkarev.vault.viewbuilding.Dimens.IconPadding
@@ -50,11 +48,6 @@ import com.arsvechkarev.vault.viewdsl.textSize
 import com.arsvechkarev.vault.viewdsl.visible
 import com.arsvechkarev.vault.viewdsl.withViewBuilder
 import com.arsvechkarev.vault.views.SimpleDialog
-import com.arsvechkarev.vault.views.dialogs.InfoDialog.Companion.InfoDialog
-import com.arsvechkarev.vault.views.dialogs.InfoDialog.Companion.infoDialog
-import com.arsvechkarev.vault.views.dialogs.LoadingDialog
-import com.arsvechkarev.vault.views.dialogs.PasswordStrengthDialog.Companion.PasswordStrengthDialog
-import com.arsvechkarev.vault.views.dialogs.PasswordStrengthDialog.Companion.passwordStrengthDialog
 import com.arsvechkarev.vault.views.drawables.LetterInCircleDrawable.Companion.setLetterDrawable
 import navigation.BaseScreen
 import kotlin.math.abs
@@ -139,16 +132,6 @@ class CreatingServiceScreen : BaseScreen(), CreatingServiceView {
         text(R.string.text_continue)
         onClick { continueWithCreating() }
       }
-      PasswordEditingDialog {
-        onCloseClicked = { presenter.closePasswordEditingDialog() }
-        onPasswordIsTooWeakClicked = { presenter.onPasswordIsTooWeakClicked() }
-      }
-      InfoDialog()
-      LoadingDialog()
-      PasswordStrengthDialog {
-        onHide = { presenter.onHidePasswordStrengthDialog() }
-        onGotItClicked { presenter.onHidePasswordStrengthDialog() }
-      }
     }
   }
   
@@ -183,43 +166,6 @@ class CreatingServiceScreen : BaseScreen(), CreatingServiceView {
     textView(TextError).text(R.string.text_service_name_cannot_be_empty)
   }
   
-  override fun showPasswordCreatingDialog() {
-    editText(EditTextServiceName).isEnabled = false
-    editText(EditTextEmail).isEnabled = false
-    passwordEditingDialog().initiatePasswordCreation(onSavePasswordClick = { password ->
-      presenter.onPasswordEntered(password)
-    })
-    contextNonNull.hideKeyboard()
-  }
-  
-  override fun hidePasswordCreatingDialog() {
-    editText(EditTextServiceName).isEnabled = true
-    editText(EditTextEmail).isEnabled = true
-    passwordEditingDialog().hide()
-  }
-  
-  override fun showPasswordStrengthDialog() {
-    contextNonNull.hideKeyboard()
-    passwordStrengthDialog.show()
-  }
-  
-  override fun hidePasswordStrengthDialog() {
-    passwordStrengthDialog.hide()
-  }
-  
-  override fun showSavePasswordDialog() {
-    infoDialog.showWithOkOption(
-      R.string.text_saving_password,
-      R.string.text_do_you_want_to_save_password,
-      R.string.text_yes,
-      onOkClicked = { presenter.acceptNewPassword() }
-    )
-  }
-  
-  override fun hideSavePasswordDialog() {
-    infoDialog.hide()
-  }
-  
   override fun showIconFromResources(icon: Drawable) {
     showOrHideImageBasedOnLayout()
     imageView(R.id.creating_service_image).image(icon)
@@ -237,10 +183,6 @@ class CreatingServiceScreen : BaseScreen(), CreatingServiceView {
   
   override fun showLoadingCreation() {
     viewAs<SimpleDialog>(DialogProgressBar).show()
-  }
-  
-  override fun handleBackPress(): Boolean {
-    return presenter.handleBackPress()
   }
   
   private fun showOrHideImageBasedOnLayout() {

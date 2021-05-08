@@ -3,7 +3,7 @@ package com.arsvechkarev.vault.features.creating_service
 import com.arsvechkarev.vault.core.BasePresenterWithChannels
 import com.arsvechkarev.vault.core.Screens
 import com.arsvechkarev.vault.core.Threader
-import com.arsvechkarev.vault.core.channels.Channel
+import com.arsvechkarev.vault.core.channels.Communicator
 import com.arsvechkarev.vault.core.model.Service
 import com.arsvechkarev.vault.cryptography.MasterPasswordHolder.masterPassword
 import com.arsvechkarev.vault.features.common.ServicesRepository
@@ -23,7 +23,8 @@ import javax.inject.Named
 
 class CreatingServicePresenter @Inject constructor(
   private val servicesRepository: ServicesRepository,
-  @Named(PasswordCreatingTag) private val passwordCreatingChannel: Channel<PasswordCreatingEvents>,
+  @Named(
+    PasswordCreatingTag) private val passwordCreatingCommunicator: Communicator<PasswordCreatingEvents>,
   private val router: Router,
   threader: Threader
 ) : BasePresenterWithChannels<CreatingServiceView>(threader) {
@@ -33,9 +34,10 @@ class CreatingServicePresenter @Inject constructor(
   private var email: String = ""
   
   init {
-    subscribeToChannel(passwordCreatingChannel) { event ->
+    subscribeToChannel(passwordCreatingCommunicator) { event ->
       when (event) {
-        is OnSavePasswordButtonClicked -> passwordCreatingChannel.send(ShowAcceptPasswordDialog)
+        is OnSavePasswordButtonClicked -> passwordCreatingCommunicator.send(
+          ShowAcceptPasswordDialog)
         is OnNewPasswordAccepted -> performServiceSaving(event.password)
       }
     }
@@ -62,7 +64,7 @@ class CreatingServicePresenter @Inject constructor(
     this.serviceName = serviceName.trim()
     this.username = username.trim()
     this.email = email.trim()
-    passwordCreatingChannel.send(NewPassword)
+    passwordCreatingCommunicator.send(NewPassword)
     router.goForward(Screens.PasswordCreatingScreen)
   }
   
@@ -72,13 +74,13 @@ class CreatingServicePresenter @Inject constructor(
   
   private fun performServiceSaving(password: String) {
     viewState.showLoadingCreation()
-    passwordCreatingChannel.send(ShowLoading)
+    passwordCreatingCommunicator.send(ShowLoading)
     onIoThread {
       val serviceInfo = Service(UUID.randomUUID().toString(), serviceName,
         username, email, password)
       servicesRepository.saveService(masterPassword, serviceInfo)
       onMainThread {
-        passwordCreatingChannel.send(ExitScreen)
+        passwordCreatingCommunicator.send(ExitScreen)
         router.goBackTo(Screens.ServicesListScreen)
       }
     }

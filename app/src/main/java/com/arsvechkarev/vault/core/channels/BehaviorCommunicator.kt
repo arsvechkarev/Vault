@@ -1,10 +1,10 @@
 package com.arsvechkarev.vault.core.channels
 
 /**
- * Channel that behaves like BehaviorSubject in RxJava: when new subscriber is added, it receives
+ * Communicator that behaves like BehaviorSubject in RxJava: when new subscriber is added, it receives
  * latest event if there was one
  */
-class BehaviorChannel<E> : Channel<E> {
+class BehaviorCommunicator<E> : Communicator<E> {
   
   private val subscribers = ArrayList<(E) -> Unit>()
   private var latestEvent: E? = null

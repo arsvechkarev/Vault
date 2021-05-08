@@ -54,6 +54,9 @@ class MvpViewScreenHandler(
       ANIMATION_BACKWARD -> view.apply(appearanceAsGoingBackward)
     }
     screen.onAppearedOnScreen()
+    if (type != ANIMATION_BACKWARD) {
+      screen.onAppearedOnScreenGoingForward()
+    }
     screen.viewNonNull.postDelayed({
       if (screen._view != null) screen.onAppearedOnScreenAfterAnimation()
     }, animationDuration)

@@ -1,6 +1,6 @@
 package com.arsvechkarev.vault.features.services_list
 
-import com.arsvechkarev.vault.core.model.Service
+import com.arsvechkarev.vault.core.model.ServiceModel
 import moxy.MvpView
 import moxy.viewstate.strategy.AddToEndSingleStrategy
 import moxy.viewstate.strategy.StateStrategyType
@@ -12,11 +12,11 @@ interface ServicesListView : MvpView {
   
   fun showNoServices()
   
-  fun showServicesList(list: List<Service>)
+  fun showServicesList(list: List<ServiceModel>)
   
-  fun showDeleteDialog(service: Service)
+  fun showDeleteDialog(serviceModel: ServiceModel)
   
   fun showLoadingDeletingService()
   
-  fun showDeletedService(service: Service)
+  fun showDeletedService(serviceModel: ServiceModel)
 }

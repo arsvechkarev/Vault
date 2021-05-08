@@ -28,6 +28,9 @@ android {
     signingConfig signingConfigs.release
   }
   buildTypes {
+    debug {
+      applicationIdSuffix ".debug"
+    }
     release {
       minifyEnabled ext.minifyEnabled
       shrinkResources ext.shrinkResources

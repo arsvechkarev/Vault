@@ -10,18 +10,6 @@ interface CreatingServiceView : MvpView {
   
   fun showServiceNameCannotBeEmpty()
   
-  fun showPasswordCreatingDialog()
-  
-  fun hidePasswordCreatingDialog()
-  
-  fun showPasswordStrengthDialog()
-  
-  fun hidePasswordStrengthDialog()
-  
-  fun showSavePasswordDialog()
-  
-  fun hideSavePasswordDialog()
-  
   fun showLetterInCircleIcon(letter: String)
   
   fun showIconFromResources(icon: Drawable)

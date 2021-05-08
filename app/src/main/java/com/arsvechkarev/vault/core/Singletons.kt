@@ -13,7 +13,6 @@ import com.arsvechkarev.vault.cryptography.ZxcvbnPasswordChecker
 import com.arsvechkarev.vault.cryptography.generator.PasswordGenerator
 import com.arsvechkarev.vault.cryptography.generator.PasswordGeneratorImpl
 import com.arsvechkarev.vault.features.common.ServicesRepository
-import com.arsvechkarev.vault.features.creating_password.PasswordCreatingPresenter
 import com.nulabinc.zxcvbn.Zxcvbn
 import java.security.SecureRandom
 
@@ -27,7 +26,6 @@ object Singletons {
   private var _masterKey: MasterKey? = null
   
   val passwordChecker: PasswordChecker = ZxcvbnPasswordChecker(Zxcvbn())
-  val passwordCreatingPresenter = PasswordCreatingPresenter(passwordChecker, passwordGenerator, AndroidThreader)
   val userAuthSaver: UserAuthSaver get() = _userAuthSaver!!
   val masterPasswordChecker: MasterPasswordChecker get() = _masterPasswordChecker!!
   val servicesRepository: ServicesRepository get() = _servicesRepository!!

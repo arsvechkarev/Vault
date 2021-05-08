@@ -25,9 +25,20 @@ interface Screen {
   fun onRelease() = Unit
   
   /**
-   * Called whenever the screen is brought to front to user
+   * Called whenever the screen is brought to front to user. This method will be called even if
+   * user switched to this screen from other screen using back button
+   *
+   * @see onAppearedOnScreenGoingForward
    */
   fun onAppearedOnScreen() = Unit
+  
+  /**
+   * Called whenever the screen is brought to front to user going forward. This method will **NOT**
+   * be called when user switches to this screen from other screen using back button
+   *
+   * @see onAppearedOnScreen
+   */
+  fun onAppearedOnScreenGoingForward() = Unit
   
   /**
    * Called whenever the screen is brought to front to user and screen animation is completed
@@ -38,6 +49,11 @@ interface Screen {
    * Called whenever the screen is disappeared
    */
   fun onDisappearedFromScreen() = Unit
+  
+  /**
+   * Called whenever the screen is disappeared and animation is completed
+   */
+  fun onDisappearedFromScreenAfterAnimation() = Unit
   
   /**
    * Called when orientation became portrait

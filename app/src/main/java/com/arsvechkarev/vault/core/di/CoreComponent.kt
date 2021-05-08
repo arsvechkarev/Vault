@@ -1,6 +1,7 @@
 package com.arsvechkarev.vault.core.di
 
 import android.content.Context
+import com.arsvechkarev.vault.core.di.modules.ChannelsModule
 import com.arsvechkarev.vault.core.di.modules.CoreModule
 import com.arsvechkarev.vault.core.di.modules.CryptographyModule
 import com.arsvechkarev.vault.core.di.modules.FileSaverModule
@@ -28,6 +29,7 @@ import javax.inject.Singleton
 @Component(
   modules = [
     CoreModule::class,
+    ChannelsModule::class,
     RouterModule::class,
     CryptographyModule::class,
     FileSaverModule::class,

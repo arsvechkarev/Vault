@@ -1,30 +1,45 @@
 package com.arsvechkarev.vault.features.creating_service
 
-import com.arsvechkarev.vault.core.BasePresenter
+import com.arsvechkarev.vault.core.BasePresenterWithChannels
+import com.arsvechkarev.vault.core.Screens
 import com.arsvechkarev.vault.core.Threader
+import com.arsvechkarev.vault.core.channels.Channel
 import com.arsvechkarev.vault.core.model.Service
 import com.arsvechkarev.vault.cryptography.MasterPasswordHolder.masterPassword
 import com.arsvechkarev.vault.features.common.ServicesRepository
 import com.arsvechkarev.vault.features.common.getIconForServiceName
-import com.arsvechkarev.vault.features.creating_service.CreatingServiceScreenState.DIALOG_PASSWORD_STRENGTH
-import com.arsvechkarev.vault.features.creating_service.CreatingServiceScreenState.DIALOG_SAVE_PASSWORD
-import com.arsvechkarev.vault.features.creating_service.CreatingServiceScreenState.INITIAL
-import com.arsvechkarev.vault.features.creating_service.CreatingServiceScreenState.PASSWORD_SCREEN
+import com.arsvechkarev.vault.features.creating_password.PasswordCreatingActions.ConfigureMode.NewPassword
+import com.arsvechkarev.vault.features.creating_password.PasswordCreatingActions.ExitScreen
+import com.arsvechkarev.vault.features.creating_password.PasswordCreatingActions.ShowAcceptPasswordDialog
+import com.arsvechkarev.vault.features.creating_password.PasswordCreatingActions.ShowLoading
+import com.arsvechkarev.vault.features.creating_password.PasswordCreatingEvents
+import com.arsvechkarev.vault.features.creating_password.PasswordCreatingReactions.OnNewPasswordAccepted
+import com.arsvechkarev.vault.features.creating_password.PasswordCreatingReactions.OnSavePasswordButtonClicked
+import com.arsvechkarev.vault.features.creating_password.PasswordCreatingTag
 import navigation.Router
 import java.util.UUID
 import javax.inject.Inject
+import javax.inject.Named
 
 class CreatingServicePresenter @Inject constructor(
   private val servicesRepository: ServicesRepository,
+  @Named(PasswordCreatingTag) private val passwordCreatingChannel: Channel<PasswordCreatingEvents>,
   private val router: Router,
   threader: Threader
-) : BasePresenter<CreatingServiceView>(threader) {
+) : BasePresenterWithChannels<CreatingServiceView>(threader) {
   
-  private var state = INITIAL
   private var serviceName: String = ""
   private var username: String = ""
   private var email: String = ""
-  private var password: String = ""
+  
+  init {
+    subscribeToChannel(passwordCreatingChannel) { event ->
+      when (event) {
+        is OnSavePasswordButtonClicked -> passwordCreatingChannel.send(ShowAcceptPasswordDialog)
+        is OnNewPasswordAccepted -> performServiceSaving(event.password)
+      }
+    }
+  }
   
   fun onServiceNameChanged(text: String) {
     if (text.isNotBlank()) {
@@ -44,69 +59,27 @@ class CreatingServicePresenter @Inject constructor(
       viewState.showServiceNameCannotBeEmpty()
       return
     }
-    state = PASSWORD_SCREEN
     this.serviceName = serviceName.trim()
     this.username = username.trim()
     this.email = email.trim()
-    viewState.showPasswordCreatingDialog()
+    passwordCreatingChannel.send(NewPassword)
+    router.goForward(Screens.PasswordCreatingScreen)
   }
   
-  fun onPasswordEntered(password: String) {
-    this.password = password
-    state = DIALOG_SAVE_PASSWORD
-    viewState.showSavePasswordDialog()
+  fun onBackClicked() {
+    router.goBack()
   }
   
-  fun onPasswordIsTooWeakClicked() {
-    state = DIALOG_PASSWORD_STRENGTH
-    viewState.showPasswordStrengthDialog()
-  }
-  
-  fun onHidePasswordStrengthDialog() {
-    state = PASSWORD_SCREEN
-    viewState.hidePasswordStrengthDialog()
-  }
-  
-  fun acceptNewPassword() {
-    state = INITIAL
+  private fun performServiceSaving(password: String) {
     viewState.showLoadingCreation()
-    viewState.hideSavePasswordDialog()
+    passwordCreatingChannel.send(ShowLoading)
     onIoThread {
       val serviceInfo = Service(UUID.randomUUID().toString(), serviceName,
         username, email, password)
       servicesRepository.saveService(masterPassword, serviceInfo)
-      onMainThread { router.goBack() }
-    }
-  }
-  
-  fun closePasswordEditingDialog() {
-    state = INITIAL
-    viewState.hidePasswordCreatingDialog()
-  }
-  
-  fun onBackClicked() {
-  
-  }
-  
-  fun handleBackPress(): Boolean {
-    return when (state) {
-      INITIAL -> {
-        false
-      }
-      PASSWORD_SCREEN -> {
-        state = INITIAL
-        viewState.hidePasswordCreatingDialog()
-        true
-      }
-      DIALOG_PASSWORD_STRENGTH -> {
-        state = PASSWORD_SCREEN
-        viewState.hidePasswordStrengthDialog()
-        true
-      }
-      DIALOG_SAVE_PASSWORD -> {
-        state = PASSWORD_SCREEN
-        viewState.hideSavePasswordDialog()
-        true
+      onMainThread {
+        passwordCreatingChannel.send(ExitScreen)
+        router.goBackTo(Screens.ServicesListScreen)
       }
     }
   }

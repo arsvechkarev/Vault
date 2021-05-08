@@ -198,7 +198,7 @@ class InfoScreen : BaseScreen(), InfoView {
   }
   
   override fun onAppearedOnScreen() {
-    val serviceInfo = arguments[SERVICE_INFO] as Service
+    val serviceInfo = arguments[SERVICE] as Service
     presenter.performSetup(serviceInfo)
   }
   
@@ -330,8 +330,8 @@ class InfoScreen : BaseScreen(), InfoView {
   }
   
   companion object {
-    
-    const val SERVICE_INFO = "SERVICE_INFO"
+  
+    const val SERVICE = "SERVICE"
     
     const val ImageServiceName = "ImageServiceName"
     const val EditableTextInfoServiceName = "EditableTextInfoServiceName"

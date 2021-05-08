@@ -230,9 +230,27 @@ class PasswordEditingDialog(
     editText(DialogPasswordEditText).removeTextChangedListener(passwordTextWatcher)
   }
   
+  override fun showCreatingPasswordMode() {
+  }
+  
+  override fun showEditingPasswordMode(password: String) {
+  }
+  
   override fun showChangePasswordLength(progress: Int) {
     val text = context.getString(R.string.text_password_length, progress)
     textView(DialogPasswordTextLength).text(text)
+  }
+  
+  override fun showPasswordAcceptingDialog() {
+  }
+  
+  override fun hidePasswordAcceptingDialog() {
+  }
+  
+  override fun showLoadingDialog() {
+  }
+  
+  override fun hideLoadingDialog() {
   }
   
   override fun showPasswordStrength(strength: PasswordStrength?) {
@@ -263,22 +281,22 @@ class PasswordEditingDialog(
   override fun showPasswordIsEmpty() {
     textView(DialogPasswordTextError).text(R.string.text_password_cannot_be_empty)
   }
-  
-  override fun showPasswordIsTooWeak() {
-    textView(DialogPasswordTextError).text(R.string.text_password_is_too_weak)
-    textView(DialogPasswordTextError).onClick(onPasswordIsTooWeakClicked)
-    textView(DialogPasswordTextError).drawables(end = R.drawable.ic_question, color = Colors.Error)
-  }
-  
-  override fun showPasswordIsTooShort() {
-    val text = context.getString(R.string.text_password_min_length, MIN_PASSWORD_LENGTH)
-    textView(DialogPasswordTextError).text(text)
-  }
-  
-  override fun showSavePasswordClicked(password: String) {
-    context.hideKeyboard(editText(DialogPasswordEditText))
-    onSavePasswordClick(password)
-  }
+  //
+  //  override fun showPasswordIsTooWeak() {
+  //    textView(DialogPasswordTextError).text(R.string.text_password_is_too_weak)
+  //    textView(DialogPasswordTextError).onClick(onPasswordIsTooWeakClicked)
+  //    textView(DialogPasswordTextError).drawables(end = R.drawable.ic_question, color = Colors.Error)
+  //  }
+  //
+  //  override fun showPasswordIsTooShort() {
+  //    val text = context.getString(R.string.text_password_min_length, MIN_PASSWORD_LENGTH)
+  //    textView(DialogPasswordTextError).text(text)
+  //  }
+  //
+  //  override fun showSavePasswordClicked(password: String) {
+  //    context.hideKeyboard(editText(DialogPasswordEditText))
+  //    onSavePasswordClick(password)
+  //  }
   
   companion object {
     

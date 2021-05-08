@@ -1,13 +1,13 @@
 package com.arsvechkarev.vault.core.di.modules
 
-import com.arsvechkarev.vault.core.FileSaver
-import com.arsvechkarev.vault.cryptography.Cryptography
-import com.arsvechkarev.vault.cryptography.MasterPasswordChecker
-import com.arsvechkarev.vault.cryptography.MasterPasswordCheckerImpl
-import com.arsvechkarev.vault.cryptography.PasswordChecker
-import com.arsvechkarev.vault.cryptography.ZxcvbnPasswordChecker
-import com.arsvechkarev.vault.cryptography.generator.PasswordGenerator
-import com.arsvechkarev.vault.cryptography.generator.PasswordGeneratorImpl
+import buisnesslogic.Cryptography
+import buisnesslogic.FileSaver
+import buisnesslogic.MasterPasswordChecker
+import buisnesslogic.MasterPasswordCheckerImpl
+import buisnesslogic.PasswordChecker
+import buisnesslogic.ZxcvbnPasswordChecker
+import buisnesslogic.generator.PasswordGenerator
+import buisnesslogic.generator.PasswordGeneratorImpl
 import com.nulabinc.zxcvbn.Zxcvbn
 import dagger.Module
 import dagger.Provides

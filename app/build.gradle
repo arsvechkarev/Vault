@@ -28,6 +28,9 @@ android {
     signingConfig signingConfigs.release
   }
   buildTypes {
+    debug {
+      applicationIdSuffix ".debug"
+    }
     release {
       minifyEnabled ext.minifyEnabled
       shrinkResources ext.shrinkResources
@@ -44,6 +47,7 @@ android {
 
 dependencies {
 
+  implementation project(':buisness-logic')
   implementation project(':navigation')
 
   def appDependencies = rootProject.ext.applicationDependencies

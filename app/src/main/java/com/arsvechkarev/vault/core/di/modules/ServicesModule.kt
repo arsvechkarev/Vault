@@ -1,12 +1,12 @@
 package com.arsvechkarev.vault.core.di.modules
 
-import com.arsvechkarev.vault.core.AndroidJsonConverter
-import com.arsvechkarev.vault.core.FileSaver
-import com.arsvechkarev.vault.core.JsonConverter
+import buisnesslogic.Cryptography
+import buisnesslogic.FileSaver
+import buisnesslogic.GsonJsonConverter
+import buisnesslogic.JsonConverter
+import buisnesslogic.ServicesStorage
+import buisnesslogic.ServicesStorageImpl
 import com.arsvechkarev.vault.core.Threader
-import com.arsvechkarev.vault.cryptography.Cryptography
-import com.arsvechkarev.vault.cryptography.ServicesStorage
-import com.arsvechkarev.vault.cryptography.ServicesStorageImpl
 import com.arsvechkarev.vault.features.common.ServicesRepository
 import dagger.Module
 import dagger.Provides
@@ -17,7 +17,7 @@ object ServicesModule {
   
   @Provides
   @JvmStatic
-  fun provideJsonConverter(): JsonConverter = AndroidJsonConverter
+  fun provideJsonConverter(): JsonConverter = GsonJsonConverter
   
   @Provides
   @JvmStatic

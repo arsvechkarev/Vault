@@ -3,7 +3,7 @@ package com.arsvechkarev.vault.features.services_list
 import android.view.Gravity.CENTER
 import android.widget.ImageView
 import android.widget.TextView
-import com.arsvechkarev.vault.core.model.Service
+import com.arsvechkarev.vault.core.model.ServiceModel
 import com.arsvechkarev.vault.features.common.getIconForServiceName
 import com.arsvechkarev.vault.recycler.CallbackType
 import com.arsvechkarev.vault.recycler.ListAdapter
@@ -30,13 +30,13 @@ import com.arsvechkarev.vault.viewdsl.viewAs
 import com.arsvechkarev.vault.views.drawables.LetterInCircleDrawable.Companion.setLetterDrawable
 
 class ServicesListAdapter(
-  private val onItemClick: (Service) -> Unit,
-  private val onItemLongClick: (Service) -> Unit
+  private val onItemClick: (ServiceModel) -> Unit,
+  private val onItemLongClick: (ServiceModel) -> Unit
 ) : ListAdapter() {
   
   init {
     addDelegates(
-      delegate<Service> {
+      delegate<ServiceModel> {
         buildView {
           RootHorizontalLayout(MatchParent, WrapContent) {
             rippleBackground(Colors.Ripple)
@@ -71,9 +71,9 @@ class ServicesListAdapter(
     )
   }
   
-  fun removeItem(service: Service) {
+  fun removeItem(serviceModel: ServiceModel) {
     val list = ArrayList(data)
-    list.remove(service)
+    list.remove(serviceModel)
     submitList(list, CallbackType.TWO_LISTS)
   }
   

@@ -34,18 +34,6 @@ interface InfoView : MvpView {
   
   fun hideDeleteDialog()
   
-  fun showPasswordEditingDialog(password: String)
-  
-  fun hidePasswordEditingDialog()
-  
-  fun showPasswordStrengthDialog()
-  
-  fun hidePasswordStrengthDialog()
-  
-  fun showAcceptPasswordDialog()
-  
-  fun hideSavePasswordDialog()
-  
   fun showLoading()
   
   fun hideLoading()

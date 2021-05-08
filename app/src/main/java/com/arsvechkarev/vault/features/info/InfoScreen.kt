@@ -11,7 +11,7 @@ import com.arsvechkarev.vault.R
 import com.arsvechkarev.vault.core.di.CoreComponent
 import com.arsvechkarev.vault.core.extensions.getDeleteMessageText
 import com.arsvechkarev.vault.core.extensions.moxyPresenter
-import com.arsvechkarev.vault.core.model.Service
+import com.arsvechkarev.vault.core.model.ServiceModel
 import com.arsvechkarev.vault.viewbuilding.Colors
 import com.arsvechkarev.vault.viewbuilding.Dimens
 import com.arsvechkarev.vault.viewbuilding.Dimens.DividerHeight
@@ -185,7 +185,7 @@ class InfoScreen : BaseScreen(), InfoView {
   }
   
   override fun onAppearedOnScreenGoingForward() {
-    val serviceInfo = arguments[SERVICE] as Service
+    val serviceInfo = arguments[SERVICE] as ServiceModel
     presenter.performSetup(serviceInfo)
   }
   

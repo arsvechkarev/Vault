@@ -1,15 +1,14 @@
 package com.arsvechkarev.vault.features.creating_master_password
 
+import buisnesslogic.MasterPasswordChecker
+import buisnesslogic.MasterPasswordHolder
+import buisnesslogic.PasswordChecker
+import buisnesslogic.PasswordStatus.OK
 import com.arsvechkarev.vault.core.BasePresenter
 import com.arsvechkarev.vault.core.Screens
 import com.arsvechkarev.vault.core.Threader
 import com.arsvechkarev.vault.core.UserAuthSaver
 import com.arsvechkarev.vault.core.di.FeatureScope
-import com.arsvechkarev.vault.core.extensions.assertThat
-import com.arsvechkarev.vault.cryptography.MasterPasswordChecker
-import com.arsvechkarev.vault.cryptography.MasterPasswordHolder
-import com.arsvechkarev.vault.cryptography.PasswordChecker
-import com.arsvechkarev.vault.cryptography.PasswordStatus.OK
 import com.arsvechkarev.vault.features.creating_master_password.CreatingMasterPasswordScreenState.DIALOG_PASSWORD_STRENGTH
 import com.arsvechkarev.vault.features.creating_master_password.CreatingMasterPasswordScreenState.ENTERING_PASSWORD
 import com.arsvechkarev.vault.features.creating_master_password.CreatingMasterPasswordScreenState.REPEATING_PASSWORD
@@ -67,7 +66,7 @@ class CreatingMasterPasswordPresenter @Inject constructor(
   }
   
   fun onEnteredPassword(password: String) {
-    assertThat(state == ENTERING_PASSWORD)
+    require(state == ENTERING_PASSWORD)
     val passwordStatus = passwordChecker.validate(password)
     if (passwordStatus == OK) {
       state = REPEATING_PASSWORD
@@ -79,7 +78,7 @@ class CreatingMasterPasswordPresenter @Inject constructor(
   }
   
   fun onRepeatedPassword(password: String) {
-    assertThat(state == REPEATING_PASSWORD)
+    require(state == REPEATING_PASSWORD)
     if (previouslyEnteredPassword != "" && password == previouslyEnteredPassword) {
       finishAuthorization()
     } else {

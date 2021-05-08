@@ -5,9 +5,9 @@ import android.animation.ValueAnimator
 import android.content.Context
 import android.graphics.Canvas
 import android.view.View
+import buisnesslogic.PasswordStrength
 import com.arsvechkarev.vault.core.extensions.Paint
 import com.arsvechkarev.vault.core.extensions.f
-import com.arsvechkarev.vault.cryptography.PasswordStrength
 import com.arsvechkarev.vault.viewbuilding.Colors
 import com.arsvechkarev.vault.viewdsl.AccelerateDecelerateInterpolator
 import com.arsvechkarev.vault.viewdsl.DURATION_DEFAULT

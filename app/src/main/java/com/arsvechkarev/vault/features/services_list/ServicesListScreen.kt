@@ -14,7 +14,7 @@ import com.arsvechkarev.vault.core.di.CoreComponent
 import com.arsvechkarev.vault.core.extensions.getDeleteMessageText
 import com.arsvechkarev.vault.core.extensions.ifTrue
 import com.arsvechkarev.vault.core.extensions.moxyPresenter
-import com.arsvechkarev.vault.core.model.Service
+import com.arsvechkarev.vault.core.model.ServiceModel
 import com.arsvechkarev.vault.viewbuilding.Colors
 import com.arsvechkarev.vault.viewbuilding.Dimens.FabSize
 import com.arsvechkarev.vault.viewbuilding.Dimens.ImageNoServicesSize
@@ -153,15 +153,15 @@ class ServicesListScreen : BaseScreen(), ServicesListView {
     showView(view(LayoutNoPasswords))
   }
   
-  override fun showServicesList(list: List<Service>) {
+  override fun showServicesList(list: List<ServiceModel>) {
     showView(viewAs<RecyclerView>())
     adapter.changeListWithoutAnimation(list)
   }
   
-  override fun showDeleteDialog(service: Service) {
+  override fun showDeleteDialog(serviceModel: ServiceModel) {
     infoDialog.showWithDeleteAndCancelOption(
-      R.string.text_delete_service, getDeleteMessageText(service.serviceName),
-      onDeleteClicked = { presenter.deleteService(service) }
+      R.string.text_delete_service, getDeleteMessageText(serviceModel.serviceName),
+      onDeleteClicked = { presenter.deleteService(serviceModel) }
     )
   }
   
@@ -170,8 +170,8 @@ class ServicesListScreen : BaseScreen(), ServicesListView {
     loadingDialog.show()
   }
   
-  override fun showDeletedService(service: Service) {
-    adapter.removeItem(service)
+  override fun showDeletedService(serviceModel: ServiceModel) {
+    adapter.removeItem(serviceModel)
     loadingDialog.hide()
   }
   

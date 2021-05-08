@@ -1,7 +1,7 @@
 package com.arsvechkarev.vault.core
 
 import com.arsvechkarev.vault.core.extensions.bundle
-import com.arsvechkarev.vault.core.model.Service
+import com.arsvechkarev.vault.core.model.ServiceModel
 import com.arsvechkarev.vault.features.creating_master_password.CreatingMasterPasswordScreen
 import com.arsvechkarev.vault.features.creating_password.PasswordCreatingScreen
 import com.arsvechkarev.vault.features.creating_service.CreatingServiceScreen
@@ -24,8 +24,8 @@ object Screens {
   
   val CreatingServiceScreen = Screen { CreatingServiceScreen::class }
   
-  fun InfoScreen(service: Service) =
-      Screen(arguments = bundle(SERVICE to service)) { InfoScreen::class }
+  fun InfoScreen(serviceModel: ServiceModel) =
+      Screen(arguments = bundle(SERVICE to serviceModel)) { InfoScreen::class }
   
   val PasswordCreatingScreen = Screen { PasswordCreatingScreen::class }
 }

@@ -1,11 +1,11 @@
 package com.arsvechkarev.vault.features.start
 
+import buisnesslogic.MasterPasswordChecker
+import buisnesslogic.MasterPasswordHolder
 import com.arsvechkarev.vault.core.BasePresenter
 import com.arsvechkarev.vault.core.Screens
 import com.arsvechkarev.vault.core.Threader
 import com.arsvechkarev.vault.core.di.FeatureScope
-import com.arsvechkarev.vault.cryptography.MasterPasswordChecker
-import com.arsvechkarev.vault.cryptography.MasterPasswordHolder
 import navigation.Router
 import javax.inject.Inject
 

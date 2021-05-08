@@ -1,49 +1,66 @@
 package com.arsvechkarev.vault.features.info
 
-import com.arsvechkarev.vault.core.BasePresenter
+import buisnesslogic.MasterPasswordHolder.masterPassword
+import com.arsvechkarev.vault.core.BasePresenterWithChannels
 import com.arsvechkarev.vault.core.Clipboard
+import com.arsvechkarev.vault.core.Screens
 import com.arsvechkarev.vault.core.Threader
+import com.arsvechkarev.vault.core.communicators.Communicator
 import com.arsvechkarev.vault.core.di.FeatureScope
-import com.arsvechkarev.vault.core.model.Service
-import com.arsvechkarev.vault.cryptography.MasterPasswordHolder.masterPassword
+import com.arsvechkarev.vault.core.model.ServiceModel
 import com.arsvechkarev.vault.features.common.ServicesRepository
 import com.arsvechkarev.vault.features.common.getIconForServiceName
+import com.arsvechkarev.vault.features.creating_password.PasswordCreatingActions.ConfigureMode.EditPassword
+import com.arsvechkarev.vault.features.creating_password.PasswordCreatingActions.ExitScreen
+import com.arsvechkarev.vault.features.creating_password.PasswordCreatingActions.ShowAcceptPasswordDialog
+import com.arsvechkarev.vault.features.creating_password.PasswordCreatingActions.ShowLoading
+import com.arsvechkarev.vault.features.creating_password.PasswordCreatingEvents
+import com.arsvechkarev.vault.features.creating_password.PasswordCreatingReactions.OnNewPasswordAccepted
+import com.arsvechkarev.vault.features.creating_password.PasswordCreatingReactions.OnSavePasswordButtonClicked
+import com.arsvechkarev.vault.features.creating_password.PasswordCreatingTag
 import com.arsvechkarev.vault.features.info.InfoScreenState.DELETING_DIALOG
 import com.arsvechkarev.vault.features.info.InfoScreenState.EDITING_NAME_OR_USERNAME_OR_EMAIL
 import com.arsvechkarev.vault.features.info.InfoScreenState.INITIAL
 import com.arsvechkarev.vault.features.info.InfoScreenState.LOADING
-import com.arsvechkarev.vault.features.info.InfoScreenState.PASSWORD_EDITING_DIALOG
-import com.arsvechkarev.vault.features.info.InfoScreenState.PASSWORD_STRENGTH_DIALOG
-import com.arsvechkarev.vault.features.info.InfoScreenState.SAVE_PASSWORD_DIALOG
 import navigation.Router
 import javax.inject.Inject
+import javax.inject.Named
 
 @FeatureScope
 class InfoPresenter @Inject constructor(
+  @Named(PasswordCreatingTag)
+  private val passwordCreatingCommunicator: Communicator<PasswordCreatingEvents>,
   private val servicesRepository: ServicesRepository,
   private val clipboard: Clipboard,
   private val router: Router,
   threader: Threader
-) : BasePresenter<InfoView>(threader) {
+) : BasePresenterWithChannels<InfoView>(threader) {
   
-  private lateinit var service: Service
+  private lateinit var serviceModel: ServiceModel
   
-  private var password: String = ""
   private var state = INITIAL
   
   val isEditingNameOrEmailNow get() = state == EDITING_NAME_OR_USERNAME_OR_EMAIL
   
-  fun performSetup(service: Service) {
-    this.service = service
+  init {
+    subscribeToChannel(passwordCreatingCommunicator) { event ->
+      when (event) {
+        is OnSavePasswordButtonClicked -> reactToSaveButtonClicked(event.password)
+        is OnNewPasswordAccepted -> reactToNewPasswordSaved(event.password)
+      }
+    }
+  }
+  
+  fun performSetup(serviceModel: ServiceModel) {
+    this.serviceModel = serviceModel
     state = INITIAL
-    password = service.password
-    updateServiceIcon(service.serviceName)
-    viewState.showServiceName(service.serviceName)
-    viewState.setPassword(service.password)
+    updateServiceIcon(serviceModel.serviceName)
+    viewState.showServiceName(serviceModel.serviceName)
+    viewState.setPassword(serviceModel.password)
     viewState.hidePassword()
-    val username = service.username
+    val username = serviceModel.username
     if (username.isEmpty()) viewState.showNoUsername() else viewState.showUsername(username)
-    val email = service.email
+    val email = serviceModel.email
     if (email.isEmpty()) viewState.showNoEmail() else viewState.showEmail(email)
   }
   
@@ -54,15 +71,14 @@ class InfoPresenter @Inject constructor(
   
   fun saveServiceName(serviceName: String) {
     state = INITIAL
-    if (service.serviceName == serviceName) return
+    if (serviceModel.serviceName == serviceName) return
     viewState.showLoading()
     state = LOADING
-    service = Service(service.id, serviceName, service.username,
-      service.email, service.password)
+    serviceModel = serviceModel.copy(serviceName = serviceName)
     viewState.showServiceName(serviceName)
     updateServiceIcon(serviceName)
     onIoThread {
-      servicesRepository.updateService(masterPassword, service)
+      servicesRepository.updateService(masterPassword, serviceModel)
       state = INITIAL
       onMainThread { viewState.hideLoading() }
     }
@@ -70,14 +86,13 @@ class InfoPresenter @Inject constructor(
   
   fun saveUsername(username: String) {
     state = INITIAL
-    if (service.username == username) return
+    if (serviceModel.username == username) return
     viewState.showLoading()
     state = LOADING
-    service = Service(service.id, service.serviceName, username,
-      service.email, service.password)
+    serviceModel = serviceModel.copy(username = username)
     if (username.isBlank()) viewState.showNoUsername() else viewState.showUsername(username)
     onIoThread {
-      servicesRepository.updateService(masterPassword, service)
+      servicesRepository.updateService(masterPassword, serviceModel)
       state = INITIAL
       onMainThread { viewState.hideLoading() }
     }
@@ -85,14 +100,13 @@ class InfoPresenter @Inject constructor(
   
   fun saveEmail(email: String) {
     state = INITIAL
-    if (service.email == email) return
+    if (serviceModel.email == email) return
     viewState.showLoading()
     state = LOADING
-    service = Service(service.id, service.serviceName, service.username,
-      email, service.password)
+    serviceModel = serviceModel.copy(email = email)
     if (email.isBlank()) viewState.showNoEmail() else viewState.showEmail(email)
     onIoThread {
-      servicesRepository.updateService(masterPassword, service)
+      servicesRepository.updateService(masterPassword, serviceModel)
       state = INITIAL
       onMainThread { viewState.hideLoading() }
     }
@@ -100,7 +114,7 @@ class InfoPresenter @Inject constructor(
   
   fun onTogglePassword(isPasswordShown: Boolean) {
     if (isPasswordShown) {
-      viewState.showPassword(service.password)
+      viewState.showPassword(serviceModel.password)
     } else {
       viewState.hidePassword()
     }
@@ -112,7 +126,7 @@ class InfoPresenter @Inject constructor(
   
   fun onDeleteClicked() {
     state = DELETING_DIALOG
-    viewState.showDeleteDialog(service.serviceName)
+    viewState.showDeleteDialog(serviceModel.serviceName)
   }
   
   fun onHideDeleteDialog() {
@@ -124,7 +138,7 @@ class InfoPresenter @Inject constructor(
     viewState.hideDeleteDialog()
     viewState.showLoading()
     onIoThread {
-      servicesRepository.deleteService(masterPassword, service, notifyListeners = true)
+      servicesRepository.deleteService(masterPassword, serviceModel, notifyListeners = true)
       state = INITIAL
       onMainThread {
         viewState.showExit()
@@ -134,66 +148,13 @@ class InfoPresenter @Inject constructor(
   }
   
   fun onCopyClicked() {
-    clipboard.copyPassword(service.password)
+    clipboard.copyPassword(serviceModel.password)
     viewState.showCopiedPassword()
   }
   
   fun onEditPasswordIconClicked() {
-    state = PASSWORD_EDITING_DIALOG
-    viewState.showPasswordEditingDialog(service.password)
-  }
-  
-  fun onShowPasswordStrengthDialog() {
-    state = PASSWORD_STRENGTH_DIALOG
-    viewState.showPasswordStrengthDialog()
-  }
-  
-  fun onHidePasswordStrengthDialog() {
-    state = PASSWORD_EDITING_DIALOG
-    viewState.hidePasswordStrengthDialog()
-  }
-  
-  fun onSaveNewPasswordClicked(password: String) {
-    if (this.password == password) {
-      state = INITIAL
-      viewState.hidePasswordEditingDialog()
-      return
-    }
-    if (this.password.isEmpty()) {
-      // Password was cleared after user closed SavePasswordDialog
-      this.password = password
-    }
-    this.password = password
-    state = SAVE_PASSWORD_DIALOG
-    viewState.showAcceptPasswordDialog()
-  }
-  
-  fun acceptPassword() {
-    state = LOADING
-    viewState.showLoading()
-    viewState.hideSavePasswordDialog()
-    service = Service(service.id, service.serviceName, service.username,
-      service.email, password)
-    onIoThread {
-      servicesRepository.updateService(masterPassword, service)
-      state = INITIAL
-      onMainThread {
-        viewState.setPassword(password)
-        viewState.hidePasswordEditingDialog()
-        viewState.hideLoading()
-      }
-    }
-  }
-  
-  fun closePasswordScreen() {
-    state = INITIAL
-    viewState.hidePasswordEditingDialog()
-  }
-  
-  fun onHideAcceptPasswordDialog() {
-    password = ""
-    state = PASSWORD_EDITING_DIALOG
-    viewState.hideSavePasswordDialog()
+    router.goForward(Screens.PasswordCreatingScreen)
+    passwordCreatingCommunicator.send(EditPassword(serviceModel.password))
   }
   
   fun onBackClicked() {
@@ -214,20 +175,27 @@ class InfoPresenter @Inject constructor(
         state = INITIAL
         true
       }
-      PASSWORD_EDITING_DIALOG -> {
-        viewState.hidePasswordEditingDialog()
-        state = INITIAL
-        true
-      }
-      PASSWORD_STRENGTH_DIALOG -> {
-        viewState.hidePasswordStrengthDialog()
-        state = PASSWORD_EDITING_DIALOG
-        true
-      }
-      SAVE_PASSWORD_DIALOG -> {
-        viewState.hideSavePasswordDialog()
-        state = PASSWORD_EDITING_DIALOG
-        true
+    }
+  }
+  
+  private fun reactToSaveButtonClicked(newPassword: String) {
+    if (serviceModel.password == newPassword) {
+      // Password is the same as was before, just closing PasswordCreatingScreen
+      router.goBack()
+      return
+    }
+    passwordCreatingCommunicator.send(ShowAcceptPasswordDialog)
+  }
+  
+  private fun reactToNewPasswordSaved(newPassword: String) {
+    passwordCreatingCommunicator.send(ShowLoading)
+    serviceModel = serviceModel.copy(password = newPassword)
+    onIoThread {
+      servicesRepository.updateService(masterPassword, serviceModel)
+      onMainThread {
+        viewState.setPassword(newPassword)
+        passwordCreatingCommunicator.send(ExitScreen)
+        router.goBack()
       }
     }
   }

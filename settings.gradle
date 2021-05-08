@@ -2,3 +2,4 @@ rootProject.name = "Vault"
 include ':app'
 include ':config'
 include ':navigation'
+include ':buisness-logic'

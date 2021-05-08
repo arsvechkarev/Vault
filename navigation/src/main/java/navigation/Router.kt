@@ -16,8 +16,8 @@ class Router : BaseRouter() {
     executeCommands(Back(releaseCurrentScreen))
   }
   
-  fun goBackTo(screenInfo: ScreenInfo, releaseAllLeftScreen: Boolean = true) {
-    executeCommands(BackTo(screenInfo, releaseAllLeftScreen))
+  fun goBackTo(screenInfo: ScreenInfo, releaseAllLeftScreens: Boolean = true) {
+    executeCommands(BackTo(screenInfo, releaseAllLeftScreens))
   }
   
   fun switchToNewRoot(screenInfo: ScreenInfo) {

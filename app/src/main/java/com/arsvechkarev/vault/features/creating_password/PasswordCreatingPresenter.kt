@@ -4,7 +4,7 @@ import com.arsvechkarev.vault.core.BasePresenterWithChannels
 import com.arsvechkarev.vault.core.DEFAULT_PASSWORD_LENGTH
 import com.arsvechkarev.vault.core.MIN_PASSWORD_LENGTH
 import com.arsvechkarev.vault.core.Threader
-import com.arsvechkarev.vault.core.channels.Channel
+import com.arsvechkarev.vault.core.channels.Communicator
 import com.arsvechkarev.vault.core.di.FeatureScope
 import com.arsvechkarev.vault.core.extensions.hasNumbers
 import com.arsvechkarev.vault.core.extensions.hasSpecialSymbols
@@ -34,7 +34,8 @@ import javax.inject.Named
 class PasswordCreatingPresenter @Inject constructor(
   private val passwordChecker: PasswordChecker,
   private val passwordGenerator: PasswordGenerator,
-  @Named(PasswordCreatingTag) private val passwordCreatingChannel: Channel<PasswordCreatingEvents>,
+  @Named(
+    PasswordCreatingTag) private val passwordCreatingCommunicator: Communicator<PasswordCreatingEvents>,
   private val router: Router,
   threader: Threader
 ) : BasePresenterWithChannels<PasswordCreatingView>(threader) {
@@ -45,7 +46,7 @@ class PasswordCreatingPresenter @Inject constructor(
   private var state = INITIAL
   
   init {
-    subscribeToChannel(passwordCreatingChannel) { event ->
+    subscribeToChannel(passwordCreatingCommunicator) { event ->
       when (event) {
         NewPassword -> {
           viewState.showCreatingPasswordMode()
@@ -108,7 +109,7 @@ class PasswordCreatingPresenter @Inject constructor(
   fun onSavePasswordClicked() {
     when (passwordChecker.validate(password)) {
       EMPTY -> viewState.showPasswordIsEmpty()
-      else -> passwordCreatingChannel.send(OnSavePasswordButtonClicked(password))
+      else -> passwordCreatingCommunicator.send(OnSavePasswordButtonClicked(password))
     }
   }
   
@@ -146,6 +147,6 @@ class PasswordCreatingPresenter @Inject constructor(
   }
   
   fun acceptPassword() {
-    passwordCreatingChannel.send(OnNewPasswordAccepted(password))
+    passwordCreatingCommunicator.send(OnNewPasswordAccepted(password))
   }
 }

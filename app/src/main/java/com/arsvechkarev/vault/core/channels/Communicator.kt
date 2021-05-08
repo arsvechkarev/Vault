@@ -1,11 +1,11 @@
 package com.arsvechkarev.vault.core.channels
 
 /**
- * Channel for sending and receiving events. **NOT THREAD SAFE**
+ * Communicator for sending and receiving events. **NOT THREAD SAFE**
  *
  * @param E type of events
  */
-interface Channel<E> {
+interface Communicator<E> {
   
   /**
    * Sends [event] to all current subscribers

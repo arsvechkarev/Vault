@@ -1,10 +1,11 @@
-package com.arsvechkarev.vault.features.services_list
+package com.arsvechkarev.vault.features.services_list.presentation
 
 import android.content.Context
 import android.text.SpannableString
 import android.text.style.RelativeSizeSpan
 import android.view.Gravity.BOTTOM
 import android.view.Gravity.CENTER
+import android.view.Gravity.CENTER_VERTICAL
 import android.view.Gravity.END
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
@@ -17,6 +18,7 @@ import com.arsvechkarev.vault.core.extensions.moxyPresenter
 import com.arsvechkarev.vault.core.model.ServiceModel
 import com.arsvechkarev.vault.viewbuilding.Colors
 import com.arsvechkarev.vault.viewbuilding.Dimens.FabSize
+import com.arsvechkarev.vault.viewbuilding.Dimens.IconPadding
 import com.arsvechkarev.vault.viewbuilding.Dimens.ImageNoServicesSize
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginDefault
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginMedium
@@ -26,6 +28,7 @@ import com.arsvechkarev.vault.viewbuilding.Dimens.VerticalMarginSmall
 import com.arsvechkarev.vault.viewbuilding.Fonts
 import com.arsvechkarev.vault.viewbuilding.Styles.BaseTextView
 import com.arsvechkarev.vault.viewbuilding.Styles.BoldTextView
+import com.arsvechkarev.vault.viewbuilding.Styles.TitleTextView
 import com.arsvechkarev.vault.viewbuilding.TextSizes
 import com.arsvechkarev.vault.viewdsl.Size.Companion.MatchParent
 import com.arsvechkarev.vault.viewdsl.Size.Companion.WrapContent
@@ -34,8 +37,11 @@ import com.arsvechkarev.vault.viewdsl.animateInvisible
 import com.arsvechkarev.vault.viewdsl.animateVisible
 import com.arsvechkarev.vault.viewdsl.backgroundColor
 import com.arsvechkarev.vault.viewdsl.behavior
+import com.arsvechkarev.vault.viewdsl.circleRippleBackground
 import com.arsvechkarev.vault.viewdsl.classNameTag
+import com.arsvechkarev.vault.viewdsl.gone
 import com.arsvechkarev.vault.viewdsl.gravity
+import com.arsvechkarev.vault.viewdsl.id
 import com.arsvechkarev.vault.viewdsl.image
 import com.arsvechkarev.vault.viewdsl.invisible
 import com.arsvechkarev.vault.viewdsl.layoutGravity
@@ -50,6 +56,7 @@ import com.arsvechkarev.vault.viewdsl.size
 import com.arsvechkarev.vault.viewdsl.tag
 import com.arsvechkarev.vault.viewdsl.text
 import com.arsvechkarev.vault.viewdsl.textSize
+import com.arsvechkarev.vault.viewdsl.visible
 import com.arsvechkarev.vault.viewdsl.withViewBuilder
 import com.arsvechkarev.vault.views.MaterialProgressBar
 import com.arsvechkarev.vault.views.behaviors.HeaderBehavior
@@ -67,12 +74,23 @@ class ServicesListScreen : BaseScreen(), ServicesListView {
     val viewUnderHeaderBehavior = ViewUnderHeaderBehavior()
     RootCoordinatorLayout {
       backgroundColor(Colors.Background)
-      TextView(MatchParent, WrapContent, style = BoldTextView) {
-        paddings(top = VerticalMarginSmall + StatusBarHeight, bottom = MarginSmall,
-          start = MarginDefault)
-        textSize(TextSizes.H0)
+      FrameLayout(MatchParent, WrapContent) {
         behavior(HeaderBehavior())
-        text(context.getString(R.string.text_passwords))
+        paddings(top = VerticalMarginSmall + StatusBarHeight, bottom = MarginSmall,
+          start = MarginDefault, end = MarginDefault)
+        TextView(MatchParent, WrapContent, style = TitleTextView) {
+          text(context.getString(R.string.text_passwords))
+          layoutGravity(CENTER_VERTICAL)
+        }
+        ImageView(WrapContent, WrapContent) {
+          id(R.drawable.ic_settings)
+          gone()
+          image(R.drawable.ic_settings)
+          layoutGravity(CENTER_VERTICAL or END)
+          padding(IconPadding)
+          circleRippleBackground()
+          onClick { presenter.onSettingsIconClicked() }
+        }
       }
       RecyclerView(MatchParent, WrapContent) {
         classNameTag()
@@ -143,6 +161,10 @@ class ServicesListScreen : BaseScreen(), ServicesListView {
   
   override fun onInit() {
     viewAs<RecyclerView>().setupWith(adapter)
+  }
+  
+  override fun showSettingsIcon() {
+    imageView(R.drawable.ic_settings).visible()
   }
   
   override fun showLoading() {

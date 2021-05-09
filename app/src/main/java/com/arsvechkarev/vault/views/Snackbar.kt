@@ -3,7 +3,6 @@ package com.arsvechkarev.vault.views
 import android.content.Context
 import android.view.ViewGroup
 import android.widget.TextView
-import com.arsvechkarev.vault.core.extensions.i
 import com.arsvechkarev.vault.viewbuilding.Colors
 import com.arsvechkarev.vault.viewbuilding.Dimens
 import com.arsvechkarev.vault.viewbuilding.Dimens.CheckmarkSize
@@ -76,7 +75,7 @@ class Snackbar(context: Context) : ViewGroup(context) {
   override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
     val width = widthMeasureSpec.size
     val checkmarkHeight = CheckmarkSize
-    val checkmarkWidth = exactly((checkmarkHeight * 1.3333f).i)
+    val checkmarkWidth = exactly((checkmarkHeight * 1.3333f).toInt())
     checkmarkView.measure(checkmarkWidth, exactly(checkmarkHeight))
     val textInfoWidth = width - paddingStart - paddingEnd - innerPadding * 2 -
         checkmarkView.measuredWidth

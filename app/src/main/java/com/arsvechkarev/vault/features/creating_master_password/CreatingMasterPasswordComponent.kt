@@ -1,10 +1,10 @@
 package com.arsvechkarev.vault.features.creating_master_password
 
 import android.content.Context
-import com.arsvechkarev.vault.core.UserAuthSaver
-import com.arsvechkarev.vault.core.UserAuthSaverImpl
 import com.arsvechkarev.vault.core.di.FeatureScope
 import com.arsvechkarev.vault.core.di.modules.PasswordActionsModule
+import com.arsvechkarev.vault.features.common.UserAuthSaver
+import com.arsvechkarev.vault.features.common.UserAuthSaverImpl
 import dagger.Module
 import dagger.Provides
 import dagger.Subcomponent

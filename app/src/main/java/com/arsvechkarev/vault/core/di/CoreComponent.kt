@@ -5,6 +5,7 @@ import com.arsvechkarev.vault.core.di.modules.CommunicatorsModule
 import com.arsvechkarev.vault.core.di.modules.CoreModule
 import com.arsvechkarev.vault.core.di.modules.CryptographyModule
 import com.arsvechkarev.vault.core.di.modules.FileSaverModule
+import com.arsvechkarev.vault.core.di.modules.FingerprintsCheckerModule
 import com.arsvechkarev.vault.core.di.modules.MasterKeyModule
 import com.arsvechkarev.vault.core.di.modules.RouterModule
 import com.arsvechkarev.vault.core.di.modules.ServicesModule
@@ -19,8 +20,10 @@ import com.arsvechkarev.vault.features.info.InfoModule
 import com.arsvechkarev.vault.features.initial_screen.InitialComponent
 import com.arsvechkarev.vault.features.main.MainComponent
 import com.arsvechkarev.vault.features.main.NavigationModule
-import com.arsvechkarev.vault.features.services_list.ServicesListComponent
-import com.arsvechkarev.vault.features.services_list.ServicesListModule
+import com.arsvechkarev.vault.features.services_list.di.ServicesListComponent
+import com.arsvechkarev.vault.features.services_list.di.ServicesListModule
+import com.arsvechkarev.vault.features.settings.di.SettingsComponent
+import com.arsvechkarev.vault.features.settings.di.SettingsModule
 import com.arsvechkarev.vault.features.start.StartComponent
 import com.arsvechkarev.vault.features.start.StartModule
 import dagger.Component
@@ -35,12 +38,14 @@ import javax.inject.Singleton
     CryptographyModule::class,
     MasterKeyModule::class,
     FileSaverModule::class,
+    FingerprintsCheckerModule::class,
     ServicesModule::class,
     CreatingMasterPasswordModule::class,
     CreatingServiceModule::class,
     InfoModule::class,
     ServicesListModule::class,
     StartModule::class,
+    SettingsModule::class,
     PasswordCreatingModule::class,
     NavigationModule::class
   ]
@@ -62,6 +67,8 @@ interface CoreComponent {
   fun getServicesListComponentFactory(): ServicesListComponent.Factory
   
   fun getStartComponentFactory(): StartComponent.Factory
+  
+  fun getSettingsComponentFactory(): SettingsComponent.Factory
   
   @Component.Builder
   interface Builder {

@@ -3,6 +3,7 @@
   <string name="text_empty"/>
   <string name="text_password">Password</string>
   <string name="text_passwords">Passwords</string>
+  <string name="text_settings">Settings</string>
   <string name="text_create_master_password">Create master password</string>
   <string name="text_weak">Weak</string>
   <string name="text_medium">Medium</string>

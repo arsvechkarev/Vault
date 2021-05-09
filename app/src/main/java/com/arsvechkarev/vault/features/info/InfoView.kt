@@ -1,6 +1,5 @@
 package com.arsvechkarev.vault.features.info
 
-import android.graphics.drawable.Drawable
 import moxy.MvpView
 import moxy.viewstate.strategy.AddToEndSingleStrategy
 import moxy.viewstate.strategy.StateStrategyType
@@ -8,11 +7,9 @@ import moxy.viewstate.strategy.StateStrategyType
 @StateStrategyType(AddToEndSingleStrategy::class)
 interface InfoView : MvpView {
   
-  fun showLetterInCircleIcon(letter: String)
-  
-  fun showIconFromResources(icon: Drawable)
-  
   fun showServiceName(serviceName: String)
+  
+  fun showServiceIcon(serviceName: String)
   
   fun showUsername(username: String)
   

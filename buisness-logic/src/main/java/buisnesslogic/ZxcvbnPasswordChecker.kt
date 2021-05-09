@@ -2,6 +2,11 @@ package buisnesslogic
 
 import com.nulabinc.zxcvbn.Zxcvbn
 
+/**
+ * Password checker that uses zxcvbn library to check password strength.
+ *
+ * Library could be found at https://github.com/dropbox/zxcvbn
+ */
 class ZxcvbnPasswordChecker(
   private val zxcvbn: Zxcvbn
 ) : PasswordChecker {

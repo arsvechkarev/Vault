@@ -3,9 +3,7 @@ package navigation
 import android.view.View
 import android.view.animation.AccelerateDecelerateInterpolator
 
-const val DURATION_SHORT = 500L
-
-fun View.animateVisible(duration: Long = DURATION_SHORT) {
+fun View.animateVisible(duration: Long) {
   alpha = 0f
   visibility = View.VISIBLE
   animate().alpha(1f).setDuration(duration)
@@ -13,13 +11,13 @@ fun View.animateVisible(duration: Long = DURATION_SHORT) {
       .start()
 }
 
-fun View.animateGoneAfter(duration: Long = DURATION_SHORT) {
+fun View.animateGoneAfter(duration: Long) {
   handler.postDelayed({
     visibility = View.GONE
   }, duration)
 }
 
-fun View.animateSlideFromRight(duration: Long = DURATION_SHORT) {
+fun View.animateSlideFromRight(duration: Long) {
   val width = context.resources.displayMetrics.widthPixels
   val height = context.resources.displayMetrics.heightPixels
   alpha = 0f
@@ -33,7 +31,7 @@ fun View.animateSlideFromRight(duration: Long = DURATION_SHORT) {
       .start()
 }
 
-fun View.animateSlideToRight(duration: Long = DURATION_SHORT) {
+fun View.animateSlideToRight(duration: Long) {
   val width = context.resources.displayMetrics.widthPixels
   val height = context.resources.displayMetrics.heightPixels
   val dx = minOf(width, height) / 8f

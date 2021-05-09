@@ -13,33 +13,17 @@ class CryptographyTest {
   @Test
   fun `Encrypting and decrypting data`() {
     val password = "ko)du28:0=_"
-    val originalData = "this is super secret data"
-    
-    val ciphertext = cryptography.encryptForTheFirstTime(password, originalData)
-    val metaInfo = cryptography.getEncryptionMetaInfo(password, ciphertext)
-    val decryptedText = cryptography.decryptCipher(password, metaInfo, ciphertext)
-    
-    assertEquals(originalData, decryptedText)
-    
-    val newData = "now this is new data"
-    val newCiphertext = cryptography.encryptData(password, metaInfo, newData)
-    val newDecryptedData = cryptography.decryptCipher(password, metaInfo, newCiphertext)
-    
-    assertEquals(newData, newDecryptedData)
-  }
+    val plaintext = "this is super secret data"
   
-  @Test
-  fun `Testing meta info`() {
-    val password = "io00(3zUIc"
-    val oldData = "this is old data"
-    
-    val initialCipher = cryptography.encryptForTheFirstTime(password, oldData)
-    val oldMetaInfo = cryptography.getEncryptionMetaInfo(password, initialCipher)
-    
-    val newData = "new data"
-    val newCipher = cryptography.encryptData(password, oldMetaInfo, newData)
-    val newMetaInfo = cryptography.getEncryptionMetaInfo(password, newCipher)
-    
-    assertEquals(oldMetaInfo, newMetaInfo)
+    val ciphertext = cryptography.encryptForTheFirstTime(password, plaintext)
+    val decryptedText = cryptography.decryptData(password, ciphertext)
+  
+    assertEquals(plaintext, decryptedText)
+  
+    val newData = "now this is new data"
+    val newCiphertext = cryptography.encryptData(password, newData, ciphertext)
+    val newDecryptedData = cryptography.decryptData(password, newCiphertext)
+  
+    assertEquals(newData, newDecryptedData)
   }
 }

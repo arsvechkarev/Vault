@@ -1,9 +1,10 @@
 package com.arsvechkarev.vault.features.common
 
 import android.graphics.drawable.Drawable
+import android.widget.ImageView
 import com.arsvechkarev.vault.R
-import com.arsvechkarev.vault.viewdsl.ContextHolder
 import com.arsvechkarev.vault.viewdsl.retrieveDrawable
+import com.arsvechkarev.vault.views.drawables.LetterInCircleDrawable
 
 private const val AMAZON = "amazon"
 private const val GOOGLE = "google"
@@ -20,10 +21,26 @@ private const val VK = "vk"
 private const val WHATSAPP = "whatsapp"
 private const val GITHUB = "github"
 
-fun getIconForServiceName(inputText: String): Drawable? {
-  val text = inputText.trim()
-  if (text.isBlank()) return null
-  val drawable: (Int) -> Drawable = { ContextHolder.applicationContext.retrieveDrawable(it) }
+fun ImageView.setServiceIcon(serviceName: String) {
+  val text = serviceName.trim()
+  if (text.isBlank()) {
+    setImageDrawable(null) // Text is blank, showing no icon
+    return
+  }
+  val existingServiceIcon = findExistingServiceIcon(text)
+  if (existingServiceIcon != null) {
+    setImageDrawable(existingServiceIcon)
+  } else {
+    // No existing service icon found, setting LetterInCircleImage
+    val letter = serviceName[0].toString()
+    (this.drawable as? LetterInCircleDrawable)?.setLetter(letter) ?: run {
+      setImageDrawable(LetterInCircleDrawable(letter))
+    }
+  }
+}
+
+private fun ImageView.findExistingServiceIcon(text: String): Drawable? {
+  val drawable: (Int) -> Drawable = { context.retrieveDrawable(it) }
   return when {
     text has AMAZON -> drawable(R.drawable.icon_amazon)
     text has GOOGLE -> drawable(R.drawable.icon_google)

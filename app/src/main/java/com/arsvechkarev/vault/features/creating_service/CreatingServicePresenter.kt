@@ -7,7 +7,6 @@ import com.arsvechkarev.vault.core.Threader
 import com.arsvechkarev.vault.core.communicators.Communicator
 import com.arsvechkarev.vault.core.model.ServiceModel
 import com.arsvechkarev.vault.features.common.ServicesRepository
-import com.arsvechkarev.vault.features.common.getIconForServiceName
 import com.arsvechkarev.vault.features.creating_password.PasswordCreatingActions.ConfigureMode.NewPassword
 import com.arsvechkarev.vault.features.creating_password.PasswordCreatingActions.ExitScreen
 import com.arsvechkarev.vault.features.creating_password.PasswordCreatingActions.ShowAcceptPasswordDialog
@@ -44,16 +43,7 @@ class CreatingServicePresenter @Inject constructor(
   }
   
   fun onServiceNameChanged(text: String) {
-    if (text.isNotBlank()) {
-      val icon = getIconForServiceName(text)
-      if (icon != null) {
-        viewState.showIconFromResources(icon)
-      } else {
-        viewState.showLetterInCircleIcon(text[0].toString())
-      }
-    } else {
-      viewState.hideLetterInCircleIcon()
-    }
+    viewState.showServiceIcon(text)
   }
   
   fun onContinueClicked(serviceName: String, username: String, email: String) {
@@ -73,7 +63,6 @@ class CreatingServicePresenter @Inject constructor(
   }
   
   private fun performServiceSaving(password: String) {
-    viewState.showLoadingCreation()
     passwordCreatingCommunicator.send(ShowLoading)
     onIoThread {
       val serviceInfo = ServiceModel(UUID.randomUUID().toString(), serviceName,

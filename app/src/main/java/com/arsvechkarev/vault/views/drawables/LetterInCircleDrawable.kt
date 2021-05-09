@@ -20,7 +20,12 @@ class LetterInCircleDrawable(
   private val paint = Paint(color = backgroundColor)
   private var halfTextHeight = 0f
   
+  init {
+    require(letter.length == 1)
+  }
+  
   fun setLetter(letter: String) {
+    require(letter.length == 1)
     this.letter = letter
     invalidateSelf()
   }

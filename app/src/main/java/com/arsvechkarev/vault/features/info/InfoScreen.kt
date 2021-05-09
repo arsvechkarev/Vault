@@ -2,7 +2,6 @@ package com.arsvechkarev.vault.features.info
 
 import android.content.Context
 import android.content.res.ColorStateList
-import android.graphics.drawable.Drawable
 import android.view.Gravity.BOTTOM
 import android.view.Gravity.CENTER
 import android.view.Gravity.CENTER_HORIZONTAL
@@ -12,6 +11,7 @@ import com.arsvechkarev.vault.core.di.CoreComponent
 import com.arsvechkarev.vault.core.extensions.getDeleteMessageText
 import com.arsvechkarev.vault.core.extensions.moxyPresenter
 import com.arsvechkarev.vault.core.model.ServiceModel
+import com.arsvechkarev.vault.features.common.setServiceIcon
 import com.arsvechkarev.vault.viewbuilding.Colors
 import com.arsvechkarev.vault.viewbuilding.Dimens
 import com.arsvechkarev.vault.viewbuilding.Dimens.DividerHeight
@@ -55,7 +55,6 @@ import com.arsvechkarev.vault.views.dialogs.InfoDialog.Companion.InfoDialog
 import com.arsvechkarev.vault.views.dialogs.InfoDialog.Companion.infoDialog
 import com.arsvechkarev.vault.views.dialogs.LoadingDialog
 import com.arsvechkarev.vault.views.dialogs.loadingDialog
-import com.arsvechkarev.vault.views.drawables.LetterInCircleDrawable.Companion.setLetterDrawable
 import navigation.BaseScreen
 
 class InfoScreen : BaseScreen(), InfoView {
@@ -189,16 +188,12 @@ class InfoScreen : BaseScreen(), InfoView {
     presenter.performSetup(serviceInfo)
   }
   
-  override fun showLetterInCircleIcon(letter: String) {
-    imageView(ImageServiceName).setLetterDrawable(letter)
-  }
-  
-  override fun showIconFromResources(icon: Drawable) {
-    imageView(ImageServiceName).image(icon)
-  }
-  
   override fun showServiceName(serviceName: String) {
     viewAs<EditableTextInfoViewGroup>(EditableTextInfoServiceName).setText(serviceName)
+  }
+  
+  override fun showServiceIcon(serviceName: String) {
+    imageView(ImageServiceName).setServiceIcon(serviceName)
   }
   
   override fun showUsername(username: String) {

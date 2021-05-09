@@ -1,7 +1,6 @@
 package com.arsvechkarev.vault.features.creating_service
 
 import android.content.Context
-import android.graphics.drawable.Drawable
 import android.view.Gravity.CENTER
 import android.view.Gravity.CENTER_VERTICAL
 import android.view.WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE
@@ -9,6 +8,7 @@ import android.widget.ImageView.ScaleType.FIT_XY
 import com.arsvechkarev.vault.R
 import com.arsvechkarev.vault.core.di.CoreComponent
 import com.arsvechkarev.vault.core.extensions.moxyPresenter
+import com.arsvechkarev.vault.features.common.setServiceIcon
 import com.arsvechkarev.vault.viewbuilding.Colors
 import com.arsvechkarev.vault.viewbuilding.Colors.Error
 import com.arsvechkarev.vault.viewbuilding.Dimens.IconPadding
@@ -25,7 +25,6 @@ import com.arsvechkarev.vault.viewdsl.Size.Companion.MatchParent
 import com.arsvechkarev.vault.viewdsl.Size.Companion.WrapContent
 import com.arsvechkarev.vault.viewdsl.backgroundColor
 import com.arsvechkarev.vault.viewdsl.circleRippleBackground
-import com.arsvechkarev.vault.viewdsl.clearImage
 import com.arsvechkarev.vault.viewdsl.constraints
 import com.arsvechkarev.vault.viewdsl.gravity
 import com.arsvechkarev.vault.viewdsl.hideKeyboard
@@ -47,8 +46,6 @@ import com.arsvechkarev.vault.viewdsl.textColor
 import com.arsvechkarev.vault.viewdsl.textSize
 import com.arsvechkarev.vault.viewdsl.visible
 import com.arsvechkarev.vault.viewdsl.withViewBuilder
-import com.arsvechkarev.vault.views.SimpleDialog
-import com.arsvechkarev.vault.views.drawables.LetterInCircleDrawable.Companion.setLetterDrawable
 import navigation.BaseScreen
 import kotlin.math.abs
 
@@ -166,23 +163,8 @@ class CreatingServiceScreen : BaseScreen(), CreatingServiceView {
     textView(TextError).text(R.string.text_service_name_cannot_be_empty)
   }
   
-  override fun showIconFromResources(icon: Drawable) {
-    showOrHideImageBasedOnLayout()
-    imageView(R.id.creating_service_image).image(icon)
-  }
-  
-  override fun showLetterInCircleIcon(letter: String) {
-    showOrHideImageBasedOnLayout()
-    imageView(R.id.creating_service_image).setLetterDrawable(letter)
-  }
-  
-  override fun hideLetterInCircleIcon() {
-    showOrHideImageBasedOnLayout()
-    imageView(R.id.creating_service_image).clearImage()
-  }
-  
-  override fun showLoadingCreation() {
-    viewAs<SimpleDialog>(DialogProgressBar).show()
+  override fun showServiceIcon(serviceName: String) {
+    imageView(R.id.creating_service_image).setServiceIcon(serviceName)
   }
   
   private fun showOrHideImageBasedOnLayout() {
@@ -210,6 +192,5 @@ class CreatingServiceScreen : BaseScreen(), CreatingServiceView {
     const val EditTextServiceName = "EditTextServiceName"
     const val EditTextUsername = "EditTextUsername"
     const val EditTextEmail = "EditTextEmail"
-    const val DialogProgressBar = "DialogProgressBar"
   }
 }

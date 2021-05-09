@@ -12,8 +12,7 @@ class ServicesStorageImpl(
     val ciphertext = fileSaver.readTextFromFile()
     // Text in file should not be empty, because it was saved earlier
     require(ciphertext.isNotEmpty())
-    val metaInfo = cryptography.getEncryptionMetaInfo(password, ciphertext)
-    val json = cryptography.decryptCipher(password, metaInfo, ciphertext)
+    val json = cryptography.decryptData(password, ciphertext)
     if (json == "") return ArrayList()
     return getFromString(json)
   }
@@ -46,8 +45,7 @@ class ServicesStorageImpl(
   private fun saveServicesToFile(servicesList: MutableList<ServiceEntity>, password: String) {
     val servicesInfoJson = convertToString(servicesList)
     val ciphertext = fileSaver.readTextFromFile()
-    val metaInfo = cryptography.getEncryptionMetaInfo(password, ciphertext)
-    val encryptedText = cryptography.encryptData(password, metaInfo, servicesInfoJson)
+    val encryptedText = cryptography.encryptData(password, servicesInfoJson, ciphertext)
     fileSaver.saveTextToFile(encryptedText)
   }
   

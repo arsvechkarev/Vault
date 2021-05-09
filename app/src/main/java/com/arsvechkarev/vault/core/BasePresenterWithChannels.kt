@@ -9,7 +9,7 @@ abstract class BasePresenterWithChannels<V : MvpView>(threader: Threader) :
   
   private val channelsToListenersMap = HashMap<Communicator<out Any>, ArrayList<(Any) -> Unit>>()
   
-  protected fun <E : Any> subscribeToChannel(communicator: Communicator<E>, listener: (E) -> Unit) {
+  protected fun <E : Any> subscribeToCommunicator(communicator: Communicator<E>, listener: (E) -> Unit) {
     val list = (channelsToListenersMap[communicator] ?: ArrayList())
     @Suppress("UNCHECKED_CAST")
     list.add(listener as ((Any) -> Unit))

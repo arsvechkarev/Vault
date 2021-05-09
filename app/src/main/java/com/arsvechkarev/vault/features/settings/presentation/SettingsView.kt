@@ -8,4 +8,8 @@ import moxy.viewstate.strategy.StateStrategyType
 interface SettingsView : MvpView {
   
   fun showUseFingerprintForEnteringEnabled(checked: Boolean)
+  
+  fun showPasswordCheckingDialog()
+  
+  fun hidePasswordCheckingDialog()
 }

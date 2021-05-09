@@ -3,8 +3,8 @@ package com.arsvechkarev.vault.features.info
 import android.content.Context
 import com.arsvechkarev.vault.core.di.FeatureScope
 import com.arsvechkarev.vault.core.di.modules.CoreModule
-import com.arsvechkarev.vault.features.common.AndroidClipboard
 import com.arsvechkarev.vault.features.common.Clipboard
+import com.arsvechkarev.vault.features.common.ClipboardImpl
 import dagger.Module
 import dagger.Provides
 import dagger.Subcomponent
@@ -19,7 +19,7 @@ object InfoModule {
   @Provides
   @JvmStatic
   @Singleton
-  fun provideClipboard(context: Context): Clipboard = AndroidClipboard(context)
+  fun provideClipboard(context: Context): Clipboard = ClipboardImpl(context)
 }
 
 @FeatureScope

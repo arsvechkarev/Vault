@@ -33,7 +33,7 @@ class CreatingServicePresenter @Inject constructor(
   private var email: String = ""
   
   init {
-    subscribeToChannel(passwordCreatingCommunicator) { event ->
+    subscribeToCommunicator(passwordCreatingCommunicator) { event ->
       when (event) {
         is OnSavePasswordButtonClicked -> passwordCreatingCommunicator.send(
           ShowAcceptPasswordDialog)

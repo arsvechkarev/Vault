@@ -42,7 +42,7 @@ class InfoPresenter @Inject constructor(
   val isEditingNameOrEmailNow get() = state == EDITING_NAME_OR_USERNAME_OR_EMAIL
   
   init {
-    subscribeToChannel(passwordCreatingCommunicator) { event ->
+    subscribeToCommunicator(passwordCreatingCommunicator) { event ->
       when (event) {
         is OnSavePasswordButtonClicked -> reactToSaveButtonClicked(event.password)
         is OnNewPasswordAccepted -> reactToNewPasswordSaved(event.password)

@@ -5,7 +5,7 @@ import com.arsvechkarev.vault.core.di.modules.CommunicatorsModule
 import com.arsvechkarev.vault.core.di.modules.CoreModule
 import com.arsvechkarev.vault.core.di.modules.CryptographyModule
 import com.arsvechkarev.vault.core.di.modules.FileSaverModule
-import com.arsvechkarev.vault.core.di.modules.FingerprintsCheckerModule
+import com.arsvechkarev.vault.core.di.modules.FingerprintsModule
 import com.arsvechkarev.vault.core.di.modules.MasterKeyModule
 import com.arsvechkarev.vault.core.di.modules.RouterModule
 import com.arsvechkarev.vault.core.di.modules.ServicesModule
@@ -20,6 +20,8 @@ import com.arsvechkarev.vault.features.info.InfoModule
 import com.arsvechkarev.vault.features.initial_screen.InitialComponent
 import com.arsvechkarev.vault.features.main.MainComponent
 import com.arsvechkarev.vault.features.main.NavigationModule
+import com.arsvechkarev.vault.features.password_checking.PasswordCheckingComponent
+import com.arsvechkarev.vault.features.password_checking.PasswordCheckingModule
 import com.arsvechkarev.vault.features.services_list.di.ServicesListComponent
 import com.arsvechkarev.vault.features.services_list.di.ServicesListModule
 import com.arsvechkarev.vault.features.settings.di.SettingsComponent
@@ -38,13 +40,14 @@ import javax.inject.Singleton
     CryptographyModule::class,
     MasterKeyModule::class,
     FileSaverModule::class,
-    FingerprintsCheckerModule::class,
+    FingerprintsModule::class,
     ServicesModule::class,
     CreatingMasterPasswordModule::class,
+    PasswordCheckingModule::class,
+    StartModule::class,
+    ServicesListModule::class,
     CreatingServiceModule::class,
     InfoModule::class,
-    ServicesListModule::class,
-    StartModule::class,
     SettingsModule::class,
     PasswordCreatingModule::class,
     NavigationModule::class
@@ -69,6 +72,8 @@ interface CoreComponent {
   fun getStartComponentFactory(): StartComponent.Factory
   
   fun getSettingsComponentFactory(): SettingsComponent.Factory
+  
+  fun getPasswordCheckingComponentFactory(): PasswordCheckingComponent.Factory
   
   @Component.Builder
   interface Builder {

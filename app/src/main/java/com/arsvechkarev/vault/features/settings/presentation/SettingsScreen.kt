@@ -7,6 +7,8 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import com.arsvechkarev.vault.R
 import com.arsvechkarev.vault.core.di.CoreComponent
 import com.arsvechkarev.vault.core.extensions.moxyPresenter
+import com.arsvechkarev.vault.features.password_checking.PasswordCheckingDialog.Companion.PasswordCheckingDialog
+import com.arsvechkarev.vault.features.password_checking.PasswordCheckingDialog.Companion.passwordCheckingDialog
 import com.arsvechkarev.vault.viewbuilding.Colors
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginDefault
 import com.arsvechkarev.vault.viewbuilding.Dimens.VerticalMarginSmall
@@ -87,6 +89,7 @@ class SettingsScreen : BaseScreen(), SettingsView {
           }
         }
       }
+      PasswordCheckingDialog()
     }
   }
   
@@ -99,6 +102,14 @@ class SettingsScreen : BaseScreen(), SettingsView {
     if (switch.isChecked != checked) {
       switch.isChecked = checked
     }
+  }
+  
+  override fun showPasswordCheckingDialog() {
+    passwordCheckingDialog.show()
+  }
+  
+  override fun hidePasswordCheckingDialog() {
+    passwordCheckingDialog.hide()
   }
   
   private companion object {

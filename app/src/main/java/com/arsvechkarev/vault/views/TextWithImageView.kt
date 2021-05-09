@@ -7,7 +7,6 @@ import android.graphics.PorterDuffColorFilter
 import android.view.View
 import com.arsvechkarev.vault.core.extensions.TextPaint
 import com.arsvechkarev.vault.core.extensions.getTextHeight
-import com.arsvechkarev.vault.core.extensions.i
 import com.arsvechkarev.vault.viewbuilding.Colors
 import com.arsvechkarev.vault.viewbuilding.Dimens
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginMedium
@@ -48,8 +47,8 @@ class TextWithImageView(
   }
   
   override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
-    val textWidth = textPaint.measureText(text).i
-    val textHeight = (textPaint.getTextHeight() * 2.5f).i
+    val textWidth = textPaint.measureText(text).toInt()
+    val textHeight = (textPaint.getTextHeight() * 2.5f).toInt()
     val width = maxOf(iconSize, textWidth) + paddingStart + paddingEnd
     val height = iconSize + textHeight + paddingTop + paddingBottom
     setMeasuredDimension(width, height)

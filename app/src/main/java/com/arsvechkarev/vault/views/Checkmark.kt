@@ -12,7 +12,6 @@ import android.view.View
 import androidx.core.content.ContextCompat
 import com.arsvechkarev.vault.R
 import com.arsvechkarev.vault.core.extensions.TEMP_RECT
-import com.arsvechkarev.vault.core.extensions.i
 import com.arsvechkarev.vault.viewbuilding.Colors
 import com.arsvechkarev.vault.viewdsl.AccelerateDecelerateInterpolator
 import com.arsvechkarev.vault.viewdsl.DURATION_SHORT
@@ -146,10 +145,10 @@ class Checkmark(context: Context) : View(context) {
   
   private fun setCheckmarkBounds(rect: Rect) {
     rect.set(
-      (width / 2f - width * 0.4f).i,
-      (height / 2f - height * 0.4f).i,
-      (width / 2f + width * 0.4f).i,
-      (height / 2f + height * 0.4f).i
+      (width / 2f - width * 0.4f).toInt(),
+      (height / 2f - height * 0.4f).toInt(),
+      (width / 2f + width * 0.4f).toInt(),
+      (height / 2f + height * 0.4f).toInt()
     )
   }
   

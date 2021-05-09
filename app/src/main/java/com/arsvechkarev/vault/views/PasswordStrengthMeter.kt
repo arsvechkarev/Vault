@@ -7,7 +7,6 @@ import android.graphics.Canvas
 import android.view.View
 import buisnesslogic.PasswordStrength
 import com.arsvechkarev.vault.core.extensions.Paint
-import com.arsvechkarev.vault.core.extensions.f
 import com.arsvechkarev.vault.viewbuilding.Colors
 import com.arsvechkarev.vault.viewdsl.AccelerateDecelerateInterpolator
 import com.arsvechkarev.vault.viewdsl.DURATION_DEFAULT
@@ -58,7 +57,7 @@ class PasswordStrengthMeter(context: Context) : View(context) {
   
   override fun onDraw(canvas: Canvas) {
     canvas.drawRoundRect(
-      0f, 0f, width * percentage, height.f, height / 2f, height / 2f, paint
+      0f, 0f, width * percentage, height.toFloat(), height / 2f, height / 2f, paint
     )
   }
 }

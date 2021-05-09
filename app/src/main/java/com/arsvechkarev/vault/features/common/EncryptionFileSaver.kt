@@ -1,4 +1,4 @@
-package com.arsvechkarev.vault.core
+package com.arsvechkarev.vault.features.common
 
 import android.content.Context
 import androidx.security.crypto.EncryptedFile

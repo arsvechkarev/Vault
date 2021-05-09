@@ -1,9 +1,10 @@
-package com.arsvechkarev.vault.features.common
+package com.arsvechkarev.vault.features.common.fingerprints
 
 import android.content.Context
 import androidx.core.hardware.fingerprint.FingerprintManagerCompat
 
-class AndroidFingerprintsChecker(private val context: Context) : FingerprintsChecker {
+class FingerprintsAvailabilityCheckerImpl(private val context: Context) :
+  FingerprintsAvailabilityChecker {
   
   override fun areFingerprintsSupported(): Boolean {
     val fingerprintManagerCompat = FingerprintManagerCompat.from(context)

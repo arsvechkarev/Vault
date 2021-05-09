@@ -46,7 +46,7 @@ class PasswordCreatingPresenter @Inject constructor(
   private var state = INITIAL
   
   init {
-    subscribeToChannel(passwordCreatingCommunicator) { event ->
+    subscribeToCommunicator(passwordCreatingCommunicator) { event ->
       when (event) {
         NewPassword -> {
           viewState.showCreatingPasswordMode()

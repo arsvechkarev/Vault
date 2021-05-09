@@ -11,12 +11,13 @@ class MasterPasswordCheckerImpl(
   }
   
   override fun isCorrect(masterPassword: String): Boolean {
-    val textFromFile = fileSaver.readTextFromFile()
+    val ciphertext = fileSaver.readTextFromFile()
     return try {
-      val metaInfo = cryptography.getEncryptionMetaInfo(masterPassword, textFromFile)
-      cryptography.decryptCipher(masterPassword, metaInfo, textFromFile)
+      cryptography.decryptData(masterPassword, ciphertext)
+      // Decryption was successful, returning true
       true
     } catch (e: Throwable) {
+      // Error happened during decryption, returning false
       false
     }
   }

@@ -1,7 +1,6 @@
 package buisnesslogic
 
 import buisnesslogic.base64.Base64Coder
-import buisnesslogic.model.EncryptionMetaInfo
 import buisnesslogic.random.SeedRandomGenerator
 import java.security.MessageDigest
 import java.security.SecureRandom
@@ -11,11 +10,18 @@ import javax.crypto.spec.IvParameterSpec
 import javax.crypto.spec.PBEKeySpec
 import javax.crypto.spec.SecretKeySpec
 
+/**
+ * Class that performs actual encryption/decryption of data with master password
+ */
 class Cryptography(
   private val base64Coder: Base64Coder,
   private val seedRandomGenerator: SeedRandomGenerator
 ) {
   
+  /**
+   * Performs initial encryption of [data] with [password] and returns encrypted text. After that
+   * returns result can be decrypted with the [password] and [data] can be retrieved
+   */
   fun encryptForTheFirstTime(password: String, data: String): String {
     val saltSize = getSaltBytesSize(password)
     val initialSalt = generateRandomArray(MAX_SALT_SIZE)
@@ -34,18 +40,32 @@ class Cryptography(
     return encodedSalt + encodedIv + encode
   }
   
-  fun encryptData(password: String, metaInfo: EncryptionMetaInfo, data: String): String {
+  /**
+   * Encrypts [plaintext] with [password] and returns encrypted data. In addition to [plaintext]
+   * and [password] you should provide [ciphertext] that contains meta information about encryption,
+   * such as salt, iv, etc. In order to get ciphertext, you should call [encryptForTheFirstTime] first
+   *
+   * @see encryptForTheFirstTime
+   * @see decryptData
+   */
+  fun encryptData(password: String, plaintext: String, ciphertext: String): String {
+    val metaInfo = getEncryptionMetaInfo(password, ciphertext)
     val spec = PBEKeySpec(password.toCharArray(), metaInfo.salt,
       SECRET_KEY_ITERATIONS, SECRET_KEY_LENGTH)
     val factory = SecretKeyFactory.getInstance(SECRET_KEY_ALGORITHM)
     val secretKey = SecretKeySpec(factory.generateSecret(spec).encoded, ALGORITHM)
     val cipher = Cipher.getInstance(CIPHER_TRANSFORMATION)
     cipher.init(Cipher.ENCRYPT_MODE, secretKey, IvParameterSpec(metaInfo.iv))
-    val encode = base64Coder.encode(cipher.doFinal(data.toByteArray()))
+    val encode = base64Coder.encode(cipher.doFinal(plaintext.toByteArray()))
     return metaInfo.encodedSalt + metaInfo.unpaddedIv + encode
   }
   
-  fun decryptCipher(password: String, metaInfo: EncryptionMetaInfo, ciphertext: String): String {
+  /**
+   * Decrypts [ciphertext] using given [password] and returns decrypted plaintext. If decryption
+   * was unsuccessful, throws exception
+   */
+  fun decryptData(password: String, ciphertext: String): String {
+    val metaInfo = getEncryptionMetaInfo(password, ciphertext)
     val saltLength = metaInfo.encodedSalt.length
     val encryptedData = ciphertext.substring(saltLength + 22, ciphertext.length)
     val spec = PBEKeySpec(password.toCharArray(), metaInfo.salt,
@@ -57,7 +77,7 @@ class Cryptography(
     return String(cipher.doFinal(base64Coder.decode(encryptedData)))
   }
   
-  fun getEncryptionMetaInfo(password: String, ciphertext: String): EncryptionMetaInfo {
+  private fun getEncryptionMetaInfo(password: String, ciphertext: String): EncryptionMetaInfo {
     val saltBytesSize = getSaltBytesSize(password)
     val saltLength = getSaltStringLength(saltBytesSize)
     val encodedSalt = ciphertext.take(saltLength)
@@ -86,6 +106,16 @@ class Cryptography(
     random.nextBytes(byteArray)
     return byteArray
   }
+  
+  /**
+   * Meta information about encryption stuff
+   */
+  class EncryptionMetaInfo(
+    val salt: ByteArray,
+    val encodedSalt: String,
+    val iv: ByteArray,
+    val unpaddedIv: String
+  )
   
   companion object {
     

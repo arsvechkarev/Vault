@@ -9,7 +9,6 @@ import com.arsvechkarev.vault.core.communicators.Communicator
 import com.arsvechkarev.vault.core.di.FeatureScope
 import com.arsvechkarev.vault.core.model.ServiceModel
 import com.arsvechkarev.vault.features.common.ServicesRepository
-import com.arsvechkarev.vault.features.common.getIconForServiceName
 import com.arsvechkarev.vault.features.creating_password.PasswordCreatingActions.ConfigureMode.EditPassword
 import com.arsvechkarev.vault.features.creating_password.PasswordCreatingActions.ExitScreen
 import com.arsvechkarev.vault.features.creating_password.PasswordCreatingActions.ShowAcceptPasswordDialog
@@ -54,8 +53,8 @@ class InfoPresenter @Inject constructor(
   fun performSetup(serviceModel: ServiceModel) {
     this.serviceModel = serviceModel
     state = INITIAL
-    updateServiceIcon(serviceModel.serviceName)
     viewState.showServiceName(serviceModel.serviceName)
+    viewState.showServiceIcon(serviceModel.serviceName)
     viewState.setPassword(serviceModel.password)
     viewState.hidePassword()
     val username = serviceModel.username
@@ -65,8 +64,7 @@ class InfoPresenter @Inject constructor(
   }
   
   fun onServiceNameChanged(text: String) {
-    if (text.isBlank()) return
-    updateServiceIcon(text)
+    viewState.showServiceIcon(text)
   }
   
   fun saveServiceName(serviceName: String) {
@@ -76,7 +74,7 @@ class InfoPresenter @Inject constructor(
     state = LOADING
     serviceModel = serviceModel.copy(serviceName = serviceName)
     viewState.showServiceName(serviceName)
-    updateServiceIcon(serviceName)
+    viewState.showServiceIcon(serviceName)
     onIoThread {
       servicesRepository.updateService(masterPassword, serviceModel)
       state = INITIAL
@@ -197,15 +195,6 @@ class InfoPresenter @Inject constructor(
         passwordCreatingCommunicator.send(ExitScreen)
         router.goBack()
       }
-    }
-  }
-  
-  private fun updateServiceIcon(serviceName: String) {
-    val icon = getIconForServiceName(serviceName)
-    if (icon != null) {
-      viewState.showIconFromResources(icon)
-    } else {
-      viewState.showLetterInCircleIcon(serviceName[0].toString())
     }
   }
 }

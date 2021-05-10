@@ -1,4 +1,4 @@
-package com.arsvechkarev.vault.features.services_list
+package com.arsvechkarev.vault.features.services_list.presentation
 
 import android.view.Gravity.CENTER
 import android.widget.ImageView

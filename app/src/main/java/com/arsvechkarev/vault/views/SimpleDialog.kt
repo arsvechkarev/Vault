@@ -13,13 +13,13 @@ import android.widget.FrameLayout
 import androidx.core.graphics.ColorUtils
 import com.arsvechkarev.vault.viewbuilding.Colors
 import com.arsvechkarev.vault.viewdsl.AccelerateDecelerateInterpolator
-import com.arsvechkarev.vault.viewdsl.DURATION_SHORT
 import com.arsvechkarev.vault.viewdsl.cancelIfRunning
 import com.arsvechkarev.vault.viewdsl.contains
 import com.arsvechkarev.vault.viewdsl.gone
 import com.arsvechkarev.vault.viewdsl.invisible
 import com.arsvechkarev.vault.viewdsl.layoutGravity
 import com.arsvechkarev.vault.viewdsl.visible
+import config.DurationsConfigurator
 import kotlin.math.abs
 import kotlin.math.hypot
 
@@ -32,7 +32,7 @@ open class SimpleDialog(context: Context) : FrameLayout(context) {
   private val dialogView get() = getChildAt(0)
   private val shadowAnimator = ValueAnimator().apply {
     interpolator = AccelerateDecelerateInterpolator
-    duration = DURATION_SHORT
+    duration = DurationsConfigurator.DurationShort
     addUpdateListener {
       currentShadowFraction = it.animatedValue as Float
       onShadowFractionChangedListener?.invoke(currentShadowFraction)
@@ -45,6 +45,7 @@ open class SimpleDialog(context: Context) : FrameLayout(context) {
   var isCancellable = true
   var onShown = {}
   var onHide = {}
+  var onOutsideClick = {}
   
   var isOpened = false
     private set
@@ -71,7 +72,7 @@ open class SimpleDialog(context: Context) : FrameLayout(context) {
         .scaleX(1f)
         .scaleY(1f)
         .alpha(1f)
-        .setDuration(DURATION_SHORT)
+        .setDuration(DurationsConfigurator.DurationShort)
         .withEndAction(onShown)
         .setInterpolator(AccelerateDecelerateInterpolator)
         .start()
@@ -88,7 +89,7 @@ open class SimpleDialog(context: Context) : FrameLayout(context) {
         .alpha(0f)
         .scaleX(SCALE_FACTOR)
         .scaleY(SCALE_FACTOR)
-        .setDuration(DURATION_SHORT)
+        .setDuration(DurationsConfigurator.DurationShort)
         .setInterpolator(AccelerateDecelerateInterpolator)
         .withEndAction { gone(); onHide() }
         .start()
@@ -116,6 +117,7 @@ open class SimpleDialog(context: Context) : FrameLayout(context) {
         val dy = abs(event.y - latestY)
         val scaledTouchSlop = ViewConfiguration.get(context).scaledTouchSlop
         if (hypot(dx, dy) < scaledTouchSlop && isCancellable) {
+          onOutsideClick()
           hide()
         }
       }

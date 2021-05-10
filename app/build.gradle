@@ -47,12 +47,15 @@ android {
 
 dependencies {
 
+  implementation project(':config')
   implementation project(':buisness-logic')
   implementation project(':navigation')
 
   def appDependencies = rootProject.ext.applicationDependencies
   implementation appDependencies.kotlin
   implementation appDependencies.appCompat
+  implementation appDependencies.coroutinesCore
+  implementation appDependencies.coroutinesAndroid
   implementation appDependencies.coordinatorLayout
   implementation appDependencies.constraintLayout
   implementation appDependencies.recyclerView
@@ -62,6 +65,7 @@ dependencies {
   implementation appDependencies.dagger
   implementation appDependencies.zxcvbn
   implementation appDependencies.androidSecurity
+  implementation appDependencies.biometric
   implementation appDependencies.timber
   kapt appDependencies.daggerCompiler
   kapt appDependencies.moxyCompiler

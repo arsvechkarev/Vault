@@ -1,6 +1,7 @@
-package com.arsvechkarev.vault.features.services_list
+package com.arsvechkarev.vault.features.services_list.di
 
 import com.arsvechkarev.vault.core.di.FeatureScope
+import com.arsvechkarev.vault.features.services_list.presentation.ServicesListPresenter
 import dagger.Module
 import dagger.Subcomponent
 

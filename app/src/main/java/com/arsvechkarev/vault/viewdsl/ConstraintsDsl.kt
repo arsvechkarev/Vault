@@ -11,8 +11,7 @@ import androidx.constraintlayout.widget.ConstraintSet.TOP
 fun View.constraints(block: ConstraintsDsl.() -> Unit) {
   require(layoutParams is ConstraintLayout.LayoutParams)
   val constraintsDsl = ConstraintsDsl(id, parent as ConstraintLayout)
-  constraintsDsl.apply(block)
-  constraintsDsl.applyToLayout()
+  constraintsDsl.apply(block).applyToLayout()
 }
 
 class ConstraintsDsl(
@@ -28,12 +27,20 @@ class ConstraintsDsl(
     constraintSet.connect(viewId, START, id, START)
   }
   
+  fun startToEndOf(id: Int) {
+    constraintSet.connect(viewId, START, id, END)
+  }
+  
   fun topToTopOf(id: Int) {
     constraintSet.connect(viewId, TOP, id, TOP)
   }
   
   fun endToEndOf(id: Int) {
     constraintSet.connect(viewId, END, id, END)
+  }
+  
+  fun endToStartOf(id: Int) {
+    constraintSet.connect(viewId, END, id, START)
   }
   
   fun bottomToBottomOf(id: Int) {

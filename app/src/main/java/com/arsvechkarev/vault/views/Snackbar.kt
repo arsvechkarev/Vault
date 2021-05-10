@@ -3,7 +3,6 @@ package com.arsvechkarev.vault.views
 import android.content.Context
 import android.view.ViewGroup
 import android.widget.TextView
-import com.arsvechkarev.vault.core.extensions.i
 import com.arsvechkarev.vault.viewbuilding.Colors
 import com.arsvechkarev.vault.viewbuilding.Dimens
 import com.arsvechkarev.vault.viewbuilding.Dimens.CheckmarkSize
@@ -12,7 +11,6 @@ import com.arsvechkarev.vault.viewbuilding.Dimens.MarginSmall
 import com.arsvechkarev.vault.viewbuilding.Styles.BaseTextView
 import com.arsvechkarev.vault.viewbuilding.TextSizes
 import com.arsvechkarev.vault.viewdsl.AccelerateDecelerateInterpolator
-import com.arsvechkarev.vault.viewdsl.DURATION_SHORT
 import com.arsvechkarev.vault.viewdsl.animateVisible
 import com.arsvechkarev.vault.viewdsl.atMost
 import com.arsvechkarev.vault.viewdsl.backgroundRoundRect
@@ -23,7 +21,7 @@ import com.arsvechkarev.vault.viewdsl.paddings
 import com.arsvechkarev.vault.viewdsl.size
 import com.arsvechkarev.vault.viewdsl.text
 import com.arsvechkarev.vault.viewdsl.textSize
-import com.arsvechkarev.vault.views.AnimatableCheckmark.Companion.CHECKMARK_DELAY
+import config.DurationsConfigurator
 
 class Snackbar(context: Context) : ViewGroup(context) {
   
@@ -56,10 +54,12 @@ class Snackbar(context: Context) : ViewGroup(context) {
     checkmarkView.animateCheckmark()
     animate().translationY(0f)
         .setInterpolator(AccelerateDecelerateInterpolator)
-        .setDuration(DURATION_SHORT)
+        .setDuration(DurationsConfigurator.DurationShort)
         .withLayer()
         .start()
-    postDelayed({ hide() }, DURATION_SHORT + CHECKMARK_DELAY + SHOWING_TIME)
+    val delay = DurationsConfigurator.DurationShort + DurationsConfigurator.DurationCheckmark +
+        DurationsConfigurator.DurationSnackbar
+    postDelayed({ hide() }, delay)
   }
   
   fun hide() {
@@ -67,7 +67,7 @@ class Snackbar(context: Context) : ViewGroup(context) {
     opened = false
     animate().translationY(height * 1.8f)
         .setInterpolator(AccelerateDecelerateInterpolator)
-        .setDuration(DURATION_SHORT)
+        .setDuration(DurationsConfigurator.DurationShort)
         .withLayer()
         .withEndAction { checkmarkView.invisible() }
         .start()
@@ -76,7 +76,7 @@ class Snackbar(context: Context) : ViewGroup(context) {
   override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
     val width = widthMeasureSpec.size
     val checkmarkHeight = CheckmarkSize
-    val checkmarkWidth = exactly((checkmarkHeight * 1.3333f).i)
+    val checkmarkWidth = exactly((checkmarkHeight * 1.3333f).toInt())
     checkmarkView.measure(checkmarkWidth, exactly(checkmarkHeight))
     val textInfoWidth = width - paddingStart - paddingEnd - innerPadding * 2 -
         checkmarkView.measuredWidth
@@ -92,10 +92,5 @@ class Snackbar(context: Context) : ViewGroup(context) {
     if (!isOpened) {
       translationY = height * 1.5f
     }
-  }
-  
-  companion object {
-    
-    const val SHOWING_TIME = 1000
   }
 }

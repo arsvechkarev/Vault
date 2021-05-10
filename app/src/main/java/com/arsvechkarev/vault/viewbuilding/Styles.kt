@@ -47,6 +47,11 @@ object Styles {
     textSize(TextSizes.H4)
   }
   
+  val TitleTextView: TextView.() -> Unit = {
+    apply(BoldTextView)
+    textSize(TextSizes.H0)
+  }
+  
   fun ClickableTextView(
     rippleColor: Int = Colors.AccentRipple,
   ): TextView.() -> Unit = {

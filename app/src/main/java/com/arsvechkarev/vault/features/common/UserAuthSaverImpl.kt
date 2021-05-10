@@ -1,4 +1,4 @@
-package com.arsvechkarev.vault.core
+package com.arsvechkarev.vault.features.common
 
 import android.annotation.SuppressLint
 import android.content.Context

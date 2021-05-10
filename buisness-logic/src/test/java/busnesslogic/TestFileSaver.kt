@@ -13,4 +13,8 @@ class TestFileSaver : FileSaver {
   override fun readTextFromFile(): String {
     return text
   }
+  
+  override fun deleteFile() {
+    text = ""
+  }
 }

@@ -101,21 +101,21 @@ class StartScreen : BaseScreen(), StartView {
     CoreComponent.instance.getStartComponentFactory().create().providePresenter()
   }
   
-  override fun onInit() {
+  override fun showKeyboard() {
     viewAs<EditTextPassword>(start_screen_enter_password).requestEditTextFocus()
     contextNonNull.showKeyboard()
   }
   
-  override fun showLoading() {
+  override fun showLoadingCheckingPassword() {
     loadingDialog.show()
   }
   
-  override fun showError() {
+  override fun showFailureCheckingPassword() {
     textView(start_screen_error_text).text(R.string.text_password_is_incorrect)
     loadingDialog.hide()
   }
   
-  override fun showSuccess() {
+  override fun showSuccessCheckingPassword() {
     contextNonNull.hideKeyboard()
   }
 }

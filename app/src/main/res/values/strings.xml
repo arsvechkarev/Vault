@@ -3,6 +3,7 @@
   <string name="text_empty"/>
   <string name="text_password">Password</string>
   <string name="text_passwords">Passwords</string>
+  <string name="text_settings">Settings</string>
   <string name="text_create_master_password">Create master password</string>
   <string name="text_weak">Weak</string>
   <string name="text_medium">Medium</string>
@@ -68,6 +69,9 @@
   <string name="text_delete">DELETE</string>
   <string name="text_got_it">GOT IT</string>
   <string name="text_password_copied">Password successfully copied!</string>
+  <string name="text_adding_biometrics_data">Adding biometrics data</string>
+  <string name="text_enter_with_fingerprint">Enter using your fingerprint</string>
+  <string name="text_biometrics_added">Biometrics successfully added!</string>
   <string name="text_password_should_be_strong">
     If you want to have a strong, secure password, it should be at least 8 characters long. Also, it should
     contain numbers, uppercase and lowercase letters, and special symbols. And try to avoid common words and

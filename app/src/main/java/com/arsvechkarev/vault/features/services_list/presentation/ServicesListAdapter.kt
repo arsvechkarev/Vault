@@ -5,8 +5,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import com.arsvechkarev.vault.core.model.ServiceModel
 import com.arsvechkarev.vault.features.common.setServiceIcon
-import com.arsvechkarev.vault.recycler.CallbackType
-import com.arsvechkarev.vault.recycler.ListAdapter
+import com.arsvechkarev.vault.recycler.BaseListAdapter
 import com.arsvechkarev.vault.recycler.delegate
 import com.arsvechkarev.vault.viewbuilding.Colors
 import com.arsvechkarev.vault.viewbuilding.Dimens.HorizontalMarginSmall
@@ -30,7 +29,7 @@ import com.arsvechkarev.vault.viewdsl.viewAs
 class ServicesListAdapter(
   private val onItemClick: (ServiceModel) -> Unit,
   private val onItemLongClick: (ServiceModel) -> Unit
-) : ListAdapter() {
+) : BaseListAdapter() {
   
   init {
     addDelegates(
@@ -64,9 +63,9 @@ class ServicesListAdapter(
   }
   
   fun removeItem(serviceModel: ServiceModel) {
-    val list = ArrayList(data)
+    val list = ArrayList(currentList)
     list.remove(serviceModel)
-    submitList(list, CallbackType.TWO_LISTS)
+    submitList(list)
   }
   
   private companion object {

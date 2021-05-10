@@ -95,6 +95,7 @@ class ServicesListScreen : BaseScreen(), ServicesListView {
       RecyclerView(MatchParent, WrapContent) {
         classNameTag()
         behavior(ScrollingRecyclerBehavior())
+        setupWith(this@ServicesListScreen.adapter)
       }
       VerticalLayout(MatchParent, MatchParent) {
         tag(LayoutLoading)
@@ -159,10 +160,6 @@ class ServicesListScreen : BaseScreen(), ServicesListView {
     CoreComponent.instance.getServicesListComponentFactory().create().providePresenter()
   }
   
-  override fun onInit() {
-    viewAs<RecyclerView>().setupWith(adapter)
-  }
-  
   override fun showSettingsIcon() {
     imageView(R.drawable.ic_settings).visible()
   }
@@ -177,7 +174,7 @@ class ServicesListScreen : BaseScreen(), ServicesListView {
   
   override fun showServicesList(list: List<ServiceModel>) {
     showView(viewAs<RecyclerView>())
-    adapter.changeListWithoutAnimation(list)
+    adapter.submitList(list)
   }
   
   override fun showDeleteDialog(serviceModel: ServiceModel) {

@@ -9,9 +9,13 @@ java {
 }
 
 dependencies {
-  implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+
+  def appDependencies = rootProject.ext.applicationDependencies
+  implementation appDependencies.kotlin
+  implementation appDependencies.coroutinesCore
   implementation "com.google.code.gson:gson:2.8.6"
   implementation "com.nulab-inc:zxcvbn:1.3.1"
 
-  testImplementation "junit:junit:4.13.2"
+  def testDependencies = rootProject.ext.testDependencies
+  testImplementation testDependencies.junit
 }

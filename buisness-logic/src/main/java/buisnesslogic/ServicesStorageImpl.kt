@@ -8,7 +8,7 @@ class ServicesStorageImpl(
   private val jsonConverter: JsonConverter
 ) : ServicesStorage {
   
-  override fun getServices(password: String): List<ServiceEntity> {
+  override suspend fun getServices(password: String): List<ServiceEntity> {
     val ciphertext = fileSaver.readTextFromFile()
     // Text in file should not be empty, because it was saved earlier
     require(ciphertext.isNotEmpty())
@@ -17,13 +17,13 @@ class ServicesStorageImpl(
     return getFromString(json)
   }
   
-  override fun saveService(password: String, serviceEntity: ServiceEntity) {
+  override suspend fun saveService(password: String, serviceEntity: ServiceEntity) {
     val servicesList = getServices(password).toMutableList()
     servicesList.add(serviceEntity)
     saveServicesToFile(servicesList, password)
   }
   
-  override fun updateService(password: String, serviceEntity: ServiceEntity) {
+  override suspend fun updateService(password: String, serviceEntity: ServiceEntity) {
     val servicesList = getServices(password).toMutableList()
     for (i in servicesList.indices) {
       if (serviceEntity.id == servicesList[i].id) {
@@ -34,7 +34,7 @@ class ServicesStorageImpl(
     saveServicesToFile(servicesList, password)
   }
   
-  override fun deleteService(password: String, serviceEntity: ServiceEntity) {
+  override suspend fun deleteService(password: String, serviceEntity: ServiceEntity) {
     val servicesInfoList = getServices(password).toMutableList()
     val oldSize = servicesInfoList.size
     removeServiceById(servicesInfoList, serviceEntity.id)

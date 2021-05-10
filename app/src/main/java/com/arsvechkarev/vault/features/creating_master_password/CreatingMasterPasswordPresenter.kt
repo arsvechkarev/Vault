@@ -5,13 +5,14 @@ import buisnesslogic.MasterPasswordHolder
 import buisnesslogic.PasswordChecker
 import buisnesslogic.PasswordStatus.OK
 import com.arsvechkarev.vault.core.BasePresenter
-import com.arsvechkarev.vault.core.Threader
+import com.arsvechkarev.vault.core.Dispatchers
 import com.arsvechkarev.vault.core.di.FeatureScope
 import com.arsvechkarev.vault.features.common.Screens
 import com.arsvechkarev.vault.features.common.UserAuthSaver
 import com.arsvechkarev.vault.features.creating_master_password.CreatingMasterPasswordScreenState.DIALOG_PASSWORD_STRENGTH
 import com.arsvechkarev.vault.features.creating_master_password.CreatingMasterPasswordScreenState.ENTERING_PASSWORD
 import com.arsvechkarev.vault.features.creating_master_password.CreatingMasterPasswordScreenState.REPEATING_PASSWORD
+import kotlinx.coroutines.launch
 import navigation.Router
 import javax.inject.Inject
 
@@ -21,8 +22,8 @@ class CreatingMasterPasswordPresenter @Inject constructor(
   private val masterPasswordChecker: MasterPasswordChecker,
   private val userAuthSaver: UserAuthSaver,
   private val router: Router,
-  threader: Threader
-) : BasePresenter<CreatingMasterPasswordView>(threader) {
+  dispatchers: Dispatchers
+) : BasePresenter<CreatingMasterPasswordView>(dispatchers) {
   
   private var state = ENTERING_PASSWORD
   private var previouslyEnteredPassword: String = ""
@@ -88,11 +89,13 @@ class CreatingMasterPasswordPresenter @Inject constructor(
   
   private fun finishAuthorization() {
     viewState.showFinishingAuthorization()
-    onBackgroundThread {
-      userAuthSaver.setUserIsAuthorized(true)
-      masterPasswordChecker.initializeEncryptedFile(previouslyEnteredPassword)
-      MasterPasswordHolder.setMasterPassword(previouslyEnteredPassword)
-      onMainThread { router.switchToNewRoot(Screens.ServicesListScreen) }
+    launch {
+      onBackgroundThread {
+        userAuthSaver.setUserIsAuthorized(true)
+        masterPasswordChecker.initializeEncryptedFile(previouslyEnteredPassword)
+        MasterPasswordHolder.setMasterPassword(previouslyEnteredPassword)
+      }
+      router.switchToNewRoot(Screens.ServicesListScreen)
     }
   }
 }

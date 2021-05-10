@@ -7,10 +7,9 @@ import android.graphics.Canvas
 import android.view.View
 import buisnesslogic.PasswordStrength
 import com.arsvechkarev.vault.core.extensions.Paint
-import com.arsvechkarev.vault.core.extensions.f
 import com.arsvechkarev.vault.viewbuilding.Colors
 import com.arsvechkarev.vault.viewdsl.AccelerateDecelerateInterpolator
-import com.arsvechkarev.vault.viewdsl.DURATION_DEFAULT
+import config.DurationsConfigurator
 
 class PasswordStrengthMeter(context: Context) : View(context) {
   
@@ -18,14 +17,14 @@ class PasswordStrengthMeter(context: Context) : View(context) {
   private var percentage = 0f
   private val paint = Paint(Colors.Transparent)
   private val colorAnimator = ValueAnimator().apply {
-    duration = DURATION_DEFAULT
+    duration = DurationsConfigurator.DurationDefault
     interpolator = AccelerateDecelerateInterpolator
     addUpdateListener {
       paint.color = it.animatedValue as Int
     }
   }
   private val percentageAnimator = ValueAnimator().apply {
-    duration = DURATION_DEFAULT
+    duration = DurationsConfigurator.DurationDefault
     interpolator = AccelerateDecelerateInterpolator
     addUpdateListener {
       percentage = it.animatedValue as Float
@@ -58,7 +57,7 @@ class PasswordStrengthMeter(context: Context) : View(context) {
   
   override fun onDraw(canvas: Canvas) {
     canvas.drawRoundRect(
-      0f, 0f, width * percentage, height.f, height / 2f, height / 2f, paint
+      0f, 0f, width * percentage, height.toFloat(), height / 2f, height / 2f, paint
     )
   }
 }

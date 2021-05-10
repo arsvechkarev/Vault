@@ -1,4 +1,4 @@
-package com.arsvechkarev.vault.core
+package com.arsvechkarev.vault.features.common
 
 import android.content.ClipData
 import android.content.ClipboardManager
@@ -6,7 +6,7 @@ import android.content.Context
 import com.arsvechkarev.vault.R
 import com.arsvechkarev.vault.viewdsl.getSystemService
 
-class AndroidClipboard(private val context: Context) : Clipboard {
+class ClipboardImpl(private val context: Context) : Clipboard {
   
   override fun copyPassword(password: String) {
     val clipboardManager = context.getSystemService<ClipboardManager>()

@@ -15,4 +15,9 @@ interface FileSaver {
    * Returns text from file. If file is not created, returns empty string
    */
   fun readTextFromFile(): String
+  
+  /**
+   * Deletes file. If file is already deleted, does nothing
+   */
+  fun deleteFile()
 }

@@ -1,4 +1,4 @@
-package com.arsvechkarev.vault.core
+package com.arsvechkarev.vault.features.common
 
 import android.content.Context
 import androidx.security.crypto.EncryptedFile
@@ -32,6 +32,10 @@ class EncryptionFileSaver(
     getEncryptedFile(context, file).openFileInput().use { stream ->
       return String(stream.readBytes(), charset)
     }
+  }
+  
+  override fun deleteFile() {
+    context.getFileStreamPath(filename).delete()
   }
   
   private fun getEncryptedFile(context: Context, file: File): EncryptedFile {

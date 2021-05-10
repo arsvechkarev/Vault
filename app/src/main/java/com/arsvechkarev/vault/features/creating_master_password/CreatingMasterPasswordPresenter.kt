@@ -5,10 +5,10 @@ import buisnesslogic.MasterPasswordHolder
 import buisnesslogic.PasswordChecker
 import buisnesslogic.PasswordStatus.OK
 import com.arsvechkarev.vault.core.BasePresenter
-import com.arsvechkarev.vault.core.Screens
 import com.arsvechkarev.vault.core.Threader
-import com.arsvechkarev.vault.core.UserAuthSaver
 import com.arsvechkarev.vault.core.di.FeatureScope
+import com.arsvechkarev.vault.features.common.Screens
+import com.arsvechkarev.vault.features.common.UserAuthSaver
 import com.arsvechkarev.vault.features.creating_master_password.CreatingMasterPasswordScreenState.DIALOG_PASSWORD_STRENGTH
 import com.arsvechkarev.vault.features.creating_master_password.CreatingMasterPasswordScreenState.ENTERING_PASSWORD
 import com.arsvechkarev.vault.features.creating_master_password.CreatingMasterPasswordScreenState.REPEATING_PASSWORD

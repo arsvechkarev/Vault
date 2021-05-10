@@ -11,6 +11,7 @@ object DurationsConfigurator {
   private var _medium = 500L
   private var _long = 800L
   private var _checkmark = 1300L
+  private var _snackbar = 1000L
   
   val DurationShortVibration get() = _shortVibration
   val DurationShort get() = _short
@@ -18,6 +19,7 @@ object DurationsConfigurator {
   val DurationMedium get() = _medium
   val DurationLong get() = _long
   val DurationCheckmark get() = _checkmark
+  val DurationSnackbar get() = _snackbar
   
   fun setDurations(
     shortVibration: Long = DurationShortVibration,
@@ -26,6 +28,7 @@ object DurationsConfigurator {
     medium: Long = DurationMedium,
     long: Long = DurationLong,
     checkmark: Long = DurationCheckmark,
+    snackbar: Long = DurationSnackbar,
   ) {
     _shortVibration = shortVibration
     _short = short
@@ -33,6 +36,7 @@ object DurationsConfigurator {
     _medium = medium
     _long = long
     _checkmark = checkmark
+    _snackbar = snackbar
   }
   
   fun resetDurations() {
@@ -42,5 +46,6 @@ object DurationsConfigurator {
     _medium = 0
     _long = 0
     _checkmark = 0
+    _snackbar = 0
   }
 }

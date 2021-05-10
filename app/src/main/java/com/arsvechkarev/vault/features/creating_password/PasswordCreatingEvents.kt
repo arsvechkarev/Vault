@@ -2,12 +2,12 @@ package com.arsvechkarev.vault.features.creating_password
 
 const val PasswordCreatingTag = "PasswordCreatingTag"
 
-abstract class PasswordCreatingEvents
+interface PasswordCreatingEvents
 
 /**
  * Reactions, i.e events that [PasswordCreatingScreen] sends and other screens can listen to
  */
-sealed class PasswordCreatingReactions : PasswordCreatingEvents() {
+sealed class PasswordCreatingReactions : PasswordCreatingEvents {
   
   /** Happens when user clicks on 'save' button */
   class OnSavePasswordButtonClicked(val password: String) : PasswordCreatingReactions()
@@ -19,7 +19,7 @@ sealed class PasswordCreatingReactions : PasswordCreatingEvents() {
 /**
  * Actions, i.e events that other screens send to [PasswordCreatingScreen]
  */
-sealed class PasswordCreatingActions : PasswordCreatingEvents() {
+sealed class PasswordCreatingActions : PasswordCreatingEvents {
   
   /**
    * Action that configures [PasswordCreatingScreen]

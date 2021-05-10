@@ -12,10 +12,9 @@ import android.view.View
 import androidx.core.content.ContextCompat
 import com.arsvechkarev.vault.R
 import com.arsvechkarev.vault.core.extensions.TEMP_RECT
-import com.arsvechkarev.vault.core.extensions.i
 import com.arsvechkarev.vault.viewbuilding.Colors
 import com.arsvechkarev.vault.viewdsl.AccelerateDecelerateInterpolator
-import com.arsvechkarev.vault.viewdsl.DURATION_SHORT
+import config.DurationsConfigurator
 
 class Checkmark(context: Context) : View(context) {
   
@@ -40,7 +39,7 @@ class Checkmark(context: Context) : View(context) {
   private var _drawBorder = false
   
   private val animator = ValueAnimator().apply {
-    duration = DURATION_SHORT
+    duration = DurationsConfigurator.DurationShort
     interpolator = AccelerateDecelerateInterpolator
     addUpdateListener {
       circlePaint.strokeWidth = it.animatedValue as Float
@@ -49,7 +48,7 @@ class Checkmark(context: Context) : View(context) {
   }
   
   private val borderAnimator = ValueAnimator().apply {
-    duration = DURATION_SHORT
+    duration = DurationsConfigurator.DurationShort
     interpolator = AccelerateDecelerateInterpolator
     addUpdateListener {
       borderPaint.strokeWidth = it.animatedValue as Float
@@ -146,10 +145,10 @@ class Checkmark(context: Context) : View(context) {
   
   private fun setCheckmarkBounds(rect: Rect) {
     rect.set(
-      (width / 2f - width * 0.4f).i,
-      (height / 2f - height * 0.4f).i,
-      (width / 2f + width * 0.4f).i,
-      (height / 2f + height * 0.4f).i
+      (width / 2f - width * 0.4f).toInt(),
+      (height / 2f - height * 0.4f).toInt(),
+      (width / 2f + width * 0.4f).toInt(),
+      (height / 2f + height * 0.4f).toInt()
     )
   }
   

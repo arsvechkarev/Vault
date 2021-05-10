@@ -1,4 +1,4 @@
-package com.arsvechkarev.vault.features.common.fingerprints
+package com.arsvechkarev.vault.features.common.biometrics
 
 import android.annotation.SuppressLint
 import android.content.Context

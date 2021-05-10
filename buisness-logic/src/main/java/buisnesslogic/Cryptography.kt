@@ -36,7 +36,7 @@ class Cryptography(
     val secretKey = SecretKeySpec(factory.generateSecret(spec).encoded, ALGORITHM)
     val cipher = Cipher.getInstance(CIPHER_TRANSFORMATION)
     cipher.init(Cipher.ENCRYPT_MODE, secretKey, IvParameterSpec(iv))
-    val encode = base64Coder.encode(cipher.doFinal(data.toByteArray()))
+    val encode = base64Coder.encode(cipher.doFinal(data.toByteArray(charset)))
     return encodedSalt + encodedIv + encode
   }
   
@@ -56,7 +56,7 @@ class Cryptography(
     val secretKey = SecretKeySpec(factory.generateSecret(spec).encoded, ALGORITHM)
     val cipher = Cipher.getInstance(CIPHER_TRANSFORMATION)
     cipher.init(Cipher.ENCRYPT_MODE, secretKey, IvParameterSpec(metaInfo.iv))
-    val encode = base64Coder.encode(cipher.doFinal(plaintext.toByteArray()))
+    val encode = base64Coder.encode(cipher.doFinal(plaintext.toByteArray(charset)))
     return metaInfo.encodedSalt + metaInfo.unpaddedIv + encode
   }
   
@@ -74,7 +74,7 @@ class Cryptography(
     val secretKey = SecretKeySpec(factory.generateSecret(spec).encoded, ALGORITHM)
     val cipher = Cipher.getInstance(CIPHER_TRANSFORMATION)
     cipher.init(Cipher.DECRYPT_MODE, secretKey, IvParameterSpec(metaInfo.iv))
-    return String(cipher.doFinal(base64Coder.decode(encryptedData)))
+    return String(cipher.doFinal(base64Coder.decode(encryptedData)), charset)
   }
   
   private fun getEncryptionMetaInfo(password: String, ciphertext: String): EncryptionMetaInfo {
@@ -93,7 +93,7 @@ class Cryptography(
   
   private fun getSaltBytesSize(password: String): Int {
     val sha256 = MessageDigest.getInstance(SHA_256)
-    val digest = sha256.digest(password.toByteArray())
+    val digest = sha256.digest(password.toByteArray(charset))
     sha256.reset()
     val randomNumber = seedRandomGenerator.generateNumber(digest, MAX_SALT_SIZE / 2)
     val size = MAX_SALT_SIZE / 2 + randomNumber
@@ -118,7 +118,8 @@ class Cryptography(
   )
   
   companion object {
-    
+  
+    private val charset = Charsets.UTF_8
     private const val ALGORITHM = "AES"
     private const val SECRET_KEY_ALGORITHM = "PBKDF2WithHmacSHA256"
     private const val CIPHER_TRANSFORMATION = "AES/CBC/PKCS5Padding"

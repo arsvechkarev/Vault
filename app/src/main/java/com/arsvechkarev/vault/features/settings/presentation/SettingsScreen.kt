@@ -21,6 +21,7 @@ import com.arsvechkarev.vault.viewdsl.Size.Companion.WrapContent
 import com.arsvechkarev.vault.viewdsl.backgroundColor
 import com.arsvechkarev.vault.viewdsl.constraints
 import com.arsvechkarev.vault.viewdsl.id
+import com.arsvechkarev.vault.viewdsl.margin
 import com.arsvechkarev.vault.viewdsl.margins
 import com.arsvechkarev.vault.viewdsl.onClick
 import com.arsvechkarev.vault.viewdsl.paddings
@@ -28,6 +29,7 @@ import com.arsvechkarev.vault.viewdsl.rippleBackground
 import com.arsvechkarev.vault.viewdsl.text
 import com.arsvechkarev.vault.viewdsl.textSize
 import com.arsvechkarev.vault.viewdsl.withViewBuilder
+import com.arsvechkarev.vault.views.Snackbar
 import navigation.BaseScreen
 
 class SettingsScreen : BaseScreen(), SettingsView {
@@ -89,7 +91,16 @@ class SettingsScreen : BaseScreen(), SettingsView {
           }
         }
       }
-      PasswordCheckingDialog()
+      PasswordCheckingDialog {
+        id(PasswordCheckingDialogId)
+      }
+      child<Snackbar>(MatchParent, WrapContent) {
+        id(SnackbarId)
+        margin(MarginDefault)
+        constraints {
+          bottomToBottomOf(parent)
+        }
+      }
     }
   }
   
@@ -104,6 +115,10 @@ class SettingsScreen : BaseScreen(), SettingsView {
     }
   }
   
+  override fun showAddedBiometricsSuccessfully() {
+    viewAs<Snackbar>(SnackbarId).show(R.string.text_biometrics_added)
+  }
+  
   override fun showPasswordCheckingDialog() {
     passwordCheckingDialog.show()
   }
@@ -114,11 +129,13 @@ class SettingsScreen : BaseScreen(), SettingsView {
   
   private companion object {
     
-    private val RootLayoutId = View.generateViewId()
-    private val ImageBackId = View.generateViewId()
-    private val TextTitleId = View.generateViewId()
-    private val LayoutUseFingerprintId = View.generateViewId()
-    private val TextUseFingerprintId = View.generateViewId()
-    private val SwitchUseFingerprintId = View.generateViewId()
+    val RootLayoutId = View.generateViewId()
+    val ImageBackId = View.generateViewId()
+    val TextTitleId = View.generateViewId()
+    val LayoutUseFingerprintId = View.generateViewId()
+    val TextUseFingerprintId = View.generateViewId()
+    val SwitchUseFingerprintId = View.generateViewId()
+    val PasswordCheckingDialogId = View.generateViewId()
+    val SnackbarId = View.generateViewId()
   }
 }

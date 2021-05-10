@@ -50,6 +50,7 @@ class MainActivity : BaseActivity() {
     window.decorView.systemUiVisibility = (SYSTEM_UI_FLAG_LAYOUT_STABLE
         or SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN)
     setContentView(mainActivityLayout)
+    CoreComponent.init(applicationContext, this)
     CoreComponent.instance.getMainComponentBuilder()
         .activity(this)
         .rootViewId(rootViewId)

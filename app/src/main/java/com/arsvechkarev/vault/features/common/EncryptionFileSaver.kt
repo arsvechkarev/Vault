@@ -34,6 +34,10 @@ class EncryptionFileSaver(
     }
   }
   
+  override fun deleteFile() {
+    context.getFileStreamPath(filename).delete()
+  }
+  
   private fun getEncryptedFile(context: Context, file: File): EncryptedFile {
     val encryptionScheme = EncryptedFile.FileEncryptionScheme.AES256_GCM_HKDF_4KB
     return EncryptedFile.Builder(context, file, masterKey, encryptionScheme).build()

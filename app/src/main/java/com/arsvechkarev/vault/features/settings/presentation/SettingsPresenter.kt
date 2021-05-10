@@ -1,15 +1,24 @@
 package com.arsvechkarev.vault.features.settings.presentation
 
-import com.arsvechkarev.vault.core.BasePresenterWithChannels
-import com.arsvechkarev.vault.core.Threader
+import android.annotation.SuppressLint
+import buisnesslogic.MasterPasswordHolder.masterPassword
+import com.arsvechkarev.vault.core.BaseCoroutinesPresenter
+import com.arsvechkarev.vault.core.Dispatchers
 import com.arsvechkarev.vault.core.communicators.Communicator
 import com.arsvechkarev.vault.core.di.FeatureScope
-import com.arsvechkarev.vault.features.common.fingerprints.SavedFingerprintChecker
+import com.arsvechkarev.vault.features.common.biometrics.BiometricsPrompt
+import com.arsvechkarev.vault.features.common.biometrics.BiometricsPromptEvents.Error
+import com.arsvechkarev.vault.features.common.biometrics.BiometricsPromptEvents.Failure
+import com.arsvechkarev.vault.features.common.biometrics.BiometricsPromptEvents.Success
+import com.arsvechkarev.vault.features.common.biometrics.BiometricsStorage
+import com.arsvechkarev.vault.features.common.biometrics.SavedFingerprintChecker
 import com.arsvechkarev.vault.features.password_checking.PasswordCheckingActions
 import com.arsvechkarev.vault.features.password_checking.PasswordCheckingEvents
 import com.arsvechkarev.vault.features.password_checking.PasswordCheckingReactions.PasswordCheckedSuccessfully
 import com.arsvechkarev.vault.features.password_checking.PasswordCheckingTag
+import kotlinx.coroutines.flow.collect
 import navigation.Router
+import timber.log.Timber
 import javax.inject.Inject
 import javax.inject.Named
 
@@ -18,20 +27,15 @@ class SettingsPresenter @Inject constructor(
   @Named(PasswordCheckingTag)
   private val passwordCheckingCommunicator: Communicator<PasswordCheckingEvents>,
   private val fingerprintChecker: SavedFingerprintChecker,
+  private val biometricsPrompt: BiometricsPrompt,
+  private val biometricsStorage: BiometricsStorage,
   private val router: Router,
-  threader: Threader
-) : BasePresenterWithChannels<SettingsView>(threader) {
+  dispatchers: Dispatchers,
+) : BaseCoroutinesPresenter<SettingsView>(dispatchers) {
   
   init {
-    subscribeToCommunicator(passwordCheckingCommunicator) { events ->
-      when (events) {
-        is PasswordCheckedSuccessfully -> {
-          passwordCheckingCommunicator.send(PasswordCheckingActions.HideDialog)
-          fingerprintChecker.setAuthorizationWithUserFingerAvailable(true)
-          viewState.showUseFingerprintForEnteringEnabled(true)
-        }
-      }
-    }
+    subscribeToBiometricsEvents()
+    subscribeToPasswordCheckingEvents()
   }
   
   override fun onFirstViewAttach() {
@@ -52,18 +56,54 @@ class SettingsPresenter @Inject constructor(
     }
   }
   
+  fun onBackClicked() {
+    router.goBack()
+  }
+  
   private fun reactToNewTogglingState(isChecked: Boolean) {
     if (isChecked) {
       passwordCheckingCommunicator.send(PasswordCheckingActions.ShowDialog)
       // Setting it to false temporarily, so that it doesn't show checked state before user entered password
       viewState.showUseFingerprintForEnteringEnabled(false)
     } else {
-      fingerprintChecker.setAuthorizationWithUserFingerAvailable(false)
-      viewState.showUseFingerprintForEnteringEnabled(false)
+      coroutine {
+        onIoThread { biometricsStorage.deleteAllFiles() }
+        fingerprintChecker.setAuthorizationWithUserFingerAvailable(false)
+        viewState.showUseFingerprintForEnteringEnabled(false)
+      }
     }
   }
   
-  fun onBackClicked() {
-    router.goBack()
+  private fun subscribeToPasswordCheckingEvents() {
+    subscribeToCommunicator(passwordCheckingCommunicator) { events ->
+      when (events) {
+        is PasswordCheckedSuccessfully -> {
+          biometricsPrompt.showEncryptingBiometricsPrompt()
+          passwordCheckingCommunicator.send(PasswordCheckingActions.HideDialog)
+        }
+      }
+    }
+  }
+  
+  @SuppressLint("NewApi")
+  private fun subscribeToBiometricsEvents() {
+    coroutine {
+      biometricsPrompt.biometricsEvents().collect { event ->
+        when (event) {
+          is Success -> {
+            onIoThread { biometricsStorage.encryptAndSaveData(masterPassword, event.result) }
+            fingerprintChecker.setAuthorizationWithUserFingerAvailable(true)
+            viewState.showUseFingerprintForEnteringEnabled(true)
+            viewState.showAddedBiometricsSuccessfully()
+          }
+          is Error -> {
+            Timber.d("Biometrics in SettingsPresenter error: ${event.errorString}")
+          }
+          is Failure -> {
+            Timber.d("Biometrics in SettingsPresenter failed")
+          }
+        }
+      }
+    }
   }
 }

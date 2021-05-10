@@ -1,47 +1,39 @@
 package com.arsvechkarev.vault.features.common
 
 import buisnesslogic.ServicesStorage
-import com.arsvechkarev.vault.core.Threader
 import com.arsvechkarev.vault.core.model.ServiceModel
 import com.arsvechkarev.vault.core.model.toServiceEntity
 import com.arsvechkarev.vault.core.model.toServiceModelList
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.SharedFlow
 import java.util.Locale
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class ServicesRepository @Inject constructor(
-  private val storage: ServicesStorage,
-  private val threader: Threader
-) {
+class ServicesListenableRepository @Inject constructor(private val storage: ServicesStorage) {
   
   private var servicesList: MutableList<ServiceModel> = ArrayList()
-  private var changeListeners = ArrayList<((list: List<ServiceModel>) -> Unit)>()
   
-  fun addChangeListener(listener: (list: List<ServiceModel>) -> Unit) {
-    changeListeners.add(listener)
-  }
+  private val _flow = MutableSharedFlow<List<ServiceModel>>()
+  val flow: SharedFlow<List<ServiceModel>> get() = _flow
   
-  fun removeChangeListener(listener: (list: List<ServiceModel>) -> Unit) {
-    changeListeners.remove(listener)
-  }
-  
-  fun getServices(password: String): List<ServiceModel> {
+  suspend fun getServices(password: String): List<ServiceModel> {
     if (servicesList.isEmpty()) {
       servicesList = storage.getServices(password).toServiceModelList().toMutableList()
       sortList()
     }
-    return servicesList
+    return ArrayList(servicesList)
   }
   
-  fun saveService(password: String, serviceModel: ServiceModel) {
+  suspend fun saveService(password: String, serviceModel: ServiceModel) {
     storage.saveService(password, serviceModel.toServiceEntity())
     servicesList.add(serviceModel)
     sortList()
-    notifyListeners()
+    notifySubscribers()
   }
   
-  fun updateService(password: String, serviceModel: ServiceModel) {
+  suspend fun updateService(password: String, serviceModel: ServiceModel) {
     storage.updateService(password, serviceModel.toServiceEntity())
     for (i in 0 until servicesList.size) {
       val currentServiceInfo = servicesList[i]
@@ -51,21 +43,19 @@ class ServicesRepository @Inject constructor(
       }
     }
     sortList()
-    notifyListeners()
+    notifySubscribers()
   }
   
-  fun deleteService(password: String, serviceModel: ServiceModel, notifyListeners: Boolean) {
+  suspend fun deleteService(password: String, serviceModel: ServiceModel, notifySubscribers: Boolean) {
     storage.deleteService(password, serviceModel.toServiceEntity())
     servicesList.remove(serviceModel)
-    if (notifyListeners) {
-      notifyListeners()
+    if (notifySubscribers) {
+      notifySubscribers()
     }
   }
   
-  private fun notifyListeners() {
-    threader.onMainThread {
-      changeListeners.forEach { it.invoke(servicesList) }
-    }
+  private suspend fun notifySubscribers() {
+    _flow.emit(ArrayList(servicesList))
   }
   
   private fun sortList() {

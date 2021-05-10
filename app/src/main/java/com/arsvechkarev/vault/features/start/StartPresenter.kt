@@ -3,7 +3,7 @@ package com.arsvechkarev.vault.features.start
 import android.annotation.SuppressLint
 import buisnesslogic.MasterPasswordChecker
 import buisnesslogic.MasterPasswordHolder
-import com.arsvechkarev.vault.core.BaseCoroutinesPresenter
+import com.arsvechkarev.vault.core.BasePresenter
 import com.arsvechkarev.vault.core.Dispatchers
 import com.arsvechkarev.vault.core.di.FeatureScope
 import com.arsvechkarev.vault.features.common.Screens
@@ -12,6 +12,7 @@ import com.arsvechkarev.vault.features.common.biometrics.BiometricsPromptEvents
 import com.arsvechkarev.vault.features.common.biometrics.BiometricsStorage
 import com.arsvechkarev.vault.features.common.biometrics.SavedFingerprintChecker
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 import navigation.Router
 import timber.log.Timber
 import javax.inject.Inject
@@ -24,7 +25,7 @@ class StartPresenter @Inject constructor(
   private val biometricsStorage: BiometricsStorage,
   private val router: Router,
   dispatchers: Dispatchers,
-) : BaseCoroutinesPresenter<StartView>(dispatchers) {
+) : BasePresenter<StartView>(dispatchers) {
   
   init {
     subscribeToBiometricsEvents()
@@ -41,7 +42,7 @@ class StartPresenter @Inject constructor(
   fun onEnteredPassword(password: String) {
     if (password.isBlank()) return
     viewState.showLoadingCheckingPassword()
-    coroutine {
+    launch {
       val isCorrect = onIoThread { masterPasswordChecker.isCorrect(password) }
       if (isCorrect) {
         MasterPasswordHolder.setMasterPassword(password)
@@ -55,7 +56,7 @@ class StartPresenter @Inject constructor(
   
   @SuppressLint("NewApi")
   private fun subscribeToBiometricsEvents() {
-    coroutine {
+    launch {
       biometricsPrompt.biometricsEvents().collect { event ->
         when (event) {
           is BiometricsPromptEvents.Success -> {

@@ -1,10 +1,8 @@
 package com.arsvechkarev.vault.core.di.modules
 
 import android.content.Context
-import com.arsvechkarev.vault.core.AndroidThreader
 import com.arsvechkarev.vault.core.DefaultDispatchers
 import com.arsvechkarev.vault.core.Dispatchers
-import com.arsvechkarev.vault.core.Threader
 import com.arsvechkarev.vault.core.di.ApplicationScope
 import dagger.Module
 import dagger.Provides
@@ -16,9 +14,6 @@ class CoreModule(private val context: Context) {
   
   @Provides
   fun provideDispatchers(): Dispatchers = DefaultDispatchers
-  
-  @Provides
-  fun provideThreader(): Threader = AndroidThreader
   
   @Provides
   fun provideContext(): Context = context

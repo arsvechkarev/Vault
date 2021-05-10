@@ -6,8 +6,7 @@ import buisnesslogic.GsonJsonConverter
 import buisnesslogic.JsonConverter
 import buisnesslogic.ServicesStorage
 import buisnesslogic.ServicesStorageImpl
-import com.arsvechkarev.vault.core.Threader
-import com.arsvechkarev.vault.features.common.ServicesRepository
+import com.arsvechkarev.vault.features.common.ServicesListenableRepository
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
@@ -33,10 +32,9 @@ object ServicesModule {
   @Provides
   @JvmStatic
   @Singleton
-  fun provideServicesRepository(
-    servicesStorage: ServicesStorage,
-    threader: Threader
-  ): ServicesRepository {
-    return ServicesRepository(servicesStorage, threader)
+  fun provideServicesListenableRepository(
+    servicesStorage: ServicesStorage
+  ): ServicesListenableRepository {
+    return ServicesListenableRepository(servicesStorage)
   }
 }

@@ -2,36 +2,35 @@ package com.arsvechkarev.vault.features.services_list.presentation
 
 import buisnesslogic.MasterPasswordHolder.masterPassword
 import com.arsvechkarev.vault.core.BasePresenter
-import com.arsvechkarev.vault.core.Threader
+import com.arsvechkarev.vault.core.Dispatchers
 import com.arsvechkarev.vault.core.di.FeatureScope
 import com.arsvechkarev.vault.core.model.ServiceModel
 import com.arsvechkarev.vault.features.common.Screens
-import com.arsvechkarev.vault.features.common.ServicesRepository
+import com.arsvechkarev.vault.features.common.ServicesListenableRepository
 import com.arsvechkarev.vault.features.common.biometrics.BiometricsAvailabilityChecker
+import kotlinx.coroutines.launch
 import navigation.Router
 import javax.inject.Inject
 
 @FeatureScope
 class ServicesListPresenter @Inject constructor(
-  private val servicesRepository: ServicesRepository,
+  private val servicesRepository: ServicesListenableRepository,
   private val biometricsAvailabilityChecker: BiometricsAvailabilityChecker,
   private val router: Router,
-  threader: Threader
-) : BasePresenter<ServicesListView>(threader) {
-  
-  private val listChangeListener: (List<ServiceModel>) -> Unit = { list ->
-    if (list.isNotEmpty()) {
-      viewState.showServicesList(list)
-    } else {
-      viewState.showNoServices()
-    }
-  }
+  dispatchers: Dispatchers
+) : BasePresenter<ServicesListView>(dispatchers) {
   
   override fun onFirstViewAttach() {
     if (biometricsAvailabilityChecker.isBiometricsSupported()) {
       viewState.showSettingsIcon()
     }
-    servicesRepository.addChangeListener(listChangeListener)
+    servicesRepository.flow.collectInPresenterScope { list ->
+      if (list.isNotEmpty()) {
+        viewState.showServicesList(list)
+      } else {
+        viewState.showNoServices()
+      }
+    }
     startLoadingPasswords()
   }
   
@@ -53,20 +52,22 @@ class ServicesListPresenter @Inject constructor(
   
   fun deleteService(serviceModel: ServiceModel) {
     viewState.showLoadingDeletingService()
-    onIoThread {
-      servicesRepository.deleteService(masterPassword, serviceModel, notifyListeners = false)
-      onMainThread { viewState.showDeletedService(serviceModel) }
+    launch {
+      onIoThread {
+        servicesRepository.deleteService(masterPassword, serviceModel, notifySubscribers = false)
+      }
+      viewState.showDeletedService(serviceModel)
     }
   }
   
   private fun startLoadingPasswords() {
-    onIoThread {
-      onMainThread { viewState.showLoading() }
-      val services = servicesRepository.getServices(masterPassword)
+    launch {
+      viewState.showLoading()
+      val services = onIoThread { servicesRepository.getServices(masterPassword) }
       if (services.isNotEmpty()) {
-        onMainThread { viewState.showServicesList(services) }
+        viewState.showServicesList(services)
       } else {
-        onMainThread { viewState.showNoServices() }
+        viewState.showNoServices()
       }
     }
   }

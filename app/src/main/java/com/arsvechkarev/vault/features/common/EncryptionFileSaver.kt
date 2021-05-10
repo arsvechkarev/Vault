@@ -15,22 +15,26 @@ class EncryptionFileSaver(
   private val charset = Charsets.UTF_8
   
   override fun saveTextToFile(text: String) {
-    val file = File(context.filesDir, filename)
-    file.delete()
-    val encryptedFile = getEncryptedFile(context, file)
-    encryptedFile.openFileOutput().use { stream ->
-      val bytes = text.toByteArray(charset)
-      stream.write(bytes)
+    synchronized(this) {
+      val file = File(context.filesDir, filename)
+      file.delete()
+      val encryptedFile = getEncryptedFile(context, file)
+      encryptedFile.openFileOutput().use { stream ->
+        val bytes = text.toByteArray(charset)
+        stream.write(bytes)
+      }
     }
   }
   
   override fun readTextFromFile(): String {
-    val file = context.getFileStreamPath(filename)
-    if (!file.exists()) {
-      return ""
-    }
-    getEncryptedFile(context, file).openFileInput().use { stream ->
-      return String(stream.readBytes(), charset)
+    synchronized(this) {
+      val file = context.getFileStreamPath(filename)
+      if (!file.exists()) {
+        return ""
+      }
+      getEncryptedFile(context, file).openFileInput().use { stream ->
+        return String(stream.readBytes(), charset)
+      }
     }
   }
   

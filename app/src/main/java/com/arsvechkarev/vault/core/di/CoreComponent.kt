@@ -1,11 +1,13 @@
 package com.arsvechkarev.vault.core.di
 
 import android.content.Context
+import androidx.fragment.app.FragmentActivity
+import com.arsvechkarev.vault.core.di.modules.ActivityModule
+import com.arsvechkarev.vault.core.di.modules.BiometricsModule
 import com.arsvechkarev.vault.core.di.modules.CommunicatorsModule
 import com.arsvechkarev.vault.core.di.modules.CoreModule
 import com.arsvechkarev.vault.core.di.modules.CryptographyModule
 import com.arsvechkarev.vault.core.di.modules.FileSaverModule
-import com.arsvechkarev.vault.core.di.modules.FingerprintsModule
 import com.arsvechkarev.vault.core.di.modules.MasterKeyModule
 import com.arsvechkarev.vault.core.di.modules.RouterModule
 import com.arsvechkarev.vault.core.di.modules.ServicesModule
@@ -35,12 +37,13 @@ import javax.inject.Singleton
 @Component(
   modules = [
     CoreModule::class,
+    ActivityModule::class,
     CommunicatorsModule::class,
     RouterModule::class,
     CryptographyModule::class,
     MasterKeyModule::class,
     FileSaverModule::class,
-    FingerprintsModule::class,
+    BiometricsModule::class,
     ServicesModule::class,
     CreatingMasterPasswordModule::class,
     PasswordCheckingModule::class,
@@ -77,9 +80,11 @@ interface CoreComponent {
   
   @Component.Builder
   interface Builder {
-    
+  
     fun coreModule(coreModule: CoreModule): Builder
-    
+  
+    fun activityModule(activityModule: ActivityModule): Builder
+  
     fun build(): CoreComponent
   }
   
@@ -87,10 +92,11 @@ interface CoreComponent {
     
     private var _instance: CoreComponent? = null
     val instance: CoreComponent get() = _instance!!
-    
-    fun init(applicationContext: Context) {
+  
+    fun init(applicationContext: Context, activity: FragmentActivity) {
       _instance = DaggerCoreComponent.builder()
           .coreModule(CoreModule(applicationContext))
+          .activityModule(ActivityModule(activity))
           .build()
     }
   }

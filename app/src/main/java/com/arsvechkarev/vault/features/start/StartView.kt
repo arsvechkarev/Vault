@@ -7,9 +7,11 @@ import moxy.viewstate.strategy.StateStrategyType
 @StateStrategyType(AddToEndSingleStrategy::class)
 interface StartView : MvpView {
   
-  fun showLoading()
+  fun showKeyboard()
   
-  fun showError()
+  fun showLoadingCheckingPassword()
   
-  fun showSuccess()
+  fun showFailureCheckingPassword()
+  
+  fun showSuccessCheckingPassword()
 }

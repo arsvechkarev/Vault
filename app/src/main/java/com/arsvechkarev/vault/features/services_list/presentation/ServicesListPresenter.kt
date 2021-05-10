@@ -7,14 +7,14 @@ import com.arsvechkarev.vault.core.di.FeatureScope
 import com.arsvechkarev.vault.core.model.ServiceModel
 import com.arsvechkarev.vault.features.common.Screens
 import com.arsvechkarev.vault.features.common.ServicesRepository
-import com.arsvechkarev.vault.features.common.fingerprints.FingerprintsAvailabilityChecker
+import com.arsvechkarev.vault.features.common.biometrics.BiometricsAvailabilityChecker
 import navigation.Router
 import javax.inject.Inject
 
 @FeatureScope
 class ServicesListPresenter @Inject constructor(
   private val servicesRepository: ServicesRepository,
-  private val fingerprintsAvailabilityChecker: FingerprintsAvailabilityChecker,
+  private val biometricsAvailabilityChecker: BiometricsAvailabilityChecker,
   private val router: Router,
   threader: Threader
 ) : BasePresenter<ServicesListView>(threader) {
@@ -28,7 +28,7 @@ class ServicesListPresenter @Inject constructor(
   }
   
   override fun onFirstViewAttach() {
-    if (fingerprintsAvailabilityChecker.areFingerprintsSupported()) {
+    if (biometricsAvailabilityChecker.isBiometricsSupported()) {
       viewState.showSettingsIcon()
     }
     servicesRepository.addChangeListener(listChangeListener)

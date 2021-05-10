@@ -9,6 +9,8 @@ interface SettingsView : MvpView {
   
   fun showUseFingerprintForEnteringEnabled(checked: Boolean)
   
+  fun showAddedBiometricsSuccessfully()
+  
   fun showPasswordCheckingDialog()
   
   fun hidePasswordCheckingDialog()

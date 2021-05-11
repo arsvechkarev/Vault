@@ -35,7 +35,9 @@ class StartPresenter @Inject constructor(
   override fun onFirstViewAttach() {
     super.onFirstViewAttach()
     if (fingerprintChecker.isAuthorizationWithUserFingerAvailable()) {
-      biometricsPrompt.showDecryptingBiometricsPrompt(biometricsStorage.getIv())
+      showBiometricsPrompt()
+    } else {
+      viewState.showKeyboard()
     }
   }
   
@@ -54,6 +56,18 @@ class StartPresenter @Inject constructor(
     }
   }
   
+  fun onFingerprintIconClicked() {
+    showBiometricsPrompt()
+  }
+  
+  private fun showBiometricsPrompt() {
+    launch {
+      viewState.hideFingerprintIcon()
+      val iv = onIoThread { biometricsStorage.getIv() }
+      biometricsPrompt.showDecryptingBiometricsPrompt(iv)
+    }
+  }
+  
   @SuppressLint("NewApi")
   private fun subscribeToBiometricsEvents() {
     launch {
@@ -63,8 +77,18 @@ class StartPresenter @Inject constructor(
             val masterPassword = onIoThread { biometricsStorage.getMasterPassword(event.result) }
             require(masterPassword.isNotEmpty())
             onEnteredPassword(masterPassword)
+            viewState.showStubPasswordInEditText()
+          }
+          is BiometricsPromptEvents.Lockout -> {
+            viewState.showTooManyAttemptsTryAgainLater()
+          }
+          is BiometricsPromptEvents.LockoutPermanent -> {
+            viewState.showPermanentLockout()
+            viewState.hideFingerprintIcon()
           }
           is BiometricsPromptEvents.Error -> {
+            viewState.showFingerprintIcon()
+            viewState.showKeyboard()
             Timber.d("Biometrics in StartPresenter error: ${event.errorString}")
           }
           is BiometricsPromptEvents.Failure -> {

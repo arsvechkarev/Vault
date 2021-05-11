@@ -41,24 +41,24 @@ abstract class BaseScreen : Screen, MvpDelegateHolder {
     return contextNonNull.getString(resId, *args)
   }
   
-  fun view(tag: Any): View {
-    if (viewsCache[tag] == null) {
-      if (tag is Int) {
-        viewsCache[tag] = viewNonNull.findViewById(tag)
+  fun view(tagOrId: Any): View {
+    if (viewsCache[tagOrId] == null) {
+      if (tagOrId is Int) {
+        viewsCache[tagOrId] = viewNonNull.findViewById(tagOrId)
       } else {
-        viewsCache[tag] = viewNonNull.findViewWithTag(tag)
+        viewsCache[tagOrId] = viewNonNull.findViewWithTag(tagOrId)
       }
     }
-    return viewsCache.getValue(tag)
+    return viewsCache.getValue(tagOrId)
   }
   
-  inline fun <reified T : View> viewAs(tag: Any = T::class.java.name): T {
-    return view(tag) as T
+  inline fun <reified T : View> viewAs(tagOrId: Any = T::class.java.name): T {
+    return view(tagOrId) as T
   }
   
-  fun imageView(tag: Any) = viewAs<ImageView>(tag)
+  fun imageView(tagOrId: Any) = viewAs<ImageView>(tagOrId)
   
-  fun textView(tag: Any) = viewAs<TextView>(tag)
+  fun textView(tagOrId: Any) = viewAs<TextView>(tagOrId)
   
-  fun editText(tag: Any) = viewAs<EditText>(tag)
+  fun editText(tagOrId: Any) = viewAs<EditText>(tagOrId)
 }

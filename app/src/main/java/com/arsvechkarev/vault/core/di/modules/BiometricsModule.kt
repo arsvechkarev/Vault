@@ -45,13 +45,13 @@ object BiometricsModule {
   
   @Provides
   @JvmStatic
-  @Singleton
   @RequiresApi(28)
   fun provideBiometricsPrompt(
+    appContext: Context,
     activity: FragmentActivity,
     @ApplicationScope coroutineScope: CoroutineScope
   ): BiometricsPrompt {
-    return BiometricsPromptImpl(activity, coroutineScope)
+    return BiometricsPromptImpl(appContext, activity, coroutineScope)
   }
   
   @Provides

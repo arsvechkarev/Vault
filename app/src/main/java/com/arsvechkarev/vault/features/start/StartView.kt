@@ -7,7 +7,17 @@ import moxy.viewstate.strategy.StateStrategyType
 @StateStrategyType(AddToEndSingleStrategy::class)
 interface StartView : MvpView {
   
+  fun showFingerprintIcon()
+  
+  fun hideFingerprintIcon()
+  
+  fun showStubPasswordInEditText()
+  
   fun showKeyboard()
+  
+  fun showTooManyAttemptsTryAgainLater()
+  
+  fun showPermanentLockout()
   
   fun showLoadingCheckingPassword()
   

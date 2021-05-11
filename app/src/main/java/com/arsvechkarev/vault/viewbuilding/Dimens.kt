@@ -35,6 +35,7 @@ object Dimens {
   val DividerHeight get() = adjustDivider(1.dp)
   val PasswordStrengthMeterHeight get() = adjust(6.dp)
   val ProgressBarSizeBig get() = adjust(60.dp)
+  val FingerprintIconSize get() = adjust(60.dp)
   val FabSize get() = adjust(60.dp)
   val HorizontalMarginPasswordsActionView get() = adjustHorizontal(24.dp)
   

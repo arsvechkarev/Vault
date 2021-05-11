@@ -72,6 +72,8 @@
   <string name="text_adding_biometrics_data">Adding biometrics data</string>
   <string name="text_enter_with_fingerprint">Enter using your fingerprint</string>
   <string name="text_biometrics_added">Biometrics successfully added!</string>
+  <string name="text_biometrics_try_again_later">You made too many attempts. Try again in 30 seconds</string>
+  <string name="text_biometrics_use_password">You made too many attempts. Use password instead</string>
   <string name="text_password_should_be_strong">
     If you want to have a strong, secure password, it should be at least 8 characters long. Also, it should
     contain numbers, uppercase and lowercase letters, and special symbols. And try to avoid common words and

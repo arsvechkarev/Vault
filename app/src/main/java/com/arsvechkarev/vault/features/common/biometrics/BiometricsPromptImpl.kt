@@ -1,5 +1,6 @@
 package com.arsvechkarev.vault.features.common.biometrics
 
+import android.content.Context
 import android.os.Build
 import android.security.keystore.KeyGenParameterSpec
 import android.security.keystore.KeyProperties
@@ -27,13 +28,14 @@ import javax.crypto.spec.IvParameterSpec
 
 @RequiresApi(Build.VERSION_CODES.P)
 class BiometricsPromptImpl(
-  private val activity: FragmentActivity,
+  private val context: Context,
+  activity: FragmentActivity,
   private val coroutineScope: CoroutineScope
 ) : BiometricsPrompt {
   
   private val eventsFlow = MutableSharedFlow<BiometricsPromptEvents>()
   
-  private val executor = ContextCompat.getMainExecutor(activity)
+  private val executor = ContextCompat.getMainExecutor(context)
   
   private val biometricPrompt = BiometricPrompt(activity, executor,
     object : BiometricPrompt.AuthenticationCallback() {
@@ -45,8 +47,11 @@ class BiometricsPromptImpl(
             ERROR_CANCELED, ERROR_USER_CANCELED, ERROR_NEGATIVE_BUTTON -> {
               eventsFlow.emit(BiometricsPromptEvents.Cancelled(errString))
             }
-            ERROR_LOCKOUT, ERROR_LOCKOUT_PERMANENT -> {
+            ERROR_LOCKOUT -> {
               eventsFlow.emit(BiometricsPromptEvents.Lockout(errString))
+            }
+            ERROR_LOCKOUT_PERMANENT -> {
+              eventsFlow.emit(BiometricsPromptEvents.LockoutPermanent(errString))
             }
             else -> eventsFlow.emit(BiometricsPromptEvents.Error(errString))
           }
@@ -78,20 +83,20 @@ class BiometricsPromptImpl(
     val cipher = getCipher()
     val secretKey = getSecretKey()
     cipher.init(Cipher.ENCRYPT_MODE, secretKey)
-    showPrompt(activity.getText(R.string.text_adding_biometrics_data), cipher)
+    showPrompt(context.getText(R.string.text_adding_biometrics_data), cipher)
   }
   
   override fun showDecryptingBiometricsPrompt(iv: ByteArray) {
     val cipher = getCipher()
     val secretKey = getSecretKey()
     cipher.init(Cipher.DECRYPT_MODE, secretKey, IvParameterSpec(iv))
-    showPrompt(activity.getText(R.string.text_enter_with_fingerprint), cipher)
+    showPrompt(context.getText(R.string.text_enter_with_fingerprint), cipher)
   }
   
   private fun showPrompt(title: CharSequence, cipher: Cipher) {
     val promptInfo = BiometricPrompt.PromptInfo.Builder()
         .setTitle(title)
-        .setNegativeButtonText(activity.getText(R.string.text_cancel))
+        .setNegativeButtonText(context.getText(R.string.text_cancel))
         .build()
     biometricPrompt.authenticate(promptInfo, BiometricPrompt.CryptoObject(cipher))
   }

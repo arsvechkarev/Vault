@@ -19,6 +19,9 @@ sealed class BiometricsPromptEvents {
   /** User made too many attempts and prompt was locked out */
   class Lockout(errorString: CharSequence) : Error(errorString)
   
+  /** User made way too many attempts and prompt was locked out permanently */
+  class LockoutPermanent(errorString: CharSequence) : Error(errorString)
+  
   /** Success with biometric prompt */
   class Success(val result: BiometricPrompt.AuthenticationResult) : BiometricsPromptEvents()
 }

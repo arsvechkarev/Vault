@@ -47,11 +47,8 @@ val Context.statusBarHeight: Int
 fun Context.showKeyboard() {
   val inputMethodManager =
       getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager?
-  inputMethodManager!!.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0)
-}
-
-fun Context.setSoftInputMode(mode: Int) {
-  (this as Activity).window.setSoftInputMode(mode)
+  val view = (this as? Activity)?.window?.decorView ?: View(this)
+  inputMethodManager!!.showSoftInput(view, 0)
 }
 
 fun Context.hideKeyboard() {
@@ -59,6 +56,10 @@ fun Context.hideKeyboard() {
       getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager?
   val token = (this as? Activity)?.window?.decorView?.windowToken ?: View(this).windowToken
   inputMethodManager!!.hideSoftInputFromWindow(token, 0)
+}
+
+fun Context.setSoftInputMode(mode: Int) {
+  (this as Activity).window.setSoftInputMode(mode)
 }
 
 @ColorInt

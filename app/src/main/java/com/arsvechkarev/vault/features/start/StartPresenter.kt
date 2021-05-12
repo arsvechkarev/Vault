@@ -62,7 +62,6 @@ class StartPresenter @Inject constructor(
   
   private fun showBiometricsPrompt() {
     launch {
-      viewState.hideFingerprintIcon()
       val iv = onIoThread { biometricsStorage.getIv() }
       biometricsPrompt.showDecryptingBiometricsPrompt(iv)
     }

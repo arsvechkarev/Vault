@@ -7,6 +7,14 @@ import com.arsvechkarev.vault.R
 import com.arsvechkarev.vault.core.di.CoreComponent
 import com.arsvechkarev.vault.core.extensions.moxyPresenter
 import com.arsvechkarev.vault.core.extensions.showToast
+import com.arsvechkarev.vault.core.mvi.MviView
+import com.arsvechkarev.vault.features.start.StartScreenSingleEvent.ClearEditText
+import com.arsvechkarev.vault.features.start.StartScreenSingleEvent.ShowEditTextStubPassword
+import com.arsvechkarev.vault.features.start.StartScreenSingleEvent.ShowPermanentLockout
+import com.arsvechkarev.vault.features.start.StartScreenSingleEvent.ShowTooManyAttemptsTryAgainLater
+import com.arsvechkarev.vault.features.start.StartScreenUserAction.OnEditTextStartTyping
+import com.arsvechkarev.vault.features.start.StartScreenUserAction.OnEnteredPassword
+import com.arsvechkarev.vault.features.start.StartScreenUserAction.OnFingerprintIconClicked
 import com.arsvechkarev.vault.viewbuilding.Colors
 import com.arsvechkarev.vault.viewbuilding.Dimens.FingerprintIconSize
 import com.arsvechkarev.vault.viewbuilding.Dimens.ImageLogoSize
@@ -27,6 +35,7 @@ import com.arsvechkarev.vault.viewdsl.hideKeyboard
 import com.arsvechkarev.vault.viewdsl.id
 import com.arsvechkarev.vault.viewdsl.image
 import com.arsvechkarev.vault.viewdsl.invisible
+import com.arsvechkarev.vault.viewdsl.isVisible
 import com.arsvechkarev.vault.viewdsl.margin
 import com.arsvechkarev.vault.viewdsl.marginHorizontal
 import com.arsvechkarev.vault.viewdsl.margins
@@ -35,14 +44,13 @@ import com.arsvechkarev.vault.viewdsl.showKeyboard
 import com.arsvechkarev.vault.viewdsl.text
 import com.arsvechkarev.vault.viewdsl.textColor
 import com.arsvechkarev.vault.viewdsl.textSize
-import com.arsvechkarev.vault.viewdsl.visible
 import com.arsvechkarev.vault.viewdsl.withViewBuilder
 import com.arsvechkarev.vault.views.EditTextPassword
 import com.arsvechkarev.vault.views.dialogs.LoadingDialog
 import com.arsvechkarev.vault.views.dialogs.loadingDialog
 import navigation.BaseScreen
 
-class StartScreen : BaseScreen(), StartView {
+class StartScreen : BaseScreen(), MviView<StartScreenState> {
   
   override fun buildLayout(context: Context) = context.withViewBuilder {
     RootConstraintLayout {
@@ -79,8 +87,8 @@ class StartScreen : BaseScreen(), StartView {
           id(EditTextPasswordId)
           marginHorizontal(MarginDefault)
           setHint(R.string.hint_enter_password)
-          onTextChanged { textView(TextErrorId).text("") }
-          onSubmit { text -> presenter.onEnteredPassword(text) }
+          onTextChanged { presenter.applyAction(OnEditTextStartTyping) }
+          onSubmit { text -> presenter.applyAction(OnEnteredPassword(text)) }
         }
       }
       ImageView(FingerprintIconSize, FingerprintIconSize) {
@@ -93,7 +101,7 @@ class StartScreen : BaseScreen(), StartView {
         image(R.drawable.ic_fingerprint)
         margin(MarginMedium)
         invisible()
-        onClick { presenter.onFingerprintIconClicked() }
+        onClick { presenter.applyAction(OnFingerprintIconClicked) }
       }
       TextView(MatchParent, WrapContent, style = ClickableButton()) {
         id(ContinueButtonId)
@@ -106,7 +114,7 @@ class StartScreen : BaseScreen(), StartView {
         }
         onClick {
           val text = viewAs<EditTextPassword>(EditTextPasswordId).getText()
-          presenter.onEnteredPassword(text)
+          presenter.applyAction(OnEnteredPassword(text))
         }
       }
       LoadingDialog()
@@ -117,42 +125,37 @@ class StartScreen : BaseScreen(), StartView {
     CoreComponent.instance.getStartComponentFactory().create().providePresenter()
   }
   
-  override fun showFingerprintIcon() {
-    view(FingerprintButtonId).visible()
+  override fun render(state: StartScreenState) {
+    if (state.isLoading) loadingDialog.show() else loadingDialog.hide()
+    view(FingerprintButtonId).isVisible = state.showFingerprintIcon
+    if (state.showPasswordIsIncorrect) {
+      textView(TextErrorId).text(R.string.text_password_is_incorrect)
+    } else {
+      textView(TextErrorId).text("")
+    }
+    if (state.showKeyboard) {
+      contextNonNull.showKeyboard()
+      viewAs<EditTextPassword>(EditTextPasswordId).requestEditTextFocus()
+    } else {
+      contextNonNull.hideKeyboard()
+    }
   }
   
-  override fun hideFingerprintIcon() {
-    view(FingerprintButtonId).invisible()
-  }
-  
-  override fun showStubPasswordInEditText() {
-    viewAs<EditTextPassword>(EditTextPasswordId).text(R.string.text_password_stub)
-  }
-  
-  override fun showKeyboard() {
-    viewAs<EditTextPassword>(EditTextPasswordId).requestEditTextFocus()
-    contextNonNull.showKeyboard()
-  }
-  
-  override fun showTooManyAttemptsTryAgainLater() {
-    showToast(R.string.text_biometrics_try_again_later)
-  }
-  
-  override fun showPermanentLockout() {
-    showToast(R.string.text_biometrics_use_password)
-  }
-  
-  override fun showLoadingCheckingPassword() {
-    loadingDialog.show()
-  }
-  
-  override fun showFailureCheckingPassword() {
-    textView(TextErrorId).text(R.string.text_password_is_incorrect)
-    loadingDialog.hide()
-  }
-  
-  override fun showSuccessCheckingPassword() {
-    contextNonNull.hideKeyboard()
+  override fun renderSingleEvent(event: Any) {
+    when (event as StartScreenSingleEvent) {
+      ClearEditText -> {
+        viewAs<EditTextPassword>(EditTextPasswordId).text("")
+      }
+      ShowPermanentLockout -> {
+        showToast(R.string.text_biometrics_use_password)
+      }
+      ShowTooManyAttemptsTryAgainLater -> {
+        showToast(R.string.text_biometrics_try_again_later)
+      }
+      ShowEditTextStubPassword -> {
+        viewAs<EditTextPassword>(EditTextPasswordId).text(R.string.text_password_stub)
+      }
+    }
   }
   
   private companion object {

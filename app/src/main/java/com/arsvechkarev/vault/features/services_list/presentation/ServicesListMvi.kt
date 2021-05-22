@@ -1,32 +1,32 @@
 package com.arsvechkarev.vault.features.services_list.presentation
 
+import com.arsvechkarev.vault.core.Result
 import com.arsvechkarev.vault.core.model.ServiceModel
-import com.arsvechkarev.vault.core.mvi.result.Result
 
-sealed class ServicesListAction {
+sealed class ServicesListScreenAction {
   
-  class UpdateData(val data: Result<List<ServiceModel>>) : ServicesListAction()
+  class UpdateData(val data: Result<List<ServiceModel>>) : ServicesListScreenAction()
   
-  class UpdateSettingsIcon(val showSettingsIcon: Boolean) : ServicesListAction()
+  class UpdateSettingsIcon(val showSettingsIcon: Boolean) : ServicesListScreenAction()
   
-  object DeletedService : ServicesListAction()
+  object DeletedService : ServicesListScreenAction()
 }
 
-sealed class ServicesListUserAction : ServicesListAction() {
+sealed class ServicesListScreenUserAction : ServicesListScreenAction() {
   
-  object StartInitialLoading : ServicesListUserAction()
+  object StartInitialLoading : ServicesListScreenUserAction()
   
-  object OnSettingsClicked : ServicesListUserAction()
+  object OnSettingsClicked : ServicesListScreenUserAction()
   
-  object OnFabClicked : ServicesListUserAction()
+  object OnFabClicked : ServicesListScreenUserAction()
   
-  class OnServiceItemClicked(val serviceModel: ServiceModel) : ServicesListUserAction()
+  class OnServiceItemClicked(val serviceModel: ServiceModel) : ServicesListScreenUserAction()
   
-  class OnServiceItemLongClicked(val serviceModel: ServiceModel) : ServicesListUserAction()
+  class OnServiceItemLongClicked(val serviceModel: ServiceModel) : ServicesListScreenUserAction()
   
-  object HideDeleteDialog : ServicesListUserAction()
+  object HideDeleteDialog : ServicesListScreenUserAction()
   
-  object OnAgreeToDeleteServiceClicked : ServicesListUserAction()
+  object OnAgreeToDeleteServiceClicked : ServicesListScreenUserAction()
 }
 
 data class ServicesListState(

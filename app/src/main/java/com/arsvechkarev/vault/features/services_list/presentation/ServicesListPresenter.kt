@@ -2,23 +2,23 @@ package com.arsvechkarev.vault.features.services_list.presentation
 
 import buisnesslogic.MasterPasswordHolder.masterPassword
 import com.arsvechkarev.vault.core.Dispatchers
+import com.arsvechkarev.vault.core.Result
 import com.arsvechkarev.vault.core.di.FeatureScope
 import com.arsvechkarev.vault.core.model.ServiceModel
 import com.arsvechkarev.vault.core.mvi.BaseMviPresenter
-import com.arsvechkarev.vault.core.mvi.result.Result
 import com.arsvechkarev.vault.features.common.Screens
 import com.arsvechkarev.vault.features.common.ServicesListenableRepository
 import com.arsvechkarev.vault.features.common.biometrics.BiometricsAvailabilityChecker
-import com.arsvechkarev.vault.features.services_list.presentation.ServicesListAction.DeletedService
-import com.arsvechkarev.vault.features.services_list.presentation.ServicesListAction.UpdateData
-import com.arsvechkarev.vault.features.services_list.presentation.ServicesListAction.UpdateSettingsIcon
-import com.arsvechkarev.vault.features.services_list.presentation.ServicesListUserAction.HideDeleteDialog
-import com.arsvechkarev.vault.features.services_list.presentation.ServicesListUserAction.OnAgreeToDeleteServiceClicked
-import com.arsvechkarev.vault.features.services_list.presentation.ServicesListUserAction.OnFabClicked
-import com.arsvechkarev.vault.features.services_list.presentation.ServicesListUserAction.OnServiceItemClicked
-import com.arsvechkarev.vault.features.services_list.presentation.ServicesListUserAction.OnServiceItemLongClicked
-import com.arsvechkarev.vault.features.services_list.presentation.ServicesListUserAction.OnSettingsClicked
-import com.arsvechkarev.vault.features.services_list.presentation.ServicesListUserAction.StartInitialLoading
+import com.arsvechkarev.vault.features.services_list.presentation.ServicesListScreenAction.DeletedService
+import com.arsvechkarev.vault.features.services_list.presentation.ServicesListScreenAction.UpdateData
+import com.arsvechkarev.vault.features.services_list.presentation.ServicesListScreenAction.UpdateSettingsIcon
+import com.arsvechkarev.vault.features.services_list.presentation.ServicesListScreenUserAction.HideDeleteDialog
+import com.arsvechkarev.vault.features.services_list.presentation.ServicesListScreenUserAction.OnAgreeToDeleteServiceClicked
+import com.arsvechkarev.vault.features.services_list.presentation.ServicesListScreenUserAction.OnFabClicked
+import com.arsvechkarev.vault.features.services_list.presentation.ServicesListScreenUserAction.OnServiceItemClicked
+import com.arsvechkarev.vault.features.services_list.presentation.ServicesListScreenUserAction.OnServiceItemLongClicked
+import com.arsvechkarev.vault.features.services_list.presentation.ServicesListScreenUserAction.OnSettingsClicked
+import com.arsvechkarev.vault.features.services_list.presentation.ServicesListScreenUserAction.StartInitialLoading
 import kotlinx.coroutines.launch
 import navigation.Router
 import javax.inject.Inject
@@ -29,8 +29,8 @@ class ServicesListPresenter @Inject constructor(
   biometricsAvailabilityChecker: BiometricsAvailabilityChecker,
   private val router: Router,
   dispatchers: Dispatchers
-) : BaseMviPresenter<ServicesListAction, ServicesListUserAction, ServicesListState>(
-  ServicesListUserAction::class,
+) : BaseMviPresenter<ServicesListScreenAction, ServicesListScreenUserAction, ServicesListState>(
+  ServicesListScreenUserAction::class,
   dispatchers
 ) {
   
@@ -53,7 +53,7 @@ class ServicesListPresenter @Inject constructor(
   
   override fun getDefaultState() = ServicesListState()
   
-  override fun reduce(action: ServicesListAction) = when (action) {
+  override fun reduce(action: ServicesListScreenAction) = when (action) {
     is StartInitialLoading -> {
       state.copy(result = Result.loading())
     }
@@ -78,7 +78,7 @@ class ServicesListPresenter @Inject constructor(
     else -> state
   }
   
-  override fun onSideEffect(action: ServicesListUserAction) {
+  override fun onSideEffect(action: ServicesListScreenUserAction) {
     when (action) {
       StartInitialLoading -> {
         startLoadingPasswords()

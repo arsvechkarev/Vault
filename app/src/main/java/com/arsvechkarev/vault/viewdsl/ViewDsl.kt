@@ -48,7 +48,11 @@ fun View.gone() {
   visibility = View.GONE
 }
 
-val View.isVisible get() = visibility == View.VISIBLE
+var View.isVisible
+  get() = visibility == View.VISIBLE
+  set(value) {
+    visibility = if (value) View.VISIBLE else View.INVISIBLE
+  }
 
 fun <T : View> T.size(
   width: Int,

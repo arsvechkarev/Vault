@@ -6,8 +6,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -15,7 +13,19 @@ import moxy.MvpPresenter
 import kotlin.reflect.KClass
 
 /**
- * @param State state
+ * Base presenter for mvi architecture
+ *
+ * [Action] action is basically anything that can happen in the program. It could represent program events,
+ * such as loaded data, error from server etc. It also can be user input, such as button clicks, edit text
+ * inputs, etc., Although for user inputs you should [UserAction], which is a subclass of [Action].
+ *
+ * [State] is a state of a program: Loaded data, dialogs, whether something is checked or selected, etc.
+ * What happens is actions are applied to current state, from which new state might emerge and become
+ * current state. This way the we always know what current state is and we control its transformations
+ *
+ * Whenever [UserAction] happens, state is transformed and method [onSideEffect] is called. This is
+ * our chance to react to user actions. Here we can initiate data loading, show dialogs, react to button
+ * clicks, etc.
  */
 abstract class BaseMviPresenter<Action : Any, UserAction : Action, State>(
   private val userActionClass: KClass<UserAction>,
@@ -27,26 +37,39 @@ abstract class BaseMviPresenter<Action : Any, UserAction : Action, State>(
   private var _state: State? = null
   val state: State get() = _state ?: getDefaultState()
   
-  private var _states = MutableSharedFlow<State>(replay = 1)
-  val states: SharedFlow<State>
-    get() = _states
-  
-  private var _singleEvents = MutableSharedFlow<Any>(replay = 1)
-  val singleEvents: SharedFlow<Any>
-    get() = _singleEvents
-  
+  /**
+   * Returns default state for this presenter
+   */
   abstract fun getDefaultState(): State
   
+  /**
+   * Processes [action] and applies it to state if necessary
+   */
   abstract fun reduce(action: Action): State
   
-  abstract fun onSideEffect(action: UserAction)
+  /**
+   * Called when [applyAction] was called with an instance of [UserAction]
+   */
+  open fun onSideEffect(action: UserAction) = Unit
   
+  /**
+   * Submits [action] to processing
+   */
   fun applyAction(action: Action) {
+    val oldState = _state
     _state = reduce(action)
-    viewState.render(state)
+    if (oldState != state) {
+      viewState.render(state)
+    }
     if (userActionClass.java.isInstance(action)) {
       @Suppress("UNCHECKED_CAST")
       onSideEffect(action as UserAction)
+    }
+  }
+  
+  fun showSingleEvent(event: Any) {
+    launch {
+      viewState.renderSingleEvent(event)
     }
   }
   

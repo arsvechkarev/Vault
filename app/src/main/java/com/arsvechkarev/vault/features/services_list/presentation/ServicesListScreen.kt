@@ -16,11 +16,11 @@ import com.arsvechkarev.vault.core.extensions.getDeleteMessageText
 import com.arsvechkarev.vault.core.extensions.ifTrue
 import com.arsvechkarev.vault.core.extensions.moxyPresenter
 import com.arsvechkarev.vault.core.mvi.MviView
-import com.arsvechkarev.vault.features.services_list.presentation.ServicesListUserAction.HideDeleteDialog
-import com.arsvechkarev.vault.features.services_list.presentation.ServicesListUserAction.OnFabClicked
-import com.arsvechkarev.vault.features.services_list.presentation.ServicesListUserAction.OnServiceItemClicked
-import com.arsvechkarev.vault.features.services_list.presentation.ServicesListUserAction.OnServiceItemLongClicked
-import com.arsvechkarev.vault.features.services_list.presentation.ServicesListUserAction.OnSettingsClicked
+import com.arsvechkarev.vault.features.services_list.presentation.ServicesListScreenUserAction.HideDeleteDialog
+import com.arsvechkarev.vault.features.services_list.presentation.ServicesListScreenUserAction.OnFabClicked
+import com.arsvechkarev.vault.features.services_list.presentation.ServicesListScreenUserAction.OnServiceItemClicked
+import com.arsvechkarev.vault.features.services_list.presentation.ServicesListScreenUserAction.OnServiceItemLongClicked
+import com.arsvechkarev.vault.features.services_list.presentation.ServicesListScreenUserAction.OnSettingsClicked
 import com.arsvechkarev.vault.viewbuilding.Colors
 import com.arsvechkarev.vault.viewbuilding.Dimens.FabSize
 import com.arsvechkarev.vault.viewbuilding.Dimens.IconPadding

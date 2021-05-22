@@ -3,14 +3,28 @@ package com.arsvechkarev.vault.features.start
 import android.annotation.SuppressLint
 import buisnesslogic.MasterPasswordChecker
 import buisnesslogic.MasterPasswordHolder
-import com.arsvechkarev.vault.core.BasePresenter
 import com.arsvechkarev.vault.core.Dispatchers
 import com.arsvechkarev.vault.core.di.FeatureScope
+import com.arsvechkarev.vault.core.mvi.BaseMviPresenter
 import com.arsvechkarev.vault.features.common.Screens
 import com.arsvechkarev.vault.features.common.biometrics.BiometricsPrompt
 import com.arsvechkarev.vault.features.common.biometrics.BiometricsPromptEvents
 import com.arsvechkarev.vault.features.common.biometrics.BiometricsStorage
 import com.arsvechkarev.vault.features.common.biometrics.SavedFingerprintChecker
+import com.arsvechkarev.vault.features.start.StartScreenAction.HideFingerprintIcon
+import com.arsvechkarev.vault.features.start.StartScreenAction.ShowBiometricsError
+import com.arsvechkarev.vault.features.start.StartScreenAction.ShowFailureCheckingPassword
+import com.arsvechkarev.vault.features.start.StartScreenAction.ShowFingerprintIcon
+import com.arsvechkarev.vault.features.start.StartScreenAction.ShowKeyboard
+import com.arsvechkarev.vault.features.start.StartScreenAction.ShowLoadingCheckingPassword
+import com.arsvechkarev.vault.features.start.StartScreenAction.ShowSuccessCheckingPassword
+import com.arsvechkarev.vault.features.start.StartScreenSingleEvent.ClearEditText
+import com.arsvechkarev.vault.features.start.StartScreenSingleEvent.ShowEditTextStubPassword
+import com.arsvechkarev.vault.features.start.StartScreenSingleEvent.ShowPermanentLockout
+import com.arsvechkarev.vault.features.start.StartScreenSingleEvent.ShowTooManyAttemptsTryAgainLater
+import com.arsvechkarev.vault.features.start.StartScreenUserAction.OnEditTextStartTyping
+import com.arsvechkarev.vault.features.start.StartScreenUserAction.OnEnteredPassword
+import com.arsvechkarev.vault.features.start.StartScreenUserAction.OnFingerprintIconClicked
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import navigation.Router
@@ -25,7 +39,10 @@ class StartPresenter @Inject constructor(
   private val biometricsStorage: BiometricsStorage,
   private val router: Router,
   dispatchers: Dispatchers,
-) : BasePresenter<StartView>(dispatchers) {
+) : BaseMviPresenter<StartScreenAction, StartScreenUserAction, StartScreenState>(
+  StartScreenUserAction::class,
+  dispatchers
+) {
   
   init {
     subscribeToBiometricsEvents()
@@ -33,30 +50,54 @@ class StartPresenter @Inject constructor(
   
   @SuppressLint("NewApi")
   override fun onFirstViewAttach() {
-    super.onFirstViewAttach()
     if (fingerprintChecker.isAuthorizationWithUserFingerAvailable()) {
       showBiometricsPrompt()
     } else {
-      viewState.showKeyboard()
+      applyAction(ShowKeyboard)
     }
   }
   
-  fun onEnteredPassword(password: String) {
+  override fun getDefaultState(): StartScreenState {
+    return StartScreenState()
+  }
+  
+  override fun reduce(action: StartScreenAction) = when (action) {
+    ShowFingerprintIcon -> state.copy(showFingerprintIcon = true)
+    HideFingerprintIcon -> state.copy(showFingerprintIcon = false)
+    ShowBiometricsError -> state.copy(showFingerprintIcon = true, showKeyboard = true)
+    ShowKeyboard -> state.copy(showKeyboard = true)
+    ShowLoadingCheckingPassword -> state.copy(isLoading = true)
+    ShowFailureCheckingPassword -> state.copy(isLoading = false, showPasswordIsIncorrect = true)
+    ShowSuccessCheckingPassword -> state.copy(isLoading = false, showKeyboard = false)
+    OnEditTextStartTyping -> state.copy(showPasswordIsIncorrect = false)
+    else -> state
+  }
+  
+  override fun onSideEffect(action: StartScreenUserAction) {
+    when (action) {
+      is OnEnteredPassword -> onEnteredPassword(action.password)
+      OnFingerprintIconClicked -> onFingerprintIconClicked()
+      else -> Unit
+    }
+  }
+  
+  private fun onEnteredPassword(password: String) {
     if (password.isBlank()) return
-    viewState.showLoadingCheckingPassword()
+    applyAction(ShowLoadingCheckingPassword)
     launch {
       val isCorrect = onIoThread { masterPasswordChecker.isCorrect(password) }
       if (isCorrect) {
         MasterPasswordHolder.setMasterPassword(password)
-        viewState.showSuccessCheckingPassword()
+        applyAction(ShowSuccessCheckingPassword)
         router.switchToNewRoot(Screens.ServicesListScreen)
       } else {
-        viewState.showFailureCheckingPassword()
+        showSingleEvent(ClearEditText)
+        applyAction(ShowFailureCheckingPassword)
       }
     }
   }
   
-  fun onFingerprintIconClicked() {
+  private fun onFingerprintIconClicked() {
     showBiometricsPrompt()
   }
   
@@ -75,19 +116,18 @@ class StartPresenter @Inject constructor(
           is BiometricsPromptEvents.Success -> {
             val masterPassword = onIoThread { biometricsStorage.getMasterPassword(event.result) }
             require(masterPassword.isNotEmpty())
+            showSingleEvent(ShowEditTextStubPassword)
             onEnteredPassword(masterPassword)
-            viewState.showStubPasswordInEditText()
           }
           is BiometricsPromptEvents.Lockout -> {
-            viewState.showTooManyAttemptsTryAgainLater()
+            showSingleEvent(ShowTooManyAttemptsTryAgainLater)
           }
           is BiometricsPromptEvents.LockoutPermanent -> {
-            viewState.showPermanentLockout()
-            viewState.hideFingerprintIcon()
+            showSingleEvent(ShowPermanentLockout)
+            applyAction(HideFingerprintIcon)
           }
           is BiometricsPromptEvents.Error -> {
-            viewState.showFingerprintIcon()
-            viewState.showKeyboard()
+            applyAction(ShowBiometricsError)
             Timber.d("Biometrics in StartPresenter error: ${event.errorString}")
           }
           is BiometricsPromptEvents.Failure -> {

@@ -15,7 +15,12 @@ import com.arsvechkarev.vault.core.di.CoreComponent
 import com.arsvechkarev.vault.core.extensions.getDeleteMessageText
 import com.arsvechkarev.vault.core.extensions.ifTrue
 import com.arsvechkarev.vault.core.extensions.moxyPresenter
-import com.arsvechkarev.vault.core.model.ServiceModel
+import com.arsvechkarev.vault.core.mvi.MviView
+import com.arsvechkarev.vault.features.services_list.presentation.ServicesListUserAction.HideDeleteDialog
+import com.arsvechkarev.vault.features.services_list.presentation.ServicesListUserAction.OnFabClicked
+import com.arsvechkarev.vault.features.services_list.presentation.ServicesListUserAction.OnServiceItemClicked
+import com.arsvechkarev.vault.features.services_list.presentation.ServicesListUserAction.OnServiceItemLongClicked
+import com.arsvechkarev.vault.features.services_list.presentation.ServicesListUserAction.OnSettingsClicked
 import com.arsvechkarev.vault.viewbuilding.Colors
 import com.arsvechkarev.vault.viewbuilding.Dimens.FabSize
 import com.arsvechkarev.vault.viewbuilding.Dimens.IconPadding
@@ -68,7 +73,7 @@ import com.arsvechkarev.vault.views.dialogs.LoadingDialog
 import com.arsvechkarev.vault.views.dialogs.loadingDialog
 import navigation.BaseScreen
 
-class ServicesListScreen : BaseScreen(), ServicesListView {
+class ServicesListScreen : BaseScreen(), MviView<ServicesListState> {
   
   override fun buildLayout(context: Context) = context.withViewBuilder {
     val viewUnderHeaderBehavior = ViewUnderHeaderBehavior()
@@ -89,7 +94,7 @@ class ServicesListScreen : BaseScreen(), ServicesListView {
           layoutGravity(CENTER_VERTICAL or END)
           padding(IconPadding)
           circleRippleBackground()
-          onClick { presenter.onSettingsIconClicked() }
+          onClick { presenter.applyAction(OnSettingsClicked) }
         }
       }
       RecyclerView(MatchParent, WrapContent) {
@@ -142,7 +147,7 @@ class ServicesListScreen : BaseScreen(), ServicesListView {
         image(R.drawable.ic_plus)
         layoutGravity(BOTTOM or END)
         rippleBackground(Colors.Ripple, Colors.Accent, cornerRadius = FabSize)
-        onClick { presenter.onNewServiceClicked() }
+        onClick { presenter.applyAction(OnFabClicked) }
       }
       InfoDialog()
       LoadingDialog()
@@ -151,8 +156,8 @@ class ServicesListScreen : BaseScreen(), ServicesListView {
   
   private val adapter by lazy {
     ServicesListAdapter(
-      onItemClick = { presenter.onServiceItemClicked(it) },
-      onItemLongClick = { presenter.onServiceLongItemClicked(it) }
+      onItemClick = { presenter.applyAction(OnServiceItemClicked(it)) },
+      onItemLongClick = { presenter.applyAction(OnServiceItemLongClicked(it)) }
     )
   }
   
@@ -160,38 +165,33 @@ class ServicesListScreen : BaseScreen(), ServicesListView {
     CoreComponent.instance.getServicesListComponentFactory().create().providePresenter()
   }
   
-  override fun showSettingsIcon() {
-    imageView(R.drawable.ic_settings).visible()
-  }
-  
-  override fun showLoading() {
-    showView(view(LayoutLoading))
-  }
-  
-  override fun showNoServices() {
-    showView(view(LayoutNoPasswords))
-  }
-  
-  override fun showServicesList(list: List<ServiceModel>) {
-    showView(viewAs<RecyclerView>())
-    adapter.submitList(list)
-  }
-  
-  override fun showDeleteDialog(serviceModel: ServiceModel) {
-    infoDialog.showWithDeleteAndCancelOption(
-      R.string.text_delete_service, getDeleteMessageText(serviceModel.serviceName),
-      onDeleteClicked = { presenter.deleteService(serviceModel) }
-    )
-  }
-  
-  override fun showLoadingDeletingService() {
-    infoDialog.hide()
-    loadingDialog.show()
-  }
-  
-  override fun showDeletedService(serviceModel: ServiceModel) {
-    adapter.removeItem(serviceModel)
-    loadingDialog.hide()
+  override fun render(state: ServicesListState) {
+    if (state.showSettingsIcon) {
+      imageView(R.drawable.ic_settings).visible()
+    }
+    state.result?.handle {
+      onLoading { showView(view(LayoutLoading)) }
+      onEmpty { showView(view(LayoutNoPasswords)) }
+      onSuccess { list ->
+        showView(viewAs<RecyclerView>())
+        adapter.submitList(list)
+      }
+    }
+    val deleteDialog = state.deleteDialog
+    if (deleteDialog != null) {
+      infoDialog.showWithDeleteAndCancelOption(
+        R.string.text_delete_service, getDeleteMessageText(deleteDialog.serviceModel.serviceName),
+        onDeleteClicked = { presenter.deleteService(deleteDialog.serviceModel) }
+      )
+      infoDialog.onHide = { presenter.applyAction(HideDeleteDialog) }
+    } else {
+      infoDialog.hide()
+    }
+    if (state.showDeletionLoadingDialog) {
+      loadingDialog.show()
+    } else {
+      loadingDialog.hide()
+    }
   }
   
   private fun showView(layout: View) {

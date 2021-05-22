@@ -15,8 +15,8 @@ class ServicesListenableRepository @Inject constructor(private val storage: Serv
   
   private var servicesList: MutableList<ServiceModel> = ArrayList()
   
-  private val _flow = MutableSharedFlow<List<ServiceModel>>()
-  val flow: SharedFlow<List<ServiceModel>> get() = _flow
+  private val _servicesFlow = MutableSharedFlow<List<ServiceModel>>()
+  val servicesFlow: SharedFlow<List<ServiceModel>> get() = _servicesFlow
   
   suspend fun getServices(password: String): List<ServiceModel> {
     if (servicesList.isEmpty()) {
@@ -55,7 +55,7 @@ class ServicesListenableRepository @Inject constructor(private val storage: Serv
   }
   
   private suspend fun notifySubscribers() {
-    _flow.emit(ArrayList(servicesList))
+    _servicesFlow.emit(ArrayList(servicesList))
   }
   
   private fun sortList() {

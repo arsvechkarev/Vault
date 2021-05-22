@@ -62,12 +62,6 @@ class ServicesListAdapter(
     )
   }
   
-  fun removeItem(serviceModel: ServiceModel) {
-    val list = ArrayList(currentList)
-    list.remove(serviceModel)
-    submitList(list)
-  }
-  
   private companion object {
     
     const val ItemServiceInfoImage = "ItemServiceInfoImage"

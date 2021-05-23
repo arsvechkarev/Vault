@@ -16,9 +16,7 @@ interface BaseTextWatcher : TextWatcher {
 }
 
 fun EditText.setMaxLength(max: Int) {
-  val filterArray = arrayOfNulls<InputFilter>(1)
-  filterArray[0] = InputFilter.LengthFilter(max)
-  filters = filterArray
+  filters += arrayOf(InputFilter.LengthFilter(max))
 }
 
 fun EditText.onTextChanged(block: (text: String) -> Unit) {

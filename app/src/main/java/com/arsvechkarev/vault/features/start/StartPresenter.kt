@@ -18,11 +18,10 @@ import com.arsvechkarev.vault.features.start.StartScreenAction.ShowFingerprintIc
 import com.arsvechkarev.vault.features.start.StartScreenAction.ShowKeyboard
 import com.arsvechkarev.vault.features.start.StartScreenAction.ShowLoadingCheckingPassword
 import com.arsvechkarev.vault.features.start.StartScreenAction.ShowSuccessCheckingPassword
-import com.arsvechkarev.vault.features.start.StartScreenSingleEvent.ClearEditText
 import com.arsvechkarev.vault.features.start.StartScreenSingleEvent.ShowEditTextStubPassword
 import com.arsvechkarev.vault.features.start.StartScreenSingleEvent.ShowPermanentLockout
 import com.arsvechkarev.vault.features.start.StartScreenSingleEvent.ShowTooManyAttemptsTryAgainLater
-import com.arsvechkarev.vault.features.start.StartScreenUserAction.OnEditTextStartTyping
+import com.arsvechkarev.vault.features.start.StartScreenUserAction.OnEditTextTyping
 import com.arsvechkarev.vault.features.start.StartScreenUserAction.OnEnteredPassword
 import com.arsvechkarev.vault.features.start.StartScreenUserAction.OnFingerprintIconClicked
 import kotlinx.coroutines.flow.collect
@@ -69,7 +68,7 @@ class StartPresenter @Inject constructor(
     ShowLoadingCheckingPassword -> state.copy(isLoading = true)
     ShowFailureCheckingPassword -> state.copy(isLoading = false, showPasswordIsIncorrect = true)
     ShowSuccessCheckingPassword -> state.copy(isLoading = false, showKeyboard = false)
-    OnEditTextStartTyping -> state.copy(showPasswordIsIncorrect = false)
+    OnEditTextTyping -> state.copy(showPasswordIsIncorrect = false)
     else -> state
   }
   
@@ -91,7 +90,6 @@ class StartPresenter @Inject constructor(
         applyAction(ShowSuccessCheckingPassword)
         router.switchToNewRoot(Screens.ServicesListScreen)
       } else {
-        showSingleEvent(ClearEditText)
         applyAction(ShowFailureCheckingPassword)
       }
     }

@@ -89,7 +89,7 @@ interface CoreComponent {
   }
   
   companion object {
-    
+  
     private var _instance: CoreComponent? = null
     val instance: CoreComponent get() = _instance!!
   
@@ -98,6 +98,10 @@ interface CoreComponent {
           .coreModule(CoreModule(applicationContext))
           .activityModule(ActivityModule(activity))
           .build()
+    }
+  
+    fun clear() {
+      _instance = null
     }
   }
 }

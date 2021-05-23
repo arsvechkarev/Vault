@@ -4,17 +4,34 @@ import buisnesslogic.MasterPasswordChecker
 import buisnesslogic.MasterPasswordHolder
 import buisnesslogic.PasswordChecker
 import buisnesslogic.PasswordStatus.OK
-import com.arsvechkarev.vault.core.BasePresenter
 import com.arsvechkarev.vault.core.Dispatchers
 import com.arsvechkarev.vault.core.di.FeatureScope
+import com.arsvechkarev.vault.core.mvi.BaseMviPresenter
 import com.arsvechkarev.vault.features.common.Screens
 import com.arsvechkarev.vault.features.common.UserAuthSaver
-import com.arsvechkarev.vault.features.creating_master_password.CreatingMasterPasswordScreenState.DIALOG_PASSWORD_STRENGTH
-import com.arsvechkarev.vault.features.creating_master_password.CreatingMasterPasswordScreenState.ENTERING_PASSWORD
-import com.arsvechkarev.vault.features.creating_master_password.CreatingMasterPasswordScreenState.REPEATING_PASSWORD
+import com.arsvechkarev.vault.features.creating_master_password.CreatingMasterPasswordScreenActions.PasswordEnteringStateChanged
+import com.arsvechkarev.vault.features.creating_master_password.CreatingMasterPasswordScreenActions.ShowPasswordsDontMatch
+import com.arsvechkarev.vault.features.creating_master_password.CreatingMasterPasswordScreenActions.ShowPasswordsMatch
+import com.arsvechkarev.vault.features.creating_master_password.CreatingMasterPasswordScreenActions.UpdatePasswordStatus
+import com.arsvechkarev.vault.features.creating_master_password.CreatingMasterPasswordScreenActions.UpdatePasswordStrength
+import com.arsvechkarev.vault.features.creating_master_password.CreatingMasterPasswordScreenUserActions.OnBackButtonClicked
+import com.arsvechkarev.vault.features.creating_master_password.CreatingMasterPasswordScreenUserActions.OnBackPressed
+import com.arsvechkarev.vault.features.creating_master_password.CreatingMasterPasswordScreenUserActions.OnContinueClicked
+import com.arsvechkarev.vault.features.creating_master_password.CreatingMasterPasswordScreenUserActions.OnInitialPasswordTyping
+import com.arsvechkarev.vault.features.creating_master_password.CreatingMasterPasswordScreenUserActions.OnRepeatPasswordTyping
+import com.arsvechkarev.vault.features.creating_master_password.CreatingMasterPasswordScreenUserActions.RequestHidePasswordStrengthDialog
+import com.arsvechkarev.vault.features.creating_master_password.CreatingMasterPasswordScreenUserActions.RequestShowPasswordStrengthDialog
+import com.arsvechkarev.vault.features.creating_master_password.CreatingMasterPasswordSingleEvents.FinishingAuthorization
+import com.arsvechkarev.vault.features.creating_master_password.CreatingMasterPasswordSingleEvents.HideErrorText
+import com.arsvechkarev.vault.features.creating_master_password.PasswordEnteringState.INITIAL
+import com.arsvechkarev.vault.features.creating_master_password.PasswordEnteringState.REPEATING
 import kotlinx.coroutines.launch
 import navigation.Router
 import javax.inject.Inject
+
+typealias Actions = CreatingMasterPasswordScreenActions
+typealias UserActions = CreatingMasterPasswordScreenUserActions
+typealias State = CreatingMasterPasswordScreenState
 
 @FeatureScope
 class CreatingMasterPasswordPresenter @Inject constructor(
@@ -23,77 +40,79 @@ class CreatingMasterPasswordPresenter @Inject constructor(
   private val userAuthSaver: UserAuthSaver,
   private val router: Router,
   dispatchers: Dispatchers
-) : BasePresenter<CreatingMasterPasswordView>(dispatchers) {
+) : BaseMviPresenter<Actions, UserActions, State>(UserActions::class, dispatchers) {
   
-  private var state = ENTERING_PASSWORD
-  private var previouslyEnteredPassword: String = ""
-  
-  fun computePasswordStrength(password: String) {
-    val strength = passwordChecker.checkStrength(password)
-    viewState.showPasswordStrength(strength)
+  override fun getDefaultState(): State {
+    return State()
   }
   
-  fun onShowPasswordStrengthDialog() {
-    viewState.showPasswordStrengthDialog()
-    state = DIALOG_PASSWORD_STRENGTH
+  override fun reduce(action: Actions) = when (action) {
+    is OnInitialPasswordTyping -> state.copy(initialPassword = action.password)
+    is OnRepeatPasswordTyping -> state.copy(repeatedPassword = action.password)
+    is UpdatePasswordStatus -> state.copy(passwordStatus = action.passwordStatus)
+    is UpdatePasswordStrength -> state.copy(passwordStrength = action.passwordStrength)
+    is PasswordEnteringStateChanged -> state.copy(passwordEnteringState = action.state)
+    is ShowPasswordsMatch -> state.copy(passwordsMatch = true)
+    is ShowPasswordsDontMatch -> state.copy(passwordsMatch = false)
+    RequestShowPasswordStrengthDialog -> state.copy(showPasswordStrengthDialog = true)
+    RequestHidePasswordStrengthDialog -> state.copy(showPasswordStrengthDialog = false)
+    else -> state
   }
   
-  fun onHidePasswordStrengthDialog() {
-    viewState.hidePasswordStrengthDialog()
-    state = ENTERING_PASSWORD
-  }
-  
-  fun handleBackPress(): Boolean {
-    return when (state) {
-      ENTERING_PASSWORD -> false
-      DIALOG_PASSWORD_STRENGTH -> {
-        viewState.hidePasswordStrengthDialog()
-        state = ENTERING_PASSWORD
-        true
+  override fun onSideEffect(action: UserActions) {
+    when (action) {
+      is OnInitialPasswordTyping -> {
+        val strength = passwordChecker.checkStrength(action.password)
+        applyAction(UpdatePasswordStrength(strength))
+        showSingleEvent(HideErrorText)
       }
-      REPEATING_PASSWORD -> {
-        viewState.switchToEnterPasswordState()
-        state = ENTERING_PASSWORD
-        true
+      is OnRepeatPasswordTyping -> {
+        showSingleEvent(HideErrorText)
       }
+      OnBackPressed, OnBackButtonClicked -> {
+        if (state.showPasswordStrengthDialog) {
+          applyAction(RequestHidePasswordStrengthDialog)
+        } else {
+          when (state.passwordEnteringState) {
+            INITIAL -> router.goBack()
+            REPEATING -> applyAction(PasswordEnteringStateChanged(INITIAL))
+          }
+        }
+      }
+      OnContinueClicked -> {
+        when (state.passwordEnteringState) {
+          INITIAL -> onEnteredPassword(state.initialPassword)
+          REPEATING -> onRepeatedPassword(state.repeatedPassword)
+        }
+      }
+      else -> Unit
     }
   }
   
-  fun onBackButtonClick() {
-    if (state == REPEATING_PASSWORD) {
-      state = ENTERING_PASSWORD
-      viewState.switchToEnterPasswordState()
-    }
-  }
-  
-  fun onEnteredPassword(password: String) {
-    require(state == ENTERING_PASSWORD)
+  private fun onEnteredPassword(password: String) {
     val passwordStatus = passwordChecker.validate(password)
+    applyAction(UpdatePasswordStatus(passwordStatus))
     if (passwordStatus == OK) {
-      state = REPEATING_PASSWORD
-      previouslyEnteredPassword = password
-      viewState.switchToRepeatPasswordState()
-    } else {
-      viewState.showPasswordProblem(passwordStatus)
+      applyAction(PasswordEnteringStateChanged(REPEATING))
     }
   }
   
-  fun onRepeatedPassword(password: String) {
-    require(state == REPEATING_PASSWORD)
-    if (previouslyEnteredPassword != "" && password == previouslyEnteredPassword) {
+  private fun onRepeatedPassword(password: String) {
+    if (state.initialPassword != "" && password == state.initialPassword) {
+      applyAction(ShowPasswordsMatch)
       finishAuthorization()
     } else {
-      viewState.showPasswordsDontMatch()
+      applyAction(ShowPasswordsDontMatch)
     }
   }
   
   private fun finishAuthorization() {
-    viewState.showFinishingAuthorization()
+    showSingleEvent(FinishingAuthorization)
     launch {
       onBackgroundThread {
         userAuthSaver.setUserIsAuthorized(true)
-        masterPasswordChecker.initializeEncryptedFile(previouslyEnteredPassword)
-        MasterPasswordHolder.setMasterPassword(previouslyEnteredPassword)
+        masterPasswordChecker.initializeEncryptedFile(state.initialPassword)
+        MasterPasswordHolder.setMasterPassword(state.initialPassword)
       }
       router.switchToNewRoot(Screens.ServicesListScreen)
     }

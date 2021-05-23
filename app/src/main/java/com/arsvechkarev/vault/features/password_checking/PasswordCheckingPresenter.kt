@@ -1,13 +1,17 @@
 package com.arsvechkarev.vault.features.password_checking
 
 import buisnesslogic.MasterPasswordChecker
-import com.arsvechkarev.vault.core.BasePresenter
 import com.arsvechkarev.vault.core.Dispatchers
 import com.arsvechkarev.vault.core.communicators.FlowCommunicator
 import com.arsvechkarev.vault.features.password_checking.PasswordCheckingActions.HideDialog
 import com.arsvechkarev.vault.features.password_checking.PasswordCheckingActions.ShowDialog
 import com.arsvechkarev.vault.features.password_checking.PasswordCheckingReactions.PasswordCheckedSuccessfully
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import moxy.MvpPresenter
 import javax.inject.Inject
 import javax.inject.Named
 
@@ -15,8 +19,10 @@ class PasswordCheckingPresenter @Inject constructor(
   @Named(PasswordCheckingTag)
   private val passwordCheckingCommunicator: FlowCommunicator<PasswordCheckingEvents>,
   private val masterPasswordChecker: MasterPasswordChecker,
-  dispatchers: Dispatchers,
-) : BasePresenter<PasswordCheckingView>(dispatchers) {
+  private val dispatchers: Dispatchers,
+) : MvpPresenter<PasswordCheckingView>(), CoroutineScope {
+  
+  override val coroutineContext = dispatchers.Main + SupervisorJob()
   
   private var view: PasswordCheckingView? = null
   
@@ -31,7 +37,9 @@ class PasswordCheckingPresenter @Inject constructor(
   fun checkPassword(password: String) {
     view?.showPasswordCheckingLoading()
     launch {
-      val isPasswordCorrect = onIoThread { masterPasswordChecker.isCorrect(password) }
+      val isPasswordCorrect = withContext(dispatchers.IO) {
+        masterPasswordChecker.isCorrect(password)
+      }
       view?.showPasswordCheckingFinished()
       if (isPasswordCorrect) {
         passwordCheckingCommunicator.send(PasswordCheckedSuccessfully)
@@ -47,10 +55,12 @@ class PasswordCheckingPresenter @Inject constructor(
   }
   
   private fun subscribeToPasswordCheckingActions() {
-    passwordCheckingCommunicator.events.collectInPresenterScope { events ->
-      when (events) {
-        is ShowDialog -> view?.showDialog()
-        is HideDialog -> view?.hideDialog()
+    launch {
+      passwordCheckingCommunicator.events.collect { events ->
+        when (events) {
+          is ShowDialog -> view?.showDialog()
+          is HideDialog -> view?.hideDialog()
+        }
       }
     }
   }

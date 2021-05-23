@@ -21,7 +21,7 @@ sealed class StartScreenUserAction : StartScreenAction() {
   
   class OnEnteredPassword(val password: String) : StartScreenUserAction()
   
-  object OnEditTextStartTyping : StartScreenUserAction()
+  object OnEditTextTyping : StartScreenUserAction()
   
   object OnFingerprintIconClicked : StartScreenUserAction()
 }
@@ -33,8 +33,6 @@ sealed class StartScreenSingleEvent {
   object ShowPermanentLockout : StartScreenSingleEvent()
   
   object ShowEditTextStubPassword : StartScreenSingleEvent()
-  
-  object ClearEditText : StartScreenSingleEvent()
 }
 
 data class StartScreenState(

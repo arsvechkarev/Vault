@@ -9,7 +9,7 @@ import moxy.viewstate.strategy.StateStrategyType
 @StateStrategyType(AddToEndSingleStrategy::class)
 interface CreatingMasterPasswordView : MvpView {
   
-  fun showPasswordProblem(passwordStatus: PasswordStatus)
+  fun showPasswordStatus(passwordStatus: PasswordStatus)
   
   fun showPasswordStrength(strength: PasswordStrength?)
   

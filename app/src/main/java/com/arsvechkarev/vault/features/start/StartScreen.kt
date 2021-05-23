@@ -8,11 +8,10 @@ import com.arsvechkarev.vault.core.di.CoreComponent
 import com.arsvechkarev.vault.core.extensions.moxyPresenter
 import com.arsvechkarev.vault.core.extensions.showToast
 import com.arsvechkarev.vault.core.mvi.MviView
-import com.arsvechkarev.vault.features.start.StartScreenSingleEvent.ClearEditText
 import com.arsvechkarev.vault.features.start.StartScreenSingleEvent.ShowEditTextStubPassword
 import com.arsvechkarev.vault.features.start.StartScreenSingleEvent.ShowPermanentLockout
 import com.arsvechkarev.vault.features.start.StartScreenSingleEvent.ShowTooManyAttemptsTryAgainLater
-import com.arsvechkarev.vault.features.start.StartScreenUserAction.OnEditTextStartTyping
+import com.arsvechkarev.vault.features.start.StartScreenUserAction.OnEditTextTyping
 import com.arsvechkarev.vault.features.start.StartScreenUserAction.OnEnteredPassword
 import com.arsvechkarev.vault.features.start.StartScreenUserAction.OnFingerprintIconClicked
 import com.arsvechkarev.vault.viewbuilding.Colors
@@ -87,7 +86,7 @@ class StartScreen : BaseScreen(), MviView<StartScreenState> {
           id(EditTextPasswordId)
           marginHorizontal(MarginDefault)
           setHint(R.string.hint_enter_password)
-          onTextChanged { presenter.applyAction(OnEditTextStartTyping) }
+          onTextChanged { presenter.applyAction(OnEditTextTyping) }
           onSubmit { text -> presenter.applyAction(OnEnteredPassword(text)) }
         }
       }
@@ -143,9 +142,6 @@ class StartScreen : BaseScreen(), MviView<StartScreenState> {
   
   override fun renderSingleEvent(event: Any) {
     when (event as StartScreenSingleEvent) {
-      ClearEditText -> {
-        viewAs<EditTextPassword>(EditTextPasswordId).text("")
-      }
       ShowPermanentLockout -> {
         showToast(R.string.text_biometrics_use_password)
       }

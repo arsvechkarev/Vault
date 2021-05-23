@@ -100,6 +100,7 @@ class MainActivity : BaseActivity() {
   override fun onDestroy() {
     super.onDestroy()
     navigator.releaseScreens()
+    CoreComponent.clear()
   }
   
   private companion object {

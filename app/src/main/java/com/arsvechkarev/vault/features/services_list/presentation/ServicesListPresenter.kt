@@ -67,7 +67,7 @@ class ServicesListPresenter @Inject constructor(
       state.copy(deleteDialog = DeleteDialog(action.serviceModel))
     }
     OnAgreeToDeleteServiceClicked -> {
-      state.copy(deleteDialog = null, showDeletionLoadingDialog = true)
+      state.copy(showDeletionLoadingDialog = true)
     }
     HideDeleteDialog -> {
       state.copy(deleteDialog = null)
@@ -101,10 +101,11 @@ class ServicesListPresenter @Inject constructor(
     }
   }
   
-  fun deleteService(serviceModel: ServiceModel) {
+  private fun deleteService(serviceModel: ServiceModel) {
     launch {
+      applyAction(HideDeleteDialog)
       onIoThread {
-        servicesRepository.deleteService(masterPassword, serviceModel, notifySubscribers = false)
+        servicesRepository.deleteService(masterPassword, serviceModel, notifySubscribers = true)
       }
       applyAction(DeletedService)
     }

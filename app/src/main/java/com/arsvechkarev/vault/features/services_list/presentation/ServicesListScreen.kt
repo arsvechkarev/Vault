@@ -17,6 +17,7 @@ import com.arsvechkarev.vault.core.extensions.ifTrue
 import com.arsvechkarev.vault.core.extensions.moxyPresenter
 import com.arsvechkarev.vault.core.mvi.MviView
 import com.arsvechkarev.vault.features.services_list.presentation.ServicesListScreenUserAction.HideDeleteDialog
+import com.arsvechkarev.vault.features.services_list.presentation.ServicesListScreenUserAction.OnAgreeToDeleteServiceClicked
 import com.arsvechkarev.vault.features.services_list.presentation.ServicesListScreenUserAction.OnFabClicked
 import com.arsvechkarev.vault.features.services_list.presentation.ServicesListScreenUserAction.OnServiceItemClicked
 import com.arsvechkarev.vault.features.services_list.presentation.ServicesListScreenUserAction.OnServiceItemLongClicked
@@ -181,7 +182,7 @@ class ServicesListScreen : BaseScreen(), MviView<ServicesListState> {
     if (deleteDialog != null) {
       infoDialog.showWithDeleteAndCancelOption(
         R.string.text_delete_service, getDeleteMessageText(deleteDialog.serviceModel.serviceName),
-        onDeleteClicked = { presenter.deleteService(deleteDialog.serviceModel) }
+        onDeleteClicked = { presenter.applyAction(OnAgreeToDeleteServiceClicked) }
       )
       infoDialog.onHide = { presenter.applyAction(HideDeleteDialog) }
     } else {

@@ -11,7 +11,6 @@ import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import moxy.MvpPresenter
 import javax.inject.Inject
 import javax.inject.Named
 
@@ -20,7 +19,7 @@ class PasswordCheckingPresenter @Inject constructor(
   private val passwordCheckingCommunicator: FlowCommunicator<PasswordCheckingEvents>,
   private val masterPasswordChecker: MasterPasswordChecker,
   private val dispatchers: Dispatchers,
-) : MvpPresenter<PasswordCheckingView>(), CoroutineScope {
+) : CoroutineScope {
   
   override val coroutineContext = dispatchers.Main + SupervisorJob()
   
@@ -30,7 +29,7 @@ class PasswordCheckingPresenter @Inject constructor(
     subscribeToPasswordCheckingActions()
   }
   
-  override fun attachView(view: PasswordCheckingView) {
+  fun attachView(view: PasswordCheckingView) {
     this.view = view
   }
   
@@ -50,7 +49,6 @@ class PasswordCheckingPresenter @Inject constructor(
   }
   
   fun detachView() {
-    super.onDestroy()
     view = null
   }
   

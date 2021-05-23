@@ -1,4 +1,4 @@
-package com.arsvechkarev.vault.features.settings.presentation
+package com.arsvechkarev.vault.features.settings
 
 import moxy.MvpView
 import moxy.viewstate.strategy.AddToEndSingleStrategy

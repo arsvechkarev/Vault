@@ -13,10 +13,10 @@ import com.arsvechkarev.vault.features.creating_password.PasswordCreatingActions
 import com.arsvechkarev.vault.features.creating_password.PasswordCreatingActions.ExitScreen
 import com.arsvechkarev.vault.features.creating_password.PasswordCreatingActions.ShowAcceptPasswordDialog
 import com.arsvechkarev.vault.features.creating_password.PasswordCreatingActions.ShowLoading
+import com.arsvechkarev.vault.features.creating_password.PasswordCreatingCommunicator
 import com.arsvechkarev.vault.features.creating_password.PasswordCreatingEvents
 import com.arsvechkarev.vault.features.creating_password.PasswordCreatingReactions.OnNewPasswordAccepted
 import com.arsvechkarev.vault.features.creating_password.PasswordCreatingReactions.OnSavePasswordButtonClicked
-import com.arsvechkarev.vault.features.creating_password.PasswordCreatingTag
 import com.arsvechkarev.vault.features.info.InfoScreenState.DELETING_DIALOG
 import com.arsvechkarev.vault.features.info.InfoScreenState.EDITING_NAME_OR_USERNAME_OR_EMAIL
 import com.arsvechkarev.vault.features.info.InfoScreenState.INITIAL
@@ -24,11 +24,10 @@ import com.arsvechkarev.vault.features.info.InfoScreenState.LOADING
 import kotlinx.coroutines.launch
 import navigation.Router
 import javax.inject.Inject
-import javax.inject.Named
 
 @FeatureScope
 class InfoPresenter @Inject constructor(
-  @Named(PasswordCreatingTag)
+  @PasswordCreatingCommunicator
   private val passwordCreatingCommunicator: FlowCommunicator<PasswordCreatingEvents>,
   private val servicesRepository: ServicesListenableRepository,
   private val clipboard: Clipboard,

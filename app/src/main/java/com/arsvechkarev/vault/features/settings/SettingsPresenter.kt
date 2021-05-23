@@ -1,4 +1,4 @@
-package com.arsvechkarev.vault.features.settings.presentation
+package com.arsvechkarev.vault.features.settings
 
 import android.annotation.SuppressLint
 import buisnesslogic.MasterPasswordHolder.masterPassword

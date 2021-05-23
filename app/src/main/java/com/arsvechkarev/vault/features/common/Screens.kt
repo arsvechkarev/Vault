@@ -28,5 +28,5 @@ object Screens {
   
   val PasswordCreatingScreen = Screen { PasswordCreatingScreen::class }
   
-  val SettingsScreen = Screen { com.arsvechkarev.vault.features.settings.presentation.SettingsScreen::class }
+  val SettingsScreen = Screen { com.arsvechkarev.vault.features.settings.SettingsScreen::class }
 }

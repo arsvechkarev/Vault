@@ -26,8 +26,8 @@ import com.arsvechkarev.vault.features.password_checking.PasswordCheckingCompone
 import com.arsvechkarev.vault.features.password_checking.PasswordCheckingModule
 import com.arsvechkarev.vault.features.services_list.di.ServicesListComponent
 import com.arsvechkarev.vault.features.services_list.di.ServicesListModule
-import com.arsvechkarev.vault.features.settings.di.SettingsComponent
-import com.arsvechkarev.vault.features.settings.di.SettingsModule
+import com.arsvechkarev.vault.features.settings.SettingsComponent
+import com.arsvechkarev.vault.features.settings.SettingsModule
 import com.arsvechkarev.vault.features.start.StartComponent
 import com.arsvechkarev.vault.features.start.StartModule
 import dagger.Component

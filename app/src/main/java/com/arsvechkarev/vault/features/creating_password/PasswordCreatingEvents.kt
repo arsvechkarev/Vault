@@ -1,6 +1,10 @@
 package com.arsvechkarev.vault.features.creating_password
 
-const val PasswordCreatingTag = "PasswordCreatingTag"
+import javax.inject.Qualifier
+
+@Qualifier
+@Retention
+annotation class PasswordCreatingCommunicator
 
 interface PasswordCreatingEvents
 

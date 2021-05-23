@@ -6,10 +6,7 @@ import android.graphics.Color
 import android.graphics.PorterDuff.Mode.SRC_ATOP
 import android.graphics.PorterDuffColorFilter
 import android.graphics.Typeface
-import android.text.InputFilter
-import android.text.InputFilter.LengthFilter
 import android.util.TypedValue
-import android.widget.EditText
 import android.widget.TextView
 import androidx.annotation.DimenRes
 import androidx.annotation.DrawableRes
@@ -55,6 +52,10 @@ inline fun TextView.text(@StringRes resId: Int) {
 
 inline fun TextView.text(text: CharSequence) {
   setText(text)
+}
+
+inline fun TextView.clearText() {
+  text = null
 }
 
 inline fun TextView.textColor(color: Int) {

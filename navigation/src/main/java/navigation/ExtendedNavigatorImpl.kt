@@ -49,7 +49,7 @@ class ExtendedNavigatorImpl(
   }
   
   override fun handleGoBack(): Boolean {
-    if (screensStack.isEmpty()) return true
+    if (screensStack.isEmpty()) return false
     val screenOnTop = screensStack.last()
     val screenHandlerOnTop = screenHandlersCache.getValue(screenOnTop)
     if (screenHandlerOnTop.handleBackPress()) {
@@ -235,23 +235,25 @@ class ExtendedNavigatorImpl(
   }
   
   private fun dump() {
-    val stack = buildString {
-      append("Screens stack:\n")
-      screensStack.forEachIndexed { i, screenKey ->
-        append("\r$i -> $screenKey\n")
+    if (BuildConfig.DEBUG) {
+      val stack = buildString {
+        append("Screens stack:\n")
+        screensStack.forEachIndexed { i, screenKey ->
+          append("\r$i -> $screenKey\n")
+        }
       }
-    }
-    val cache = buildString {
-      append("Screens in cache:\n")
-      screenHandlersCache.forEach { (screenKey, _) ->
-        append("\r").append("$screenKey\n")
+      val cache = buildString {
+        append("Screens in cache:\n")
+        screenHandlersCache.forEach { (screenKey, _) ->
+          append("\r").append("$screenKey\n")
+        }
       }
+      Log.d("ExtendedNavigatorImpl", "=====================")
+      Log.d("ExtendedNavigatorImpl", stack)
+      Log.d("ExtendedNavigatorImpl", "")
+      Log.d("ExtendedNavigatorImpl", cache)
+      Log.d("ExtendedNavigatorImpl", "=====================")
     }
-    Log.d("ExtendedNavigatorImpl", "=====================")
-    Log.d("ExtendedNavigatorImpl", stack)
-    Log.d("ExtendedNavigatorImpl", "")
-    Log.d("ExtendedNavigatorImpl", cache)
-    Log.d("ExtendedNavigatorImpl", "=====================")
   }
   
   companion object {

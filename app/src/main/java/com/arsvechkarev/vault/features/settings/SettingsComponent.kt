@@ -1,7 +1,6 @@
-package com.arsvechkarev.vault.features.settings.di
+package com.arsvechkarev.vault.features.settings
 
 import com.arsvechkarev.vault.core.di.FeatureScope
-import com.arsvechkarev.vault.features.settings.presentation.SettingsPresenter
 import dagger.Module
 import dagger.Subcomponent
 

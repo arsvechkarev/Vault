@@ -29,11 +29,10 @@ import com.arsvechkarev.vault.features.creating_password.PasswordCreatingState.S
 import kotlinx.coroutines.launch
 import navigation.Router
 import javax.inject.Inject
-import javax.inject.Named
 
 @FeatureScope
 class PasswordCreatingPresenter @Inject constructor(
-  @Named(PasswordCreatingTag)
+  @PasswordCreatingCommunicator
   private val passwordCreatingCommunicator: FlowCommunicator<PasswordCreatingEvents>,
   private val passwordChecker: PasswordChecker,
   private val passwordGenerator: PasswordGenerator,

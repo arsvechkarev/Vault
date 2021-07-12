@@ -5,6 +5,7 @@ package buisnesslogic.model
  * english letters
  */
 enum class PasswordCharacteristics {
+  
   /**
    * Password includes uppercase english letters
    */

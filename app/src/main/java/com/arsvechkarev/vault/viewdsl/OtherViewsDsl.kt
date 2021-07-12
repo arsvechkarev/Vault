@@ -3,6 +3,7 @@ package com.arsvechkarev.vault.viewdsl
 import android.R.attr.state_checked
 import android.content.res.ColorStateList
 import android.graphics.drawable.Drawable
+import android.widget.CompoundButton
 import android.widget.ImageView
 import android.widget.SeekBar
 import androidx.annotation.DrawableRes
@@ -32,14 +33,18 @@ inline fun SeekBar.onProgressChanged(crossinline block: (progress: Int) -> Unit)
     override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
       block(progress)
     }
-    
+  
     override fun onStartTrackingTouch(seekBar: SeekBar?) {
     }
-    
+  
     override fun onStopTrackingTouch(seekBar: SeekBar?) {
     }
-    
+  
   })
+}
+
+fun CompoundButton.setCheckedSafe(checked: Boolean) {
+  if (isChecked != checked) isChecked = checked
 }
 
 fun SwitchCompat.setColors(

@@ -15,7 +15,7 @@ class PasswordGeneratorImpl(private val random: SecureRandom) : PasswordGenerato
   
   override fun generatePassword(
     length: Int,
-    characteristics: Collection<PasswordCharacteristics>
+    characteristics: Set<PasswordCharacteristics>
   ): String {
     val array = CharArray(length)
     val generators = getGeneratorsFrom(characteristics)

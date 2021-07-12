@@ -1,20 +1,20 @@
 package busnesslogic
 
-import buisnesslogic.Cryptography
+import buisnesslogic.CryptographyImpl
 import buisnesslogic.base64.JavaBase64Coder
 import buisnesslogic.random.SeedRandomGeneratorImpl
 import org.junit.Assert.assertEquals
 import org.junit.Test
 
-class CryptographyTest {
+class CryptographyImplTest {
   
-  private val cryptography = Cryptography(JavaBase64Coder, SeedRandomGeneratorImpl)
+  private val cryptography = CryptographyImpl(JavaBase64Coder, SeedRandomGeneratorImpl)
   
   @Test
   fun `Encrypting and decrypting data`() {
     val password = "ko)du28:0=_"
     val plaintext = "this is super secret data"
-  
+    
     val ciphertext = cryptography.encryptForTheFirstTime(password, plaintext)
     val decryptedText = cryptography.decryptData(password, ciphertext)
   

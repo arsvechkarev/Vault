@@ -1,6 +1,7 @@
 package com.arsvechkarev.vault.core.di.modules
 
 import buisnesslogic.Cryptography
+import buisnesslogic.CryptographyImpl
 import buisnesslogic.base64.Base64Coder
 import buisnesslogic.base64.JavaBase64Coder
 import buisnesslogic.random.SeedRandomGenerator
@@ -27,6 +28,6 @@ object CryptographyModule {
     base64Coder: Base64Coder,
     seedRandomGenerator: SeedRandomGenerator
   ): Cryptography {
-    return Cryptography(base64Coder, seedRandomGenerator)
+    return CryptographyImpl(base64Coder, seedRandomGenerator)
   }
 }

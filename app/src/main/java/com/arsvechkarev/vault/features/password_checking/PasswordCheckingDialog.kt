@@ -96,16 +96,18 @@ class PasswordCheckingDialog(
   
   override fun showDialog() {
     show()
-    post {
-      context.showKeyboard()
-    }
     viewAs<EditTextPassword>().requestEditTextFocus()
+    postDelayed({
+      context.showKeyboard()
+    }, 100)
   }
   
   override fun hideDialog() {
     hide()
-    viewAs<EditTextPassword>().text("")
     context.hideKeyboard()
+    post {
+      viewAs<EditTextPassword>().text("")
+    }
   }
   
   override fun showPasswordCheckingLoading() {

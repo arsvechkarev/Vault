@@ -12,5 +12,5 @@ interface PasswordGenerator {
    *
    * @see PasswordCharacteristics
    */
-  fun generatePassword(length: Int, characteristics: Collection<PasswordCharacteristics>): String
+  fun generatePassword(length: Int, characteristics: Set<PasswordCharacteristics>): String
 }

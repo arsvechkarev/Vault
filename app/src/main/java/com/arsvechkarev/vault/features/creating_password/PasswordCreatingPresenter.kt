@@ -28,6 +28,7 @@ import com.arsvechkarev.vault.features.creating_password.PasswordCreatingState.L
 import com.arsvechkarev.vault.features.creating_password.PasswordCreatingState.SHOWING_ACCEPT_DIALOG
 import kotlinx.coroutines.launch
 import navigation.Router
+import java.util.EnumSet
 import javax.inject.Inject
 
 @FeatureScope
@@ -40,7 +41,7 @@ class PasswordCreatingPresenter @Inject constructor(
   dispatchers: Dispatchers
 ) : BasePresenter<PasswordCreatingView>(dispatchers) {
   
-  private var passwordCharacteristics = hashSetOf(UPPERCASE_SYMBOLS, NUMBERS, SPECIAL_SYMBOLS)
+  private var passwordCharacteristics = EnumSet.of(UPPERCASE_SYMBOLS, NUMBERS, SPECIAL_SYMBOLS)
   private var passwordLength = DEFAULT_PASSWORD_LENGTH
   private var password = ""
   private var state = INITIAL

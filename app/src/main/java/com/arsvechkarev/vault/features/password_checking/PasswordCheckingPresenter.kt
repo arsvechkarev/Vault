@@ -12,10 +12,9 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
-import javax.inject.Named
 
 class PasswordCheckingPresenter @Inject constructor(
-  @Named(PasswordCheckingTag)
+  @PasswordCheckingCommunicator
   private val passwordCheckingCommunicator: FlowCommunicator<PasswordCheckingEvents>,
   private val masterPasswordChecker: MasterPasswordChecker,
   private val dispatchers: Dispatchers,

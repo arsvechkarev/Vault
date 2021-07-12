@@ -39,7 +39,9 @@ class EncryptionFileSaver(
   }
   
   override fun deleteFile() {
-    context.getFileStreamPath(filename).delete()
+    synchronized(this) {
+      context.getFileStreamPath(filename).delete()
+    }
   }
   
   private fun getEncryptedFile(context: Context, file: File): EncryptedFile {

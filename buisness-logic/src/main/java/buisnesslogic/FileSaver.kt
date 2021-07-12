@@ -1,7 +1,8 @@
 package buisnesslogic
 
 /**
- * File saver that helps reading and writing text to and from file
+ * File saver that helps reading and writing text to and from file. Implementations should be
+ * thread-safe
  */
 interface FileSaver {
   

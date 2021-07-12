@@ -1,6 +1,10 @@
 package com.arsvechkarev.vault.features.password_checking
 
-const val PasswordCheckingTag = "PasswordCheckingTag"
+import javax.inject.Qualifier
+
+@Qualifier
+@Retention
+annotation class PasswordCheckingCommunicator
 
 interface PasswordCheckingEvents
 

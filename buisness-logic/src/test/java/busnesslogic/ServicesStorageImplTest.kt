@@ -1,6 +1,6 @@
 package busnesslogic
 
-import buisnesslogic.Cryptography
+import buisnesslogic.CryptographyImpl
 import buisnesslogic.GsonJsonConverter
 import buisnesslogic.ServicesStorageImpl
 import buisnesslogic.base64.JavaBase64Coder
@@ -17,7 +17,7 @@ class ServicesStorageImplTest {
   private val testFileSaver = TestFileSaver()
   private val testPassword = "pAsSw0rd"
   
-  private val cryptography = Cryptography(JavaBase64Coder, SeedRandomGeneratorImpl)
+  private val cryptography = CryptographyImpl(JavaBase64Coder, SeedRandomGeneratorImpl)
   private val storage = ServicesStorageImpl(cryptography, testFileSaver, GsonJsonConverter)
   
   @Before

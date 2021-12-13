@@ -7,13 +7,17 @@
         <option name="testRunner" value="GRADLE" />
         <option name="distributionType" value="DEFAULT_WRAPPED" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="gradleJvm" value="11" />
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
-            <option value="$PROJECT_DIR$/app" />
-            <option value="$PROJECT_DIR$/buisness-logic" />
-            <option value="$PROJECT_DIR$/config" />
-            <option value="$PROJECT_DIR$/navigation" />
+            <option value="$PROJECT_DIR$/android-app" />
+            <option value="$PROJECT_DIR$/android-app/app" />
+            <option value="$PROJECT_DIR$/android-app/buisness-logic" />
+            <option value="$PROJECT_DIR$/android-app/config" />
+            <option value="$PROJECT_DIR$/android-app/navigation" />
+            <option value="$PROJECT_DIR$/common-crypto" />
+            <option value="$PROJECT_DIR$/desktop-app" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />

@@ -1,0 +1,19 @@
+plugins {
+  id 'application'
+  id 'org.openjfx.javafxplugin' version '0.0.9'
+}
+
+repositories {
+  mavenCentral()
+}
+
+dependencies {
+  implementation project(":common-crypto")
+}
+
+javafx {
+  version = "17"
+  modules = ['javafx.controls', 'javafx.fxml']
+}
+
+mainClassName = 'com.arsvechkarev.vaultdesktop.MainApp'

@@ -1,5 +1,8 @@
 rootProject.name = "Vault"
-include ':app'
-include ':config'
-include ':navigation'
-include ':buisness-logic'
+include 'android-app:app'
+include 'android-app:config'
+include 'android-app:navigation'
+include 'android-app:buisness-logic'
+include 'common-crypto'
+include 'desktop-app'
+

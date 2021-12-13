@@ -12,7 +12,7 @@
     android:roundIcon="@mipmap/ic_launcher_round"
     android:supportsRtl="true"
     android:theme="@style/AppTheme.Dark">
-    <activity android:name=".features.main.MainActivity"
+    <activity android:name=".features.MainActivity"
       android:screenOrientation="portrait"
       android:windowSoftInputMode="adjustResize">
       <intent-filter>

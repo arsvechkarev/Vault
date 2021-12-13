@@ -2,7 +2,7 @@ ext {
 
   coroutines_version = '1.4.1'
   moxy_version = '2.2.0'
-  dagger_version = '2.30'
+  dagger_version = '2.40.5'
 
   applicationDependencies = [
       kotlin           : "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version",

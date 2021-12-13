@@ -23,7 +23,7 @@ android {
 }
 
 dependencies {
-  implementation project(":config")
+  implementation project(":android-app:config")
 
   def dependencies = rootProject.ext.applicationDependencies
 

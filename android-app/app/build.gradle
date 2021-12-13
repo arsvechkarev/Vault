@@ -7,14 +7,14 @@ plugins {
 
 android {
   signingConfigs {
-    Properties properties = new Properties()
-    properties.load(new FileInputStream(file("../local.properties")))
-    release {
-      storeFile file(properties["storeFile"])
-      storePassword properties["storePassword"]
-      keyAlias properties["keyAlias"]
-      keyPassword properties["keyPassword"]
-    }
+//    Properties properties = new Properties()
+//    properties.load(new FileInputStream(file("../local.properties")))
+//    release {
+//      storeFile file(properties["storeFile"])
+//      storePassword properties["storePassword"]
+//      keyAlias properties["keyAlias"]
+//      keyPassword properties["keyPassword"]
+//    }
   }
   def ext = rootProject.ext
   compileSdkVersion ext.compileSdkVersion
@@ -25,7 +25,7 @@ android {
     versionCode ext.versionCode
     versionName ext.versionName
     testInstrumentationRunner ext.testInstrumentationRunner
-    signingConfig signingConfigs.release
+//    signingConfig signingConfigs.release
   }
   buildTypes {
     debug {
@@ -47,9 +47,10 @@ android {
 
 dependencies {
 
-  implementation project(':config')
-  implementation project(':buisness-logic')
-  implementation project(':navigation')
+  implementation project(':android-app:config')
+  implementation project(':android-app:buisness-logic')
+  implementation project(':android-app:navigation')
+  implementation project(':common-crypto')
 
   def appDependencies = rootProject.ext.applicationDependencies
   implementation appDependencies.kotlin

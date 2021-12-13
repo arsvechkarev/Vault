@@ -1,4 +1,4 @@
-package com.arsvechkarev.vault.features.main
+package com.arsvechkarev.vault.features
 
 import android.widget.FrameLayout
 import com.arsvechkarev.vault.core.di.FeatureScope

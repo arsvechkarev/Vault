@@ -20,8 +20,8 @@ import com.arsvechkarev.vault.features.creating_service.CreatingServiceModule
 import com.arsvechkarev.vault.features.info.InfoComponent
 import com.arsvechkarev.vault.features.info.InfoModule
 import com.arsvechkarev.vault.features.initial_screen.InitialComponent
-import com.arsvechkarev.vault.features.main.MainComponent
-import com.arsvechkarev.vault.features.main.NavigationModule
+import com.arsvechkarev.vault.features.MainComponent
+import com.arsvechkarev.vault.features.NavigationModule
 import com.arsvechkarev.vault.features.password_checking.PasswordCheckingComponent
 import com.arsvechkarev.vault.features.password_checking.PasswordCheckingModule
 import com.arsvechkarev.vault.features.services_list.di.ServicesListComponent

@@ -2,9 +2,13 @@
 <project version="4">
   <component name="CompilerConfiguration">
     <bytecodeTargetLevel target="1.7">
-      <module name="Vault.app" target="11" />
+      <module name="desktop-app" target="11" />
+      <module name="vault-desktop" target="11" />
+      <module name="vault-desktop.main" target="11" />
+      <module name="vault-desktop.test" target="11" />
+      <module name="Vault.app" target="1.8" />
       <module name="Vault.config" target="1.8" />
-      <module name="Vault.navigation" target="11" />
+      <module name="Vault.navigation" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>

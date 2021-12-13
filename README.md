@@ -1,6 +1,6 @@
 # Vault
 
-### An android-based, simple, and secure password manager
+### Secure, fast, simple and beautiful password manager
 
 ### [Download apk](android-app/apk/app-debug.apk)
 

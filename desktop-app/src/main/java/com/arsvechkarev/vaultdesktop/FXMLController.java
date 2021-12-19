@@ -1,6 +1,6 @@
 package com.arsvechkarev.vaultdesktop;
 
-import com.arsvechkarev.commoncrypto.Cipher;
+import com.arsvechkarev.commoncrypto.AesSivTinkCipher;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.ResourceBundle;
@@ -21,7 +21,7 @@ public class FXMLController implements Initializable {
     var password = "password123";
 
     var plaintext = "This is my texxxxt!!!";
-    byte[] encrypt = Cipher.INSTANCE.encrypt(password, plaintext);
+    byte[] encrypt = AesSivTinkCipher.INSTANCE.encrypt(password, plaintext);
     label.setText(
         "Hello, JavaFX " + password + "\nRunning on Java " + Arrays.toString(encrypt) + ".");
 

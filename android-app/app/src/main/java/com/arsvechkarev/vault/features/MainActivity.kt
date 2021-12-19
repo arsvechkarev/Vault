@@ -4,8 +4,6 @@ import android.os.Bundle
 import android.view.View
 import android.view.View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
 import android.view.View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-import android.widget.Toast
-import com.arsvechkarev.commoncrypto.Cipher
 import com.arsvechkarev.vault.core.BaseActivity
 import com.arsvechkarev.vault.core.di.CoreComponent
 import com.arsvechkarev.vault.features.common.Screens

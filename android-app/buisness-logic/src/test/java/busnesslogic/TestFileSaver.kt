@@ -4,17 +4,17 @@ import buisnesslogic.FileSaver
 
 class TestFileSaver : FileSaver {
   
-  private var text: String = ""
+  private var data: ByteArray? = null
   
-  override fun saveTextToFile(text: String) {
-    this.text = text
+  override fun saveData(data: ByteArray) {
+    this.data = data
   }
   
-  override fun readTextFromFile(): String {
-    return text
+  override fun readData(): ByteArray? {
+    return data
   }
   
-  override fun deleteFile() {
-    text = ""
+  override fun delete() {
+    data = null
   }
 }

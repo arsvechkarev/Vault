@@ -9,7 +9,7 @@ class ServicesStorageImpl(
 ) : ServicesStorage {
   
   override suspend fun getServices(password: String): List<ServiceEntity> {
-    val ciphertext = fileSaver.readTextFromFile()
+    val ciphertext = checkNotNull(fileSaver.readData()) { "Encrypted data was empty" }
     // Text in file should not be empty, because it was saved earlier
     require(ciphertext.isNotEmpty())
     val json = cryptography.decryptData(password, ciphertext)
@@ -44,9 +44,8 @@ class ServicesStorageImpl(
   
   private fun saveServicesToFile(servicesList: MutableList<ServiceEntity>, password: String) {
     val servicesInfoJson = convertToString(servicesList)
-    val ciphertext = fileSaver.readTextFromFile()
-    val encryptedText = cryptography.encryptData(password, servicesInfoJson, ciphertext)
-    fileSaver.saveTextToFile(encryptedText)
+    val encryptedText = cryptography.encryptData(password, servicesInfoJson)
+    fileSaver.saveData(encryptedText)
   }
   
   private fun removeServiceById(servicesList: MutableCollection<ServiceEntity>, id: String) {

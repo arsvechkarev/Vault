@@ -6,15 +6,15 @@ class TestFileSaver : FileSaver {
   
   private var text: String = ""
   
-  override fun saveTextToFile(text: String) {
-    this.text = text
+  override fun saveData(data: String) {
+    this.text = data
   }
   
-  override fun readTextFromFile(): String {
+  override fun readData(): String {
     return text
   }
   
-  override fun deleteFile() {
+  override fun delete() {
     text = ""
   }
 }

@@ -1,24 +1,24 @@
 package buisnesslogic
 
 /**
- * File saver that helps reading and writing text to and from file. Implementations should be
+ * File saver that helps to read and to write text to and from file. Implementations should be
  * thread-safe
  */
 interface FileSaver {
   
   /**
-   * Saves [text] to file. If file is not created, creates it. If file was not empty prior to
-   * this operation, removes old data and saves [text] afterwards
+   * Saves [data] to the file. If the file is didn't exist, creates it. If file was not empty prior
+   * to this operation, removes old data and saves [data] afterwards
    */
-  fun saveTextToFile(text: String)
+  fun saveData(data: ByteArray)
   
   /**
-   * Returns text from file. If file is not created, returns empty string
+   * Returns data from the file. If the file doesn't exist, returns null
    */
-  fun readTextFromFile(): String
+  fun readData(): ByteArray?
   
   /**
    * Deletes file. If file is already deleted, does nothing
    */
-  fun deleteFile()
+  fun delete()
 }

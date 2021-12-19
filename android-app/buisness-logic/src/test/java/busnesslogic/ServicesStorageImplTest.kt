@@ -1,6 +1,6 @@
 package busnesslogic
 
-import buisnesslogic.CryptographyImpl
+import buisnesslogic.AesSivTinkCryptography
 import buisnesslogic.GsonJsonConverter
 import buisnesslogic.ServicesStorageImpl
 import buisnesslogic.base64.JavaBase64Coder
@@ -17,18 +17,17 @@ class ServicesStorageImplTest {
   private val testFileSaver = TestFileSaver()
   private val testPassword = "pAsSw0rd"
   
-  private val cryptography = CryptographyImpl(JavaBase64Coder, SeedRandomGeneratorImpl)
-  private val storage = ServicesStorageImpl(cryptography, testFileSaver, GsonJsonConverter)
+  private val storage = ServicesStorageImpl(AesSivTinkCryptography, testFileSaver, GsonJsonConverter)
   
   @Before
   fun setUp() {
-    val encryptedText = cryptography.encryptForTheFirstTime(testPassword, "")
-    testFileSaver.saveTextToFile(encryptedText)
+    val encryptedText = AesSivTinkCryptography.encryptData(testPassword, "")
+    testFileSaver.saveData(encryptedText)
   }
   
   @After
   fun tearDown() {
-    testFileSaver.saveTextToFile("")
+    testFileSaver.delete()
   }
   
   @Test

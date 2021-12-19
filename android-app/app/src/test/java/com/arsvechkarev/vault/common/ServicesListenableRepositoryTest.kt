@@ -1,6 +1,5 @@
 package com.arsvechkarev.vault.common
 
-import buisnesslogic.CryptographyImpl
 import buisnesslogic.GsonJsonConverter
 import buisnesslogic.ServicesStorageImpl
 import buisnesslogic.base64.JavaBase64Coder
@@ -24,12 +23,12 @@ class ServicesListenableRepositoryTest {
   @Before
   fun setUp() {
     val encryptedText = cryptography.encryptForTheFirstTime(testPassword, "")
-    testFileSaver.saveTextToFile(encryptedText)
+    testFileSaver.saveData(encryptedText)
   }
   
   @After
   fun tearDown() {
-    testFileSaver.saveTextToFile("")
+    testFileSaver.saveData("")
   }
   
   @Test

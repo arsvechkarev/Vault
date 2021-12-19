@@ -27,19 +27,19 @@ android {
     testInstrumentationRunner ext.testInstrumentationRunner
 //    signingConfig signingConfigs.release
   }
-  buildTypes {
-    debug {
-      applicationIdSuffix ".debug"
-    }
-    release {
-      minifyEnabled ext.minifyEnabled
-      shrinkResources ext.shrinkResources
-      proguardFiles(getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro')
-    }
-    mock {
-      initWith debug
-    }
-  }
+//  buildTypes {
+//    debug {
+//      applicationIdSuffix ".debug"
+//    }
+//    release {
+//      minifyEnabled ext.minifyEnabled
+//      shrinkResources ext.shrinkResources
+//      proguardFiles(getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro')
+//    }
+//    mock {
+//      initWith debug
+//    }
+//  }
   kotlinOptions {
     jvmTarget = "1.8"
   }
@@ -75,5 +75,5 @@ dependencies {
   testImplementation testDependencies.junit
   testImplementation testDependencies.gson
 
-  debugImplementation appDependencies.leakCanary
+//  debugImplementation appDependencies.leakCanary
 }

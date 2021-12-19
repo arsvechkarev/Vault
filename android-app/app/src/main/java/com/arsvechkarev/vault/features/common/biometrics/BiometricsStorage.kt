@@ -15,26 +15,26 @@ class BiometricsStorage constructor(
   fun encryptAndSaveData(masterPassword: String, result: BiometricPrompt.AuthenticationResult) {
     val cipher = result.cryptoObject?.cipher ?: throw NullPointerException()
     val encryptedInfo = cipher.doFinal(masterPassword.toByteArray(charset))
-    passwordFileSaver.saveTextToFile(base64Coder.encode(encryptedInfo))
-    ivFileSaver.saveTextToFile(base64Coder.encode(cipher.iv))
+    passwordFileSaver.saveData(encryptedInfo)
+    ivFileSaver.saveData(cipher.iv)
   }
   
   @WorkerThread
   fun getIv(): ByteArray {
-    return base64Coder.decode(ivFileSaver.readTextFromFile())
+    return checkNotNull(ivFileSaver.readData()) { "Iv shouldn't be null" }
   }
   
   @WorkerThread
   fun getMasterPassword(result: BiometricPrompt.AuthenticationResult): String {
     val cipher = result.cryptoObject?.cipher ?: throw NullPointerException()
-    val encodedString = passwordFileSaver.readTextFromFile()
-    return String(cipher.doFinal(base64Coder.decode(encodedString)), charset)
+    val encodedData = passwordFileSaver.readData()
+    return String(cipher.doFinal(encodedData), charset)
   }
   
   @WorkerThread
   fun deleteAllFiles() {
-    passwordFileSaver.deleteFile()
-    ivFileSaver.deleteFile()
+    passwordFileSaver.delete()
+    ivFileSaver.delete()
   }
   
   companion object {

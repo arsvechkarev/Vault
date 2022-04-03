@@ -11,14 +11,14 @@ import javax.inject.Singleton
 
 @Module(includes = [CoreModule::class, MasterKeyModule::class])
 object FileSaverModule {
-  
-  @Provides
-  @JvmStatic
-  @Singleton
-  fun provideFileSaver(
-    context: Context,
-    masterKey: MasterKey
-  ): FileSaver {
-    return EncryptionFileSaver(PASSWORDS_FILENAME, context, masterKey)
-  }
+
+    @Provides
+    @JvmStatic
+    @Singleton
+    fun provideFileSaver(
+        context: Context,
+        masterKey: MasterKey
+    ): FileSaver {
+        return EncryptionFileSaver(PASSWORDS_FILENAME, context, masterKey)
+    }
 }

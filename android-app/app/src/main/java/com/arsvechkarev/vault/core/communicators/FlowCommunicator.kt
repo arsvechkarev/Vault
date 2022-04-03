@@ -8,14 +8,14 @@ import kotlinx.coroutines.flow.Flow
  * @param E types of events
  */
 interface FlowCommunicator<E> {
-  
-  /**
-   * Flow of events
-   */
-  val events: Flow<E>
-  
-  /**
-   * Sends [event] to all current subscribers
-   */
-  suspend fun send(event: E)
+
+    /**
+     * Flow of events
+     */
+    val events: Flow<E>
+
+    /**
+     * Sends [event] to all current subscribers
+     */
+    suspend fun send(event: E)
 }

@@ -22,44 +22,44 @@ private const val WHATSAPP = "whatsapp"
 private const val GITHUB = "github"
 
 fun ImageView.setServiceIcon(serviceName: String) {
-  val text = serviceName.trim()
-  if (text.isBlank()) {
-    setImageDrawable(null) // Text is blank, showing no icon
-    return
-  }
-  val existingServiceIcon = findExistingServiceIcon(text)
-  if (existingServiceIcon != null) {
-    setImageDrawable(existingServiceIcon)
-  } else {
-    // No existing service icon found, setting LetterInCircleImage
-    val letter = serviceName[0].toString()
-    (this.drawable as? LetterInCircleDrawable)?.setLetter(letter) ?: run {
-      setImageDrawable(LetterInCircleDrawable(letter))
+    val text = serviceName.trim()
+    if (text.isBlank()) {
+        setImageDrawable(null) // Text is blank, showing no icon
+        return
     }
-  }
+    val existingServiceIcon = findExistingServiceIcon(text)
+    if (existingServiceIcon != null) {
+        setImageDrawable(existingServiceIcon)
+    } else {
+        // No existing service icon found, setting LetterInCircleImage
+        val letter = serviceName[0].toString()
+        (this.drawable as? LetterInCircleDrawable)?.setLetter(letter) ?: run {
+            setImageDrawable(LetterInCircleDrawable(letter))
+        }
+    }
 }
 
 private fun ImageView.findExistingServiceIcon(text: String): Drawable? {
-  val drawable: (Int) -> Drawable = { context.retrieveDrawable(it) }
-  return when {
-    text has AMAZON -> drawable(R.drawable.icon_amazon)
-    text has GOOGLE -> drawable(R.drawable.icon_google)
-    text has FACEBOOK_MESSENGER -> drawable(R.drawable.icon_facebook_messenger)
-    text has FACEBOOK -> drawable(R.drawable.icon_facebook)
-    text has MICROSOFT -> drawable(R.drawable.icon_microsoft)
-    text has NETFLIX -> drawable(R.drawable.icon_netfilx)
-    text has INSTAGRAM -> drawable(R.drawable.icon_instagram)
-    text has SNAPCHAT -> drawable(R.drawable.icon_snapchat)
-    text has TELEGRAM -> drawable(R.drawable.icon_telegram)
-    text has TWITTER -> drawable(R.drawable.icon_twitter)
-    text has SPOTIFY -> drawable(R.drawable.icon_spotify)
-    text has VK -> drawable(R.drawable.icon_vk)
-    text has WHATSAPP -> drawable(R.drawable.icon_whatsapp)
-    text has GITHUB -> drawable(R.drawable.icon_github)
-    else -> null
-  }
+    val drawable: (Int) -> Drawable = { context.retrieveDrawable(it) }
+    return when {
+        text has AMAZON -> drawable(R.drawable.icon_amazon)
+        text has GOOGLE -> drawable(R.drawable.icon_google)
+        text has FACEBOOK_MESSENGER -> drawable(R.drawable.icon_facebook_messenger)
+        text has FACEBOOK -> drawable(R.drawable.icon_facebook)
+        text has MICROSOFT -> drawable(R.drawable.icon_microsoft)
+        text has NETFLIX -> drawable(R.drawable.icon_netfilx)
+        text has INSTAGRAM -> drawable(R.drawable.icon_instagram)
+        text has SNAPCHAT -> drawable(R.drawable.icon_snapchat)
+        text has TELEGRAM -> drawable(R.drawable.icon_telegram)
+        text has TWITTER -> drawable(R.drawable.icon_twitter)
+        text has SPOTIFY -> drawable(R.drawable.icon_spotify)
+        text has VK -> drawable(R.drawable.icon_vk)
+        text has WHATSAPP -> drawable(R.drawable.icon_whatsapp)
+        text has GITHUB -> drawable(R.drawable.icon_github)
+        else -> null
+    }
 }
 
 private infix fun String.has(text: String): Boolean {
-  return this.contains(text, ignoreCase = true)
+    return this.contains(text, ignoreCase = true)
 }

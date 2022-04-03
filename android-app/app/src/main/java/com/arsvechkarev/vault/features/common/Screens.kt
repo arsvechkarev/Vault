@@ -12,21 +12,22 @@ import com.arsvechkarev.vault.features.start.StartScreen
 import navigation.Screen
 
 object Screens {
-  
-  val InitialScreen = Screen { InitialScreen::class }
-  
-  val CreateMasterPasswordScreen = Screen { CreatingMasterPasswordScreen::class }
-  
-  val StartScreen = Screen { StartScreen::class }
-  
-  val ServicesListScreen = Screen { com.arsvechkarev.vault.features.services_list.presentation.ServicesListScreen::class }
-  
-  val CreatingServiceScreen = Screen { CreatingServiceScreen::class }
-  
-  fun InfoScreen(serviceModel: ServiceModel) =
-      Screen(arguments = bundle(SERVICE to serviceModel)) { InfoScreen::class }
-  
-  val PasswordCreatingScreen = Screen { PasswordCreatingScreen::class }
-  
-  val SettingsScreen = Screen { com.arsvechkarev.vault.features.settings.SettingsScreen::class }
+
+    val InitialScreen = Screen { InitialScreen::class }
+
+    val CreateMasterPasswordScreen = Screen { CreatingMasterPasswordScreen::class }
+
+    val StartScreen = Screen { StartScreen::class }
+
+    val ServicesListScreen =
+        Screen { com.arsvechkarev.vault.features.services_list.presentation.ServicesListScreen::class }
+
+    val CreatingServiceScreen = Screen { CreatingServiceScreen::class }
+
+    fun InfoScreen(serviceModel: ServiceModel) =
+        Screen(arguments = bundle(SERVICE to serviceModel)) { InfoScreen::class }
+
+    val PasswordCreatingScreen = Screen { PasswordCreatingScreen::class }
+
+    val SettingsScreen = Screen { com.arsvechkarev.vault.features.settings.SettingsScreen::class }
 }

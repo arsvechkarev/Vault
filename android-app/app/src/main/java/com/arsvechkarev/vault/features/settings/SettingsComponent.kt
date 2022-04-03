@@ -10,12 +10,12 @@ object SettingsModule
 @FeatureScope
 @Subcomponent
 interface SettingsComponent {
-  
-  @Subcomponent.Factory
-  interface Factory {
-    
-    fun create(): SettingsComponent
-  }
-  
-  fun providePresenter(): SettingsPresenter
+
+    @Subcomponent.Factory
+    interface Factory {
+
+        fun create(): SettingsComponent
+    }
+
+    fun providePresenter(): SettingsPresenter
 }

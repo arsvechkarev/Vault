@@ -8,12 +8,12 @@ object CreatingServiceModule
 
 @Subcomponent
 interface CreatingServiceComponent {
-  
-  @Subcomponent.Factory
-  interface Factory {
-    
-    fun create(): CreatingServiceComponent
-  }
-  
-  fun providePresenter(): CreatingServicePresenter
+
+    @Subcomponent.Factory
+    interface Factory {
+
+        fun create(): CreatingServiceComponent
+    }
+
+    fun providePresenter(): CreatingServicePresenter
 }

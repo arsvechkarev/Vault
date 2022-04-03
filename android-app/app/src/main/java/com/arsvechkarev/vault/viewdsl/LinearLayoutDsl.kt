@@ -4,13 +4,13 @@ import android.view.View
 import android.widget.LinearLayout
 
 fun LinearLayout.orientation(orientation: Int) {
-  this.orientation = orientation
+    this.orientation = orientation
 }
 
 fun LinearLayout.gravity(gravity: Int) {
-  setGravity(gravity)
+    setGravity(gravity)
 }
 
 fun View.weight(weight: Float) {
-  (layoutParams as LinearLayout.LayoutParams).weight = weight
+    (layoutParams as LinearLayout.LayoutParams).weight = weight
 }

@@ -8,12 +8,12 @@ object PasswordCheckingModule
 
 @Subcomponent
 interface PasswordCheckingComponent {
-  
-  @Subcomponent.Factory
-  interface Factory {
-    
-    fun create(): PasswordCheckingComponent
-  }
-  
-  fun providePresenter(): PasswordCheckingPresenter
+
+    @Subcomponent.Factory
+    interface Factory {
+
+        fun create(): PasswordCheckingComponent
+    }
+
+    fun providePresenter(): PasswordCheckingPresenter
 }

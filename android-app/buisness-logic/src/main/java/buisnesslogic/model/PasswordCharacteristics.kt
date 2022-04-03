@@ -5,19 +5,19 @@ package buisnesslogic.model
  * english letters
  */
 enum class PasswordCharacteristics {
-  
-  /**
-   * Password includes uppercase english letters
-   */
-  UPPERCASE_SYMBOLS,
-  
-  /**
-   * Password includes numbers 0-9
-   */
-  NUMBERS,
-  
-  /**
-   * Password includes special symbols such as !@&? etc. You could find them all in [SPECIAL_SYMBOLS_STRING]
-   */
-  SPECIAL_SYMBOLS,
+
+    /**
+     * Password includes uppercase english letters
+     */
+    UPPERCASE_SYMBOLS,
+
+    /**
+     * Password includes numbers 0-9
+     */
+    NUMBERS,
+
+    /**
+     * Password includes special symbols such as !@&? etc. You could find them all in [SPECIAL_SYMBOLS_STRING]
+     */
+    SPECIAL_SYMBOLS,
 }

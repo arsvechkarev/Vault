@@ -6,12 +6,12 @@ import moxy.viewstate.strategy.StateStrategyType
 
 @StateStrategyType(AddToEndSingleStrategy::class)
 interface SettingsView : MvpView {
-  
-  fun showFingerprintEnteringEnabled(checked: Boolean)
-  
-  fun showAddedBiometricsSuccessfully()
-  
-  fun showPasswordCheckingDialog()
-  
-  fun hidePasswordCheckingDialog()
+
+    fun showFingerprintEnteringEnabled(checked: Boolean)
+
+    fun showAddedBiometricsSuccessfully()
+
+    fun showPasswordCheckingDialog()
+
+    fun hidePasswordCheckingDialog()
 }

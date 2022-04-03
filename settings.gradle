@@ -3,6 +3,7 @@ include 'android-app:app'
 include 'android-app:config'
 include 'android-app:navigation'
 include 'android-app:buisness-logic'
+include 'android-app:kotea'
 include 'common-crypto'
 include 'desktop-app'
 

@@ -11,15 +11,15 @@ import javax.inject.Singleton
 
 @Module
 class CoreModule(private val context: Context) {
-  
-  @Provides
-  fun provideDispatchers(): Dispatchers = DefaultDispatchers
-  
-  @Provides
-  fun provideContext(): Context = context
-  
-  @Provides
-  @Singleton
-  @ApplicationScope
-  fun provideScope(dispatchers: Dispatchers): CoroutineScope = CoroutineScope(dispatchers.Main)
+
+    @Provides
+    fun provideDispatchers(): Dispatchers = DefaultDispatchers
+
+    @Provides
+    fun provideContext(): Context = context
+
+    @Provides
+    @Singleton
+    @ApplicationScope
+    fun provideScope(dispatchers: Dispatchers): CoroutineScope = CoroutineScope(dispatchers.Main)
 }

@@ -13,20 +13,20 @@ import javax.inject.Singleton
 
 @Module
 object CommunicatorsModule {
-  
-  @Provides
-  @Singleton
-  @JvmStatic
-  @PasswordCreatingCommunicator
-  fun providePasswordCreatingCommunicator(): FlowCommunicator<PasswordCreatingEvents> {
-    return FlowCommunicatorImpl(MutableSharedFlow(replay = 1))
-  }
-  
-  @Provides
-  @Singleton
-  @JvmStatic
-  @PasswordCheckingCommunicator
-  fun providePasswordCheckingCommunicator(): FlowCommunicator<PasswordCheckingEvents> {
-    return FlowCommunicatorImpl()
-  }
+
+    @Provides
+    @Singleton
+    @JvmStatic
+    @PasswordCreatingCommunicator
+    fun providePasswordCreatingCommunicator(): FlowCommunicator<PasswordCreatingEvents> {
+        return FlowCommunicatorImpl(MutableSharedFlow(replay = 1))
+    }
+
+    @Provides
+    @Singleton
+    @JvmStatic
+    @PasswordCheckingCommunicator
+    fun providePasswordCheckingCommunicator(): FlowCommunicator<PasswordCheckingEvents> {
+        return FlowCommunicatorImpl()
+    }
 }

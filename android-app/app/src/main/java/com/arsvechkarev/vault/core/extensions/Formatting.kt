@@ -7,11 +7,15 @@ import com.arsvechkarev.vault.viewbuilding.Fonts
 import navigation.BaseScreen
 
 fun BaseScreen.getDeleteMessageText(serviceName: String): CharSequence {
-  val questionPrefixLength = contextNonNull.getString(
-    R.string.text_delete_service_question_prefix).length
-  val questionString = contextNonNull.getString(R.string.text_delete_service_question, serviceName)
-  val spannableString = SpannableString(questionString)
-  spannableString.setSpan(TypefaceSpan(Fonts.SegoeUiBold), questionPrefixLength + 1,
-    questionString.length - 1, 0)
-  return spannableString
+    val questionPrefixLength = contextNonNull.getString(
+        R.string.text_delete_service_question_prefix
+    ).length
+    val questionString =
+        contextNonNull.getString(R.string.text_delete_service_question, serviceName)
+    val spannableString = SpannableString(questionString)
+    spannableString.setSpan(
+        TypefaceSpan(Fonts.SegoeUiBold), questionPrefixLength + 1,
+        questionString.length - 1, 0
+    )
+    return spannableString
 }

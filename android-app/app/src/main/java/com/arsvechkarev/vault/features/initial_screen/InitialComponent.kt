@@ -8,12 +8,12 @@ object InitialModule
 
 @Subcomponent
 interface InitialComponent {
-  
-  @Subcomponent.Factory
-  interface Factory {
-    
-    fun create(): InitialComponent
-  }
-  
-  fun inject(initialScreen: InitialScreen)
+
+    @Subcomponent.Factory
+    interface Factory {
+
+        fun create(): InitialComponent
+    }
+
+    fun inject(initialScreen: InitialScreen)
 }

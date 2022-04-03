@@ -13,38 +13,39 @@ package buisnesslogic.random
 // Copied from kotlin standard library, so that we can control the implementation
 //
 internal class XorWowRandom internal constructor(
-  private var x: Int,
-  private var y: Int,
-  private var z: Int,
-  private var w: Int,
-  private var v: Int,
-  private var addend: Int
+    private var x: Int,
+    private var y: Int,
+    private var z: Int,
+    private var w: Int,
+    private var v: Int,
+    private var addend: Int
 ) {
-  
-  internal constructor(seed1: Int, seed2: Int) :
-      this(seed1, seed2, 0, 0, seed1.inv(), (seed1 shl 10) xor (seed2 ushr 4))
-  
-  init {
-    require(
-      (x or y or z or w or v) != 0) { "Initial state must have at least one non-zero element." }
-    
-    // some trivial seeds can produce several values with zeroes in upper bits, so we discard first 64
-    repeat(64) { nextInt() }
-  }
-  
-  fun nextInt(): Int {
-    // Equivalent to the xorxow algorithm
-    // From Marsaglia, G. 2003. Xorshift RNGs. J. Statis. Soft. 8, 14, p. 5
-    var t = x
-    t = t xor (t ushr 2)
-    x = y
-    y = z
-    z = w
-    val v0 = v
-    w = v0
-    t = (t xor (t shl 1)) xor v0 xor (v0 shl 4)
-    v = t
-    addend += 362437
-    return t + addend
-  }
+
+    internal constructor(seed1: Int, seed2: Int) :
+            this(seed1, seed2, 0, 0, seed1.inv(), (seed1 shl 10) xor (seed2 ushr 4))
+
+    init {
+        require(
+            (x or y or z or w or v) != 0
+        ) { "Initial state must have at least one non-zero element." }
+
+        // some trivial seeds can produce several values with zeroes in upper bits, so we discard first 64
+        repeat(64) { nextInt() }
+    }
+
+    fun nextInt(): Int {
+        // Equivalent to the xorxow algorithm
+        // From Marsaglia, G. 2003. Xorshift RNGs. J. Statis. Soft. 8, 14, p. 5
+        var t = x
+        t = t xor (t ushr 2)
+        x = y
+        y = z
+        z = w
+        val v0 = v
+        w = v0
+        t = (t xor (t shl 1)) xor v0 xor (v0 shl 4)
+        v = t
+        addend += 362437
+        return t + addend
+    }
 }

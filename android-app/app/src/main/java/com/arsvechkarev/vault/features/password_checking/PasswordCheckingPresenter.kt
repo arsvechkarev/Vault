@@ -14,51 +14,51 @@ import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class PasswordCheckingPresenter @Inject constructor(
-  @PasswordCheckingCommunicator
-  private val passwordCheckingCommunicator: FlowCommunicator<PasswordCheckingEvents>,
-  private val masterPasswordChecker: MasterPasswordChecker,
-  private val dispatchers: Dispatchers,
+    @PasswordCheckingCommunicator
+    private val passwordCheckingCommunicator: FlowCommunicator<PasswordCheckingEvents>,
+    private val masterPasswordChecker: MasterPasswordChecker,
+    private val dispatchers: Dispatchers,
 ) : CoroutineScope {
-  
-  override val coroutineContext = dispatchers.Main + SupervisorJob()
-  
-  private var view: PasswordCheckingView? = null
-  
-  init {
-    subscribeToPasswordCheckingActions()
-  }
-  
-  fun attachView(view: PasswordCheckingView) {
-    this.view = view
-  }
-  
-  fun checkPassword(password: String) {
-    view?.showPasswordCheckingLoading()
-    launch {
-      val isPasswordCorrect = withContext(dispatchers.IO) {
-        masterPasswordChecker.isCorrect(password)
-      }
-      view?.showPasswordCheckingFinished()
-      if (isPasswordCorrect) {
-        passwordCheckingCommunicator.send(PasswordCheckedSuccessfully)
-      } else {
-        view?.showPasswordIsIncorrect()
-      }
+
+    override val coroutineContext = dispatchers.Main + SupervisorJob()
+
+    private var view: PasswordCheckingView? = null
+
+    init {
+        subscribeToPasswordCheckingActions()
     }
-  }
-  
-  fun detachView() {
-    view = null
-  }
-  
-  private fun subscribeToPasswordCheckingActions() {
-    launch {
-      passwordCheckingCommunicator.events.collect { events ->
-        when (events) {
-          is ShowDialog -> view?.showDialog()
-          is HideDialog -> view?.hideDialog()
+
+    fun attachView(view: PasswordCheckingView) {
+        this.view = view
+    }
+
+    fun checkPassword(password: String) {
+        view?.showPasswordCheckingLoading()
+        launch {
+            val isPasswordCorrect = withContext(dispatchers.IO) {
+                masterPasswordChecker.isCorrect(password)
+            }
+            view?.showPasswordCheckingFinished()
+            if (isPasswordCorrect) {
+                passwordCheckingCommunicator.send(PasswordCheckedSuccessfully)
+            } else {
+                view?.showPasswordIsIncorrect()
+            }
         }
-      }
     }
-  }
+
+    fun detachView() {
+        view = null
+    }
+
+    private fun subscribeToPasswordCheckingActions() {
+        launch {
+            passwordCheckingCommunicator.events.collect { events ->
+                when (events) {
+                    is ShowDialog -> view?.showDialog()
+                    is HideDialog -> view?.hideDialog()
+                }
+            }
+        }
+    }
 }

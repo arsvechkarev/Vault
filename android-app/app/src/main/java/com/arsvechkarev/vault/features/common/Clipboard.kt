@@ -1,6 +1,6 @@
 package com.arsvechkarev.vault.features.common
 
 interface Clipboard {
-  
-  fun copyPassword(password: String)
+
+    fun copyPassword(password: String)
 }

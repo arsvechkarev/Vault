@@ -10,25 +10,25 @@ import com.arsvechkarev.vault.viewbuilding.Fonts
 val TEMP_RECT = Rect()
 
 fun Any.Paint(
-  color: Int
+    color: Int
 ) = android.graphics.Paint(Paint.ANTI_ALIAS_FLAG).apply {
-  this.color = color
+    this.color = color
 }
 
 fun Any.TextPaint(
-  textSize: Float = 0f,
-  color: Int = Colors.TextPrimary,
-  textAlign: Paint.Align = Paint.Align.CENTER,
-  font: Typeface = Fonts.SegoeUi
+    textSize: Float = 0f,
+    color: Int = Colors.TextPrimary,
+    textAlign: Paint.Align = Paint.Align.CENTER,
+    font: Typeface = Fonts.SegoeUi
 ) = android.text.TextPaint(Paint.ANTI_ALIAS_FLAG).apply {
-  this.textSize = textSize
-  this.color = color
-  this.textAlign = textAlign
-  this.typeface = font
+    this.textSize = textSize
+    this.color = color
+    this.textAlign = textAlign
+    this.typeface = font
 }
 
 fun TextPaint.getTextHeight(text: String = "Agy"): Int {
-  TEMP_RECT.setEmpty()
-  getTextBounds(text, 0, text.length, TEMP_RECT)
-  return TEMP_RECT.height()
+    TEMP_RECT.setEmpty()
+    getTextBounds(text, 0, text.length, TEMP_RECT)
+    return TEMP_RECT.height()
 }

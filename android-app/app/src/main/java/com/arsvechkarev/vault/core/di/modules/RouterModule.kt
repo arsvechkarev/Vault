@@ -8,14 +8,14 @@ import javax.inject.Singleton
 
 @Module
 object RouterModule {
-  
-  @Provides
-  @Singleton
-  @JvmStatic
-  fun provideRouter(): Router = Router()
-  
-  @Provides
-  @Singleton
-  @JvmStatic
-  fun provideCicerone(router: Router): Cicerone<Router> = Cicerone.create(router)
+
+    @Provides
+    @Singleton
+    @JvmStatic
+    fun provideRouter(): Router = Router()
+
+    @Provides
+    @Singleton
+    @JvmStatic
+    fun provideCicerone(router: Router): Cicerone<Router> = Cicerone.create(router)
 }

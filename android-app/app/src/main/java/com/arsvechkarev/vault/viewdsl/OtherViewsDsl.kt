@@ -12,55 +12,59 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
 fun RecyclerView.setupWith(adapter: RecyclerView.Adapter<*>) {
-  layoutManager = LinearLayoutManager(context)
-  this.adapter = adapter
+    layoutManager = LinearLayoutManager(context)
+    this.adapter = adapter
 }
 
 fun ImageView.image(@DrawableRes resId: Int) {
-  setImageResource(resId)
+    setImageResource(resId)
 }
 
 fun ImageView.image(drawable: Drawable) {
-  setImageDrawable(drawable)
+    setImageDrawable(drawable)
 }
 
 fun ImageView.clearImage() {
-  setImageDrawable(null)
+    setImageDrawable(null)
 }
 
 inline fun SeekBar.onProgressChanged(crossinline block: (progress: Int) -> Unit) {
-  setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
-    override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
-      block(progress)
-    }
-  
-    override fun onStartTrackingTouch(seekBar: SeekBar?) {
-    }
-  
-    override fun onStopTrackingTouch(seekBar: SeekBar?) {
-    }
-  
-  })
+    setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+        override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
+            block(progress)
+        }
+
+        override fun onStartTrackingTouch(seekBar: SeekBar?) {
+        }
+
+        override fun onStopTrackingTouch(seekBar: SeekBar?) {
+        }
+
+    })
 }
 
 fun CompoundButton.setCheckedSafe(checked: Boolean) {
-  if (isChecked != checked) isChecked = checked
+    if (isChecked != checked) isChecked = checked
 }
 
 fun SwitchCompat.setColors(
-  colorThumbEnabled: Int,
-  colorThumbDisabled: Int,
-  colorTrackEnabled: Int,
-  colorTrackDisabled: Int
+    colorThumbEnabled: Int,
+    colorThumbDisabled: Int,
+    colorTrackEnabled: Int,
+    colorTrackDisabled: Int
 ) {
-  thumbTintList = ColorStateList(arrayOf(intArrayOf(state_checked), intArrayOf()),
-    intArrayOf(
-      colorThumbEnabled,
-      colorThumbDisabled
-    ))
-  trackTintList = ColorStateList(arrayOf(intArrayOf(state_checked), intArrayOf()),
-    intArrayOf(
-      colorTrackEnabled,
-      colorTrackDisabled,
-    ))
+    thumbTintList = ColorStateList(
+        arrayOf(intArrayOf(state_checked), intArrayOf()),
+        intArrayOf(
+            colorThumbEnabled,
+            colorThumbDisabled
+        )
+    )
+    trackTintList = ColorStateList(
+        arrayOf(intArrayOf(state_checked), intArrayOf()),
+        intArrayOf(
+            colorTrackEnabled,
+            colorTrackDisabled,
+        )
+    )
 }

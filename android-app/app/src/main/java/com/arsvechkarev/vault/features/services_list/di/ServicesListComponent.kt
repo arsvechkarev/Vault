@@ -11,12 +11,12 @@ object ServicesListModule
 @FeatureScope
 @Subcomponent
 interface ServicesListComponent {
-  
-  @Subcomponent.Factory
-  interface Factory {
-    
-    fun create(): ServicesListComponent
-  }
-  
-  fun providePresenter(): ServicesListPresenter
+
+    @Subcomponent.Factory
+    interface Factory {
+
+        fun create(): ServicesListComponent
+    }
+
+    fun providePresenter(): ServicesListPresenter
 }

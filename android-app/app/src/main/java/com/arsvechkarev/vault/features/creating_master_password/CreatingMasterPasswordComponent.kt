@@ -11,28 +11,28 @@ import dagger.Subcomponent
 import javax.inject.Singleton
 
 @Module(
-  includes = [PasswordActionsModule::class],
-  subcomponents = [CreatingMasterPasswordComponent::class]
+    includes = [PasswordActionsModule::class],
+    subcomponents = [CreatingMasterPasswordComponent::class]
 )
 object CreatingMasterPasswordModule {
-  
-  @Provides
-  @JvmStatic
-  @Singleton
-  fun provideUserAuthSaver(context: Context): UserAuthSaver {
-    return UserAuthSaverImpl(context)
-  }
+
+    @Provides
+    @JvmStatic
+    @Singleton
+    fun provideUserAuthSaver(context: Context): UserAuthSaver {
+        return UserAuthSaverImpl(context)
+    }
 }
 
 @FeatureScope
 @Subcomponent
 interface CreatingMasterPasswordComponent {
-  
-  @Subcomponent.Factory
-  interface Factory {
-    
-    fun create(): CreatingMasterPasswordComponent
-  }
-  
-  fun providePresenter(): CreatingMasterPasswordPresenter
+
+    @Subcomponent.Factory
+    interface Factory {
+
+        fun create(): CreatingMasterPasswordComponent
+    }
+
+    fun providePresenter(): CreatingMasterPasswordPresenter
 }

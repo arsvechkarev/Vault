@@ -1,6 +1,6 @@
 plugins {
-  id 'com.android.library'
-  id 'kotlin-android'
+    id 'com.android.library'
+    id 'kotlin-android'
 }
 
 android {
@@ -23,17 +23,17 @@ android {
 }
 
 dependencies {
-  implementation project(":android-app:config")
+    implementation project(":android-app:config")
 
-  def dependencies = rootProject.ext.applicationDependencies
+    def dependencies = rootProject.ext.applicationDependencies
 
-  api dependencies.cicerone
+    api dependencies.cicerone
 
-  implementation dependencies.kotlin
-  implementation dependencies.appCompat
-  implementation dependencies.cicerone
-  implementation dependencies.moxy
+    implementation dependencies.kotlin
+    implementation dependencies.appCompat
+    implementation dependencies.cicerone
+    implementation dependencies.moxy
 
-  def testDependencies = rootProject.ext.testDependencies
-  testImplementation testDependencies.junit
+    def testDependencies = rootProject.ext.testDependencies
+    testImplementation testDependencies.junit
 }

@@ -8,12 +8,8 @@ import com.arsvechkarev.vault.core.di.CoreComponent
 import com.arsvechkarev.vault.core.extensions.moxyPresenter
 import com.arsvechkarev.vault.core.extensions.showToast
 import com.arsvechkarev.vault.core.mvi.MviView
-import com.arsvechkarev.vault.features.start.StartScreenSingleEvent.ShowEditTextStubPassword
-import com.arsvechkarev.vault.features.start.StartScreenSingleEvent.ShowPermanentLockout
-import com.arsvechkarev.vault.features.start.StartScreenSingleEvent.ShowTooManyAttemptsTryAgainLater
-import com.arsvechkarev.vault.features.start.StartScreenUserAction.OnEditTextTyping
-import com.arsvechkarev.vault.features.start.StartScreenUserAction.OnEnteredPassword
-import com.arsvechkarev.vault.features.start.StartScreenUserAction.OnFingerprintIconClicked
+import com.arsvechkarev.vault.features.start.StartScreenSingleEvent.*
+import com.arsvechkarev.vault.features.start.StartScreenUserAction.*
 import com.arsvechkarev.vault.viewbuilding.Colors
 import com.arsvechkarev.vault.viewbuilding.Dimens.FingerprintIconSize
 import com.arsvechkarev.vault.viewbuilding.Dimens.ImageLogoSize
@@ -50,117 +46,117 @@ import com.arsvechkarev.vault.views.dialogs.loadingDialog
 import navigation.BaseScreen
 
 class StartScreen : BaseScreen(), MviView<StartScreenState> {
-  
-  override fun buildLayout(context: Context) = context.withViewBuilder {
-    RootConstraintLayout {
-      VerticalLayout(WrapContent, WrapContent) {
-        id(LogoLayoutId)
-        constraints {
-          topToTopOf(parent)
-          startToStartOf(parent)
-          endToEndOf(parent)
-          bottomToTopOf(ContentLayoutId)
+
+    override fun buildLayout(context: Context) = context.withViewBuilder {
+        RootConstraintLayout {
+            VerticalLayout(WrapContent, WrapContent) {
+                id(LogoLayoutId)
+                constraints {
+                    topToTopOf(parent)
+                    startToStartOf(parent)
+                    endToEndOf(parent)
+                    bottomToTopOf(ContentLayoutId)
+                }
+                gravity(CENTER)
+                ImageView(ImageLogoSize, ImageLogoSize) {
+                    image(R.mipmap.ic_launcher)
+                    margin(MarginDefault)
+                }
+                TextView(WrapContent, WrapContent, style = BoldTextView) {
+                    textSize(TextSizes.H0)
+                    text(R.string.app_name)
+                }
+            }
+            VerticalLayout(MatchParent, WrapContent) {
+                id(ContentLayoutId)
+                margins(top = MarginBig * 2)
+                constraints {
+                    centeredWithin(parent)
+                }
+                TextView(MatchParent, WrapContent, style = BaseTextView) {
+                    id(TextErrorId)
+                    margins(start = MarginDefault + MarginVerySmall, bottom = MarginSmall)
+                    textColor(Colors.Error)
+                }
+                child<EditTextPassword>(MatchParent, WrapContent) {
+                    id(EditTextPasswordId)
+                    marginHorizontal(MarginDefault)
+                    setHint(R.string.hint_enter_password)
+                    onTextChanged { presenter.applyAction(OnEditTextTyping) }
+                    onSubmit { text -> presenter.applyAction(OnEnteredPassword(text)) }
+                }
+            }
+            ImageView(FingerprintIconSize, FingerprintIconSize) {
+                id(FingerprintButtonId)
+                constraints {
+                    bottomToTopOf(ContinueButtonId)
+                    startToStartOf(parent)
+                    endToEndOf(parent)
+                }
+                image(R.drawable.ic_fingerprint)
+                margin(MarginMedium)
+                invisible()
+                onClick { presenter.applyAction(OnFingerprintIconClicked) }
+            }
+            TextView(MatchParent, WrapContent, style = ClickableButton()) {
+                id(ContinueButtonId)
+                text(R.string.text_continue)
+                margins(start = MarginDefault, end = MarginDefault, bottom = MarginDefault)
+                constraints {
+                    startToStartOf(parent)
+                    endToEndOf(parent)
+                    bottomToBottomOf(parent)
+                }
+                onClick {
+                    val text = viewAs<EditTextPassword>(EditTextPasswordId).getText()
+                    presenter.applyAction(OnEnteredPassword(text))
+                }
+            }
+            LoadingDialog()
         }
-        gravity(CENTER)
-        ImageView(ImageLogoSize, ImageLogoSize) {
-          image(R.mipmap.ic_launcher)
-          margin(MarginDefault)
-        }
-        TextView(WrapContent, WrapContent, style = BoldTextView) {
-          textSize(TextSizes.H0)
-          text(R.string.app_name)
-        }
-      }
-      VerticalLayout(MatchParent, WrapContent) {
-        id(ContentLayoutId)
-        margins(top = MarginBig * 2)
-        constraints {
-          centeredWithin(parent)
-        }
-        TextView(MatchParent, WrapContent, style = BaseTextView) {
-          id(TextErrorId)
-          margins(start = MarginDefault + MarginVerySmall, bottom = MarginSmall)
-          textColor(Colors.Error)
-        }
-        child<EditTextPassword>(MatchParent, WrapContent) {
-          id(EditTextPasswordId)
-          marginHorizontal(MarginDefault)
-          setHint(R.string.hint_enter_password)
-          onTextChanged { presenter.applyAction(OnEditTextTyping) }
-          onSubmit { text -> presenter.applyAction(OnEnteredPassword(text)) }
-        }
-      }
-      ImageView(FingerprintIconSize, FingerprintIconSize) {
-        id(FingerprintButtonId)
-        constraints {
-          bottomToTopOf(ContinueButtonId)
-          startToStartOf(parent)
-          endToEndOf(parent)
-        }
-        image(R.drawable.ic_fingerprint)
-        margin(MarginMedium)
-        invisible()
-        onClick { presenter.applyAction(OnFingerprintIconClicked) }
-      }
-      TextView(MatchParent, WrapContent, style = ClickableButton()) {
-        id(ContinueButtonId)
-        text(R.string.text_continue)
-        margins(start = MarginDefault, end = MarginDefault, bottom = MarginDefault)
-        constraints {
-          startToStartOf(parent)
-          endToEndOf(parent)
-          bottomToBottomOf(parent)
-        }
-        onClick {
-          val text = viewAs<EditTextPassword>(EditTextPasswordId).getText()
-          presenter.applyAction(OnEnteredPassword(text))
-        }
-      }
-      LoadingDialog()
     }
-  }
-  
-  private val presenter by moxyPresenter {
-    CoreComponent.instance.getStartComponentFactory().create().providePresenter()
-  }
-  
-  override fun render(state: StartScreenState) {
-    if (state.isLoading) loadingDialog.show() else loadingDialog.hide()
-    view(FingerprintButtonId).isVisible = state.showFingerprintIcon
-    if (state.showPasswordIsIncorrect) {
-      textView(TextErrorId).text(R.string.text_password_is_incorrect)
-    } else {
-      textView(TextErrorId).text("")
+
+    private val presenter by moxyPresenter {
+        CoreComponent.instance.getStartComponentFactory().create().providePresenter()
     }
-    if (state.showKeyboard) {
-      contextNonNull.showKeyboard()
-      viewAs<EditTextPassword>(EditTextPasswordId).requestEditTextFocus()
-    } else {
-      contextNonNull.hideKeyboard()
+
+    override fun render(state: StartScreenState) {
+        if (state.isLoading) loadingDialog.show() else loadingDialog.hide()
+        view(FingerprintButtonId).isVisible = state.showFingerprintIcon
+        if (state.showPasswordIsIncorrect) {
+            textView(TextErrorId).text(R.string.text_password_is_incorrect)
+        } else {
+            textView(TextErrorId).text("")
+        }
+        if (state.showKeyboard) {
+            contextNonNull.showKeyboard()
+            viewAs<EditTextPassword>(EditTextPasswordId).requestEditTextFocus()
+        } else {
+            contextNonNull.hideKeyboard()
+        }
     }
-  }
-  
-  override fun renderSingleEvent(event: Any) {
-    when (event as StartScreenSingleEvent) {
-      ShowPermanentLockout -> {
-        showToast(R.string.text_biometrics_use_password)
-      }
-      ShowTooManyAttemptsTryAgainLater -> {
-        showToast(R.string.text_biometrics_try_again_later)
-      }
-      ShowEditTextStubPassword -> {
-        viewAs<EditTextPassword>(EditTextPasswordId).text(R.string.text_password_stub)
-      }
+
+    override fun renderSingleEvent(event: Any) {
+        when (event as StartScreenSingleEvent) {
+            ShowPermanentLockout -> {
+                showToast(R.string.text_biometrics_use_password)
+            }
+            ShowTooManyAttemptsTryAgainLater -> {
+                showToast(R.string.text_biometrics_try_again_later)
+            }
+            ShowEditTextStubPassword -> {
+                viewAs<EditTextPassword>(EditTextPasswordId).text(R.string.text_password_stub)
+            }
+        }
     }
-  }
-  
-  private companion object {
-    
-    val LogoLayoutId = View.generateViewId()
-    val ContentLayoutId = View.generateViewId()
-    val TextErrorId = View.generateViewId()
-    val EditTextPasswordId = View.generateViewId()
-    val FingerprintButtonId = View.generateViewId()
-    val ContinueButtonId = View.generateViewId()
-  }
+
+    private companion object {
+
+        val LogoLayoutId = View.generateViewId()
+        val ContentLayoutId = View.generateViewId()
+        val TextErrorId = View.generateViewId()
+        val EditTextPasswordId = View.generateViewId()
+        val FingerprintButtonId = View.generateViewId()
+        val ContinueButtonId = View.generateViewId()
+    }
 }

@@ -9,13 +9,13 @@ annotation class PasswordCheckingCommunicator
 interface PasswordCheckingEvents
 
 sealed class PasswordCheckingActions : PasswordCheckingEvents {
-  
-  object ShowDialog : PasswordCheckingActions()
-  
-  object HideDialog : PasswordCheckingActions()
+
+    object ShowDialog : PasswordCheckingActions()
+
+    object HideDialog : PasswordCheckingActions()
 }
 
 sealed class PasswordCheckingReactions : PasswordCheckingEvents {
-  
-  object PasswordCheckedSuccessfully : PasswordCheckingReactions()
+
+    object PasswordCheckedSuccessfully : PasswordCheckingReactions()
 }

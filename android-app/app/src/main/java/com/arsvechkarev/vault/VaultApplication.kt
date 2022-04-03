@@ -6,11 +6,11 @@ import com.arsvechkarev.vault.viewdsl.ContextHolder
 import timber.log.Timber
 
 class VaultApplication : Application() {
-  
-  override fun onCreate() {
-    super.onCreate()
-    Timber.plant(Timber.DebugTree())
-    ContextHolder.init(applicationContext)
-    Fonts.init(applicationContext)
-  }
+
+    override fun onCreate() {
+        super.onCreate()
+        Timber.plant(Timber.DebugTree())
+        ContextHolder.init(applicationContext)
+        Fonts.init(applicationContext)
+    }
 }

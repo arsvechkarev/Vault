@@ -15,6 +15,7 @@
 </p>
 
 #### Technology stack:
+
 - Kotlin
 - MVP (Moxy)
 - Unit testing (junit)
@@ -22,6 +23,7 @@
 - Custom UI library
 
 #### Main features:
+
 - [x] Start screen
 - [x] Creating master password screen
 - [x] Cryptography algorithm
@@ -31,6 +33,7 @@
 - [x] Password editing screen
 
 #### In progress:
+
 - [x] Unit-tests for cryptohraphy
 - [x] Dagger 2
 - [ ] Light theme

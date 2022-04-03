@@ -10,11 +10,11 @@ object PasswordCreatingModule
 @FeatureScope
 @Subcomponent
 interface PasswordCreatingComponent {
-  
-  fun getPresenter(): PasswordCreatingPresenter
-  
-  @Subcomponent.Factory
-  interface Factory {
-    fun create(): PasswordCreatingComponent
-  }
+
+    fun getPresenter(): PasswordCreatingPresenter
+
+    @Subcomponent.Factory
+    interface Factory {
+        fun create(): PasswordCreatingComponent
+    }
 }

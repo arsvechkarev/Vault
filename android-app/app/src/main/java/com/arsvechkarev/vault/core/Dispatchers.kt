@@ -6,8 +6,8 @@ import kotlinx.coroutines.CoroutineDispatcher
  * Dispatchers for coroutines
  */
 interface Dispatchers {
-  
-  val IO: CoroutineDispatcher
-  val Default: CoroutineDispatcher
-  val Main: CoroutineDispatcher
+
+    val IO: CoroutineDispatcher
+    val Default: CoroutineDispatcher
+    val Main: CoroutineDispatcher
 }

@@ -6,20 +6,20 @@ import dagger.Module
 import dagger.Subcomponent
 
 @Module(
-  includes = [PasswordActionsModule::class],
-  subcomponents = [StartComponent::class]
+    includes = [PasswordActionsModule::class],
+    subcomponents = [StartComponent::class]
 )
 object StartModule
 
 @FeatureScope
 @Subcomponent
 interface StartComponent {
-  
-  @Subcomponent.Factory
-  interface Factory {
-    
-    fun create(): StartComponent
-  }
-  
-  fun providePresenter(): StartPresenter
+
+    @Subcomponent.Factory
+    interface Factory {
+
+        fun create(): StartComponent
+    }
+
+    fun providePresenter(): StartPresenter
 }

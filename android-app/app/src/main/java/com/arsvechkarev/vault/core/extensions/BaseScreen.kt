@@ -5,5 +5,5 @@ import androidx.annotation.StringRes
 import navigation.BaseScreen
 
 fun BaseScreen.showToast(@StringRes resId: Int) {
-  Toast.makeText(contextNonNull, contextNonNull.getText(resId), Toast.LENGTH_LONG).show()
+    Toast.makeText(contextNonNull, contextNonNull.getText(resId), Toast.LENGTH_LONG).show()
 }

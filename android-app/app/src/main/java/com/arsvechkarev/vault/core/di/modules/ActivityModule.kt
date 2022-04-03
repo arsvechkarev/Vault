@@ -7,8 +7,8 @@ import javax.inject.Singleton
 
 @Module
 class ActivityModule(private val activity: FragmentActivity) {
-  
-  @Provides
-  @Singleton
-  fun provideActivity(): FragmentActivity = activity
+
+    @Provides
+    @Singleton
+    fun provideActivity(): FragmentActivity = activity
 }

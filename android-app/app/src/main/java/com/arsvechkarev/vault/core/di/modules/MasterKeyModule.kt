@@ -8,13 +8,13 @@ import javax.inject.Singleton
 
 @Module(includes = [CoreModule::class])
 object MasterKeyModule {
-  
-  @Provides
-  @Singleton
-  @JvmStatic
-  fun provideMasterKey(context: Context): MasterKey {
-    return MasterKey.Builder(context)
-        .setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
-        .build()
-  }
+
+    @Provides
+    @Singleton
+    @JvmStatic
+    fun provideMasterKey(context: Context): MasterKey {
+        return MasterKey.Builder(context)
+            .setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
+            .build()
+    }
 }

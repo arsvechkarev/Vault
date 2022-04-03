@@ -21,90 +21,90 @@ import navigation.Router
 import javax.inject.Inject
 
 class MainActivity : BaseActivity() {
-  
-  private val mainActivityLayout
-    get() = withViewBuilder {
-      RootView(context).apply {
-        id(rootViewId)
-        size(MatchParent, MatchParent)
-        fitsSystemWindows = true
-      }
+
+    private val mainActivityLayout
+        get() = withViewBuilder {
+            RootView(context).apply {
+                id(rootViewId)
+                size(MatchParent, MatchParent)
+                fitsSystemWindows = true
+            }
+        }
+
+    @Inject
+    lateinit var navigator: ExtendedNavigator
+
+    @Inject
+    lateinit var cicerone: Cicerone<Router>
+
+    @Inject
+    lateinit var router: Router
+
+    @Inject
+    lateinit var userAuthSaver: UserAuthSaver
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        Densities.init(resources)
+        Colors.init(this)
+        window.decorView.systemUiVisibility = (SYSTEM_UI_FLAG_LAYOUT_STABLE
+                or SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN)
+        setContentView(mainActivityLayout)
+        CoreComponent.init(applicationContext, this)
+        CoreComponent.instance.getMainComponentBuilder()
+            .activity(this)
+            .rootViewId(rootViewId)
+            .build()
+            .inject(this)
+        figureOutScreenToGo(savedInstanceState)
     }
-  
-  @Inject
-  lateinit var navigator: ExtendedNavigator
-  
-  @Inject
-  lateinit var cicerone: Cicerone<Router>
-  
-  @Inject
-  lateinit var router: Router
-  
-  @Inject
-  lateinit var userAuthSaver: UserAuthSaver
-  
-  override fun onCreate(savedInstanceState: Bundle?) {
-    super.onCreate(savedInstanceState)
-    Densities.init(resources)
-    Colors.init(this)
-    window.decorView.systemUiVisibility = (SYSTEM_UI_FLAG_LAYOUT_STABLE
-        or SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN)
-    setContentView(mainActivityLayout)
-    CoreComponent.init(applicationContext, this)
-    CoreComponent.instance.getMainComponentBuilder()
-        .activity(this)
-        .rootViewId(rootViewId)
-        .build()
-        .inject(this)
-    figureOutScreenToGo(savedInstanceState)
-  }
-  
-  private fun figureOutScreenToGo(savedInstanceState: Bundle?) {
-    if (savedInstanceState != null) {
-      // Activity is recreated, navigator handles this case automatically
-      return
+
+    private fun figureOutScreenToGo(savedInstanceState: Bundle?) {
+        if (savedInstanceState != null) {
+            // Activity is recreated, navigator handles this case automatically
+            return
+        }
+        if (userAuthSaver.isUserAuthorized()) {
+            router.goForward(Screens.StartScreen)
+        } else {
+            router.goForward(Screens.InitialScreen)
+        }
     }
-    if (userAuthSaver.isUserAuthorized()) {
-      router.goForward(Screens.StartScreen)
-    } else {
-      router.goForward(Screens.InitialScreen)
+
+    override fun onResume() {
+        super.onResume()
+        cicerone.getNavigatorHolder().setNavigator(navigator)
     }
-  }
-  
-  override fun onResume() {
-    super.onResume()
-    cicerone.getNavigatorHolder().setNavigator(navigator)
-  }
-  
-  override fun onPause() {
-    super.onPause()
-    cicerone.getNavigatorHolder().removeNavigator()
-  }
-  
-  override fun onBackPressed() {
-    if (!navigator.handleGoBack()) {
-      super.onBackPressed()
+
+    override fun onPause() {
+        super.onPause()
+        cicerone.getNavigatorHolder().removeNavigator()
     }
-  }
-  
-  override fun onSaveInstanceState(outState: Bundle) {
-    super.onSaveInstanceState(outState)
-    navigator.onSaveInstanceState(outState)
-  }
-  
-  override fun onRestoreInstanceState(savedInstanceState: Bundle) {
-    super.onRestoreInstanceState(savedInstanceState)
-    navigator.onRestoreInstanceState(savedInstanceState)
-  }
-  
-  override fun onDestroy() {
-    super.onDestroy()
-    navigator.releaseScreens()
-    CoreComponent.clear()
-  }
-  
-  private companion object {
-    
-    val rootViewId = View.generateViewId()
-  }
+
+    override fun onBackPressed() {
+        if (!navigator.handleGoBack()) {
+            super.onBackPressed()
+        }
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        navigator.onSaveInstanceState(outState)
+    }
+
+    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+        super.onRestoreInstanceState(savedInstanceState)
+        navigator.onRestoreInstanceState(savedInstanceState)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        navigator.releaseScreens()
+        CoreComponent.clear()
+    }
+
+    private companion object {
+
+        val rootViewId = View.generateViewId()
+    }
 }

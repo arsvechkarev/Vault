@@ -16,84 +16,84 @@ import android.view.View
 import com.arsvechkarev.vault.viewbuilding.Colors
 
 fun Drawable.applyColor(color: Int) {
-  colorFilter = PorterDuffColorFilter(color, PorterDuff.Mode.SRC_ATOP)
+    colorFilter = PorterDuffColorFilter(color, PorterDuff.Mode.SRC_ATOP)
 }
 
 fun View.backgroundRoundRect(cornerRadius: Int, color: Int) {
-  val r = cornerRadius.toFloat()
-  val outerRadii = floatArrayOf(r, r, r, r, r, r, r, r)
-  val roundRectShape = RoundRectShape(outerRadii, null, null)
-  val backgroundRect = ShapeDrawable().apply {
-    shape = roundRectShape
-    paint.color = color
-  }
-  background(backgroundRect)
+    val r = cornerRadius.toFloat()
+    val outerRadii = floatArrayOf(r, r, r, r, r, r, r, r)
+    val roundRectShape = RoundRectShape(outerRadii, null, null)
+    val backgroundRect = ShapeDrawable().apply {
+        shape = roundRectShape
+        paint.color = color
+    }
+    background(backgroundRect)
 }
 
 fun View.gradientRippleBackground(
-  cornerRadius: Int,
-  rippleColor: Int,
-  gradientStart: Int,
-  gradientEnd: Int,
-  orientation: GradientDrawable.Orientation
+    cornerRadius: Int,
+    rippleColor: Int,
+    gradientStart: Int,
+    gradientEnd: Int,
+    orientation: GradientDrawable.Orientation
 ) {
-  val bgDrawable = GradientDrawable(orientation, intArrayOf(gradientStart, gradientEnd))
-  val r = cornerRadius.toFloat()
-  val outerRadii = floatArrayOf(r, r, r, r, r, r, r, r)
-  bgDrawable.cornerRadii = outerRadii
-  rippleBackground(rippleColor, cornerRadius, bgDrawable)
+    val bgDrawable = GradientDrawable(orientation, intArrayOf(gradientStart, gradientEnd))
+    val r = cornerRadius.toFloat()
+    val outerRadii = floatArrayOf(r, r, r, r, r, r, r, r)
+    bgDrawable.cornerRadii = outerRadii
+    rippleBackground(rippleColor, cornerRadius, bgDrawable)
 }
 
 fun View.rippleBackground(
-  rippleColor: Int,
-  backgroundColor: Int,
-  cornerRadius: Int
+    rippleColor: Int,
+    backgroundColor: Int,
+    cornerRadius: Int
 ) {
-  val r = cornerRadius.toFloat()
-  val outerRadii = floatArrayOf(r, r, r, r, r, r, r, r)
-  val roundRectShape = RoundRectShape(outerRadii, null, null)
-  val backgroundRect = ShapeDrawable().apply {
-    shape = roundRectShape
-    paint.color = backgroundColor
-  }
-  rippleBackground(rippleColor, cornerRadius, backgroundRect)
+    val r = cornerRadius.toFloat()
+    val outerRadii = floatArrayOf(r, r, r, r, r, r, r, r)
+    val roundRectShape = RoundRectShape(outerRadii, null, null)
+    val backgroundRect = ShapeDrawable().apply {
+        shape = roundRectShape
+        paint.color = backgroundColor
+    }
+    rippleBackground(rippleColor, cornerRadius, backgroundRect)
 }
 
 fun View.rippleBackground(
-  rippleColor: Int,
-  cornerRadius: Int,
-  backgroundDrawable: Drawable
+    rippleColor: Int,
+    cornerRadius: Int,
+    backgroundDrawable: Drawable
 ) {
-  val r = cornerRadius.toFloat()
-  val outerRadii = floatArrayOf(r, r, r, r, r, r, r, r)
-  val roundRectShape = RoundRectShape(outerRadii, null, null)
-  val maskRect = ShapeDrawable().apply {
-    shape = roundRectShape
-    paint.color = rippleColor
-  }
-  isClickable = true
-  isFocusable = true
-  background(RippleDrawable(ColorStateList.valueOf(rippleColor), backgroundDrawable, maskRect))
+    val r = cornerRadius.toFloat()
+    val outerRadii = floatArrayOf(r, r, r, r, r, r, r, r)
+    val roundRectShape = RoundRectShape(outerRadii, null, null)
+    val maskRect = ShapeDrawable().apply {
+        shape = roundRectShape
+        paint.color = rippleColor
+    }
+    isClickable = true
+    isFocusable = true
+    background(RippleDrawable(ColorStateList.valueOf(rippleColor), backgroundDrawable, maskRect))
 }
 
 fun View.circleRippleBackground(rippleColor: Int = Colors.Ripple) {
-  addRippleBackground(OvalShape(), rippleColor)
+    addRippleBackground(OvalShape(), rippleColor)
 }
 
 fun View.rippleBackground(rippleColor: Int = Colors.Ripple) {
-  addRippleBackground(RectShape(), rippleColor)
+    addRippleBackground(RectShape(), rippleColor)
 }
 
 private fun View.addRippleBackground(shape: Shape, rippleColor: Int = Colors.Ripple) {
-  val background = ShapeDrawable().apply {
-    this.shape = shape
-    paint.color = Color.TRANSPARENT
-  }
-  val mask = ShapeDrawable().apply {
-    this.shape = shape
-    paint.color = rippleColor
-  }
-  isClickable = true
-  isFocusable = true
-  background(RippleDrawable(ColorStateList.valueOf(rippleColor), background, mask))
+    val background = ShapeDrawable().apply {
+        this.shape = shape
+        paint.color = Color.TRANSPARENT
+    }
+    val mask = ShapeDrawable().apply {
+        this.shape = shape
+        paint.color = rippleColor
+    }
+    isClickable = true
+    isFocusable = true
+    background(RippleDrawable(ColorStateList.valueOf(rippleColor), background, mask))
 }

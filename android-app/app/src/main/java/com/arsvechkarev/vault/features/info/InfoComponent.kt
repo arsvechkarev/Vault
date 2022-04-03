@@ -11,26 +11,26 @@ import dagger.Subcomponent
 import javax.inject.Singleton
 
 @Module(
-  includes = [CoreModule::class],
-  subcomponents = [InfoComponent::class]
+    includes = [CoreModule::class],
+    subcomponents = [InfoComponent::class]
 )
 object InfoModule {
-  
-  @Provides
-  @JvmStatic
-  @Singleton
-  fun provideClipboard(context: Context): Clipboard = ClipboardImpl(context)
+
+    @Provides
+    @JvmStatic
+    @Singleton
+    fun provideClipboard(context: Context): Clipboard = ClipboardImpl(context)
 }
 
 @FeatureScope
 @Subcomponent
 interface InfoComponent {
-  
-  @Subcomponent.Factory
-  interface Factory {
-    
-    fun create(): InfoComponent
-  }
-  
-  fun providePresenter(): InfoPresenter
+
+    @Subcomponent.Factory
+    interface Factory {
+
+        fun create(): InfoComponent
+    }
+
+    fun providePresenter(): InfoPresenter
 }

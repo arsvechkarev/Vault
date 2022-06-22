@@ -5,7 +5,6 @@ import buisnesslogic.ServicesStorageImpl
 import buisnesslogic.base64.JavaBase64Coder
 import buisnesslogic.random.SeedRandomGeneratorImpl
 import com.arsvechkarev.vault.core.model.ServiceModel
-import com.arsvechkarev.vault.features.common.ServicesListenableRepository
 import kotlinx.coroutines.runBlocking
 import org.junit.After
 import org.junit.Assert.assertTrue

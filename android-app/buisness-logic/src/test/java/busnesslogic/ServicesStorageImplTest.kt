@@ -3,9 +3,7 @@ package busnesslogic
 import buisnesslogic.AesSivTinkCryptography
 import buisnesslogic.GsonJsonConverter
 import buisnesslogic.ServicesStorageImpl
-import buisnesslogic.base64.JavaBase64Coder
 import buisnesslogic.model.ServiceEntity
-import buisnesslogic.random.SeedRandomGeneratorImpl
 import kotlinx.coroutines.runBlocking
 import org.junit.After
 import org.junit.Assert.assertTrue
@@ -70,13 +68,13 @@ class ServicesStorageImplTest {
   fun `Deleting services`() = runBlocking {
     val service1 = ServiceEntity("id", "google", "pro", "", "po39,x//2")
     val service2 = ServiceEntity("id2", "netflix", "lol", "", "wasp")
-    
+  
     storage.saveService(testPassword, service1)
     storage.saveService(testPassword, service2)
     storage.deleteService(testPassword, service2)
-    val services = storage.getServices(testPassword)
-    
-    assertTrue(services.size == 1)
-    assertTrue(services.contains(service1))
+    val actualServices = storage.getServices(testPassword)
+  
+    assertTrue(actualServices.size == 1)
+    assertTrue(actualServices.contains(service1))
   }
 }

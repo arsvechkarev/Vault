@@ -4,11 +4,11 @@ import buisnesslogic.MasterPasswordChecker
 import buisnesslogic.MasterPasswordHolder
 import buisnesslogic.PasswordChecker
 import buisnesslogic.PasswordStatus.OK
+import com.arsvechkarev.vault.common.Screens
+import com.arsvechkarev.vault.common.UserAuthSaver
 import com.arsvechkarev.vault.core.Dispatchers
 import com.arsvechkarev.vault.core.di.FeatureScope
 import com.arsvechkarev.vault.core.mvi.BaseMviPresenter
-import com.arsvechkarev.vault.features.common.Screens
-import com.arsvechkarev.vault.features.common.UserAuthSaver
 import com.arsvechkarev.vault.features.creating_master_password.CreatingMasterPasswordScreenActions.PasswordEnteringStateChanged
 import com.arsvechkarev.vault.features.creating_master_password.CreatingMasterPasswordScreenActions.ShowPasswordsDontMatch
 import com.arsvechkarev.vault.features.creating_master_password.CreatingMasterPasswordScreenActions.ShowPasswordsMatch

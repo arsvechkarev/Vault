@@ -7,10 +7,10 @@ import android.view.View
 import android.view.WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE
 import android.widget.ImageView.ScaleType.FIT_XY
 import com.arsvechkarev.vault.R
+import com.arsvechkarev.vault.common.setServiceIcon
 import com.arsvechkarev.vault.core.di.CoreComponent
 import com.arsvechkarev.vault.core.extensions.moxyPresenter
 import com.arsvechkarev.vault.core.mvi.MviView
-import com.arsvechkarev.vault.features.common.setServiceIcon
 import com.arsvechkarev.vault.features.creating_service.CreatingServiceUserActions.OnBackPressed
 import com.arsvechkarev.vault.features.creating_service.CreatingServiceUserActions.OnContinueClicked
 import com.arsvechkarev.vault.features.creating_service.CreatingServiceUserActions.OnServiceNameTextChanged

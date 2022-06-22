@@ -67,7 +67,7 @@ goto fail
 :execute
 @rem Setup the command line
 
-set CLASSPATH=%APP_HOME%\lib\desktop-app.jar;%APP_HOME%\lib\common-crypto.jar;%APP_HOME%\lib\javafx-fxml-17-mac.jar;%APP_HOME%\lib\javafx-controls-17-mac.jar;%APP_HOME%\lib\javafx-controls-17.jar;%APP_HOME%\lib\javafx-graphics-17-mac.jar;%APP_HOME%\lib\javafx-graphics-17.jar;%APP_HOME%\lib\javafx-base-17-mac.jar;%APP_HOME%\lib\javafx-base-17.jar;%APP_HOME%\lib\kotlin-stdlib-jdk8-1.6.10-RC.jar;%APP_HOME%\lib\tink-android-1.6.1.jar;%APP_HOME%\lib\kotlin-stdlib-jdk7-1.6.10-RC.jar;%APP_HOME%\lib\kotlin-stdlib-1.6.10-RC.jar;%APP_HOME%\lib\gson-2.8.6.jar;%APP_HOME%\lib\annotations-13.0.jar;%APP_HOME%\lib\kotlin-stdlib-common-1.6.10-RC.jar
+set CLASSPATH=%APP_HOME%\lib\desktop-app.jar;%APP_HOME%\lib\common-crypto.jar;%APP_HOME%\lib\javafx-fxml-17-win.jar;%APP_HOME%\lib\javafx-controls-17-win.jar;%APP_HOME%\lib\javafx-controls-17.jar;%APP_HOME%\lib\javafx-graphics-17-win.jar;%APP_HOME%\lib\javafx-graphics-17.jar;%APP_HOME%\lib\javafx-base-17-win.jar;%APP_HOME%\lib\javafx-base-17.jar;%APP_HOME%\lib\kotlin-stdlib-jdk8-1.6.10-RC.jar;%APP_HOME%\lib\tink-android-1.6.1.jar;%APP_HOME%\lib\kotlin-stdlib-jdk7-1.6.10-RC.jar;%APP_HOME%\lib\kotlin-stdlib-1.6.10-RC.jar;%APP_HOME%\lib\gson-2.8.6.jar;%APP_HOME%\lib\annotations-13.0.jar;%APP_HOME%\lib\kotlin-stdlib-common-1.6.10-RC.jar
 
 
 @rem Execute desktop-app

@@ -3,8 +3,8 @@ package com.arsvechkarev.vault.features.services_list.presentation
 import android.view.Gravity.CENTER
 import android.widget.ImageView
 import android.widget.TextView
+import com.arsvechkarev.vault.common.setServiceIcon
 import com.arsvechkarev.vault.core.model.ServiceModel
-import com.arsvechkarev.vault.features.common.setServiceIcon
 import com.arsvechkarev.vault.recycler.BaseListAdapter
 import com.arsvechkarev.vault.recycler.delegate
 import com.arsvechkarev.vault.viewbuilding.Colors

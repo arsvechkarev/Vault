@@ -4,10 +4,10 @@ import android.os.Bundle
 import android.view.View
 import android.view.View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
 import android.view.View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+import com.arsvechkarev.vault.common.Screens
+import com.arsvechkarev.vault.common.UserAuthSaver
 import com.arsvechkarev.vault.core.BaseActivity
 import com.arsvechkarev.vault.core.di.CoreComponent
-import com.arsvechkarev.vault.features.common.Screens
-import com.arsvechkarev.vault.features.common.UserAuthSaver
 import com.arsvechkarev.vault.viewbuilding.Colors
 import com.arsvechkarev.vault.viewdsl.Densities
 import com.arsvechkarev.vault.viewdsl.Size.Companion.MatchParent

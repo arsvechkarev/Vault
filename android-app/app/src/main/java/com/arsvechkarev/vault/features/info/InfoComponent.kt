@@ -1,10 +1,10 @@
 package com.arsvechkarev.vault.features.info
 
 import android.content.Context
+import com.arsvechkarev.vault.common.Clipboard
+import com.arsvechkarev.vault.common.ClipboardImpl
 import com.arsvechkarev.vault.core.di.FeatureScope
 import com.arsvechkarev.vault.core.di.modules.CoreModule
-import com.arsvechkarev.vault.features.common.Clipboard
-import com.arsvechkarev.vault.features.common.ClipboardImpl
 import dagger.Module
 import dagger.Provides
 import dagger.Subcomponent

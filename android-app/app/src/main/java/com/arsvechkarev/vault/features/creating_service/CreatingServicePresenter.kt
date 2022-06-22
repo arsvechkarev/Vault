@@ -1,12 +1,12 @@
 package com.arsvechkarev.vault.features.creating_service
 
 import buisnesslogic.MasterPasswordHolder.masterPassword
+import com.arsvechkarev.vault.common.Screens
+import com.arsvechkarev.vault.common.ServicesListenableRepository
 import com.arsvechkarev.vault.core.Dispatchers
 import com.arsvechkarev.vault.core.communicators.FlowCommunicator
 import com.arsvechkarev.vault.core.model.ServiceModel
 import com.arsvechkarev.vault.core.mvi.BaseMviPresenter
-import com.arsvechkarev.vault.features.common.Screens
-import com.arsvechkarev.vault.features.common.ServicesListenableRepository
 import com.arsvechkarev.vault.features.creating_password.PasswordCreatingActions.ConfigureMode.NewPassword
 import com.arsvechkarev.vault.features.creating_password.PasswordCreatingActions.ExitScreen
 import com.arsvechkarev.vault.features.creating_password.PasswordCreatingActions.ShowAcceptPasswordDialog

@@ -44,24 +44,25 @@ fun Animator.doOnEnd(block: () -> Unit) {
 }
 
 fun View.animateVisible(andThen: () -> Unit = {}, duration: Long = DurationsConfigurator.DurationDefault) {
-  if (visibility == View.VISIBLE) return
-  alpha = 0f
+  //  if (visibility == View.VISIBLE) return
+  //  alpha = 0f
   visible()
-  animate().alpha(1f).setDuration(duration)
-      .setInterpolator(AccelerateDecelerateInterpolator)
-      .withEndAction(andThen)
-      .start()
+  //  animate().alpha(1f).setDuration(duration)
+  //      .setInterpolator(AccelerateDecelerateInterpolator)
+  //      .withEndAction(andThen)
+  //      .start()
 }
 
 fun View.animateInvisible(andThen: () -> Unit = {}, duration: Long = DurationsConfigurator.DurationDefault) {
   if (visibility == View.INVISIBLE) return
-  animate().alpha(0f).setDuration(duration)
-      .setInterpolator(AccelerateDecelerateInterpolator)
-      .withEndAction {
-        invisible()
-        andThen()
-      }
-      .start()
+  invisible()
+  //  animate().alpha(0f).setDuration(duration)
+  //      .setInterpolator(AccelerateDecelerateInterpolator)
+  //      .withEndAction {
+  //        invisible()
+  //        andThen()
+  //      }
+  //      .start()
 }
 
 fun View.rotate() {

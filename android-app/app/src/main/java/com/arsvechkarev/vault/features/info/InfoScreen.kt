@@ -7,11 +7,11 @@ import android.view.Gravity.CENTER
 import android.view.Gravity.CENTER_HORIZONTAL
 import android.view.Gravity.END
 import com.arsvechkarev.vault.R
+import com.arsvechkarev.vault.common.setServiceIcon
 import com.arsvechkarev.vault.core.di.CoreComponent
 import com.arsvechkarev.vault.core.extensions.getDeleteMessageText
 import com.arsvechkarev.vault.core.extensions.moxyPresenter
 import com.arsvechkarev.vault.core.model.ServiceModel
-import com.arsvechkarev.vault.features.common.setServiceIcon
 import com.arsvechkarev.vault.viewbuilding.Colors
 import com.arsvechkarev.vault.viewbuilding.Dimens
 import com.arsvechkarev.vault.viewbuilding.Dimens.DividerHeight

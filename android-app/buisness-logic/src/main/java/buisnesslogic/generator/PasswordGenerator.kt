@@ -1,6 +1,7 @@
 package buisnesslogic.generator
 
 import buisnesslogic.model.PasswordCharacteristics
+import java.util.EnumSet
 
 /**
  * Generates random passwords
@@ -12,5 +13,5 @@ interface PasswordGenerator {
    *
    * @see PasswordCharacteristics
    */
-  fun generatePassword(length: Int, characteristics: Set<PasswordCharacteristics>): String
+  fun generatePassword(length: Int, characteristics: EnumSet<PasswordCharacteristics>): String
 }

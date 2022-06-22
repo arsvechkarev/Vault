@@ -1,14 +1,14 @@
 package com.arsvechkarev.vault.features.services_list.presentation
 
 import buisnesslogic.MasterPasswordHolder.masterPassword
+import com.arsvechkarev.vault.common.Screens
+import com.arsvechkarev.vault.common.ServicesListenableRepository
+import com.arsvechkarev.vault.common.biometrics.BiometricsAvailabilityChecker
 import com.arsvechkarev.vault.core.Dispatchers
 import com.arsvechkarev.vault.core.Result
 import com.arsvechkarev.vault.core.di.FeatureScope
 import com.arsvechkarev.vault.core.model.ServiceModel
 import com.arsvechkarev.vault.core.mvi.BaseMviPresenter
-import com.arsvechkarev.vault.features.common.Screens
-import com.arsvechkarev.vault.features.common.ServicesListenableRepository
-import com.arsvechkarev.vault.features.common.biometrics.BiometricsAvailabilityChecker
 import com.arsvechkarev.vault.features.services_list.presentation.ServicesListScreenAction.DeletedService
 import com.arsvechkarev.vault.features.services_list.presentation.ServicesListScreenAction.UpdateData
 import com.arsvechkarev.vault.features.services_list.presentation.ServicesListScreenAction.UpdateSettingsIcon

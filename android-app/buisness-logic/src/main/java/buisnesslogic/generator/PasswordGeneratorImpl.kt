@@ -5,6 +5,7 @@ import buisnesslogic.model.PasswordCharacteristics.NUMBERS
 import buisnesslogic.model.PasswordCharacteristics.SPECIAL_SYMBOLS
 import buisnesslogic.model.PasswordCharacteristics.UPPERCASE_SYMBOLS
 import java.security.SecureRandom
+import java.util.EnumSet
 
 class PasswordGeneratorImpl(private val random: SecureRandom) : PasswordGenerator {
   
@@ -15,7 +16,7 @@ class PasswordGeneratorImpl(private val random: SecureRandom) : PasswordGenerato
   
   override fun generatePassword(
     length: Int,
-    characteristics: Set<PasswordCharacteristics>
+    characteristics: EnumSet<PasswordCharacteristics>
   ): String {
     val array = CharArray(length)
     val generators = getGeneratorsFrom(characteristics)

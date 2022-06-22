@@ -3,8 +3,8 @@ package com.arsvechkarev.vault.core.di.modules
 import android.content.Context
 import androidx.security.crypto.MasterKey
 import buisnesslogic.FileSaver
+import com.arsvechkarev.vault.common.EncryptionFileSaver
 import com.arsvechkarev.vault.core.PASSWORDS_FILENAME
-import com.arsvechkarev.vault.features.common.EncryptionFileSaver
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton

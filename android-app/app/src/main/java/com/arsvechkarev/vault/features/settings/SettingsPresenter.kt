@@ -2,16 +2,16 @@ package com.arsvechkarev.vault.features.settings
 
 import android.annotation.SuppressLint
 import buisnesslogic.MasterPasswordHolder.masterPassword
+import com.arsvechkarev.vault.common.biometrics.BiometricsPrompt
+import com.arsvechkarev.vault.common.biometrics.BiometricsPromptEvents.Error
+import com.arsvechkarev.vault.common.biometrics.BiometricsPromptEvents.Failure
+import com.arsvechkarev.vault.common.biometrics.BiometricsPromptEvents.Success
+import com.arsvechkarev.vault.common.biometrics.BiometricsStorage
+import com.arsvechkarev.vault.common.biometrics.SavedFingerprintChecker
 import com.arsvechkarev.vault.core.Dispatchers
 import com.arsvechkarev.vault.core.communicators.FlowCommunicator
 import com.arsvechkarev.vault.core.di.FeatureScope
 import com.arsvechkarev.vault.core.mvi.BaseMviPresenter
-import com.arsvechkarev.vault.features.common.biometrics.BiometricsPrompt
-import com.arsvechkarev.vault.features.common.biometrics.BiometricsPromptEvents.Error
-import com.arsvechkarev.vault.features.common.biometrics.BiometricsPromptEvents.Failure
-import com.arsvechkarev.vault.features.common.biometrics.BiometricsPromptEvents.Success
-import com.arsvechkarev.vault.features.common.biometrics.BiometricsStorage
-import com.arsvechkarev.vault.features.common.biometrics.SavedFingerprintChecker
 import com.arsvechkarev.vault.features.password_checking.PasswordCheckingActions.HideDialog
 import com.arsvechkarev.vault.features.password_checking.PasswordCheckingActions.ShowDialog
 import com.arsvechkarev.vault.features.password_checking.PasswordCheckingCommunicator

@@ -1,14 +1,14 @@
 package com.arsvechkarev.vault.features.info
 
 import buisnesslogic.MasterPasswordHolder.masterPassword
+import com.arsvechkarev.vault.common.Clipboard
+import com.arsvechkarev.vault.common.Screens
+import com.arsvechkarev.vault.common.ServicesListenableRepository
 import com.arsvechkarev.vault.core.BasePresenter
 import com.arsvechkarev.vault.core.Dispatchers
 import com.arsvechkarev.vault.core.communicators.FlowCommunicator
 import com.arsvechkarev.vault.core.di.FeatureScope
 import com.arsvechkarev.vault.core.model.ServiceModel
-import com.arsvechkarev.vault.features.common.Clipboard
-import com.arsvechkarev.vault.features.common.Screens
-import com.arsvechkarev.vault.features.common.ServicesListenableRepository
 import com.arsvechkarev.vault.features.creating_password.PasswordCreatingActions.ConfigureMode.EditPassword
 import com.arsvechkarev.vault.features.creating_password.PasswordCreatingActions.ExitScreen
 import com.arsvechkarev.vault.features.creating_password.PasswordCreatingActions.ShowAcceptPasswordDialog
@@ -141,7 +141,7 @@ class InfoPresenter @Inject constructor(
   }
   
   fun onCopyClicked() {
-    clipboard.copyPassword(serviceModel.password)
+    clipboard.copyToClipboard(serviceModel.password)
     viewState.showCopiedPassword()
   }
   

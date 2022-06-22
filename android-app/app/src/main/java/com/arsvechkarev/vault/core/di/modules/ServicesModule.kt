@@ -6,7 +6,7 @@ import buisnesslogic.GsonJsonConverter
 import buisnesslogic.JsonConverter
 import buisnesslogic.ServicesStorage
 import buisnesslogic.ServicesStorageImpl
-import com.arsvechkarev.vault.features.common.ServicesListenableRepository
+import com.arsvechkarev.vault.common.ServicesListenableRepository
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton

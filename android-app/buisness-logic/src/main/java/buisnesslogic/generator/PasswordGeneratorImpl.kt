@@ -4,15 +4,14 @@ import buisnesslogic.model.PasswordCharacteristics
 import buisnesslogic.model.PasswordCharacteristics.NUMBERS
 import buisnesslogic.model.PasswordCharacteristics.SPECIAL_SYMBOLS
 import buisnesslogic.model.PasswordCharacteristics.UPPERCASE_SYMBOLS
-import java.security.SecureRandom
 import java.util.EnumSet
 
-class PasswordGeneratorImpl(private val random: SecureRandom) : PasswordGenerator {
+class PasswordGeneratorImpl(private val randomGenerator: RandomGenerator) : PasswordGenerator {
   
-  private val uppercaseSymbolsGenerator: SymbolsGenerator = UppercaseSymbolsGenerator(random)
-  private val lowercaseSymbolsGenerator: SymbolsGenerator = LowercaseSymbolsGenerator(random)
-  private val numbersGenerator: SymbolsGenerator = NumbersGenerator(random)
-  private val specialSymbolsGenerator: SymbolsGenerator = SpecialSymbolsGenerator(random)
+  private val uppercaseSymbolsGenerator = UppercaseSymbolsGenerator(randomGenerator)
+  private val lowercaseSymbolsGenerator = LowercaseSymbolsGenerator(randomGenerator)
+  private val numbersGenerator = NumbersGenerator(randomGenerator)
+  private val specialSymbolsGenerator = SpecialSymbolsGenerator(randomGenerator)
   
   override fun generatePassword(
     length: Int,
@@ -21,7 +20,7 @@ class PasswordGeneratorImpl(private val random: SecureRandom) : PasswordGenerato
     val array = CharArray(length)
     val generators = getGeneratorsFrom(characteristics)
     repeat(length) { i ->
-      val randomGenerator = generators[random.nextInt(generators.size)]
+      val randomGenerator = generators[randomGenerator.nextInt(generators.size)]
       array[i] = randomGenerator.generate()
     }
     return String(array)

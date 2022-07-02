@@ -1,59 +1,33 @@
 package com.arsvechkarev.vault.viewbuilding
 
-import android.content.Context
 import android.graphics.Color
-import com.arsvechkarev.vault.R
-import com.arsvechkarev.vault.viewdsl.getAttrColor
 
+@Suppress("MayBeConstant")
 object Colors {
   
-  const val Transparent = Color.TRANSPARENT
+  val Transparent = Color.TRANSPARENT
+  val Background = "17212B".color
+  val Surface = "383838".color
+  val Dialog = "17212B".color
+  val Icon = "FFFFFF".color
+  val Ripple = "C6FFFFFF".color
+  val Accent = "3C80AE".color
+  val AccentLight = "69ACD8".color
+  val AccentRipple = "70307FB5".color
+  val Correct = "29B500".color
+  val CorrectRipple = "70249802".color
+  val Error = "D5301E".color
+  val ErrorRipple = "70E64545".color
+  val TextPrimary = "FFFFFF".color
+  val TextSecondary = "A3A3A3".color
+  val PasswordWeak = "C80505".color
+  val PasswordMedium = "DA6314".color
+  val PasswordStrong = "DAAF14".color
+  val PasswordVeryStrong = "069A15".color
+  val Disabled = "AFAFAF".color
+  val Divider = "AFAFAF".color
+  val Shadow = "9A000000".color
   
-  private val colors = IntArray(24) { 0 }
-  
-  val Background get() = colors[0]
-  val Surface get() = colors[1]
-  val Dialog get() = colors[2]
-  val Icon get() = colors[3]
-  val Ripple get() = colors[4]
-  val Accent get() = colors[5]
-  val AccentLight get() = colors[6]
-  val AccentRipple get() = colors[8]
-  val Correct get() = colors[9]
-  val CorrectRipple get() = colors[10]
-  val Error get() = colors[11]
-  val ErrorRipple get() = colors[12]
-  val TextPrimary get() = colors[13]
-  val TextSecondary get() = colors[14]
-  val PasswordWeak get() = colors[15]
-  val PasswordMedium get() = colors[16]
-  val PasswordStrong get() = colors[17]
-  val PasswordVeryStrong get() = colors[18]
-  val Disabled get() = colors[21]
-  val Divider get() = colors[22]
-  val Shadow get() = colors[23]
-  
-  fun init(context: Context) {
-    colors[0] = context.getAttrColor(R.attr.colorBackground)
-    colors[1] = context.getAttrColor(R.attr.colorSurface)
-    colors[2] = context.getAttrColor(R.attr.colorDialog)
-    colors[3] = context.getAttrColor(R.attr.colorIcon)
-    colors[4] = context.getAttrColor(R.attr.colorRipple)
-    colors[5] = context.getAttrColor(R.attr.colorAccent)
-    colors[6] = context.getAttrColor(R.attr.colorAccentLight)
-    colors[8] = context.getAttrColor(R.attr.colorAccentRipple)
-    colors[9] = context.getAttrColor(R.attr.colorCorrect)
-    colors[10] = context.getAttrColor(R.attr.colorCorrectRipple)
-    colors[11] = context.getAttrColor(R.attr.colorError)
-    colors[12] = context.getAttrColor(R.attr.colorErrorRipple)
-    colors[13] = context.getAttrColor(R.attr.colorTextPrimary)
-    colors[14] = context.getAttrColor(R.attr.colorTextSecondary)
-    colors[15] = context.getAttrColor(R.attr.colorPasswordWeak)
-    colors[16] = context.getAttrColor(R.attr.colorPasswordMedium)
-    colors[17] = context.getAttrColor(R.attr.colorPasswordStrong)
-    colors[18] = context.getAttrColor(R.attr.colorPasswordVeryStrong)
-    colors[21] = context.getAttrColor(R.attr.colorDisabled)
-    colors[22] = context.getAttrColor(R.attr.colorDivider)
-    colors[23] = context.getAttrColor(R.attr.colorShadow)
-  }
+  private inline val String.color: Int
+    get() = Color.parseColor("#$this")
 }

@@ -1,18 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-  package="com.arsvechkarev.vault">
+          package="com.arsvechkarev.vault">
 
   <uses-permission android:name="android.permission.USE_BIOMETRIC"/>
-  <uses-permission android:name="android.permission.USE_FINGERPRINT"/>
 
-  <application android:name=".VaultApplication"
+  <application
+    android:name=".VaultApplication"
     android:allowBackup="false"
     android:icon="@mipmap/ic_launcher"
     android:label="@string/app_name"
     android:roundIcon="@mipmap/ic_launcher_round"
     android:supportsRtl="true"
-    android:theme="@style/AppTheme.Dark">
-    <activity android:name=".features.MainActivity"
+    android:theme="@style/AppTheme">
+    <activity
+      android:name=".MainActivity"
+      android:exported="true"
       android:screenOrientation="portrait"
       android:windowSoftInputMode="adjustResize">
       <intent-filter>

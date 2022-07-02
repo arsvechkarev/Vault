@@ -13,9 +13,8 @@ import buisnesslogic.model.PasswordCharacteristics.NUMBERS
 import buisnesslogic.model.PasswordCharacteristics.SPECIAL_SYMBOLS
 import buisnesslogic.model.PasswordCharacteristics.UPPERCASE_SYMBOLS
 import com.arsvechkarev.vault.core.BasePresenter
-import com.arsvechkarev.vault.core.Dispatchers
+import com.arsvechkarev.vault.core.DispatchersFacade
 import com.arsvechkarev.vault.core.communicators.FlowCommunicator
-import com.arsvechkarev.vault.core.di.FeatureScope
 import com.arsvechkarev.vault.features.creating_password.PasswordCreatingActions.ConfigureMode.EditPassword
 import com.arsvechkarev.vault.features.creating_password.PasswordCreatingActions.ConfigureMode.NewPassword
 import com.arsvechkarev.vault.features.creating_password.PasswordCreatingActions.ExitScreen
@@ -31,14 +30,13 @@ import navigation.Router
 import java.util.EnumSet
 import javax.inject.Inject
 
-@FeatureScope
 class PasswordCreatingPresenter @Inject constructor(
   @PasswordCreatingCommunicator
   private val passwordCreatingCommunicator: FlowCommunicator<PasswordCreatingEvents>,
   private val passwordChecker: PasswordChecker,
   private val passwordGenerator: PasswordGenerator,
   private val router: Router,
-  dispatchers: Dispatchers
+  dispatchers: DispatchersFacade
 ) : BasePresenter<PasswordCreatingView>(dispatchers) {
   
   private var passwordCharacteristics = EnumSet.of(UPPERCASE_SYMBOLS, NUMBERS, SPECIAL_SYMBOLS)

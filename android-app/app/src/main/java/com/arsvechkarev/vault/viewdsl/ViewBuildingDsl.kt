@@ -12,6 +12,8 @@ import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.recyclerview.widget.RecyclerView
+import com.arsvechkarev.vault.viewbuilding.Styles
+import com.arsvechkarev.vault.viewbuilding.Styles.BaseBackground
 import com.arsvechkarev.vault.viewdsl.Size.Companion.MatchParent
 import com.arsvechkarev.vault.viewdsl.Size.Companion.WrapContent
 import com.arsvechkarev.vault.viewdsl.Size.IntSize
@@ -65,23 +67,26 @@ class ViewBuilder(val context: Context) {
   fun Any.RootFrameLayout(
     width: Size = MatchParent,
     height: Size = MatchParent,
+    defaultStyle: View.() -> Unit = BaseBackground,
     style: FrameLayout.() -> Unit = {},
     block: FrameLayout.() -> Unit = {}
-  ) = FrameLayout(context).size(width, height).apply(style).apply(block)
+  ) = FrameLayout(context).size(width, height).apply(defaultStyle).apply(style).apply(block)
   
   fun Any.RootCoordinatorLayout(
     width: Size = MatchParent,
     height: Size = MatchParent,
+    defaultStyle: View.() -> Unit = BaseBackground,
     style: CoordinatorLayout.() -> Unit = {},
     block: CoordinatorLayout.() -> Unit = {}
-  ) = CoordinatorLayout(context).size(width, height).apply(style).apply(block)
+  ) = CoordinatorLayout(context).size(width, height).apply(defaultStyle).apply(style).apply(block)
   
   fun Any.RootConstraintLayout(
     width: Size = MatchParent,
     height: Size = MatchParent,
+    defaultStyle: View.() -> Unit = BaseBackground,
     style: ConstraintLayout.() -> Unit = {},
     block: ConstraintLayout.() -> Unit = {}
-  ) = ConstraintLayout(context).size(width, height).apply(style).apply(block)
+  ) = ConstraintLayout(context).size(width, height).apply(defaultStyle).apply(style).apply(block)
   
   inline fun <reified T : View> FrameLayout.child(
     width: Size, height: Size, style: T.() -> Unit = {}, block: T.() -> Unit,
@@ -131,6 +136,18 @@ class ViewBuilder(val context: Context) {
     width: Size,
     height: Size,
     style: TextView.() -> Unit = {},
+    block: TextView.() -> Unit,
+  ) = when (this) {
+    is FrameLayout -> child<TextView, FrameLayoutParams>(width, height, style, block)
+    is LinearLayout -> child<TextView, LinearLayoutParams>(width, height, style, block)
+    is CoordinatorLayout -> child<TextView, CoordLayoutParams>(width, height, style, block)
+    else -> child<TextView, ViewGroupLayoutParams>(width, height, style, block)
+  }
+  
+  fun ViewGroup.ClickableButton(
+    width: Size,
+    height: Size,
+    style: TextView.() -> Unit = Styles.Button(),
     block: TextView.() -> Unit,
   ) = when (this) {
     is FrameLayout -> child<TextView, FrameLayoutParams>(width, height, style, block)

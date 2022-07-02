@@ -1,7 +1,7 @@
 package com.arsvechkarev.vault.features.password_checking
 
 import buisnesslogic.MasterPasswordChecker
-import com.arsvechkarev.vault.core.Dispatchers
+import com.arsvechkarev.vault.core.DispatchersFacade
 import com.arsvechkarev.vault.core.communicators.FlowCommunicator
 import com.arsvechkarev.vault.features.password_checking.PasswordCheckingActions.HideDialog
 import com.arsvechkarev.vault.features.password_checking.PasswordCheckingActions.ShowDialog
@@ -17,7 +17,7 @@ class PasswordCheckingPresenter @Inject constructor(
   @PasswordCheckingCommunicator
   private val passwordCheckingCommunicator: FlowCommunicator<PasswordCheckingEvents>,
   private val masterPasswordChecker: MasterPasswordChecker,
-  private val dispatchers: Dispatchers,
+  private val dispatchers: DispatchersFacade,
 ) : CoroutineScope {
   
   override val coroutineContext = dispatchers.Main + SupervisorJob()

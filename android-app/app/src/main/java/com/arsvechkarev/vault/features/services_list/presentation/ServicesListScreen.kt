@@ -11,23 +11,15 @@ import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import com.arsvechkarev.vault.R
 import com.arsvechkarev.vault.core.TypefaceSpan
-import com.arsvechkarev.vault.core.di.CoreComponent
 import com.arsvechkarev.vault.core.extensions.getDeleteMessageText
 import com.arsvechkarev.vault.core.extensions.ifTrue
-import com.arsvechkarev.vault.core.extensions.moxyPresenter
 import com.arsvechkarev.vault.core.mvi.MviView
-import com.arsvechkarev.vault.features.services_list.presentation.ServicesListScreenUserAction.HideDeleteDialog
-import com.arsvechkarev.vault.features.services_list.presentation.ServicesListScreenUserAction.OnAgreeToDeleteServiceClicked
-import com.arsvechkarev.vault.features.services_list.presentation.ServicesListScreenUserAction.OnFabClicked
-import com.arsvechkarev.vault.features.services_list.presentation.ServicesListScreenUserAction.OnServiceItemClicked
-import com.arsvechkarev.vault.features.services_list.presentation.ServicesListScreenUserAction.OnServiceItemLongClicked
-import com.arsvechkarev.vault.features.services_list.presentation.ServicesListScreenUserAction.OnSettingsClicked
 import com.arsvechkarev.vault.viewbuilding.Colors
 import com.arsvechkarev.vault.viewbuilding.Dimens.FabSize
 import com.arsvechkarev.vault.viewbuilding.Dimens.IconPadding
 import com.arsvechkarev.vault.viewbuilding.Dimens.ImageNoServicesSize
-import com.arsvechkarev.vault.viewbuilding.Dimens.MarginDefault
-import com.arsvechkarev.vault.viewbuilding.Dimens.MarginMedium
+import com.arsvechkarev.vault.viewbuilding.Dimens.MarginLarge
+import com.arsvechkarev.vault.viewbuilding.Dimens.MarginNormal
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginSmall
 import com.arsvechkarev.vault.viewbuilding.Dimens.ProgressBarSizeBig
 import com.arsvechkarev.vault.viewbuilding.Dimens.VerticalMarginSmall
@@ -53,7 +45,6 @@ import com.arsvechkarev.vault.viewdsl.invisible
 import com.arsvechkarev.vault.viewdsl.layoutGravity
 import com.arsvechkarev.vault.viewdsl.margin
 import com.arsvechkarev.vault.viewdsl.marginHorizontal
-import com.arsvechkarev.vault.viewdsl.onClick
 import com.arsvechkarev.vault.viewdsl.padding
 import com.arsvechkarev.vault.viewdsl.paddings
 import com.arsvechkarev.vault.viewdsl.rippleBackground
@@ -83,7 +74,7 @@ class ServicesListScreen : BaseScreen(), MviView<ServicesListState> {
       FrameLayout(MatchParent, WrapContent) {
         behavior(HeaderBehavior())
         paddings(top = VerticalMarginSmall + StatusBarHeight, bottom = MarginSmall,
-          start = MarginDefault, end = MarginDefault)
+          start = MarginNormal, end = MarginNormal)
         TextView(MatchParent, WrapContent, style = TitleTextView) {
           text(context.getString(R.string.text_passwords))
           layoutGravity(CENTER_VERTICAL)
@@ -95,7 +86,7 @@ class ServicesListScreen : BaseScreen(), MviView<ServicesListState> {
           layoutGravity(CENTER_VERTICAL or END)
           padding(IconPadding)
           circleRippleBackground()
-          onClick { presenter.applyAction(OnSettingsClicked) }
+          //          onClick { presenter.applyAction(OnSettingsClicked) }
         }
       }
       RecyclerView(MatchParent, WrapContent) {
@@ -118,22 +109,22 @@ class ServicesListScreen : BaseScreen(), MviView<ServicesListState> {
       VerticalLayout(MatchParent, MatchParent) {
         tag(LayoutNoPasswords)
         invisible()
-        marginHorizontal(MarginMedium)
+        marginHorizontal(MarginLarge)
         behavior(viewUnderHeaderBehavior)
         layoutGravity(CENTER)
         gravity(CENTER)
         ImageView(ImageNoServicesSize, ImageNoServicesSize) {
           image(R.drawable.ic_lists)
-          margin(MarginDefault)
+          margin(MarginNormal)
         }
         TextView(WrapContent, WrapContent, style = BoldTextView) {
-          marginHorizontal(MarginDefault)
+          marginHorizontal(MarginNormal)
           textSize(TextSizes.H3)
           text(R.string.text_no_passwords)
         }
         TextView(WrapContent, WrapContent, style = BaseTextView) {
           textSize(TextSizes.H4)
-          margin(MarginDefault)
+          margin(MarginNormal)
           gravity(CENTER)
           val spannableString = SpannableString(context.getString(R.string.text_click_plus))
           val index = spannableString.indexOf('+')
@@ -143,12 +134,12 @@ class ServicesListScreen : BaseScreen(), MviView<ServicesListState> {
         }
       }
       ImageView(FabSize, FabSize) {
-        margin(MarginDefault)
+        margin(MarginNormal)
         padding(MarginSmall)
         image(R.drawable.ic_plus)
         layoutGravity(BOTTOM or END)
         rippleBackground(Colors.Ripple, Colors.Accent, cornerRadius = FabSize)
-        onClick { presenter.applyAction(OnFabClicked) }
+        //        onClick { presenter.applyAction(OnFabClicked) }
       }
       InfoDialog()
       LoadingDialog()
@@ -157,13 +148,9 @@ class ServicesListScreen : BaseScreen(), MviView<ServicesListState> {
   
   private val adapter by lazy {
     ServicesListAdapter(
-      onItemClick = { presenter.applyAction(OnServiceItemClicked(it)) },
-      onItemLongClick = { presenter.applyAction(OnServiceItemLongClicked(it)) }
+      onItemClick = {/* presenter.applyAction(OnServiceItemClicked(it))*/ },
+      onItemLongClick = { /*presenter.applyAction(OnServiceItemLongClicked(it)) */ }
     )
-  }
-  
-  private val presenter by moxyPresenter {
-    CoreComponent.instance.getServicesListComponentFactory().create().providePresenter()
   }
   
   override fun render(state: ServicesListState) {
@@ -182,9 +169,9 @@ class ServicesListScreen : BaseScreen(), MviView<ServicesListState> {
     if (deleteDialog != null) {
       infoDialog.showWithDeleteAndCancelOption(
         R.string.text_delete_service, getDeleteMessageText(deleteDialog.serviceModel.serviceName),
-        onDeleteClicked = { presenter.applyAction(OnAgreeToDeleteServiceClicked) }
+        onDeleteClicked = {/* presenter.applyAction(OnAgreeToDeleteServiceClicked)*/ }
       )
-      infoDialog.onHide = { presenter.applyAction(HideDeleteDialog) }
+      //      infoDialog.onHide = { presenter.applyAction(HideDeleteDialog) }
     } else {
       infoDialog.hide()
     }

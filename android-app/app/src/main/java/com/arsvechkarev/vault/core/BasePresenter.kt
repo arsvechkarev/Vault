@@ -12,7 +12,7 @@ import moxy.MvpPresenter
 import moxy.MvpView
 
 abstract class BasePresenter<V : MvpView>(
-  protected val dispatchers: Dispatchers,
+  protected val dispatchers: DispatchersFacade,
 ) : MvpPresenter<V>(), CoroutineScope {
   
   override val coroutineContext = dispatchers.Main + SupervisorJob()

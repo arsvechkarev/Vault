@@ -15,8 +15,6 @@ import buisnesslogic.model.PasswordCharacteristics.NUMBERS
 import buisnesslogic.model.PasswordCharacteristics.SPECIAL_SYMBOLS
 import buisnesslogic.model.PasswordCharacteristics.UPPERCASE_SYMBOLS
 import com.arsvechkarev.vault.R
-import com.arsvechkarev.vault.core.di.CoreComponent
-import com.arsvechkarev.vault.core.extensions.moxyPresenter
 import com.arsvechkarev.vault.viewbuilding.Colors
 import com.arsvechkarev.vault.viewbuilding.Dimens
 import com.arsvechkarev.vault.viewbuilding.Dimens.ImageBackMargin
@@ -38,9 +36,6 @@ import com.arsvechkarev.vault.viewdsl.layoutGravity
 import com.arsvechkarev.vault.viewdsl.margin
 import com.arsvechkarev.vault.viewdsl.margins
 import com.arsvechkarev.vault.viewdsl.onClick
-import com.arsvechkarev.vault.viewdsl.onProgressChanged
-import com.arsvechkarev.vault.viewdsl.onSubmit
-import com.arsvechkarev.vault.viewdsl.onTextChanged
 import com.arsvechkarev.vault.viewdsl.padding
 import com.arsvechkarev.vault.viewdsl.setMaxLength
 import com.arsvechkarev.vault.viewdsl.setSoftInputMode
@@ -78,14 +73,14 @@ class PasswordCreatingScreen : BaseScreen(), PasswordCreatingView {
             margins(end = ImageBackMargin, top = MarginSmall, bottom = MarginSmall)
             layoutGravity(CENTER or Gravity.END)
             padding(Dimens.IconPadding)
-            onClick { presenter.onCloseClicked() }
+            //            onClick { presenter.onCloseClicked() }
           }
         }
         TextView(WrapContent, WrapContent, style = Styles.BaseTextView) {
           tag(DialogPasswordTextError)
           layoutGravity(CENTER)
           gravity(CENTER)
-          drawablePadding(Dimens.MarginDefault)
+          drawablePadding(Dimens.MarginNormal)
           textColor(Colors.Error)
         }
         EditText(MatchParent, WrapContent, style = Styles.BaseEditText) {
@@ -94,11 +89,11 @@ class PasswordCreatingScreen : BaseScreen(), PasswordCreatingView {
           margin(MarginSmall)
           setMaxLength(MAX_PASSWORD_LENGTH)
           isSingleLine = false
-          onSubmit { presenter.onSavePasswordClicked() }
+          //          onSubmit { presenter.onSavePasswordClicked() }
         }
         child<PasswordStrengthMeterWithText>(MatchParent, WrapContent) {
           classNameTag()
-          margin(Dimens.MarginDefault)
+          margin(Dimens.MarginNormal)
         }
         val commonBlock: CheckmarkAndTextViewGroup.() -> Unit = {
           onClick {
@@ -108,7 +103,7 @@ class PasswordCreatingScreen : BaseScreen(), PasswordCreatingView {
               R.string.text_special_symbols -> SPECIAL_SYMBOLS
               else -> throw IllegalStateException("Unknown tag")
             }
-            presenter.onCheckmarkClicked(characteristics)
+            //            presenter.onCheckmarkClicked(characteristics)
           }
         }
         CheckmarkAndTextViewGroup(R.string.text_uppercase_symbols, commonBlock)
@@ -116,46 +111,42 @@ class PasswordCreatingScreen : BaseScreen(), PasswordCreatingView {
         CheckmarkAndTextViewGroup(R.string.text_special_symbols, commonBlock)
         TextView(WrapContent, WrapContent, style = BoldTextView) {
           tag(DialogPasswordTextLength)
-          margins(start = Dimens.MarginDefault, top = Dimens.MarginBig)
+          margins(start = Dimens.MarginNormal, top = Dimens.MarginExtraLarge)
           textSize(TextSizes.H3)
           text(context.getString(R.string.text_password_length, DEFAULT_PASSWORD_LENGTH))
         }
         child<SeekBar>(MatchParent, WrapContent) {
           classNameTag()
-          margin(Dimens.MarginDefault)
+          margin(Dimens.MarginNormal)
           max = MAX_PASSWORD_LENGTH - MIN_PASSWORD_LENGTH
           progress = DEFAULT_PASSWORD_LENGTH - MIN_PASSWORD_LENGTH
-          onProgressChanged { presenter.onPasswordLengthChanged(it) }
+          //          onProgressChanged { presenter.onPasswordLengthChanged(it) }
         }
         TextView(WrapContent, WrapContent, style = Styles.ClickableTextView()) {
-          margins(top = Dimens.MarginDefault)
+          margins(top = Dimens.MarginNormal)
           layoutGravity(Gravity.CENTER_HORIZONTAL)
           gravity(CENTER)
           drawables(start = R.drawable.ic_generate, color = Colors.AccentLight)
           drawablePadding(MarginSmall)
           textColor(Colors.AccentLight)
           text(context.getString(R.string.text_generate_password))
-          onClick { presenter.onGeneratePasswordClicked() }
+          //          onClick { presenter.onGeneratePasswordClicked() }
         }
       }
-      TextView(WrapContent, WrapContent, style = Styles.ClickableButton()) {
+      TextView(WrapContent, WrapContent, style = Styles.Button()) {
         layoutGravity(CENTER or Gravity.BOTTOM)
-        margin(Dimens.MarginDefault)
+        margin(Dimens.MarginNormal)
         textSize(TextSizes.H3)
         text(R.string.text_save_password)
-        onClick { presenter.onSavePasswordClicked() }
+        //        onClick { presenter.onSavePasswordClicked() }
       }
       InfoDialog()
       LoadingDialog()
     }
   }
   
-  private val presenter: PasswordCreatingPresenter by moxyPresenter {
-    CoreComponent.instance.getPasswordCreatingComponentFactory().create().getPresenter()
-  }
-  
   override fun onInit() {
-    editText(DialogPasswordEditText).onTextChanged { presenter.onPasswordChanged(it) }
+    //    editText(DialogPasswordEditText).onTextChanged { presenter.onPasswordChanged(it) }
   }
   
   override fun onAppearedOnScreenAfterAnimation() {
@@ -221,12 +212,12 @@ class PasswordCreatingScreen : BaseScreen(), PasswordCreatingView {
   
   override fun showPasswordAcceptingDialog() {
     contextNonNull.hideKeyboard()
-    infoDialog.onHide = { presenter.onHideAcceptPasswordDialog() }
+    //    infoDialog.onHide = { presenter.onHideAcceptPasswordDialog() }
     infoDialog.showWithOkOption(
       R.string.text_saving_password,
       R.string.text_do_you_want_to_save_password,
       R.string.text_yes,
-      onOkClicked = { presenter.acceptPassword() }
+      //      onOkClicked = { presenter.acceptPassword() }
     )
   }
   
@@ -244,7 +235,8 @@ class PasswordCreatingScreen : BaseScreen(), PasswordCreatingView {
   }
   
   override fun handleBackPress(): Boolean {
-    return presenter.handleBackPress()
+    return false
+    //    return presenteer.handleBackPress()
   }
   
   private companion object {

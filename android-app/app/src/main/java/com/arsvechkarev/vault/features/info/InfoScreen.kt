@@ -7,20 +7,18 @@ import android.view.Gravity.CENTER
 import android.view.Gravity.CENTER_HORIZONTAL
 import android.view.Gravity.END
 import com.arsvechkarev.vault.R
-import com.arsvechkarev.vault.common.setServiceIcon
-import com.arsvechkarev.vault.core.di.CoreComponent
 import com.arsvechkarev.vault.core.extensions.getDeleteMessageText
-import com.arsvechkarev.vault.core.extensions.moxyPresenter
 import com.arsvechkarev.vault.core.model.ServiceModel
+import com.arsvechkarev.vault.core.setServiceIcon
 import com.arsvechkarev.vault.viewbuilding.Colors
 import com.arsvechkarev.vault.viewbuilding.Dimens
 import com.arsvechkarev.vault.viewbuilding.Dimens.DividerHeight
 import com.arsvechkarev.vault.viewbuilding.Dimens.HorizontalMarginPasswordsActionView
 import com.arsvechkarev.vault.viewbuilding.Dimens.HorizontalMarginSmall
 import com.arsvechkarev.vault.viewbuilding.Dimens.ImageServiceNameSize
-import com.arsvechkarev.vault.viewbuilding.Dimens.MarginBig
-import com.arsvechkarev.vault.viewbuilding.Dimens.MarginDefault
-import com.arsvechkarev.vault.viewbuilding.Dimens.MarginVerySmall
+import com.arsvechkarev.vault.viewbuilding.Dimens.MarginExtraLarge
+import com.arsvechkarev.vault.viewbuilding.Dimens.MarginNormal
+import com.arsvechkarev.vault.viewbuilding.Dimens.MarginTiny
 import com.arsvechkarev.vault.viewbuilding.Dimens.VerticalMarginSmall
 import com.arsvechkarev.vault.viewbuilding.Styles.BaseTextView
 import com.arsvechkarev.vault.viewbuilding.Styles.BoldTextView
@@ -41,7 +39,6 @@ import com.arsvechkarev.vault.viewdsl.layoutGravity
 import com.arsvechkarev.vault.viewdsl.margin
 import com.arsvechkarev.vault.viewdsl.marginHorizontal
 import com.arsvechkarev.vault.viewdsl.margins
-import com.arsvechkarev.vault.viewdsl.onClick
 import com.arsvechkarev.vault.viewdsl.padding
 import com.arsvechkarev.vault.viewdsl.tag
 import com.arsvechkarev.vault.viewdsl.text
@@ -66,9 +63,9 @@ class InfoScreen : BaseScreen(), InfoView {
         gravity(CENTER_HORIZONTAL)
         margins(top = StatusBarHeight)
         FrameLayout(MatchParent, WrapContent) {
-          margins(top = MarginDefault, start = MarginDefault, end = MarginDefault)
+          margins(top = MarginNormal, start = MarginNormal, end = MarginNormal)
           ImageView(WrapContent, WrapContent, style = ImageBack) {
-            onClick { presenter.onBackClicked() }
+            //            onClick { presenter.onBackClicked() }
           }
           ImageView(WrapContent, WrapContent) {
             image(R.drawable.ic_delete)
@@ -76,7 +73,7 @@ class InfoScreen : BaseScreen(), InfoView {
             padding(Dimens.IconPadding)
             circleRippleBackground(Colors.ErrorRipple)
             layoutGravity(END)
-            onClick { if (!presenter.isEditingNameOrEmailNow) presenter.onDeleteClicked() }
+            //            onClick { if (!presenter.isEditingNameOrEmailNow) presenter.onDeleteClicked() }
           }
         }
         ImageView(ImageServiceNameSize, ImageServiceNameSize) {
@@ -84,19 +81,19 @@ class InfoScreen : BaseScreen(), InfoView {
         }
         TextView(WrapContent, WrapContent, style = BaseTextView) {
           text(R.string.text_service_name)
-          margins(top = MarginBig)
+          margins(top = MarginExtraLarge)
           textColor(Colors.TextSecondary)
         }
         val editableCommonBlock: EditableTextInfoViewGroup.() -> Unit = {
           marginHorizontal(HorizontalMarginPasswordsActionView)
-          onEditClickAllowed = { !presenter.isEditingNameOrEmailNow }
-          onSwitchToEditMode = { presenter.switchToEditingMode() }
+          //          onEditClickAllowed = { !presenter.isEditingNameOrEmailNow }
+          //          onSwitchToEditMode = { presenter.switchToEditingMode() }
         }
         child<EditableTextInfoViewGroup>(MatchParent, WrapContent) {
           tag(EditableTextInfoServiceName)
           apply(editableCommonBlock)
-          onEditTextChanged { presenter.onServiceNameChanged(it) }
-          onTextSaved = { presenter.saveServiceName(it) }
+          //          onEditTextChanged { presenter.onServiceNameChanged(it) }
+          //          onTextSaved = { presenter.saveServiceName(it) }
         }
         View(MatchParent, IntSize(DividerHeight)) {
           backgroundColor(Colors.Divider)
@@ -112,7 +109,7 @@ class InfoScreen : BaseScreen(), InfoView {
           tag(EditableTextInfoUsername)
           apply(editableCommonBlock)
           allowSavingWhenEmpty = true
-          onTextSaved = { presenter.saveUsername(it) }
+          //          onTextSaved = { presenter.saveUsername(it) }
         }
         View(MatchParent, IntSize(DividerHeight)) {
           backgroundColor(Colors.Divider)
@@ -128,7 +125,7 @@ class InfoScreen : BaseScreen(), InfoView {
           tag(EditableTextInfoEmail)
           apply(editableCommonBlock)
           allowSavingWhenEmpty = true
-          onTextSaved = { presenter.saveEmail(it) }
+          //          onTextSaved = { presenter.saveEmail(it) }
         }
         View(MatchParent, IntSize(DividerHeight)) {
           backgroundColor(Colors.Divider)
@@ -137,7 +134,7 @@ class InfoScreen : BaseScreen(), InfoView {
         }
         TextView(WrapContent, WrapContent, style = BaseTextView) {
           text(R.string.text_password)
-          margins(top = VerticalMarginSmall, bottom = MarginVerySmall)
+          margins(top = VerticalMarginSmall, bottom = MarginTiny)
           textColor(Colors.TextSecondary)
           textSize(TextSizes.H4)
         }
@@ -163,10 +160,10 @@ class InfoScreen : BaseScreen(), InfoView {
           classNameTag()
           margins(top = VerticalMarginSmall, start = HorizontalMarginPasswordsActionView,
             end = HorizontalMarginPasswordsActionView)
-          onCopyClicked { presenter.onCopyClicked() }
-          onEditClicked { presenter.onEditPasswordIconClicked() }
-          onTogglePassword = { presenter.onTogglePassword(it) }
-          reactToClicks = { !presenter.isEditingNameOrEmailNow }
+          //          onCopyClicked { presenter.onCopyClicked() }
+          //          onEditClicked { presenter.onEditPasswordIconClicked() }
+          //          onTogglePassword = { presenter.onTogglePassword(it) }
+          //          reactToClicks = { !presenter.isEditingNameOrEmailNow }
         }
       }
       LoadingDialog()
@@ -174,18 +171,18 @@ class InfoScreen : BaseScreen(), InfoView {
       child<Snackbar>(MatchParent, WrapContent) {
         classNameTag()
         layoutGravity(BOTTOM)
-        margin(MarginDefault)
+        margin(MarginNormal)
       }
     }
   }
   
-  private val presenter by moxyPresenter {
-    CoreComponent.instance.getInfoComponentFactory().create().providePresenter()
-  }
+  //  private val presenter by moxyPresenter {
+  //    CoreComponent.instance.getInfoComponentFactory().create().providePresenter()
+  //  }
   
   override fun onAppearedOnScreenGoingForward() {
     val serviceInfo = arguments[SERVICE] as ServiceModel
-    presenter.performSetup(serviceInfo)
+    //    presenter.performSetup(serviceInfo)
   }
   
   override fun showServiceName(serviceName: String) {
@@ -243,10 +240,10 @@ class InfoScreen : BaseScreen(), InfoView {
   }
   
   override fun showDeleteDialog(serviceName: String) {
-    infoDialog.onHide = { presenter.onHideDeleteDialog() }
+    //    infoDialog.onHide = { presenter.onHideDeleteDialog() }
     infoDialog.showWithDeleteAndCancelOption(
       R.string.text_delete_service, getDeleteMessageText(serviceName),
-      onDeleteClicked = { presenter.agreeToDeleteService() }
+      onDeleteClicked = { }
     )
   }
   
@@ -272,7 +269,8 @@ class InfoScreen : BaseScreen(), InfoView {
   }
   
   override fun handleBackPress(): Boolean {
-    return presenter.handleBackPress()
+    return false
+    //    return presenter.handleBackPress()
   }
   
   companion object {

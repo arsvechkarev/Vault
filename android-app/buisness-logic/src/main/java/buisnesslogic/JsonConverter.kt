@@ -6,7 +6,7 @@ package buisnesslogic
 interface JsonConverter {
   
   /**
-   * Parses [json] to json array the converts that array to list using [mapper]
+   * Parses [json] as json array, then converts the array to list using [mapper]
    *
    * @param mapper Mapper that converts json object represented as map to desired object of type [T]
    */

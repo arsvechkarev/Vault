@@ -1,13 +1,12 @@
 package com.arsvechkarev.vault.features.info
 
 import buisnesslogic.MasterPasswordHolder.masterPassword
-import com.arsvechkarev.vault.common.Clipboard
-import com.arsvechkarev.vault.common.Screens
-import com.arsvechkarev.vault.common.ServicesListenableRepository
 import com.arsvechkarev.vault.core.BasePresenter
-import com.arsvechkarev.vault.core.Dispatchers
+import com.arsvechkarev.vault.core.Clipboard
+import com.arsvechkarev.vault.core.DispatchersFacade
+import com.arsvechkarev.vault.core.Screens
+import com.arsvechkarev.vault.core.ServicesListenableRepository
 import com.arsvechkarev.vault.core.communicators.FlowCommunicator
-import com.arsvechkarev.vault.core.di.FeatureScope
 import com.arsvechkarev.vault.core.model.ServiceModel
 import com.arsvechkarev.vault.features.creating_password.PasswordCreatingActions.ConfigureMode.EditPassword
 import com.arsvechkarev.vault.features.creating_password.PasswordCreatingActions.ExitScreen
@@ -25,14 +24,13 @@ import kotlinx.coroutines.launch
 import navigation.Router
 import javax.inject.Inject
 
-@FeatureScope
 class InfoPresenter @Inject constructor(
   @PasswordCreatingCommunicator
   private val passwordCreatingCommunicator: FlowCommunicator<PasswordCreatingEvents>,
   private val servicesRepository: ServicesListenableRepository,
   private val clipboard: Clipboard,
   private val router: Router,
-  dispatchers: Dispatchers
+  dispatchers: DispatchersFacade
 ) : BasePresenter<InfoView>(dispatchers) {
   
   private lateinit var serviceModel: ServiceModel

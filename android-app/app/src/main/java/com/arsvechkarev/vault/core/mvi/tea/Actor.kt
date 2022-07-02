@@ -1,3 +1,8 @@
 package com.arsvechkarev.vault.core.mvi.tea
 
-interface Actor<Command, Event>
+import kotlinx.coroutines.flow.Flow
+
+interface Actor<Command, Event> {
+  
+  fun handle(commands: Flow<Command>): Flow<Event>
+}

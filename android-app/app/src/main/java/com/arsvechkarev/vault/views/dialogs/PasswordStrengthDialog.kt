@@ -8,9 +8,9 @@ import android.widget.TextView
 import com.arsvechkarev.vault.R
 import com.arsvechkarev.vault.viewbuilding.Colors
 import com.arsvechkarev.vault.viewbuilding.Dimens.CornerRadiusDefault
-import com.arsvechkarev.vault.viewbuilding.Dimens.MarginBig
-import com.arsvechkarev.vault.viewbuilding.Dimens.MarginDefault
-import com.arsvechkarev.vault.viewbuilding.Dimens.MarginMedium
+import com.arsvechkarev.vault.viewbuilding.Dimens.MarginExtraLarge
+import com.arsvechkarev.vault.viewbuilding.Dimens.MarginLarge
+import com.arsvechkarev.vault.viewbuilding.Dimens.MarginNormal
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginSmall
 import com.arsvechkarev.vault.viewbuilding.Styles.BaseTextView
 import com.arsvechkarev.vault.viewbuilding.Styles.BoldTextView
@@ -37,22 +37,22 @@ class PasswordStrengthDialog(context: Context) : SimpleDialog(context) {
     withViewBuilder {
       VerticalLayout(WrapContent, WrapContent) {
         layoutGravity(CENTER)
-        marginHorizontal(MarginBig)
+        marginHorizontal(MarginExtraLarge)
         backgroundRoundRect(CornerRadiusDefault, Colors.Dialog)
         TextView(WrapContent, WrapContent, style = BoldTextView) {
-          margins(top = MarginDefault, start = MarginDefault)
+          margins(top = MarginNormal, start = MarginNormal)
           text(R.string.text_password_strength)
           textSize(TextSizes.H3)
         }
         TextView(WrapContent, WrapContent, style = BaseTextView) {
-          margins(top = MarginMedium, start = MarginDefault, end = MarginDefault)
+          margins(top = MarginLarge, start = MarginNormal, end = MarginNormal)
           textSize(TextSizes.H4)
           text(R.string.text_password_should_be_strong)
         }
         TextView(WrapContent, WrapContent, style = ClickableTextView()) {
           classNameTag()
           layoutGravity(Gravity.END)
-          margins(top = MarginMedium, bottom = MarginDefault,
+          margins(top = MarginLarge, bottom = MarginNormal,
             start = MarginSmall, end = MarginSmall)
           text(R.string.text_got_it)
         }

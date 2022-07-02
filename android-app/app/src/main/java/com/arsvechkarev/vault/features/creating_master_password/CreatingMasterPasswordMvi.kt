@@ -3,50 +3,47 @@ package com.arsvechkarev.vault.features.creating_master_password
 import buisnesslogic.PasswordStatus
 import buisnesslogic.PasswordStrength
 
-sealed class CreatingMasterPasswordScreenActions {
-  
-  class PasswordEnteringStateChanged(
-    val state: PasswordEnteringState
-  ) : CreatingMasterPasswordScreenActions()
-  
-  class UpdatePasswordStatus(
-    val passwordStatus: PasswordStatus?
-  ) : CreatingMasterPasswordScreenActions()
-  
-  class UpdatePasswordStrength(
-    val passwordStrength: PasswordStrength?
-  ) : CreatingMasterPasswordScreenActions()
-  
-  object ShowPasswordsMatch : CreatingMasterPasswordScreenActions()
-  
-  object ShowPasswordsDontMatch : CreatingMasterPasswordScreenActions()
+typealias CMPState = CreatingMasterPasswordState
+typealias CMPEvents = CreatingMasterPasswordEvent
+typealias CMPUiEvent = CreatingMasterPasswordUiEvent
+typealias CMPCommands = CreatingMasterPasswordCommands
+typealias CMPNews = CreatingMasterPasswordNews
+
+sealed interface CreatingMasterPasswordEvent {
+  class PasswordEnteringStateChanged(val state: PasswordEnteringState) : CMPEvents
+  class UpdatePasswordStatus(val passwordStatus: PasswordStatus?) : CMPEvents
+  class UpdatePasswordStrength(val passwordStrength: PasswordStrength?) : CMPEvents
+  object ShowPasswordsMatch : CMPEvents
+  object ShowPasswordsDontMatch : CMPEvents
+  object FinishedAuth : CMPEvents
 }
 
-sealed class CreatingMasterPasswordScreenUserActions : CreatingMasterPasswordScreenActions() {
-  
-  class OnInitialPasswordTyping(val password: String) : CreatingMasterPasswordScreenUserActions()
-  
-  class OnRepeatPasswordTyping(val password: String) : CreatingMasterPasswordScreenUserActions()
-  
-  object RequestShowPasswordStrengthDialog : CreatingMasterPasswordScreenUserActions()
-  
-  object RequestHidePasswordStrengthDialog : CreatingMasterPasswordScreenUserActions()
-  
-  object OnContinueClicked : CreatingMasterPasswordScreenUserActions()
-  
-  object OnBackPressed : CreatingMasterPasswordScreenUserActions()
-  
-  object OnBackButtonClicked : CreatingMasterPasswordScreenUserActions()
+sealed interface CreatingMasterPasswordUiEvent : CreatingMasterPasswordEvent {
+  class OnInitialPasswordTyping(val password: String) : CMPUiEvent
+  class OnRepeatPasswordTyping(val password: String) : CreatingMasterPasswordUiEvent
+  object RequestShowPasswordStrengthDialog : CreatingMasterPasswordUiEvent
+  object RequestHidePasswordStrengthDialog : CreatingMasterPasswordUiEvent
+  object OnContinueClicked : CreatingMasterPasswordUiEvent
+  object OnBackPressed : CreatingMasterPasswordUiEvent
+  object OnBackButtonClicked : CreatingMasterPasswordUiEvent
 }
 
-sealed class CreatingMasterPasswordSingleEvents {
-  
-  object HideErrorText : CreatingMasterPasswordSingleEvents()
-  
-  object FinishingAuthorization : CreatingMasterPasswordSingleEvents()
+sealed interface CreatingMasterPasswordNews {
+  object HideErrorText : CreatingMasterPasswordNews
+  object FinishingAuthorization : CreatingMasterPasswordNews
 }
 
-data class CreatingMasterPasswordScreenState(
+sealed interface CreatingMasterPasswordCommands {
+  
+  sealed interface PasswordCommand : CreatingMasterPasswordCommands {
+    class CheckPasswordStrength(val password: String) : PasswordCommand
+    class Validate(val password: String) : PasswordCommand
+  }
+  
+  class FinishAuth(val password: String) : CreatingMasterPasswordCommands
+}
+
+data class CreatingMasterPasswordState(
   val passwordEnteringState: PasswordEnteringState = PasswordEnteringState.INITIAL,
   val passwordStatus: PasswordStatus? = null,
   val passwordStrength: PasswordStrength? = null,

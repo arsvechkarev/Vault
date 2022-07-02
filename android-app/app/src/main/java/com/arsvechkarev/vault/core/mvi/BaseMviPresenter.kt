@@ -1,7 +1,7 @@
 package com.arsvechkarev.vault.core.mvi
 
 import androidx.annotation.CallSuper
-import com.arsvechkarev.vault.core.Dispatchers
+import com.arsvechkarev.vault.core.DispatchersFacade
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
@@ -29,7 +29,7 @@ import kotlin.reflect.KClass
  */
 abstract class BaseMviPresenter<Action : Any, UserAction : Action, State>(
   private val userActionClass: KClass<UserAction>,
-  protected val dispatchers: Dispatchers
+  protected val dispatchers: DispatchersFacade
 ) : MvpPresenter<MviView<State>>(), CoroutineScope {
   
   override val coroutineContext = dispatchers.Main + SupervisorJob()

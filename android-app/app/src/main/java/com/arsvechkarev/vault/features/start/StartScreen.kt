@@ -4,27 +4,22 @@ import android.content.Context
 import android.view.Gravity.CENTER
 import android.view.View
 import com.arsvechkarev.vault.R
-import com.arsvechkarev.vault.core.di.CoreComponent
-import com.arsvechkarev.vault.core.extensions.moxyPresenter
 import com.arsvechkarev.vault.core.extensions.showToast
 import com.arsvechkarev.vault.core.mvi.MviView
 import com.arsvechkarev.vault.features.start.StartScreenSingleEvent.ShowEditTextStubPassword
 import com.arsvechkarev.vault.features.start.StartScreenSingleEvent.ShowPermanentLockout
 import com.arsvechkarev.vault.features.start.StartScreenSingleEvent.ShowTooManyAttemptsTryAgainLater
-import com.arsvechkarev.vault.features.start.StartScreenUserAction.OnEditTextTyping
-import com.arsvechkarev.vault.features.start.StartScreenUserAction.OnEnteredPassword
-import com.arsvechkarev.vault.features.start.StartScreenUserAction.OnFingerprintIconClicked
 import com.arsvechkarev.vault.viewbuilding.Colors
 import com.arsvechkarev.vault.viewbuilding.Dimens.FingerprintIconSize
 import com.arsvechkarev.vault.viewbuilding.Dimens.ImageLogoSize
-import com.arsvechkarev.vault.viewbuilding.Dimens.MarginBig
-import com.arsvechkarev.vault.viewbuilding.Dimens.MarginDefault
-import com.arsvechkarev.vault.viewbuilding.Dimens.MarginMedium
+import com.arsvechkarev.vault.viewbuilding.Dimens.MarginExtraLarge
+import com.arsvechkarev.vault.viewbuilding.Dimens.MarginLarge
+import com.arsvechkarev.vault.viewbuilding.Dimens.MarginNormal
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginSmall
-import com.arsvechkarev.vault.viewbuilding.Dimens.MarginVerySmall
+import com.arsvechkarev.vault.viewbuilding.Dimens.MarginTiny
 import com.arsvechkarev.vault.viewbuilding.Styles.BaseTextView
 import com.arsvechkarev.vault.viewbuilding.Styles.BoldTextView
-import com.arsvechkarev.vault.viewbuilding.Styles.ClickableButton
+import com.arsvechkarev.vault.viewbuilding.Styles.Button
 import com.arsvechkarev.vault.viewbuilding.TextSizes
 import com.arsvechkarev.vault.viewdsl.Size.Companion.MatchParent
 import com.arsvechkarev.vault.viewdsl.Size.Companion.WrapContent
@@ -64,7 +59,7 @@ class StartScreen : BaseScreen(), MviView<StartScreenState> {
         gravity(CENTER)
         ImageView(ImageLogoSize, ImageLogoSize) {
           image(R.mipmap.ic_launcher)
-          margin(MarginDefault)
+          margin(MarginNormal)
         }
         TextView(WrapContent, WrapContent, style = BoldTextView) {
           textSize(TextSizes.H0)
@@ -73,21 +68,21 @@ class StartScreen : BaseScreen(), MviView<StartScreenState> {
       }
       VerticalLayout(MatchParent, WrapContent) {
         id(ContentLayoutId)
-        margins(top = MarginBig * 2)
+        margins(top = MarginExtraLarge * 2)
         constraints {
           centeredWithin(parent)
         }
         TextView(MatchParent, WrapContent, style = BaseTextView) {
           id(TextErrorId)
-          margins(start = MarginDefault + MarginVerySmall, bottom = MarginSmall)
+          margins(start = MarginNormal + MarginTiny, bottom = MarginSmall)
           textColor(Colors.Error)
         }
         child<EditTextPassword>(MatchParent, WrapContent) {
           id(EditTextPasswordId)
-          marginHorizontal(MarginDefault)
+          marginHorizontal(MarginNormal)
           setHint(R.string.hint_enter_password)
-          onTextChanged { presenter.applyAction(OnEditTextTyping) }
-          onSubmit { text -> presenter.applyAction(OnEnteredPassword(text)) }
+          //          onTextChanged { presenter.applyAction(OnEditTextTyping) }
+          //          onSubmit { text -> presenter.applyAction(OnEnteredPassword(text)) }
         }
       }
       ImageView(FingerprintIconSize, FingerprintIconSize) {
@@ -98,14 +93,14 @@ class StartScreen : BaseScreen(), MviView<StartScreenState> {
           endToEndOf(parent)
         }
         image(R.drawable.ic_fingerprint)
-        margin(MarginMedium)
+        margin(MarginLarge)
         invisible()
-        onClick { presenter.applyAction(OnFingerprintIconClicked) }
+        //        onClick { presenter.applyAction(OnFingerprintIconClicked) }
       }
-      TextView(MatchParent, WrapContent, style = ClickableButton()) {
+      TextView(MatchParent, WrapContent, style = Button()) {
         id(ContinueButtonId)
         text(R.string.text_continue)
-        margins(start = MarginDefault, end = MarginDefault, bottom = MarginDefault)
+        margins(start = MarginNormal, end = MarginNormal, bottom = MarginNormal)
         constraints {
           startToStartOf(parent)
           endToEndOf(parent)
@@ -113,15 +108,11 @@ class StartScreen : BaseScreen(), MviView<StartScreenState> {
         }
         onClick {
           val text = viewAs<EditTextPassword>(EditTextPasswordId).getText()
-          presenter.applyAction(OnEnteredPassword(text))
+          //          presenter.applyAction(OnEnteredPassword(text))
         }
       }
       LoadingDialog()
     }
-  }
-  
-  private val presenter by moxyPresenter {
-    CoreComponent.instance.getStartComponentFactory().create().providePresenter()
   }
   
   override fun render(state: StartScreenState) {

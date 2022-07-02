@@ -5,8 +5,8 @@ import android.widget.FrameLayout
 import android.widget.TextView
 import buisnesslogic.PasswordStrength
 import com.arsvechkarev.vault.R
-import com.arsvechkarev.vault.viewbuilding.Dimens.MarginDefault
-import com.arsvechkarev.vault.viewbuilding.Dimens.MarginMedium
+import com.arsvechkarev.vault.viewbuilding.Dimens.MarginLarge
+import com.arsvechkarev.vault.viewbuilding.Dimens.MarginNormal
 import com.arsvechkarev.vault.viewbuilding.Dimens.PasswordStrengthMeterHeight
 import com.arsvechkarev.vault.viewbuilding.Styles.BoldTextView
 import com.arsvechkarev.vault.viewbuilding.TextSizes
@@ -31,11 +31,11 @@ class PasswordStrengthMeterWithText(context: Context) : FrameLayout(context) {
   init {
     withViewBuilder {
       TextView(WrapContent, WrapContent, style = BoldTextView) {
-        margins(start = MarginDefault, top = MarginMedium)
+        margins(start = MarginNormal, top = MarginLarge)
         textSize(TextSizes.H3)
       }
       child<PasswordStrengthMeter>(MatchParent, IntSize(PasswordStrengthMeterHeight)) {
-        margin(MarginDefault)
+        margin(MarginNormal)
       }
     }
   }
@@ -44,7 +44,7 @@ class PasswordStrengthMeterWithText(context: Context) : FrameLayout(context) {
     val textMaxWidth = textView.paint.measureText(context.getString(R.string.text_medium))
     val widthSize = widthMeasureSpec.size
     textView.measure(unspecified(), unspecified())
-    val passwordMeterWidth = exactly(widthSize - textMaxWidth.toInt() - MarginDefault)
+    val passwordMeterWidth = exactly(widthSize - textMaxWidth.toInt() - MarginNormal)
     val passwordMeterHeight = exactly(PasswordStrengthMeterHeight)
     passwordStrengthMeter.measure(passwordMeterWidth, passwordMeterHeight)
     setMeasuredDimension(
@@ -64,7 +64,7 @@ class PasswordStrengthMeterWithText(context: Context) : FrameLayout(context) {
   override fun onLayout(changed: Boolean, l: Int, t: Int, r: Int, b: Int) {
     val textMaxWidth = textView.paint.measureText(context.getString(R.string.text_medium)).toInt()
     textView.layoutLeftTop(textMaxWidth / 2 - textView.measuredWidth / 2, 0)
-    passwordStrengthMeter.layoutLeftTop(textMaxWidth + MarginDefault,
+    passwordStrengthMeter.layoutLeftTop(textMaxWidth + MarginNormal,
       height / 2 - passwordStrengthMeter.height / 2)
   }
 }

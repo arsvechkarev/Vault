@@ -9,7 +9,7 @@ import android.widget.TextView
 import com.arsvechkarev.vault.R
 import com.arsvechkarev.vault.viewbuilding.Dimens.IconPadding
 import com.arsvechkarev.vault.viewbuilding.Dimens.IconSize
-import com.arsvechkarev.vault.viewbuilding.Dimens.MarginDefault
+import com.arsvechkarev.vault.viewbuilding.Dimens.MarginNormal
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginSmall
 import com.arsvechkarev.vault.viewbuilding.Fonts
 import com.arsvechkarev.vault.viewbuilding.Styles.BaseEditText
@@ -144,7 +144,7 @@ class EditableTextInfoViewGroup(context: Context) : ViewGroup(context) {
   
   override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
     val widthSize = widthMeasureSpec.size
-    val maxTextWidth = widthSize - IconSize * 2 - MarginSmall * 2 - MarginDefault
+    val maxTextWidth = widthSize - IconSize * 2 - MarginSmall * 2 - MarginNormal
     imageEdit.measure(unspecified(), unspecified())
     imageSave.measure(unspecified(), unspecified())
     textView.measure(exactly(maxTextWidth), unspecified())

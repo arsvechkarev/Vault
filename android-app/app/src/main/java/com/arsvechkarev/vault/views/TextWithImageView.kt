@@ -9,8 +9,8 @@ import com.arsvechkarev.vault.core.extensions.TextPaint
 import com.arsvechkarev.vault.core.extensions.getTextHeight
 import com.arsvechkarev.vault.viewbuilding.Colors
 import com.arsvechkarev.vault.viewbuilding.Dimens
-import com.arsvechkarev.vault.viewbuilding.Dimens.MarginMedium
-import com.arsvechkarev.vault.viewbuilding.Dimens.MarginVerySmall
+import com.arsvechkarev.vault.viewbuilding.Dimens.MarginLarge
+import com.arsvechkarev.vault.viewbuilding.Dimens.MarginTiny
 import com.arsvechkarev.vault.viewbuilding.Dimens.PasswordActionsViewImageSize
 import com.arsvechkarev.vault.viewbuilding.Fonts
 import com.arsvechkarev.vault.viewdsl.paddings
@@ -31,8 +31,8 @@ class TextWithImageView(
   
   init {
     rippleBackground(Colors.Ripple, Colors.Transparent, Dimens.CornerRadiusDefault)
-    paddings(start = MarginMedium, top = MarginVerySmall,
-      end = MarginMedium, bottom = MarginVerySmall)
+    paddings(start = MarginLarge, top = MarginTiny,
+      end = MarginLarge, bottom = MarginTiny)
   }
   
   fun setText(textRes: Int) {

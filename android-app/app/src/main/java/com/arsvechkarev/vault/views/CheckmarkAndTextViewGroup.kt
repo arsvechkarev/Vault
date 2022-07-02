@@ -7,9 +7,9 @@ import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.LinearLayout
 import com.arsvechkarev.vault.viewbuilding.Dimens.CheckmarkSize
-import com.arsvechkarev.vault.viewbuilding.Dimens.MarginDefault
+import com.arsvechkarev.vault.viewbuilding.Dimens.MarginNormal
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginSmall
-import com.arsvechkarev.vault.viewbuilding.Dimens.MarginVerySmall
+import com.arsvechkarev.vault.viewbuilding.Dimens.MarginTiny
 import com.arsvechkarev.vault.viewbuilding.Styles.BaseTextView
 import com.arsvechkarev.vault.viewdsl.Size.Companion.WrapContent
 import com.arsvechkarev.vault.viewdsl.gravity
@@ -38,8 +38,8 @@ class CheckmarkAndTextViewGroup(
   init {
     orientation(HORIZONTAL)
     withViewBuilder {
-      paddingHorizontal(MarginDefault)
-      paddingVertical(MarginVerySmall)
+      paddingHorizontal(MarginNormal)
+      paddingVertical(MarginTiny)
       gravity(CENTER_VERTICAL)
       onClick {
         val checkmark = getChildAt(0) as Checkmark

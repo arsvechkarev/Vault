@@ -1,12 +1,10 @@
 package com.arsvechkarev.vault.features.services_list.presentation
 
 import buisnesslogic.MasterPasswordHolder.masterPassword
-import com.arsvechkarev.vault.common.Screens
-import com.arsvechkarev.vault.common.ServicesListenableRepository
-import com.arsvechkarev.vault.common.biometrics.BiometricsAvailabilityChecker
-import com.arsvechkarev.vault.core.Dispatchers
+import com.arsvechkarev.vault.core.DispatchersFacade
 import com.arsvechkarev.vault.core.Result
-import com.arsvechkarev.vault.core.di.FeatureScope
+import com.arsvechkarev.vault.core.Screens
+import com.arsvechkarev.vault.core.ServicesListenableRepository
 import com.arsvechkarev.vault.core.model.ServiceModel
 import com.arsvechkarev.vault.core.mvi.BaseMviPresenter
 import com.arsvechkarev.vault.features.services_list.presentation.ServicesListScreenAction.DeletedService
@@ -23,12 +21,10 @@ import kotlinx.coroutines.launch
 import navigation.Router
 import javax.inject.Inject
 
-@FeatureScope
 class ServicesListPresenter @Inject constructor(
   private val servicesRepository: ServicesListenableRepository,
-  biometricsAvailabilityChecker: BiometricsAvailabilityChecker,
   private val router: Router,
-  dispatchers: Dispatchers
+  dispatchers: DispatchersFacade
 ) : BaseMviPresenter<ServicesListScreenAction, ServicesListScreenUserAction, ServicesListState>(
   ServicesListScreenUserAction::class,
   dispatchers
@@ -41,9 +37,6 @@ class ServicesListPresenter @Inject constructor(
       } else {
         applyAction(UpdateData(Result.empty()))
       }
-    }
-    if (biometricsAvailabilityChecker.isBiometricsSupported()) {
-      applyAction(UpdateSettingsIcon(showSettingsIcon = true))
     }
   }
   

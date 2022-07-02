@@ -17,26 +17,26 @@ import buisnesslogic.PasswordStrength.STRONG
 import buisnesslogic.PasswordStrength.VERY_STRONG
 import buisnesslogic.PasswordStrength.WEAK
 import com.arsvechkarev.vault.R
-import com.arsvechkarev.vault.core.di.CoreComponent
-import com.arsvechkarev.vault.core.extensions.moxyPresenter
+import com.arsvechkarev.vault.core.di.appComponent
+import com.arsvechkarev.vault.core.extensions.moxyStore
 import com.arsvechkarev.vault.core.mvi.MviView
-import com.arsvechkarev.vault.features.creating_master_password.CreatingMasterPasswordScreenUserActions.OnBackButtonClicked
-import com.arsvechkarev.vault.features.creating_master_password.CreatingMasterPasswordScreenUserActions.OnBackPressed
-import com.arsvechkarev.vault.features.creating_master_password.CreatingMasterPasswordScreenUserActions.OnContinueClicked
-import com.arsvechkarev.vault.features.creating_master_password.CreatingMasterPasswordScreenUserActions.OnInitialPasswordTyping
-import com.arsvechkarev.vault.features.creating_master_password.CreatingMasterPasswordScreenUserActions.OnRepeatPasswordTyping
-import com.arsvechkarev.vault.features.creating_master_password.CreatingMasterPasswordScreenUserActions.RequestHidePasswordStrengthDialog
-import com.arsvechkarev.vault.features.creating_master_password.CreatingMasterPasswordScreenUserActions.RequestShowPasswordStrengthDialog
-import com.arsvechkarev.vault.features.creating_master_password.CreatingMasterPasswordSingleEvents.FinishingAuthorization
+import com.arsvechkarev.vault.features.creating_master_password.CreatingMasterPasswordNews.FinishingAuthorization
+import com.arsvechkarev.vault.features.creating_master_password.CreatingMasterPasswordUiEvent.OnBackButtonClicked
+import com.arsvechkarev.vault.features.creating_master_password.CreatingMasterPasswordUiEvent.OnBackPressed
+import com.arsvechkarev.vault.features.creating_master_password.CreatingMasterPasswordUiEvent.OnContinueClicked
+import com.arsvechkarev.vault.features.creating_master_password.CreatingMasterPasswordUiEvent.OnInitialPasswordTyping
+import com.arsvechkarev.vault.features.creating_master_password.CreatingMasterPasswordUiEvent.OnRepeatPasswordTyping
+import com.arsvechkarev.vault.features.creating_master_password.CreatingMasterPasswordUiEvent.RequestHidePasswordStrengthDialog
+import com.arsvechkarev.vault.features.creating_master_password.CreatingMasterPasswordUiEvent.RequestShowPasswordStrengthDialog
 import com.arsvechkarev.vault.features.creating_master_password.PasswordEnteringState.INITIAL
 import com.arsvechkarev.vault.features.creating_master_password.PasswordEnteringState.REPEATING
 import com.arsvechkarev.vault.viewbuilding.Colors
-import com.arsvechkarev.vault.viewbuilding.Dimens.MarginDefault
-import com.arsvechkarev.vault.viewbuilding.Dimens.MarginMedium
+import com.arsvechkarev.vault.viewbuilding.Dimens.MarginLarge
+import com.arsvechkarev.vault.viewbuilding.Dimens.MarginNormal
 import com.arsvechkarev.vault.viewbuilding.Dimens.PasswordStrengthMeterHeight
 import com.arsvechkarev.vault.viewbuilding.Styles.BaseTextView
 import com.arsvechkarev.vault.viewbuilding.Styles.BoldTextView
-import com.arsvechkarev.vault.viewbuilding.Styles.ClickableButton
+import com.arsvechkarev.vault.viewbuilding.Styles.Button
 import com.arsvechkarev.vault.viewbuilding.Styles.ImageBack
 import com.arsvechkarev.vault.viewbuilding.TextSizes
 import com.arsvechkarev.vault.viewdsl.Size.Companion.MatchParent
@@ -44,8 +44,8 @@ import com.arsvechkarev.vault.viewdsl.Size.Companion.WrapContent
 import com.arsvechkarev.vault.viewdsl.Size.IntSize
 import com.arsvechkarev.vault.viewdsl.animateInvisible
 import com.arsvechkarev.vault.viewdsl.animateVisible
-import com.arsvechkarev.vault.viewdsl.backgroundColor
 import com.arsvechkarev.vault.viewdsl.classNameTag
+import com.arsvechkarev.vault.viewdsl.clearOnClick
 import com.arsvechkarev.vault.viewdsl.drawablePadding
 import com.arsvechkarev.vault.viewdsl.drawables
 import com.arsvechkarev.vault.viewdsl.gravity
@@ -70,22 +70,21 @@ import com.arsvechkarev.vault.views.dialogs.PasswordStrengthDialog.Companion.pas
 import com.arsvechkarev.vault.views.dialogs.loadingDialog
 import navigation.BaseScreen
 
-class CreatingMasterPasswordScreen : BaseScreen(), MviView<CreatingMasterPasswordScreenState> {
+class CreatingMasterPasswordScreen : BaseScreen(), MviView<CreatingMasterPasswordState> {
   
   override fun buildLayout(context: Context) = context.withViewBuilder {
     RootCoordinatorLayout(MatchParent, MatchParent) {
-      backgroundColor(Colors.Background)
       HorizontalLayout(MatchParent, WrapContent) {
         tag(RepeatPasswordLayout)
         invisible()
-        margins(top = MarginDefault + StatusBarHeight, start = MarginDefault, end = MarginDefault)
+        margins(top = MarginNormal + StatusBarHeight, start = MarginNormal, end = MarginNormal)
         ImageView(WrapContent, WrapContent, style = ImageBack) {
-          onClick { presenter.applyAction(OnBackButtonClicked) }
+          onClick { store.dispatch(OnBackButtonClicked) }
         }
         TextView(WrapContent, WrapContent, style = BoldTextView) {
           layoutGravity(CENTER)
           text(R.string.text_repeat_password)
-          margins(start = MarginMedium, end = MarginMedium)
+          margins(start = MarginLarge, end = MarginLarge)
           gravity(CENTER)
           textSize(TextSizes.H1)
         }
@@ -93,7 +92,7 @@ class CreatingMasterPasswordScreen : BaseScreen(), MviView<CreatingMasterPasswor
       TextView(MatchParent, WrapContent, style = BoldTextView) {
         tag(TextTitle)
         text(R.string.text_create_master_password)
-        margins(top = MarginDefault + StatusBarHeight, start = MarginDefault, end = MarginDefault)
+        margins(top = MarginNormal + StatusBarHeight, start = MarginNormal, end = MarginNormal)
         gravity(CENTER)
         textSize(TextSizes.H1)
       }
@@ -101,12 +100,12 @@ class CreatingMasterPasswordScreen : BaseScreen(), MviView<CreatingMasterPasswor
         layoutGravity(CENTER)
         TextView(WrapContent, WrapContent, style = BaseTextView) {
           tag(TextPasswordStrength)
-          margins(start = MarginDefault)
+          margins(start = MarginNormal)
         }
         child<PasswordStrengthMeter>(MatchParent, IntSize(PasswordStrengthMeterHeight)) {
           classNameTag()
-          margins(top = MarginDefault, start = MarginDefault,
-            end = MarginDefault, bottom = MarginMedium)
+          margins(top = MarginNormal, start = MarginNormal,
+            end = MarginNormal, bottom = MarginLarge)
         }
         child<ViewSwitcher>(MatchParent, WrapContent) {
           classNameTag()
@@ -114,53 +113,55 @@ class CreatingMasterPasswordScreen : BaseScreen(), MviView<CreatingMasterPasswor
           outAnimation = AnimationUtils.loadAnimation(context, R.anim.slide_in_right)
           child<EditTextPassword>(MatchParent, WrapContent) {
             tag(EditTextEnterPassword)
-            marginHorizontal(MarginDefault)
+            marginHorizontal(MarginNormal)
             setHint(R.string.hint_enter_password)
-            onTextChanged { text -> presenter.applyAction(OnInitialPasswordTyping(text)) }
+            onTextChanged { text ->
+              store.dispatch(OnInitialPasswordTyping(text))
+            }
           }
           child<EditTextPassword>(MatchParent, WrapContent) {
             tag(EditTextRepeatPassword)
-            marginHorizontal(MarginDefault)
+            marginHorizontal(MarginNormal)
             setHint(R.string.hint_repeat_password)
-            onTextChanged { text -> presenter.applyAction(OnRepeatPasswordTyping(text)) }
+            onTextChanged { text ->
+              store.dispatch(OnRepeatPasswordTyping(text))
+            }
           }
         }
         TextView(WrapContent, WrapContent, style = BaseTextView) {
           tag(TextError)
           gravity(CENTER)
-          drawablePadding(MarginDefault)
+          drawablePadding(MarginNormal)
           drawables(end = R.drawable.ic_question, color = Colors.Background)
           textColor(Colors.Error)
-          margins(start = MarginDefault, end = MarginDefault, top = MarginDefault)
+          margins(start = MarginNormal, end = MarginNormal, top = MarginNormal)
         }
       }
-      TextView(MatchParent, WrapContent, style = ClickableButton()) {
+      TextView(MatchParent, WrapContent, style = Button()) {
         tag(TextContinue)
         layoutGravity(Gravity.BOTTOM)
         text(R.string.text_continue)
-        margins(start = MarginDefault, end = MarginDefault, bottom = MarginDefault)
-        onClick { presenter.applyAction(OnContinueClicked) }
+        margins(start = MarginNormal, end = MarginNormal, bottom = MarginNormal)
+        onClick { store.dispatch(OnContinueClicked) }
       }
       LoadingDialog()
       PasswordStrengthDialog {
-        onHide = { presenter.applyAction(RequestHidePasswordStrengthDialog) }
-        onGotItClicked { presenter.applyAction(RequestHidePasswordStrengthDialog) }
+        onHide = { store.dispatch(RequestHidePasswordStrengthDialog) }
+        onGotItClicked { store.dispatch(RequestHidePasswordStrengthDialog) }
       }
     }
   }
   
   private var passwordEnteringState = INITIAL
   
-  private val presenter by moxyPresenter {
-    CoreComponent.instance.getCreatingMasterPasswordComponentFactory().create().providePresenter()
-  }
+  private val store by moxyStore { CreatingMasterPasswordStore(appComponent) }
   
   override fun onAppearedOnScreenAfterAnimation() {
     contextNonNull.showKeyboard()
     viewAs<EditTextPassword>(EditTextEnterPassword).requestEditTextFocus()
   }
   
-  override fun render(state: CreatingMasterPasswordScreenState) {
+  override fun render(state: CreatingMasterPasswordState) {
     if (passwordEnteringState != state.passwordEnteringState) {
       passwordEnteringState = state.passwordEnteringState
       when (passwordEnteringState) {
@@ -190,8 +191,8 @@ class CreatingMasterPasswordScreen : BaseScreen(), MviView<CreatingMasterPasswor
   }
   
   override fun handleBackPress(): Boolean {
-    presenter.applyAction(OnBackPressed)
-    return true
+    store.dispatch(OnBackPressed)
+    return false
   }
   
   private fun showPasswordStatus(passwordStatus: PasswordStatus) {
@@ -204,10 +205,10 @@ class CreatingMasterPasswordScreen : BaseScreen(), MviView<CreatingMasterPasswor
     textView(TextError).visible()
     if (passwordStatus == TOO_WEAK) {
       textView(TextError).drawables(end = R.drawable.ic_question, color = Colors.Error)
-      textView(TextError).onClick { presenter.applyAction(RequestShowPasswordStrengthDialog) }
+      textView(TextError).onClick { store.dispatch(RequestShowPasswordStrengthDialog) }
     } else {
       textView(TextError).drawables(end = R.drawable.ic_question, color = Colors.Background)
-      textView(TextError).onClick {}
+      textView(TextError).clearOnClick()
     }
     textView(TextError).text(text)
   }

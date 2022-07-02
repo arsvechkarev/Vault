@@ -1,16 +1,7 @@
 package com.arsvechkarev.vault.features.settings
 
-import android.annotation.SuppressLint
-import buisnesslogic.MasterPasswordHolder.masterPassword
-import com.arsvechkarev.vault.common.biometrics.BiometricsPrompt
-import com.arsvechkarev.vault.common.biometrics.BiometricsPromptEvents.Error
-import com.arsvechkarev.vault.common.biometrics.BiometricsPromptEvents.Failure
-import com.arsvechkarev.vault.common.biometrics.BiometricsPromptEvents.Success
-import com.arsvechkarev.vault.common.biometrics.BiometricsStorage
-import com.arsvechkarev.vault.common.biometrics.SavedFingerprintChecker
-import com.arsvechkarev.vault.core.Dispatchers
+import com.arsvechkarev.vault.core.DispatchersFacade
 import com.arsvechkarev.vault.core.communicators.FlowCommunicator
-import com.arsvechkarev.vault.core.di.FeatureScope
 import com.arsvechkarev.vault.core.mvi.BaseMviPresenter
 import com.arsvechkarev.vault.features.password_checking.PasswordCheckingActions.HideDialog
 import com.arsvechkarev.vault.features.password_checking.PasswordCheckingActions.ShowDialog
@@ -20,34 +11,25 @@ import com.arsvechkarev.vault.features.password_checking.PasswordCheckingReactio
 import com.arsvechkarev.vault.features.settings.SettingsScreenActions.HidePasswordCheckingDialog
 import com.arsvechkarev.vault.features.settings.SettingsScreenActions.ShowFingerprintEnteringEnabled
 import com.arsvechkarev.vault.features.settings.SettingsScreenActions.ShowPasswordCheckingDialog
-import com.arsvechkarev.vault.features.settings.SettingsScreenSingleEvents.ShowBiometricsAddedSuccessfully
 import com.arsvechkarev.vault.features.settings.SettingsScreenUserActions.OnBackPressed
 import com.arsvechkarev.vault.features.settings.SettingsScreenUserActions.OnUserFingerprintTextClicked
 import com.arsvechkarev.vault.features.settings.SettingsScreenUserActions.ToggleUseFingerprintForEnteringCheckbox
 import kotlinx.coroutines.launch
 import navigation.Router
-import timber.log.Timber
 import javax.inject.Inject
 
-@FeatureScope
 class SettingsPresenter @Inject constructor(
   @PasswordCheckingCommunicator
   private val passwordCheckingCommunicator: FlowCommunicator<PasswordCheckingEvents>,
-  private val fingerprintChecker: SavedFingerprintChecker,
-  private val biometricsPrompt: BiometricsPrompt,
-  private val biometricsStorage: BiometricsStorage,
   private val router: Router,
-  dispatchers: Dispatchers,
+  dispatchers: DispatchersFacade,
 ) : BaseMviPresenter<SettingsScreenActions, SettingsScreenUserActions, SettingsScreenState>(
   SettingsScreenUserActions::class,
   dispatchers
 ) {
   
   init {
-    subscribeToBiometricsEvents()
     subscribeToPasswordCheckingEvents()
-    val fingerprintAuthAvailable = fingerprintChecker.isAuthorizationWithUserFingerAvailable()
-    applyAction(ShowFingerprintEnteringEnabled(fingerprintAuthAvailable))
   }
   
   override fun getDefaultState(): SettingsScreenState {
@@ -87,13 +69,11 @@ class SettingsPresenter @Inject constructor(
   }
   
   private fun onUseFingerprintsTextClicked() {
-    val isChecked = !fingerprintChecker.isAuthorizationWithUserFingerAvailable()
-    reactToNewTogglingState(isChecked)
+    reactToNewTogglingState(false)
   }
   
   private fun toggleUseFingerprintForEntering(isChecked: Boolean) {
-    val valueInPrefs = fingerprintChecker.isAuthorizationWithUserFingerAvailable()
-    if (valueInPrefs != isChecked) {
+    if (false != isChecked) {
       reactToNewTogglingState(isChecked)
     }
   }
@@ -106,8 +86,6 @@ class SettingsPresenter @Inject constructor(
         // Setting it to false temporarily, so that it doesn't show checked state before user entered password
         applyAction(ShowFingerprintEnteringEnabled(enabled = false))
       } else {
-        onIoThread { biometricsStorage.deleteAllFiles() }
-        fingerprintChecker.setAuthorizationWithUserFingerAvailable(false)
         applyAction(ShowFingerprintEnteringEnabled(enabled = false))
       }
     }
@@ -117,29 +95,8 @@ class SettingsPresenter @Inject constructor(
     passwordCheckingCommunicator.events.collectInPresenterScope { event ->
       when (event) {
         is PasswordCheckedSuccessfully -> {
-          biometricsPrompt.showEncryptingBiometricsPrompt()
           applyAction(HidePasswordCheckingDialog)
           passwordCheckingCommunicator.send(HideDialog)
-        }
-      }
-    }
-  }
-  
-  @SuppressLint("NewApi")
-  private fun subscribeToBiometricsEvents() {
-    biometricsPrompt.biometricsEvents().collectInPresenterScope { event ->
-      when (event) {
-        is Success -> {
-          onIoThread { biometricsStorage.encryptAndSaveData(masterPassword, event.result) }
-          fingerprintChecker.setAuthorizationWithUserFingerAvailable(true)
-          applyAction(ShowFingerprintEnteringEnabled(true))
-          showSingleEvent(ShowBiometricsAddedSuccessfully)
-        }
-        is Error -> {
-          Timber.d("Biometrics in SettingsPresenter error: ${event.errorString}")
-        }
-        is Failure -> {
-          Timber.d("Biometrics in SettingsPresenter failed")
         }
       }
     }

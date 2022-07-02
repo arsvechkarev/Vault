@@ -7,9 +7,9 @@ import com.arsvechkarev.vault.R
 import com.arsvechkarev.vault.viewbuilding.Colors.Dialog
 import com.arsvechkarev.vault.viewbuilding.Dimens.CornerRadiusDefault
 import com.arsvechkarev.vault.viewbuilding.Dimens.HorizontalMarginVerySmall
-import com.arsvechkarev.vault.viewbuilding.Dimens.MarginBig
-import com.arsvechkarev.vault.viewbuilding.Dimens.MarginDefault
-import com.arsvechkarev.vault.viewbuilding.Dimens.MarginMedium
+import com.arsvechkarev.vault.viewbuilding.Dimens.MarginExtraLarge
+import com.arsvechkarev.vault.viewbuilding.Dimens.MarginLarge
+import com.arsvechkarev.vault.viewbuilding.Dimens.MarginNormal
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginSmall
 import com.arsvechkarev.vault.viewbuilding.Styles.BaseTextView
 import com.arsvechkarev.vault.viewbuilding.Styles.BoldTextView
@@ -39,19 +39,19 @@ class InfoDialog(context: Context) : SimpleDialog(context) {
     withViewBuilder {
       VerticalLayout(WrapContent, WrapContent) {
         layoutGravity(Gravity.CENTER)
-        marginHorizontal(MarginBig)
+        marginHorizontal(MarginExtraLarge)
         backgroundRoundRect(CornerRadiusDefault, Dialog)
         TextView(WrapContent, WrapContent, style = BoldTextView) {
-          margins(top = MarginDefault, start = MarginDefault)
+          margins(top = MarginNormal, start = MarginNormal)
           tag(DialogInfoTitle)
         }
         TextView(WrapContent, WrapContent, style = BaseTextView) {
           tag(DialogInfoMessage)
-          margins(top = MarginMedium, start = MarginDefault, end = MarginDefault)
+          margins(top = MarginLarge, start = MarginNormal, end = MarginNormal)
         }
         HorizontalLayout(WrapContent, WrapContent) {
           layoutGravity(Gravity.END)
-          margins(top = MarginMedium, bottom = MarginDefault, start = MarginSmall,
+          margins(top = MarginLarge, bottom = MarginNormal, start = MarginSmall,
             end = MarginSmall)
           TextView(WrapContent, WrapContent, style = ClickableTextView()) {
             tag(DialogInfoText1)

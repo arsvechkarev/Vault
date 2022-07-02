@@ -3,14 +3,13 @@ package com.arsvechkarev.vault.features.password_checking
 import android.content.Context
 import android.view.ViewGroup
 import com.arsvechkarev.vault.R
-import com.arsvechkarev.vault.core.di.CoreComponent.Companion.instance
 import com.arsvechkarev.vault.viewbuilding.Colors
 import com.arsvechkarev.vault.viewbuilding.Dimens.CornerRadiusDefault
 import com.arsvechkarev.vault.viewbuilding.Dimens.IconSize
-import com.arsvechkarev.vault.viewbuilding.Dimens.MarginBig
-import com.arsvechkarev.vault.viewbuilding.Dimens.MarginDefault
+import com.arsvechkarev.vault.viewbuilding.Dimens.MarginExtraLarge
+import com.arsvechkarev.vault.viewbuilding.Dimens.MarginNormal
 import com.arsvechkarev.vault.viewbuilding.Styles.BoldTextView
-import com.arsvechkarev.vault.viewbuilding.Styles.ClickableButton
+import com.arsvechkarev.vault.viewbuilding.Styles.Button
 import com.arsvechkarev.vault.viewbuilding.TextSizes
 import com.arsvechkarev.vault.viewdsl.Size.Companion.MatchParent
 import com.arsvechkarev.vault.viewdsl.Size.Companion.WrapContent
@@ -23,7 +22,6 @@ import com.arsvechkarev.vault.viewdsl.hideKeyboard
 import com.arsvechkarev.vault.viewdsl.invisible
 import com.arsvechkarev.vault.viewdsl.marginHorizontal
 import com.arsvechkarev.vault.viewdsl.margins
-import com.arsvechkarev.vault.viewdsl.onClick
 import com.arsvechkarev.vault.viewdsl.padding
 import com.arsvechkarev.vault.viewdsl.showKeyboard
 import com.arsvechkarev.vault.viewdsl.size
@@ -41,7 +39,6 @@ import com.arsvechkarev.vault.views.SimpleDialog
 import navigation.BaseScreen
 
 class PasswordCheckingDialog(
-  private val presenter: PasswordCheckingPresenter,
   context: Context
 ) : SimpleDialog(context), PasswordCheckingView {
   
@@ -49,8 +46,8 @@ class PasswordCheckingDialog(
     onOutsideClick = { context.hideKeyboard() }
     withViewBuilder {
       VerticalLayout(MatchParent, WrapContent) {
-        marginHorizontal(MarginBig)
-        padding(MarginDefault)
+        marginHorizontal(MarginExtraLarge)
+        padding(MarginNormal)
         backgroundRoundRect(CornerRadiusDefault, Colors.Dialog)
         TextView(WrapContent, WrapContent, style = BoldTextView) {
           textSize(TextSizes.H3)
@@ -59,13 +56,13 @@ class PasswordCheckingDialog(
         val textError = TextView(WrapContent, WrapContent) {
           tag(TextErrorTag)
           textColor(Colors.Error)
-          margins(top = MarginDefault)
+          margins(top = MarginNormal)
         }
         val editTextPassword = child<EditTextPassword>(MatchParent, WrapContent) {
           classNameTag()
           setHint(R.string.hint_enter_password)
           onTextChanged { textError.text("") }
-          onSubmit { text -> presenter.checkPassword(text) }
+          //          onSubmit { text -> presenter.checkPassword(text) }
         }
         addView {
           MaterialProgressBar(context, thickness = NORMAL).apply {
@@ -74,24 +71,14 @@ class PasswordCheckingDialog(
             invisible()
           }
         }
-        TextView(MatchParent, WrapContent, style = ClickableButton()) {
+        TextView(MatchParent, WrapContent, style = Button()) {
           tag(ContinueButtonTag)
           text(R.string.text_continue)
-          margins(top = MarginDefault)
-          onClick { presenter.checkPassword(editTextPassword.getText()) }
+          margins(top = MarginNormal)
+          //          onClick { presenter.checkPassword(editTextPassword.getText()) }
         }
       }
     }
-  }
-  
-  override fun onAttachedToWindow() {
-    super.onAttachedToWindow()
-    presenter.attachView(this)
-  }
-  
-  override fun onDetachedFromWindow() {
-    super.onDetachedFromWindow()
-    presenter.detachView()
   }
   
   override fun showDialog() {
@@ -134,8 +121,7 @@ class PasswordCheckingDialog(
     val BaseScreen.passwordCheckingDialog get() = viewAs<PasswordCheckingDialog>()
     
     fun ViewGroup.PasswordCheckingDialog(block: PasswordCheckingDialog.() -> Unit = {}) = withViewBuilder {
-      val presenter = instance.getPasswordCheckingComponentFactory().create().providePresenter()
-      val infoDialog = PasswordCheckingDialog(presenter, context)
+      val infoDialog = PasswordCheckingDialog(context)
       infoDialog.size(MatchParent, MatchParent)
       infoDialog.classNameTag()
       addView(infoDialog)

@@ -1,9 +1,9 @@
 package com.arsvechkarev.vault.features.creating_service
 
 import buisnesslogic.MasterPasswordHolder.masterPassword
-import com.arsvechkarev.vault.common.Screens
-import com.arsvechkarev.vault.common.ServicesListenableRepository
-import com.arsvechkarev.vault.core.Dispatchers
+import com.arsvechkarev.vault.core.DispatchersFacade
+import com.arsvechkarev.vault.core.Screens
+import com.arsvechkarev.vault.core.ServicesListenableRepository
 import com.arsvechkarev.vault.core.communicators.FlowCommunicator
 import com.arsvechkarev.vault.core.model.ServiceModel
 import com.arsvechkarev.vault.core.mvi.BaseMviPresenter
@@ -29,7 +29,7 @@ class CreatingServicePresenter @Inject constructor(
   private val passwordCreatingCommunicator: FlowCommunicator<PasswordCreatingEvents>,
   private val servicesRepository: ServicesListenableRepository,
   private val router: Router,
-  dispatchers: Dispatchers
+  dispatchers: DispatchersFacade
 ) : BaseMviPresenter<CreatingServiceActions, CreatingServiceUserActions, CreatingServiceState>(
   CreatingServiceUserActions::class,
   dispatchers

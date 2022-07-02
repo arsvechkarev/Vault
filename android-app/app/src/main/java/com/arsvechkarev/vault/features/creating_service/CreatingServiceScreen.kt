@@ -7,23 +7,18 @@ import android.view.View
 import android.view.WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE
 import android.widget.ImageView.ScaleType.FIT_XY
 import com.arsvechkarev.vault.R
-import com.arsvechkarev.vault.common.setServiceIcon
-import com.arsvechkarev.vault.core.di.CoreComponent
-import com.arsvechkarev.vault.core.extensions.moxyPresenter
 import com.arsvechkarev.vault.core.mvi.MviView
-import com.arsvechkarev.vault.features.creating_service.CreatingServiceUserActions.OnBackPressed
-import com.arsvechkarev.vault.features.creating_service.CreatingServiceUserActions.OnContinueClicked
-import com.arsvechkarev.vault.features.creating_service.CreatingServiceUserActions.OnServiceNameTextChanged
+import com.arsvechkarev.vault.core.setServiceIcon
 import com.arsvechkarev.vault.viewbuilding.Colors
 import com.arsvechkarev.vault.viewbuilding.Colors.Error
 import com.arsvechkarev.vault.viewbuilding.Dimens.IconPadding
 import com.arsvechkarev.vault.viewbuilding.Dimens.ImageServiceNameSize
-import com.arsvechkarev.vault.viewbuilding.Dimens.MarginDefault
+import com.arsvechkarev.vault.viewbuilding.Dimens.MarginNormal
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginSmall
 import com.arsvechkarev.vault.viewbuilding.Styles.BaseEditText
 import com.arsvechkarev.vault.viewbuilding.Styles.BaseTextView
 import com.arsvechkarev.vault.viewbuilding.Styles.BoldTextView
-import com.arsvechkarev.vault.viewbuilding.Styles.ClickableButton
+import com.arsvechkarev.vault.viewbuilding.Styles.Button
 import com.arsvechkarev.vault.viewbuilding.TextSizes
 import com.arsvechkarev.vault.viewdsl.Size.Companion.MatchParent
 import com.arsvechkarev.vault.viewdsl.Size.Companion.WrapContent
@@ -41,7 +36,6 @@ import com.arsvechkarev.vault.viewdsl.margin
 import com.arsvechkarev.vault.viewdsl.margins
 import com.arsvechkarev.vault.viewdsl.onClick
 import com.arsvechkarev.vault.viewdsl.onSubmit
-import com.arsvechkarev.vault.viewdsl.onTextChanged
 import com.arsvechkarev.vault.viewdsl.padding
 import com.arsvechkarev.vault.viewdsl.setSoftInputMode
 import com.arsvechkarev.vault.viewdsl.showKeyboard
@@ -69,11 +63,11 @@ class CreatingServiceScreen : BaseScreen(), MviView<CreatingServiceState> {
         }
         ImageView(WrapContent, WrapContent) {
           image(R.drawable.ic_back)
-          margin(MarginDefault)
+          margin(MarginNormal)
           gravity(CENTER_VERTICAL)
           padding(IconPadding)
           circleRippleBackground()
-          onClick { presenter.applyAction(OnBackPressed) }
+          //          onClick { presenter.applyAction(OnBackPressed) }
         }
         TextView(WrapContent, WrapContent, style = BoldTextView) {
           layoutGravity(CENTER)
@@ -99,31 +93,31 @@ class CreatingServiceScreen : BaseScreen(), MviView<CreatingServiceState> {
         TextView(WrapContent, WrapContent, style = BaseTextView) {
           id(TextError)
           textColor(Error)
-          margins(start = MarginDefault)
+          margins(start = MarginNormal)
         }
         EditText(MatchParent, WrapContent, style = BaseEditText) {
           id(EditTextServiceName)
-          margins(top = MarginSmall, start = MarginDefault, end = MarginDefault)
+          margins(top = MarginSmall, start = MarginNormal, end = MarginNormal)
           setHint(R.string.text_service_name)
-          onTextChanged { text -> presenter.applyAction(OnServiceNameTextChanged(text)) }
+          //          onTextChanged { text -> presenter.applyAction(OnServiceNameTextChanged(text)) }
           onSubmit { editText(EditTextUsername).requestFocus() }
         }
         EditText(MatchParent, WrapContent, style = BaseEditText) {
           id(EditTextUsername)
-          margins(top = MarginDefault, start = MarginDefault, end = MarginDefault)
+          margins(top = MarginNormal, start = MarginNormal, end = MarginNormal)
           setHint(R.string.text_username_optional)
           onSubmit { editText(EditTextEmail).requestFocus() }
         }
         EditText(MatchParent, WrapContent, style = BaseEditText) {
           id(EditTextEmail)
-          margins(top = MarginDefault, start = MarginDefault, end = MarginDefault)
+          margins(top = MarginNormal, start = MarginNormal, end = MarginNormal)
           setHint(R.string.text_email_optional)
           onSubmit { continueWithCreating() }
         }
       }
-      TextView(MatchParent, WrapContent, style = ClickableButton()) {
+      TextView(MatchParent, WrapContent, style = Button()) {
         id(ButtonContinue)
-        margins(start = MarginDefault, end = MarginDefault, bottom = MarginDefault)
+        margins(start = MarginNormal, end = MarginNormal, bottom = MarginNormal)
         constraints {
           startToStartOf(parent)
           endToEndOf(parent)
@@ -135,9 +129,9 @@ class CreatingServiceScreen : BaseScreen(), MviView<CreatingServiceState> {
     }
   }
   
-  private val presenter by moxyPresenter {
-    CoreComponent.instance.getCreatingServiceComponentFactory().create().providePresenter()
-  }
+  //  private val presenter by moxyPresenter {
+  //    CoreComponent.instance.getCreatingServiceComponentFactory().create().providePresenter()
+  //  }
   
   override fun onAppearedOnScreenAfterAnimation() {
     editText(EditTextServiceName).requestFocus()
@@ -173,7 +167,7 @@ class CreatingServiceScreen : BaseScreen(), MviView<CreatingServiceState> {
     val serviceName = editText(EditTextServiceName).text.toString()
     val username = editText(EditTextUsername).text.toString()
     val email = editText(EditTextEmail).text.toString()
-    presenter.applyAction(OnContinueClicked(serviceName, username, email))
+    //    presenter.applyAction(OnContinueClicked(serviceName, username, email))
   }
   
   private companion object {

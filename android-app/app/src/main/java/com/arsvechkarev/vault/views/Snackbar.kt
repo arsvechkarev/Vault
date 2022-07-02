@@ -6,7 +6,7 @@ import android.widget.TextView
 import com.arsvechkarev.vault.viewbuilding.Colors
 import com.arsvechkarev.vault.viewbuilding.Dimens
 import com.arsvechkarev.vault.viewbuilding.Dimens.CheckmarkSize
-import com.arsvechkarev.vault.viewbuilding.Dimens.MarginDefault
+import com.arsvechkarev.vault.viewbuilding.Dimens.MarginNormal
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginSmall
 import com.arsvechkarev.vault.viewbuilding.Styles.BaseTextView
 import com.arsvechkarev.vault.viewbuilding.TextSizes
@@ -36,7 +36,7 @@ class Snackbar(context: Context) : ViewGroup(context) {
   init {
     clipToPadding = false
     backgroundRoundRect(Dimens.CornerRadiusSmall, Colors.Dialog)
-    paddings(start = MarginDefault, end = MarginDefault, top = MarginSmall, bottom = MarginSmall)
+    paddings(start = MarginNormal, end = MarginNormal, top = MarginSmall, bottom = MarginSmall)
     addView(TextView(context).apply(BaseTextView).apply {
       textSize(TextSizes.H4)
     })

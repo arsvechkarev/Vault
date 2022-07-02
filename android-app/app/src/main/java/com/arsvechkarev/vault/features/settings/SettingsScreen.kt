@@ -5,17 +5,11 @@ import android.view.View
 import androidx.appcompat.widget.SwitchCompat
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.arsvechkarev.vault.R
-import com.arsvechkarev.vault.core.di.CoreComponent
-import com.arsvechkarev.vault.core.extensions.moxyPresenter
 import com.arsvechkarev.vault.core.mvi.MviView
 import com.arsvechkarev.vault.features.password_checking.PasswordCheckingDialog.Companion.PasswordCheckingDialog
-import com.arsvechkarev.vault.features.settings.SettingsScreenActions.HidePasswordCheckingDialog
 import com.arsvechkarev.vault.features.settings.SettingsScreenSingleEvents.ShowBiometricsAddedSuccessfully
-import com.arsvechkarev.vault.features.settings.SettingsScreenUserActions.OnBackPressed
-import com.arsvechkarev.vault.features.settings.SettingsScreenUserActions.OnUserFingerprintTextClicked
-import com.arsvechkarev.vault.features.settings.SettingsScreenUserActions.ToggleUseFingerprintForEnteringCheckbox
 import com.arsvechkarev.vault.viewbuilding.Colors
-import com.arsvechkarev.vault.viewbuilding.Dimens.MarginDefault
+import com.arsvechkarev.vault.viewbuilding.Dimens.MarginNormal
 import com.arsvechkarev.vault.viewbuilding.Dimens.VerticalMarginSmall
 import com.arsvechkarev.vault.viewbuilding.Styles.BaseTextView
 import com.arsvechkarev.vault.viewbuilding.Styles.ImageBack
@@ -28,7 +22,6 @@ import com.arsvechkarev.vault.viewdsl.constraints
 import com.arsvechkarev.vault.viewdsl.id
 import com.arsvechkarev.vault.viewdsl.margin
 import com.arsvechkarev.vault.viewdsl.margins
-import com.arsvechkarev.vault.viewdsl.onClick
 import com.arsvechkarev.vault.viewdsl.paddings
 import com.arsvechkarev.vault.viewdsl.rippleBackground
 import com.arsvechkarev.vault.viewdsl.setCheckedSafe
@@ -46,17 +39,17 @@ class SettingsScreen : BaseScreen(), MviView<SettingsScreenState> {
       backgroundColor(Colors.Background)
       ImageView(WrapContent, WrapContent, style = ImageBack) {
         id(ImageBackId)
-        margins(start = MarginDefault)
+        margins(start = MarginNormal)
         constraints {
           startToStartOf(parent)
           topToTopOf(TextTitleId)
           bottomToBottomOf(TextTitleId)
         }
-        onClick { presenter.applyAction(OnBackPressed) }
+        //        onClick { presenter.applyAction(OnBackPressed) }
       }
       TextView(WrapContent, WrapContent, style = TitleTextView) {
         id(TextTitleId)
-        margins(top = MarginDefault + StatusBarHeight, start = MarginDefault)
+        margins(top = MarginNormal + StatusBarHeight, start = MarginNormal)
         constraints {
           topToTopOf(parent)
           startToEndOf(ImageBackId)
@@ -70,11 +63,11 @@ class SettingsScreen : BaseScreen(), MviView<SettingsScreenState> {
           startToStartOf(parent)
           topToBottomOf(TextTitleId)
         }
-        onClick { presenter.applyAction(OnUserFingerprintTextClicked) }
+        //        onClick { presenter.applyAction(OnUserFingerprintTextClicked) }
         rippleBackground()
         TextView(MatchParent, WrapContent, style = BaseTextView) {
           id(TextUseFingerprintId)
-          paddings(top = MarginDefault, bottom = MarginDefault, start = MarginDefault)
+          paddings(top = MarginNormal, bottom = MarginNormal, start = MarginNormal)
           constraints {
             startToStartOf(parent)
             endToStartOf(SwitchUseFingerprintId)
@@ -86,33 +79,29 @@ class SettingsScreen : BaseScreen(), MviView<SettingsScreenState> {
         }
         child<SwitchCompat>(WrapContent, WrapContent) {
           id(SwitchUseFingerprintId)
-          margins(end = MarginDefault)
+          margins(end = MarginNormal)
           constraints {
             topToTopOf(parent)
             bottomToBottomOf(parent)
             endToEndOf(parent)
           }
           setOnCheckedChangeListener { _, isChecked ->
-            presenter.applyAction(ToggleUseFingerprintForEnteringCheckbox(isChecked))
+            //            presenter.applyAction(ToggleUseFingerprintForEnteringCheckbox(isChecked))
           }
         }
       }
       PasswordCheckingDialog {
         id(PasswordCheckingDialogId)
-        onHide = { presenter.applyAction(HidePasswordCheckingDialog) }
+        //        onHide = { presenter.applyAction(HidePasswordCheckingDialog) }
       }
       child<Snackbar>(MatchParent, WrapContent) {
         id(SnackbarId)
-        margin(MarginDefault)
+        margin(MarginNormal)
         constraints {
           bottomToBottomOf(parent)
         }
       }
     }
-  }
-  
-  private val presenter by moxyPresenter {
-    CoreComponent.instance.getSettingsComponentFactory().create().providePresenter()
   }
   
   override fun render(state: SettingsScreenState) {
@@ -126,7 +115,7 @@ class SettingsScreen : BaseScreen(), MviView<SettingsScreenState> {
   }
   
   override fun handleBackPress(): Boolean {
-    presenter.applyAction(OnBackPressed)
+    //    presenter.applyAction(OnBackPressed)
     return true
   }
   

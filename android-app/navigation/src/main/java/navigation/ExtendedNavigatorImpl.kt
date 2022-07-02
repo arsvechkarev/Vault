@@ -162,7 +162,9 @@ class ExtendedNavigatorImpl(
     }
     screenHandlersCache.remove(screenKey)
     screenHandlersCache.values.forEach { screenHandler ->
-      if (host.isAttached(screenHandler)) host.removeScreenHandler(screenHandler)
+      if (host.isAttached(screenHandler)) {
+        host.removeScreenHandler(screenHandler)
+      }
       screenHandler.performFullRelease()
     }
     screenHandlersCache.clear()

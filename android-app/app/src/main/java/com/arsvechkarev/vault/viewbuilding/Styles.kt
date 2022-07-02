@@ -9,15 +9,16 @@ import android.graphics.drawable.shapes.RoundRectShape
 import android.text.InputType.TYPE_TEXT_VARIATION_PASSWORD
 import android.text.TextUtils
 import android.view.Gravity
+import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import com.arsvechkarev.vault.R
 import com.arsvechkarev.vault.viewbuilding.Dimens.CornerRadiusSmall
-import com.arsvechkarev.vault.viewbuilding.Dimens.MarginDefault
+import com.arsvechkarev.vault.viewbuilding.Dimens.MarginMedium
+import com.arsvechkarev.vault.viewbuilding.Dimens.MarginNormal
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginSmall
-import com.arsvechkarev.vault.viewbuilding.Dimens.MarginVerySmall
 import com.arsvechkarev.vault.viewdsl.background
 import com.arsvechkarev.vault.viewdsl.circleRippleBackground
 import com.arsvechkarev.vault.viewdsl.dp
@@ -30,9 +31,14 @@ import com.arsvechkarev.vault.viewdsl.paddingVertical
 import com.arsvechkarev.vault.viewdsl.rippleBackground
 import com.arsvechkarev.vault.viewdsl.textColor
 import com.arsvechkarev.vault.viewdsl.textSize
+import com.arsvechkarev.vault.views.drawables.GradientBackgroundDrawable
 
 @Suppress("FunctionName")
 object Styles {
+  
+  val BaseBackground: View.() -> Unit = {
+    background = GradientBackgroundDrawable(context)
+  }
   
   val BaseTextView: TextView.() -> Unit = {
     textSize(TextSizes.H5)
@@ -59,7 +65,7 @@ object Styles {
     font(Typeface.DEFAULT_BOLD)
     paddingVertical(MarginSmall)
     textColor(Colors.AccentLight)
-    paddingHorizontal(MarginDefault)
+    paddingHorizontal(MarginNormal)
     rippleBackground(rippleColor, Colors.Transparent, CornerRadiusSmall)
   }
   
@@ -68,12 +74,12 @@ object Styles {
     textColor(Colors.Error)
   }
   
-  fun ClickableButton(
+  fun Button(
     colorStart: Int = Colors.Accent,
     colorEnd: Int = Colors.AccentLight,
   ): TextView.() -> Unit = {
     apply(BoldTextView)
-    val gradientDrawable = GradientDrawable(GradientDrawable.Orientation.BL_TR, intArrayOf(
+    val gradientDrawable = GradientDrawable(GradientDrawable.Orientation.TL_BR, intArrayOf(
       colorStart, colorEnd))
     val r = 120.dp.toFloat()
     val outerRadii = floatArrayOf(r, r, r, r, r, r, r, r)
@@ -85,9 +91,8 @@ object Styles {
     }
     val colorStateList = ColorStateList.valueOf(Colors.Ripple)
     background(RippleDrawable(colorStateList, gradientDrawable, maskRect))
-    paddingVertical(MarginVerySmall)
-    paddingHorizontal(MarginDefault)
-    textSize(TextSizes.H3)
+    padding(MarginMedium)
+    textSize(TextSizes.H4)
     gravity(Gravity.CENTER)
     isClickable = true
     isFocusable = true

@@ -80,7 +80,7 @@ class PasswordCreatingPresenter @Inject constructor(
   }
   
   fun onSavePasswordClicked() {
-    when (passwordChecker.validate(password)) {
+    when (passwordChecker.getPasswordStatus(password)) {
       EMPTY -> viewState.showPasswordIsEmpty()
       else -> launch { passwordCreatingCommunicator.send(OnSavePasswordButtonClicked(password)) }
     }

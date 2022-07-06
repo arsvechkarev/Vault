@@ -47,7 +47,7 @@ import com.arsvechkarev.vault.viewdsl.withViewBuilder
 import navigation.BaseScreen
 import kotlin.math.abs
 
-class CreatingServiceScreen : BaseScreen(), MviView<CreatingServiceState> {
+class CreatingServiceScreen : BaseScreen(), MviView<CreatingServiceState, CreatingServiceState> {
   
   override fun buildLayout(context: Context) = context.withViewBuilder {
     RootConstraintLayout {

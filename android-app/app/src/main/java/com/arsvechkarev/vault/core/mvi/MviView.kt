@@ -5,11 +5,11 @@ import moxy.viewstate.strategy.alias.AddToEndSingle
 import moxy.viewstate.strategy.alias.OneExecution
 
 /** Mvi view that only renders state [S] */
-interface MviView<S> : MvpView {
+interface MviView<State, News> : MvpView {
   
   @AddToEndSingle
-  fun render(state: S)
+  fun render(state: State)
   
   @OneExecution
-  fun renderSingleEvent(event: Any) = Unit
+  fun handleNews(event: News) = Unit
 }

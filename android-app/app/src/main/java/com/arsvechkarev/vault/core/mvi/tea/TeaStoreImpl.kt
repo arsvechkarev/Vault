@@ -1,12 +1,13 @@
 package com.arsvechkarev.vault.core.mvi.tea
 
+import android.util.Log
 import com.arsvechkarev.vault.core.DispatchersFacade
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
@@ -17,57 +18,60 @@ class TeaStoreImpl<State : Any, Event : Any, UiEvent : Event, Command : Any, New
 ) : TeaStore<State, UiEvent, News> {
   
   private val commandsFlow = MutableSharedFlow<Command>()
-  private val eventsFlow = MutableSharedFlow<Event>()
+  private val eventsFlow = MutableSharedFlow<Event>(
+    extraBufferCapacity = 1,
+    onBufferOverflow = BufferOverflow.DROP_OLDEST
+  )
   
-  override val stateFlow = MutableStateFlow(initialState)
+  override val state = MutableStateFlow(initialState)
   override val news = MutableSharedFlow<News>()
   
   override fun launch(coroutineScope: CoroutineScope, dispatchersFacade: DispatchersFacade) {
+    Log.d("TeaStoreImpl", "store launched")
     actors.forEach { actor ->
       coroutineScope.launch(dispatchersFacade.IO) {
-        println("launched for actor $actor")
+        Log.d("TeaStoreImpl", "launched for actor $actor")
         try {
           actor.handle(commandsFlow)
-              .onEach { event -> println("actor processing event $event") }
               .collect { event ->
+                Log.d("TeaStoreImpl", "actor emitting event $event")
                 eventsFlow.emit(event)
-                println("actor emmited event $event")
               }
         } catch (e: CancellationException) {
-          println("throwing $e")
+          Log.d("TeaStoreImpl", "error, throwing $e")
           throw e
         }
       }
     }
-    coroutineScope.launch {
-      println("launched events flow")
+    coroutineScope.launch(dispatchersFacade.Default) {
+      Log.d("TeaStoreImpl", "launched events flow")
       eventsFlow.collect { event ->
-        println("processing event $event")
-        val currentState = stateFlow.value
+        Log.d("TeaStoreImpl", "processing event $event")
+        val currentState = state.value
         val update = reducer.reduce(currentState, event)
-        println("update = $update")
+        Log.d("TeaStoreImpl", "update = $update")
         if (update.state != currentState) {
-          println("update = $update")
           withContext(dispatchersFacade.Main) {
-            println("dispatching state ${update.state}")
-            stateFlow.emit(update.state)
+            Log.d("TeaStoreImpl", "dispatching state ${update.state}")
+            state.emit(update.state)
           }
         }
         update.commands.forEach { command ->
-          println("emitting command $command")
+          Log.d("TeaStoreImpl", "emitting command $command")
           commandsFlow.emit(command)
         }
         withContext(dispatchersFacade.Main) {
-          println("emitting news")
-          update.news.forEach { command -> news.emit(command) }
+          update.news.forEach { newsItem ->
+            Log.d("TeaStoreImpl", "emitting news $newsItem")
+            news.emit(newsItem)
+          }
         }
       }
     }
   }
   
   override fun dispatch(event: UiEvent) {
-    println("trying to dispatch event $event")
-    val result = eventsFlow.tryEmit(event)
-    println("dispatch successful = $result")
+    Log.d("TeaStoreImpl", "dispatching event $event")
+    eventsFlow.tryEmit(event)
   }
 }

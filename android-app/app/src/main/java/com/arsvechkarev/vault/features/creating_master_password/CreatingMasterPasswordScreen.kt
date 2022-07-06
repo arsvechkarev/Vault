@@ -70,7 +70,8 @@ import com.arsvechkarev.vault.views.dialogs.PasswordStrengthDialog.Companion.pas
 import com.arsvechkarev.vault.views.dialogs.loadingDialog
 import navigation.BaseScreen
 
-class CreatingMasterPasswordScreen : BaseScreen(), MviView<CreatingMasterPasswordState> {
+class CreatingMasterPasswordScreen : BaseScreen(),
+  MviView<CreatingMasterPasswordState, CreatingMasterPasswordNews> {
   
   override fun buildLayout(context: Context) = context.withViewBuilder {
     RootCoordinatorLayout(MatchParent, MatchParent) {
@@ -183,7 +184,7 @@ class CreatingMasterPasswordScreen : BaseScreen(), MviView<CreatingMasterPasswor
     }
   }
   
-  override fun renderSingleEvent(event: Any) {
+  override fun handleNews(event: CreatingMasterPasswordNews) {
     if (event is FinishingAuthorization) {
       contextNonNull.hideKeyboard()
       loadingDialog.show()

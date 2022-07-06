@@ -26,7 +26,7 @@ class ZxcvbnPasswordChecker(
     }
   }
   
-  override fun validate(password: String): PasswordStatus {
+  override fun getPasswordStatus(password: String): PasswordStatus {
     if (password.isBlank()) {
       return PasswordStatus.EMPTY
     }

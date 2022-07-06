@@ -6,3 +6,4 @@ include 'android-app:buisness-logic'
 include 'common-crypto'
 include 'desktop-app'
 
+include ':android-app:viewdsl'

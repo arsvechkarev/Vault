@@ -14,6 +14,7 @@ import com.arsvechkarev.vault.core.TypefaceSpan
 import com.arsvechkarev.vault.core.extensions.getDeleteMessageText
 import com.arsvechkarev.vault.core.extensions.ifTrue
 import com.arsvechkarev.vault.core.mvi.MviView
+import com.arsvechkarev.vault.features.settings.SettingsScreenSingleEvents
 import com.arsvechkarev.vault.viewbuilding.Colors
 import com.arsvechkarev.vault.viewbuilding.Dimens.FabSize
 import com.arsvechkarev.vault.viewbuilding.Dimens.IconPadding
@@ -65,7 +66,7 @@ import com.arsvechkarev.vault.views.dialogs.LoadingDialog
 import com.arsvechkarev.vault.views.dialogs.loadingDialog
 import navigation.BaseScreen
 
-class ServicesListScreen : BaseScreen(), MviView<ServicesListState> {
+class ServicesListScreen : BaseScreen(), MviView<ServicesListState, SettingsScreenSingleEvents> {
   
   override fun buildLayout(context: Context) = context.withViewBuilder {
     val viewUnderHeaderBehavior = ViewUnderHeaderBehavior()

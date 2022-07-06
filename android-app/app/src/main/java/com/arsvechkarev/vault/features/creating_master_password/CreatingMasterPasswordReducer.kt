@@ -1,5 +1,6 @@
 package com.arsvechkarev.vault.features.creating_master_password
 
+import buisnesslogic.PasswordStatus
 import com.arsvechkarev.vault.core.Screens
 import com.arsvechkarev.vault.core.mvi.tea.DslReducer
 import com.arsvechkarev.vault.features.creating_master_password.CreatingMasterPasswordCommands.FinishAuth
@@ -20,6 +21,7 @@ import com.arsvechkarev.vault.features.creating_master_password.CreatingMasterPa
 import com.arsvechkarev.vault.features.creating_master_password.CreatingMasterPasswordUiEvent.OnRepeatPasswordTyping
 import com.arsvechkarev.vault.features.creating_master_password.CreatingMasterPasswordUiEvent.RequestHidePasswordStrengthDialog
 import com.arsvechkarev.vault.features.creating_master_password.CreatingMasterPasswordUiEvent.RequestShowPasswordStrengthDialog
+import com.arsvechkarev.vault.features.creating_master_password.PasswordEnteringState.REPEATING
 import navigation.Router
 
 class CreatingMasterPasswordReducer(
@@ -41,7 +43,17 @@ class CreatingMasterPasswordReducer(
         state { copy(passwordEnteringState = event.state) }
       }
       is UpdatePasswordStatus -> {
-        state { copy(passwordStatus = event.passwordStatus) }
+        val passwordEnteringState = if (event.passwordStatus == PasswordStatus.OK) {
+          REPEATING
+        } else {
+          state.passwordEnteringState
+        }
+        state {
+          copy(
+            passwordStatus = event.passwordStatus,
+            passwordEnteringState = passwordEnteringState
+          )
+        }
       }
       is UpdatePasswordStrength -> {
         state { copy(passwordStrength = event.passwordStrength) }
@@ -70,7 +82,7 @@ class CreatingMasterPasswordReducer(
             PasswordEnteringState.INITIAL -> {
               router.goBack()
             }
-            PasswordEnteringState.REPEATING -> {
+            REPEATING -> {
               state { copy(passwordEnteringState = PasswordEnteringState.INITIAL) }
             }
           }
@@ -81,7 +93,7 @@ class CreatingMasterPasswordReducer(
           PasswordEnteringState.INITIAL -> {
             commands(Validate(state.initialPassword))
           }
-          PasswordEnteringState.REPEATING -> {
+          REPEATING -> {
             if (state.initialPassword != "" && state.repeatedPassword == state.initialPassword) {
               state { copy(passwordsMatch = true) }
               commands(FinishAuth(state.initialPassword))

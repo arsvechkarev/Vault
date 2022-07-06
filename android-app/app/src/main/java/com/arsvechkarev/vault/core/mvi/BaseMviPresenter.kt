@@ -30,7 +30,7 @@ import kotlin.reflect.KClass
 abstract class BaseMviPresenter<Action : Any, UserAction : Action, State>(
   private val userActionClass: KClass<UserAction>,
   protected val dispatchers: DispatchersFacade
-) : MvpPresenter<MviView<State>>(), CoroutineScope {
+) : MvpPresenter<MviView<State, UserAction>>(), CoroutineScope {
   
   override val coroutineContext = dispatchers.Main + SupervisorJob()
   
@@ -69,7 +69,7 @@ abstract class BaseMviPresenter<Action : Any, UserAction : Action, State>(
   
   fun showSingleEvent(event: Any) {
     launch {
-      viewState.renderSingleEvent(event)
+      //      viewState.renderSingleEvent(event)
     }
   }
   

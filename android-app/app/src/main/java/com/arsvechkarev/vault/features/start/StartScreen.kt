@@ -6,9 +6,9 @@ import android.view.View
 import com.arsvechkarev.vault.R
 import com.arsvechkarev.vault.core.extensions.showToast
 import com.arsvechkarev.vault.core.mvi.MviView
-import com.arsvechkarev.vault.features.start.StartScreenSingleEvent.ShowEditTextStubPassword
-import com.arsvechkarev.vault.features.start.StartScreenSingleEvent.ShowPermanentLockout
-import com.arsvechkarev.vault.features.start.StartScreenSingleEvent.ShowTooManyAttemptsTryAgainLater
+import com.arsvechkarev.vault.features.start.StartScreenNews.ShowEditTextStubPassword
+import com.arsvechkarev.vault.features.start.StartScreenNews.ShowPermanentLockout
+import com.arsvechkarev.vault.features.start.StartScreenNews.ShowTooManyAttemptsTryAgainLater
 import com.arsvechkarev.vault.viewbuilding.Colors
 import com.arsvechkarev.vault.viewbuilding.Dimens.FingerprintIconSize
 import com.arsvechkarev.vault.viewbuilding.Dimens.ImageLogoSize
@@ -44,7 +44,7 @@ import com.arsvechkarev.vault.views.dialogs.LoadingDialog
 import com.arsvechkarev.vault.views.dialogs.loadingDialog
 import navigation.BaseScreen
 
-class StartScreen : BaseScreen(), MviView<StartScreenState> {
+class StartScreen : BaseScreen(), MviView<StartScreenState, StartScreenNews> {
   
   override fun buildLayout(context: Context) = context.withViewBuilder {
     RootConstraintLayout {
@@ -131,8 +131,8 @@ class StartScreen : BaseScreen(), MviView<StartScreenState> {
     }
   }
   
-  override fun renderSingleEvent(event: Any) {
-    when (event as StartScreenSingleEvent) {
+  override fun handleNews(event: StartScreenNews) {
+    when (event) {
       ShowPermanentLockout -> {
         showToast(R.string.text_biometrics_use_password)
       }

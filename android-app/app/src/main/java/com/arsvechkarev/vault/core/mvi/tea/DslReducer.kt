@@ -28,10 +28,13 @@ abstract class DslReducer<State : Any, Event : Any, Command : Any, News : Any>
     _state = state
     _event = event
     dslReduce(event)
-    return Update(
+    val update = Update(
       state = this.state,
       commands = _commands,
       news = _news
     )
+    _commands = emptyList()
+    _news = emptyList()
+    return update
   }
 }

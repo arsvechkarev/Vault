@@ -31,7 +31,7 @@ import com.arsvechkarev.vault.viewdsl.withViewBuilder
 import com.arsvechkarev.vault.views.Snackbar
 import navigation.BaseScreen
 
-class SettingsScreen : BaseScreen(), MviView<SettingsScreenState> {
+class SettingsScreen : BaseScreen(), MviView<SettingsScreenState, SettingsScreenSingleEvents> {
   
   override fun buildLayout(context: Context) = context.withViewBuilder {
     RootConstraintLayout {
@@ -108,7 +108,7 @@ class SettingsScreen : BaseScreen(), MviView<SettingsScreenState> {
     viewAs<SwitchCompat>(SwitchUseFingerprintId).setCheckedSafe(state.fingerprintEnteringEnabled)
   }
   
-  override fun renderSingleEvent(event: Any) {
+  override fun handleNews(event: SettingsScreenSingleEvents) {
     if (event is ShowBiometricsAddedSuccessfully) {
       viewAs<Snackbar>(SnackbarId).show(R.string.text_biometrics_added)
     }

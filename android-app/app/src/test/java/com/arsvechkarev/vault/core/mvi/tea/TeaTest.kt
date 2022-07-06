@@ -74,10 +74,10 @@ class TeaTest {
     
     store.launch(scope, testDispatchersFacade)
     
-    assertEquals(initialState, store.stateFlow.value)
+    assertEquals(initialState, store.state.value)
     
     store.dispatch(OnLoadClick)
-    
-    assertEquals(State(loadedValue), store.stateFlow.value)
+  
+    assertEquals(State(loadedValue), store.state.value)
   }
 }

@@ -24,7 +24,6 @@ android {
     targetSdkVersion ext.targetSdkVersion
     versionCode ext.versionCode
     versionName ext.versionName
-    testInstrumentationRunner ext.testInstrumentationRunner
 //    signingConfig signingConfigs.release
   }
 //  buildTypes {

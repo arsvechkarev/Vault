@@ -26,13 +26,13 @@ sealed class StartScreenUserAction : StartScreenAction() {
   object OnFingerprintIconClicked : StartScreenUserAction()
 }
 
-sealed class StartScreenSingleEvent {
+sealed class StartScreenNews {
   
-  object ShowTooManyAttemptsTryAgainLater : StartScreenSingleEvent()
+  object ShowTooManyAttemptsTryAgainLater : StartScreenNews()
   
-  object ShowPermanentLockout : StartScreenSingleEvent()
+  object ShowPermanentLockout : StartScreenNews()
   
-  object ShowEditTextStubPassword : StartScreenSingleEvent()
+  object ShowEditTextStubPassword : StartScreenNews()
 }
 
 data class StartScreenState(

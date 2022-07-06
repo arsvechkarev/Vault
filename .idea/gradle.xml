@@ -17,6 +17,7 @@
             <option value="$PROJECT_DIR$/android-app/buisness-logic" />
             <option value="$PROJECT_DIR$/android-app/config" />
             <option value="$PROJECT_DIR$/android-app/navigation" />
+            <option value="$PROJECT_DIR$/android-app/viewdsl" />
             <option value="$PROJECT_DIR$/common-crypto" />
             <option value="$PROJECT_DIR$/desktop-app" />
           </set>

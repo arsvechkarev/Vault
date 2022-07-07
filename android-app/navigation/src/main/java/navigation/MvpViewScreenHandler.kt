@@ -3,11 +3,10 @@ package navigation
 import android.content.Context
 import android.os.Bundle
 import android.view.View
-import config.DurationsConfigurator
 import moxy.MvpDelegate
-import navigation.AnimationType.ANIMATION_BACKWARD
-import navigation.AnimationType.ANIMATION_FORWARD
-import navigation.AnimationType.ANIMATION_NONE
+import navigation.AnimationType.BACKWARD
+import navigation.AnimationType.FORWARD
+import navigation.AnimationType.NONE
 
 class MvpViewScreenHandler(
   private val screen: BaseScreen,
@@ -23,8 +22,6 @@ class MvpViewScreenHandler(
   val bundle: Bundle get() = _bundle
   
   val view: View? get() = screen._view
-  
-  override val animationDuration = DurationsConfigurator.DurationShort
   
   override fun setupArguments(bundle: Bundle) {
     screen._arguments = bundle
@@ -48,32 +45,32 @@ class MvpViewScreenHandler(
   override fun performShow(type: AnimationType) {
     val view = view ?: error("View is null in performShow()")
     screen.mvpDelegate.onAttach()
+    val endAction = { if (screen._view != null) screen.onAppearedOnScreenAfterAnimation() }
     when (type) {
-      ANIMATION_NONE -> view.visibility == View.VISIBLE
-      ANIMATION_FORWARD -> view.apply(appearanceAsGoingForward)
-      ANIMATION_BACKWARD -> view.apply(appearanceAsGoingBackward)
+      NONE -> view.visibility = View.VISIBLE
+      FORWARD -> view.animate(NavigationConfig.animations::AppearanceAsGoingForward, endAction)
+      BACKWARD -> view.animate(NavigationConfig.animations::AppearanceAsGoingBackward, endAction)
     }
     screen.onAppearedOnScreen()
-    if (type != ANIMATION_BACKWARD) {
+    if (type != BACKWARD) {
       screen.onAppearedOnScreenGoingForward()
     }
-    screen.viewNonNull.postDelayed({
-      if (screen._view != null) screen.onAppearedOnScreenAfterAnimation()
-    }, animationDuration)
   }
   
-  override fun performHide(type: AnimationType) {
+  override fun performHide(type: AnimationType, doOnEnd: () -> Unit) {
     val view = view ?: error("View is null in performHide()")
     screen.mvpDelegate.onDetach()
-    when (type) {
-      ANIMATION_NONE -> view.visibility = View.GONE
-      ANIMATION_FORWARD -> view.apply(disappearanceAsGoingForward)
-      ANIMATION_BACKWARD -> view.apply(disappearanceAsGoingBackward)
+    val endAction = {
+      if (screen._view != null) {
+        screen.onDisappearedFromScreen()
+      }
+      doOnEnd()
     }
-    screen.onDisappearedFromScreen()
-    screen.viewNonNull.postDelayed({
-      if (screen._view != null) screen.onDisappearedFromScreenAfterAnimation()
-    }, animationDuration)
+    when (type) {
+      NONE -> view.visibility = View.GONE
+      FORWARD -> view.animate(NavigationConfig.animations::DisappearanceAsGoingForward, endAction)
+      BACKWARD -> view.animate(NavigationConfig.animations::DisappearanceAsGoingBackward, endAction)
+    }
   }
   
   override fun performSaveInstanceState(bundle: Bundle) {
@@ -111,22 +108,7 @@ class MvpViewScreenHandler(
     screen.clearViewCache()
   }
   
-  private companion object {
-    
-    private val appearanceAsGoingForward: View.() -> Unit = {
-      animateSlideFromRight(duration = DurationsConfigurator.DurationShort)
-    }
-    
-    private val appearanceAsGoingBackward: View.() -> Unit = {
-      animateVisible(duration = DurationsConfigurator.DurationShort)
-    }
-    
-    private val disappearanceAsGoingForward: View.() -> Unit = {
-      animateGoneAfter(duration = DurationsConfigurator.DurationShort)
-    }
-    
-    private val disappearanceAsGoingBackward: View.() -> Unit = {
-      animateSlideToRight(duration = DurationsConfigurator.DurationShort)
-    }
+  private fun View.animate(animation: (doOnEnd: () -> Unit) -> View.() -> Unit, doOnEnd: () -> Unit) {
+    apply(animation(doOnEnd))
   }
 }

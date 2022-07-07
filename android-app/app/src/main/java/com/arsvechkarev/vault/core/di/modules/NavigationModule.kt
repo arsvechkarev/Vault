@@ -34,7 +34,9 @@ class NavigationModuleImpl(
   
   private fun createNavigator(activity: MvpAppCompatActivity, rootViewId: Int): ExtendedNavigator {
     val rootView = activity.findViewById<FrameLayout>(rootViewId)
-    val screenHandlerViewProvider = { handler: ScreenHandler -> (handler as MvpViewScreenHandler).view }
+    val screenHandlerViewProvider = { handler: ScreenHandler ->
+      (handler as MvpViewScreenHandler).view
+    }
     val navHost = ViewNavigationHost(rootView, screenHandlerViewProvider)
     val screenHandlerFactory = ScreenHandlerFactory { screenKey, screen ->
       MvpViewScreenHandler(screen as BaseScreen, screenKey.toString(),

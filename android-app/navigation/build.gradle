@@ -23,8 +23,6 @@ android {
 }
 
 dependencies {
-  implementation project(":android-app:config")
-
   def dependencies = rootProject.ext.applicationDependencies
 
   api dependencies.cicerone

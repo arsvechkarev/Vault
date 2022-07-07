@@ -10,7 +10,7 @@ import navigation.Replace
 import navigation.ScreenInfo
 import navigation.SwitchToNewRoot
 
-class CoroutineRouter(private val scope: CoroutineScope) : BaseRouter() {
+class Router(private val scope: CoroutineScope) : BaseRouter() {
   
   fun goForward(screenInfo: ScreenInfo, removeCurrentView: Boolean = false) {
     scope.launch { executeCommands(Forward(screenInfo, removeCurrentView)) }

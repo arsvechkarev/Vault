@@ -13,8 +13,8 @@ import buisnesslogic.model.PasswordCharacteristics.NUMBERS
 import buisnesslogic.model.PasswordCharacteristics.SPECIAL_SYMBOLS
 import buisnesslogic.model.PasswordCharacteristics.UPPERCASE_SYMBOLS
 import com.arsvechkarev.vault.core.BasePresenter
-import com.arsvechkarev.vault.core.CoroutineRouter
 import com.arsvechkarev.vault.core.DispatchersFacade
+import com.arsvechkarev.vault.core.Router
 import com.arsvechkarev.vault.core.communicators.FlowCommunicator
 import com.arsvechkarev.vault.features.creating_password.PasswordCreatingActions.ConfigureMode.EditPassword
 import com.arsvechkarev.vault.features.creating_password.PasswordCreatingActions.ConfigureMode.NewPassword
@@ -35,7 +35,7 @@ class PasswordCreatingPresenter @Inject constructor(
   private val passwordCreatingCommunicator: FlowCommunicator<PasswordCreatingEvents>,
   private val passwordChecker: PasswordChecker,
   private val passwordGenerator: PasswordGenerator,
-  private val router: CoroutineRouter,
+  private val router: Router,
   dispatchers: DispatchersFacade
 ) : BasePresenter<PasswordCreatingView>(dispatchers) {
   

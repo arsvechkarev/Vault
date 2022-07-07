@@ -3,8 +3,8 @@ package com.arsvechkarev.vault.features.start
 import android.annotation.SuppressLint
 import buisnesslogic.MasterPasswordChecker
 import buisnesslogic.MasterPasswordHolder
-import com.arsvechkarev.vault.core.CoroutineRouter
 import com.arsvechkarev.vault.core.DispatchersFacade
+import com.arsvechkarev.vault.core.Router
 import com.arsvechkarev.vault.core.Screens
 import com.arsvechkarev.vault.core.mvi.BaseMviPresenter
 import com.arsvechkarev.vault.features.start.StartScreenAction.HideFingerprintIcon
@@ -22,7 +22,7 @@ import javax.inject.Inject
 
 class StartPresenter @Inject constructor(
   private val masterPasswordChecker: MasterPasswordChecker,
-  private val router: CoroutineRouter,
+  private val router: Router,
   dispatchers: DispatchersFacade,
 ) : BaseMviPresenter<StartScreenAction, StartScreenUserAction, StartScreenState>(
   StartScreenUserAction::class,

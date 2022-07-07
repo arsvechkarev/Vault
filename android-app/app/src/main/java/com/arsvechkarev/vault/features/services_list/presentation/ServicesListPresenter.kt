@@ -1,9 +1,9 @@
 package com.arsvechkarev.vault.features.services_list.presentation
 
 import buisnesslogic.MasterPasswordHolder.masterPassword
-import com.arsvechkarev.vault.core.CoroutineRouter
 import com.arsvechkarev.vault.core.DispatchersFacade
 import com.arsvechkarev.vault.core.Result
+import com.arsvechkarev.vault.core.Router
 import com.arsvechkarev.vault.core.Screens
 import com.arsvechkarev.vault.core.ServicesListenableRepository
 import com.arsvechkarev.vault.core.model.ServiceModel
@@ -23,7 +23,7 @@ import javax.inject.Inject
 
 class ServicesListPresenter @Inject constructor(
   private val servicesRepository: ServicesListenableRepository,
-  private val router: CoroutineRouter,
+  private val router: Router,
   dispatchers: DispatchersFacade
 ) : BaseMviPresenter<ServicesListScreenAction, ServicesListScreenUserAction, ServicesListState>(
   ServicesListScreenUserAction::class,

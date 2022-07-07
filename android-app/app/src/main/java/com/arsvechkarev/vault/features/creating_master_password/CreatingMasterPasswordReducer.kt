@@ -1,7 +1,7 @@
 package com.arsvechkarev.vault.features.creating_master_password
 
 import buisnesslogic.PasswordStatus
-import com.arsvechkarev.vault.core.CoroutineRouter
+import com.arsvechkarev.vault.core.Router
 import com.arsvechkarev.vault.core.Screens
 import com.arsvechkarev.vault.core.mvi.tea.DslReducer
 import com.arsvechkarev.vault.features.creating_master_password.CreatingMasterPasswordCommands.FinishAuth
@@ -25,7 +25,7 @@ import com.arsvechkarev.vault.features.creating_master_password.CreatingMasterPa
 import com.arsvechkarev.vault.features.creating_master_password.PasswordEnteringState.REPEATING
 
 class CreatingMasterPasswordReducer(
-  private val router: CoroutineRouter
+  private val router: Router
 ) : DslReducer<CMPState, CMPEvents, CMPCommands, CMPNews>() {
   
   override fun dslReduce(event: CreatingMasterPasswordEvent) {

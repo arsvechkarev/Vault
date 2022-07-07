@@ -4,8 +4,8 @@ import android.os.Bundle
 import android.util.Log
 import androidx.annotation.VisibleForTesting
 import com.github.terrakok.cicerone.Command
-import navigation.AnimationType.ANIMATION_FORWARD
-import navigation.AnimationType.ANIMATION_NONE
+import navigation.AnimationType.FORWARD
+import navigation.AnimationType.NONE
 
 class ExtendedNavigatorImpl(
   private val host: NavigationHost,
@@ -60,8 +60,8 @@ class ExtendedNavigatorImpl(
       screenHandlerOnTop.performFullRelease()
       return false
     }
-    hideScreen(screenOnTop, AnimationType.ANIMATION_BACKWARD, releaseAfterwards = true)
-    showScreen(screensStack.last(), AnimationType.ANIMATION_BACKWARD)
+    hideScreen(screenOnTop, AnimationType.BACKWARD, releaseAfterwards = true)
+    showScreen(screensStack.last(), AnimationType.BACKWARD)
     dump()
     return true
   }
@@ -78,7 +78,7 @@ class ExtendedNavigatorImpl(
     val stringArrayList = bundle.getStringArrayList(BUNDLE_KEY)
     screensStack.addAll(getScreensFromStringsList(stringArrayList!!))
     screensStack.lastOrNull()?.let { screenOnTop ->
-      showScreen(screenOnTop, ANIMATION_NONE)
+      showScreen(screenOnTop, NONE)
     }
   }
   
@@ -99,13 +99,13 @@ class ExtendedNavigatorImpl(
       if (removeCurrentScreen) {
         removeScreenView(currentScreenKey)
       } else {
-        hideScreen(currentScreenKey, ANIMATION_FORWARD, releaseAfterwards = false)
+        hideScreen(currentScreenKey, FORWARD, releaseAfterwards = false)
       }
     }
     screensStack.add(screenKey)
     // If stack has only one screen (one that was just added to stack), then showing this
     // screen without fancy animation
-    val animationType = if (screensStack.size == 1) ANIMATION_NONE else ANIMATION_FORWARD
+    val animationType = if (screensStack.size == 1) NONE else FORWARD
     showScreen(screenKey, animationType)
   }
   
@@ -117,12 +117,12 @@ class ExtendedNavigatorImpl(
     val screenHandler = getOrCreateScreenHandler(screenKey)
     screenHandler.setupArguments(arguments)
     screensStack.lastOrNull()?.let { screenClassName ->
-      hideScreen(screenClassName, ANIMATION_FORWARD,
+      hideScreen(screenClassName, FORWARD,
         releaseAfterwards = true)
     }
     screensStack.removeLast()
     screensStack.add(screenKey)
-    showScreen(screenKey, ANIMATION_FORWARD)
+    showScreen(screenKey, FORWARD)
   }
   
   private fun performBack(releaseCurrentScreen: Boolean) {
@@ -130,15 +130,15 @@ class ExtendedNavigatorImpl(
     val screenOnTop = screensStack.removeLast()
     val screenHandlerOnTop = getOrCreateScreenHandler(screenOnTop)
     if (screensStack.isEmpty()) {
-      screenHandlerOnTop.performHide(ANIMATION_NONE)
+      screenHandlerOnTop.performHide(NONE)
       screenHandlerOnTop.performFullRelease()
       host.removeAllScreenHandlers()
       screenHandlersCache.clear()
     } else {
-      hideScreen(screenOnTop, AnimationType.ANIMATION_BACKWARD,
+      hideScreen(screenOnTop, AnimationType.BACKWARD,
         releaseAfterwards = releaseCurrentScreen)
       val currentScreen = screensStack.last()
-      showScreen(currentScreen, AnimationType.ANIMATION_BACKWARD)
+      showScreen(currentScreen, AnimationType.BACKWARD)
     }
   }
   
@@ -151,14 +151,14 @@ class ExtendedNavigatorImpl(
     val screensToDelete = ArrayList(screensStack.subList(newScreenIndex + 1, screensStack.size))
     screensStack.clear()
     screensStack.addAll(newScreensList)
-    hideScreen(currentScreen, AnimationType.ANIMATION_BACKWARD, releaseAllLeftScreens)
-    showScreen(screenKey, AnimationType.ANIMATION_BACKWARD)
+    hideScreen(currentScreen, AnimationType.BACKWARD, releaseAllLeftScreens)
+    showScreen(screenKey, AnimationType.BACKWARD)
     releaseScreens(screensToDelete, removeFromHost = releaseAllLeftScreens)
   }
   
   private fun performSwitchToNewRoot(screenKey: ScreenKey, arguments: Bundle) {
     screensStack.lastOrNull()?.let { currentScreenKey ->
-      hideScreen(currentScreenKey, ANIMATION_FORWARD, releaseAfterwards = true)
+      hideScreen(currentScreenKey, FORWARD, releaseAfterwards = true)
     }
     screenHandlersCache.remove(screenKey)
     screenHandlersCache.values.forEach { screenHandler ->
@@ -172,7 +172,7 @@ class ExtendedNavigatorImpl(
     val screenHandler = getOrCreateScreenHandler(screenKey)
     screenHandler.setupArguments(arguments)
     screensStack.add(screenKey)
-    showScreen(screenKey, ANIMATION_FORWARD)
+    showScreen(screenKey, FORWARD)
   }
   
   private fun getOrCreateScreenHandler(
@@ -186,9 +186,7 @@ class ExtendedNavigatorImpl(
   
   private fun removeScreenView(screenKey: ScreenKey) {
     val screenHandler = screenHandlersCache.getValue(screenKey)
-    screenHandler.performHide(ANIMATION_FORWARD)
-    host.removeScreenHandlerAfterDelay(screenHandler, screenHandler.animationDuration,
-      afterDelay = { screenHandler.performOnlyViewRemoval() })
+    screenHandler.performHide(FORWARD, doOnEnd = { screenHandler.performOnlyViewRemoval() })
   }
   
   private fun hideScreen(
@@ -197,12 +195,15 @@ class ExtendedNavigatorImpl(
     releaseAfterwards: Boolean
   ) {
     val screenHandler = screenHandlersCache[screenKey]
-    screenHandler?.performHide(animationType)
-    if (releaseAfterwards && screenHandler != null) {
-      host.removeScreenHandlerAfterDelay(screenHandler, screenHandler.animationDuration,
-        afterDelay = { screenHandler.performFullRelease() })
-      screenHandlersCache.remove(screenKey)
+    val endAction = if (releaseAfterwards && screenHandler != null) {
+      {
+        screenHandlersCache.remove(screenKey)
+        screenHandler.performFullRelease()
+      }
+    } else {
+      {}
     }
+    screenHandler?.performHide(animationType, endAction)
   }
   
   private fun showScreen(screenKey: ScreenKey, animationType: AnimationType) {

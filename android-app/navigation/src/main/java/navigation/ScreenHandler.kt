@@ -8,12 +8,6 @@ import android.os.Bundle
 interface ScreenHandler {
   
   /**
-   * Duration of screen's hide/show animation. Navigator uses this to remove screen only after
-   * particular period of time
-   */
-  val animationDuration: Long get() = 0
-  
-  /**
    * Sets arguments for this screen
    */
   fun setupArguments(bundle: Bundle)
@@ -38,7 +32,7 @@ interface ScreenHandler {
    * back and current screen is the only screen in stack. In this case just [performFullRelease] is
    * called
    */
-  fun performHide(type: AnimationType)
+  fun performHide(type: AnimationType, doOnEnd: () -> Unit = {})
   
   /**
    * Removes view, but not removes other screen metadata, For example, if you are using moxy,

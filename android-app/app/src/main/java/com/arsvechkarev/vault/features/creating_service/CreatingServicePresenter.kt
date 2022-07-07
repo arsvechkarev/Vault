@@ -1,8 +1,8 @@
 package com.arsvechkarev.vault.features.creating_service
 
 import buisnesslogic.MasterPasswordHolder.masterPassword
-import com.arsvechkarev.vault.core.CoroutineRouter
 import com.arsvechkarev.vault.core.DispatchersFacade
+import com.arsvechkarev.vault.core.Router
 import com.arsvechkarev.vault.core.Screens
 import com.arsvechkarev.vault.core.ServicesListenableRepository
 import com.arsvechkarev.vault.core.communicators.FlowCommunicator
@@ -28,7 +28,7 @@ class CreatingServicePresenter @Inject constructor(
   @PasswordCreatingCommunicator
   private val passwordCreatingCommunicator: FlowCommunicator<PasswordCreatingEvents>,
   private val servicesRepository: ServicesListenableRepository,
-  private val router: CoroutineRouter,
+  private val router: Router,
   dispatchers: DispatchersFacade
 ) : BaseMviPresenter<CreatingServiceActions, CreatingServiceUserActions, CreatingServiceState>(
   CreatingServiceUserActions::class,

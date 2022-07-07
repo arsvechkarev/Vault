@@ -3,7 +3,7 @@ package com.arsvechkarev.vault.core.di.modules
 import android.widget.FrameLayout
 import androidx.annotation.IdRes
 import com.arsvechkarev.vault.VaultApplication
-import com.arsvechkarev.vault.core.CoroutineRouter
+import com.arsvechkarev.vault.core.Router
 import com.github.terrakok.cicerone.Cicerone
 import moxy.MvpAppCompatActivity
 import navigation.BaseScreen
@@ -16,8 +16,8 @@ import navigation.ScreenHandlerFactory
 import navigation.ViewNavigationHost
 
 interface NavigationModule {
-  val router: CoroutineRouter
-  val cicerone: Cicerone<CoroutineRouter>
+  val router: Router
+  val cicerone: Cicerone<Router>
   val navigator: ExtendedNavigator
 }
 
@@ -26,7 +26,7 @@ class NavigationModuleImpl(
   @IdRes navigationRootViewId: Int,
 ) : NavigationModule {
   
-  override val router = CoroutineRouter(VaultApplication.AppMainCoroutineScope)
+  override val router = Router(VaultApplication.AppMainCoroutineScope)
   
   override val cicerone = Cicerone.create(router)
   

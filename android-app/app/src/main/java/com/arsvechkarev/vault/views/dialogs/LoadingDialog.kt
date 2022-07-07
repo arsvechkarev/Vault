@@ -2,14 +2,14 @@ package com.arsvechkarev.vault.views.dialogs
 
 import android.view.ViewGroup
 import com.arsvechkarev.vault.viewbuilding.Dimens.ProgressBarSizeBig
-import com.arsvechkarev.vault.viewdsl.Size.Companion.MatchParent
-import com.arsvechkarev.vault.viewdsl.addView
-import com.arsvechkarev.vault.viewdsl.size
-import com.arsvechkarev.vault.viewdsl.tag
-import com.arsvechkarev.vault.viewdsl.withViewBuilder
 import com.arsvechkarev.vault.views.MaterialProgressBar
 import com.arsvechkarev.vault.views.SimpleDialog
 import navigation.BaseScreen
+import viewdsl.Size.Companion.MatchParent
+import viewdsl.addView
+import viewdsl.size
+import viewdsl.tag
+import viewdsl.withViewBuilder
 
 const val DialogProgressBar = "DialogProgressBar"
 

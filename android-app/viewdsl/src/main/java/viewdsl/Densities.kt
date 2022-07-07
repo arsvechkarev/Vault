@@ -1,6 +1,6 @@
 @file:Suppress("ObjectPropertyName")
 
-package com.arsvechkarev.vault.viewdsl
+package viewdsl
 
 import android.content.res.Resources
 import android.util.DisplayMetrics
@@ -15,7 +15,7 @@ object Densities {
   val scaledDensity: Float get() = _scaledDensity
   val densityDpi: Int get() = _densityDpi
   
-  fun init(resources: Resources) {
+  internal fun init(resources: Resources) {
     with(resources.displayMetrics) {
       _density = density
       _scaledDensity = scaledDensity

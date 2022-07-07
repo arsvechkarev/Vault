@@ -7,6 +7,7 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import com.arsvechkarev.vault.R
+import com.arsvechkarev.vault.viewbuilding.Colors
 import com.arsvechkarev.vault.viewbuilding.Dimens.IconPadding
 import com.arsvechkarev.vault.viewbuilding.Dimens.IconSize
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginNormal
@@ -15,32 +16,32 @@ import com.arsvechkarev.vault.viewbuilding.Fonts
 import com.arsvechkarev.vault.viewbuilding.Styles.BaseEditText
 import com.arsvechkarev.vault.viewbuilding.Styles.BoldTextView
 import com.arsvechkarev.vault.viewbuilding.TextSizes
-import com.arsvechkarev.vault.viewdsl.Size.Companion.MatchParent
-import com.arsvechkarev.vault.viewdsl.Size.Companion.WrapContent
-import com.arsvechkarev.vault.viewdsl.animateInvisible
-import com.arsvechkarev.vault.viewdsl.animateVisible
-import com.arsvechkarev.vault.viewdsl.background
-import com.arsvechkarev.vault.viewdsl.circleRippleBackground
-import com.arsvechkarev.vault.viewdsl.exactly
-import com.arsvechkarev.vault.viewdsl.font
-import com.arsvechkarev.vault.viewdsl.gravity
-import com.arsvechkarev.vault.viewdsl.hideKeyboard
-import com.arsvechkarev.vault.viewdsl.image
-import com.arsvechkarev.vault.viewdsl.invisible
-import com.arsvechkarev.vault.viewdsl.layoutLeftTop
-import com.arsvechkarev.vault.viewdsl.onClick
-import com.arsvechkarev.vault.viewdsl.onSubmit
-import com.arsvechkarev.vault.viewdsl.onTextChanged
-import com.arsvechkarev.vault.viewdsl.padding
-import com.arsvechkarev.vault.viewdsl.showKeyboard
-import com.arsvechkarev.vault.viewdsl.size
-import com.arsvechkarev.vault.viewdsl.text
-import com.arsvechkarev.vault.viewdsl.textSize
-import com.arsvechkarev.vault.viewdsl.unspecified
-import com.arsvechkarev.vault.viewdsl.visible
-import com.arsvechkarev.vault.viewdsl.withViewBuilder
 import com.arsvechkarev.vault.views.EditableTextInfoViewGroup.ShowingMode.EDITING
 import com.arsvechkarev.vault.views.EditableTextInfoViewGroup.ShowingMode.SHOWING
+import viewdsl.Size.Companion.MatchParent
+import viewdsl.Size.Companion.WrapContent
+import viewdsl.animateInvisible
+import viewdsl.animateVisible
+import viewdsl.background
+import viewdsl.circleRippleBackground
+import viewdsl.exactly
+import viewdsl.font
+import viewdsl.gravity
+import viewdsl.hideKeyboard
+import viewdsl.image
+import viewdsl.invisible
+import viewdsl.layoutLeftTop
+import viewdsl.onClick
+import viewdsl.onSubmit
+import viewdsl.onTextChanged
+import viewdsl.padding
+import viewdsl.showKeyboard
+import viewdsl.size
+import viewdsl.text
+import viewdsl.textSize
+import viewdsl.unspecified
+import viewdsl.visible
+import viewdsl.withViewBuilder
 
 class EditableTextInfoViewGroup(context: Context) : ViewGroup(context) {
   
@@ -75,14 +76,14 @@ class EditableTextInfoViewGroup(context: Context) : ViewGroup(context) {
       ImageView(WrapContent, WrapContent) {
         padding(IconPadding)
         image(R.drawable.ic_edit)
-        circleRippleBackground()
+        circleRippleBackground(Colors.Ripple)
         onClick { changeModeIfPossible() }
       }
       ImageView(WrapContent, WrapContent) {
         invisible()
         padding(IconPadding)
         image(R.drawable.ic_checmark)
-        circleRippleBackground()
+        circleRippleBackground(Colors.Ripple)
         onClick { changeModeIfPossible() }
       }
     }

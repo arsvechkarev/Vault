@@ -22,28 +22,6 @@ import com.arsvechkarev.vault.viewbuilding.Dimens.MarginSmall
 import com.arsvechkarev.vault.viewbuilding.Styles
 import com.arsvechkarev.vault.viewbuilding.Styles.BoldTextView
 import com.arsvechkarev.vault.viewbuilding.TextSizes
-import com.arsvechkarev.vault.viewdsl.Size.Companion.MatchParent
-import com.arsvechkarev.vault.viewdsl.Size.Companion.WrapContent
-import com.arsvechkarev.vault.viewdsl.backgroundColor
-import com.arsvechkarev.vault.viewdsl.circleRippleBackground
-import com.arsvechkarev.vault.viewdsl.classNameTag
-import com.arsvechkarev.vault.viewdsl.drawablePadding
-import com.arsvechkarev.vault.viewdsl.drawables
-import com.arsvechkarev.vault.viewdsl.gravity
-import com.arsvechkarev.vault.viewdsl.hideKeyboard
-import com.arsvechkarev.vault.viewdsl.image
-import com.arsvechkarev.vault.viewdsl.layoutGravity
-import com.arsvechkarev.vault.viewdsl.margin
-import com.arsvechkarev.vault.viewdsl.margins
-import com.arsvechkarev.vault.viewdsl.onClick
-import com.arsvechkarev.vault.viewdsl.padding
-import com.arsvechkarev.vault.viewdsl.setMaxLength
-import com.arsvechkarev.vault.viewdsl.setSoftInputMode
-import com.arsvechkarev.vault.viewdsl.tag
-import com.arsvechkarev.vault.viewdsl.text
-import com.arsvechkarev.vault.viewdsl.textColor
-import com.arsvechkarev.vault.viewdsl.textSize
-import com.arsvechkarev.vault.viewdsl.withViewBuilder
 import com.arsvechkarev.vault.views.CheckmarkAndTextViewGroup
 import com.arsvechkarev.vault.views.CheckmarkAndTextViewGroup.Companion.CheckmarkAndTextViewGroup
 import com.arsvechkarev.vault.views.PasswordStrengthMeterWithText
@@ -52,6 +30,28 @@ import com.arsvechkarev.vault.views.dialogs.InfoDialog.Companion.infoDialog
 import com.arsvechkarev.vault.views.dialogs.LoadingDialog
 import com.arsvechkarev.vault.views.dialogs.loadingDialog
 import navigation.BaseScreen
+import viewdsl.Size.Companion.MatchParent
+import viewdsl.Size.Companion.WrapContent
+import viewdsl.backgroundColor
+import viewdsl.circleRippleBackground
+import viewdsl.classNameTag
+import viewdsl.drawablePadding
+import viewdsl.drawables
+import viewdsl.gravity
+import viewdsl.hideKeyboard
+import viewdsl.image
+import viewdsl.layoutGravity
+import viewdsl.margin
+import viewdsl.margins
+import viewdsl.onClick
+import viewdsl.padding
+import viewdsl.setMaxLength
+import viewdsl.setSoftInputMode
+import viewdsl.tag
+import viewdsl.text
+import viewdsl.textColor
+import viewdsl.textSize
+import viewdsl.withViewBuilder
 
 class PasswordCreatingScreen : BaseScreen(), PasswordCreatingView {
   
@@ -69,7 +69,7 @@ class PasswordCreatingScreen : BaseScreen(), PasswordCreatingView {
           }
           ImageView(WrapContent, WrapContent) {
             image(R.drawable.ic_cross)
-            circleRippleBackground()
+            circleRippleBackground(Colors.Ripple)
             margins(end = ImageBackMargin, top = MarginSmall, bottom = MarginSmall)
             layoutGravity(CENTER or Gravity.END)
             padding(Dimens.IconPadding)

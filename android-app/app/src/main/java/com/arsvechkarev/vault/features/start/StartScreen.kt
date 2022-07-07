@@ -21,28 +21,28 @@ import com.arsvechkarev.vault.viewbuilding.Styles.BaseTextView
 import com.arsvechkarev.vault.viewbuilding.Styles.BoldTextView
 import com.arsvechkarev.vault.viewbuilding.Styles.Button
 import com.arsvechkarev.vault.viewbuilding.TextSizes
-import com.arsvechkarev.vault.viewdsl.Size.Companion.MatchParent
-import com.arsvechkarev.vault.viewdsl.Size.Companion.WrapContent
-import com.arsvechkarev.vault.viewdsl.constraints
-import com.arsvechkarev.vault.viewdsl.gravity
-import com.arsvechkarev.vault.viewdsl.hideKeyboard
-import com.arsvechkarev.vault.viewdsl.id
-import com.arsvechkarev.vault.viewdsl.image
-import com.arsvechkarev.vault.viewdsl.invisible
-import com.arsvechkarev.vault.viewdsl.isVisible
-import com.arsvechkarev.vault.viewdsl.margin
-import com.arsvechkarev.vault.viewdsl.marginHorizontal
-import com.arsvechkarev.vault.viewdsl.margins
-import com.arsvechkarev.vault.viewdsl.onClick
-import com.arsvechkarev.vault.viewdsl.showKeyboard
-import com.arsvechkarev.vault.viewdsl.text
-import com.arsvechkarev.vault.viewdsl.textColor
-import com.arsvechkarev.vault.viewdsl.textSize
-import com.arsvechkarev.vault.viewdsl.withViewBuilder
 import com.arsvechkarev.vault.views.EditTextPassword
 import com.arsvechkarev.vault.views.dialogs.LoadingDialog
 import com.arsvechkarev.vault.views.dialogs.loadingDialog
 import navigation.BaseScreen
+import viewdsl.Size.Companion.MatchParent
+import viewdsl.Size.Companion.WrapContent
+import viewdsl.constraints
+import viewdsl.gravity
+import viewdsl.hideKeyboard
+import viewdsl.id
+import viewdsl.image
+import viewdsl.invisible
+import viewdsl.isVisible
+import viewdsl.margin
+import viewdsl.marginHorizontal
+import viewdsl.margins
+import viewdsl.onClick
+import viewdsl.showKeyboard
+import viewdsl.text
+import viewdsl.textColor
+import viewdsl.textSize
+import viewdsl.withViewBuilder
 
 class StartScreen : BaseScreen(), MviView<StartScreenState, StartScreenNews> {
   

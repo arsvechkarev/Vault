@@ -1,6 +1,6 @@
 @file:Suppress("NOTHING_TO_INLINE")
 
-package com.arsvechkarev.vault.viewdsl
+package viewdsl
 
 import android.graphics.Color
 import android.graphics.PorterDuff.Mode.SRC_ATOP
@@ -8,7 +8,6 @@ import android.graphics.PorterDuffColorFilter
 import android.graphics.Typeface
 import android.util.TypedValue
 import android.widget.TextView
-import androidx.annotation.DimenRes
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 
@@ -40,10 +39,6 @@ fun TextView.clearCompoundDrawables() {
 
 inline fun TextView.textSize(size: Float) {
   setTextSize(TypedValue.COMPLEX_UNIT_PX, size)
-}
-
-inline fun TextView.textSize(@DimenRes dimenRes: Int) {
-  textSize = dimen(dimenRes)
 }
 
 inline fun TextView.text(@StringRes resId: Int) {

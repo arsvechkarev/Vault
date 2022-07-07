@@ -10,18 +10,18 @@ import com.arsvechkarev.vault.viewbuilding.Dimens.IconSize
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginLarge
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginSmall
 import com.arsvechkarev.vault.viewbuilding.Styles.BaseEditText
-import com.arsvechkarev.vault.viewdsl.BaseTextWatcher
-import com.arsvechkarev.vault.viewdsl.Size.Companion.MatchParent
-import com.arsvechkarev.vault.viewdsl.Size.Companion.WrapContent
-import com.arsvechkarev.vault.viewdsl.image
-import com.arsvechkarev.vault.viewdsl.layoutLeftTop
-import com.arsvechkarev.vault.viewdsl.marginEnd
-import com.arsvechkarev.vault.viewdsl.margins
-import com.arsvechkarev.vault.viewdsl.onClick
-import com.arsvechkarev.vault.viewdsl.onSubmit
-import com.arsvechkarev.vault.viewdsl.onTextChanged
-import com.arsvechkarev.vault.viewdsl.paddings
-import com.arsvechkarev.vault.viewdsl.withViewBuilder
+import viewdsl.BaseTextWatcher
+import viewdsl.Size.Companion.MatchParent
+import viewdsl.Size.Companion.WrapContent
+import viewdsl.image
+import viewdsl.layoutLeftTop
+import viewdsl.marginEnd
+import viewdsl.margins
+import viewdsl.onClick
+import viewdsl.onSubmit
+import viewdsl.onTextChanged
+import viewdsl.paddings
+import viewdsl.withViewBuilder
 
 class EditTextPassword(context: Context) : FrameLayout(context) {
   

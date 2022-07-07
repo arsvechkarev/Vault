@@ -49,6 +49,7 @@ dependencies {
   implementation project(':android-app:config')
   implementation project(':android-app:buisness-logic')
   implementation project(':android-app:navigation')
+  implementation project(':android-app:viewdsl')
   implementation project(':common-crypto')
 
   def appDependencies = rootProject.ext.applicationDependencies

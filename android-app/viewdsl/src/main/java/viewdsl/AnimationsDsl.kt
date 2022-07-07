@@ -1,6 +1,6 @@
 @file:Suppress("UsePropertyAccessSyntax")
 
-package com.arsvechkarev.vault.viewdsl
+package viewdsl
 
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
@@ -8,12 +8,7 @@ import android.graphics.drawable.Animatable
 import android.view.View
 import android.view.animation.AccelerateDecelerateInterpolator
 import android.view.animation.OvershootInterpolator
-import config.DurationsConfigurator
-
-const val DURATION_SHORT = 170L
-const val DURATION_DEFAULT = 300L
-const val DURATION_MEDIUM = 500L
-const val DURATION_LONG = 1000L
+import viewdsl.ViewDslConfiguration.Durations
 
 val AccelerateDecelerateInterpolator = AccelerateDecelerateInterpolator()
 val OvershootInterpolator = OvershootInterpolator()
@@ -43,26 +38,30 @@ fun Animator.doOnEnd(block: () -> Unit) {
   })
 }
 
-fun View.animateVisible(andThen: () -> Unit = {}, duration: Long = DurationsConfigurator.DurationDefault) {
-  //  if (visibility == View.VISIBLE) return
-  //  alpha = 0f
-  visible()
-  //  animate().alpha(1f).setDuration(duration)
-  //      .setInterpolator(AccelerateDecelerateInterpolator)
-  //      .withEndAction(andThen)
-  //      .start()
+fun View.animateVisible(
+  andThen: () -> Unit = {},
+  duration: Long = Durations.VisibilityChange
+) {
+  if (visibility == View.VISIBLE) return
+  alpha = 0f
+  animate().alpha(1f).setDuration(duration)
+      .setInterpolator(AccelerateDecelerateInterpolator)
+      .withEndAction(andThen)
+      .start()
 }
 
-fun View.animateInvisible(andThen: () -> Unit = {}, duration: Long = DurationsConfigurator.DurationDefault) {
+fun View.animateInvisible(
+  andThen: () -> Unit = {},
+  duration: Long = Durations.VisibilityChange
+) {
   if (visibility == View.INVISIBLE) return
-  invisible()
-  //  animate().alpha(0f).setDuration(duration)
-  //      .setInterpolator(AccelerateDecelerateInterpolator)
-  //      .withEndAction {
-  //        invisible()
-  //        andThen()
-  //      }
-  //      .start()
+  animate().alpha(0f).setDuration(duration)
+      .setInterpolator(AccelerateDecelerateInterpolator)
+      .withEndAction {
+        invisible()
+        andThen()
+      }
+      .start()
 }
 
 fun View.rotate() {
@@ -72,7 +71,7 @@ fun View.rotate() {
   tag = "isRotating"
   animate().rotation(540f)
       .withLayer()
-      .setDuration(DurationsConfigurator.DurationLong)
+      .setDuration(Durations.Rotation)
       .setInterpolator(AccelerateDecelerateInterpolator)
       .withEndAction {
         tag("isNotRotating")

@@ -1,4 +1,4 @@
-package com.arsvechkarev.vault.viewdsl
+package viewdsl
 
 import android.app.Activity
 import android.content.Context
@@ -13,13 +13,10 @@ import androidx.annotation.AttrRes
 import androidx.annotation.ColorInt
 import androidx.annotation.DrawableRes
 import androidx.core.content.ContextCompat
-import com.arsvechkarev.vault.views.RootView
 import java.util.Locale
 
-fun dimen(dimenRes: Int) = ContextHolder.applicationContext.resources.getDimension(dimenRes)
-
 val isOrientationPortrait: Boolean
-  get() = ContextHolder.applicationContext.resources.configuration.orientation ==
+  get() = ViewDslConfiguration.applicationContext.resources.configuration.orientation ==
       Configuration.ORIENTATION_PORTRAIT
 
 val isLayoutLeftToRight: Boolean
@@ -33,8 +30,8 @@ val Context.screenHeight: Int
 
 val Context.statusBarHeight: Int
   get() {
-    if (RootView.statusBarHeightFromInsets != 0) {
-      return RootView.statusBarHeightFromInsets
+    if (ViewDslConfiguration.statusBarHeight != 0) {
+      return ViewDslConfiguration.statusBarHeight
     }
     var result = 0
     val resourceId = resources.getIdentifier("status_bar_height", "dimen", "android")

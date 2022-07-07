@@ -5,8 +5,8 @@ import android.view.MotionEvent
 import android.view.ViewGroup
 import com.arsvechkarev.vault.R
 import com.arsvechkarev.vault.viewbuilding.TextSizes
-import com.arsvechkarev.vault.viewdsl.children
-import com.arsvechkarev.vault.viewdsl.onClick
+import viewdsl.children
+import viewdsl.onClick
 
 class PasswordActionsView(context: Context) : ViewGroup(context) {
   

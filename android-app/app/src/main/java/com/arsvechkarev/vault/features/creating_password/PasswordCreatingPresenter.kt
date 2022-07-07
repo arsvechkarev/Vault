@@ -13,6 +13,7 @@ import buisnesslogic.model.PasswordCharacteristics.NUMBERS
 import buisnesslogic.model.PasswordCharacteristics.SPECIAL_SYMBOLS
 import buisnesslogic.model.PasswordCharacteristics.UPPERCASE_SYMBOLS
 import com.arsvechkarev.vault.core.BasePresenter
+import com.arsvechkarev.vault.core.CoroutineRouter
 import com.arsvechkarev.vault.core.DispatchersFacade
 import com.arsvechkarev.vault.core.communicators.FlowCommunicator
 import com.arsvechkarev.vault.features.creating_password.PasswordCreatingActions.ConfigureMode.EditPassword
@@ -26,7 +27,6 @@ import com.arsvechkarev.vault.features.creating_password.PasswordCreatingState.I
 import com.arsvechkarev.vault.features.creating_password.PasswordCreatingState.LOADING
 import com.arsvechkarev.vault.features.creating_password.PasswordCreatingState.SHOWING_ACCEPT_DIALOG
 import kotlinx.coroutines.launch
-import navigation.Router
 import java.util.EnumSet
 import javax.inject.Inject
 
@@ -35,7 +35,7 @@ class PasswordCreatingPresenter @Inject constructor(
   private val passwordCreatingCommunicator: FlowCommunicator<PasswordCreatingEvents>,
   private val passwordChecker: PasswordChecker,
   private val passwordGenerator: PasswordGenerator,
-  private val router: Router,
+  private val router: CoroutineRouter,
   dispatchers: DispatchersFacade
 ) : BasePresenter<PasswordCreatingView>(dispatchers) {
   

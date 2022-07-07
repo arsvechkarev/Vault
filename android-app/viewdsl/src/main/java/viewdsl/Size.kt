@@ -1,4 +1,4 @@
-package com.arsvechkarev.vault.viewdsl
+package viewdsl
 
 @Suppress("ClassName")
 sealed class Size {
@@ -9,7 +9,7 @@ sealed class Size {
   class Dimen(val dimenRes: Int) : Size()
   
   companion object {
-    
+  
     val MatchParent get() = MATCH_PARENT
     val WrapContent get() = WRAP_CONTENT
   }

@@ -29,33 +29,6 @@ import com.arsvechkarev.vault.viewbuilding.Styles.BaseTextView
 import com.arsvechkarev.vault.viewbuilding.Styles.BoldTextView
 import com.arsvechkarev.vault.viewbuilding.Styles.TitleTextView
 import com.arsvechkarev.vault.viewbuilding.TextSizes
-import com.arsvechkarev.vault.viewdsl.Size.Companion.MatchParent
-import com.arsvechkarev.vault.viewdsl.Size.Companion.WrapContent
-import com.arsvechkarev.vault.viewdsl.addView
-import com.arsvechkarev.vault.viewdsl.animateInvisible
-import com.arsvechkarev.vault.viewdsl.animateVisible
-import com.arsvechkarev.vault.viewdsl.backgroundColor
-import com.arsvechkarev.vault.viewdsl.behavior
-import com.arsvechkarev.vault.viewdsl.circleRippleBackground
-import com.arsvechkarev.vault.viewdsl.classNameTag
-import com.arsvechkarev.vault.viewdsl.gone
-import com.arsvechkarev.vault.viewdsl.gravity
-import com.arsvechkarev.vault.viewdsl.id
-import com.arsvechkarev.vault.viewdsl.image
-import com.arsvechkarev.vault.viewdsl.invisible
-import com.arsvechkarev.vault.viewdsl.layoutGravity
-import com.arsvechkarev.vault.viewdsl.margin
-import com.arsvechkarev.vault.viewdsl.marginHorizontal
-import com.arsvechkarev.vault.viewdsl.padding
-import com.arsvechkarev.vault.viewdsl.paddings
-import com.arsvechkarev.vault.viewdsl.rippleBackground
-import com.arsvechkarev.vault.viewdsl.setupWith
-import com.arsvechkarev.vault.viewdsl.size
-import com.arsvechkarev.vault.viewdsl.tag
-import com.arsvechkarev.vault.viewdsl.text
-import com.arsvechkarev.vault.viewdsl.textSize
-import com.arsvechkarev.vault.viewdsl.visible
-import com.arsvechkarev.vault.viewdsl.withViewBuilder
 import com.arsvechkarev.vault.views.MaterialProgressBar
 import com.arsvechkarev.vault.views.behaviors.HeaderBehavior
 import com.arsvechkarev.vault.views.behaviors.ScrollingRecyclerBehavior
@@ -65,6 +38,33 @@ import com.arsvechkarev.vault.views.dialogs.InfoDialog.Companion.infoDialog
 import com.arsvechkarev.vault.views.dialogs.LoadingDialog
 import com.arsvechkarev.vault.views.dialogs.loadingDialog
 import navigation.BaseScreen
+import viewdsl.Size.Companion.MatchParent
+import viewdsl.Size.Companion.WrapContent
+import viewdsl.addView
+import viewdsl.animateInvisible
+import viewdsl.animateVisible
+import viewdsl.backgroundColor
+import viewdsl.behavior
+import viewdsl.circleRippleBackground
+import viewdsl.classNameTag
+import viewdsl.gone
+import viewdsl.gravity
+import viewdsl.id
+import viewdsl.image
+import viewdsl.invisible
+import viewdsl.layoutGravity
+import viewdsl.margin
+import viewdsl.marginHorizontal
+import viewdsl.padding
+import viewdsl.paddings
+import viewdsl.rippleBackground
+import viewdsl.setupWith
+import viewdsl.size
+import viewdsl.tag
+import viewdsl.text
+import viewdsl.textSize
+import viewdsl.visible
+import viewdsl.withViewBuilder
 
 class ServicesListScreen : BaseScreen(), MviView<ServicesListState, SettingsScreenSingleEvents> {
   
@@ -86,7 +86,7 @@ class ServicesListScreen : BaseScreen(), MviView<ServicesListState, SettingsScre
           image(R.drawable.ic_settings)
           layoutGravity(CENTER_VERTICAL or END)
           padding(IconPadding)
-          circleRippleBackground()
+          circleRippleBackground(Colors.Ripple)
           //          onClick { presenter.applyAction(OnSettingsClicked) }
         }
       }

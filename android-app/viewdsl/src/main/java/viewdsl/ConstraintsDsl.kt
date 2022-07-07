@@ -1,4 +1,4 @@
-package com.arsvechkarev.vault.viewdsl
+package viewdsl
 
 import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -9,7 +9,7 @@ import androidx.constraintlayout.widget.ConstraintSet.START
 import androidx.constraintlayout.widget.ConstraintSet.TOP
 
 fun View.constraints(block: ConstraintsDsl.() -> Unit) {
-  require(layoutParams is ConstraintLayout.LayoutParams)
+  require(layoutParams is ConstraintLayout.LayoutParams) { "Parent should be ConstraintLayout" }
   val constraintsDsl = ConstraintsDsl(id, parent as ConstraintLayout)
   constraintsDsl.apply(block).applyToLayout()
 }

@@ -1,11 +1,9 @@
 package com.arsvechkarev.vault.viewbuilding
 
-import com.arsvechkarev.vault.viewdsl.Densities.densityDpi
-import com.arsvechkarev.vault.viewdsl.sp
+import viewdsl.Densities.densityDpi
+import viewdsl.sp
 
 object TextSizes {
-  
-  private val textSizes = FloatArray(8) { 0f }
   
   val MainHeader: Float get() = 40.sp
   val PasswordStub: Float get() = 36.sp

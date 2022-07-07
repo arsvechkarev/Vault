@@ -7,9 +7,9 @@ import android.graphics.drawable.AnimatedVectorDrawable
 import android.view.View
 import com.arsvechkarev.vault.R
 import com.arsvechkarev.vault.viewbuilding.Colors
-import com.arsvechkarev.vault.viewdsl.retrieveDrawable
-import com.arsvechkarev.vault.viewdsl.stopIfRunning
-import com.arsvechkarev.vault.viewdsl.visible
+import viewdsl.retrieveDrawable
+import viewdsl.stopIfRunning
+import viewdsl.visible
 
 class AnimatableCheckmark(context: Context) : View(context) {
   

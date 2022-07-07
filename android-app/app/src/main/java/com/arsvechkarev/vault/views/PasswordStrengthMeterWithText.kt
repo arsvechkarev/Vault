@@ -10,18 +10,18 @@ import com.arsvechkarev.vault.viewbuilding.Dimens.MarginNormal
 import com.arsvechkarev.vault.viewbuilding.Dimens.PasswordStrengthMeterHeight
 import com.arsvechkarev.vault.viewbuilding.Styles.BoldTextView
 import com.arsvechkarev.vault.viewbuilding.TextSizes
-import com.arsvechkarev.vault.viewdsl.Size.Companion.MatchParent
-import com.arsvechkarev.vault.viewdsl.Size.Companion.WrapContent
-import com.arsvechkarev.vault.viewdsl.Size.IntSize
-import com.arsvechkarev.vault.viewdsl.exactly
-import com.arsvechkarev.vault.viewdsl.layoutLeftTop
-import com.arsvechkarev.vault.viewdsl.margin
-import com.arsvechkarev.vault.viewdsl.margins
-import com.arsvechkarev.vault.viewdsl.size
-import com.arsvechkarev.vault.viewdsl.text
-import com.arsvechkarev.vault.viewdsl.textSize
-import com.arsvechkarev.vault.viewdsl.unspecified
-import com.arsvechkarev.vault.viewdsl.withViewBuilder
+import viewdsl.Size.Companion.MatchParent
+import viewdsl.Size.Companion.WrapContent
+import viewdsl.Size.IntSize
+import viewdsl.exactly
+import viewdsl.layoutLeftTop
+import viewdsl.margin
+import viewdsl.margins
+import viewdsl.size
+import viewdsl.text
+import viewdsl.textSize
+import viewdsl.unspecified
+import viewdsl.withViewBuilder
 
 class PasswordStrengthMeterWithText(context: Context) : FrameLayout(context) {
   

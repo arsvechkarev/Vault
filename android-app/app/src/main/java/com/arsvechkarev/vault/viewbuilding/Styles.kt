@@ -19,24 +19,26 @@ import com.arsvechkarev.vault.viewbuilding.Dimens.CornerRadiusSmall
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginMedium
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginNormal
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginSmall
-import com.arsvechkarev.vault.viewdsl.background
-import com.arsvechkarev.vault.viewdsl.circleRippleBackground
-import com.arsvechkarev.vault.viewdsl.dp
-import com.arsvechkarev.vault.viewdsl.font
-import com.arsvechkarev.vault.viewdsl.gravity
-import com.arsvechkarev.vault.viewdsl.image
-import com.arsvechkarev.vault.viewdsl.padding
-import com.arsvechkarev.vault.viewdsl.paddingHorizontal
-import com.arsvechkarev.vault.viewdsl.paddingVertical
-import com.arsvechkarev.vault.viewdsl.rippleBackground
-import com.arsvechkarev.vault.viewdsl.textColor
-import com.arsvechkarev.vault.viewdsl.textSize
 import com.arsvechkarev.vault.views.drawables.GradientBackgroundDrawable
+import viewdsl.DefaultStyles
+import viewdsl.Style
+import viewdsl.background
+import viewdsl.circleRippleBackground
+import viewdsl.dp
+import viewdsl.font
+import viewdsl.gravity
+import viewdsl.image
+import viewdsl.padding
+import viewdsl.paddingHorizontal
+import viewdsl.paddingVertical
+import viewdsl.rippleBackground
+import viewdsl.textColor
+import viewdsl.textSize
 
 @Suppress("FunctionName")
-object Styles {
+object Styles : DefaultStyles {
   
-  val BaseBackground: View.() -> Unit = {
+  override val BaseRootBackground: Style<View> = {
     background = GradientBackgroundDrawable(context)
   }
   
@@ -101,7 +103,7 @@ object Styles {
   val ImageBack: ImageView.() -> Unit = {
     image(R.drawable.ic_back)
     padding(Dimens.IconPadding)
-    circleRippleBackground()
+    circleRippleBackground(rippleColor = Colors.Ripple)
   }
   
   val BaseEditText: EditText.() -> Unit = {

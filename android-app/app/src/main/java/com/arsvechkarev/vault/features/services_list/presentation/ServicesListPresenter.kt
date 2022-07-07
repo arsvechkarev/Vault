@@ -1,6 +1,7 @@
 package com.arsvechkarev.vault.features.services_list.presentation
 
 import buisnesslogic.MasterPasswordHolder.masterPassword
+import com.arsvechkarev.vault.core.CoroutineRouter
 import com.arsvechkarev.vault.core.DispatchersFacade
 import com.arsvechkarev.vault.core.Result
 import com.arsvechkarev.vault.core.Screens
@@ -18,12 +19,11 @@ import com.arsvechkarev.vault.features.services_list.presentation.ServicesListSc
 import com.arsvechkarev.vault.features.services_list.presentation.ServicesListScreenUserAction.OnSettingsClicked
 import com.arsvechkarev.vault.features.services_list.presentation.ServicesListScreenUserAction.StartInitialLoading
 import kotlinx.coroutines.launch
-import navigation.Router
 import javax.inject.Inject
 
 class ServicesListPresenter @Inject constructor(
   private val servicesRepository: ServicesListenableRepository,
-  private val router: Router,
+  private val router: CoroutineRouter,
   dispatchers: DispatchersFacade
 ) : BaseMviPresenter<ServicesListScreenAction, ServicesListScreenUserAction, ServicesListState>(
   ServicesListScreenUserAction::class,

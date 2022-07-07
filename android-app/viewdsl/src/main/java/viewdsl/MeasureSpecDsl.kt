@@ -1,4 +1,4 @@
-package com.arsvechkarev.vault.viewdsl
+package viewdsl
 
 import android.view.View
 import android.view.View.MeasureSpec.UNSPECIFIED

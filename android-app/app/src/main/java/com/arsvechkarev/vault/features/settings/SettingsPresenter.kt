@@ -1,5 +1,6 @@
 package com.arsvechkarev.vault.features.settings
 
+import com.arsvechkarev.vault.core.CoroutineRouter
 import com.arsvechkarev.vault.core.DispatchersFacade
 import com.arsvechkarev.vault.core.communicators.FlowCommunicator
 import com.arsvechkarev.vault.core.mvi.BaseMviPresenter
@@ -15,13 +16,12 @@ import com.arsvechkarev.vault.features.settings.SettingsScreenUserActions.OnBack
 import com.arsvechkarev.vault.features.settings.SettingsScreenUserActions.OnUserFingerprintTextClicked
 import com.arsvechkarev.vault.features.settings.SettingsScreenUserActions.ToggleUseFingerprintForEnteringCheckbox
 import kotlinx.coroutines.launch
-import navigation.Router
 import javax.inject.Inject
 
 class SettingsPresenter @Inject constructor(
   @PasswordCheckingCommunicator
   private val passwordCheckingCommunicator: FlowCommunicator<PasswordCheckingEvents>,
-  private val router: Router,
+  private val router: CoroutineRouter,
   dispatchers: DispatchersFacade,
 ) : BaseMviPresenter<SettingsScreenActions, SettingsScreenUserActions, SettingsScreenState>(
   SettingsScreenUserActions::class,

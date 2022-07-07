@@ -3,6 +3,7 @@ package com.arsvechkarev.vault.features.start
 import android.annotation.SuppressLint
 import buisnesslogic.MasterPasswordChecker
 import buisnesslogic.MasterPasswordHolder
+import com.arsvechkarev.vault.core.CoroutineRouter
 import com.arsvechkarev.vault.core.DispatchersFacade
 import com.arsvechkarev.vault.core.Screens
 import com.arsvechkarev.vault.core.mvi.BaseMviPresenter
@@ -17,12 +18,11 @@ import com.arsvechkarev.vault.features.start.StartScreenUserAction.OnEditTextTyp
 import com.arsvechkarev.vault.features.start.StartScreenUserAction.OnEnteredPassword
 import com.arsvechkarev.vault.features.start.StartScreenUserAction.OnFingerprintIconClicked
 import kotlinx.coroutines.launch
-import navigation.Router
 import javax.inject.Inject
 
 class StartPresenter @Inject constructor(
   private val masterPasswordChecker: MasterPasswordChecker,
-  private val router: Router,
+  private val router: CoroutineRouter,
   dispatchers: DispatchersFacade,
 ) : BaseMviPresenter<StartScreenAction, StartScreenUserAction, StartScreenState>(
   StartScreenUserAction::class,

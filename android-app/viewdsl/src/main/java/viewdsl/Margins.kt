@@ -1,4 +1,4 @@
-package com.arsvechkarev.vault.viewdsl
+package viewdsl
 
 class Margins(
   val left: Int = 0,

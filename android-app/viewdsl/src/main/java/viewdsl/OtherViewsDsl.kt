@@ -1,4 +1,4 @@
-package com.arsvechkarev.vault.viewdsl
+package viewdsl
 
 import android.R.attr.state_checked
 import android.content.res.ColorStateList

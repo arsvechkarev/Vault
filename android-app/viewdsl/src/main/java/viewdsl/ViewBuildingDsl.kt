@@ -1,4 +1,6 @@
-package com.arsvechkarev.vault.viewdsl
+@file:Suppress("unused")
+
+package viewdsl
 
 import android.content.Context
 import android.view.View
@@ -12,11 +14,10 @@ import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.recyclerview.widget.RecyclerView
-import com.arsvechkarev.vault.viewbuilding.Styles
-import com.arsvechkarev.vault.viewbuilding.Styles.BaseBackground
-import com.arsvechkarev.vault.viewdsl.Size.Companion.MatchParent
-import com.arsvechkarev.vault.viewdsl.Size.Companion.WrapContent
-import com.arsvechkarev.vault.viewdsl.Size.IntSize
+import viewdsl.Size.Companion.MatchParent
+import viewdsl.Size.Companion.WrapContent
+import viewdsl.Size.IntSize
+import viewdsl.ViewDslConfiguration.DefaultStyles
 import android.view.ViewGroup.LayoutParams as ViewGroupLayoutParams
 import android.widget.FrameLayout.LayoutParams as FrameLayoutParams
 import android.widget.LinearLayout.LayoutParams as LinearLayoutParams
@@ -37,11 +38,13 @@ class ViewBuilder(val context: Context) {
   
   val StatusBarHeight get() = context.statusBarHeight
   
+  private inline val defaultRootStyle get() = DefaultStyles.BaseRootBackground
+  
   fun Any.RootVerticalLayout(
     width: Size = MatchParent,
     height: Size = MatchParent,
-    style: LinearLayout.() -> Unit = {},
-    block: LinearLayout.() -> Unit = {}
+    style: Style<LinearLayout> = {},
+    block: Style<LinearLayout> = {}
   ) = LinearLayout(context).size(width, height).apply(style).apply(block).apply {
     orientation(LinearLayout.VERTICAL)
   }
@@ -49,8 +52,8 @@ class ViewBuilder(val context: Context) {
   fun Any.RootHorizontalLayout(
     width: Size = MatchParent,
     height: Size = MatchParent,
-    style: LinearLayout.() -> Unit = {},
-    block: LinearLayout.() -> Unit = {}
+    style: Style<LinearLayout> = {},
+    block: Style<LinearLayout> = {}
   ) = LinearLayout(context).size(width, height).apply(style).apply(block).apply {
     orientation(LinearLayout.HORIZONTAL)
   }
@@ -58,35 +61,35 @@ class ViewBuilder(val context: Context) {
   fun Any.RootScrollableVerticalLayout(
     width: Size = MatchParent,
     height: Size = MatchParent,
-    style: LinearLayout.() -> Unit = {},
-    block: LinearLayout.() -> Unit = {}
+    style: Style<LinearLayout> = {},
+    block: Style<LinearLayout> = {}
   ) = ScrollView(context).size(width, height).apply {
-    VerticalLayout(MatchParent, WrapContent, style, block)
+    val compositeStyle = DefaultStyles.BaseRootBackground thenApply style
+    VerticalLayout(MatchParent, WrapContent, compositeStyle, block)
   }
   
   fun Any.RootFrameLayout(
     width: Size = MatchParent,
     height: Size = MatchParent,
-    defaultStyle: View.() -> Unit = BaseBackground,
-    style: FrameLayout.() -> Unit = {},
-    block: FrameLayout.() -> Unit = {}
-  ) = FrameLayout(context).size(width, height).apply(defaultStyle).apply(style).apply(block)
+    style: Style<FrameLayout> = {},
+    block: Style<FrameLayout> = {}
+  ) = FrameLayout(context).size(width, height).apply(defaultRootStyle).apply(style).apply(block)
   
   fun Any.RootCoordinatorLayout(
     width: Size = MatchParent,
     height: Size = MatchParent,
-    defaultStyle: View.() -> Unit = BaseBackground,
     style: CoordinatorLayout.() -> Unit = {},
     block: CoordinatorLayout.() -> Unit = {}
-  ) = CoordinatorLayout(context).size(width, height).apply(defaultStyle).apply(style).apply(block)
+  ) = CoordinatorLayout(context).size(width, height).apply(defaultRootStyle).apply(style)
+      .apply(block)
   
   fun Any.RootConstraintLayout(
     width: Size = MatchParent,
     height: Size = MatchParent,
-    defaultStyle: View.() -> Unit = BaseBackground,
-    style: ConstraintLayout.() -> Unit = {},
-    block: ConstraintLayout.() -> Unit = {}
-  ) = ConstraintLayout(context).size(width, height).apply(defaultStyle).apply(style).apply(block)
+    style: Style<ConstraintLayout> = {},
+    block: Style<ConstraintLayout> = {}
+  ) = ConstraintLayout(context).size(width, height).apply(defaultRootStyle).apply(style)
+      .apply(block)
   
   inline fun <reified T : View> FrameLayout.child(
     width: Size, height: Size, style: T.() -> Unit = {}, block: T.() -> Unit,
@@ -123,8 +126,8 @@ class ViewBuilder(val context: Context) {
   fun ViewGroup.View(
     width: Size,
     height: Size,
-    style: View.() -> Unit = {},
-    block: View.() -> Unit,
+    style: Style<View> = {},
+    block: Style<View>,
   ) = when (this) {
     is FrameLayout -> child<View, FrameLayoutParams>(width, height, style, block)
     is LinearLayout -> child<View, LinearLayoutParams>(width, height, style, block)
@@ -135,20 +138,8 @@ class ViewBuilder(val context: Context) {
   fun ViewGroup.TextView(
     width: Size,
     height: Size,
-    style: TextView.() -> Unit = {},
-    block: TextView.() -> Unit,
-  ) = when (this) {
-    is FrameLayout -> child<TextView, FrameLayoutParams>(width, height, style, block)
-    is LinearLayout -> child<TextView, LinearLayoutParams>(width, height, style, block)
-    is CoordinatorLayout -> child<TextView, CoordLayoutParams>(width, height, style, block)
-    else -> child<TextView, ViewGroupLayoutParams>(width, height, style, block)
-  }
-  
-  fun ViewGroup.ClickableButton(
-    width: Size,
-    height: Size,
-    style: TextView.() -> Unit = Styles.Button(),
-    block: TextView.() -> Unit,
+    style: Style<TextView> = {},
+    block: Style<TextView>,
   ) = when (this) {
     is FrameLayout -> child<TextView, FrameLayoutParams>(width, height, style, block)
     is LinearLayout -> child<TextView, LinearLayoutParams>(width, height, style, block)
@@ -171,8 +162,8 @@ class ViewBuilder(val context: Context) {
   fun ViewGroup.RecyclerView(
     width: Size,
     height: Size,
-    style: RecyclerView.() -> Unit = {},
-    block: RecyclerView.() -> Unit,
+    style: Style<RecyclerView> = {},
+    block: Style<RecyclerView>,
   ) = when (this) {
     is FrameLayout -> child<RecyclerView, FrameLayoutParams>(width, height, style, block)
     is LinearLayout -> child<RecyclerView, LinearLayoutParams>(width, height, style, block)
@@ -183,8 +174,8 @@ class ViewBuilder(val context: Context) {
   fun ViewGroup.ImageView(
     width: Size,
     height: Size,
-    style: ImageView.() -> Unit = {},
-    block: ImageView.() -> Unit,
+    style: Style<ImageView> = {},
+    block: Style<ImageView>,
   ) = when (this) {
     is FrameLayout -> child<ImageView, FrameLayoutParams>(width, height, style, block)
     is LinearLayout -> child<ImageView, LinearLayoutParams>(width, height, style, block)
@@ -195,8 +186,8 @@ class ViewBuilder(val context: Context) {
   fun ViewGroup.ImageView(
     width: Int,
     height: Int,
-    style: ImageView.() -> Unit = {},
-    block: ImageView.() -> Unit,
+    style: Style<ImageView> = {},
+    block: Style<ImageView>,
   ): ImageView {
     val w = IntSize(width)
     val h = IntSize(height)
@@ -211,8 +202,8 @@ class ViewBuilder(val context: Context) {
   fun ViewGroup.FrameLayout(
     width: Size,
     height: Size,
-    style: FrameLayout.() -> Unit = {},
-    block: FrameLayout.() -> Unit,
+    style: Style<FrameLayout> = {},
+    block: Style<FrameLayout>,
   ) = when (this) {
     is FrameLayout -> child<FrameLayout, FrameLayoutParams>(width, height, style, block)
     is LinearLayout -> child<FrameLayout, LinearLayoutParams>(width, height, style, block)
@@ -223,8 +214,8 @@ class ViewBuilder(val context: Context) {
   fun ViewGroup.VerticalLayout(
     width: Size,
     height: Size,
-    style: LinearLayout.() -> Unit = {},
-    block: LinearLayout.() -> Unit,
+    style: Style<LinearLayout> = {},
+    block: Style<LinearLayout>,
   ): LinearLayout {
     val layout = when (this) {
       is FrameLayout -> child<LinearLayout, FrameLayoutParams>(width, height, style, block)
@@ -238,8 +229,8 @@ class ViewBuilder(val context: Context) {
   fun ViewGroup.ScrollableVerticalLayout(
     width: Size = MatchParent,
     height: Size = MatchParent,
-    style: LinearLayout.() -> Unit = {},
-    block: LinearLayout.() -> Unit,
+    style: Style<LinearLayout> = {},
+    block: Style<LinearLayout>,
   ): ScrollView {
     val layout = when (this) {
       is FrameLayout -> child<ScrollView, FrameLayoutParams>(width, height, {}, {})
@@ -257,8 +248,8 @@ class ViewBuilder(val context: Context) {
   fun ViewGroup.HorizontalLayout(
     width: Size,
     height: Size,
-    style: LinearLayout.() -> Unit = {},
-    block: LinearLayout.() -> Unit,
+    style: Style<LinearLayout> = {},
+    block: Style<LinearLayout>,
   ): LinearLayout {
     val layout = when (this) {
       is FrameLayout -> child<LinearLayout, FrameLayoutParams>(width, height, style, block)

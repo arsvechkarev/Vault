@@ -11,16 +11,16 @@ import com.arsvechkarev.vault.viewbuilding.Dimens.MarginNormal
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginSmall
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginTiny
 import com.arsvechkarev.vault.viewbuilding.Styles.BaseTextView
-import com.arsvechkarev.vault.viewdsl.Size.Companion.WrapContent
-import com.arsvechkarev.vault.viewdsl.gravity
-import com.arsvechkarev.vault.viewdsl.margin
-import com.arsvechkarev.vault.viewdsl.margins
-import com.arsvechkarev.vault.viewdsl.onClick
-import com.arsvechkarev.vault.viewdsl.orientation
-import com.arsvechkarev.vault.viewdsl.paddingHorizontal
-import com.arsvechkarev.vault.viewdsl.paddingVertical
-import com.arsvechkarev.vault.viewdsl.text
-import com.arsvechkarev.vault.viewdsl.withViewBuilder
+import viewdsl.Size.Companion.WrapContent
+import viewdsl.gravity
+import viewdsl.margin
+import viewdsl.margins
+import viewdsl.onClick
+import viewdsl.orientation
+import viewdsl.paddingHorizontal
+import viewdsl.paddingVertical
+import viewdsl.text
+import viewdsl.withViewBuilder
 
 class CheckmarkAndTextViewGroup(
   context: Context,

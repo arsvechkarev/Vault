@@ -9,12 +9,12 @@ import com.arsvechkarev.vault.core.Screens
 import com.arsvechkarev.vault.core.di.AppComponent
 import com.arsvechkarev.vault.core.di.AppComponentProvider
 import com.arsvechkarev.vault.core.di.CoreComponentHolder
-import com.arsvechkarev.vault.viewdsl.Densities
-import com.arsvechkarev.vault.viewdsl.Size.Companion.MatchParent
-import com.arsvechkarev.vault.viewdsl.id
-import com.arsvechkarev.vault.viewdsl.size
-import com.arsvechkarev.vault.viewdsl.withViewBuilder
 import com.arsvechkarev.vault.views.RootView
+import viewdsl.Size.Companion.MatchParent
+import viewdsl.ViewDslConfiguration
+import viewdsl.id
+import viewdsl.size
+import viewdsl.withViewBuilder
 
 class MainActivity : BaseActivity(), AppComponentProvider {
   
@@ -31,7 +31,7 @@ class MainActivity : BaseActivity(), AppComponentProvider {
   
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
-    Densities.init(resources)
+    ViewDslConfiguration.initializeResources(resources)
     window.decorView.systemUiVisibility = (SYSTEM_UI_FLAG_LAYOUT_STABLE
         or SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN)
     setContentView(mainActivityLayout)

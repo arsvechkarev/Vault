@@ -1,4 +1,4 @@
-package com.arsvechkarev.vault.viewdsl
+package viewdsl
 
 import android.graphics.drawable.Drawable
 import android.graphics.drawable.GradientDrawable
@@ -221,7 +221,9 @@ inline fun <reified T : CoordinatorLayout.Behavior<*>> View.hasBehavior(): Boole
 }
 
 @Suppress("UNCHECKED_CAST")
-inline fun <reified T : View> View.viewAs(tag: Any = T::class.java.name): T = findViewWithTag(tag)
+inline fun <reified T : View> View.viewAs(tag: Any = T::class.java.name): T {
+  return findViewWithTag(tag)
+}
 
 fun View.textView(tag: Any): TextView = findViewWithTag(tag)
 

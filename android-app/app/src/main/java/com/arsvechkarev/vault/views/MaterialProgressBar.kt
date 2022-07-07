@@ -7,11 +7,11 @@ import android.graphics.drawable.AnimatedVectorDrawable
 import android.view.View
 import com.arsvechkarev.vault.R
 import com.arsvechkarev.vault.viewbuilding.Colors
-import com.arsvechkarev.vault.viewdsl.retrieveDrawable
-import com.arsvechkarev.vault.viewdsl.startIfNotRunning
-import com.arsvechkarev.vault.viewdsl.stopIfRunning
 import com.arsvechkarev.vault.views.MaterialProgressBar.Thickness.NORMAL
 import com.arsvechkarev.vault.views.MaterialProgressBar.Thickness.THICK
+import viewdsl.retrieveDrawable
+import viewdsl.startIfNotRunning
+import viewdsl.stopIfRunning
 
 class MaterialProgressBar(
   context: Context,

@@ -13,18 +13,18 @@ import android.view.View
 import android.view.ViewConfiguration
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.customview.widget.ViewDragHelper.INVALID_POINTER
-import com.arsvechkarev.vault.viewdsl.ContextHolder
-import com.arsvechkarev.vault.viewdsl.doOnEnd
-import com.arsvechkarev.vault.viewdsl.getBehavior
 import com.arsvechkarev.vault.views.behaviors.BottomSheetBehavior.State.HIDDEN
 import com.arsvechkarev.vault.views.behaviors.BottomSheetBehavior.State.SHOWN
+import viewdsl.ViewDslConfiguration.applicationContext
+import viewdsl.doOnEnd
+import viewdsl.getBehavior
 import kotlin.math.abs
 
 class BottomSheetBehavior : CoordinatorLayout.Behavior<View>() {
   
-  private val maxFlingVelocity = ViewConfiguration.get(
-    ContextHolder.applicationContext).scaledMaximumFlingVelocity
-  private val touchSlop = ViewConfiguration.get(ContextHolder.applicationContext).scaledTouchSlop
+  private val maxFlingVelocity = ViewConfiguration.get(applicationContext)
+      .scaledMaximumFlingVelocity
+  private val touchSlop = ViewConfiguration.get(applicationContext).scaledTouchSlop
   private var isBeingDragged = false
   private var latestY = -1
   private var velocityTracker: VelocityTracker? = null

@@ -39,29 +39,6 @@ import com.arsvechkarev.vault.viewbuilding.Styles.BoldTextView
 import com.arsvechkarev.vault.viewbuilding.Styles.Button
 import com.arsvechkarev.vault.viewbuilding.Styles.ImageBack
 import com.arsvechkarev.vault.viewbuilding.TextSizes
-import com.arsvechkarev.vault.viewdsl.Size.Companion.MatchParent
-import com.arsvechkarev.vault.viewdsl.Size.Companion.WrapContent
-import com.arsvechkarev.vault.viewdsl.Size.IntSize
-import com.arsvechkarev.vault.viewdsl.animateInvisible
-import com.arsvechkarev.vault.viewdsl.animateVisible
-import com.arsvechkarev.vault.viewdsl.classNameTag
-import com.arsvechkarev.vault.viewdsl.clearOnClick
-import com.arsvechkarev.vault.viewdsl.drawablePadding
-import com.arsvechkarev.vault.viewdsl.drawables
-import com.arsvechkarev.vault.viewdsl.gravity
-import com.arsvechkarev.vault.viewdsl.hideKeyboard
-import com.arsvechkarev.vault.viewdsl.invisible
-import com.arsvechkarev.vault.viewdsl.layoutGravity
-import com.arsvechkarev.vault.viewdsl.marginHorizontal
-import com.arsvechkarev.vault.viewdsl.margins
-import com.arsvechkarev.vault.viewdsl.onClick
-import com.arsvechkarev.vault.viewdsl.showKeyboard
-import com.arsvechkarev.vault.viewdsl.tag
-import com.arsvechkarev.vault.viewdsl.text
-import com.arsvechkarev.vault.viewdsl.textColor
-import com.arsvechkarev.vault.viewdsl.textSize
-import com.arsvechkarev.vault.viewdsl.visible
-import com.arsvechkarev.vault.viewdsl.withViewBuilder
 import com.arsvechkarev.vault.views.EditTextPassword
 import com.arsvechkarev.vault.views.PasswordStrengthMeter
 import com.arsvechkarev.vault.views.dialogs.LoadingDialog
@@ -69,6 +46,29 @@ import com.arsvechkarev.vault.views.dialogs.PasswordStrengthDialog.Companion.Pas
 import com.arsvechkarev.vault.views.dialogs.PasswordStrengthDialog.Companion.passwordStrengthDialog
 import com.arsvechkarev.vault.views.dialogs.loadingDialog
 import navigation.BaseScreen
+import viewdsl.Size.Companion.MatchParent
+import viewdsl.Size.Companion.WrapContent
+import viewdsl.Size.IntSize
+import viewdsl.animateInvisible
+import viewdsl.animateVisible
+import viewdsl.classNameTag
+import viewdsl.clearOnClick
+import viewdsl.drawablePadding
+import viewdsl.drawables
+import viewdsl.gravity
+import viewdsl.hideKeyboard
+import viewdsl.invisible
+import viewdsl.layoutGravity
+import viewdsl.marginHorizontal
+import viewdsl.margins
+import viewdsl.onClick
+import viewdsl.showKeyboard
+import viewdsl.tag
+import viewdsl.text
+import viewdsl.textColor
+import viewdsl.textSize
+import viewdsl.visible
+import viewdsl.withViewBuilder
 
 class CreatingMasterPasswordScreen : BaseScreen(),
   MviView<CreatingMasterPasswordState, CreatingMasterPasswordNews> {
@@ -193,7 +193,7 @@ class CreatingMasterPasswordScreen : BaseScreen(),
   
   override fun handleBackPress(): Boolean {
     store.dispatch(OnBackPressed)
-    return false
+    return true
   }
   
   private fun showPasswordStatus(passwordStatus: PasswordStatus) {

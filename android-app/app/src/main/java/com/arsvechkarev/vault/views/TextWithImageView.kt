@@ -13,9 +13,9 @@ import com.arsvechkarev.vault.viewbuilding.Dimens.MarginLarge
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginTiny
 import com.arsvechkarev.vault.viewbuilding.Dimens.PasswordActionsViewImageSize
 import com.arsvechkarev.vault.viewbuilding.Fonts
-import com.arsvechkarev.vault.viewdsl.paddings
-import com.arsvechkarev.vault.viewdsl.retrieveDrawable
-import com.arsvechkarev.vault.viewdsl.rippleBackground
+import viewdsl.paddings
+import viewdsl.retrieveDrawable
+import viewdsl.rippleBackground
 
 class TextWithImageView(
   context: Context,

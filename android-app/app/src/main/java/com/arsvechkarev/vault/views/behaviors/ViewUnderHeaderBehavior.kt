@@ -2,7 +2,7 @@ package com.arsvechkarev.vault.views.behaviors
 
 import android.view.View
 import androidx.coordinatorlayout.widget.CoordinatorLayout
-import com.arsvechkarev.vault.viewdsl.hasBehavior
+import viewdsl.hasBehavior
 
 class ViewUnderHeaderBehavior : CoordinatorLayout.Behavior<View>() {
   

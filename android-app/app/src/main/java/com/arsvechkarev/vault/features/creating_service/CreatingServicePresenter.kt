@@ -1,6 +1,7 @@
 package com.arsvechkarev.vault.features.creating_service
 
 import buisnesslogic.MasterPasswordHolder.masterPassword
+import com.arsvechkarev.vault.core.CoroutineRouter
 import com.arsvechkarev.vault.core.DispatchersFacade
 import com.arsvechkarev.vault.core.Screens
 import com.arsvechkarev.vault.core.ServicesListenableRepository
@@ -20,7 +21,6 @@ import com.arsvechkarev.vault.features.creating_service.CreatingServiceUserActio
 import com.arsvechkarev.vault.features.creating_service.CreatingServiceUserActions.OnContinueClicked
 import com.arsvechkarev.vault.features.creating_service.CreatingServiceUserActions.OnServiceNameTextChanged
 import kotlinx.coroutines.launch
-import navigation.Router
 import java.util.UUID
 import javax.inject.Inject
 
@@ -28,7 +28,7 @@ class CreatingServicePresenter @Inject constructor(
   @PasswordCreatingCommunicator
   private val passwordCreatingCommunicator: FlowCommunicator<PasswordCreatingEvents>,
   private val servicesRepository: ServicesListenableRepository,
-  private val router: Router,
+  private val router: CoroutineRouter,
   dispatchers: DispatchersFacade
 ) : BaseMviPresenter<CreatingServiceActions, CreatingServiceUserActions, CreatingServiceState>(
   CreatingServiceUserActions::class,

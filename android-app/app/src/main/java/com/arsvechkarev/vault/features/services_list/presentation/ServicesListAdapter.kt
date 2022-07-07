@@ -13,18 +13,18 @@ import com.arsvechkarev.vault.viewbuilding.Dimens.ItemServiceInfoImageSize
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginNormal
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginSmall
 import com.arsvechkarev.vault.viewbuilding.Styles.BoldTextView
-import com.arsvechkarev.vault.viewdsl.Size.Companion.MatchParent
-import com.arsvechkarev.vault.viewdsl.Size.Companion.WrapContent
-import com.arsvechkarev.vault.viewdsl.layoutGravity
-import com.arsvechkarev.vault.viewdsl.margins
-import com.arsvechkarev.vault.viewdsl.onClick
-import com.arsvechkarev.vault.viewdsl.onLongClick
-import com.arsvechkarev.vault.viewdsl.paddingHorizontal
-import com.arsvechkarev.vault.viewdsl.paddingVertical
-import com.arsvechkarev.vault.viewdsl.rippleBackground
-import com.arsvechkarev.vault.viewdsl.tag
-import com.arsvechkarev.vault.viewdsl.text
-import com.arsvechkarev.vault.viewdsl.viewAs
+import viewdsl.Size.Companion.MatchParent
+import viewdsl.Size.Companion.WrapContent
+import viewdsl.layoutGravity
+import viewdsl.margins
+import viewdsl.onClick
+import viewdsl.onLongClick
+import viewdsl.paddingHorizontal
+import viewdsl.paddingVertical
+import viewdsl.rippleBackground
+import viewdsl.tag
+import viewdsl.text
+import viewdsl.viewAs
 
 class ServicesListAdapter(
   private val onItemClick: (ServiceModel) -> Unit,

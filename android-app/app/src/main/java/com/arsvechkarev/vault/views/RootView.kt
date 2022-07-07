@@ -3,6 +3,7 @@ package com.arsvechkarev.vault.views
 import android.content.Context
 import android.view.WindowInsets
 import android.widget.FrameLayout
+import viewdsl.ViewDslConfiguration
 
 class RootView(context: Context) : FrameLayout(context) {
   
@@ -11,16 +12,10 @@ class RootView(context: Context) : FrameLayout(context) {
   }
   
   override fun onApplyWindowInsets(insets: WindowInsets): WindowInsets {
-    statusBarHeightFromInsets = insets.systemWindowInsetTop
+    ViewDslConfiguration.setStatusBarHeight(insets.systemWindowInsetTop)
     return super.onApplyWindowInsets(
       insets.replaceSystemWindowInsets(0, 0, 0,
         insets.systemWindowInsetBottom)
     )
-  }
-  
-  companion object {
-    
-    var statusBarHeightFromInsets = 0
-      private set
   }
 }

@@ -24,27 +24,6 @@ import com.arsvechkarev.vault.viewbuilding.Styles.BaseTextView
 import com.arsvechkarev.vault.viewbuilding.Styles.BoldTextView
 import com.arsvechkarev.vault.viewbuilding.Styles.ImageBack
 import com.arsvechkarev.vault.viewbuilding.TextSizes
-import com.arsvechkarev.vault.viewdsl.Size.Companion.MatchParent
-import com.arsvechkarev.vault.viewdsl.Size.Companion.WrapContent
-import com.arsvechkarev.vault.viewdsl.Size.IntSize
-import com.arsvechkarev.vault.viewdsl.animateInvisible
-import com.arsvechkarev.vault.viewdsl.animateVisible
-import com.arsvechkarev.vault.viewdsl.backgroundColor
-import com.arsvechkarev.vault.viewdsl.circleRippleBackground
-import com.arsvechkarev.vault.viewdsl.classNameTag
-import com.arsvechkarev.vault.viewdsl.gravity
-import com.arsvechkarev.vault.viewdsl.image
-import com.arsvechkarev.vault.viewdsl.invisible
-import com.arsvechkarev.vault.viewdsl.layoutGravity
-import com.arsvechkarev.vault.viewdsl.margin
-import com.arsvechkarev.vault.viewdsl.marginHorizontal
-import com.arsvechkarev.vault.viewdsl.margins
-import com.arsvechkarev.vault.viewdsl.padding
-import com.arsvechkarev.vault.viewdsl.tag
-import com.arsvechkarev.vault.viewdsl.text
-import com.arsvechkarev.vault.viewdsl.textColor
-import com.arsvechkarev.vault.viewdsl.textSize
-import com.arsvechkarev.vault.viewdsl.withViewBuilder
 import com.arsvechkarev.vault.views.EditableTextInfoViewGroup
 import com.arsvechkarev.vault.views.PasswordActionsView
 import com.arsvechkarev.vault.views.Snackbar
@@ -53,6 +32,27 @@ import com.arsvechkarev.vault.views.dialogs.InfoDialog.Companion.infoDialog
 import com.arsvechkarev.vault.views.dialogs.LoadingDialog
 import com.arsvechkarev.vault.views.dialogs.loadingDialog
 import navigation.BaseScreen
+import viewdsl.Size.Companion.MatchParent
+import viewdsl.Size.Companion.WrapContent
+import viewdsl.Size.IntSize
+import viewdsl.animateInvisible
+import viewdsl.animateVisible
+import viewdsl.backgroundColor
+import viewdsl.circleRippleBackground
+import viewdsl.classNameTag
+import viewdsl.gravity
+import viewdsl.image
+import viewdsl.invisible
+import viewdsl.layoutGravity
+import viewdsl.margin
+import viewdsl.marginHorizontal
+import viewdsl.margins
+import viewdsl.padding
+import viewdsl.tag
+import viewdsl.text
+import viewdsl.textColor
+import viewdsl.textSize
+import viewdsl.withViewBuilder
 
 class InfoScreen : BaseScreen(), InfoView {
   

@@ -1,4 +1,4 @@
-package com.arsvechkarev.vault.viewdsl
+package viewdsl
 
 import android.content.res.ColorStateList
 import android.graphics.Color
@@ -13,7 +13,6 @@ import android.graphics.drawable.shapes.RectShape
 import android.graphics.drawable.shapes.RoundRectShape
 import android.graphics.drawable.shapes.Shape
 import android.view.View
-import com.arsvechkarev.vault.viewbuilding.Colors
 
 fun Drawable.applyColor(color: Int) {
   colorFilter = PorterDuffColorFilter(color, PorterDuff.Mode.SRC_ATOP)
@@ -76,15 +75,15 @@ fun View.rippleBackground(
   background(RippleDrawable(ColorStateList.valueOf(rippleColor), backgroundDrawable, maskRect))
 }
 
-fun View.circleRippleBackground(rippleColor: Int = Colors.Ripple) {
+fun View.circleRippleBackground(rippleColor: Int) {
   addRippleBackground(OvalShape(), rippleColor)
 }
 
-fun View.rippleBackground(rippleColor: Int = Colors.Ripple) {
+fun View.rippleBackground(rippleColor: Int) {
   addRippleBackground(RectShape(), rippleColor)
 }
 
-private fun View.addRippleBackground(shape: Shape, rippleColor: Int = Colors.Ripple) {
+private fun View.addRippleBackground(shape: Shape, rippleColor: Int) {
   val background = ShapeDrawable().apply {
     this.shape = shape
     paint.color = Color.TRANSPARENT

@@ -3,8 +3,8 @@ package com.arsvechkarev.vault.core
 import android.graphics.drawable.Drawable
 import android.widget.ImageView
 import com.arsvechkarev.vault.R
-import com.arsvechkarev.vault.viewdsl.retrieveDrawable
 import com.arsvechkarev.vault.views.drawables.LetterInCircleDrawable
+import viewdsl.retrieveDrawable
 
 private const val AMAZON = "amazon"
 private const val GOOGLE = "google"

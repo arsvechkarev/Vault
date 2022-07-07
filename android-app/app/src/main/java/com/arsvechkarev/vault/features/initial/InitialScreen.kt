@@ -11,20 +11,21 @@ import com.arsvechkarev.vault.viewbuilding.Dimens.MarginExtraLarge
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginNormal
 import com.arsvechkarev.vault.viewbuilding.Styles.BaseTextView
 import com.arsvechkarev.vault.viewbuilding.Styles.BoldTextView
+import com.arsvechkarev.vault.viewbuilding.Styles.Button
 import com.arsvechkarev.vault.viewbuilding.TextSizes
-import com.arsvechkarev.vault.viewdsl.Size.Companion.MatchParent
-import com.arsvechkarev.vault.viewdsl.Size.Companion.WrapContent
-import com.arsvechkarev.vault.viewdsl.gravity
-import com.arsvechkarev.vault.viewdsl.image
-import com.arsvechkarev.vault.viewdsl.layoutGravity
-import com.arsvechkarev.vault.viewdsl.margin
-import com.arsvechkarev.vault.viewdsl.margins
-import com.arsvechkarev.vault.viewdsl.onClick
-import com.arsvechkarev.vault.viewdsl.rotate
-import com.arsvechkarev.vault.viewdsl.text
-import com.arsvechkarev.vault.viewdsl.textSize
-import com.arsvechkarev.vault.viewdsl.withViewBuilder
 import navigation.BaseScreen
+import viewdsl.Size.Companion.MatchParent
+import viewdsl.Size.Companion.WrapContent
+import viewdsl.gravity
+import viewdsl.image
+import viewdsl.layoutGravity
+import viewdsl.margin
+import viewdsl.margins
+import viewdsl.onClick
+import viewdsl.rotate
+import viewdsl.text
+import viewdsl.textSize
+import viewdsl.withViewBuilder
 
 class InitialScreen : BaseScreen() {
   
@@ -50,7 +51,7 @@ class InitialScreen : BaseScreen() {
           textSize(TextSizes.H3)
         }
       }
-      ClickableButton(MatchParent, WrapContent) {
+      TextView(MatchParent, WrapContent, style = Button()) {
         margin(MarginNormal)
         layoutGravity(BOTTOM)
         text(R.string.text_create_master_password)

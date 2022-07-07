@@ -3,6 +3,7 @@ package com.arsvechkarev.vault.features.info
 import buisnesslogic.MasterPasswordHolder.masterPassword
 import com.arsvechkarev.vault.core.BasePresenter
 import com.arsvechkarev.vault.core.Clipboard
+import com.arsvechkarev.vault.core.CoroutineRouter
 import com.arsvechkarev.vault.core.DispatchersFacade
 import com.arsvechkarev.vault.core.Screens
 import com.arsvechkarev.vault.core.ServicesListenableRepository
@@ -21,7 +22,6 @@ import com.arsvechkarev.vault.features.info.InfoScreenState.EDITING_NAME_OR_USER
 import com.arsvechkarev.vault.features.info.InfoScreenState.INITIAL
 import com.arsvechkarev.vault.features.info.InfoScreenState.LOADING
 import kotlinx.coroutines.launch
-import navigation.Router
 import javax.inject.Inject
 
 class InfoPresenter @Inject constructor(
@@ -29,7 +29,7 @@ class InfoPresenter @Inject constructor(
   private val passwordCreatingCommunicator: FlowCommunicator<PasswordCreatingEvents>,
   private val servicesRepository: ServicesListenableRepository,
   private val clipboard: Clipboard,
-  private val router: Router,
+  private val router: CoroutineRouter,
   dispatchers: DispatchersFacade
 ) : BasePresenter<InfoView>(dispatchers) {
   

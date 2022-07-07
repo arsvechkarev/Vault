@@ -15,23 +15,23 @@ import com.arsvechkarev.vault.viewbuilding.Styles.BaseTextView
 import com.arsvechkarev.vault.viewbuilding.Styles.BoldTextView
 import com.arsvechkarev.vault.viewbuilding.Styles.ClickableErrorTextView
 import com.arsvechkarev.vault.viewbuilding.Styles.ClickableTextView
-import com.arsvechkarev.vault.viewdsl.Size.Companion.MatchParent
-import com.arsvechkarev.vault.viewdsl.Size.Companion.WrapContent
-import com.arsvechkarev.vault.viewdsl.backgroundRoundRect
-import com.arsvechkarev.vault.viewdsl.classNameTag
-import com.arsvechkarev.vault.viewdsl.gone
-import com.arsvechkarev.vault.viewdsl.layoutGravity
-import com.arsvechkarev.vault.viewdsl.marginHorizontal
-import com.arsvechkarev.vault.viewdsl.margins
-import com.arsvechkarev.vault.viewdsl.onClick
-import com.arsvechkarev.vault.viewdsl.size
-import com.arsvechkarev.vault.viewdsl.tag
-import com.arsvechkarev.vault.viewdsl.text
-import com.arsvechkarev.vault.viewdsl.textView
-import com.arsvechkarev.vault.viewdsl.visible
-import com.arsvechkarev.vault.viewdsl.withViewBuilder
 import com.arsvechkarev.vault.views.SimpleDialog
 import navigation.BaseScreen
+import viewdsl.Size.Companion.MatchParent
+import viewdsl.Size.Companion.WrapContent
+import viewdsl.backgroundRoundRect
+import viewdsl.classNameTag
+import viewdsl.gone
+import viewdsl.layoutGravity
+import viewdsl.marginHorizontal
+import viewdsl.margins
+import viewdsl.onClick
+import viewdsl.size
+import viewdsl.tag
+import viewdsl.text
+import viewdsl.textView
+import viewdsl.visible
+import viewdsl.withViewBuilder
 
 class InfoDialog(context: Context) : SimpleDialog(context) {
   

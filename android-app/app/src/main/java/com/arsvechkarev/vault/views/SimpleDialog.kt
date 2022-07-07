@@ -12,14 +12,14 @@ import android.view.ViewConfiguration
 import android.widget.FrameLayout
 import androidx.core.graphics.ColorUtils
 import com.arsvechkarev.vault.viewbuilding.Colors
-import com.arsvechkarev.vault.viewdsl.AccelerateDecelerateInterpolator
-import com.arsvechkarev.vault.viewdsl.cancelIfRunning
-import com.arsvechkarev.vault.viewdsl.contains
-import com.arsvechkarev.vault.viewdsl.gone
-import com.arsvechkarev.vault.viewdsl.invisible
-import com.arsvechkarev.vault.viewdsl.layoutGravity
-import com.arsvechkarev.vault.viewdsl.visible
 import config.DurationsConfigurator
+import viewdsl.AccelerateDecelerateInterpolator
+import viewdsl.cancelIfRunning
+import viewdsl.contains
+import viewdsl.gone
+import viewdsl.invisible
+import viewdsl.layoutGravity
+import viewdsl.visible
 import kotlin.math.abs
 import kotlin.math.hypot
 

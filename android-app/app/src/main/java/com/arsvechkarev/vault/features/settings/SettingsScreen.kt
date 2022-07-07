@@ -15,21 +15,21 @@ import com.arsvechkarev.vault.viewbuilding.Styles.BaseTextView
 import com.arsvechkarev.vault.viewbuilding.Styles.ImageBack
 import com.arsvechkarev.vault.viewbuilding.Styles.TitleTextView
 import com.arsvechkarev.vault.viewbuilding.TextSizes
-import com.arsvechkarev.vault.viewdsl.Size.Companion.MatchParent
-import com.arsvechkarev.vault.viewdsl.Size.Companion.WrapContent
-import com.arsvechkarev.vault.viewdsl.backgroundColor
-import com.arsvechkarev.vault.viewdsl.constraints
-import com.arsvechkarev.vault.viewdsl.id
-import com.arsvechkarev.vault.viewdsl.margin
-import com.arsvechkarev.vault.viewdsl.margins
-import com.arsvechkarev.vault.viewdsl.paddings
-import com.arsvechkarev.vault.viewdsl.rippleBackground
-import com.arsvechkarev.vault.viewdsl.setCheckedSafe
-import com.arsvechkarev.vault.viewdsl.text
-import com.arsvechkarev.vault.viewdsl.textSize
-import com.arsvechkarev.vault.viewdsl.withViewBuilder
 import com.arsvechkarev.vault.views.Snackbar
 import navigation.BaseScreen
+import viewdsl.Size.Companion.MatchParent
+import viewdsl.Size.Companion.WrapContent
+import viewdsl.backgroundColor
+import viewdsl.constraints
+import viewdsl.id
+import viewdsl.margin
+import viewdsl.margins
+import viewdsl.paddings
+import viewdsl.rippleBackground
+import viewdsl.setCheckedSafe
+import viewdsl.text
+import viewdsl.textSize
+import viewdsl.withViewBuilder
 
 class SettingsScreen : BaseScreen(), MviView<SettingsScreenState, SettingsScreenSingleEvents> {
   
@@ -64,7 +64,7 @@ class SettingsScreen : BaseScreen(), MviView<SettingsScreenState, SettingsScreen
           topToBottomOf(TextTitleId)
         }
         //        onClick { presenter.applyAction(OnUserFingerprintTextClicked) }
-        rippleBackground()
+        rippleBackground(Colors.Ripple)
         TextView(MatchParent, WrapContent, style = BaseTextView) {
           id(TextUseFingerprintId)
           paddings(top = MarginNormal, bottom = MarginNormal, start = MarginNormal)

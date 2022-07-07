@@ -20,31 +20,31 @@ import com.arsvechkarev.vault.viewbuilding.Styles.BaseTextView
 import com.arsvechkarev.vault.viewbuilding.Styles.BoldTextView
 import com.arsvechkarev.vault.viewbuilding.Styles.Button
 import com.arsvechkarev.vault.viewbuilding.TextSizes
-import com.arsvechkarev.vault.viewdsl.Size.Companion.MatchParent
-import com.arsvechkarev.vault.viewdsl.Size.Companion.WrapContent
-import com.arsvechkarev.vault.viewdsl.backgroundColor
-import com.arsvechkarev.vault.viewdsl.circleRippleBackground
-import com.arsvechkarev.vault.viewdsl.clearText
-import com.arsvechkarev.vault.viewdsl.constraints
-import com.arsvechkarev.vault.viewdsl.gravity
-import com.arsvechkarev.vault.viewdsl.hideKeyboard
-import com.arsvechkarev.vault.viewdsl.id
-import com.arsvechkarev.vault.viewdsl.image
-import com.arsvechkarev.vault.viewdsl.invisible
-import com.arsvechkarev.vault.viewdsl.layoutGravity
-import com.arsvechkarev.vault.viewdsl.margin
-import com.arsvechkarev.vault.viewdsl.margins
-import com.arsvechkarev.vault.viewdsl.onClick
-import com.arsvechkarev.vault.viewdsl.onSubmit
-import com.arsvechkarev.vault.viewdsl.padding
-import com.arsvechkarev.vault.viewdsl.setSoftInputMode
-import com.arsvechkarev.vault.viewdsl.showKeyboard
-import com.arsvechkarev.vault.viewdsl.text
-import com.arsvechkarev.vault.viewdsl.textColor
-import com.arsvechkarev.vault.viewdsl.textSize
-import com.arsvechkarev.vault.viewdsl.visible
-import com.arsvechkarev.vault.viewdsl.withViewBuilder
 import navigation.BaseScreen
+import viewdsl.Size.Companion.MatchParent
+import viewdsl.Size.Companion.WrapContent
+import viewdsl.backgroundColor
+import viewdsl.circleRippleBackground
+import viewdsl.clearText
+import viewdsl.constraints
+import viewdsl.gravity
+import viewdsl.hideKeyboard
+import viewdsl.id
+import viewdsl.image
+import viewdsl.invisible
+import viewdsl.layoutGravity
+import viewdsl.margin
+import viewdsl.margins
+import viewdsl.onClick
+import viewdsl.onSubmit
+import viewdsl.padding
+import viewdsl.setSoftInputMode
+import viewdsl.showKeyboard
+import viewdsl.text
+import viewdsl.textColor
+import viewdsl.textSize
+import viewdsl.visible
+import viewdsl.withViewBuilder
 import kotlin.math.abs
 
 class CreatingServiceScreen : BaseScreen(), MviView<CreatingServiceState, CreatingServiceState> {
@@ -66,7 +66,7 @@ class CreatingServiceScreen : BaseScreen(), MviView<CreatingServiceState, Creati
           margin(MarginNormal)
           gravity(CENTER_VERTICAL)
           padding(IconPadding)
-          circleRippleBackground()
+          circleRippleBackground(Colors.Ripple)
           //          onClick { presenter.applyAction(OnBackPressed) }
         }
         TextView(WrapContent, WrapContent, style = BoldTextView) {

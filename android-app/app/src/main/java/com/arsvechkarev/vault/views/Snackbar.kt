@@ -10,18 +10,18 @@ import com.arsvechkarev.vault.viewbuilding.Dimens.MarginNormal
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginSmall
 import com.arsvechkarev.vault.viewbuilding.Styles.BaseTextView
 import com.arsvechkarev.vault.viewbuilding.TextSizes
-import com.arsvechkarev.vault.viewdsl.AccelerateDecelerateInterpolator
-import com.arsvechkarev.vault.viewdsl.animateVisible
-import com.arsvechkarev.vault.viewdsl.atMost
-import com.arsvechkarev.vault.viewdsl.backgroundRoundRect
-import com.arsvechkarev.vault.viewdsl.exactly
-import com.arsvechkarev.vault.viewdsl.invisible
-import com.arsvechkarev.vault.viewdsl.layoutLeftTop
-import com.arsvechkarev.vault.viewdsl.paddings
-import com.arsvechkarev.vault.viewdsl.size
-import com.arsvechkarev.vault.viewdsl.text
-import com.arsvechkarev.vault.viewdsl.textSize
 import config.DurationsConfigurator
+import viewdsl.AccelerateDecelerateInterpolator
+import viewdsl.animateVisible
+import viewdsl.atMost
+import viewdsl.backgroundRoundRect
+import viewdsl.exactly
+import viewdsl.invisible
+import viewdsl.layoutLeftTop
+import viewdsl.paddings
+import viewdsl.size
+import viewdsl.text
+import viewdsl.textSize
 
 class Snackbar(context: Context) : ViewGroup(context) {
   

@@ -16,20 +16,20 @@ import com.arsvechkarev.vault.viewbuilding.Styles.BaseTextView
 import com.arsvechkarev.vault.viewbuilding.Styles.BoldTextView
 import com.arsvechkarev.vault.viewbuilding.Styles.ClickableTextView
 import com.arsvechkarev.vault.viewbuilding.TextSizes
-import com.arsvechkarev.vault.viewdsl.Size.Companion.MatchParent
-import com.arsvechkarev.vault.viewdsl.Size.Companion.WrapContent
-import com.arsvechkarev.vault.viewdsl.backgroundRoundRect
-import com.arsvechkarev.vault.viewdsl.classNameTag
-import com.arsvechkarev.vault.viewdsl.layoutGravity
-import com.arsvechkarev.vault.viewdsl.marginHorizontal
-import com.arsvechkarev.vault.viewdsl.margins
-import com.arsvechkarev.vault.viewdsl.onClick
-import com.arsvechkarev.vault.viewdsl.text
-import com.arsvechkarev.vault.viewdsl.textSize
-import com.arsvechkarev.vault.viewdsl.viewAs
-import com.arsvechkarev.vault.viewdsl.withViewBuilder
 import com.arsvechkarev.vault.views.SimpleDialog
 import navigation.BaseScreen
+import viewdsl.Size.Companion.MatchParent
+import viewdsl.Size.Companion.WrapContent
+import viewdsl.backgroundRoundRect
+import viewdsl.classNameTag
+import viewdsl.layoutGravity
+import viewdsl.marginHorizontal
+import viewdsl.margins
+import viewdsl.onClick
+import viewdsl.text
+import viewdsl.textSize
+import viewdsl.viewAs
+import viewdsl.withViewBuilder
 
 class PasswordStrengthDialog(context: Context) : SimpleDialog(context) {
   

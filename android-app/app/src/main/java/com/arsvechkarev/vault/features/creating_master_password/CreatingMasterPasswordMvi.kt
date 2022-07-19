@@ -29,7 +29,6 @@ sealed interface CreatingMasterPasswordUiEvent : CreatingMasterPasswordEvent {
 }
 
 sealed interface CreatingMasterPasswordNews {
-  object HideErrorText : CreatingMasterPasswordNews
   object FinishingAuthorization : CreatingMasterPasswordNews
 }
 
@@ -50,6 +49,7 @@ data class CreatingMasterPasswordState(
   val showPasswordStrengthDialog: Boolean = false,
   val initialPassword: String = "",
   val repeatedPassword: String = "",
+  val showErrorText: Boolean = false,
   val passwordsMatch: Boolean? = null
 )
 

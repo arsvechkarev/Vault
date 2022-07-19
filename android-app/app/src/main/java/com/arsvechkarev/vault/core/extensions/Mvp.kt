@@ -59,7 +59,7 @@ private class PresenterStore<State : Any, UiEvent : Any, News : Any>(
 ) : MvpPresenter<MviView<State, News>>() {
   
   private val mainStoreScope = CoroutineScope(SupervisorJob())
-  private val stateAndNewsScope = CoroutineScope(dispatchersFacade.Main)
+  private val stateAndNewsScope = CoroutineScope(context = SupervisorJob() + dispatchersFacade.Main)
   
   override fun onFirstViewAttach() {
     store.launch(mainStoreScope, DefaultDispatchersFacade)

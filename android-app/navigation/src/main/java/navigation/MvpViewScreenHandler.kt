@@ -108,7 +108,10 @@ class MvpViewScreenHandler(
     screen.clearViewCache()
   }
   
-  private fun View.animate(animation: (doOnEnd: () -> Unit) -> View.() -> Unit, doOnEnd: () -> Unit) {
+  private fun View.animate(
+    animation: (doOnEnd: () -> Unit) -> View.() -> Unit,
+    doOnEnd: () -> Unit
+  ) {
     apply(animation(doOnEnd))
   }
 }

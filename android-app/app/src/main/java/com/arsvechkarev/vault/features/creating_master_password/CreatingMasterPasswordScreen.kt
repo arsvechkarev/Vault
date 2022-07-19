@@ -1,6 +1,7 @@
 package com.arsvechkarev.vault.features.creating_master_password
 
 import android.content.Context
+import android.util.Log
 import android.view.Gravity
 import android.view.Gravity.CENTER
 import android.view.animation.AnimationUtils
@@ -11,7 +12,6 @@ import buisnesslogic.PasswordStatus.EMPTY
 import buisnesslogic.PasswordStatus.OK
 import buisnesslogic.PasswordStatus.TOO_SHORT
 import buisnesslogic.PasswordStatus.TOO_WEAK
-import buisnesslogic.PasswordStrength
 import buisnesslogic.PasswordStrength.MEDIUM
 import buisnesslogic.PasswordStrength.STRONG
 import buisnesslogic.PasswordStrength.VERY_STRONG
@@ -175,13 +175,16 @@ class CreatingMasterPasswordScreen : BaseScreen(),
     } else {
       passwordStrengthDialog.hide()
     }
-    state.passwordStatus?.let(::showPasswordStatus)
-    showPasswordStrength(state.passwordStrength)
-    if (state.passwordsMatch == false) {
-      textView(TextError).text(R.string.text_passwords_dont_match)
-    } else if (state.passwordsMatch == true) {
+    if (state.showErrorText) {
+      state.passwordStatus?.let(::showPasswordStatus)
+      if (state.passwordsMatch == false) {
+        textView(TextError).text(R.string.text_passwords_dont_match)
+      }
+    } else {
       textView(TextError).text("")
+      textView(TextError).drawables(end = R.drawable.ic_question, color = Colors.Background)
     }
+    showPasswordStrength(state)
   }
   
   override fun handleNews(event: CreatingMasterPasswordNews) {
@@ -197,13 +200,13 @@ class CreatingMasterPasswordScreen : BaseScreen(),
   }
   
   private fun showPasswordStatus(passwordStatus: PasswordStatus) {
+    Log.d("CMPScreen", "showing password status $passwordStatus")
     val text = when (passwordStatus) {
       EMPTY -> contextNonNull.getString(R.string.text_password_cannot_be_empty)
       TOO_SHORT -> contextNonNull.getString(R.string.text_password_min_length, MIN_PASSWORD_LENGTH)
       TOO_WEAK -> contextNonNull.getString(R.string.text_password_is_too_weak)
       OK -> contextNonNull.getString(R.string.text_empty)
     }
-    textView(TextError).visible()
     if (passwordStatus == TOO_WEAK) {
       textView(TextError).drawables(end = R.drawable.ic_question, color = Colors.Error)
       textView(TextError).onClick { store.dispatch(RequestShowPasswordStrengthDialog) }
@@ -214,9 +217,13 @@ class CreatingMasterPasswordScreen : BaseScreen(),
     textView(TextError).text(text)
   }
   
-  private fun showPasswordStrength(strength: PasswordStrength?) {
-    viewAs<PasswordStrengthMeter>().setStrength(strength)
-    val textResId = when (strength) {
+  private fun showPasswordStrength(state: CreatingMasterPasswordState) {
+    if (state.passwordEnteringState == REPEATING) {
+      textView(TextPasswordStrength).text("")
+      return
+    }
+    viewAs<PasswordStrengthMeter>().setStrength(state.passwordStrength)
+    val textResId = when (state.passwordStrength) {
       WEAK -> R.string.text_weak
       MEDIUM -> R.string.text_medium
       STRONG -> R.string.text_strong
@@ -233,7 +240,6 @@ class CreatingMasterPasswordScreen : BaseScreen(),
     view(TextTitle).animateVisible()
     view(RepeatPasswordLayout).animateInvisible()
     textView(TextPasswordStrength).animateVisible()
-    textView(TextTitle).text(R.string.text_create_master_password)
     viewAs<ViewSwitcher>().apply {
       inAnimation = AnimationUtils.loadAnimation(contextNonNull, android.R.anim.slide_in_left)
       outAnimation = AnimationUtils.loadAnimation(contextNonNull, android.R.anim.slide_out_right)
@@ -244,7 +250,6 @@ class CreatingMasterPasswordScreen : BaseScreen(),
   private fun switchToRepeatPasswordState() {
     viewAs<EditTextPassword>(EditTextRepeatPassword).text("")
     textView(TextError).text("")
-    textView(TextPasswordStrength).text("")
     textView(TextPasswordStrength).animateInvisible()
     view(TextTitle).animateInvisible()
     view(RepeatPasswordLayout).animateVisible()

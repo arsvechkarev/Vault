@@ -42,7 +42,7 @@ fun View.animateVisible(
   andThen: () -> Unit = {},
   duration: Long = Durations.VisibilityChange
 ) {
-  if (visibility == View.VISIBLE) return
+  if (alpha == 1f) return
   alpha = 0f
   animate().alpha(1f).setDuration(duration)
       .setInterpolator(AccelerateDecelerateInterpolator)
@@ -54,13 +54,10 @@ fun View.animateInvisible(
   andThen: () -> Unit = {},
   duration: Long = Durations.VisibilityChange
 ) {
-  if (visibility == View.INVISIBLE) return
+  if (alpha == 0f) return
   animate().alpha(0f).setDuration(duration)
       .setInterpolator(AccelerateDecelerateInterpolator)
-      .withEndAction {
-        invisible()
-        andThen()
-      }
+      .withEndAction(andThen)
       .start()
 }
 

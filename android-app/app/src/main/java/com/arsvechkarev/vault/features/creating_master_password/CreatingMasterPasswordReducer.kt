@@ -1,6 +1,6 @@
 package com.arsvechkarev.vault.features.creating_master_password
 
-import buisnesslogic.PasswordStatus
+import buisnesslogic.PasswordStatus.OK
 import com.arsvechkarev.vault.core.Router
 import com.arsvechkarev.vault.core.Screens
 import com.arsvechkarev.vault.core.mvi.tea.DslReducer
@@ -14,7 +14,6 @@ import com.arsvechkarev.vault.features.creating_master_password.CreatingMasterPa
 import com.arsvechkarev.vault.features.creating_master_password.CreatingMasterPasswordEvent.UpdatePasswordStatus
 import com.arsvechkarev.vault.features.creating_master_password.CreatingMasterPasswordEvent.UpdatePasswordStrength
 import com.arsvechkarev.vault.features.creating_master_password.CreatingMasterPasswordNews.FinishingAuthorization
-import com.arsvechkarev.vault.features.creating_master_password.CreatingMasterPasswordNews.HideErrorText
 import com.arsvechkarev.vault.features.creating_master_password.CreatingMasterPasswordUiEvent.OnBackButtonClicked
 import com.arsvechkarev.vault.features.creating_master_password.CreatingMasterPasswordUiEvent.OnBackPressed
 import com.arsvechkarev.vault.features.creating_master_password.CreatingMasterPasswordUiEvent.OnContinueClicked
@@ -22,6 +21,7 @@ import com.arsvechkarev.vault.features.creating_master_password.CreatingMasterPa
 import com.arsvechkarev.vault.features.creating_master_password.CreatingMasterPasswordUiEvent.OnRepeatPasswordTyping
 import com.arsvechkarev.vault.features.creating_master_password.CreatingMasterPasswordUiEvent.RequestHidePasswordStrengthDialog
 import com.arsvechkarev.vault.features.creating_master_password.CreatingMasterPasswordUiEvent.RequestShowPasswordStrengthDialog
+import com.arsvechkarev.vault.features.creating_master_password.PasswordEnteringState.INITIAL
 import com.arsvechkarev.vault.features.creating_master_password.PasswordEnteringState.REPEATING
 
 class CreatingMasterPasswordReducer(
@@ -34,24 +34,25 @@ class CreatingMasterPasswordReducer(
         handleUIEvent(event)
       }
       ShowPasswordsMatch -> {
-        state { copy(passwordsMatch = true) }
+        state { copy(passwordsMatch = true, showErrorText = false) }
       }
       ShowPasswordsDontMatch -> {
-        state { copy(passwordsMatch = false) }
+        state { copy(passwordsMatch = false, showErrorText = true) }
       }
       is PasswordEnteringStateChanged -> {
         state { copy(passwordEnteringState = event.state) }
       }
       is UpdatePasswordStatus -> {
-        val passwordEnteringState = if (event.passwordStatus == PasswordStatus.OK) {
-          REPEATING
+        val (passwordEnteringState, showErrorText) = if (event.passwordStatus == OK) {
+          Pair(REPEATING, false)
         } else {
-          state.passwordEnteringState
+          Pair(state.passwordEnteringState, true)
         }
         state {
           copy(
             passwordStatus = event.passwordStatus,
-            passwordEnteringState = passwordEnteringState
+            passwordEnteringState = passwordEnteringState,
+            showErrorText = showErrorText
           )
         }
       }
@@ -67,39 +68,38 @@ class CreatingMasterPasswordReducer(
   private fun handleUIEvent(event: CMPUiEvent) {
     when (event) {
       is OnInitialPasswordTyping -> {
-        state { copy(initialPassword = event.password) }
+        state { copy(initialPassword = event.password, showErrorText = false) }
         commands(CheckPasswordStrength(event.password))
-        news(HideErrorText)
       }
       is OnRepeatPasswordTyping -> {
-        news(HideErrorText)
+        state { copy(showErrorText = false) }
       }
       OnBackPressed, OnBackButtonClicked -> {
         if (state.showPasswordStrengthDialog) {
           state { copy(showPasswordStrengthDialog = false) }
         } else {
           when (state.passwordEnteringState) {
-            PasswordEnteringState.INITIAL -> {
+            INITIAL -> {
               router.goBack()
             }
             REPEATING -> {
-              state { copy(passwordEnteringState = PasswordEnteringState.INITIAL) }
+              state { copy(passwordEnteringState = INITIAL) }
             }
           }
         }
       }
       OnContinueClicked -> {
         when (state.passwordEnteringState) {
-          PasswordEnteringState.INITIAL -> {
+          INITIAL -> {
             commands(Validate(state.initialPassword))
           }
           REPEATING -> {
             if (state.initialPassword != "" && state.repeatedPassword == state.initialPassword) {
-              state { copy(passwordsMatch = true) }
+              state { copy(passwordsMatch = true, showErrorText = false) }
               commands(FinishAuth(state.initialPassword))
               news(FinishingAuthorization)
             } else {
-              state { copy(passwordsMatch = false) }
+              state { copy(passwordsMatch = false, showErrorText = true) }
             }
           }
         }

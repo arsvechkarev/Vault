@@ -11,18 +11,18 @@ import navigation.animateVisible
 object VaultNavigationAnimations : NavigationAnimations {
   
   override fun AppearanceAsGoingForward(doOnEnd: () -> Unit): View.() -> Unit = {
-    animateSlideFromRight(duration = DurationsConfigurator.DurationShort)
+    animateSlideFromRight(duration = DurationsConfigurator.DurationShort, doOnEnd)
   }
   
   override fun AppearanceAsGoingBackward(doOnEnd: () -> Unit): View.() -> Unit = {
-    animateVisible(duration = DurationsConfigurator.DurationShort)
+    animateVisible(duration = DurationsConfigurator.DurationShort, doOnEnd)
   }
   
   override fun DisappearanceAsGoingForward(doOnEnd: () -> Unit): View.() -> Unit = {
-    animateGoneAfter(duration = DurationsConfigurator.DurationShort)
+    animateGoneAfter(duration = DurationsConfigurator.DurationShort, doOnEnd)
   }
   
   override fun DisappearanceAsGoingBackward(doOnEnd: () -> Unit): View.() -> Unit = {
-    animateSlideToRight(duration = DurationsConfigurator.DurationShort)
+    animateSlideToRight(duration = DurationsConfigurator.DurationShort, doOnEnd)
   }
 }

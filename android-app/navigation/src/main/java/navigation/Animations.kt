@@ -3,21 +3,23 @@ package navigation
 import android.view.View
 import android.view.animation.AccelerateDecelerateInterpolator
 
-fun View.animateVisible(duration: Long) {
+fun View.animateVisible(duration: Long, doOnEnd: () -> Unit) {
   alpha = 0f
   visibility = View.VISIBLE
   animate().alpha(1f).setDuration(duration)
       .setInterpolator(AccelerateDecelerateInterpolator())
+      .withEndAction(doOnEnd)
       .start()
 }
 
-fun View.animateGoneAfter(duration: Long) {
+fun View.animateGoneAfter(duration: Long, doOnEnd: () -> Unit) {
   handler.postDelayed({
     visibility = View.GONE
+    doOnEnd()
   }, duration)
 }
 
-fun View.animateSlideFromRight(duration: Long) {
+fun View.animateSlideFromRight(duration: Long, doOnEnd: () -> Unit) {
   val width = context.resources.displayMetrics.widthPixels
   val height = context.resources.displayMetrics.heightPixels
   alpha = 0f
@@ -27,11 +29,12 @@ fun View.animateSlideFromRight(duration: Long) {
       .translationX(0f)
       .setDuration(duration)
       .withLayer()
+      .withEndAction(doOnEnd)
       .setInterpolator(AccelerateDecelerateInterpolator())
       .start()
 }
 
-fun View.animateSlideToRight(duration: Long) {
+fun View.animateSlideToRight(duration: Long, doOnEnd: () -> Unit) {
   val width = context.resources.displayMetrics.widthPixels
   val height = context.resources.displayMetrics.heightPixels
   val dx = minOf(width, height) / 8f
@@ -43,6 +46,7 @@ fun View.animateSlideToRight(duration: Long) {
       .withEndAction {
         visibility = View.GONE
         translationX = 0f
+        doOnEnd()
       }
       .start()
 }

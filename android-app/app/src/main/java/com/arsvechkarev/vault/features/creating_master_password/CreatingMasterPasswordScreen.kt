@@ -73,7 +73,7 @@ class CreatingMasterPasswordScreen : BaseScreen(),
   MviView<CreatingMasterPasswordState, CreatingMasterPasswordNews> {
   
   override fun buildLayout(context: Context) = context.withViewBuilder {
-    RootCoordinatorLayout(MatchParent, MatchParent) {
+    RootFrameLayout(MatchParent, MatchParent) {
       HorizontalLayout(MatchParent, WrapContent) {
         tag(RepeatPasswordLayout)
         invisible()

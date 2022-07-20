@@ -22,9 +22,8 @@ import com.arsvechkarev.vault.features.creating_service.CreatingServiceUserActio
 import com.arsvechkarev.vault.features.creating_service.CreatingServiceUserActions.OnServiceNameTextChanged
 import kotlinx.coroutines.launch
 import java.util.UUID
-import javax.inject.Inject
 
-class CreatingServicePresenter @Inject constructor(
+class CreatingServicePresenter constructor(
   @PasswordCreatingCommunicator
   private val passwordCreatingCommunicator: FlowCommunicator<PasswordCreatingEvents>,
   private val servicesRepository: ServicesListenableRepository,

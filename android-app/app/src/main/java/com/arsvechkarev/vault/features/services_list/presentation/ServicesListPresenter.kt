@@ -19,9 +19,8 @@ import com.arsvechkarev.vault.features.services_list.presentation.ServicesListSc
 import com.arsvechkarev.vault.features.services_list.presentation.ServicesListScreenUserAction.OnSettingsClicked
 import com.arsvechkarev.vault.features.services_list.presentation.ServicesListScreenUserAction.StartInitialLoading
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
-class ServicesListPresenter @Inject constructor(
+class ServicesListPresenter constructor(
   private val servicesRepository: ServicesListenableRepository,
   private val router: Router,
   dispatchers: DispatchersFacade

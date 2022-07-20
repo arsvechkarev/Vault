@@ -3,11 +3,8 @@ package com.arsvechkarev.vault.core
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Context.MODE_PRIVATE
-import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
-class AuthCheckerImpl @Inject constructor(context: Context) : AuthChecker {
+class AuthCheckerImpl constructor(context: Context) : AuthChecker {
   
   private val sharedPreferences = context.getSharedPreferences(USER_AUTH_FILENAME, MODE_PRIVATE)
   

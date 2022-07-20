@@ -2,7 +2,6 @@ ext {
 
   coroutines_version = '1.4.1'
   moxy_version = '2.2.0'
-  dagger_version = '2.40.5'
 
   applicationDependencies = [
       kotlin           : "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version",
@@ -16,8 +15,6 @@ ext {
       moxy             : "com.github.moxy-community:moxy:$moxy_version",
       moxyCompiler     : "com.github.moxy-community:moxy-compiler:$moxy_version",
       moxyAndroidx     : "com.github.moxy-community:moxy-androidx:$moxy_version",
-      dagger           : "com.google.dagger:dagger:$dagger_version",
-      daggerCompiler   : "com.google.dagger:dagger-compiler:$dagger_version",
       zxcvbn           : "com.nulab-inc:zxcvbn:1.3.1",
       androidSecurity  : "androidx.security:security-crypto:1.1.0-alpha03",
       biometric        : "androidx.biometric:biometric:1.0.1",

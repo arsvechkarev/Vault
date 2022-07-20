@@ -16,9 +16,8 @@ import com.arsvechkarev.vault.features.settings.SettingsScreenUserActions.OnBack
 import com.arsvechkarev.vault.features.settings.SettingsScreenUserActions.OnUserFingerprintTextClicked
 import com.arsvechkarev.vault.features.settings.SettingsScreenUserActions.ToggleUseFingerprintForEnteringCheckbox
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
-class SettingsPresenter @Inject constructor(
+class SettingsPresenter constructor(
   @PasswordCheckingCommunicator
   private val passwordCheckingCommunicator: FlowCommunicator<PasswordCheckingEvents>,
   private val router: Router,

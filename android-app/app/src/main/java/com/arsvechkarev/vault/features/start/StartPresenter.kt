@@ -18,9 +18,8 @@ import com.arsvechkarev.vault.features.start.StartScreenUserAction.OnEditTextTyp
 import com.arsvechkarev.vault.features.start.StartScreenUserAction.OnEnteredPassword
 import com.arsvechkarev.vault.features.start.StartScreenUserAction.OnFingerprintIconClicked
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
-class StartPresenter @Inject constructor(
+class StartPresenter constructor(
   private val masterPasswordChecker: MasterPasswordChecker,
   private val router: Router,
   dispatchers: DispatchersFacade,
@@ -31,7 +30,7 @@ class StartPresenter @Inject constructor(
   
   @SuppressLint("NewApi")
   override fun onFirstViewAttach() {
-      applyAction(ShowKeyboard)
+    applyAction(ShowKeyboard)
   }
   
   override fun getDefaultState(): StartScreenState {

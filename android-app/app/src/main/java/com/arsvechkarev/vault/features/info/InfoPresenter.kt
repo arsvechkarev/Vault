@@ -22,9 +22,8 @@ import com.arsvechkarev.vault.features.info.InfoScreenState.EDITING_NAME_OR_USER
 import com.arsvechkarev.vault.features.info.InfoScreenState.INITIAL
 import com.arsvechkarev.vault.features.info.InfoScreenState.LOADING
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
-class InfoPresenter @Inject constructor(
+class InfoPresenter constructor(
   @PasswordCreatingCommunicator
   private val passwordCreatingCommunicator: FlowCommunicator<PasswordCreatingEvents>,
   private val servicesRepository: ServicesListenableRepository,

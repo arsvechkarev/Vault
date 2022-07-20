@@ -1,8 +1,6 @@
 package com.arsvechkarev.vault.features.creating_password
 
-import javax.inject.Qualifier
 
-@Qualifier
 @Retention
 annotation class PasswordCreatingCommunicator
 

@@ -7,11 +7,8 @@ import com.arsvechkarev.vault.core.model.toServiceModelList
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import java.util.Locale
-import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
-class ServicesListenableRepository @Inject constructor(private val storage: ServicesStorage) {
+class ServicesListenableRepository constructor(private val storage: ServicesStorage) {
   
   private var servicesList: MutableList<ServiceModel> = ArrayList()
   

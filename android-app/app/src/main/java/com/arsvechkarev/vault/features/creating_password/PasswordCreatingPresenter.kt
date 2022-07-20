@@ -28,9 +28,8 @@ import com.arsvechkarev.vault.features.creating_password.PasswordCreatingState.L
 import com.arsvechkarev.vault.features.creating_password.PasswordCreatingState.SHOWING_ACCEPT_DIALOG
 import kotlinx.coroutines.launch
 import java.util.EnumSet
-import javax.inject.Inject
 
-class PasswordCreatingPresenter @Inject constructor(
+class PasswordCreatingPresenter constructor(
   @PasswordCreatingCommunicator
   private val passwordCreatingCommunicator: FlowCommunicator<PasswordCreatingEvents>,
   private val passwordInfoChecker: PasswordInfoChecker,

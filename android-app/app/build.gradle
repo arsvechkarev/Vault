@@ -63,12 +63,10 @@ dependencies {
   implementation appDependencies.cicerone
   implementation appDependencies.moxy
   implementation appDependencies.moxyAndroidx
-  implementation appDependencies.dagger
   implementation appDependencies.zxcvbn
   implementation appDependencies.androidSecurity
   implementation appDependencies.biometric
   implementation appDependencies.timber
-  kapt appDependencies.daggerCompiler
   kapt appDependencies.moxyCompiler
 
   def testDependencies = rootProject.ext.testDependencies

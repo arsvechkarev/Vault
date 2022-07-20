@@ -11,9 +11,8 @@ import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import javax.inject.Inject
 
-class PasswordCheckingPresenter @Inject constructor(
+class PasswordCheckingPresenter constructor(
   @PasswordCheckingCommunicator
   private val passwordCheckingCommunicator: FlowCommunicator<PasswordCheckingEvents>,
   private val masterPasswordChecker: MasterPasswordChecker,

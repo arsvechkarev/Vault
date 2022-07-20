@@ -7,9 +7,9 @@ import com.nulabinc.zxcvbn.Zxcvbn
  *
  * Library could be found at https://github.com/dropbox/zxcvbn
  */
-class ZxcvbnPasswordChecker(
+class ZxcvbnPasswordInfoChecker(
   private val zxcvbn: Zxcvbn
-) : PasswordChecker {
+) : PasswordInfoChecker {
   
   override fun checkStrength(password: String): PasswordStrength? {
     if (password.isBlank()) return null
@@ -26,16 +26,16 @@ class ZxcvbnPasswordChecker(
     }
   }
   
-  override fun getPasswordStatus(password: String): PasswordStatus {
+  override fun checkForErrors(password: String): PasswordError? {
     if (password.isBlank()) {
-      return PasswordStatus.EMPTY
+      return PasswordError.EMPTY
     }
     if (password.length < MIN_PASSWORD_LENGTH) {
-      return PasswordStatus.TOO_SHORT
+      return PasswordError.TOO_SHORT
     }
     if (checkStrength(password) == PasswordStrength.WEAK) {
-      return PasswordStatus.TOO_WEAK
+      return PasswordError.TOO_WEAK
     }
-    return PasswordStatus.OK
+    return null
   }
 }

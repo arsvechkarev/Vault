@@ -2,8 +2,8 @@ package com.arsvechkarev.vault.features.creating_password
 
 import buisnesslogic.DEFAULT_PASSWORD_LENGTH
 import buisnesslogic.MIN_PASSWORD_LENGTH
-import buisnesslogic.PasswordChecker
-import buisnesslogic.PasswordStatus.EMPTY
+import buisnesslogic.PasswordError.EMPTY
+import buisnesslogic.PasswordInfoChecker
 import buisnesslogic.generator.PasswordGenerator
 import buisnesslogic.hasNumbers
 import buisnesslogic.hasSpecialSymbols
@@ -33,7 +33,7 @@ import javax.inject.Inject
 class PasswordCreatingPresenter @Inject constructor(
   @PasswordCreatingCommunicator
   private val passwordCreatingCommunicator: FlowCommunicator<PasswordCreatingEvents>,
-  private val passwordChecker: PasswordChecker,
+  private val passwordInfoChecker: PasswordInfoChecker,
   private val passwordGenerator: PasswordGenerator,
   private val router: Router,
   dispatchers: DispatchersFacade
@@ -80,7 +80,7 @@ class PasswordCreatingPresenter @Inject constructor(
   }
   
   fun onSavePasswordClicked() {
-    when (passwordChecker.getPasswordStatus(password)) {
+    when (passwordInfoChecker.checkForErrors(password)) {
       EMPTY -> viewState.showPasswordIsEmpty()
       else -> launch { passwordCreatingCommunicator.send(OnSavePasswordButtonClicked(password)) }
     }
@@ -89,7 +89,7 @@ class PasswordCreatingPresenter @Inject constructor(
   private fun showPasswordInfo() {
     fillPasswordCharacteristics()
     viewState.showPasswordCharacteristics(passwordCharacteristics)
-    viewState.showPasswordStrength(passwordChecker.checkStrength(password))
+    viewState.showPasswordStrength(passwordInfoChecker.checkStrength(password))
   }
   
   private fun fillPasswordCharacteristics() {

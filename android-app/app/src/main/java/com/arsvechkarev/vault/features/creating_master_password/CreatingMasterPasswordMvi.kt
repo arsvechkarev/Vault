@@ -1,6 +1,6 @@
 package com.arsvechkarev.vault.features.creating_master_password
 
-import buisnesslogic.PasswordStatus
+import buisnesslogic.PasswordError
 import buisnesslogic.PasswordStrength
 
 typealias CMPState = CreatingMasterPasswordState
@@ -10,11 +10,8 @@ typealias CMPCommands = CreatingMasterPasswordCommands
 typealias CMPNews = CreatingMasterPasswordNews
 
 sealed interface CreatingMasterPasswordEvent {
-  class PasswordEnteringStateChanged(val state: PasswordEnteringState) : CMPEvents
-  class UpdatePasswordStatus(val passwordStatus: PasswordStatus?) : CMPEvents
+  class UpdatePasswordError(val passwordError: PasswordError?) : CMPEvents
   class UpdatePasswordStrength(val passwordStrength: PasswordStrength?) : CMPEvents
-  object ShowPasswordsMatch : CMPEvents
-  object ShowPasswordsDontMatch : CMPEvents
   object FinishedAuth : CMPEvents
 }
 
@@ -36,7 +33,7 @@ sealed interface CreatingMasterPasswordCommands {
   
   sealed interface PasswordCommand : CreatingMasterPasswordCommands {
     class CheckPasswordStrength(val password: String) : PasswordCommand
-    class Validate(val password: String) : PasswordCommand
+    class CheckPasswordForErrors(val password: String) : PasswordCommand
   }
   
   class FinishAuth(val password: String) : CreatingMasterPasswordCommands
@@ -44,13 +41,16 @@ sealed interface CreatingMasterPasswordCommands {
 
 data class CreatingMasterPasswordState(
   val passwordEnteringState: PasswordEnteringState = PasswordEnteringState.INITIAL,
-  val passwordStatus: PasswordStatus? = null,
+  val passwordStatus: UiPasswordStatus? = null,
   val passwordStrength: PasswordStrength? = null,
   val showPasswordStrengthDialog: Boolean = false,
   val initialPassword: String = "",
   val repeatedPassword: String = "",
   val showErrorText: Boolean = false,
-  val passwordsMatch: Boolean? = null
 )
+
+enum class UiPasswordStatus {
+  OK, TOO_WEAK, TOO_SHORT, EMPTY, PASSWORDS_DONT_MATCH
+}
 
 enum class PasswordEnteringState { INITIAL, REPEATING }

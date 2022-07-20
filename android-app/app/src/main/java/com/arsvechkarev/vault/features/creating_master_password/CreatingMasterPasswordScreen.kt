@@ -1,17 +1,11 @@
 package com.arsvechkarev.vault.features.creating_master_password
 
 import android.content.Context
-import android.util.Log
 import android.view.Gravity
 import android.view.Gravity.CENTER
 import android.view.animation.AnimationUtils
 import android.widget.ViewSwitcher
 import buisnesslogic.MIN_PASSWORD_LENGTH
-import buisnesslogic.PasswordStatus
-import buisnesslogic.PasswordStatus.EMPTY
-import buisnesslogic.PasswordStatus.OK
-import buisnesslogic.PasswordStatus.TOO_SHORT
-import buisnesslogic.PasswordStatus.TOO_WEAK
 import buisnesslogic.PasswordStrength.MEDIUM
 import buisnesslogic.PasswordStrength.STRONG
 import buisnesslogic.PasswordStrength.VERY_STRONG
@@ -30,6 +24,11 @@ import com.arsvechkarev.vault.features.creating_master_password.CreatingMasterPa
 import com.arsvechkarev.vault.features.creating_master_password.CreatingMasterPasswordUiEvent.RequestShowPasswordStrengthDialog
 import com.arsvechkarev.vault.features.creating_master_password.PasswordEnteringState.INITIAL
 import com.arsvechkarev.vault.features.creating_master_password.PasswordEnteringState.REPEATING
+import com.arsvechkarev.vault.features.creating_master_password.UiPasswordStatus.EMPTY
+import com.arsvechkarev.vault.features.creating_master_password.UiPasswordStatus.OK
+import com.arsvechkarev.vault.features.creating_master_password.UiPasswordStatus.PASSWORDS_DONT_MATCH
+import com.arsvechkarev.vault.features.creating_master_password.UiPasswordStatus.TOO_SHORT
+import com.arsvechkarev.vault.features.creating_master_password.UiPasswordStatus.TOO_WEAK
 import com.arsvechkarev.vault.viewbuilding.Colors
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginLarge
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginNormal
@@ -177,9 +176,6 @@ class CreatingMasterPasswordScreen : BaseScreen(),
     }
     if (state.showErrorText) {
       state.passwordStatus?.let(::showPasswordStatus)
-      if (state.passwordsMatch == false) {
-        textView(TextError).text(R.string.text_passwords_dont_match)
-      }
     } else {
       textView(TextError).text("")
       textView(TextError).drawables(end = R.drawable.ic_question, color = Colors.Background)
@@ -199,13 +195,20 @@ class CreatingMasterPasswordScreen : BaseScreen(),
     return true
   }
   
-  private fun showPasswordStatus(passwordStatus: PasswordStatus) {
-    Log.d("CMPScreen", "showing password status $passwordStatus")
+  private fun showPasswordStatus(passwordStatus: UiPasswordStatus) {
     val text = when (passwordStatus) {
-      EMPTY -> contextNonNull.getString(R.string.text_password_cannot_be_empty)
-      TOO_SHORT -> contextNonNull.getString(R.string.text_password_min_length, MIN_PASSWORD_LENGTH)
-      TOO_WEAK -> contextNonNull.getString(R.string.text_password_is_too_weak)
       OK -> contextNonNull.getString(R.string.text_empty)
+      TOO_WEAK -> contextNonNull.getString(R.string.text_password_is_too_weak)
+      TOO_SHORT -> contextNonNull.getString(R.string.text_password_min_length, MIN_PASSWORD_LENGTH)
+      EMPTY -> contextNonNull.getString(R.string.text_password_cannot_be_empty)
+      PASSWORDS_DONT_MATCH -> {
+        if (passwordEnteringState == INITIAL) {
+          // Don't show "Passwords don't match" error when we are in initial password entering state
+          contextNonNull.getString(R.string.text_empty)
+        } else {
+          contextNonNull.getString(R.string.text_passwords_dont_match)
+        }
+      }
     }
     if (passwordStatus == TOO_WEAK) {
       textView(TextError).drawables(end = R.drawable.ic_question, color = Colors.Error)
@@ -235,7 +238,6 @@ class CreatingMasterPasswordScreen : BaseScreen(),
   
   private fun switchToEnterPasswordState() {
     viewAs<PasswordStrengthMeter>().setStrength(null, animate = false)
-    textView(TextError).text("")
     viewAs<PasswordStrengthMeter>().visible()
     view(TextTitle).animateVisible()
     view(RepeatPasswordLayout).animateInvisible()

@@ -11,7 +11,7 @@ fun CreatingMasterPasswordStore(
 ): TeaStore<CMPState, CMPUiEvent, CMPNews> {
   return TeaStoreImpl(
     actors = listOf(
-      PasswordCheckingActor(appComponent.passwordChecker),
+      PasswordCheckingActor(appComponent.passwordInfoChecker),
       FinishAuthActor(appComponent.authChecker, appComponent.masterPasswordChecker,
         appComponent.dispatchersFacade)
     ),

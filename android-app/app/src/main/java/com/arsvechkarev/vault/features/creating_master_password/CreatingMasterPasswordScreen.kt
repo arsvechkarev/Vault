@@ -32,6 +32,7 @@ import com.arsvechkarev.vault.features.creating_master_password.UiPasswordStatus
 import com.arsvechkarev.vault.viewbuilding.Colors
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginLarge
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginNormal
+import com.arsvechkarev.vault.viewbuilding.Dimens.MarginTiny
 import com.arsvechkarev.vault.viewbuilding.Dimens.PasswordStrengthMeterHeight
 import com.arsvechkarev.vault.viewbuilding.Styles.BaseTextView
 import com.arsvechkarev.vault.viewbuilding.Styles.BoldTextView
@@ -113,7 +114,7 @@ class CreatingMasterPasswordScreen : BaseScreen(),
           outAnimation = AnimationUtils.loadAnimation(context, R.anim.slide_in_right)
           child<EditTextPassword>(MatchParent, WrapContent) {
             tag(EditTextEnterPassword)
-            marginHorizontal(MarginNormal)
+            marginHorizontal(MarginNormal - MarginTiny)
             setHint(R.string.hint_enter_password)
             onTextChanged { text ->
               store.dispatch(OnInitialPasswordTyping(text))
@@ -121,7 +122,7 @@ class CreatingMasterPasswordScreen : BaseScreen(),
           }
           child<EditTextPassword>(MatchParent, WrapContent) {
             tag(EditTextRepeatPassword)
-            marginHorizontal(MarginNormal)
+            marginHorizontal(MarginNormal - MarginTiny)
             setHint(R.string.hint_repeat_password)
             onTextChanged { text ->
               store.dispatch(OnRepeatPasswordTyping(text))

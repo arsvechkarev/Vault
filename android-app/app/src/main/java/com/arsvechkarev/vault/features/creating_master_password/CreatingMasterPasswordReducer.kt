@@ -64,7 +64,7 @@ class CreatingMasterPasswordReducer(
         commands(CheckPasswordStrength(event.password))
       }
       is OnRepeatPasswordTyping -> {
-        state { copy(showErrorText = false) }
+        state { copy(repeatedPassword = event.password, showErrorText = false) }
       }
       OnBackPressed, OnBackButtonClicked -> {
         if (state.showPasswordStrengthDialog) {

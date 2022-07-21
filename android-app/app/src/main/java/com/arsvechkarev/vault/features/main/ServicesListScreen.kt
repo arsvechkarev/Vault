@@ -1,4 +1,4 @@
-package com.arsvechkarev.vault.features.services_list.presentation
+package com.arsvechkarev.vault.features.main
 
 import android.content.Context
 import android.text.SpannableString
@@ -66,7 +66,7 @@ import viewdsl.textSize
 import viewdsl.visible
 import viewdsl.withViewBuilder
 
-class ServicesListScreen : BaseScreen(), MviView<ServicesListState, SettingsScreenSingleEvents> {
+class ServicesListScreen : BaseScreen(), MviView<MainState, SettingsScreenSingleEvents> {
   
   override fun buildLayout(context: Context) = context.withViewBuilder {
     val viewUnderHeaderBehavior = ViewUnderHeaderBehavior()
@@ -154,7 +154,7 @@ class ServicesListScreen : BaseScreen(), MviView<ServicesListState, SettingsScre
     )
   }
   
-  override fun render(state: ServicesListState) {
+  override fun render(state: MainState) {
     if (state.showSettingsIcon) {
       imageView(R.drawable.ic_settings).visible()
     }
@@ -169,7 +169,8 @@ class ServicesListScreen : BaseScreen(), MviView<ServicesListState, SettingsScre
     val deleteDialog = state.deleteDialog
     if (deleteDialog != null) {
       infoDialog.showWithDeleteAndCancelOption(
-        R.string.text_delete_service, getDeleteMessageText(deleteDialog.serviceModel.serviceName),
+        R.string.text_delete_service,
+        getDeleteMessageText(deleteDialog.passwordInfoItem.websiteName),
         onDeleteClicked = {/* presenter.applyAction(OnAgreeToDeleteServiceClicked)*/ }
       )
       //      infoDialog.onHide = { presenter.applyAction(HideDeleteDialog) }

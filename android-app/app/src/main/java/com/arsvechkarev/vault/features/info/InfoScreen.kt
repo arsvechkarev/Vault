@@ -8,7 +8,7 @@ import android.view.Gravity.CENTER_HORIZONTAL
 import android.view.Gravity.END
 import com.arsvechkarev.vault.R
 import com.arsvechkarev.vault.core.extensions.getDeleteMessageText
-import com.arsvechkarev.vault.core.model.ServiceModel
+import com.arsvechkarev.vault.core.model.PasswordInfoItem
 import com.arsvechkarev.vault.core.setServiceIcon
 import com.arsvechkarev.vault.viewbuilding.Colors
 import com.arsvechkarev.vault.viewbuilding.Dimens
@@ -181,7 +181,7 @@ class InfoScreen : BaseScreen(), InfoView {
   //  }
   
   override fun onAppearedOnScreenGoingForward() {
-    val serviceInfo = arguments[SERVICE] as ServiceModel
+    val serviceInfo = arguments[SERVICE] as PasswordInfoItem
     //    presenter.performSetup(serviceInfo)
   }
   

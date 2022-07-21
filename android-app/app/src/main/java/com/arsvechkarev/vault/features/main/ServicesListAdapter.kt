@@ -1,9 +1,9 @@
-package com.arsvechkarev.vault.features.services_list.presentation
+package com.arsvechkarev.vault.features.main
 
 import android.view.Gravity.CENTER
 import android.widget.ImageView
 import android.widget.TextView
-import com.arsvechkarev.vault.core.model.ServiceModel
+import com.arsvechkarev.vault.core.model.PasswordInfoItem
 import com.arsvechkarev.vault.core.setServiceIcon
 import com.arsvechkarev.vault.recycler.BaseListAdapter
 import com.arsvechkarev.vault.recycler.delegate
@@ -27,13 +27,13 @@ import viewdsl.text
 import viewdsl.viewAs
 
 class ServicesListAdapter(
-  private val onItemClick: (ServiceModel) -> Unit,
-  private val onItemLongClick: (ServiceModel) -> Unit
+  private val onItemClick: (PasswordInfoItem) -> Unit,
+  private val onItemLongClick: (PasswordInfoItem) -> Unit
 ) : BaseListAdapter() {
   
   init {
     addDelegates(
-      delegate<ServiceModel> {
+      delegate<PasswordInfoItem> {
         buildView {
           RootHorizontalLayout(MatchParent, WrapContent) {
             rippleBackground(Colors.Ripple)
@@ -55,8 +55,8 @@ class ServicesListAdapter(
           itemView.onLongClick { onItemLongClick(item) }
         }
         onBind {
-          itemView.viewAs<ImageView>(ItemServiceInfoImage).setServiceIcon(item.serviceName)
-          itemView.viewAs<TextView>(ItemServiceInfoTextServiceName).text(item.serviceName)
+          itemView.viewAs<ImageView>(ItemServiceInfoImage).setServiceIcon(item.websiteName)
+          itemView.viewAs<TextView>(ItemServiceInfoTextServiceName).text(item.websiteName)
         }
       }
     )

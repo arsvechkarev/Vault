@@ -1,31 +1,31 @@
-package com.arsvechkarev.vault.features.services_list.presentation
+package com.arsvechkarev.vault.features.main
 
 import buisnesslogic.MasterPasswordHolder.masterPassword
+import com.arsvechkarev.vault.core.CachedPasswordsStorage
 import com.arsvechkarev.vault.core.DispatchersFacade
 import com.arsvechkarev.vault.core.Result
 import com.arsvechkarev.vault.core.Router
 import com.arsvechkarev.vault.core.Screens
-import com.arsvechkarev.vault.core.ServicesListenableRepository
-import com.arsvechkarev.vault.core.model.ServiceModel
+import com.arsvechkarev.vault.core.model.PasswordInfoItem
 import com.arsvechkarev.vault.core.mvi.BaseMviPresenter
-import com.arsvechkarev.vault.features.services_list.presentation.ServicesListScreenAction.DeletedService
-import com.arsvechkarev.vault.features.services_list.presentation.ServicesListScreenAction.UpdateData
-import com.arsvechkarev.vault.features.services_list.presentation.ServicesListScreenAction.UpdateSettingsIcon
-import com.arsvechkarev.vault.features.services_list.presentation.ServicesListScreenUserAction.HideDeleteDialog
-import com.arsvechkarev.vault.features.services_list.presentation.ServicesListScreenUserAction.OnAgreeToDeleteServiceClicked
-import com.arsvechkarev.vault.features.services_list.presentation.ServicesListScreenUserAction.OnFabClicked
-import com.arsvechkarev.vault.features.services_list.presentation.ServicesListScreenUserAction.OnServiceItemClicked
-import com.arsvechkarev.vault.features.services_list.presentation.ServicesListScreenUserAction.OnServiceItemLongClicked
-import com.arsvechkarev.vault.features.services_list.presentation.ServicesListScreenUserAction.OnSettingsClicked
-import com.arsvechkarev.vault.features.services_list.presentation.ServicesListScreenUserAction.StartInitialLoading
+import com.arsvechkarev.vault.features.main.MainScreenEvent.DeletedService
+import com.arsvechkarev.vault.features.main.MainScreenEvent.UpdateData
+import com.arsvechkarev.vault.features.main.MainScreenEvent.UpdateSettingsIcon
+import com.arsvechkarev.vault.features.main.MainScreenUiEvent.HideDeleteDialog
+import com.arsvechkarev.vault.features.main.MainScreenUiEvent.OnAgreeToDeleteServiceClicked
+import com.arsvechkarev.vault.features.main.MainScreenUiEvent.OnFabClicked
+import com.arsvechkarev.vault.features.main.MainScreenUiEvent.OnServiceItemClicked
+import com.arsvechkarev.vault.features.main.MainScreenUiEvent.OnServiceItemLongClicked
+import com.arsvechkarev.vault.features.main.MainScreenUiEvent.OnSettingsClicked
+import com.arsvechkarev.vault.features.main.MainScreenUiEvent.StartInitialLoading
 import kotlinx.coroutines.launch
 
 class ServicesListPresenter constructor(
-  private val servicesRepository: ServicesListenableRepository,
+  private val servicesRepository: CachedPasswordsStorage,
   private val router: Router,
   dispatchers: DispatchersFacade
-) : BaseMviPresenter<ServicesListScreenAction, ServicesListScreenUserAction, ServicesListState>(
-  ServicesListScreenUserAction::class,
+) : BaseMviPresenter<MainScreenEvent, MainScreenUiEvent, MainState>(
+  MainScreenUiEvent::class,
   dispatchers
 ) {
   
@@ -43,9 +43,9 @@ class ServicesListPresenter constructor(
     applyAction(StartInitialLoading)
   }
   
-  override fun getDefaultState() = ServicesListState()
+  override fun getDefaultState() = MainState()
   
-  override fun reduce(action: ServicesListScreenAction) = when (action) {
+  override fun reduce(action: MainScreenEvent) = when (action) {
     is StartInitialLoading -> {
       state.copy(result = Result.loading())
     }
@@ -56,7 +56,7 @@ class ServicesListPresenter constructor(
       state.copy(showSettingsIcon = action.showSettingsIcon)
     }
     is OnServiceItemLongClicked -> {
-      state.copy(deleteDialog = DeleteDialog(action.serviceModel))
+      state.copy(deleteDialog = DeleteDialog(action.passwordInfoItem))
     }
     OnAgreeToDeleteServiceClicked -> {
       state.copy(showDeletionLoadingDialog = true)
@@ -70,7 +70,7 @@ class ServicesListPresenter constructor(
     else -> state
   }
   
-  override fun onSideEffect(action: ServicesListScreenUserAction) {
+  override fun onSideEffect(action: MainScreenUiEvent) {
     when (action) {
       StartInitialLoading -> {
         startLoadingPasswords()
@@ -84,20 +84,21 @@ class ServicesListPresenter constructor(
         router.goForward(Screens.CreatingServiceScreen)
       }
       is OnServiceItemClicked -> {
-        router.goForward(Screens.InfoScreen(action.serviceModel))
+        router.goForward(Screens.InfoScreen(action.passwordInfoItem))
       }
       OnAgreeToDeleteServiceClicked -> {
-        state.deleteDialog?.let { deleteService(it.serviceModel) }
+        state.deleteDialog?.let { deleteService(it.passwordInfoItem) }
       }
       else -> Unit
     }
   }
   
-  private fun deleteService(serviceModel: ServiceModel) {
+  private fun deleteService(passwordInfoItem: PasswordInfoItem) {
     launch {
       applyAction(HideDeleteDialog)
       onIoThread {
-        servicesRepository.deleteService(masterPassword, serviceModel, notifySubscribers = true)
+        servicesRepository.deletePassword(masterPassword, passwordInfoItem,
+          notifySubscribers = true)
       }
       applyAction(DeletedService)
     }
@@ -105,7 +106,7 @@ class ServicesListPresenter constructor(
   
   private fun startLoadingPasswords() {
     launch {
-      val services = onIoThread { servicesRepository.getServices(masterPassword) }
+      val services = onIoThread { servicesRepository.getPasswords(masterPassword) }
       if (services.isNotEmpty()) {
         applyAction(UpdateData(Result.success(services)))
       } else {

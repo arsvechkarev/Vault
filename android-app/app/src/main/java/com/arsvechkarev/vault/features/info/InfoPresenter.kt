@@ -2,13 +2,13 @@ package com.arsvechkarev.vault.features.info
 
 import buisnesslogic.MasterPasswordHolder.masterPassword
 import com.arsvechkarev.vault.core.BasePresenter
+import com.arsvechkarev.vault.core.CachedPasswordsStorage
 import com.arsvechkarev.vault.core.Clipboard
 import com.arsvechkarev.vault.core.DispatchersFacade
 import com.arsvechkarev.vault.core.Router
 import com.arsvechkarev.vault.core.Screens
-import com.arsvechkarev.vault.core.ServicesListenableRepository
 import com.arsvechkarev.vault.core.communicators.FlowCommunicator
-import com.arsvechkarev.vault.core.model.ServiceModel
+import com.arsvechkarev.vault.core.model.PasswordInfoItem
 import com.arsvechkarev.vault.features.creating_password.PasswordCreatingActions.ConfigureMode.EditPassword
 import com.arsvechkarev.vault.features.creating_password.PasswordCreatingActions.ExitScreen
 import com.arsvechkarev.vault.features.creating_password.PasswordCreatingActions.ShowAcceptPasswordDialog
@@ -26,13 +26,13 @@ import kotlinx.coroutines.launch
 class InfoPresenter constructor(
   @PasswordCreatingCommunicator
   private val passwordCreatingCommunicator: FlowCommunicator<PasswordCreatingEvents>,
-  private val servicesRepository: ServicesListenableRepository,
+  private val servicesRepository: CachedPasswordsStorage,
   private val clipboard: Clipboard,
   private val router: Router,
   dispatchers: DispatchersFacade
 ) : BasePresenter<InfoView>(dispatchers) {
   
-  private lateinit var serviceModel: ServiceModel
+  private lateinit var passwordInfoItem: PasswordInfoItem
   
   private var state = INITIAL
   
@@ -42,16 +42,16 @@ class InfoPresenter constructor(
     subscribeToPasswordCreatingEvents()
   }
   
-  fun performSetup(serviceModel: ServiceModel) {
-    this.serviceModel = serviceModel
+  fun performSetup(passwordInfoItem: PasswordInfoItem) {
+    this.passwordInfoItem = passwordInfoItem
     state = INITIAL
-    viewState.showServiceName(serviceModel.serviceName)
-    viewState.showServiceIcon(serviceModel.serviceName)
-    viewState.setPassword(serviceModel.password)
+    viewState.showServiceName(passwordInfoItem.websiteName)
+    viewState.showServiceIcon(passwordInfoItem.websiteName)
+    viewState.setPassword(passwordInfoItem.notes)
     viewState.hidePassword()
-    val username = serviceModel.username
+    val username = passwordInfoItem.login
     if (username.isEmpty()) viewState.showNoUsername() else viewState.showUsername(username)
-    val email = serviceModel.email
+    val email = passwordInfoItem.password
     if (email.isEmpty()) viewState.showNoEmail() else viewState.showEmail(email)
   }
   
@@ -61,14 +61,14 @@ class InfoPresenter constructor(
   
   fun saveServiceName(serviceName: String) {
     state = INITIAL
-    if (serviceModel.serviceName == serviceName) return
+    if (passwordInfoItem.websiteName == serviceName) return
     viewState.showLoading()
     state = LOADING
-    serviceModel = serviceModel.copy(serviceName = serviceName)
+    passwordInfoItem = passwordInfoItem.copy(websiteName = serviceName)
     viewState.showServiceName(serviceName)
     viewState.showServiceIcon(serviceName)
     launch {
-      onIoThread { servicesRepository.updateService(masterPassword, serviceModel) }
+      onIoThread { servicesRepository.updatePassword(masterPassword, passwordInfoItem) }
       state = INITIAL
       viewState.hideLoading()
     }
@@ -76,13 +76,13 @@ class InfoPresenter constructor(
   
   fun saveUsername(username: String) {
     state = INITIAL
-    if (serviceModel.username == username) return
+    if (passwordInfoItem.login == username) return
     viewState.showLoading()
     state = LOADING
-    serviceModel = serviceModel.copy(username = username)
+    passwordInfoItem = passwordInfoItem.copy(login = username)
     if (username.isBlank()) viewState.showNoUsername() else viewState.showUsername(username)
     launch {
-      onIoThread { servicesRepository.updateService(masterPassword, serviceModel) }
+      onIoThread { servicesRepository.updatePassword(masterPassword, passwordInfoItem) }
       state = INITIAL
       viewState.hideLoading()
     }
@@ -90,13 +90,13 @@ class InfoPresenter constructor(
   
   fun saveEmail(email: String) {
     state = INITIAL
-    if (serviceModel.email == email) return
+    if (passwordInfoItem.password == email) return
     viewState.showLoading()
     state = LOADING
-    serviceModel = serviceModel.copy(email = email)
+    passwordInfoItem = passwordInfoItem.copy(password = email)
     if (email.isBlank()) viewState.showNoEmail() else viewState.showEmail(email)
     launch {
-      onIoThread { servicesRepository.updateService(masterPassword, serviceModel) }
+      onIoThread { servicesRepository.updatePassword(masterPassword, passwordInfoItem) }
       state = INITIAL
       viewState.hideLoading()
     }
@@ -104,7 +104,7 @@ class InfoPresenter constructor(
   
   fun onTogglePassword(isPasswordShown: Boolean) {
     if (isPasswordShown) {
-      viewState.showPassword(serviceModel.password)
+      viewState.showPassword(passwordInfoItem.notes)
     } else {
       viewState.hidePassword()
     }
@@ -116,7 +116,7 @@ class InfoPresenter constructor(
   
   fun onDeleteClicked() {
     state = DELETING_DIALOG
-    viewState.showDeleteDialog(serviceModel.serviceName)
+    viewState.showDeleteDialog(passwordInfoItem.websiteName)
   }
   
   fun onHideDeleteDialog() {
@@ -129,7 +129,8 @@ class InfoPresenter constructor(
     viewState.showLoading()
     launch {
       onIoThread {
-        servicesRepository.deleteService(masterPassword, serviceModel, notifySubscribers = true)
+        servicesRepository.deletePassword(masterPassword, passwordInfoItem,
+          notifySubscribers = true)
       }
       state = INITIAL
       viewState.showExit()
@@ -138,13 +139,13 @@ class InfoPresenter constructor(
   }
   
   fun onCopyClicked() {
-    clipboard.copyToClipboard(serviceModel.password)
+    clipboard.copyToClipboard(passwordInfoItem.notes)
     viewState.showCopiedPassword()
   }
   
   fun onEditPasswordIconClicked() {
     router.goForward(Screens.PasswordCreatingScreen)
-    launch { passwordCreatingCommunicator.send(EditPassword(serviceModel.password)) }
+    launch { passwordCreatingCommunicator.send(EditPassword(passwordInfoItem.notes)) }
   }
   
   fun onBackClicked() {
@@ -178,7 +179,7 @@ class InfoPresenter constructor(
   }
   
   private fun reactToSaveButtonClicked(newPassword: String) {
-    if (serviceModel.password == newPassword) {
+    if (passwordInfoItem.notes == newPassword) {
       // Password is the same as was before, just closing PasswordCreatingScreen
       router.goBack()
       return
@@ -189,8 +190,8 @@ class InfoPresenter constructor(
   private fun reactToNewPasswordSaved(newPassword: String) {
     launch {
       passwordCreatingCommunicator.send(ShowLoading)
-      serviceModel = serviceModel.copy(password = newPassword)
-      onIoThread { servicesRepository.updateService(masterPassword, serviceModel) }
+      passwordInfoItem = passwordInfoItem.copy(notes = newPassword)
+      onIoThread { servicesRepository.updatePassword(masterPassword, passwordInfoItem) }
       viewState.setPassword(newPassword)
       passwordCreatingCommunicator.send(ExitScreen)
       router.goBack()

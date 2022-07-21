@@ -1,12 +1,12 @@
 package com.arsvechkarev.vault.features.creating_service
 
 import buisnesslogic.MasterPasswordHolder.masterPassword
+import com.arsvechkarev.vault.core.CachedPasswordsStorage
 import com.arsvechkarev.vault.core.DispatchersFacade
 import com.arsvechkarev.vault.core.Router
 import com.arsvechkarev.vault.core.Screens
-import com.arsvechkarev.vault.core.ServicesListenableRepository
 import com.arsvechkarev.vault.core.communicators.FlowCommunicator
-import com.arsvechkarev.vault.core.model.ServiceModel
+import com.arsvechkarev.vault.core.model.PasswordInfoItem
 import com.arsvechkarev.vault.core.mvi.BaseMviPresenter
 import com.arsvechkarev.vault.features.creating_password.PasswordCreatingActions.ConfigureMode.NewPassword
 import com.arsvechkarev.vault.features.creating_password.PasswordCreatingActions.ExitScreen
@@ -26,7 +26,7 @@ import java.util.UUID
 class CreatingServicePresenter constructor(
   @PasswordCreatingCommunicator
   private val passwordCreatingCommunicator: FlowCommunicator<PasswordCreatingEvents>,
-  private val servicesRepository: ServicesListenableRepository,
+  private val servicesRepository: CachedPasswordsStorage,
   private val router: Router,
   dispatchers: DispatchersFacade
 ) : BaseMviPresenter<CreatingServiceActions, CreatingServiceUserActions, CreatingServiceState>(
@@ -83,10 +83,10 @@ class CreatingServicePresenter constructor(
   private fun performServiceSaving(password: String) {
     launch {
       passwordCreatingCommunicator.send(ShowLoading)
-      val serviceInfo = ServiceModel(
+      val serviceInfo = PasswordInfoItem(
         UUID.randomUUID().toString(), state.serviceName, state.username, state.email, password
       )
-      onIoThread { servicesRepository.saveService(masterPassword, serviceInfo) }
+      onIoThread { servicesRepository.savePassword(masterPassword, serviceInfo) }
       passwordCreatingCommunicator.send(ExitScreen)
       router.goBackTo(Screens.ServicesListScreen)
     }

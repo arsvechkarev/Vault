@@ -23,7 +23,7 @@ class ListenableCachedPasswordStorage(private val cachedPasswordStorage: CachedP
     notifySubscribers(masterPassword)
   }
   
-  suspend fun deleteService(masterPassword: String, passwordInfoItem: PasswordInfoItem) {
+  suspend fun deletePassword(masterPassword: String, passwordInfoItem: PasswordInfoItem) {
     cachedPasswordStorage.deletePassword(masterPassword, passwordInfoItem)
     notifySubscribers(masterPassword)
   }

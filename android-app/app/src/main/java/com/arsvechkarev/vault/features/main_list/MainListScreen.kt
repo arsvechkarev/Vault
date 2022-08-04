@@ -1,8 +1,9 @@
-package com.arsvechkarev.vault.features.main
+package com.arsvechkarev.vault.features.main_list
 
 import android.content.Context
 import android.text.SpannableString
 import android.text.style.RelativeSizeSpan
+import android.util.Log
 import android.view.Gravity.BOTTOM
 import android.view.Gravity.CENTER
 import android.view.Gravity.CENTER_VERTICAL
@@ -11,13 +12,14 @@ import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import com.arsvechkarev.vault.R
 import com.arsvechkarev.vault.core.TypefaceSpan
-import com.arsvechkarev.vault.core.extensions.getDeleteMessageText
+import com.arsvechkarev.vault.core.di.appComponent
 import com.arsvechkarev.vault.core.extensions.ifTrue
+import com.arsvechkarev.vault.core.extensions.moxyStore
 import com.arsvechkarev.vault.core.mvi.MviView
-import com.arsvechkarev.vault.features.settings.SettingsScreenSingleEvents
+import com.arsvechkarev.vault.features.main_list.MainListUiEvent.OnInit
+import com.arsvechkarev.vault.features.main_list.MainListUiEvent.OnPasswordItemClicked
 import com.arsvechkarev.vault.viewbuilding.Colors
 import com.arsvechkarev.vault.viewbuilding.Dimens.FabSize
-import com.arsvechkarev.vault.viewbuilding.Dimens.IconPadding
 import com.arsvechkarev.vault.viewbuilding.Dimens.ImageNoServicesSize
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginLarge
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginNormal
@@ -33,23 +35,15 @@ import com.arsvechkarev.vault.views.MaterialProgressBar
 import com.arsvechkarev.vault.views.behaviors.HeaderBehavior
 import com.arsvechkarev.vault.views.behaviors.ScrollingRecyclerBehavior
 import com.arsvechkarev.vault.views.behaviors.ViewUnderHeaderBehavior
-import com.arsvechkarev.vault.views.dialogs.InfoDialog.Companion.InfoDialog
-import com.arsvechkarev.vault.views.dialogs.InfoDialog.Companion.infoDialog
-import com.arsvechkarev.vault.views.dialogs.LoadingDialog
-import com.arsvechkarev.vault.views.dialogs.loadingDialog
 import navigation.BaseScreen
 import viewdsl.Size.Companion.MatchParent
 import viewdsl.Size.Companion.WrapContent
 import viewdsl.addView
 import viewdsl.animateInvisible
 import viewdsl.animateVisible
-import viewdsl.backgroundColor
 import viewdsl.behavior
-import viewdsl.circleRippleBackground
 import viewdsl.classNameTag
-import viewdsl.gone
 import viewdsl.gravity
-import viewdsl.id
 import viewdsl.image
 import viewdsl.invisible
 import viewdsl.layoutGravity
@@ -63,15 +57,13 @@ import viewdsl.size
 import viewdsl.tag
 import viewdsl.text
 import viewdsl.textSize
-import viewdsl.visible
 import viewdsl.withViewBuilder
 
-class ServicesListScreen : BaseScreen(), MviView<MainState, SettingsScreenSingleEvents> {
+class MainListScreen : BaseScreen(), MviView<MainListState, Nothing> {
   
   override fun buildLayout(context: Context) = context.withViewBuilder {
     val viewUnderHeaderBehavior = ViewUnderHeaderBehavior()
     RootCoordinatorLayout {
-      backgroundColor(Colors.Background)
       FrameLayout(MatchParent, WrapContent) {
         behavior(HeaderBehavior())
         paddings(top = VerticalMarginSmall + StatusBarHeight, bottom = MarginSmall,
@@ -80,20 +72,11 @@ class ServicesListScreen : BaseScreen(), MviView<MainState, SettingsScreenSingle
           text(context.getString(R.string.text_passwords))
           layoutGravity(CENTER_VERTICAL)
         }
-        ImageView(WrapContent, WrapContent) {
-          id(R.drawable.ic_settings)
-          gone()
-          image(R.drawable.ic_settings)
-          layoutGravity(CENTER_VERTICAL or END)
-          padding(IconPadding)
-          circleRippleBackground(Colors.Ripple)
-          //          onClick { presenter.applyAction(OnSettingsClicked) }
-        }
       }
       RecyclerView(MatchParent, WrapContent) {
         classNameTag()
         behavior(ScrollingRecyclerBehavior())
-        setupWith(this@ServicesListScreen.adapter)
+        setupWith(this@MainListScreen.adapter)
       }
       VerticalLayout(MatchParent, MatchParent) {
         tag(LayoutLoading)
@@ -140,47 +123,31 @@ class ServicesListScreen : BaseScreen(), MviView<MainState, SettingsScreenSingle
         image(R.drawable.ic_plus)
         layoutGravity(BOTTOM or END)
         rippleBackground(Colors.Ripple, Colors.Accent, cornerRadius = FabSize)
-        //        onClick { presenter.applyAction(OnFabClicked) }
       }
-      InfoDialog()
-      LoadingDialog()
     }
   }
   
+  private val store by moxyStore { MainListStore(appComponent) }
+  
   private val adapter by lazy {
-    ServicesListAdapter(
-      onItemClick = {/* presenter.applyAction(OnServiceItemClicked(it))*/ },
-      onItemLongClick = { /*presenter.applyAction(OnServiceItemLongClicked(it)) */ }
+    MainListAdapter(
+      onItemClick = { item -> store.dispatch(OnPasswordItemClicked(item)) },
     )
   }
   
-  override fun render(state: MainState) {
-    if (state.showSettingsIcon) {
-      imageView(R.drawable.ic_settings).visible()
-    }
-    state.result?.handle {
+  override fun onInit() {
+    Log.d("TeaStoreImplMainList", "dispatching init")
+    store.dispatch(OnInit)
+  }
+  
+  override fun render(state: MainListState) {
+    state.data?.handle {
       onLoading { showView(view(LayoutLoading)) }
       onEmpty { showView(view(LayoutNoPasswords)) }
       onSuccess { list ->
         showView(viewAs<RecyclerView>())
         adapter.submitList(list)
       }
-    }
-    val deleteDialog = state.deleteDialog
-    if (deleteDialog != null) {
-      infoDialog.showWithDeleteAndCancelOption(
-        R.string.text_delete_service,
-        getDeleteMessageText(deleteDialog.passwordInfoItem.websiteName),
-        onDeleteClicked = {/* presenter.applyAction(OnAgreeToDeleteServiceClicked)*/ }
-      )
-      //      infoDialog.onHide = { presenter.applyAction(HideDeleteDialog) }
-    } else {
-      infoDialog.hide()
-    }
-    if (state.showDeletionLoadingDialog) {
-      loadingDialog.show()
-    } else {
-      loadingDialog.hide()
     }
   }
   

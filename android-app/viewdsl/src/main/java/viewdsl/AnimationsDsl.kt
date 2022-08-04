@@ -44,12 +44,10 @@ fun View.animateVisible(
 ) {
   if (visibility == View.VISIBLE && alpha == 1f) return
   alpha = 0f
+  visible()
   animate().alpha(1f).setDuration(duration)
       .setInterpolator(AccelerateDecelerateInterpolator)
-      .withEndAction {
-        visible()
-        andThen()
-      }
+      .withEndAction(andThen)
       .start()
 }
 

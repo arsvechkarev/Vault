@@ -129,8 +129,7 @@ class InfoPresenter constructor(
     viewState.showLoading()
     launch {
       onIoThread {
-        servicesRepository.deletePassword(masterPassword, passwordInfoItem,
-          notifySubscribers = true)
+        servicesRepository.deletePassword(masterPassword, passwordInfoItem)
       }
       state = INITIAL
       viewState.showExit()

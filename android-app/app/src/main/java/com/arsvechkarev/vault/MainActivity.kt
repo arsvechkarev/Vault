@@ -29,6 +29,11 @@ class MainActivity : BaseActivity(), AppComponentProvider {
   
   private var _appComponent: AppComponent? = null
   
+  override val appComponent: AppComponent
+    get() = checkNotNull(_appComponent) {
+      "App component cannot be accessed before onCreate() or after onDestroy()"
+    }
+  
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     ViewDslConfiguration.initializeResources(resources)
@@ -45,7 +50,7 @@ class MainActivity : BaseActivity(), AppComponentProvider {
       return
     }
     if (appComponent.authChecker.isUserLoggedIn()) {
-      appComponent.router.goForward(Screens.StartScreen)
+      appComponent.router.goForward(Screens.LoginScreen)
     } else {
       appComponent.router.goForward(Screens.InitialScreen)
     }
@@ -82,11 +87,6 @@ class MainActivity : BaseActivity(), AppComponentProvider {
     appComponent.navigator.releaseScreens()
     _appComponent = null
   }
-  
-  override val appComponent: AppComponent
-    get() = checkNotNull(_appComponent) {
-      "App component cannot be accessed before onCreate() or after onDestroy()"
-    }
   
   private companion object {
     

@@ -1,4 +1,4 @@
-package com.arsvechkarev.vault.features.main
+package com.arsvechkarev.vault.features.main_list
 
 import android.view.Gravity.CENTER
 import android.widget.ImageView
@@ -18,7 +18,6 @@ import viewdsl.Size.Companion.WrapContent
 import viewdsl.layoutGravity
 import viewdsl.margins
 import viewdsl.onClick
-import viewdsl.onLongClick
 import viewdsl.paddingHorizontal
 import viewdsl.paddingVertical
 import viewdsl.rippleBackground
@@ -26,9 +25,8 @@ import viewdsl.tag
 import viewdsl.text
 import viewdsl.viewAs
 
-class ServicesListAdapter(
+class MainListAdapter(
   private val onItemClick: (PasswordInfoItem) -> Unit,
-  private val onItemLongClick: (PasswordInfoItem) -> Unit
 ) : BaseListAdapter() {
   
   init {
@@ -52,7 +50,6 @@ class ServicesListAdapter(
         }
         onInitViewHolder {
           itemView.onClick { onItemClick(item) }
-          itemView.onLongClick { onItemLongClick(item) }
         }
         onBind {
           itemView.viewAs<ImageView>(ItemServiceInfoImage).setServiceIcon(item.websiteName)

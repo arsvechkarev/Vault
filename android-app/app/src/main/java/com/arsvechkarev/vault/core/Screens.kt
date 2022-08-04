@@ -8,8 +8,8 @@ import com.arsvechkarev.vault.features.creating_service.CreatingServiceScreen
 import com.arsvechkarev.vault.features.info.InfoScreen
 import com.arsvechkarev.vault.features.info.InfoScreen.Companion.SERVICE
 import com.arsvechkarev.vault.features.initial.InitialScreen
+import com.arsvechkarev.vault.features.login.LoginScreen
 import com.arsvechkarev.vault.features.settings.SettingsScreen
-import com.arsvechkarev.vault.features.start.StartScreen
 import navigation.Screen
 
 object Screens {
@@ -18,9 +18,9 @@ object Screens {
   
   val CreateMasterPasswordScreen = Screen { CreatingMasterPasswordScreen::class }
   
-  val StartScreen = Screen { StartScreen::class }
+  val LoginScreen = Screen { LoginScreen::class }
   
-  val ServicesListScreen = Screen { com.arsvechkarev.vault.features.main.ServicesListScreen::class }
+  val MainListScreen = Screen { com.arsvechkarev.vault.features.main_list.MainListScreen::class }
   
   val CreatingServiceScreen = Screen { CreatingServiceScreen::class }
   

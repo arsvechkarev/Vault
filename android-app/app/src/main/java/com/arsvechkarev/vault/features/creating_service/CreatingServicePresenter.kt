@@ -88,7 +88,7 @@ class CreatingServicePresenter constructor(
       )
       onIoThread { servicesRepository.savePassword(masterPassword, serviceInfo) }
       passwordCreatingCommunicator.send(ExitScreen)
-      router.goBackTo(Screens.ServicesListScreen)
+      router.goBackTo(Screens.MainListScreen)
     }
   }
   

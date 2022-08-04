@@ -1,6 +1,6 @@
 ext {
 
-  coroutines_version = '1.4.1'
+  coroutines_version = '1.6.3'
   moxy_version = '2.2.0'
 
   applicationDependencies = [

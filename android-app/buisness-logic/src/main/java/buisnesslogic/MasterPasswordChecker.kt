@@ -10,10 +10,10 @@ interface MasterPasswordChecker {
   /**
    * Initializes encryption file with [masterPassword]
    */
-  fun initializeEncryptedFile(masterPassword: String)
+  suspend fun initializeEncryptedFile(masterPassword: String)
   
   /**
    * Checks whether [masterPassword] is correct or not
    */
-  fun isCorrect(masterPassword: String): Boolean
+  suspend fun isCorrect(masterPassword: String): Boolean
 }

@@ -1,19 +1,18 @@
-package com.arsvechkarev.vault.features.start
+package com.arsvechkarev.vault.features.login
 
 import android.content.Context
 import android.view.Gravity.CENTER
 import android.view.View
 import com.arsvechkarev.vault.R
-import com.arsvechkarev.vault.core.extensions.showToast
+import com.arsvechkarev.vault.core.di.appComponent
+import com.arsvechkarev.vault.core.extensions.moxyStore
 import com.arsvechkarev.vault.core.mvi.MviView
-import com.arsvechkarev.vault.features.start.StartScreenNews.ShowEditTextStubPassword
-import com.arsvechkarev.vault.features.start.StartScreenNews.ShowPermanentLockout
-import com.arsvechkarev.vault.features.start.StartScreenNews.ShowTooManyAttemptsTryAgainLater
+import com.arsvechkarev.vault.features.login.LoginUiEvent.OnAppearedOnScreen
+import com.arsvechkarev.vault.features.login.LoginUiEvent.OnEnteredPassword
+import com.arsvechkarev.vault.features.login.LoginUiEvent.OnTypingText
 import com.arsvechkarev.vault.viewbuilding.Colors
-import com.arsvechkarev.vault.viewbuilding.Dimens.FingerprintIconSize
 import com.arsvechkarev.vault.viewbuilding.Dimens.ImageLogoSize
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginExtraLarge
-import com.arsvechkarev.vault.viewbuilding.Dimens.MarginLarge
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginNormal
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginSmall
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginTiny
@@ -32,8 +31,6 @@ import viewdsl.gravity
 import viewdsl.hideKeyboard
 import viewdsl.id
 import viewdsl.image
-import viewdsl.invisible
-import viewdsl.isVisible
 import viewdsl.margin
 import viewdsl.marginHorizontal
 import viewdsl.margins
@@ -44,7 +41,8 @@ import viewdsl.textColor
 import viewdsl.textSize
 import viewdsl.withViewBuilder
 
-class StartScreen : BaseScreen(), MviView<StartScreenState, StartScreenNews> {
+// TODO (7/21/2022): Add support for entering code instead of master password
+class LoginScreen : BaseScreen(), MviView<LoginState, Nothing> {
   
   override fun buildLayout(context: Context) = context.withViewBuilder {
     RootConstraintLayout {
@@ -80,22 +78,11 @@ class StartScreen : BaseScreen(), MviView<StartScreenState, StartScreenNews> {
         child<EditTextPassword>(MatchParent, WrapContent) {
           id(EditTextPasswordId)
           marginHorizontal(MarginNormal)
+          text("qwerty123??") // TODO (7/22/2022): DELETE THIS!!!
           setHint(R.string.hint_enter_password)
-          //          onTextChanged { presenter.applyAction(OnEditTextTyping) }
-          //          onSubmit { text -> presenter.applyAction(OnEnteredPassword(text)) }
+          onTextChanged { store.dispatch(OnTypingText) }
+          onSubmit { text -> store.dispatch(OnEnteredPassword(text)) }
         }
-      }
-      ImageView(FingerprintIconSize, FingerprintIconSize) {
-        id(FingerprintButtonId)
-        constraints {
-          bottomToTopOf(ContinueButtonId)
-          startToStartOf(parent)
-          endToEndOf(parent)
-        }
-        image(R.drawable.ic_fingerprint)
-        margin(MarginLarge)
-        invisible()
-        //        onClick { presenter.applyAction(OnFingerprintIconClicked) }
       }
       TextView(MatchParent, WrapContent, style = Button()) {
         id(ContinueButtonId)
@@ -108,16 +95,21 @@ class StartScreen : BaseScreen(), MviView<StartScreenState, StartScreenNews> {
         }
         onClick {
           val text = viewAs<EditTextPassword>(EditTextPasswordId).getText()
-          //          presenter.applyAction(OnEnteredPassword(text))
+          store.dispatch(OnEnteredPassword(text))
         }
       }
       LoadingDialog()
     }
   }
   
-  override fun render(state: StartScreenState) {
+  private val store by moxyStore { LoginStore(appComponent) }
+  
+  override fun onAppearedOnScreen() {
+    store.dispatch(OnAppearedOnScreen)
+  }
+  
+  override fun render(state: LoginState) {
     if (state.isLoading) loadingDialog.show() else loadingDialog.hide()
-    view(FingerprintButtonId).isVisible = state.showFingerprintIcon
     if (state.showPasswordIsIncorrect) {
       textView(TextErrorId).text(R.string.text_password_is_incorrect)
     } else {
@@ -131,27 +123,12 @@ class StartScreen : BaseScreen(), MviView<StartScreenState, StartScreenNews> {
     }
   }
   
-  override fun handleNews(event: StartScreenNews) {
-    when (event) {
-      ShowPermanentLockout -> {
-        showToast(R.string.text_biometrics_use_password)
-      }
-      ShowTooManyAttemptsTryAgainLater -> {
-        showToast(R.string.text_biometrics_try_again_later)
-      }
-      ShowEditTextStubPassword -> {
-        viewAs<EditTextPassword>(EditTextPasswordId).text(R.string.text_password_stub)
-      }
-    }
-  }
-  
   private companion object {
     
     val LogoLayoutId = View.generateViewId()
     val ContentLayoutId = View.generateViewId()
     val TextErrorId = View.generateViewId()
     val EditTextPasswordId = View.generateViewId()
-    val FingerprintButtonId = View.generateViewId()
     val ContinueButtonId = View.generateViewId()
   }
 }

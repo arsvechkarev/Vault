@@ -52,7 +52,7 @@ class CreatingMasterPasswordReducer(
         state { copy(passwordStrength = event.passwordStrength) }
       }
       FinishedAuth -> {
-        router.switchToNewRoot(Screens.ServicesListScreen)
+        router.switchToNewRoot(Screens.MainListScreen)
       }
     }
   }

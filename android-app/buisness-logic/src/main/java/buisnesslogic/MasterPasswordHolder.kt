@@ -1,5 +1,6 @@
 package buisnesslogic
 
+// TODO (7/21/2022): Store password as byte array?
 object MasterPasswordHolder {
   
   private var _masterPassword: String? = null

@@ -17,6 +17,10 @@ class FileSaverModuleImpl(
       .setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
       .build()
   
-  override val fileSaver =
-      EncryptionFileSaver(PASSWORDS_FILENAME, coreModule.application, masterKey)
+  override val fileSaver = EncryptionFileSaver(
+    PASSWORDS_FILENAME,
+    coreModule.application,
+    masterKey,
+    coreModule.dispatchersFacade
+  )
 }

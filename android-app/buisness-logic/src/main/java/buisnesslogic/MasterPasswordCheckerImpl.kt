@@ -5,12 +5,12 @@ class MasterPasswordCheckerImpl(
   private val fileSaver: FileSaver
 ) : MasterPasswordChecker {
   
-  override fun initializeEncryptedFile(masterPassword: String) {
+  override suspend fun initializeEncryptedFile(masterPassword: String) {
     val encodedText = cryptography.encryptData(masterPassword, "")
     fileSaver.saveData(encodedText)
   }
   
-  override fun isCorrect(masterPassword: String): Boolean {
+  override suspend fun isCorrect(masterPassword: String): Boolean {
     val ciphertext = fileSaver.readData() ?: return false
     return try {
       cryptography.decryptData(masterPassword, ciphertext)

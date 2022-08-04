@@ -8,7 +8,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.cancelChildren
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import moxy.MvpDelegate
 import moxy.MvpDelegateHolder
@@ -40,7 +39,9 @@ private class MoxyStoreDelegate<State : Any, Event : Any, News : Any>(
       override fun providePresenter(delegated: Any?): MvpPresenter<*> = factory()
       override fun bind(container: Any?, presenter: MvpPresenter<*>) {
         @Suppress("UNCHECKED_CAST")
-        this@MoxyStoreDelegate.presenter = presenter as PresenterStore<State, Event, News>
+        val presenterStore = presenter as PresenterStore<State, Event, News>
+        presenterStore.initialize()
+        this@MoxyStoreDelegate.presenter = presenterStore
       }
     }
     delegate.registerExternalPresenterField(field)
@@ -59,9 +60,9 @@ private class PresenterStore<State : Any, UiEvent : Any, News : Any>(
 ) : MvpPresenter<MviView<State, News>>() {
   
   private val mainStoreScope = CoroutineScope(SupervisorJob())
-  private val stateAndNewsScope = CoroutineScope(context = SupervisorJob() + dispatchersFacade.Main)
+  private val stateAndNewsScope = CoroutineScope(SupervisorJob() + dispatchersFacade.Main)
   
-  override fun onFirstViewAttach() {
+  fun initialize() {
     store.launch(mainStoreScope, DefaultDispatchersFacade)
   }
   

@@ -6,12 +6,14 @@ package com.arsvechkarev.vault.core
  *
  * @param S type of success result
  *
- * @see ResultType
+ * @see Type
  * @see ResultConsumer
  */
-class Result<S> private constructor(
+// TODO (7/21/2022): Refactor to "ContentState" (Success, Empty) and
+//  "ScreenState" (Success,Loading, Empty)
+class State<S> private constructor(
   private val data: Any?,
-  private val resultType: ResultType
+  private val type: Type
 ) {
   
   /**
@@ -22,38 +24,36 @@ class Result<S> private constructor(
   @Suppress("UNCHECKED_CAST")
   fun handle(consumerLambda: ResultConsumer<S>.() -> Unit) {
     val consumer = ResultConsumer<S>().apply(consumerLambda)
-    when (resultType) {
-      ResultType.LOADING -> consumer.onLoading.invoke()
-      ResultType.EMPTY -> consumer.onEmpty.invoke()
-      ResultType.SUCCESS -> consumer.onSuccess.invoke(data as S)
-      ResultType.FAILURE -> consumer.onFailure.invoke(data as Throwable)
+    when (type) {
+      Type.LOADING -> consumer.onLoading.invoke()
+      Type.EMPTY -> consumer.onEmpty.invoke()
+      Type.SUCCESS -> consumer.onSuccess.invoke(data as S)
+      Type.FAILURE -> consumer.onFailure.invoke(data as Throwable)
     }
   }
   
-  val isLoading get() = resultType == ResultType.LOADING
+  val isLoading get() = type == Type.LOADING
   
-  val isSuccess get() = resultType == ResultType.SUCCESS
+  val isSuccess get() = type == Type.SUCCESS
   
-  val isEmpty get() = resultType == ResultType.EMPTY
+  val isEmpty get() = type == Type.EMPTY
   
-  val isFailure get() = resultType == ResultType.FAILURE
+  val isFailure get() = type == Type.FAILURE
   
   companion object {
-    
-    fun <S> loading(): Result<S> = Result(null, ResultType.LOADING)
-    
-    fun <S> success(value: S): Result<S> = Result(value, ResultType.SUCCESS)
-    
-    fun <S> empty(): Result<S> = Result(null, ResultType.EMPTY)
-    
-    fun <S> success(value: Throwable): Result<S> = Result(value, ResultType.FAILURE)
+  
+    fun <S> loading(): State<S> = State(null, Type.LOADING)
+  
+    fun <S> success(value: S): State<S> = State(value, Type.SUCCESS)
+  
+    fun <S> empty(): State<S> = State(null, Type.EMPTY)
   }
 }
 
 /**
- * Represents a result type that [Result] could have
+ * Represents a result type that [State] could have
  */
-enum class ResultType {
+private enum class Type {
   SUCCESS, FAILURE, LOADING, EMPTY
 }
 

@@ -80,7 +80,7 @@ class CreatingMasterPasswordScreen : BaseScreen(),
         invisible()
         margins(top = MarginNormal + StatusBarHeight, start = MarginNormal, end = MarginNormal)
         ImageView(WrapContent, WrapContent, style = ImageBack) {
-          onClick { store.dispatch(OnBackButtonClicked) }
+          onClick { store.tryDispatch(OnBackButtonClicked) }
         }
         TextView(WrapContent, WrapContent, style = BoldTextView) {
           layoutGravity(CENTER)
@@ -117,7 +117,7 @@ class CreatingMasterPasswordScreen : BaseScreen(),
             marginHorizontal(MarginNormal - MarginTiny)
             setHint(R.string.hint_enter_password)
             onTextChanged { text ->
-              store.dispatch(OnInitialPasswordTyping(text))
+              store.tryDispatch(OnInitialPasswordTyping(text))
             }
           }
           child<EditTextPassword>(MatchParent, WrapContent) {
@@ -125,7 +125,7 @@ class CreatingMasterPasswordScreen : BaseScreen(),
             marginHorizontal(MarginNormal - MarginTiny)
             setHint(R.string.hint_repeat_password)
             onTextChanged { text ->
-              store.dispatch(OnRepeatPasswordTyping(text))
+              store.tryDispatch(OnRepeatPasswordTyping(text))
             }
           }
         }
@@ -143,12 +143,12 @@ class CreatingMasterPasswordScreen : BaseScreen(),
         layoutGravity(Gravity.BOTTOM)
         text(R.string.text_continue)
         margins(start = MarginNormal, end = MarginNormal, bottom = MarginNormal)
-        onClick { store.dispatch(OnContinueClicked) }
+        onClick { store.tryDispatch(OnContinueClicked) }
       }
       LoadingDialog()
       PasswordStrengthDialog {
-        onHide = { store.dispatch(RequestHidePasswordStrengthDialog) }
-        onGotItClicked { store.dispatch(RequestHidePasswordStrengthDialog) }
+        onHide = { store.tryDispatch(RequestHidePasswordStrengthDialog) }
+        onGotItClicked { store.tryDispatch(RequestHidePasswordStrengthDialog) }
       }
     }
   }
@@ -192,7 +192,7 @@ class CreatingMasterPasswordScreen : BaseScreen(),
   }
   
   override fun handleBackPress(): Boolean {
-    store.dispatch(OnBackPressed)
+    store.tryDispatch(OnBackPressed)
     return true
   }
   
@@ -213,7 +213,7 @@ class CreatingMasterPasswordScreen : BaseScreen(),
     }
     if (passwordStatus == TOO_WEAK) {
       textView(TextError).drawables(end = R.drawable.ic_question, color = Colors.Error)
-      textView(TextError).onClick { store.dispatch(RequestShowPasswordStrengthDialog) }
+      textView(TextError).onClick { store.tryDispatch(RequestShowPasswordStrengthDialog) }
     } else {
       textView(TextError).drawables(end = R.drawable.ic_question, color = Colors.Background)
       textView(TextError).clearOnClick()

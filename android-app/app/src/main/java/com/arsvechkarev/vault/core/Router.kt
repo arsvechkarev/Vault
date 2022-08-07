@@ -2,7 +2,6 @@ package com.arsvechkarev.vault.core
 
 import com.github.terrakok.cicerone.BaseRouter
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import navigation.Back
 import navigation.BackTo
@@ -30,7 +29,6 @@ class Router(private val scope: CoroutineScope) : BaseRouter() {
   }
   
   fun switchToNewRoot(screenInfo: ScreenInfo) {
-    // TODO (7/22/2022): remove delay
-    scope.launch { delay(3000); executeCommands(SwitchToNewRoot(screenInfo)) }
+    scope.launch { executeCommands(SwitchToNewRoot(screenInfo)) }
   }
 }

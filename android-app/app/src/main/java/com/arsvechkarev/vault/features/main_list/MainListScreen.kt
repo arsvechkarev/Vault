@@ -3,7 +3,6 @@ package com.arsvechkarev.vault.features.main_list
 import android.content.Context
 import android.text.SpannableString
 import android.text.style.RelativeSizeSpan
-import android.util.Log
 import android.view.Gravity.BOTTOM
 import android.view.Gravity.CENTER
 import android.view.Gravity.CENTER_VERTICAL
@@ -11,6 +10,7 @@ import android.view.Gravity.END
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import com.arsvechkarev.vault.R
+import com.arsvechkarev.vault.VaultApplication.Companion.AppMainCoroutineScope
 import com.arsvechkarev.vault.core.TypefaceSpan
 import com.arsvechkarev.vault.core.di.appComponent
 import com.arsvechkarev.vault.core.extensions.ifTrue
@@ -35,6 +35,7 @@ import com.arsvechkarev.vault.views.MaterialProgressBar
 import com.arsvechkarev.vault.views.behaviors.HeaderBehavior
 import com.arsvechkarev.vault.views.behaviors.ScrollingRecyclerBehavior
 import com.arsvechkarev.vault.views.behaviors.ViewUnderHeaderBehavior
+import kotlinx.coroutines.launch
 import navigation.BaseScreen
 import viewdsl.Size.Companion.MatchParent
 import viewdsl.Size.Companion.WrapContent
@@ -131,13 +132,13 @@ class MainListScreen : BaseScreen(), MviView<MainListState, Nothing> {
   
   private val adapter by lazy {
     MainListAdapter(
-      onItemClick = { item -> store.dispatch(OnPasswordItemClicked(item)) },
+      onItemClick = { item -> store.tryDispatch(OnPasswordItemClicked(item)) },
     )
   }
   
   override fun onInit() {
-    Log.d("TeaStoreImplMainList", "dispatching init")
-    store.dispatch(OnInit)
+    AppMainCoroutineScope.launch { store.dispatch(OnInit) }
+    //    store.tryDispatch(OnInit)
   }
   
   override fun render(state: MainListState) {

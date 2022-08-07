@@ -76,7 +76,7 @@ class TeaTest {
     
     assertEquals(initialState, store.state.value)
     
-    store.dispatch(OnLoadClick)
+    store.tryDispatch(OnLoadClick)
   
     assertEquals(State(loadedValue), store.state.value)
   }

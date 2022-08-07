@@ -4,6 +4,7 @@ import android.content.Context
 import android.view.Gravity.CENTER
 import android.view.View
 import com.arsvechkarev.vault.R
+import com.arsvechkarev.vault.VaultApplication.Companion.AppMainCoroutineScope
 import com.arsvechkarev.vault.core.di.appComponent
 import com.arsvechkarev.vault.core.extensions.moxyStore
 import com.arsvechkarev.vault.core.mvi.MviView
@@ -23,6 +24,7 @@ import com.arsvechkarev.vault.viewbuilding.TextSizes
 import com.arsvechkarev.vault.views.EditTextPassword
 import com.arsvechkarev.vault.views.dialogs.LoadingDialog
 import com.arsvechkarev.vault.views.dialogs.loadingDialog
+import kotlinx.coroutines.launch
 import navigation.BaseScreen
 import viewdsl.Size.Companion.MatchParent
 import viewdsl.Size.Companion.WrapContent
@@ -80,8 +82,8 @@ class LoginScreen : BaseScreen(), MviView<LoginState, Nothing> {
           marginHorizontal(MarginNormal)
           text("qwerty123??") // TODO (7/22/2022): DELETE THIS!!!
           setHint(R.string.hint_enter_password)
-          onTextChanged { store.dispatch(OnTypingText) }
-          onSubmit { text -> store.dispatch(OnEnteredPassword(text)) }
+          onTextChanged { store.tryDispatch(OnTypingText) }
+          onSubmit { text -> store.tryDispatch(OnEnteredPassword(text)) }
         }
       }
       TextView(MatchParent, WrapContent, style = Button()) {
@@ -95,7 +97,7 @@ class LoginScreen : BaseScreen(), MviView<LoginState, Nothing> {
         }
         onClick {
           val text = viewAs<EditTextPassword>(EditTextPasswordId).getText()
-          store.dispatch(OnEnteredPassword(text))
+          store.tryDispatch(OnEnteredPassword(text))
         }
       }
       LoadingDialog()
@@ -105,7 +107,8 @@ class LoginScreen : BaseScreen(), MviView<LoginState, Nothing> {
   private val store by moxyStore { LoginStore(appComponent) }
   
   override fun onAppearedOnScreen() {
-    store.dispatch(OnAppearedOnScreen)
+    // TODO (8/6/2022): Maybe create custom scope for screens
+    AppMainCoroutineScope.launch { store.dispatch(OnAppearedOnScreen) }
   }
   
   override fun render(state: LoginState) {

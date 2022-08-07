@@ -13,5 +13,7 @@ interface TeaStore<out State : Any, in UiEvent : Any, News : Any> {
   
   fun launch(coroutineScope: CoroutineScope, dispatchersFacade: DispatchersFacade)
   
-  fun dispatch(event: UiEvent)
+  suspend fun dispatch(event: UiEvent)
+  
+  fun tryDispatch(event: UiEvent)
 }

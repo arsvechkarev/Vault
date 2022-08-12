@@ -4,6 +4,8 @@
   <string name="text_password">Password</string>
   <string name="text_passwords">Passwords</string>
   <string name="text_settings">Settings</string>
+  <string name="text_import_passwords">Import passwords</string>
+  <string name="text_export_passwords">Export passwords</string>
   <string name="text_create_master_password">Create master password</string>
   <string name="text_weak">Weak</string>
   <string name="text_medium">Medium</string>
@@ -29,8 +31,12 @@
     your phone can open the app, or you can enter the password every time you open the app, which is safer,
     but less convenient. You can change your option later in settings
   </string>
-  <string name="text_do_not_save_password">No, I will enter password every time I open the app, although it is less convenient</string>
-  <string name="text_save_password_locally">Yes, I want password to be saved locally, although it is less safe</string>
+  <string name="text_do_not_save_password">No, I will enter password every time I open the app, although it is
+    less convenient
+  </string>
+  <string name="text_save_password_locally">Yes, I want password to be saved locally, although it is less
+    safe
+  </string>
   <string name="text_enter_master_password">Enter master password</string>
   <string name="text_enter_service_name">Enter service name</string>
   <string name="text_service_name_cannot_be_empty">Service name cannot be empty</string>

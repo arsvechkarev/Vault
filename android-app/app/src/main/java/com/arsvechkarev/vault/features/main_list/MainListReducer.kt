@@ -13,10 +13,11 @@ import com.arsvechkarev.vault.features.main_list.MainListUiEvent.OnInit
 import com.arsvechkarev.vault.features.main_list.MainListUiEvent.OnMenuItemClicked
 import com.arsvechkarev.vault.features.main_list.MainListUiEvent.OnOpenMenuClicked
 import com.arsvechkarev.vault.features.main_list.MainListUiEvent.OnPasswordItemClicked
-import com.arsvechkarev.vault.features.main_list.MenuItem.EXPORT
-import com.arsvechkarev.vault.features.main_list.MenuItem.IMPORT
-import com.arsvechkarev.vault.features.main_list.MenuItem.NEW
-import com.arsvechkarev.vault.features.main_list.MenuItem.SETTINGS
+import com.arsvechkarev.vault.features.main_list.MenuItemType.EXPORT_PASSWORDS
+import com.arsvechkarev.vault.features.main_list.MenuItemType.IMPORT_PASSWORDS
+import com.arsvechkarev.vault.features.main_list.MenuItemType.NEW_PASSWORD
+import com.arsvechkarev.vault.features.main_list.MenuItemType.SETTINGS
+import config.DurationsConfigurator
 
 class MainListReducer(
   private val router: Router
@@ -43,11 +44,24 @@ class MainListReducer(
         state { copy(menuOpened = false) }
       }
       is OnMenuItemClicked -> {
-        when (event.menuItem) {
-          EXPORT -> TODO("Add export passwords screen")
-          IMPORT -> TODO("Add import passwords screen")
-          SETTINGS -> router.goForward(SettingsScreen)
-          NEW -> router.goForward(CreatingServiceScreen)
+        state { copy(menuOpened = false) }
+        when (event.itemType) {
+          EXPORT_PASSWORDS -> {
+            TODO("Add export passwords screen")
+          }
+          IMPORT_PASSWORDS -> {
+            TODO("Add import passwords screen")
+          }
+          SETTINGS -> {
+            // TODO (8/12/2022): Figure out closing menu with animating to next screen.
+            // Options: - Closing with no animation
+            //          - Using news ?
+            //          - Not cancelling scope when moving to next screen
+            router.goForwardWithDelay(SettingsScreen, DurationsConfigurator.MenuOpening)
+          }
+          NEW_PASSWORD -> {
+            router.goForwardWithDelay(CreatingServiceScreen, DurationsConfigurator.MenuOpening)
+          }
         }
       }
       is OnPasswordItemClicked -> {

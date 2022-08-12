@@ -17,8 +17,13 @@ import com.arsvechkarev.vault.core.mvi.MviView
 import com.arsvechkarev.vault.features.main_list.MainListUiEvent.OnBackPressed
 import com.arsvechkarev.vault.features.main_list.MainListUiEvent.OnCloseMenuClicked
 import com.arsvechkarev.vault.features.main_list.MainListUiEvent.OnInit
+import com.arsvechkarev.vault.features.main_list.MainListUiEvent.OnMenuItemClicked
 import com.arsvechkarev.vault.features.main_list.MainListUiEvent.OnOpenMenuClicked
 import com.arsvechkarev.vault.features.main_list.MainListUiEvent.OnPasswordItemClicked
+import com.arsvechkarev.vault.features.main_list.MenuItemType.EXPORT_PASSWORDS
+import com.arsvechkarev.vault.features.main_list.MenuItemType.IMPORT_PASSWORDS
+import com.arsvechkarev.vault.features.main_list.MenuItemType.NEW_PASSWORD
+import com.arsvechkarev.vault.features.main_list.MenuItemType.SETTINGS
 import com.arsvechkarev.vault.viewbuilding.Dimens.ImageNoServicesSize
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginLarge
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginNormal
@@ -34,6 +39,7 @@ import com.arsvechkarev.vault.views.MaterialProgressBar
 import com.arsvechkarev.vault.views.behaviors.HeaderBehavior
 import com.arsvechkarev.vault.views.behaviors.ScrollingRecyclerBehavior
 import com.arsvechkarev.vault.views.behaviors.ViewUnderHeaderBehavior
+import com.arsvechkarev.vault.views.menu.MenuItem
 import com.arsvechkarev.vault.views.menu.MenuView
 import kotlinx.coroutines.launch
 import navigation.BaseScreen
@@ -63,7 +69,6 @@ class MainListScreen : BaseScreen(), MviView<MainListState, Nothing> {
   override fun buildLayout(context: Context) = context.withViewBuilder {
     val viewUnderHeaderBehavior = ViewUnderHeaderBehavior()
     RootCoordinatorLayout {
-      clipChildren = false
       FrameLayout(MatchParent, WrapContent) {
         behavior(HeaderBehavior())
         paddings(top = VerticalMarginSmall + StatusBarHeight, bottom = MarginSmall,
@@ -119,6 +124,15 @@ class MainListScreen : BaseScreen(), MviView<MainListState, Nothing> {
       }
       child<MenuView>(MatchParent, MatchParent) {
         classNameTag()
+        val menuItem: (Int, Int, MenuItemType) -> MenuItem = { iconRes, titleRes, itemType ->
+          MenuItem(iconRes, titleRes) { store.tryDispatch(OnMenuItemClicked(itemType)) }
+        }
+        items(
+          menuItem(R.drawable.ic_import, R.string.text_import_passwords, IMPORT_PASSWORDS),
+          menuItem(R.drawable.ic_export, R.string.text_export_passwords, EXPORT_PASSWORDS),
+          menuItem(R.drawable.ic_settings, R.string.text_settings, SETTINGS),
+          menuItem(R.drawable.ic_new_password, R.string.text_new_password, NEW_PASSWORD),
+        )
         onMenuOpenClick { store.tryDispatch(OnOpenMenuClicked) }
         onMenuCloseClick { store.tryDispatch(OnCloseMenuClicked) }
       }

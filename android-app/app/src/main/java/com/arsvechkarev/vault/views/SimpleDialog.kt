@@ -32,7 +32,7 @@ open class SimpleDialog(context: Context) : FrameLayout(context) {
   private val dialogView get() = getChildAt(0)
   private val shadowAnimator = ValueAnimator().apply {
     interpolator = AccelerateDecelerateInterpolator
-    duration = DurationsConfigurator.DurationShort
+    duration = DurationsConfigurator.Short
     addUpdateListener {
       currentShadowFraction = it.animatedValue as Float
       onShadowFractionChangedListener?.invoke(currentShadowFraction)
@@ -72,7 +72,7 @@ open class SimpleDialog(context: Context) : FrameLayout(context) {
         .scaleX(1f)
         .scaleY(1f)
         .alpha(1f)
-        .setDuration(DurationsConfigurator.DurationShort)
+        .setDuration(DurationsConfigurator.Short)
         .withEndAction(onShown)
         .setInterpolator(AccelerateDecelerateInterpolator)
         .start()
@@ -89,7 +89,7 @@ open class SimpleDialog(context: Context) : FrameLayout(context) {
         .alpha(0f)
         .scaleX(SCALE_FACTOR)
         .scaleY(SCALE_FACTOR)
-        .setDuration(DurationsConfigurator.DurationShort)
+        .setDuration(DurationsConfigurator.Short)
         .setInterpolator(AccelerateDecelerateInterpolator)
         .withEndAction { gone(); onHide() }
         .start()

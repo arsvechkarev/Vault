@@ -2,6 +2,7 @@ package com.arsvechkarev.vault.core
 
 import com.github.terrakok.cicerone.BaseRouter
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import navigation.Back
 import navigation.BackTo
@@ -14,6 +15,13 @@ class Router(private val scope: CoroutineScope) : BaseRouter() {
   
   fun goForward(screenInfo: ScreenInfo, removeCurrentView: Boolean = false) {
     scope.launch { executeCommands(Forward(screenInfo, removeCurrentView)) }
+  }
+  
+  fun goForwardWithDelay(screenInfo: ScreenInfo, delay: Long, removeCurrentView: Boolean = false) {
+    scope.launch {
+      delay(delay)
+      executeCommands(Forward(screenInfo, removeCurrentView))
+    }
   }
   
   fun replace(screenInfo: ScreenInfo) {

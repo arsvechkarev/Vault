@@ -16,7 +16,6 @@ class MenuView(context: Context) : FrameLayout(context) {
   private val menu get() = getChildAt(1) as MenuContentView
   
   init {
-    clipChildren = false
     val shadowView = addView {
       View(context).apply {
         layoutParams = LayoutParams(MATCH_PARENT, MATCH_PARENT)
@@ -33,6 +32,10 @@ class MenuView(context: Context) : FrameLayout(context) {
         }
       }
     }
+  }
+  
+  fun items(vararg items: MenuItem) {
+    menu.addItems(*items)
   }
   
   fun onMenuOpenClick(block: () -> Unit) {

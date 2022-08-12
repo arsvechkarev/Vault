@@ -3,10 +3,8 @@ package com.arsvechkarev.vault.features.main_list
 import android.content.Context
 import android.text.SpannableString
 import android.text.style.RelativeSizeSpan
-import android.view.Gravity.BOTTOM
 import android.view.Gravity.CENTER
 import android.view.Gravity.CENTER_VERTICAL
-import android.view.Gravity.END
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import com.arsvechkarev.vault.R
@@ -16,10 +14,11 @@ import com.arsvechkarev.vault.core.di.appComponent
 import com.arsvechkarev.vault.core.extensions.ifTrue
 import com.arsvechkarev.vault.core.extensions.moxyStore
 import com.arsvechkarev.vault.core.mvi.MviView
+import com.arsvechkarev.vault.features.main_list.MainListUiEvent.OnBackPressed
+import com.arsvechkarev.vault.features.main_list.MainListUiEvent.OnCloseMenuClicked
 import com.arsvechkarev.vault.features.main_list.MainListUiEvent.OnInit
+import com.arsvechkarev.vault.features.main_list.MainListUiEvent.OnOpenMenuClicked
 import com.arsvechkarev.vault.features.main_list.MainListUiEvent.OnPasswordItemClicked
-import com.arsvechkarev.vault.viewbuilding.Colors
-import com.arsvechkarev.vault.viewbuilding.Dimens.FabSize
 import com.arsvechkarev.vault.viewbuilding.Dimens.ImageNoServicesSize
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginLarge
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginNormal
@@ -35,6 +34,7 @@ import com.arsvechkarev.vault.views.MaterialProgressBar
 import com.arsvechkarev.vault.views.behaviors.HeaderBehavior
 import com.arsvechkarev.vault.views.behaviors.ScrollingRecyclerBehavior
 import com.arsvechkarev.vault.views.behaviors.ViewUnderHeaderBehavior
+import com.arsvechkarev.vault.views.menu.MenuView
 import kotlinx.coroutines.launch
 import navigation.BaseScreen
 import viewdsl.Size.Companion.MatchParent
@@ -50,9 +50,7 @@ import viewdsl.invisible
 import viewdsl.layoutGravity
 import viewdsl.margin
 import viewdsl.marginHorizontal
-import viewdsl.padding
 import viewdsl.paddings
-import viewdsl.rippleBackground
 import viewdsl.setupWith
 import viewdsl.size
 import viewdsl.tag
@@ -65,6 +63,7 @@ class MainListScreen : BaseScreen(), MviView<MainListState, Nothing> {
   override fun buildLayout(context: Context) = context.withViewBuilder {
     val viewUnderHeaderBehavior = ViewUnderHeaderBehavior()
     RootCoordinatorLayout {
+      clipChildren = false
       FrameLayout(MatchParent, WrapContent) {
         behavior(HeaderBehavior())
         paddings(top = VerticalMarginSmall + StatusBarHeight, bottom = MarginSmall,
@@ -118,12 +117,10 @@ class MainListScreen : BaseScreen(), MviView<MainListState, Nothing> {
           text(spannableString)
         }
       }
-      ImageView(FabSize, FabSize) {
-        margin(MarginNormal)
-        padding(MarginSmall)
-        image(R.drawable.ic_plus)
-        layoutGravity(BOTTOM or END)
-        rippleBackground(Colors.Ripple, Colors.Accent, cornerRadius = FabSize)
+      child<MenuView>(MatchParent, MatchParent) {
+        classNameTag()
+        onMenuOpenClick { store.tryDispatch(OnOpenMenuClicked) }
+        onMenuCloseClick { store.tryDispatch(OnCloseMenuClicked) }
       }
     }
   }
@@ -138,10 +135,14 @@ class MainListScreen : BaseScreen(), MviView<MainListState, Nothing> {
   
   override fun onInit() {
     AppMainCoroutineScope.launch { store.dispatch(OnInit) }
-    //    store.tryDispatch(OnInit)
   }
   
   override fun render(state: MainListState) {
+    if (state.menuOpened) {
+      viewAs<MenuView>().openMenu()
+    } else {
+      viewAs<MenuView>().closeMenu()
+    }
     state.data?.handle {
       onLoading { showView(view(LayoutLoading)) }
       onEmpty { showView(view(LayoutNoPasswords)) }
@@ -150,6 +151,11 @@ class MainListScreen : BaseScreen(), MviView<MainListState, Nothing> {
         adapter.submitList(list)
       }
     }
+  }
+  
+  override fun handleBackPress(): Boolean {
+    store.tryDispatch(OnBackPressed)
+    return true
   }
   
   private fun showView(layout: View) {

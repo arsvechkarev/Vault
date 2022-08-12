@@ -1,6 +1,5 @@
 package com.arsvechkarev.vault.features.main_list.actors
 
-import android.util.Log
 import com.arsvechkarev.vault.core.ListenableCachedPasswordStorage
 import com.arsvechkarev.vault.core.MasterPasswordProvider
 import com.arsvechkarev.vault.core.State
@@ -24,7 +23,6 @@ class LoadMainDataActor(
           val masterPassword = masterPasswordProvider.provideMasterPassword()
           val passwords = passwordStorage.getPasswords(masterPassword)
           val state = if (passwords.isNotEmpty()) State.success(passwords) else State.empty()
-          Log.d("TeaStoreImplMainList", "actor processing finished, result = $state")
           MainListEvent.UpdateData(state)
         }
   }

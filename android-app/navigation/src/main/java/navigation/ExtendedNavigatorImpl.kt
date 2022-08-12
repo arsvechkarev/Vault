@@ -128,12 +128,10 @@ class ExtendedNavigatorImpl(
   private fun performBack(releaseCurrentScreen: Boolean) {
     require(screensStack.isNotEmpty())
     val screenOnTop = screensStack.removeLast()
-    val screenHandlerOnTop = getOrCreateScreenHandler(screenOnTop)
     if (screensStack.isEmpty()) {
-      screenHandlerOnTop.performHide(NONE)
-      screenHandlerOnTop.performFullRelease()
-      host.removeAllScreenHandlers()
+      screensStack.clear()
       screenHandlersCache.clear()
+      host.removeAllScreenHandlers()
     } else {
       hideScreen(screenOnTop, AnimationType.BACKWARD,
         releaseAfterwards = releaseCurrentScreen)

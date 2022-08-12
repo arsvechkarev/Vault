@@ -1,5 +1,6 @@
 package navigation
 
+import android.app.Activity
 import android.view.View
 import android.view.ViewGroup
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
@@ -36,6 +37,6 @@ class ViewNavigationHost(
   }
   
   override fun removeAllScreenHandlers() {
-    root.removeAllViews()
+    (root.context as Activity).finish()
   }
 }

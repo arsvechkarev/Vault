@@ -19,6 +19,7 @@ class MenuView(context: Context) : FrameLayout(context) {
     val shadowView = addView {
       View(context).apply {
         layoutParams = LayoutParams(MATCH_PARENT, MATCH_PARENT)
+        setOnClickListener { menu.onMenuCloseClick() }
       }
     }
     addView {

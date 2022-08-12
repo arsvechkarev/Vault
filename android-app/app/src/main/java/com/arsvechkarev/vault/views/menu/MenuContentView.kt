@@ -39,7 +39,7 @@ class MenuContentView(context: Context) : ViewGroup(context) {
   private val pEnd = 12.dp
   private val pBottom = 12.dp
   private val textSize = TextSizes.H4
-  private val backgroundPaint = Paint(Colors.Accent)
+  private val backgroundPaint = Paint(Colors.Dialog)
   private var latestY = 0f
   private var latestX = 0f
   private var wasDownEventInView = false
@@ -48,8 +48,9 @@ class MenuContentView(context: Context) : ViewGroup(context) {
   private val path = Path()
   private var animCoefficient = 0f
   private var opened = false
+  
   private val coefficientAnimator = ValueAnimator().apply {
-    duration = DurationsConfigurator.DurationDefault
+    duration = DurationsConfigurator.MenuOpening
     interpolator = AccelerateDecelerateInterpolator
     addUpdateListener {
       animCoefficient = it.animatedValue as Float
@@ -59,20 +60,16 @@ class MenuContentView(context: Context) : ViewGroup(context) {
   }
   
   private val openCloseView get() = getChildAt(0) as AnimatableCircleIconView
-  
-  val isOpened get() = opened
-  
-  val firstMenuItem get() = getChildAt(1) as MenuItemView
-  val secondMenuItem get() = getChildAt(2) as MenuItemView
-  val thirdMenuItem get() = getChildAt(3) as MenuItemView
-  val fourthMenuItem get() = getChildAt(4) as MenuItemView
+  private val firstMenuItem get() = getChildAt(1) as MenuItemView
+  private val secondMenuItem get() = getChildAt(2) as MenuItemView
+  private val thirdMenuItem get() = getChildAt(3) as MenuItemView
+  private val fourthMenuItem get() = getChildAt(4) as MenuItemView
   
   var onMenuOpenClick: () -> Unit = {}
   var onMenuCloseClick: () -> Unit = {}
   var onAnimating: (fraction: Float) -> Unit = {}
   
   init {
-    clipChildren = false
     val iconSize = (crossBaseSize * 0.75f).toInt()
     addView(
       AnimatableCircleIconView(
@@ -82,13 +79,6 @@ class MenuContentView(context: Context) : ViewGroup(context) {
         Colors.Accent, Colors.Icon
       )
     )
-    val buildMenuItem = { iconRes: Int ->
-      MenuItemView(context, iconRes, textSize, itemSize, "test")
-    }
-    addView(buildMenuItem(R.drawable.ic_eye_closed))
-    addView(buildMenuItem(R.drawable.ic_eye_closed))
-    addView(buildMenuItem(R.drawable.ic_settings))
-    addView(buildMenuItem(R.drawable.ic_eye_closed))
   }
   
   fun openMenu(animate: Boolean = true) {
@@ -119,6 +109,23 @@ class MenuContentView(context: Context) : ViewGroup(context) {
     }
   }
   
+  fun addItems(vararg items: MenuItem) {
+    assert(items.size == 4)
+    val menuItemView: (MenuItem) -> MenuItemView = { menuItem ->
+      MenuItemView(
+        context = context,
+        iconRes = menuItem.iconRes,
+        textSize = textSize,
+        circleSize = itemSize,
+        text = context.getString(menuItem.titleRes)
+      ).apply { setOnClickListener { menuItem.onClick() } }
+    }
+    addView(menuItemView(items[0]))
+    addView(menuItemView(items[1]))
+    addView(menuItemView(items[2]))
+    addView(menuItemView(items[3]))
+  }
+  
   override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
     openCloseView.measure(exactly(crossBaseSize), exactly(crossBaseSize))
     children.forEach { child ->
@@ -139,7 +146,7 @@ class MenuContentView(context: Context) : ViewGroup(context) {
     val topOffset = (crossOpenedSize + crossOpenedPadding).toFloat()
     val width = w.toFloat()
     val height = h.toFloat()
-    val curveOffset = minOf(width, height) / 3f
+    val curveOffset = minOf(width, height) / 5f
     with(path) {
       moveTo(width, topOffset)
       lineTo(curveOffset, topOffset)

@@ -39,7 +39,7 @@ class Checkmark(context: Context) : View(context) {
   private var _drawBorder = false
   
   private val animator = ValueAnimator().apply {
-    duration = DurationsConfigurator.DurationShort
+    duration = DurationsConfigurator.Short
     interpolator = AccelerateDecelerateInterpolator
     addUpdateListener {
       circlePaint.strokeWidth = it.animatedValue as Float
@@ -48,7 +48,7 @@ class Checkmark(context: Context) : View(context) {
   }
   
   private val borderAnimator = ValueAnimator().apply {
-    duration = DurationsConfigurator.DurationShort
+    duration = DurationsConfigurator.Short
     interpolator = AccelerateDecelerateInterpolator
     addUpdateListener {
       borderPaint.strokeWidth = it.animatedValue as Float

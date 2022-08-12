@@ -35,7 +35,7 @@ class ExtendedNavigatorImpl(
     for (command in commands) {
       when (command) {
         is Forward -> performForward(command.screenInfo.screenKey,
-          command.screenInfo.arguments, command.clearContainer)
+          command.screenInfo.arguments, command.removeCurrentView)
         is Replace -> performReplace(command.screenInfo.screenKey,
           command.screenInfo.arguments)
         is Back -> performBack(command.releaseCurrentScreen)
@@ -88,7 +88,7 @@ class ExtendedNavigatorImpl(
     }
   }
   
-  private fun performForward(screenKey: ScreenKey, arguments: Bundle, removeCurrentScreen: Boolean) {
+  private fun performForward(screenKey: ScreenKey, arguments: Bundle, removeCurrentView: Boolean) {
     if (screensStack.lastOrNull() == screenKey) {
       // Current screen is already in front of the user, return
       return
@@ -96,7 +96,7 @@ class ExtendedNavigatorImpl(
     val screenHandler = getOrCreateScreenHandler(screenKey)
     screenHandler.setupArguments(arguments)
     screensStack.lastOrNull()?.let { currentScreenKey ->
-      if (removeCurrentScreen) {
+      if (removeCurrentView) {
         removeScreenView(currentScreenKey)
       } else {
         hideScreen(currentScreenKey, FORWARD, releaseAfterwards = false)

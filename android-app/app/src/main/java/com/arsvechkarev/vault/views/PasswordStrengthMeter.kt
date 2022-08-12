@@ -17,14 +17,14 @@ class PasswordStrengthMeter(context: Context) : View(context) {
   private var percentage = 0f
   private val paint = Paint(Colors.Transparent)
   private val colorAnimator = ValueAnimator().apply {
-    duration = DurationsConfigurator.DurationDefault
+    duration = DurationsConfigurator.Default
     interpolator = AccelerateDecelerateInterpolator
     addUpdateListener {
       paint.color = it.animatedValue as Int
     }
   }
   private val percentageAnimator = ValueAnimator().apply {
-    duration = DurationsConfigurator.DurationDefault
+    duration = DurationsConfigurator.Default
     interpolator = AccelerateDecelerateInterpolator
     addUpdateListener {
       percentage = it.animatedValue as Float

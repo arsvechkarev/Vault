@@ -13,7 +13,7 @@ sealed interface MainListUiEvent : MainListEvent {
   object OnCloseMenuClicked : MainListUiEvent
   object OnBackPressed : MainListUiEvent
   class OnPasswordItemClicked(val passwordInfoItem: PasswordInfoItem) : MainListUiEvent
-  class OnMenuItemClicked(val menuItem: MenuItem) : MainListUiEvent
+  class OnMenuItemClicked(val itemType: MenuItemType) : MainListUiEvent
 }
 
 sealed interface MainListCommand {
@@ -25,6 +25,6 @@ data class MainListState(
   val menuOpened: Boolean = false,
 )
 
-enum class MenuItem {
-  EXPORT, IMPORT, SETTINGS, NEW
+enum class MenuItemType {
+  EXPORT_PASSWORDS, IMPORT_PASSWORDS, SETTINGS, NEW_PASSWORD
 }

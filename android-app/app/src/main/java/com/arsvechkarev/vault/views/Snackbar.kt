@@ -54,11 +54,11 @@ class Snackbar(context: Context) : ViewGroup(context) {
     checkmarkView.animateCheckmark()
     animate().translationY(0f)
         .setInterpolator(AccelerateDecelerateInterpolator)
-        .setDuration(DurationsConfigurator.DurationShort)
+        .setDuration(DurationsConfigurator.Short)
         .withLayer()
         .start()
-    val delay = DurationsConfigurator.DurationShort + DurationsConfigurator.DurationCheckmark +
-        DurationsConfigurator.DurationSnackbar
+    val delay = DurationsConfigurator.Short + DurationsConfigurator.Checkmark +
+        DurationsConfigurator.Snackbar
     postDelayed({ hide() }, delay)
   }
   
@@ -67,7 +67,7 @@ class Snackbar(context: Context) : ViewGroup(context) {
     opened = false
     animate().translationY(height * 1.8f)
         .setInterpolator(AccelerateDecelerateInterpolator)
-        .setDuration(DurationsConfigurator.DurationShort)
+        .setDuration(DurationsConfigurator.Short)
         .withLayer()
         .withEndAction { checkmarkView.invisible() }
         .start()

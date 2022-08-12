@@ -37,9 +37,6 @@ class TeaStoreImpl<State : Any, Event : Any, UiEvent : Event, Command : Any, New
   private val counter = AtomicInteger(actors.size)
   
   override fun launch(coroutineScope: CoroutineScope, dispatchersFacade: DispatchersFacade) {
-    Log.d("TeaStoreImpl", "=====================================")
-    Log.d("TeaStoreImpl", "========== launching store ==========")
-    Log.d("TeaStoreImpl", "=====================================")
     actors.forEach { actor ->
       coroutineScope.launch(dispatchersFacade.IO) {
         try {
@@ -47,8 +44,6 @@ class TeaStoreImpl<State : Any, Event : Any, UiEvent : Event, Command : Any, New
               .shareIn(coroutineScope, started = WhileSubscribed(replayExpirationMillis = 0))
               .onSubscription {
                 if (counter.decrementAndGet() == 0) {
-                  Log.d("TeaStoreImpl",
-                    "completing actors latch, subs = ${commandsFlow.subscriptionCount.value}")
                   actorsLatch.complete(Unit)
                 }
               }
@@ -60,40 +55,30 @@ class TeaStoreImpl<State : Any, Event : Any, UiEvent : Event, Command : Any, New
       }
     }
     coroutineScope.launch(dispatchersFacade.Default) {
-      Log.d("TeaStoreImpl", "starting collecting events")
-      eventsFlow.onSubscription {
-        Log.d("TeaStoreImpl", "events onSubscription")
-        eventsLatch.complete(Unit)
-      }.collect { event ->
-        Log.d("TeaStoreImpl", "processing event $event")
-        val currentState = state.value
-        val update = reducer.reduce(currentState, event)
-        if (update.state != currentState) {
-          withContext(dispatchersFacade.Main) {
-            state.emit(update.state)
+      eventsFlow.onSubscription { eventsLatch.complete(Unit) }
+          .collect { event ->
+            val currentState = state.value
+            val update = reducer.reduce(currentState, event)
+            if (update.state != currentState) {
+              withContext(dispatchersFacade.Main) {
+                state.emit(update.state)
+              }
+            }
+            update.commands.forEach { command ->
+              commandsFlow.emit(command)
+            }
+            withContext(dispatchersFacade.Main) {
+              update.news.forEach { newsItem ->
+                news.emit(newsItem)
+              }
+            }
           }
-        }
-        update.commands.forEach { command ->
-          Log.d("TeaStoreImpl",
-            "emitting command ${command.javaClass.simpleName}, subs = " +
-                "${commandsFlow.subscriptionCount.value}")
-          commandsFlow.emit(command)
-        }
-        withContext(dispatchersFacade.Main) {
-          update.news.forEach { newsItem ->
-            news.emit(newsItem)
-          }
-        }
-      }
     }
   }
   
   override suspend fun dispatch(event: UiEvent) {
-    Log.d("TeaStoreImpl",
-      "before dispatching event $event, actorsLatch = ${actorsLatch.isCompleted}, eventsLatch = ${eventsLatch.isCompleted}")
     actorsLatch.await()
     eventsLatch.await()
-    Log.d("TeaStoreImpl", "dispatching event $event")
     eventsFlow.emit(event)
   }
   

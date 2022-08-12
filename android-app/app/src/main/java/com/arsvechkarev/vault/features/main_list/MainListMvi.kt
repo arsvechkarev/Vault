@@ -9,7 +9,8 @@ sealed interface MainListEvent {
 
 sealed interface MainListUiEvent : MainListEvent {
   object OnInit : MainListUiEvent
-  object OnFabClicked : MainListUiEvent
+  object OnOpenMenuClicked : MainListUiEvent
+  object OnCloseMenuClicked : MainListUiEvent
   object OnBackPressed : MainListUiEvent
   class OnPasswordItemClicked(val passwordInfoItem: PasswordInfoItem) : MainListUiEvent
   class OnMenuItemClicked(val menuItem: MenuItem) : MainListUiEvent

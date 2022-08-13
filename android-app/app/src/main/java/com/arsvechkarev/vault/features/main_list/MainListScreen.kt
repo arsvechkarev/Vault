@@ -4,8 +4,9 @@ import android.content.Context
 import android.text.SpannableString
 import android.text.style.RelativeSizeSpan
 import android.view.Gravity.CENTER
-import android.view.Gravity.CENTER_VERTICAL
+import android.view.Gravity.CENTER_HORIZONTAL
 import android.view.View
+import android.widget.ImageView.ScaleType.CENTER_CROP
 import androidx.recyclerview.widget.RecyclerView
 import com.arsvechkarev.vault.R
 import com.arsvechkarev.vault.VaultApplication.Companion.AppMainCoroutineScope
@@ -24,21 +25,17 @@ import com.arsvechkarev.vault.features.main_list.MenuItemType.EXPORT_PASSWORDS
 import com.arsvechkarev.vault.features.main_list.MenuItemType.IMPORT_PASSWORDS
 import com.arsvechkarev.vault.features.main_list.MenuItemType.NEW_PASSWORD
 import com.arsvechkarev.vault.features.main_list.MenuItemType.SETTINGS
+import com.arsvechkarev.vault.viewbuilding.Colors
 import com.arsvechkarev.vault.viewbuilding.Dimens.ImageNoServicesSize
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginLarge
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginNormal
-import com.arsvechkarev.vault.viewbuilding.Dimens.MarginSmall
 import com.arsvechkarev.vault.viewbuilding.Dimens.ProgressBarSizeBig
-import com.arsvechkarev.vault.viewbuilding.Dimens.VerticalMarginSmall
 import com.arsvechkarev.vault.viewbuilding.Fonts
 import com.arsvechkarev.vault.viewbuilding.Styles.BaseTextView
 import com.arsvechkarev.vault.viewbuilding.Styles.BoldTextView
 import com.arsvechkarev.vault.viewbuilding.Styles.TitleTextView
 import com.arsvechkarev.vault.viewbuilding.TextSizes
 import com.arsvechkarev.vault.views.MaterialProgressBar
-import com.arsvechkarev.vault.views.behaviors.HeaderBehavior
-import com.arsvechkarev.vault.views.behaviors.ScrollingRecyclerBehavior
-import com.arsvechkarev.vault.views.behaviors.ViewUnderHeaderBehavior
 import com.arsvechkarev.vault.views.menu.MenuItem
 import com.arsvechkarev.vault.views.menu.MenuView
 import kotlinx.coroutines.launch
@@ -48,7 +45,7 @@ import viewdsl.Size.Companion.WrapContent
 import viewdsl.addView
 import viewdsl.animateInvisible
 import viewdsl.animateVisible
-import viewdsl.behavior
+import viewdsl.backgroundColor
 import viewdsl.classNameTag
 import viewdsl.gravity
 import viewdsl.image
@@ -56,7 +53,9 @@ import viewdsl.invisible
 import viewdsl.layoutGravity
 import viewdsl.margin
 import viewdsl.marginHorizontal
+import viewdsl.margins
 import viewdsl.paddings
+import viewdsl.retrieveDrawable
 import viewdsl.setupWith
 import viewdsl.size
 import viewdsl.tag
@@ -67,26 +66,26 @@ import viewdsl.withViewBuilder
 class MainListScreen : BaseScreen(), MviView<MainListState, Nothing> {
   
   override fun buildLayout(context: Context) = context.withViewBuilder {
-    val viewUnderHeaderBehavior = ViewUnderHeaderBehavior()
-    RootCoordinatorLayout {
-      FrameLayout(MatchParent, WrapContent) {
-        behavior(HeaderBehavior())
-        paddings(top = VerticalMarginSmall + StatusBarHeight, bottom = MarginSmall,
-          start = MarginNormal, end = MarginNormal)
-        TextView(MatchParent, WrapContent, style = TitleTextView) {
-          text(context.getString(R.string.text_passwords))
-          layoutGravity(CENTER_VERTICAL)
-        }
+    RootFrameLayout {
+      backgroundColor(Colors.Background)
+      ImageView(MatchParent, WrapContent) {
+        image(R.drawable.bg_gradient)
+        scaleType = CENTER_CROP
+      }
+      TextView(WrapContent, WrapContent, style = TitleTextView) {
+        margins(top = MarginNormal + StatusBarHeight)
+        text(R.string.app_name)
+        layoutGravity(CENTER_HORIZONTAL)
       }
       RecyclerView(MatchParent, WrapContent) {
         classNameTag()
-        behavior(ScrollingRecyclerBehavior())
+        val gradientHeight = context.retrieveDrawable(R.drawable.bg_gradient).intrinsicHeight / 1.5
+        paddings(top = gradientHeight.toInt())
         setupWith(this@MainListScreen.adapter)
       }
       VerticalLayout(MatchParent, MatchParent) {
         tag(LayoutLoading)
         invisible()
-        behavior(viewUnderHeaderBehavior)
         layoutGravity(CENTER)
         gravity(CENTER)
         addView {
@@ -99,7 +98,6 @@ class MainListScreen : BaseScreen(), MviView<MainListState, Nothing> {
         tag(LayoutNoPasswords)
         invisible()
         marginHorizontal(MarginLarge)
-        behavior(viewUnderHeaderBehavior)
         layoutGravity(CENTER)
         gravity(CENTER)
         ImageView(ImageNoServicesSize, ImageNoServicesSize) {

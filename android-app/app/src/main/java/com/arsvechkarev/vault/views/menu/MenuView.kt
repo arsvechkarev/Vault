@@ -20,6 +20,7 @@ class MenuView(context: Context) : FrameLayout(context) {
       View(context).apply {
         layoutParams = LayoutParams(MATCH_PARENT, MATCH_PARENT)
         setOnClickListener { menu.onMenuCloseClick() }
+        isClickable = false
       }
     }
     addView {
@@ -31,6 +32,8 @@ class MenuView(context: Context) : FrameLayout(context) {
           val color = ColorUtils.blendARGB(Color.TRANSPARENT, Colors.Shadow, fraction)
           shadowView.setBackgroundColor(color)
         }
+        onMenuOpened = { shadowView.isClickable = true }
+        onMenuClosed = { shadowView.isClickable = false }
       }
     }
   }

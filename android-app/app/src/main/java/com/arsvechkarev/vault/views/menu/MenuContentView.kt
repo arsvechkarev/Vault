@@ -19,6 +19,7 @@ import viewdsl.AccelerateDecelerateInterpolator
 import viewdsl.cancelIfRunning
 import viewdsl.children
 import viewdsl.contains
+import viewdsl.doOnEnd
 import viewdsl.dp
 import viewdsl.exactly
 import viewdsl.isOrientationPortrait
@@ -69,6 +70,9 @@ class MenuContentView(context: Context) : ViewGroup(context) {
   var onMenuCloseClick: () -> Unit = {}
   var onAnimating: (fraction: Float) -> Unit = {}
   
+  var onMenuOpened: () -> Unit = {}
+  var onMenuClosed: () -> Unit = {}
+  
   init {
     val iconSize = (crossBaseSize * 0.75f).toInt()
     addView(
@@ -88,9 +92,11 @@ class MenuContentView(context: Context) : ViewGroup(context) {
     if (animate) {
       coefficientAnimator.cancelIfRunning()
       coefficientAnimator.setFloatValues(animCoefficient, 1f)
+      coefficientAnimator.doOnEnd(onMenuOpened)
       coefficientAnimator.start()
     } else {
       animCoefficient = 1f
+      onMenuOpened()
       invalidate()
     }
   }
@@ -102,9 +108,11 @@ class MenuContentView(context: Context) : ViewGroup(context) {
     if (animate) {
       coefficientAnimator.cancelIfRunning()
       coefficientAnimator.setFloatValues(animCoefficient, 0f)
+      coefficientAnimator.doOnEnd(onMenuClosed)
       coefficientAnimator.start()
     } else {
       animCoefficient = 0f
+      onMenuClosed()
       invalidate()
     }
   }

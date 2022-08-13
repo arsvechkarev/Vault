@@ -47,6 +47,7 @@ import viewdsl.animateInvisible
 import viewdsl.animateVisible
 import viewdsl.backgroundColor
 import viewdsl.classNameTag
+import viewdsl.getDrawableHeight
 import viewdsl.gravity
 import viewdsl.image
 import viewdsl.invisible
@@ -55,7 +56,6 @@ import viewdsl.margin
 import viewdsl.marginHorizontal
 import viewdsl.margins
 import viewdsl.paddings
-import viewdsl.retrieveDrawable
 import viewdsl.setupWith
 import viewdsl.size
 import viewdsl.tag
@@ -68,6 +68,13 @@ class MainListScreen : BaseScreen(), MviView<MainListState, Nothing> {
   override fun buildLayout(context: Context) = context.withViewBuilder {
     RootFrameLayout {
       backgroundColor(Colors.Background)
+      RecyclerView(MatchParent, WrapContent) {
+        classNameTag()
+        val gradientHeight = context.getDrawableHeight(R.drawable.bg_gradient) * 0.8
+        paddings(top = gradientHeight.toInt())
+        clipToPadding = false
+        setupWith(this@MainListScreen.adapter)
+      }
       ImageView(MatchParent, WrapContent) {
         image(R.drawable.bg_gradient)
         scaleType = CENTER_CROP
@@ -76,12 +83,6 @@ class MainListScreen : BaseScreen(), MviView<MainListState, Nothing> {
         margins(top = MarginNormal + StatusBarHeight)
         text(R.string.app_name)
         layoutGravity(CENTER_HORIZONTAL)
-      }
-      RecyclerView(MatchParent, WrapContent) {
-        classNameTag()
-        val gradientHeight = context.retrieveDrawable(R.drawable.bg_gradient).intrinsicHeight / 1.5
-        paddings(top = gradientHeight.toInt())
-        setupWith(this@MainListScreen.adapter)
       }
       VerticalLayout(MatchParent, MatchParent) {
         tag(LayoutLoading)

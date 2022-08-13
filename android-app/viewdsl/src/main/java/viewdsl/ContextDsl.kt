@@ -71,6 +71,10 @@ fun Context.retrieveDrawable(@DrawableRes resId: Int): Drawable {
   return ContextCompat.getDrawable(this, resId)!!
 }
 
+fun Context.getDrawableHeight(@DrawableRes resId: Int): Int {
+  return retrieveDrawable(resId).intrinsicHeight
+}
+
 inline fun <reified T> Context.getSystemService(): T {
   return ContextCompat.getSystemService(this, T::class.java)!!
 }

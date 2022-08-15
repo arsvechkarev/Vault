@@ -220,6 +220,10 @@ inline fun <reified T : CoordinatorLayout.Behavior<*>> View.hasBehavior(): Boole
   return (layoutParams as? CoordinatorLayout.LayoutParams)?.behavior as? T != null
 }
 
+inline fun View.onLayoutChanged(crossinline block: () -> Unit) {
+  addOnLayoutChangeListener { _, _, _, _, _, _, _, _, _ -> block() }
+}
+
 @Suppress("UNCHECKED_CAST")
 inline fun <reified T : View> View.viewAs(tag: Any = T::class.java.name): T {
   return findViewWithTag(tag)

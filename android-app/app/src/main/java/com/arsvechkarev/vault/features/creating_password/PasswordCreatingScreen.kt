@@ -83,7 +83,7 @@ class PasswordCreatingScreen : BaseScreen(), PasswordCreatingView {
           drawablePadding(Dimens.MarginNormal)
           textColor(Colors.Error)
         }
-        EditText(MatchParent, WrapContent, style = Styles.BaseEditText) {
+        EditText(MatchParent, WrapContent, style = Styles.BaseEditText()) {
           tag(DialogPasswordEditText)
           gravity(CENTER)
           margin(MarginSmall)

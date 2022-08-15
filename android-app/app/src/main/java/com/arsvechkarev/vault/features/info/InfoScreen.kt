@@ -80,7 +80,7 @@ class InfoScreen : BaseScreen(), InfoView {
           tag(ImageServiceName)
         }
         TextView(WrapContent, WrapContent, style = BaseTextView) {
-          text(R.string.text_service_name)
+//          text(R.string.text_password_name)
           margins(top = MarginExtraLarge)
           textColor(Colors.TextSecondary)
         }
@@ -103,7 +103,7 @@ class InfoScreen : BaseScreen(), InfoView {
         TextView(WrapContent, WrapContent, style = BaseTextView) {
           margins(top = VerticalMarginSmall)
           textColor(Colors.TextSecondary)
-          text(R.string.text_username_optional)
+          text(R.string.text_login)
         }
         child<EditableTextInfoViewGroup>(MatchParent, WrapContent) {
           tag(EditableTextInfoUsername)
@@ -119,7 +119,7 @@ class InfoScreen : BaseScreen(), InfoView {
         TextView(WrapContent, WrapContent, style = BaseTextView) {
           margins(top = VerticalMarginSmall)
           textColor(Colors.TextSecondary)
-          text(R.string.text_email_optional)
+          text(R.string.text_email)
         }
         child<EditableTextInfoViewGroup>(MatchParent, WrapContent) {
           tag(EditableTextInfoEmail)

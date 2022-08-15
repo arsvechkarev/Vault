@@ -1,18 +1,22 @@
 package com.arsvechkarev.vault.views
 
 import android.content.Context
+import android.text.InputType
 import android.text.method.PasswordTransformationMethod
 import android.view.Gravity
+import android.view.inputmethod.EditorInfo
 import android.widget.EditText
 import android.widget.FrameLayout
 import com.arsvechkarev.vault.R
 import com.arsvechkarev.vault.viewbuilding.Dimens.IconSize
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginLarge
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginSmall
-import com.arsvechkarev.vault.viewbuilding.Styles.BaseEditText
+import com.arsvechkarev.vault.viewbuilding.Fonts
+import com.arsvechkarev.vault.viewbuilding.TextSizes
 import viewdsl.BaseTextWatcher
 import viewdsl.Size.Companion.MatchParent
 import viewdsl.Size.Companion.WrapContent
+import viewdsl.font
 import viewdsl.image
 import viewdsl.layoutGravity
 import viewdsl.margins
@@ -20,6 +24,7 @@ import viewdsl.onClick
 import viewdsl.onSubmit
 import viewdsl.onTextChanged
 import viewdsl.paddings
+import viewdsl.textSize
 import viewdsl.withViewBuilder
 
 class EditTextPassword(context: Context) : FrameLayout(context) {
@@ -32,8 +37,13 @@ class EditTextPassword(context: Context) : FrameLayout(context) {
     withViewBuilder {
       val imageSize = IconSize
       val iconMarginStart = MarginLarge
-      EditText(MatchParent, MatchParent, style = BaseEditText) {
-        paddings(end = imageSize + iconMarginStart)
+      EditText(MatchParent, MatchParent) {
+        paddings(top = MarginSmall, bottom = MarginSmall, end = imageSize + iconMarginStart)
+        font(Fonts.SegoeUi)
+        textSize(TextSizes.H3)
+        setSingleLine()
+        inputType = InputType.TYPE_TEXT_VARIATION_PASSWORD
+        imeOptions = EditorInfo.IME_ACTION_DONE
         transformationMethod = PasswordTransformationMethod.getInstance()
       }
       ImageView(WrapContent, WrapContent) {

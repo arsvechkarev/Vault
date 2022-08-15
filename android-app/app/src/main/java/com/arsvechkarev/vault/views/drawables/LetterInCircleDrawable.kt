@@ -2,7 +2,6 @@ package com.arsvechkarev.vault.views.drawables
 
 import android.graphics.Canvas
 import android.graphics.Rect
-import android.widget.ImageView
 import com.arsvechkarev.vault.core.extensions.Paint
 import com.arsvechkarev.vault.core.extensions.TextPaint
 import com.arsvechkarev.vault.core.extensions.getTextHeight
@@ -12,8 +11,8 @@ import com.arsvechkarev.vault.viewbuilding.TextSizes
 
 class LetterInCircleDrawable(
   private var letter: String,
-  textColor: Int = Colors.TextPrimary,
-  backgroundColor: Int = Colors.Accent
+  textColor: Int = Colors.AccentHeavy,
+  backgroundColor: Int = Colors.WhiteCircle
 ) : BaseDrawable() {
   
   private val textPaint = TextPaint(color = textColor, font = Fonts.SegoeUiBold)
@@ -50,15 +49,6 @@ class LetterInCircleDrawable(
         break
       }
       textPaint.textSize++
-    }
-  }
-  
-  companion object {
-    
-    fun ImageView.setLetterDrawable(letter: String) {
-      (drawable as? LetterInCircleDrawable)?.setLetter(letter) ?: run {
-        setImageDrawable(LetterInCircleDrawable(letter))
-      }
     }
   }
 }

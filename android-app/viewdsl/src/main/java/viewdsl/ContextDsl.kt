@@ -9,6 +9,7 @@ import android.util.TypedValue
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
+import android.widget.EditText
 import androidx.annotation.AttrRes
 import androidx.annotation.ColorInt
 import androidx.annotation.DrawableRes
@@ -41,10 +42,10 @@ val Context.statusBarHeight: Int
     return result
   }
 
-fun Context.showKeyboard() {
+fun Context.showKeyboard(editText: EditText? = null) {
   val inputMethodManager =
       getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager?
-  val view = (this as? Activity)?.window?.decorView ?: View(this)
+  val view = editText ?: View(this)
   inputMethodManager!!.showSoftInput(view, 0)
 }
 

@@ -2,9 +2,9 @@ package com.arsvechkarev.vault.core
 
 import com.arsvechkarev.vault.core.extensions.bundle
 import com.arsvechkarev.vault.core.model.PasswordInfoItem
+import com.arsvechkarev.vault.features.creating_entry.CreatingEntryScreen
 import com.arsvechkarev.vault.features.creating_master_password.CreatingMasterPasswordScreen
 import com.arsvechkarev.vault.features.creating_password.PasswordCreatingScreen
-import com.arsvechkarev.vault.features.creating_service.CreatingServiceScreen
 import com.arsvechkarev.vault.features.info.InfoScreen
 import com.arsvechkarev.vault.features.info.InfoScreen.Companion.SERVICE
 import com.arsvechkarev.vault.features.initial.InitialScreen
@@ -22,7 +22,7 @@ object Screens {
   
   val MainListScreen = Screen { com.arsvechkarev.vault.features.main_list.MainListScreen::class }
   
-  val CreatingServiceScreen = Screen { CreatingServiceScreen::class }
+  val CreatingEntryScreen = Screen { CreatingEntryScreen::class }
   
   fun InfoScreen(passwordInfoItem: PasswordInfoItem) =
       Screen(arguments = bundle(SERVICE to passwordInfoItem)) { InfoScreen::class }

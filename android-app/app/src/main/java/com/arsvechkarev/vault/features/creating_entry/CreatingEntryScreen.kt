@@ -6,6 +6,7 @@ import android.view.Gravity.CENTER_VERTICAL
 import android.view.View
 import android.view.WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE
 import android.widget.ImageView.ScaleType.FIT_XY
+import androidx.annotation.StringRes
 import com.arsvechkarev.vault.R
 import com.arsvechkarev.vault.core.di.appComponent
 import com.arsvechkarev.vault.core.extensions.moxyStore
@@ -13,6 +14,7 @@ import com.arsvechkarev.vault.core.mvi.MviView
 import com.arsvechkarev.vault.core.setServiceIcon
 import com.arsvechkarev.vault.features.creating_entry.CreatingEntryUiEvent.OnBackButtonClicked
 import com.arsvechkarev.vault.features.creating_entry.CreatingEntryUiEvent.OnContinueClicked
+import com.arsvechkarev.vault.features.creating_entry.CreatingEntryUiEvent.OnLoginTextChanged
 import com.arsvechkarev.vault.features.creating_entry.CreatingEntryUiEvent.OnWebsiteNameTextChanged
 import com.arsvechkarev.vault.viewbuilding.Colors
 import com.arsvechkarev.vault.viewbuilding.Dimens.IconPadding
@@ -46,6 +48,7 @@ import viewdsl.padding
 import viewdsl.setSoftInputMode
 import viewdsl.showKeyboard
 import viewdsl.text
+import viewdsl.textColor
 import viewdsl.textSize
 import viewdsl.visible
 import viewdsl.withViewBuilder
@@ -115,6 +118,7 @@ class CreatingEntryScreen : BaseScreen(), MviView<CreatingEntryState, CreatingEn
         EditText(MatchParent, WrapContent, style = BaseEditText(hint = R.string.hint_login)) {
           id(EditTextLogin)
           margins(start = MarginNormal - MarginTiny, end = MarginNormal)
+          onTextChanged { text -> store.tryDispatch(OnLoginTextChanged(text)) }
           onSubmit { continueWithCreating() }
         }
       }
@@ -141,6 +145,16 @@ class CreatingEntryScreen : BaseScreen(), MviView<CreatingEntryState, CreatingEn
   
   override fun render(state: CreatingEntryState) {
     imageView(ImageId).setServiceIcon(state.websiteName)
+    if (state.websiteNameEmpty) {
+      showAccentTextViewError(TextWebsiteName, R.string.text_website_name_cant_be_empty)
+    } else {
+      showAccentTextViewDefault(TextWebsiteName, R.string.text_website_name)
+    }
+    if (state.loginEmpty) {
+      showAccentTextViewError(TextLogin, R.string.text_login_cant_be_empty)
+    } else {
+      showAccentTextViewDefault(TextLogin, R.string.text_login)
+    }
   }
   
   override fun onRelease() {
@@ -165,8 +179,22 @@ class CreatingEntryScreen : BaseScreen(), MviView<CreatingEntryState, CreatingEn
     store.tryDispatch(OnContinueClicked(websiteName, login))
   }
   
-  private companion object {
+  private fun showAccentTextViewDefault(textViewId: Int, @StringRes defaultTextRes: Int) {
+    textView(textViewId).apply {
+      apply(AccentTextView)
+      text(defaultTextRes)
+    }
+  }
   
+  private fun showAccentTextViewError(textViewId: Int, @StringRes errorTextRes: Int) {
+    textView(textViewId).apply {
+      textColor(Colors.Error)
+      text(errorTextRes)
+    }
+  }
+  
+  private companion object {
+    
     val ToolbarId = View.generateViewId()
     val EditTextLayoutsId = View.generateViewId()
     val ImageId = View.generateViewId()

@@ -7,6 +7,8 @@ import android.graphics.drawable.RippleDrawable
 import android.graphics.drawable.ShapeDrawable
 import android.graphics.drawable.shapes.RoundRectShape
 import android.text.InputType.TYPE_TEXT_VARIATION_PASSWORD
+import android.text.SpannableString
+import android.text.Spanned
 import android.text.TextUtils
 import android.view.Gravity
 import android.view.View
@@ -14,7 +16,9 @@ import android.view.inputmethod.EditorInfo
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.annotation.StringRes
 import com.arsvechkarev.vault.R
+import com.arsvechkarev.vault.core.TypefaceSpan
 import com.arsvechkarev.vault.viewbuilding.Dimens.CornerRadiusSmall
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginMedium
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginNormal
@@ -34,6 +38,7 @@ import viewdsl.paddingVertical
 import viewdsl.rippleBackground
 import viewdsl.textColor
 import viewdsl.textSize
+
 
 @Suppress("FunctionName")
 object Styles : DefaultStyles {
@@ -100,18 +105,31 @@ object Styles : DefaultStyles {
     isFocusable = true
   }
   
+  val AccentTextView: TextView.() -> Unit = {
+    apply(BaseTextView)
+    textColor(Colors.Accent)
+    textSize(TextSizes.H5)
+  }
+  
   val ImageBack: ImageView.() -> Unit = {
     image(R.drawable.ic_back)
     padding(Dimens.IconPadding)
     circleRippleBackground(rippleColor = Colors.Ripple)
   }
   
-  val BaseEditText: EditText.() -> Unit = {
-    font(Fonts.SegoeUi)
+  fun BaseEditText(@StringRes hint: Int = 0): EditText.() -> Unit = {
+    font(Fonts.SegoeUiBold)
     textSize(TextSizes.H3)
     paddingVertical(MarginSmall)
     setSingleLine()
+    background = null
     inputType = TYPE_TEXT_VARIATION_PASSWORD
     imeOptions = EditorInfo.IME_ACTION_DONE
+    if (hint != 0) {
+      val spannableString = SpannableString(context.getString(hint))
+      spannableString.setSpan(TypefaceSpan(Fonts.SegoeUi), 0, spannableString.length,
+        Spanned.SPAN_INCLUSIVE_EXCLUSIVE)
+      setHint(spannableString)
+    }
   }
 }

@@ -60,7 +60,7 @@ class EditableTextInfoViewGroup(context: Context) : ViewGroup(context) {
   
   init {
     withViewBuilder {
-      EditText(MatchParent, WrapContent, style = BaseEditText) {
+      EditText(MatchParent, WrapContent, style = BaseEditText()) {
         invisible()
         background(null)
         gravity(CENTER)

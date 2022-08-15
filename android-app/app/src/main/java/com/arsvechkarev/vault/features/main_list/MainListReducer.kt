@@ -1,7 +1,7 @@
 package com.arsvechkarev.vault.features.main_list
 
 import com.arsvechkarev.vault.core.Router
-import com.arsvechkarev.vault.core.Screens.CreatingServiceScreen
+import com.arsvechkarev.vault.core.Screens.CreatingEntryScreen
 import com.arsvechkarev.vault.core.Screens.InfoScreen
 import com.arsvechkarev.vault.core.Screens.SettingsScreen
 import com.arsvechkarev.vault.core.mvi.tea.DslReducer
@@ -60,7 +60,7 @@ class MainListReducer(
             router.goForwardWithDelay(SettingsScreen, DurationsConfigurator.MenuOpening)
           }
           NEW_PASSWORD -> {
-            router.goForwardWithDelay(CreatingServiceScreen, DurationsConfigurator.MenuOpening)
+            router.goForwardWithDelay(CreatingEntryScreen, DurationsConfigurator.MenuOpening)
           }
         }
       }

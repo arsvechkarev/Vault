@@ -14,6 +14,8 @@ object Colors {
   val Accent = "3C80AE".color
   val AccentLight = "69ACD8".color
   val AccentRipple = "70307FB5".color
+  val AccentHeavy = "235575".color
+  val WhiteCircle = "FFFFFF".color
   val Correct = "29B500".color
   val CorrectRipple = "70249802".color
   val Error = "D5301E".color

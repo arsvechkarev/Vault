@@ -27,6 +27,8 @@
   <string name="hint_website_name">Enter website name</string>
   <string name="text_login">Login</string>
   <string name="hint_login">Enter login</string>
+  <string name="text_website_name_cant_be_empty">Website name cannot be empty</string>
+  <string name="text_login_cant_be_empty">Login cannot be empty</string>
   <string name="text_new_password">New password</string>
   <string name="text_do_you_want_to_save_password_locally">Do you want to save password locally?</string>
   <string name="text_save_password_or_not">

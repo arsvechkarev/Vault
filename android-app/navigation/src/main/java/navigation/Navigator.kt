@@ -1,9 +1,15 @@
 package navigation
 
 import android.os.Bundle
-import com.github.terrakok.cicerone.Navigator
 
-interface ExtendedNavigator : Navigator {
+interface Navigator {
+  
+  /**
+   * Performs transition described by the navigation command
+   *
+   * @param commands the navigation command array to apply per single transaction
+   */
+  fun applyCommands(commands: Array<out Command>)
   
   /**
    * Handles going back in stack. Returns true, if there was any screens in stack to be removed

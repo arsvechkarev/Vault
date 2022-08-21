@@ -11,7 +11,6 @@ ext {
       coordinatorLayout: "androidx.coordinatorlayout:coordinatorlayout:1.1.0",
       constraintLayout : "androidx.constraintlayout:constraintlayout:2.0.4",
       recyclerView     : "androidx.recyclerview:recyclerview:1.1.0",
-      cicerone         : "com.github.terrakok:cicerone:6.6",
       moxy             : "com.github.moxy-community:moxy:$moxy_version",
       moxyCompiler     : "com.github.moxy-community:moxy-compiler:$moxy_version",
       moxyAndroidx     : "com.github.moxy-community:moxy-androidx:$moxy_version",

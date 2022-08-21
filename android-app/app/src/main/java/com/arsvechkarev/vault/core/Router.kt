@@ -1,11 +1,11 @@
 package com.arsvechkarev.vault.core
 
-import com.github.terrakok.cicerone.BaseRouter
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import navigation.Back
 import navigation.BackTo
+import navigation.BaseRouter
 import navigation.Forward
 import navigation.Replace
 import navigation.ScreenInfo

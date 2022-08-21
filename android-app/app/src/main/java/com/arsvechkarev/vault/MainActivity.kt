@@ -58,12 +58,12 @@ class MainActivity : BaseActivity(), AppComponentProvider {
   
   override fun onResume() {
     super.onResume()
-    appComponent.cicerone.getNavigatorHolder().setNavigator(appComponent.navigator)
+    appComponent.navigationController.getNavigatorHolder().setNavigator(appComponent.navigator)
   }
   
   override fun onPause() {
     super.onPause()
-    appComponent.cicerone.getNavigatorHolder().removeNavigator()
+    appComponent.navigationController.getNavigatorHolder().removeNavigator()
   }
   
   override fun onBackPressed() {

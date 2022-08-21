@@ -8,7 +8,7 @@ import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 
-class ExtendedNavigatorTest {
+class NavigatorTest {
   
   class Screen1 : FakeViewHavingScreen()
   class Screen2 : FakeViewHavingScreen()
@@ -23,12 +23,12 @@ class ExtendedNavigatorTest {
   private val screen5 = Screen { Screen5::class }
   
   lateinit var host: FakeNavigationHost
-  lateinit var navigator: ExtendedNavigatorImpl
+  lateinit var navigator: NavigatorImpl
   
   @Before
   fun setUp() {
     host = FakeNavigationHost { handler -> (handler as FakeScreenHandler).fakeView!! }
-    navigator = ExtendedNavigatorImpl(host, OfClassNameFactory, FakeScreenHandlerFactory)
+    navigator = NavigatorImpl(host, OfClassNameFactory, FakeScreenHandlerFactory)
   }
   
   @Test

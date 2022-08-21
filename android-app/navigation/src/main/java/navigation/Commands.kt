@@ -1,6 +1,6 @@
 package navigation
 
-import com.github.terrakok.cicerone.Command
+interface Command
 
 data class Forward(val screenInfo: ScreenInfo, val removeCurrentView: Boolean) : Command
 

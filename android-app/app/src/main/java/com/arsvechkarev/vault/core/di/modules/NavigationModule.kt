@@ -4,12 +4,12 @@ import android.widget.FrameLayout
 import androidx.annotation.IdRes
 import com.arsvechkarev.vault.VaultApplication
 import com.arsvechkarev.vault.core.Router
-import com.github.terrakok.cicerone.Cicerone
 import moxy.MvpAppCompatActivity
 import navigation.BaseScreen
-import navigation.ExtendedNavigator
-import navigation.ExtendedNavigatorImpl
 import navigation.MvpViewScreenHandler
+import navigation.NavigationController
+import navigation.Navigator
+import navigation.NavigatorImpl
 import navigation.OfClassNameFactory
 import navigation.ScreenHandler
 import navigation.ScreenHandlerFactory
@@ -17,8 +17,8 @@ import navigation.ViewNavigationHost
 
 interface NavigationModule {
   val router: Router
-  val cicerone: Cicerone<Router>
-  val navigator: ExtendedNavigator
+  val navigationController: NavigationController
+  val navigator: Navigator
 }
 
 class NavigationModuleImpl(
@@ -28,11 +28,11 @@ class NavigationModuleImpl(
   
   override val router = Router(VaultApplication.AppMainCoroutineScope)
   
-  override val cicerone = Cicerone.create(router)
+  override val navigationController = NavigationController.create(router)
   
   override val navigator = createNavigator(activity, navigationRootViewId)
   
-  private fun createNavigator(activity: MvpAppCompatActivity, rootViewId: Int): ExtendedNavigator {
+  private fun createNavigator(activity: MvpAppCompatActivity, rootViewId: Int): Navigator {
     val rootView = activity.findViewById<FrameLayout>(rootViewId)
     val screenHandlerViewProvider = { handler: ScreenHandler ->
       (handler as MvpViewScreenHandler).view
@@ -42,6 +42,6 @@ class NavigationModuleImpl(
       MvpViewScreenHandler(screen as BaseScreen, screenKey.toString(),
         activity.mvpDelegate, activity)
     }
-    return ExtendedNavigatorImpl(navHost, OfClassNameFactory, screenHandlerFactory)
+    return NavigatorImpl(navHost, OfClassNameFactory, screenHandlerFactory)
   }
 }

@@ -3,15 +3,14 @@ package navigation
 import android.os.Bundle
 import android.util.Log
 import androidx.annotation.VisibleForTesting
-import com.github.terrakok.cicerone.Command
 import navigation.AnimationType.FORWARD
 import navigation.AnimationType.NONE
 
-class ExtendedNavigatorImpl(
+class NavigatorImpl(
   private val host: NavigationHost,
   private val screenFactory: ScreenFactory,
   private val screenHandlerFactory: ScreenHandlerFactory,
-) : ExtendedNavigator {
+) : Navigator {
   
   // Map of screen keys to handlers
   private val screenHandlersCache = HashMap<ScreenKey, ScreenHandler>()

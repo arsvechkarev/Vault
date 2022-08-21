@@ -8,21 +8,14 @@ import buisnesslogic.generator.PasswordGenerator
 import buisnesslogic.hasNumbers
 import buisnesslogic.hasSpecialSymbols
 import buisnesslogic.hasUppercaseLetters
-import buisnesslogic.model.PasswordCharacteristics
-import buisnesslogic.model.PasswordCharacteristics.NUMBERS
-import buisnesslogic.model.PasswordCharacteristics.SPECIAL_SYMBOLS
-import buisnesslogic.model.PasswordCharacteristics.UPPERCASE_SYMBOLS
+import buisnesslogic.model.PasswordCharacteristic
+import buisnesslogic.model.PasswordCharacteristic.NUMBERS
+import buisnesslogic.model.PasswordCharacteristic.SPECIAL_SYMBOLS
+import buisnesslogic.model.PasswordCharacteristic.UPPERCASE_SYMBOLS
 import com.arsvechkarev.vault.core.BasePresenter
 import com.arsvechkarev.vault.core.DispatchersFacade
 import com.arsvechkarev.vault.core.Router
-import com.arsvechkarev.vault.core.communicators.FlowCommunicator
-import com.arsvechkarev.vault.features.creating_password.PasswordCreatingActions.ConfigureMode.EditPassword
-import com.arsvechkarev.vault.features.creating_password.PasswordCreatingActions.ConfigureMode.NewPassword
-import com.arsvechkarev.vault.features.creating_password.PasswordCreatingActions.ExitScreen
-import com.arsvechkarev.vault.features.creating_password.PasswordCreatingActions.ShowAcceptPasswordDialog
-import com.arsvechkarev.vault.features.creating_password.PasswordCreatingActions.ShowLoading
-import com.arsvechkarev.vault.features.creating_password.PasswordCreatingReactions.OnNewPasswordAccepted
-import com.arsvechkarev.vault.features.creating_password.PasswordCreatingReactions.OnSavePasswordButtonClicked
+import com.arsvechkarev.vault.core.communicators.Communicator
 import com.arsvechkarev.vault.features.creating_password.PasswordCreatingState.INITIAL
 import com.arsvechkarev.vault.features.creating_password.PasswordCreatingState.LOADING
 import com.arsvechkarev.vault.features.creating_password.PasswordCreatingState.SHOWING_ACCEPT_DIALOG
@@ -31,7 +24,7 @@ import java.util.EnumSet
 
 class PasswordCreatingPresenter constructor(
   @PasswordCreatingCommunicator
-  private val passwordCreatingCommunicator: FlowCommunicator<PasswordCreatingEvents>,
+  private val passwordCreatingCommunicator: Communicator<PasswordCreatingEvents, PasswordCreatingEvents>,
   private val passwordInfoChecker: PasswordInfoChecker,
   private val passwordGenerator: PasswordGenerator,
   private val router: Router,
@@ -69,7 +62,7 @@ class PasswordCreatingPresenter constructor(
     viewState.showChangePasswordLength(length)
   }
   
-  fun onCheckmarkClicked(characteristics: PasswordCharacteristics) {
+  fun onCheckmarkClicked(characteristics: PasswordCharacteristic) {
     if (passwordCharacteristics.contains(characteristics)) {
       passwordCharacteristics.remove(characteristics)
     } else {
@@ -81,7 +74,7 @@ class PasswordCreatingPresenter constructor(
   fun onSavePasswordClicked() {
     when (passwordInfoChecker.checkForErrors(password)) {
       EMPTY -> viewState.showPasswordIsEmpty()
-      else -> launch { passwordCreatingCommunicator.send(OnSavePasswordButtonClicked(password)) }
+      else -> launch { /*passwordCreatingCommunicator.send(OnSavePasswordButtonClicked(password))*/ }
     }
   }
   
@@ -119,36 +112,35 @@ class PasswordCreatingPresenter constructor(
   }
   
   fun acceptPassword() {
-    launch { passwordCreatingCommunicator.send(OnNewPasswordAccepted(password)) }
+    launch { /*passwordCreatingCommunicator.send(OnNewPasswordAccepted(password))*/ }
   }
   
   private fun subscribeToPasswordCreatingEvents() {
-    passwordCreatingCommunicator.events.collectInPresenterScope { event ->
-      when (event) {
-        NewPassword -> {
-          viewState.showCreatingPasswordMode()
-          showInitialGeneratedPassword()
-        }
-        is EditPassword -> {
-          this.password = event.password
-          viewState.showEditingPasswordMode(password)
-          onPasswordChanged(password)
-        }
-        ShowAcceptPasswordDialog -> {
-          state = SHOWING_ACCEPT_DIALOG
-          viewState.showPasswordAcceptingDialog()
-        }
-        ShowLoading -> {
-          state = LOADING
-          viewState.hidePasswordAcceptingDialog()
-          viewState.showLoadingDialog()
-        }
-        ExitScreen -> {
-          state = INITIAL
-          viewState.hidePasswordAcceptingDialog()
-          viewState.hideLoadingDialog()
-        }
-      }
-    }
+    //    passwordCreatingCommunicator.events.collectInPresenterScope { event ->
+    //      when (event) {
+    //        NewPassword -> {
+    //          viewState.showCreatingPasswordMode()
+    //          showInitialGeneratedPassword()
+    //        }
+    //        is EditPassword -> {
+    //          this.password = event.password
+    //          viewState.showEditingPasswordMode(password)
+    //          onPasswordChanged(password)
+    //        }
+    //        ShowAcceptPasswordDialog -> {
+    //          state = SHOWING_ACCEPT_DIALOG
+    //          viewState.showPasswordAcceptingDialog()
+    //        }
+    //        ShowLoading -> {
+    //          state = LOADING
+    //          viewState.hidePasswordAcceptingDialog()
+    //          viewState.showLoadingDialog()
+    //        }
+    //        ExitScreen -> {
+    //          state = INITIAL
+    //          viewState.hidePasswordAcceptingDialog()
+    //          viewState.hideLoadingDialog()
+    //        }
+    //      }
   }
 }

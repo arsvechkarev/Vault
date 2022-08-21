@@ -1,10 +1,11 @@
 package com.arsvechkarev.vault.core.extensions
 
-import android.view.View
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.emptyFlow
+import kotlinx.coroutines.flow.flatMapLatest
 
-val View.coroutineScope: CoroutineScope
-  get() {
-    return CoroutineScope(Dispatchers.Main)
-  }
+inline fun <Command, reified Event> Flow<Command>.emptyMap(
+  crossinline action: suspend () -> Unit
+): Flow<Event> {
+  return flatMapLatest { action(); emptyFlow() }
+}

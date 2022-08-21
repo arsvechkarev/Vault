@@ -14,6 +14,7 @@ class ZxcvbnPasswordInfoChecker(
   override fun checkStrength(password: String): PasswordStrength? {
     if (password.isBlank()) return null
     var strengthNum = zxcvbn.measure(password).score
+    // TODO (8/15/2022): Maybe leave only zxcvbn
     if (password.hasNumbers) strengthNum += 1
     if (password.hasUppercaseLetters) strengthNum += 1
     if (password.hasLowercaseLetters) strengthNum += 1

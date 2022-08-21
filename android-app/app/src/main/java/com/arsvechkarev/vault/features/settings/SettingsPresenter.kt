@@ -2,13 +2,8 @@ package com.arsvechkarev.vault.features.settings
 
 import com.arsvechkarev.vault.core.DispatchersFacade
 import com.arsvechkarev.vault.core.Router
-import com.arsvechkarev.vault.core.communicators.FlowCommunicator
 import com.arsvechkarev.vault.core.mvi.BaseMviPresenter
-import com.arsvechkarev.vault.features.password_checking.PasswordCheckingActions.HideDialog
-import com.arsvechkarev.vault.features.password_checking.PasswordCheckingActions.ShowDialog
 import com.arsvechkarev.vault.features.password_checking.PasswordCheckingCommunicator
-import com.arsvechkarev.vault.features.password_checking.PasswordCheckingEvents
-import com.arsvechkarev.vault.features.password_checking.PasswordCheckingReactions.PasswordCheckedSuccessfully
 import com.arsvechkarev.vault.features.settings.SettingsScreenActions.HidePasswordCheckingDialog
 import com.arsvechkarev.vault.features.settings.SettingsScreenActions.ShowFingerprintEnteringEnabled
 import com.arsvechkarev.vault.features.settings.SettingsScreenActions.ShowPasswordCheckingDialog
@@ -19,7 +14,7 @@ import kotlinx.coroutines.launch
 
 class SettingsPresenter constructor(
   @PasswordCheckingCommunicator
-  private val passwordCheckingCommunicator: FlowCommunicator<PasswordCheckingEvents>,
+  //  private val passwordCheckingCommunicator: Communicator<PasswordCheckingEvents>,
   private val router: Router,
   dispatchers: DispatchersFacade,
 ) : BaseMviPresenter<SettingsScreenActions, SettingsScreenUserActions, SettingsScreenState>(
@@ -58,7 +53,7 @@ class SettingsPresenter constructor(
       }
       OnBackPressed -> {
         if (state.showPasswordCheckingDialog) {
-          launch { passwordCheckingCommunicator.send(HideDialog) }
+          //          launch { passwordCheckingCommunicator.send(HideDialog) }
           applyAction(HidePasswordCheckingDialog)
         } else {
           router.goBack()
@@ -81,7 +76,7 @@ class SettingsPresenter constructor(
     launch {
       if (isChecked) {
         applyAction(ShowPasswordCheckingDialog)
-        passwordCheckingCommunicator.send(ShowDialog)
+        //        passwordCheckingCommunicator.send(ShowDialog)
         // Setting it to false temporarily, so that it doesn't show checked state before user entered password
         applyAction(ShowFingerprintEnteringEnabled(enabled = false))
       } else {
@@ -91,13 +86,13 @@ class SettingsPresenter constructor(
   }
   
   private fun subscribeToPasswordCheckingEvents() {
-    passwordCheckingCommunicator.events.collectInPresenterScope { event ->
-      when (event) {
-        is PasswordCheckedSuccessfully -> {
-          applyAction(HidePasswordCheckingDialog)
-          passwordCheckingCommunicator.send(HideDialog)
-        }
-      }
-    }
+    //    passwordCheckingCommunicator.events.collectInPresenterScope { event ->
+    //      when (event) {
+    //        is PasswordCheckedSuccessfully -> {
+    //          applyAction(HidePasswordCheckingDialog)
+    //          passwordCheckingCommunicator.send(HideDialog)
+    //        }
+    //      }
+    //    }
   }
 }

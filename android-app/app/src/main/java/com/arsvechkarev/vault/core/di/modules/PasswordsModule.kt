@@ -1,5 +1,6 @@
 package com.arsvechkarev.vault.core.di.modules
 
+import buisnesslogic.IdGeneratorImpl
 import buisnesslogic.MasterPasswordChecker
 import buisnesslogic.MasterPasswordCheckerImpl
 import buisnesslogic.PasswordInfoChecker
@@ -38,11 +39,12 @@ class PasswordsModuleImpl(
   
   override val listenableCachedPasswordStorage = ListenableCachedPasswordStorage(
     CachedPasswordsStorage(
-      PasswordsStorageImpl(
+      storage = PasswordsStorageImpl(
         cryptographyModule.cryptography,
         fileSaverModule.fileSaver,
         coreModule.jsonConverter
-      )
+      ),
+      idGenerator = IdGeneratorImpl
     )
   )
 }

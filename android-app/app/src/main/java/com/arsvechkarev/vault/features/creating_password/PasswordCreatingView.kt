@@ -1,7 +1,7 @@
 package com.arsvechkarev.vault.features.creating_password
 
 import buisnesslogic.PasswordStrength
-import buisnesslogic.model.PasswordCharacteristics
+import buisnesslogic.model.PasswordCharacteristic
 import moxy.MvpView
 import moxy.viewstate.strategy.AddToEndSingleStrategy
 import moxy.viewstate.strategy.StateStrategyType
@@ -17,7 +17,7 @@ interface PasswordCreatingView : MvpView {
   
   fun showPasswordStrength(strength: PasswordStrength?)
   
-  fun showPasswordCharacteristics(characteristics: Collection<PasswordCharacteristics>)
+  fun showPasswordCharacteristics(characteristics: Collection<PasswordCharacteristic>)
   
   fun showGeneratedPassword(password: String)
   

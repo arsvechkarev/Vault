@@ -7,7 +7,7 @@ import com.arsvechkarev.vault.core.DispatchersFacade
 import com.arsvechkarev.vault.core.mvi.tea.Actor
 import com.arsvechkarev.vault.features.creating_master_password.CMPCommands
 import com.arsvechkarev.vault.features.creating_master_password.CMPEvents
-import com.arsvechkarev.vault.features.creating_master_password.CreatingMasterPasswordCommands.FinishAuth
+import com.arsvechkarev.vault.features.creating_master_password.CreatingMasterPasswordCommand.FinishAuth
 import com.arsvechkarev.vault.features.creating_master_password.CreatingMasterPasswordEvent.FinishedAuth
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.filterIsInstance

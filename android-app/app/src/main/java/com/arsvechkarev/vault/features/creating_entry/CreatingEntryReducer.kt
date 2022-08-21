@@ -3,7 +3,12 @@ package com.arsvechkarev.vault.features.creating_entry
 import com.arsvechkarev.vault.core.Router
 import com.arsvechkarev.vault.core.Screens
 import com.arsvechkarev.vault.core.mvi.tea.DslReducer
+import com.arsvechkarev.vault.features.creating_entry.CreatingEntryCommand.GoToInfoScreen
+import com.arsvechkarev.vault.features.creating_entry.CreatingEntryCommand.NotifyEntryCreated
+import com.arsvechkarev.vault.features.creating_entry.CreatingEntryCommand.SaveEntry
 import com.arsvechkarev.vault.features.creating_entry.CreatingEntryCommand.ValidateInput
+import com.arsvechkarev.vault.features.creating_entry.CreatingEntryEvent.EntryCreated
+import com.arsvechkarev.vault.features.creating_entry.CreatingEntryEvent.PasswordEntered
 import com.arsvechkarev.vault.features.creating_entry.CreatingEntryEvent.SendValidationResult
 import com.arsvechkarev.vault.features.creating_entry.CreatingEntryEvent.ValidationResult.Fail
 import com.arsvechkarev.vault.features.creating_entry.CreatingEntryEvent.ValidationResult.Success
@@ -41,9 +46,18 @@ class CreatingEntryReducer(
             }
           }
           Success -> {
-            router.goForward(Screens.PasswordCreatingScreen)
+            router.goForward(Screens.CreatingPasswordScreen)
           }
         }
+      }
+      is PasswordEntered -> {
+        commands(SaveEntry(state.websiteName, state.login, event.password))
+      }
+      is EntryCreated -> {
+        commands(
+          NotifyEntryCreated,
+          GoToInfoScreen(event.passwordInfoItem)
+        )
       }
     }
   }

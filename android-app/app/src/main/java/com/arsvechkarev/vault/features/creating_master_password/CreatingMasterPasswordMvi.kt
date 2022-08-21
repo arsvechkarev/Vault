@@ -6,7 +6,7 @@ import buisnesslogic.PasswordStrength
 typealias CMPState = CreatingMasterPasswordState
 typealias CMPEvents = CreatingMasterPasswordEvent
 typealias CMPUiEvent = CreatingMasterPasswordUiEvent
-typealias CMPCommands = CreatingMasterPasswordCommands
+typealias CMPCommands = CreatingMasterPasswordCommand
 typealias CMPNews = CreatingMasterPasswordNews
 
 sealed interface CreatingMasterPasswordEvent {
@@ -29,14 +29,14 @@ sealed interface CreatingMasterPasswordNews {
   object FinishingAuthorization : CreatingMasterPasswordNews
 }
 
-sealed interface CreatingMasterPasswordCommands {
+sealed interface CreatingMasterPasswordCommand {
   
-  sealed interface PasswordCommand : CreatingMasterPasswordCommands {
+  sealed interface PasswordCommand : CreatingMasterPasswordCommand {
     class CheckPasswordStrength(val password: String) : PasswordCommand
     class CheckPasswordForErrors(val password: String) : PasswordCommand
   }
   
-  class FinishAuth(val password: String) : CreatingMasterPasswordCommands
+  class FinishAuth(val password: String) : CreatingMasterPasswordCommand
 }
 
 data class CreatingMasterPasswordState(

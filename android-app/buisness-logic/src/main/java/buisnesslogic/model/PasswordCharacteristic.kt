@@ -4,7 +4,7 @@ package buisnesslogic.model
  * Password characteristics i.e what password has. By default password consists of only lowercase
  * english letters
  */
-enum class PasswordCharacteristics {
+enum class PasswordCharacteristic {
   
   /**
    * Password includes uppercase english letters

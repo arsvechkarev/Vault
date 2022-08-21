@@ -2,6 +2,7 @@ package navigation
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import moxy.MvpDelegate
 import navigation.AnimationType.BACKWARD
@@ -29,7 +30,9 @@ class MvpViewScreenHandler(
   
   override fun buildViewIfNeeded() {
     if (screen._view == null) {
+      Log.d("AndroidRuntime", "buildLayoutStarted")
       screen._view = screen.buildLayout(context)
+      Log.d("AndroidRuntime", "buildLayoutFinished")
     }
   }
   

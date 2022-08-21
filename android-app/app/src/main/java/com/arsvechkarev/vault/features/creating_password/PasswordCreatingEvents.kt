@@ -7,7 +7,7 @@ annotation class PasswordCreatingCommunicator
 interface PasswordCreatingEvents
 
 /**
- * Reactions, i.e events that [PasswordCreatingScreen] sends and other screens can listen to
+ * Reactions, i.e events that [CreatingPasswordScreen] sends and other screens can listen to
  */
 sealed class PasswordCreatingReactions : PasswordCreatingEvents {
   
@@ -19,12 +19,12 @@ sealed class PasswordCreatingReactions : PasswordCreatingEvents {
 }
 
 /**
- * Actions, i.e events that other screens send to [PasswordCreatingScreen]
+ * Actions, i.e events that other screens send to [CreatingPasswordScreen]
  */
 sealed class PasswordCreatingActions : PasswordCreatingEvents {
   
   /**
-   * Action that configures [PasswordCreatingScreen]
+   * Action that configures [CreatingPasswordScreen]
    */
   sealed class ConfigureMode : PasswordCreatingActions() {
     

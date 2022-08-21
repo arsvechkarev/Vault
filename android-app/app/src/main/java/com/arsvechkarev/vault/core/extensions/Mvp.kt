@@ -1,5 +1,6 @@
 package com.arsvechkarev.vault.core.extensions
 
+import android.util.Log
 import com.arsvechkarev.vault.core.DefaultDispatchersFacade
 import com.arsvechkarev.vault.core.DispatchersFacade
 import com.arsvechkarev.vault.core.mvi.MviView
@@ -68,13 +69,14 @@ private class PresenterStore<State : Any, UiEvent : Any, News : Any>(
   
   @Suppress("UNCHECKED_CAST")
   override fun attachView(view: MviView<State, News>) {
+    super.attachView(view)
+    Log.d("AndroidRuntime", "attachView()")
     stateAndNewsScope.launch {
       store.state.collect { state -> (viewState as MviView<State, News>).render(state) }
     }
     stateAndNewsScope.launch {
       store.news.collect { news -> (viewState as MviView<State, News>).handleNews(news) }
     }
-    super.attachView(view)
   }
   
   override fun detachView(view: MviView<State, News>) {

@@ -13,9 +13,15 @@ class ListenableCachedPasswordStorage(private val cachedPasswordStorage: CachedP
     return cachedPasswordStorage.getPasswords(masterPassword)
   }
   
-  suspend fun savePassword(masterPassword: String, passwordInfoItem: PasswordInfoItem) {
-    cachedPasswordStorage.savePassword(masterPassword, passwordInfoItem)
+  suspend fun savePassword(
+    masterPassword: String,
+    websiteName: String,
+    login: String,
+    password: String
+  ): PasswordInfoItem {
+    val item = cachedPasswordStorage.savePassword(masterPassword, websiteName, login, password)
     notifySubscribers(masterPassword)
+    return item
   }
   
   suspend fun updatePassword(masterPassword: String, passwordInfoItem: PasswordInfoItem) {

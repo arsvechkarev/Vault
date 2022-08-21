@@ -4,7 +4,7 @@ import com.arsvechkarev.vault.core.extensions.bundle
 import com.arsvechkarev.vault.core.model.PasswordInfoItem
 import com.arsvechkarev.vault.features.creating_entry.CreatingEntryScreen
 import com.arsvechkarev.vault.features.creating_master_password.CreatingMasterPasswordScreen
-import com.arsvechkarev.vault.features.creating_password.PasswordCreatingScreen
+import com.arsvechkarev.vault.features.creating_password.CreatingPasswordScreen
 import com.arsvechkarev.vault.features.info.InfoScreen
 import com.arsvechkarev.vault.features.info.InfoScreen.Companion.SERVICE
 import com.arsvechkarev.vault.features.initial.InitialScreen
@@ -27,7 +27,7 @@ object Screens {
   fun InfoScreen(passwordInfoItem: PasswordInfoItem) =
       Screen(arguments = bundle(SERVICE to passwordInfoItem)) { InfoScreen::class }
   
-  val PasswordCreatingScreen = Screen { PasswordCreatingScreen::class }
+  val CreatingPasswordScreen = Screen { CreatingPasswordScreen::class }
   
   val SettingsScreen = Screen { SettingsScreen::class }
 }

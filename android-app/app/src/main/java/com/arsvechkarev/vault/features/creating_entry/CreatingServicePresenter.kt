@@ -1,30 +1,23 @@
 package com.arsvechkarev.vault.features.creating_entry
 
-import buisnesslogic.MasterPasswordHolder.masterPassword
 import com.arsvechkarev.vault.core.CachedPasswordsStorage
 import com.arsvechkarev.vault.core.DispatchersFacade
 import com.arsvechkarev.vault.core.Router
 import com.arsvechkarev.vault.core.Screens
-import com.arsvechkarev.vault.core.communicators.FlowCommunicator
+import com.arsvechkarev.vault.core.communicators.Communicator
 import com.arsvechkarev.vault.core.model.PasswordInfoItem
 import com.arsvechkarev.vault.core.mvi.BaseMviPresenter
 import com.arsvechkarev.vault.features.creating_entry.CreatingEntryUiEvent.OnBackButtonClicked
 import com.arsvechkarev.vault.features.creating_entry.CreatingEntryUiEvent.OnContinueClicked
 import com.arsvechkarev.vault.features.creating_entry.CreatingEntryUiEvent.OnWebsiteNameTextChanged
-import com.arsvechkarev.vault.features.creating_password.PasswordCreatingActions.ConfigureMode.NewPassword
-import com.arsvechkarev.vault.features.creating_password.PasswordCreatingActions.ExitScreen
-import com.arsvechkarev.vault.features.creating_password.PasswordCreatingActions.ShowAcceptPasswordDialog
-import com.arsvechkarev.vault.features.creating_password.PasswordCreatingActions.ShowLoading
 import com.arsvechkarev.vault.features.creating_password.PasswordCreatingCommunicator
 import com.arsvechkarev.vault.features.creating_password.PasswordCreatingEvents
-import com.arsvechkarev.vault.features.creating_password.PasswordCreatingReactions.OnNewPasswordAccepted
-import com.arsvechkarev.vault.features.creating_password.PasswordCreatingReactions.OnSavePasswordButtonClicked
 import kotlinx.coroutines.launch
 import java.util.UUID
 
 class CreatingServicePresenter constructor(
   @PasswordCreatingCommunicator
-  private val passwordCreatingCommunicator: FlowCommunicator<PasswordCreatingEvents>,
+  private val passwordCreatingCommunicator: Communicator<PasswordCreatingEvents, PasswordCreatingEvents>,
   private val servicesRepository: CachedPasswordsStorage,
   private val router: Router,
   dispatchers: DispatchersFacade
@@ -75,32 +68,32 @@ class CreatingServicePresenter constructor(
       //      applyAction(ShowServiceNameCannotBeEmpty)
       return
     }
-    launch { passwordCreatingCommunicator.send(NewPassword) }
-    router.goForward(Screens.PasswordCreatingScreen)
+    //    launch { passwordCreatingCommunicator.i(NewPassword) }
+    router.goForward(Screens.CreatingPasswordScreen)
   }
   
   private fun performServiceSaving(password: String) {
     launch {
-      passwordCreatingCommunicator.send(ShowLoading)
+      //      passwordCreatingCommunicator.send(ShowLoading)
       val serviceInfo = PasswordInfoItem(
         UUID.randomUUID().toString(), state.websiteName, state.login, "state.email", password
       )
-      onIoThread { servicesRepository.savePassword(masterPassword, serviceInfo) }
-      passwordCreatingCommunicator.send(ExitScreen)
+      //      onIoThread { servicesRepository.savePassword(masterPassword, serviceInfo) }
+      //      passwordCreatingCommunicator.send(ExitScreen)
       router.goBackTo(Screens.MainListScreen)
     }
   }
   
   private fun subscribeToPasswordCreatingEvents() {
-    passwordCreatingCommunicator.events.collectInPresenterScope { event ->
-      when (event) {
-        is OnSavePasswordButtonClicked -> {
-          passwordCreatingCommunicator.send(ShowAcceptPasswordDialog)
-        }
-        is OnNewPasswordAccepted -> {
-          performServiceSaving(event.password)
-        }
-      }
-    }
+    //    passwordCreatingCommunicator.events.collectInPresenterScope { event ->
+    //      when (event) {
+    //        is OnSavePasswordButtonClicked -> {
+    //          passwordCreatingCommunicator.send(ShowAcceptPasswordDialog)
+    //        }
+    //        is OnNewPasswordAccepted -> {
+    //          performServiceSaving(event.password)
+    //        }
+    //      }
+    //    }
   }
 }

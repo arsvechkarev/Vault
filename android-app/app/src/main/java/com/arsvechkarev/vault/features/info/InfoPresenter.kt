@@ -7,16 +7,8 @@ import com.arsvechkarev.vault.core.Clipboard
 import com.arsvechkarev.vault.core.DispatchersFacade
 import com.arsvechkarev.vault.core.Router
 import com.arsvechkarev.vault.core.Screens
-import com.arsvechkarev.vault.core.communicators.FlowCommunicator
 import com.arsvechkarev.vault.core.model.PasswordInfoItem
-import com.arsvechkarev.vault.features.creating_password.PasswordCreatingActions.ConfigureMode.EditPassword
-import com.arsvechkarev.vault.features.creating_password.PasswordCreatingActions.ExitScreen
-import com.arsvechkarev.vault.features.creating_password.PasswordCreatingActions.ShowAcceptPasswordDialog
-import com.arsvechkarev.vault.features.creating_password.PasswordCreatingActions.ShowLoading
 import com.arsvechkarev.vault.features.creating_password.PasswordCreatingCommunicator
-import com.arsvechkarev.vault.features.creating_password.PasswordCreatingEvents
-import com.arsvechkarev.vault.features.creating_password.PasswordCreatingReactions.OnNewPasswordAccepted
-import com.arsvechkarev.vault.features.creating_password.PasswordCreatingReactions.OnSavePasswordButtonClicked
 import com.arsvechkarev.vault.features.info.InfoScreenState.DELETING_DIALOG
 import com.arsvechkarev.vault.features.info.InfoScreenState.EDITING_NAME_OR_USERNAME_OR_EMAIL
 import com.arsvechkarev.vault.features.info.InfoScreenState.INITIAL
@@ -25,7 +17,7 @@ import kotlinx.coroutines.launch
 
 class InfoPresenter constructor(
   @PasswordCreatingCommunicator
-  private val passwordCreatingCommunicator: FlowCommunicator<PasswordCreatingEvents>,
+  //  private val passwordCreatingCommunicator: Communicator<PasswordCreatingEvents, >,
   private val servicesRepository: CachedPasswordsStorage,
   private val clipboard: Clipboard,
   private val router: Router,
@@ -143,8 +135,8 @@ class InfoPresenter constructor(
   }
   
   fun onEditPasswordIconClicked() {
-    router.goForward(Screens.PasswordCreatingScreen)
-    launch { passwordCreatingCommunicator.send(EditPassword(passwordInfoItem.notes)) }
+    router.goForward(Screens.CreatingPasswordScreen)
+    //    launch { passwordCreatingCommunicator.send(EditPassword(passwordInfoItem.notes)) }
   }
   
   fun onBackClicked() {
@@ -169,12 +161,12 @@ class InfoPresenter constructor(
   }
   
   private fun subscribeToPasswordCreatingEvents() {
-    passwordCreatingCommunicator.events.collectInPresenterScope { event ->
-      when (event) {
-        is OnSavePasswordButtonClicked -> reactToSaveButtonClicked(event.password)
-        is OnNewPasswordAccepted -> reactToNewPasswordSaved(event.password)
-      }
-    }
+    //    passwordCreatingCommunicator.events.collectInPresenterScope { event ->
+    //      when (event) {
+    //        is OnSavePasswordButtonClicked -> reactToSaveButtonClicked(event.password)
+    //        is OnNewPasswordAccepted -> reactToNewPasswordSaved(event.password)
+    //      }
+    //    }
   }
   
   private fun reactToSaveButtonClicked(newPassword: String) {
@@ -183,16 +175,16 @@ class InfoPresenter constructor(
       router.goBack()
       return
     }
-    launch { passwordCreatingCommunicator.send(ShowAcceptPasswordDialog) }
+    //    launch { passwordCreatingCommunicator.send(ShowAcceptPasswordDialog) }
   }
   
   private fun reactToNewPasswordSaved(newPassword: String) {
     launch {
-      passwordCreatingCommunicator.send(ShowLoading)
+      //      passwordCreatingCommunicator.send(ShowLoading)
       passwordInfoItem = passwordInfoItem.copy(notes = newPassword)
       onIoThread { servicesRepository.updatePassword(masterPassword, passwordInfoItem) }
       viewState.setPassword(newPassword)
-      passwordCreatingCommunicator.send(ExitScreen)
+      //      passwordCreatingCommunicator.send(ExitScreen)
       router.goBack()
     }
   }

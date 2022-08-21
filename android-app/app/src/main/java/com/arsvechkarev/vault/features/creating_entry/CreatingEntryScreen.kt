@@ -139,8 +139,10 @@ class CreatingEntryScreen : BaseScreen(), MviView<CreatingEntryState, CreatingEn
   private val store by moxyStore { CreatingEntryStore(appComponent) }
   
   override fun onAppearedOnScreenAfterAnimation() {
-    editText(EditTextWebsiteName).requestFocus()
-    contextNonNull.showKeyboard(editText(EditTextWebsiteName))
+    editText(EditTextWebsiteName).apply {
+      requestFocus()
+      contextNonNull.showKeyboard(this)
+    }
   }
   
   override fun render(state: CreatingEntryState) {

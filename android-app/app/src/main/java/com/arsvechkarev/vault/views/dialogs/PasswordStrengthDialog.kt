@@ -18,7 +18,6 @@ import com.arsvechkarev.vault.viewbuilding.Styles.ClickableTextView
 import com.arsvechkarev.vault.viewbuilding.TextSizes
 import com.arsvechkarev.vault.views.SimpleDialog
 import navigation.BaseFragmentScreen
-import navigation.BaseScreen
 import viewdsl.Size.Companion.MatchParent
 import viewdsl.Size.Companion.WrapContent
 import viewdsl.backgroundRoundRect
@@ -54,7 +53,8 @@ class PasswordStrengthDialog(context: Context) : SimpleDialog(context) {
           classNameTag()
           layoutGravity(Gravity.END)
           margins(top = MarginLarge, bottom = MarginNormal,
-            start = MarginSmall, end = MarginSmall)
+            start = MarginSmall, end = MarginSmall
+          )
           text(R.string.text_got_it)
         }
       }
@@ -66,8 +66,6 @@ class PasswordStrengthDialog(context: Context) : SimpleDialog(context) {
   }
   
   companion object {
-  
-    val BaseScreen.passwordStrengthDialog get() = viewAs<PasswordStrengthDialog>()
   
     val BaseFragmentScreen.passwordStrengthDialog get() = viewAs<PasswordStrengthDialog>()
   

@@ -1,6 +1,5 @@
 package navigation
 
-// TODO (8/21/2022): Think about name
 class NavigationController private constructor(
   private val router: BaseRouter
 ) {

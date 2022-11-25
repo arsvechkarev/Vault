@@ -15,7 +15,6 @@ import com.arsvechkarev.vault.views.EditTextPassword
 import com.arsvechkarev.vault.views.MaterialProgressBar
 import com.arsvechkarev.vault.views.MaterialProgressBar.Thickness.NORMAL
 import com.arsvechkarev.vault.views.SimpleDialog
-import navigation.BaseScreen
 import viewdsl.Size.Companion.MatchParent
 import viewdsl.Size.Companion.WrapContent
 import viewdsl.addView
@@ -117,8 +116,6 @@ class PasswordCheckingDialog(
     
     private const val TextErrorTag = "TextError"
     private const val ContinueButtonTag = "ContinueButton"
-    
-    val BaseScreen.passwordCheckingDialog get() = viewAs<PasswordCheckingDialog>()
     
     fun ViewGroup.PasswordCheckingDialog(block: PasswordCheckingDialog.() -> Unit = {}) = withViewBuilder {
       val infoDialog = PasswordCheckingDialog(context)

@@ -17,7 +17,6 @@ import com.arsvechkarev.vault.viewbuilding.Styles.ClickableErrorTextView
 import com.arsvechkarev.vault.viewbuilding.Styles.ClickableTextView
 import com.arsvechkarev.vault.views.SimpleDialog
 import navigation.BaseFragmentScreen
-import navigation.BaseScreen
 import viewdsl.Size.Companion.MatchParent
 import viewdsl.Size.Companion.WrapContent
 import viewdsl.backgroundRoundRect
@@ -53,7 +52,8 @@ class InfoDialog(context: Context) : SimpleDialog(context) {
         HorizontalLayout(WrapContent, WrapContent) {
           layoutGravity(Gravity.END)
           margins(top = MarginLarge, bottom = MarginNormal, start = MarginSmall,
-            end = MarginSmall)
+            end = MarginSmall
+          )
           TextView(WrapContent, WrapContent, style = ClickableTextView()) {
             tag(DialogInfoText1)
             margins(end = HorizontalMarginVerySmall)
@@ -104,8 +104,6 @@ class InfoDialog(context: Context) : SimpleDialog(context) {
     private const val DialogInfoText1 = "DialogErrorText1"
     private const val DialogInfoText2 = "DialogErrorText2"
     private const val DialogInfoMessage = "DialogInfoMessage"
-  
-    val BaseScreen.infoDialog get() = viewAs<InfoDialog>()
   
     val BaseFragmentScreen.infoDialog get() = viewAs<InfoDialog>()
   

@@ -1,12 +1,11 @@
 ext {
-    compileSdkVersion = 30
-    applicationId = 'com.arsvechkarev.vault'
-    minSdkVersion = 21
-    targetSdkVersion = 30
-    versionCode = 1
-    versionName = '1.0.0'
-    testInstrumentationRunner = 'androidx.test.runner.AndroidJUnitRunner'
+  compileSdkVersion = 32
+  applicationId = 'com.arsvechkarev.vault'
+  minSdkVersion = 21
+  targetSdkVersion = 32
+  versionCode = 1
+  versionName = '1.0.0'
 
-    minifyEnabled = true
-    shrinkResources = true
+  minifyEnabled = true
+  shrinkResources = true
 }

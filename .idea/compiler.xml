@@ -9,6 +9,7 @@
       <module name="Vault.app" target="1.8" />
       <module name="Vault.config" target="1.8" />
       <module name="Vault.navigation" target="1.8" />
+      <module name="Vault.viewdsl" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>

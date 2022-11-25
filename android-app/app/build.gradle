@@ -1,12 +1,12 @@
 plugins {
-    id 'com.android.application'
-    id 'kotlin-android'
-    id 'kotlin-kapt'
-    id 'kotlin-parcelize'
+  id 'com.android.application'
+  id 'kotlin-android'
+  id 'kotlin-kapt'
+  id 'kotlin-parcelize'
 }
 
 android {
-    signingConfigs {
+  signingConfigs {
 //    Properties properties = new Properties()
 //    properties.load(new FileInputStream(file("../local.properties")))
 //    release {
@@ -15,18 +15,17 @@ android {
 //      keyAlias properties["keyAlias"]
 //      keyPassword properties["keyPassword"]
 //    }
-    }
-    def ext = rootProject.ext
-    compileSdkVersion ext.compileSdkVersion
-    defaultConfig {
-        applicationId ext.applicationId
-        minSdkVersion ext.minSdkVersion
-        targetSdkVersion ext.targetSdkVersion
-        versionCode ext.versionCode
-        versionName ext.versionName
-        testInstrumentationRunner ext.testInstrumentationRunner
+  }
+  def ext = rootProject.ext
+  compileSdkVersion ext.compileSdkVersion
+  defaultConfig {
+    applicationId ext.applicationId
+    minSdkVersion ext.minSdkVersion
+    targetSdkVersion ext.targetSdkVersion
+    versionCode ext.versionCode
+    versionName ext.versionName
 //    signingConfig signingConfigs.release
-    }
+  }
 //  buildTypes {
 //    debug {
 //      applicationIdSuffix ".debug"
@@ -40,41 +39,39 @@ android {
 //      initWith debug
 //    }
 //  }
-    kotlinOptions {
-        jvmTarget = "1.8"
-    }
+  kotlinOptions {
+    jvmTarget = "1.8"
+  }
 }
 
 dependencies {
 
-    implementation project(':android-app:config')
-    implementation project(':android-app:buisness-logic')
-    implementation project(':android-app:navigation')
-//    implementation project(':android-app:kotea')
-    implementation project(':common-crypto')
+  implementation project(':android-app:config')
+  implementation project(':android-app:buisness-logic')
+  implementation project(':android-app:navigation')
+  implementation project(':android-app:viewdsl')
+  implementation project(':common-crypto')
 
-    def appDependencies = rootProject.ext.applicationDependencies
-    implementation appDependencies.kotlin
-    implementation appDependencies.appCompat
-    implementation appDependencies.coroutinesCore
-    implementation appDependencies.coroutinesAndroid
-    implementation appDependencies.coordinatorLayout
-    implementation appDependencies.constraintLayout
-    implementation appDependencies.recyclerView
-    implementation appDependencies.cicerone
-    implementation appDependencies.moxy
-    implementation appDependencies.moxyAndroidx
-    implementation appDependencies.dagger
-    implementation appDependencies.zxcvbn
-    implementation appDependencies.androidSecurity
-    implementation appDependencies.biometric
-    implementation appDependencies.timber
-    kapt appDependencies.daggerCompiler
-    kapt appDependencies.moxyCompiler
+  def appDependencies = rootProject.ext.applicationDependencies
+  implementation appDependencies.kotlin
+  implementation appDependencies.appCompat
+  implementation appDependencies.coroutinesCore
+  implementation appDependencies.coroutinesAndroid
+  implementation appDependencies.coordinatorLayout
+  implementation appDependencies.constraintLayout
+  implementation appDependencies.recyclerView
+  implementation appDependencies.moxy
+  implementation appDependencies.moxyAndroidx
+  implementation appDependencies.zxcvbn
+  implementation appDependencies.androidSecurity
+  implementation appDependencies.biometric
+  implementation appDependencies.timber
+  implementation appDependencies.lifecycleRuntime
+  kapt appDependencies.moxyCompiler
 
-    def testDependencies = rootProject.ext.testDependencies
-    testImplementation testDependencies.junit
-    testImplementation testDependencies.gson
+  def testDependencies = rootProject.ext.testDependencies
+  testImplementation testDependencies.junit
+  testImplementation testDependencies.gson
 
 //  debugImplementation appDependencies.leakCanary
 }

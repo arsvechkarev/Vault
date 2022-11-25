@@ -1,59 +1,56 @@
 package com.arsvechkarev.vault.features.creating_master_password
 
-import buisnesslogic.PasswordStatus
+import buisnesslogic.PasswordError
 import buisnesslogic.PasswordStrength
 
-sealed class CreatingMasterPasswordScreenActions {
+typealias CMPState = CreatingMasterPasswordState
+typealias CMPEvents = CreatingMasterPasswordEvent
+typealias CMPUiEvent = CreatingMasterPasswordUiEvent
+typealias CMPCommands = CreatingMasterPasswordCommand
+typealias CMPNews = CreatingMasterPasswordNews
 
-    class PasswordEnteringStateChanged(
-        val state: PasswordEnteringState
-    ) : CreatingMasterPasswordScreenActions()
-
-    class UpdatePasswordStatus(
-        val passwordStatus: PasswordStatus?
-    ) : CreatingMasterPasswordScreenActions()
-
-    class UpdatePasswordStrength(
-        val passwordStrength: PasswordStrength?
-    ) : CreatingMasterPasswordScreenActions()
-
-    object ShowPasswordsMatch : CreatingMasterPasswordScreenActions()
-
-    object ShowPasswordsDontMatch : CreatingMasterPasswordScreenActions()
+sealed interface CreatingMasterPasswordEvent {
+  class UpdatePasswordError(val passwordError: PasswordError?) : CMPEvents
+  class UpdatePasswordStrength(val passwordStrength: PasswordStrength?) : CMPEvents
+  object FinishedAuth : CMPEvents
 }
 
-sealed class CreatingMasterPasswordScreenUserActions : CreatingMasterPasswordScreenActions() {
-
-    class OnInitialPasswordTyping(val password: String) : CreatingMasterPasswordScreenUserActions()
-
-    class OnRepeatPasswordTyping(val password: String) : CreatingMasterPasswordScreenUserActions()
-
-    object RequestShowPasswordStrengthDialog : CreatingMasterPasswordScreenUserActions()
-
-    object RequestHidePasswordStrengthDialog : CreatingMasterPasswordScreenUserActions()
-
-    object OnContinueClicked : CreatingMasterPasswordScreenUserActions()
-
-    object OnBackPressed : CreatingMasterPasswordScreenUserActions()
-
-    object OnBackButtonClicked : CreatingMasterPasswordScreenUserActions()
+sealed interface CreatingMasterPasswordUiEvent : CreatingMasterPasswordEvent {
+  class OnInitialPasswordTyping(val password: String) : CMPUiEvent
+  class OnRepeatPasswordTyping(val password: String) : CreatingMasterPasswordUiEvent
+  object RequestShowPasswordStrengthDialog : CreatingMasterPasswordUiEvent
+  object RequestHidePasswordStrengthDialog : CreatingMasterPasswordUiEvent
+  object OnContinueClicked : CreatingMasterPasswordUiEvent
+  object OnBackPressed : CreatingMasterPasswordUiEvent
+  object OnBackButtonClicked : CreatingMasterPasswordUiEvent
 }
 
-sealed class CreatingMasterPasswordSingleEvents {
-
-    object HideErrorText : CreatingMasterPasswordSingleEvents()
-
-    object FinishingAuthorization : CreatingMasterPasswordSingleEvents()
+sealed interface CreatingMasterPasswordNews {
+  object FinishingAuthorization : CreatingMasterPasswordNews
 }
 
-data class CreatingMasterPasswordScreenState(
-    val passwordEnteringState: PasswordEnteringState = PasswordEnteringState.INITIAL,
-    val passwordStatus: PasswordStatus? = null,
-    val passwordStrength: PasswordStrength? = null,
-    val showPasswordStrengthDialog: Boolean = false,
-    val initialPassword: String = "",
-    val repeatedPassword: String = "",
-    val passwordsMatch: Boolean? = null
+sealed interface CreatingMasterPasswordCommand {
+  
+  sealed interface PasswordCommand : CreatingMasterPasswordCommand {
+    class CheckPasswordStrength(val password: String) : PasswordCommand
+    class CheckPasswordForErrors(val password: String) : PasswordCommand
+  }
+  
+  class FinishAuth(val password: String) : CreatingMasterPasswordCommand
+}
+
+data class CreatingMasterPasswordState(
+  val passwordEnteringState: PasswordEnteringState = PasswordEnteringState.INITIAL,
+  val passwordStatus: UiPasswordStatus? = null,
+  val passwordStrength: PasswordStrength? = null,
+  val showPasswordStrengthDialog: Boolean = false,
+  val initialPassword: String = "",
+  val repeatedPassword: String = "",
+  val showErrorText: Boolean = false,
 )
+
+enum class UiPasswordStatus {
+  OK, TOO_WEAK, TOO_SHORT, EMPTY, PASSWORDS_DONT_MATCH
+}
 
 enum class PasswordEnteringState { INITIAL, REPEATING }

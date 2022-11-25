@@ -1,8 +1,6 @@
 package com.arsvechkarev.vault.features.password_checking
 
-import javax.inject.Qualifier
 
-@Qualifier
 @Retention
 annotation class PasswordCheckingCommunicator
 

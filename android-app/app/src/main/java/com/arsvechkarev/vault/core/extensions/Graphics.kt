@@ -27,6 +27,10 @@ fun Any.TextPaint(
     this.typeface = font
 }
 
+/**
+ * Using "Agy" text so that it can be measured properly, taking into account all possible heights
+ * of text
+ */
 fun TextPaint.getTextHeight(text: String = "Agy"): Int {
     TEMP_RECT.setEmpty()
     getTextBounds(text, 0, text.length, TEMP_RECT)

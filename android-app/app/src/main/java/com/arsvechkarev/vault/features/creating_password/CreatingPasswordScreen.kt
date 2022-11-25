@@ -248,14 +248,15 @@ class CreatingPasswordScreen : BaseFragmentScreen() {
   }
   
   private fun showPasswordStrength(strength: PasswordStrength?) {
+    if (strength == null) return
     val textResId = when (strength) {
-      null, PasswordStrength.WEAK -> R.string.text_weak
+      PasswordStrength.WEAK -> R.string.text_weak
       PasswordStrength.MEDIUM -> R.string.text_medium
       PasswordStrength.STRONG -> R.string.text_strong
       PasswordStrength.VERY_STRONG -> R.string.text_secure
     }
     viewAs<PasswordStrengthMeterWithText>().setText(textResId)
-    viewAs<PasswordStrengthMeterWithText>().setStrength(strength ?: PasswordStrength.WEAK)
+    viewAs<PasswordStrengthMeterWithText>().setStrength(strength)
   }
   
   private fun showPasswordAcceptingDialog() {

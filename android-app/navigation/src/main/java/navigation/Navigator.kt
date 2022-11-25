@@ -1,7 +1,5 @@
 package navigation
 
-import android.os.Bundle
-
 interface Navigator {
   
   /**
@@ -16,19 +14,4 @@ interface Navigator {
    * (and removes screen), or if current screen handled back interaction. Returns false otherwise
    */
   fun handleGoBack(): Boolean
-  
-  /**
-   * Saves navigation state in [bundle]
-   */
-  fun onSaveInstanceState(bundle: Bundle)
-  
-  /**
-   * Restores navigation state from [bundle] if needed
-   */
-  fun onRestoreInstanceState(bundle: Bundle?)
-  
-  /**
-   * Releases screens. You should call this from Activity.onDestroy()
-   */
-  fun releaseScreens()
 }

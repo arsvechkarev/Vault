@@ -189,7 +189,7 @@ class CreatingMasterPasswordScreen : BaseFragmentScreen() {
   
   private fun handleNews(event: CreatingMasterPasswordNews) {
     if (event is FinishingAuthorization) {
-      contextNonNull.hideKeyboard()
+      requireContext().hideKeyboard()
       loadingDialog.show()
     }
   }
@@ -201,16 +201,18 @@ class CreatingMasterPasswordScreen : BaseFragmentScreen() {
   
   private fun showPasswordStatus(passwordStatus: UiPasswordStatus) {
     val text = when (passwordStatus) {
-      OK -> contextNonNull.getString(R.string.text_empty)
-      TOO_WEAK -> contextNonNull.getString(R.string.text_password_is_too_weak)
-      TOO_SHORT -> contextNonNull.getString(R.string.text_password_min_length, MIN_PASSWORD_LENGTH)
-      EMPTY -> contextNonNull.getString(R.string.text_password_cannot_be_empty)
+      OK -> requireContext().getString(R.string.text_empty)
+      TOO_WEAK -> requireContext().getString(R.string.text_password_is_too_weak)
+      TOO_SHORT -> requireContext().getString(R.string.text_password_min_length,
+        MIN_PASSWORD_LENGTH
+      )
+      EMPTY -> requireContext().getString(R.string.text_password_cannot_be_empty)
       PASSWORDS_DONT_MATCH -> {
         if (passwordEnteringState == INITIAL) {
           // Don't show "Passwords don't match" error when we are in initial password entering state
-          contextNonNull.getString(R.string.text_empty)
+          requireContext().getString(R.string.text_empty)
         } else {
-          contextNonNull.getString(R.string.text_passwords_dont_match)
+          requireContext().getString(R.string.text_passwords_dont_match)
         }
       }
     }
@@ -247,8 +249,8 @@ class CreatingMasterPasswordScreen : BaseFragmentScreen() {
     view(RepeatPasswordLayout).animateInvisible()
     textView(TextPasswordStrength).animateVisible()
     viewAs<ViewSwitcher>().apply {
-      inAnimation = AnimationUtils.loadAnimation(contextNonNull, android.R.anim.slide_in_left)
-      outAnimation = AnimationUtils.loadAnimation(contextNonNull, android.R.anim.slide_out_right)
+      inAnimation = AnimationUtils.loadAnimation(requireContext(), android.R.anim.slide_in_left)
+      outAnimation = AnimationUtils.loadAnimation(requireContext(), android.R.anim.slide_out_right)
       showPrevious()
     }
   }
@@ -261,8 +263,8 @@ class CreatingMasterPasswordScreen : BaseFragmentScreen() {
     view(RepeatPasswordLayout).animateVisible()
     viewAs<PasswordStrengthMeter>().invisible()
     viewAs<ViewSwitcher>().apply {
-      inAnimation = AnimationUtils.loadAnimation(contextNonNull, R.anim.slide_out_left)
-      outAnimation = AnimationUtils.loadAnimation(contextNonNull, R.anim.slide_in_right)
+      inAnimation = AnimationUtils.loadAnimation(requireContext(), R.anim.slide_out_left)
+      outAnimation = AnimationUtils.loadAnimation(requireContext(), R.anim.slide_in_right)
       showNext()
     }
   }

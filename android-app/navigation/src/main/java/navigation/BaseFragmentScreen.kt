@@ -16,8 +16,6 @@ abstract class BaseFragmentScreen : Fragment() {
   
   private val viewsCache = HashMap<Any, View>()
   
-  protected val contextNonNull get() = requireContext()
-  
   abstract fun buildLayout(context: Context): View
   
   open fun handleBackPress(): Boolean = false

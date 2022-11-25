@@ -199,7 +199,7 @@ class InfoScreen : BaseFragmentScreen(), InfoView {
   
   override fun showNoUsername() {
     val editableUsername = viewAs<EditableTextInfoViewGroup>(EditableTextInfoUsername)
-    editableUsername.setText(contextNonNull.getString(R.string.text_no_username))
+    editableUsername.setText(requireContext().getString(R.string.text_no_username))
     editableUsername.transferTextToEditTextWhenSwitching = false
   }
   
@@ -211,7 +211,7 @@ class InfoScreen : BaseFragmentScreen(), InfoView {
   
   override fun showNoEmail() {
     val editableEmail = viewAs<EditableTextInfoViewGroup>(EditableTextInfoEmail)
-    editableEmail.setText(contextNonNull.getString(R.string.text_no_email))
+    editableEmail.setText(requireContext().getString(R.string.text_no_email))
     editableEmail.transferTextToEditTextWhenSwitching = false
   }
   

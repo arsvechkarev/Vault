@@ -72,19 +72,8 @@ class MainActivity : BaseActivity(), AppComponentProvider {
     }
   }
   
-  override fun onSaveInstanceState(outState: Bundle) {
-    super.onSaveInstanceState(outState)
-    appComponent.navigator.onSaveInstanceState(outState)
-  }
-  
-  override fun onRestoreInstanceState(savedInstanceState: Bundle) {
-    super.onRestoreInstanceState(savedInstanceState)
-    appComponent.navigator.onRestoreInstanceState(savedInstanceState)
-  }
-  
   override fun onDestroy() {
     super.onDestroy()
-    appComponent.navigator.releaseScreens()
     _appComponent = null
   }
   

@@ -1,6 +1,7 @@
 package navigation
 
 import android.os.Bundle
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
@@ -9,6 +10,8 @@ class FragmentNavigatorImpl(
   private val activity: FragmentActivity,
   private val containerViewId: Int,
 ) : Navigator {
+  
+  private val fragmentManager get() = activity.supportFragmentManager
   
   override fun applyCommands(commands: Array<out Command>) {
     commands.forEach { command ->
@@ -62,10 +65,7 @@ class FragmentNavigatorImpl(
     if (fragmentManager.fragments.size == 1) {
       activity.finish()
     } else {
-      fragmentManager.transaction {
-        applyBackwardAnimations()
-        remove(fragmentManager.fragments.last())
-      }
+      fragmentManager.removeTopFragmentWithAnimation()
     }
   }
   
@@ -75,15 +75,12 @@ class FragmentNavigatorImpl(
     }
     check(desiredIndex != -1) { "Fragment with key $screenKey was not found" }
     val lastIndex = fragmentManager.fragments.lastIndex
-    val topFragment = fragmentManager.fragments.last()
     fragmentManager.transaction {
       repeat(lastIndex - desiredIndex - 1) { index ->
         remove(fragmentManager.fragments[lastIndex - 1 - index])
       }
       runOnCommit {
-        topFragment.requireView().animateSlideToRight(200) {
-          fragmentManager.transaction { remove(topFragment) }
-        }
+        fragmentManager.removeTopFragmentWithAnimation()
       }
     }
   }
@@ -99,25 +96,9 @@ class FragmentNavigatorImpl(
       return true
     }
     val hasScreensYet = fragmentManager.fragments.size > 1
-    topFragment.requireView().animateSlideToRight(200) {
-      fragmentManager.transaction { remove(topFragment) }
-    }
+    fragmentManager.removeTopFragmentWithAnimation()
     return hasScreensYet
   }
-  
-  override fun onSaveInstanceState(bundle: Bundle) {
-    // TODO (25.11.2022): Add support in future ?
-  }
-  
-  override fun onRestoreInstanceState(bundle: Bundle?) {
-    // TODO (25.11.2022): Add support in future ?
-  }
-  
-  override fun releaseScreens() {
-    // TODO (25.11.2022): Add support in future ?
-  }
-  
-  private val fragmentManager get() = activity.supportFragmentManager
   
   private fun FragmentTransaction.addNewFragment(screenKey: ScreenKey, arguments: Bundle) {
     val name = screenKey.screenClassName
@@ -126,6 +107,14 @@ class FragmentNavigatorImpl(
     newFragment.arguments = arguments
     applyForwardAnimations()
     add(containerViewId, newFragment, screenKey.toString())
+  }
+  
+  private fun FragmentManager.removeTopFragmentWithAnimation(
+    fragment: Fragment = fragments.last()
+  ) {
+    fragment.requireView().animateSlideToRight(200) {
+      fragmentManager.transaction { remove(fragment) }
+    }
   }
   
   private fun FragmentManager.transaction(block: FragmentTransaction.() -> Unit) {
@@ -137,9 +126,5 @@ class FragmentNavigatorImpl(
   
   private fun FragmentTransaction.applyForwardAnimations() {
     setCustomAnimations(R.anim.slide_in, R.anim.fade_out)
-  }
-  
-  private fun FragmentTransaction.applyBackwardAnimations() {
-    setCustomAnimations(R.anim.fade_in, R.anim.slide_out)
   }
 }

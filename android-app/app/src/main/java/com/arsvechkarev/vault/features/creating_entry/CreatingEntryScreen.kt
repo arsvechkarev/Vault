@@ -145,7 +145,7 @@ class CreatingEntryScreen : BaseFragmentScreen() {
   override fun onAppearedOnScreenAfterAnimation() {
     editText(EditTextWebsiteName).apply {
       requestFocus()
-      contextNonNull.showKeyboard(this)
+      requireContext().showKeyboard(this)
     }
   }
   
@@ -166,8 +166,8 @@ class CreatingEntryScreen : BaseFragmentScreen() {
   override fun onDisappearedFromScreen() {
     editText(EditTextWebsiteName).clearFocus()
     editText(EditTextLogin).clearFocus()
-    contextNonNull.hideKeyboard()
-    contextNonNull.setSoftInputMode(SOFT_INPUT_ADJUST_RESIZE)
+    requireContext().hideKeyboard()
+    requireContext().setSoftInputMode(SOFT_INPUT_ADJUST_RESIZE)
   }
   
   private fun showOrHideImageBasedOnLayout() {

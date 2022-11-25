@@ -124,16 +124,16 @@ class LoginScreen : BaseFragmentScreen() {
       textView(TextErrorId).clearText()
     }
     if (state.showKeyboard) {
-      contextNonNull.showKeyboard()
+      requireContext().showKeyboard()
       viewAs<EditTextPassword>(EditTextPasswordId).requestEditTextFocus()
     } else {
-      contextNonNull.hideKeyboard()
+      requireContext().hideKeyboard()
     }
   }
   
   override fun onDestroyView() {
     super.onDestroyView()
-    contextNonNull.hideKeyboard()
+    requireContext().hideKeyboard()
   }
   
   private companion object {

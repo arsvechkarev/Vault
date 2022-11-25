@@ -12,8 +12,8 @@ import buisnesslogic.PasswordStrength.VERY_STRONG
 import buisnesslogic.PasswordStrength.WEAK
 import com.arsvechkarev.vault.R
 import com.arsvechkarev.vault.core.di.appComponent
-import com.arsvechkarev.vault.core.extensions.moxyStore
-import com.arsvechkarev.vault.core.mvi.MviView
+import com.arsvechkarev.vault.core.mvi.ext.subscribe
+import com.arsvechkarev.vault.core.mvi.ext.viewModelStore
 import com.arsvechkarev.vault.features.creating_master_password.CreatingMasterPasswordNews.FinishingAuthorization
 import com.arsvechkarev.vault.features.creating_master_password.CreatingMasterPasswordUiEvent.OnBackButtonClicked
 import com.arsvechkarev.vault.features.creating_master_password.CreatingMasterPasswordUiEvent.OnBackPressed
@@ -45,7 +45,7 @@ import com.arsvechkarev.vault.views.dialogs.LoadingDialog
 import com.arsvechkarev.vault.views.dialogs.PasswordStrengthDialog.Companion.PasswordStrengthDialog
 import com.arsvechkarev.vault.views.dialogs.PasswordStrengthDialog.Companion.passwordStrengthDialog
 import com.arsvechkarev.vault.views.dialogs.loadingDialog
-import navigation.BaseScreen
+import navigation.BaseFragmentScreen
 import viewdsl.Size.Companion.MatchParent
 import viewdsl.Size.Companion.WrapContent
 import viewdsl.Size.IntSize
@@ -70,8 +70,7 @@ import viewdsl.textSize
 import viewdsl.visible
 import viewdsl.withViewBuilder
 
-class CreatingMasterPasswordScreen : BaseScreen(),
-  MviView<CreatingMasterPasswordState, CreatingMasterPasswordNews> {
+class CreatingMasterPasswordScreen : BaseFragmentScreen() {
   
   override fun buildLayout(context: Context) = context.withViewBuilder {
     RootFrameLayout(MatchParent, MatchParent) {
@@ -155,14 +154,18 @@ class CreatingMasterPasswordScreen : BaseScreen(),
   
   private var passwordEnteringState = INITIAL
   
-  private val store by moxyStore { CreatingMasterPasswordStore(appComponent) }
+  private val store by viewModelStore { CreatingMasterPasswordStore(appComponent) }
+  
+  override fun onInit() {
+    store.subscribe(this, ::render, ::handleNews)
+  }
   
   override fun onAppearedOnScreenAfterAnimation() {
-    contextNonNull.showKeyboard()
+    requireContext().showKeyboard()
     viewAs<EditTextPassword>(EditTextEnterPassword).requestEditTextFocus()
   }
   
-  override fun render(state: CreatingMasterPasswordState) {
+  private fun render(state: CreatingMasterPasswordState) {
     if (passwordEnteringState != state.passwordEnteringState) {
       passwordEnteringState = state.passwordEnteringState
       when (passwordEnteringState) {
@@ -184,7 +187,7 @@ class CreatingMasterPasswordScreen : BaseScreen(),
     showPasswordStrength(state)
   }
   
-  override fun handleNews(event: CreatingMasterPasswordNews) {
+  private fun handleNews(event: CreatingMasterPasswordNews) {
     if (event is FinishingAuthorization) {
       contextNonNull.hideKeyboard()
       loadingDialog.show()

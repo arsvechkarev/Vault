@@ -1,6 +1,5 @@
 package com.arsvechkarev.vault.features.creating_password
 
-import android.util.Log
 import buisnesslogic.model.PasswordCharacteristic
 import buisnesslogic.model.PasswordCharacteristic.NUMBERS
 import buisnesslogic.model.PasswordCharacteristic.SPECIAL_SYMBOLS
@@ -38,7 +37,6 @@ class CreatingPasswordReducer(
 ) : DslReducer<CPState, CreatingPasswordEvent, CreatingPasswordCommand, CreatingPasswordNews>() {
   
   override fun dslReduce(event: CreatingPasswordEvent) {
-    Log.d("AndroidRuntime", "reduce called: $event")
     when (event) {
       is CreatingPasswordUiEvent -> handleUiEvent(event)
       is Setup -> {
@@ -112,7 +110,11 @@ class CreatingPasswordReducer(
         commands(ConfirmSavePassword(state.password))
       }
       OnBackClicked -> {
-        router.goBack()
+        if (state.showConfirmationDialog) {
+          state { copy(showConfirmationDialog = false) }
+        } else {
+          router.goBack()
+        }
       }
     }
   }

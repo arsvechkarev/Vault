@@ -16,6 +16,7 @@ import com.arsvechkarev.vault.viewbuilding.Styles.BoldTextView
 import com.arsvechkarev.vault.viewbuilding.Styles.ClickableErrorTextView
 import com.arsvechkarev.vault.viewbuilding.Styles.ClickableTextView
 import com.arsvechkarev.vault.views.SimpleDialog
+import navigation.BaseFragmentScreen
 import navigation.BaseScreen
 import viewdsl.Size.Companion.MatchParent
 import viewdsl.Size.Companion.WrapContent
@@ -98,14 +99,16 @@ class InfoDialog(context: Context) : SimpleDialog(context) {
   }
   
   companion object {
-    
+  
     private const val DialogInfoTitle = "DialogInfoTitle"
     private const val DialogInfoText1 = "DialogErrorText1"
     private const val DialogInfoText2 = "DialogErrorText2"
     private const val DialogInfoMessage = "DialogInfoMessage"
-    
+  
     val BaseScreen.infoDialog get() = viewAs<InfoDialog>()
-    
+  
+    val BaseFragmentScreen.infoDialog get() = viewAs<InfoDialog>()
+  
     fun ViewGroup.InfoDialog(block: InfoDialog.() -> Unit = {}) = withViewBuilder {
       val infoDialog = InfoDialog(context)
       infoDialog.size(MatchParent, MatchParent)

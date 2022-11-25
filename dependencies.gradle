@@ -6,8 +6,8 @@ ext {
   applicationDependencies = [
       kotlin           : "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version",
       appCompat        : "androidx.appcompat:appcompat:1.2.0",
-      coroutinesCore    : "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutines_version",
-      coroutinesAndroid : "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutines_version",
+      coroutinesCore   : "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutines_version",
+      coroutinesAndroid: "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutines_version",
       coordinatorLayout: "androidx.coordinatorlayout:coordinatorlayout:1.1.0",
       constraintLayout : "androidx.constraintlayout:constraintlayout:2.0.4",
       recyclerView     : "androidx.recyclerview:recyclerview:1.1.0",
@@ -18,7 +18,8 @@ ext {
       androidSecurity  : "androidx.security:security-crypto:1.1.0-alpha03",
       biometric        : "androidx.biometric:biometric:1.0.1",
       timber           : "com.jakewharton.timber:timber:4.7.1",
-      leakCanary       : "com.squareup.leakcanary:leakcanary-android:2.7"
+      leakCanary       : "com.squareup.leakcanary:leakcanary-android:2.7",
+      lifecycleRuntime : "androidx.lifecycle:lifecycle-runtime-ktx:2.4.0",
   ]
 
   espresso_version = '3.2.0'

@@ -14,7 +14,7 @@ import kotlin.reflect.KClass
 fun Screen(
   arguments: Bundle = Bundle.EMPTY,
   additionalTag: String = "",
-  screenClass: () -> KClass<out Screen>,
+  screenClass: () -> KClass<out BaseFragmentScreen>,
 ): ScreenInfo {
   return ScreenInfo(ScreenKey(screenClass().java.name, additionalTag), arguments)
 }
@@ -28,7 +28,7 @@ data class ScreenInfo(
 )
 
 /**
- * Key that helps converting [screenClassName] and [additionalTag] to and from string
+ * Key that helps to convert [screenClassName] and [additionalTag] to and from string
  */
 data class ScreenKey(val screenClassName: String, val additionalTag: String = "") {
   

@@ -1,8 +1,8 @@
 package com.arsvechkarev.vault.core.di
 
+import androidx.fragment.app.FragmentActivity
 import com.arsvechkarev.vault.core.di.modules.NavigationModule
 import com.arsvechkarev.vault.core.di.modules.NavigationModuleImpl
-import moxy.MvpAppCompatActivity
 
 class AppComponent(
   private val coreComponent: CoreComponent,
@@ -15,7 +15,7 @@ class AppComponent(
     fun create(
       coreComponent: CoreComponent,
       navigationRootViewId: Int,
-      activity: MvpAppCompatActivity
+      activity: FragmentActivity
     ): AppComponent {
       val navigationModule = NavigationModuleImpl(activity, navigationRootViewId)
       return AppComponent(coreComponent, navigationModule)

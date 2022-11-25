@@ -7,6 +7,7 @@ import navigation.Back
 import navigation.BackTo
 import navigation.BaseRouter
 import navigation.Forward
+import navigation.ForwardWithRemovalOf
 import navigation.Replace
 import navigation.ScreenInfo
 import navigation.SwitchToNewRoot
@@ -15,6 +16,10 @@ class Router(private val scope: CoroutineScope) : BaseRouter() {
   
   fun goForward(screenInfo: ScreenInfo, removeCurrentView: Boolean = false) {
     scope.launch { executeCommands(Forward(screenInfo, removeCurrentView)) }
+  }
+  
+  fun goForwardWithRemovalOf(screenInfo: ScreenInfo, screensCount: Int) {
+    scope.launch { executeCommands(ForwardWithRemovalOf(screenInfo, screensCount)) }
   }
   
   fun goForwardWithDelay(screenInfo: ScreenInfo, delay: Long, removeCurrentView: Boolean = false) {

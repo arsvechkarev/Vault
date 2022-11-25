@@ -12,8 +12,8 @@ import buisnesslogic.MIN_PASSWORD_LENGTH
 import buisnesslogic.PasswordStrength
 import com.arsvechkarev.vault.R
 import com.arsvechkarev.vault.core.di.appComponent
-import com.arsvechkarev.vault.core.extensions.moxyStore
-import com.arsvechkarev.vault.core.mvi.MviView
+import com.arsvechkarev.vault.core.mvi.ext.subscribe
+import com.arsvechkarev.vault.core.mvi.ext.viewModelStore
 import com.arsvechkarev.vault.features.creating_password.CreatingPasswordNews.ShowGeneratedPassword
 import com.arsvechkarev.vault.features.creating_password.CreatingPasswordReceiveEvent.Setup.PasswordConfigurationMode.EditPassword
 import com.arsvechkarev.vault.features.creating_password.CreatingPasswordReceiveEvent.Setup.PasswordConfigurationMode.NewPassword
@@ -46,12 +46,12 @@ import com.arsvechkarev.vault.views.dialogs.InfoDialog.Companion.InfoDialog
 import com.arsvechkarev.vault.views.dialogs.InfoDialog.Companion.infoDialog
 import com.arsvechkarev.vault.views.dialogs.LoadingDialog
 import com.arsvechkarev.vault.views.dialogs.loadingDialog
-import navigation.BaseScreen
+import navigation.BaseFragmentScreen
 import viewdsl.Size.Companion.MatchParent
 import viewdsl.Size.Companion.WrapContent
-import viewdsl.backgroundColor
 import viewdsl.circleRippleBackground
 import viewdsl.classNameTag
+import viewdsl.clearText
 import viewdsl.drawablePadding
 import viewdsl.drawables
 import viewdsl.gravity
@@ -73,12 +73,11 @@ import viewdsl.textColor
 import viewdsl.textSize
 import viewdsl.withViewBuilder
 
-class CreatingPasswordScreen : BaseScreen(), MviView<CreatingPasswordState, CreatingPasswordNews> {
+class CreatingPasswordScreen : BaseFragmentScreen() {
   
   override fun buildLayout(context: Context) = context.withViewBuilder {
     RootFrameLayout {
       id(Root)
-      backgroundColor(Colors.Background)
       VerticalLayout(MatchParent, MatchParent) {
         FrameLayout(MatchParent, WrapContent) {
           margins(top = MarginSmall + StatusBarHeight)
@@ -142,7 +141,7 @@ class CreatingPasswordScreen : BaseScreen(), MviView<CreatingPasswordState, Crea
           max = MAX_PASSWORD_LENGTH - MIN_PASSWORD_LENGTH
           progress = DEFAULT_PASSWORD_LENGTH - MIN_PASSWORD_LENGTH
           onProgressChanged { progress ->
-            store.tryDispatch(OnPasswordLengthChanged(progress))
+            store.tryDispatch(OnPasswordLengthChanged(progress + MIN_PASSWORD_LENGTH))
           }
         }
         TextView(WrapContent, WrapContent, style = ClickableTextView()) {
@@ -156,10 +155,9 @@ class CreatingPasswordScreen : BaseScreen(), MviView<CreatingPasswordState, Crea
           onClick { store.tryDispatch(OnGeneratePasswordClicked) }
         }
       }
-      TextView(WrapContent, WrapContent, style = Button()) {
+      TextView(MatchParent, WrapContent, style = Button()) {
         layoutGravity(CENTER or Gravity.BOTTOM)
         margin(MarginNormal)
-        textSize(TextSizes.H3)
         text(R.string.text_save_password)
         onClick { store.tryDispatch(OnSavePasswordClicked) }
       }
@@ -168,14 +166,18 @@ class CreatingPasswordScreen : BaseScreen(), MviView<CreatingPasswordState, Crea
     }
   }
   
-  private val store by moxyStore { CreatingPasswordStore(appComponent) }
+  private val store by viewModelStore { CreatingPasswordStore(appComponent) }
   
-  override fun onAppearedOnScreenAfterAnimation() {
-    contextNonNull.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING)
-    contextNonNull.hideKeyboard()
+  override fun onInit() {
+    store.subscribe(this, ::render, ::handleNews)
   }
   
-  override fun render(state: CreatingPasswordState) {
+  override fun onAppearedOnScreenAfterAnimation() {
+    requireContext().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING)
+    requireContext().hideKeyboard()
+  }
+  
+  private fun render(state: CreatingPasswordState) {
     if (!state.setupCompleted) {
       when (state.mode) {
         is EditPassword -> showEditingPasswordMode(state.mode.password)
@@ -192,7 +194,7 @@ class CreatingPasswordScreen : BaseScreen(), MviView<CreatingPasswordState, Crea
     if (state.showPasswordCantBeEmpty) {
       textView(TextError).text(R.string.text_password_cannot_be_empty)
     } else {
-      textView(TextError).text(R.string.text_empty)
+      textView(TextError).clearText()
     }
     if (state.showConfirmationDialog) {
       showPasswordAcceptingDialog()
@@ -206,10 +208,10 @@ class CreatingPasswordScreen : BaseScreen(), MviView<CreatingPasswordState, Crea
     }
   }
   
-  override fun handleNews(event: CreatingPasswordNews) {
+  private fun handleNews(event: CreatingPasswordNews) {
     when (event) {
       is ShowGeneratedPassword -> {
-        contextNonNull.hideKeyboard()
+        requireContext().hideKeyboard()
         editText(EditTextPassword).clearFocus()
         editText(EditTextPassword).text(event.password)
         editText(EditTextPassword).setSelection(event.password.length)
@@ -218,11 +220,11 @@ class CreatingPasswordScreen : BaseScreen(), MviView<CreatingPasswordState, Crea
   }
   
   override fun onDisappearedFromScreen() {
-    contextNonNull.hideKeyboard()
+    requireContext().hideKeyboard()
   }
   
   override fun onDisappearedFromScreenAfterAnimation() {
-    contextNonNull.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
+    requireContext().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
   }
   
   private fun showCreatingPasswordMode() {
@@ -240,9 +242,9 @@ class CreatingPasswordScreen : BaseScreen(), MviView<CreatingPasswordState, Crea
   }
   
   private fun showPasswordLength(length: Int) {
-    val text = contextNonNull.getString(R.string.text_password_length, length)
+    val text = requireContext().getString(R.string.text_password_length, length)
     textView(TextPasswordLength).text(text)
-    viewAs<SeekBar>().progress = length
+    viewAs<SeekBar>().progress = length - MIN_PASSWORD_LENGTH
   }
   
   private fun showPasswordStrength(strength: PasswordStrength?) {
@@ -257,7 +259,7 @@ class CreatingPasswordScreen : BaseScreen(), MviView<CreatingPasswordState, Crea
   }
   
   private fun showPasswordAcceptingDialog() {
-    contextNonNull.hideKeyboard()
+    requireContext().hideKeyboard()
     infoDialog.onHide = { store.tryDispatch(OnDeclinePasswordSavingClicked) }
     infoDialog.showWithOkOption(
       R.string.text_saving_password,

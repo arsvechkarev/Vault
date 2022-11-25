@@ -9,6 +9,7 @@ import com.arsvechkarev.vault.features.info.InfoScreen
 import com.arsvechkarev.vault.features.info.InfoScreen.Companion.SERVICE
 import com.arsvechkarev.vault.features.initial.InitialScreen
 import com.arsvechkarev.vault.features.login.LoginScreen
+import com.arsvechkarev.vault.features.main_list.MainListScreen
 import com.arsvechkarev.vault.features.settings.SettingsScreen
 import navigation.Screen
 
@@ -20,7 +21,7 @@ object Screens {
   
   val LoginScreen = Screen { LoginScreen::class }
   
-  val MainListScreen = Screen { com.arsvechkarev.vault.features.main_list.MainListScreen::class }
+  val MainListScreen = Screen { MainListScreen::class }
   
   val CreatingEntryScreen = Screen { CreatingEntryScreen::class }
   

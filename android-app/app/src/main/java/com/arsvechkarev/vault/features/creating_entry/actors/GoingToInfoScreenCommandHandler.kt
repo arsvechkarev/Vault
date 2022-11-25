@@ -1,7 +1,7 @@
 package com.arsvechkarev.vault.features.creating_entry.actors
 
 import com.arsvechkarev.vault.core.Router
-import com.arsvechkarev.vault.core.Screens
+import com.arsvechkarev.vault.core.Screens.InfoScreen
 import com.arsvechkarev.vault.core.mvi.tea.Actor
 import com.arsvechkarev.vault.features.creating_entry.CreatingEntryCommand
 import com.arsvechkarev.vault.features.creating_entry.CreatingEntryCommand.GoToInfoScreen
@@ -18,7 +18,7 @@ class GoingToInfoScreenCommandHandler(
   override fun handle(commands: Flow<CreatingEntryCommand>): Flow<CreatingEntryEvent> {
     return commands.filterIsInstance<GoToInfoScreen>()
         .flatMapLatest { command ->
-          router.goForward(Screens.InfoScreen(command.passwordInfoItem))
+          router.goForwardWithRemovalOf(InfoScreen(command.passwordInfoItem), 2)
           emptyFlow()
         }
   }

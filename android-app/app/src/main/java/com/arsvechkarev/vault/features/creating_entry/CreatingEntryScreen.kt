@@ -59,7 +59,7 @@ class CreatingEntryScreen : BaseFragmentScreen() {
   override fun buildLayout(context: Context) = context.withViewBuilder {
     RootConstraintLayout {
       onLayoutChanged {
-        showOrHideImageBasedOnLayout()
+        showOrHideViewsBasedOnLayout()
       }
       HorizontalLayout(MatchParent, WrapContent) {
         id(ToolbarId)
@@ -170,13 +170,20 @@ class CreatingEntryScreen : BaseFragmentScreen() {
     requireContext().setSoftInputMode(SOFT_INPUT_ADJUST_RESIZE)
   }
   
-  private fun showOrHideImageBasedOnLayout() {
-    val imageHeight = imageView(ImageId).height
+  private fun showOrHideViewsBasedOnLayout() {
+    val imageView = imageView(ImageId)
     val spaceForImage = abs(view(TextWebsiteName).top - view(ToolbarId).bottom)
-    if (spaceForImage < imageHeight) {
-      imageView(ImageId).invisible()
+    if (spaceForImage < imageView.height) {
+      imageView.invisible()
     } else {
-      imageView(ImageId).visible()
+      imageView.visible()
+    }
+    val continueButton = view(ButtonContinue)
+    val marginBetweenButtonAndText = continueButton.top - view(EditTextLayoutsId).bottom
+    if (marginBetweenButtonAndText < continueButton.height) {
+      continueButton.invisible()
+    } else {
+      continueButton.visible()
     }
   }
   

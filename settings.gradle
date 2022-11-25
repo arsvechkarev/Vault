@@ -7,3 +7,4 @@ include 'android-app:kotea'
 include 'common-crypto'
 include 'desktop-app'
 
+include ':android-app:viewdsl'

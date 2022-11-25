@@ -6,23 +6,15 @@ import buisnesslogic.base64.Base64Coder
 import buisnesslogic.base64.JavaBase64Coder
 import buisnesslogic.random.SeedRandomGenerator
 import buisnesslogic.random.SeedRandomGeneratorImpl
-import dagger.Module
-import dagger.Provides
 
-@Module
-object CryptographyModule {
+interface CryptographyModule {
+  val base64Coder: Base64Coder
+  val seedRandomGenerator: SeedRandomGenerator
+  val cryptography: Cryptography
+}
 
-    @Provides
-    @JvmStatic
-    fun provideBase64Coder(): Base64Coder = JavaBase64Coder
-
-    @Provides
-    @JvmStatic
-    fun provideSeedRandomGenerator(): SeedRandomGenerator = SeedRandomGeneratorImpl
-
-    @Provides
-    @JvmStatic
-    fun provideCryptography(): Cryptography {
-        return AesSivTinkCryptography
-    }
+class CryptographyModuleImpl : CryptographyModule {
+  override val base64Coder = JavaBase64Coder
+  override val seedRandomGenerator = SeedRandomGeneratorImpl
+  override val cryptography = AesSivTinkCryptography
 }

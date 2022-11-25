@@ -1,8 +1,10 @@
 package navigation
 
-import com.github.terrakok.cicerone.Command
+interface Command
 
-data class Forward(val screenInfo: ScreenInfo, val clearContainer: Boolean) : Command
+data class Forward(val screenInfo: ScreenInfo, val removeCurrentView: Boolean) : Command
+
+data class ForwardWithRemovalOf(val screenInfo: ScreenInfo, val screensCount: Int) : Command
 
 data class Replace(val screenInfo: ScreenInfo) : Command
 

@@ -5,8 +5,8 @@ import android.view.View.MeasureSpec
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.view.ViewCompat
 import androidx.recyclerview.widget.RecyclerView
-import com.arsvechkarev.vault.viewdsl.atMost
-import com.arsvechkarev.vault.viewdsl.hasBehavior
+import viewdsl.atMost
+import viewdsl.hasBehavior
 
 class ScrollingRecyclerBehavior : CoordinatorLayout.Behavior<RecyclerView>() {
 

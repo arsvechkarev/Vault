@@ -9,8 +9,8 @@ import android.widget.ImageView.ScaleType.FIT_XY
 import androidx.annotation.StringRes
 import com.arsvechkarev.vault.R
 import com.arsvechkarev.vault.core.di.appComponent
-import com.arsvechkarev.vault.core.extensions.moxyStore
-import com.arsvechkarev.vault.core.mvi.MviView
+import com.arsvechkarev.vault.core.mvi.ext.subscribe
+import com.arsvechkarev.vault.core.mvi.ext.viewModelStore
 import com.arsvechkarev.vault.core.setServiceIcon
 import com.arsvechkarev.vault.features.creating_entry.CreatingEntryUiEvent.OnBackButtonClicked
 import com.arsvechkarev.vault.features.creating_entry.CreatingEntryUiEvent.OnContinueClicked
@@ -27,7 +27,7 @@ import com.arsvechkarev.vault.viewbuilding.Styles.BaseEditText
 import com.arsvechkarev.vault.viewbuilding.Styles.BoldTextView
 import com.arsvechkarev.vault.viewbuilding.Styles.Button
 import com.arsvechkarev.vault.viewbuilding.TextSizes
-import navigation.BaseScreen
+import navigation.BaseFragmentScreen
 import viewdsl.Size.Companion.MatchParent
 import viewdsl.Size.Companion.WrapContent
 import viewdsl.circleRippleBackground
@@ -54,7 +54,7 @@ import viewdsl.visible
 import viewdsl.withViewBuilder
 import kotlin.math.abs
 
-class CreatingEntryScreen : BaseScreen(), MviView<CreatingEntryState, CreatingEntryState> {
+class CreatingEntryScreen : BaseFragmentScreen() {
   
   override fun buildLayout(context: Context) = context.withViewBuilder {
     RootConstraintLayout {
@@ -136,7 +136,11 @@ class CreatingEntryScreen : BaseScreen(), MviView<CreatingEntryState, CreatingEn
     }
   }
   
-  private val store by moxyStore { CreatingEntryStore(appComponent) }
+  private val store by viewModelStore { CreatingEntryStore(appComponent) }
+  
+  override fun onInit() {
+    store.subscribe(this, ::render)
+  }
   
   override fun onAppearedOnScreenAfterAnimation() {
     editText(EditTextWebsiteName).apply {
@@ -145,7 +149,7 @@ class CreatingEntryScreen : BaseScreen(), MviView<CreatingEntryState, CreatingEn
     }
   }
   
-  override fun render(state: CreatingEntryState) {
+  private fun render(state: CreatingEntryState) {
     imageView(ImageId).setServiceIcon(state.websiteName)
     if (state.websiteNameEmpty) {
       showAccentTextViewError(TextWebsiteName, R.string.text_website_name_cant_be_empty)
@@ -159,8 +163,9 @@ class CreatingEntryScreen : BaseScreen(), MviView<CreatingEntryState, CreatingEn
     }
   }
   
-  override fun onRelease() {
-    super.onRelease()
+  override fun onDisappearedFromScreen() {
+    editText(EditTextWebsiteName).clearFocus()
+    editText(EditTextLogin).clearFocus()
     contextNonNull.hideKeyboard()
     contextNonNull.setSoftInputMode(SOFT_INPUT_ADJUST_RESIZE)
   }

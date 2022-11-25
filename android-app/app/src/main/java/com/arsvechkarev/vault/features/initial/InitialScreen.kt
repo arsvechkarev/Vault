@@ -13,7 +13,7 @@ import com.arsvechkarev.vault.viewbuilding.Styles.BaseTextView
 import com.arsvechkarev.vault.viewbuilding.Styles.BoldTextView
 import com.arsvechkarev.vault.viewbuilding.Styles.Button
 import com.arsvechkarev.vault.viewbuilding.TextSizes
-import navigation.BaseScreen
+import navigation.BaseFragmentScreen
 import viewdsl.Size.Companion.MatchParent
 import viewdsl.Size.Companion.WrapContent
 import viewdsl.gravity
@@ -27,7 +27,7 @@ import viewdsl.text
 import viewdsl.textSize
 import viewdsl.withViewBuilder
 
-class InitialScreen : BaseScreen() {
+class InitialScreen : BaseFragmentScreen() {
   
   override fun buildLayout(context: Context) = context.withViewBuilder {
     RootFrameLayout {

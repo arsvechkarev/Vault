@@ -7,8 +7,6 @@ import android.view.Gravity.CENTER
 import android.view.Gravity.CENTER_HORIZONTAL
 import android.view.Gravity.END
 import com.arsvechkarev.vault.R
-import com.arsvechkarev.vault.core.extensions.getDeleteMessageText
-import com.arsvechkarev.vault.core.model.PasswordInfoItem
 import com.arsvechkarev.vault.core.setServiceIcon
 import com.arsvechkarev.vault.viewbuilding.Colors
 import com.arsvechkarev.vault.viewbuilding.Dimens
@@ -31,7 +29,7 @@ import com.arsvechkarev.vault.views.dialogs.InfoDialog.Companion.InfoDialog
 import com.arsvechkarev.vault.views.dialogs.InfoDialog.Companion.infoDialog
 import com.arsvechkarev.vault.views.dialogs.LoadingDialog
 import com.arsvechkarev.vault.views.dialogs.loadingDialog
-import navigation.BaseScreen
+import navigation.BaseFragmentScreen
 import viewdsl.Size.Companion.MatchParent
 import viewdsl.Size.Companion.WrapContent
 import viewdsl.Size.IntSize
@@ -54,7 +52,7 @@ import viewdsl.textColor
 import viewdsl.textSize
 import viewdsl.withViewBuilder
 
-class InfoScreen : BaseScreen(), InfoView {
+class InfoScreen : BaseFragmentScreen(), InfoView {
   
   override fun buildLayout(context: Context) = context.withViewBuilder {
     RootCoordinatorLayout {
@@ -180,8 +178,8 @@ class InfoScreen : BaseScreen(), InfoView {
   //    CoreComponent.instance.getInfoComponentFactory().create().providePresenter()
   //  }
   
-  override fun onAppearedOnScreenGoingForward() {
-    val serviceInfo = arguments[SERVICE] as PasswordInfoItem
+  private fun onAppearedOnScreenGoingForward() {
+    //    val serviceInfo = arguments[SERVICE] as PasswordInfoItem
     //    presenter.performSetup(serviceInfo)
   }
   
@@ -241,10 +239,10 @@ class InfoScreen : BaseScreen(), InfoView {
   
   override fun showDeleteDialog(serviceName: String) {
     //    infoDialog.onHide = { presenter.onHideDeleteDialog() }
-    infoDialog.showWithDeleteAndCancelOption(
-      R.string.text_delete_service, getDeleteMessageText(serviceName),
-      onDeleteClicked = { }
-    )
+    //    infoDialog.showWithDeleteAndCancelOption(
+    //      R.string.text_delete_service, getDeleteMessageText(serviceName),
+    //      onDeleteClicked = { }
+    //    )
   }
   
   override fun hideDeleteDialog() {

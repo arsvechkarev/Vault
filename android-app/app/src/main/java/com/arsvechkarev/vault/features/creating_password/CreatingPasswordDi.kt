@@ -4,6 +4,7 @@ import com.arsvechkarev.vault.core.communicators.CommunicatorHolder
 import com.arsvechkarev.vault.core.di.AppComponent
 import com.arsvechkarev.vault.core.mvi.tea.TeaStore
 import com.arsvechkarev.vault.core.mvi.tea.TeaStoreImpl
+import com.arsvechkarev.vault.features.creating_password.actors.CheckPasswordStrengthActor
 import com.arsvechkarev.vault.features.creating_password.actors.GeneratePasswordActor
 import com.arsvechkarev.vault.features.creating_password.actors.ReceivingInputCreatingPasswordActor
 import com.arsvechkarev.vault.features.creating_password.actors.SendingOutputCreatingPasswordActor
@@ -15,6 +16,7 @@ fun CreatingPasswordStore(
   return TeaStoreImpl(
     actors = listOf(
       GeneratePasswordActor(appComponent.passwordGenerator),
+      CheckPasswordStrengthActor(appComponent.passwordInfoChecker),
       ReceivingInputCreatingPasswordActor(communicator),
       SendingOutputCreatingPasswordActor(communicator)
     ),
@@ -24,6 +26,6 @@ fun CreatingPasswordStore(
 }
 
 object CreatingPasswordCommunication {
-  val communicatorHolder = CommunicatorHolder<CreatingPasswordReceiveEvent,
-      CreatingPasswordSendEvent>()
+  val communicatorHolder =
+      CommunicatorHolder<CreatingPasswordReceiveEvent, CreatingPasswordSendEvent>()
 }

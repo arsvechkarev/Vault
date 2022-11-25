@@ -13,16 +13,10 @@ class ZxcvbnPasswordInfoChecker(
   
   override fun checkStrength(password: String): PasswordStrength? {
     if (password.isBlank()) return null
-    var strengthNum = zxcvbn.measure(password).score
-    // TODO (8/15/2022): Maybe leave only zxcvbn
-    if (password.hasNumbers) strengthNum += 1
-    if (password.hasUppercaseLetters) strengthNum += 1
-    if (password.hasLowercaseLetters) strengthNum += 1
-    if (password.hasSpecialSymbols) strengthNum += 1
-    return when (strengthNum) {
-      in 4..5 -> PasswordStrength.MEDIUM
-      in 6..7 -> PasswordStrength.STRONG
-      8 -> PasswordStrength.VERY_STRONG
+    return when (zxcvbn.measure(password).score) {
+      2 -> PasswordStrength.MEDIUM
+      3 -> PasswordStrength.STRONG
+      in 4..Int.MAX_VALUE -> PasswordStrength.VERY_STRONG
       else -> PasswordStrength.WEAK
     }
   }

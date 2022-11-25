@@ -1,6 +1,5 @@
 package com.arsvechkarev.vault.core.mvi.tea
 
-import android.util.Log
 import com.arsvechkarev.vault.core.DispatchersFacade
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
@@ -9,6 +8,7 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import timber.log.Timber
 
 class TeaStoreImpl<State : Any, Event : Any, UiEvent : Event, Command : Any, News : Any>(
   private val actors: List<Actor<Command, Event>>,
@@ -34,7 +34,7 @@ class TeaStoreImpl<State : Any, Event : Any, UiEvent : Event, Command : Any, New
           actor.handle(commandsFlow)
               .collect(eventsFlow::emit)
         } catch (e: CancellationException) {
-          Log.d("TeaStoreImpl", "error, throwing $e", e)
+          Timber.d(e)
           throw e
         }
       }

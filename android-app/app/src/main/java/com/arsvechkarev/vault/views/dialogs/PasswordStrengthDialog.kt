@@ -17,6 +17,7 @@ import com.arsvechkarev.vault.viewbuilding.Styles.BoldTextView
 import com.arsvechkarev.vault.viewbuilding.Styles.ClickableTextView
 import com.arsvechkarev.vault.viewbuilding.TextSizes
 import com.arsvechkarev.vault.views.SimpleDialog
+import navigation.BaseFragmentScreen
 import navigation.BaseScreen
 import viewdsl.Size.Companion.MatchParent
 import viewdsl.Size.Companion.WrapContent
@@ -65,9 +66,11 @@ class PasswordStrengthDialog(context: Context) : SimpleDialog(context) {
   }
   
   companion object {
-    
+  
     val BaseScreen.passwordStrengthDialog get() = viewAs<PasswordStrengthDialog>()
-    
+  
+    val BaseFragmentScreen.passwordStrengthDialog get() = viewAs<PasswordStrengthDialog>()
+  
     fun ViewGroup.PasswordStrengthDialog(block: PasswordStrengthDialog.() -> Unit = {}) = withViewBuilder {
       child<PasswordStrengthDialog, ViewGroup.LayoutParams>(MatchParent, MatchParent, block) {
         classNameTag()

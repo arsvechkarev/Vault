@@ -66,6 +66,7 @@ dependencies {
   implementation appDependencies.androidSecurity
   implementation appDependencies.biometric
   implementation appDependencies.timber
+  implementation appDependencies.lifecycleRuntime
   kapt appDependencies.moxyCompiler
 
   def testDependencies = rootProject.ext.testDependencies

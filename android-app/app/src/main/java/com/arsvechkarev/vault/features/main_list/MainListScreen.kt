@@ -13,8 +13,8 @@ import com.arsvechkarev.vault.VaultApplication.Companion.AppMainCoroutineScope
 import com.arsvechkarev.vault.core.TypefaceSpan
 import com.arsvechkarev.vault.core.di.appComponent
 import com.arsvechkarev.vault.core.extensions.ifTrue
-import com.arsvechkarev.vault.core.extensions.moxyStore
-import com.arsvechkarev.vault.core.mvi.MviView
+import com.arsvechkarev.vault.core.mvi.ext.subscribe
+import com.arsvechkarev.vault.core.mvi.ext.viewModelStore
 import com.arsvechkarev.vault.features.main_list.MainListUiEvent.OnBackPressed
 import com.arsvechkarev.vault.features.main_list.MainListUiEvent.OnCloseMenuClicked
 import com.arsvechkarev.vault.features.main_list.MainListUiEvent.OnInit
@@ -39,7 +39,7 @@ import com.arsvechkarev.vault.views.MaterialProgressBar
 import com.arsvechkarev.vault.views.menu.MenuItem
 import com.arsvechkarev.vault.views.menu.MenuView
 import kotlinx.coroutines.launch
-import navigation.BaseScreen
+import navigation.BaseFragmentScreen
 import viewdsl.Size.Companion.MatchParent
 import viewdsl.Size.Companion.WrapContent
 import viewdsl.addView
@@ -63,7 +63,7 @@ import viewdsl.text
 import viewdsl.textSize
 import viewdsl.withViewBuilder
 
-class MainListScreen : BaseScreen(), MviView<MainListState, Nothing> {
+class MainListScreen : BaseFragmentScreen() {
   
   override fun buildLayout(context: Context) = context.withViewBuilder {
     RootFrameLayout {
@@ -138,7 +138,7 @@ class MainListScreen : BaseScreen(), MviView<MainListState, Nothing> {
     }
   }
   
-  private val store by moxyStore { MainListStore(appComponent) }
+  private val store by viewModelStore { MainListStore(appComponent) }
   
   private val adapter by lazy {
     MainListAdapter(
@@ -147,10 +147,14 @@ class MainListScreen : BaseScreen(), MviView<MainListState, Nothing> {
   }
   
   override fun onInit() {
+    store.subscribe(this, ::render)
+  }
+  
+  override fun onAppearedOnScreen() {
     AppMainCoroutineScope.launch { store.dispatch(OnInit) }
   }
   
-  override fun render(state: MainListState) {
+  private fun render(state: MainListState) {
     if (state.menuOpened) {
       viewAs<MenuView>().openMenu()
     } else {

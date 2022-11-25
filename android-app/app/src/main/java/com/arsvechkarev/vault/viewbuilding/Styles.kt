@@ -45,6 +45,7 @@ object Styles : DefaultStyles {
   
   override val BaseRootBackground: Style<View> = {
     background = GradientBackgroundDrawable(context)
+    isClickable = true
   }
   
   val BaseTextView: TextView.() -> Unit = {

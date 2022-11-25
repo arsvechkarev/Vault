@@ -6,8 +6,8 @@ import android.view.View
 import com.arsvechkarev.vault.R
 import com.arsvechkarev.vault.VaultApplication.Companion.AppMainCoroutineScope
 import com.arsvechkarev.vault.core.di.appComponent
-import com.arsvechkarev.vault.core.extensions.moxyStore
-import com.arsvechkarev.vault.core.mvi.MviView
+import com.arsvechkarev.vault.core.mvi.ext.subscribe
+import com.arsvechkarev.vault.core.mvi.ext.viewModelStore
 import com.arsvechkarev.vault.features.login.LoginUiEvent.OnAppearedOnScreen
 import com.arsvechkarev.vault.features.login.LoginUiEvent.OnEnteredPassword
 import com.arsvechkarev.vault.features.login.LoginUiEvent.OnTypingText
@@ -25,9 +25,10 @@ import com.arsvechkarev.vault.views.EditTextPassword
 import com.arsvechkarev.vault.views.dialogs.LoadingDialog
 import com.arsvechkarev.vault.views.dialogs.loadingDialog
 import kotlinx.coroutines.launch
-import navigation.BaseScreen
+import navigation.BaseFragmentScreen
 import viewdsl.Size.Companion.MatchParent
 import viewdsl.Size.Companion.WrapContent
+import viewdsl.clearText
 import viewdsl.constraints
 import viewdsl.gravity
 import viewdsl.hideKeyboard
@@ -44,7 +45,7 @@ import viewdsl.textSize
 import viewdsl.withViewBuilder
 
 // TODO (7/21/2022): Add support for entering code instead of master password
-class LoginScreen : BaseScreen(), MviView<LoginState, Nothing> {
+class LoginScreen : BaseFragmentScreen() {
   
   override fun buildLayout(context: Context) = context.withViewBuilder {
     RootConstraintLayout {
@@ -104,19 +105,23 @@ class LoginScreen : BaseScreen(), MviView<LoginState, Nothing> {
     }
   }
   
-  private val store by moxyStore { LoginStore(appComponent) }
+  private val store by viewModelStore { LoginStore(appComponent) }
   
-  override fun onAppearedOnScreen() {
+  override fun onInit() {
+    store.subscribe(this, ::render)
+  }
+  
+  override fun onAppearedOnScreenAfterAnimation() {
     // TODO (8/6/2022): Maybe create custom scope for screens
     AppMainCoroutineScope.launch { store.dispatch(OnAppearedOnScreen) }
   }
   
-  override fun render(state: LoginState) {
+  private fun render(state: LoginState) {
     if (state.isLoading) loadingDialog.show() else loadingDialog.hide()
     if (state.showPasswordIsIncorrect) {
       textView(TextErrorId).text(R.string.text_password_is_incorrect)
     } else {
-      textView(TextErrorId).text("")
+      textView(TextErrorId).clearText()
     }
     if (state.showKeyboard) {
       contextNonNull.showKeyboard()
@@ -124,6 +129,11 @@ class LoginScreen : BaseScreen(), MviView<LoginState, Nothing> {
     } else {
       contextNonNull.hideKeyboard()
     }
+  }
+  
+  override fun onDestroyView() {
+    super.onDestroyView()
+    contextNonNull.hideKeyboard()
   }
   
   private companion object {

@@ -15,6 +15,7 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.customview.widget.ViewDragHelper.INVALID_POINTER
 import com.arsvechkarev.vault.views.behaviors.BottomSheetBehavior.State.HIDDEN
 import com.arsvechkarev.vault.views.behaviors.BottomSheetBehavior.State.SHOWN
+import com.arsvechkarev.vault.views.behaviors.BottomSheetBehavior.State.SLIDING
 import viewdsl.ViewDslConfiguration.applicationContext
 import viewdsl.doOnEnd
 import viewdsl.getBehavior
@@ -46,14 +47,16 @@ class BottomSheetBehavior : CoordinatorLayout.Behavior<View>() {
   
   var onHide: () -> Unit = {}
   var onShow: () -> Unit = {}
+  var onSlidePercentageChanged: (Float) -> Unit = {}
   
   fun show() {
     bottomSheet!!.post {
       if (currentState == SHOWN || slideAnimator.isRunning) return@post
-      currentState = SHOWN
+      currentState = SLIDING
       slideAnimator.duration = DURATION_SLIDE
       slideAnimator.setIntValues(bottomSheet!!.top, parentHeight - slideRange)
       slideAnimator.doOnEnd(onShow)
+      slideAnimator.doOnEnd { currentState = SHOWN }
       slideAnimator.start()
     }
   }
@@ -61,10 +64,11 @@ class BottomSheetBehavior : CoordinatorLayout.Behavior<View>() {
   fun hide() {
     bottomSheet!!.post {
       if (currentState == HIDDEN || slideAnimator.isRunning) return@post
-      currentState = HIDDEN
+      currentState = SLIDING
       slideAnimator.duration = DURATION_SLIDE
       slideAnimator.setIntValues(bottomSheet!!.top, parentHeight)
       slideAnimator.doOnEnd(onHide)
+      slideAnimator.doOnEnd { currentState = HIDDEN }
       slideAnimator.start()
     }
   }
@@ -75,7 +79,11 @@ class BottomSheetBehavior : CoordinatorLayout.Behavior<View>() {
     slideRange = child.height
     parentHeight = parent.height
     if (bottomSheetOffsetHelper == null) {
-      bottomSheetOffsetHelper = BottomSheetOffsetHelper(child)
+      bottomSheetOffsetHelper = BottomSheetOffsetHelper(
+        child,
+        onTopChanged = { top ->
+          onSlidePercentageChanged((parentHeight - top.toFloat()) / slideRange.toFloat())
+        })
     }
     bottomSheetOffsetHelper!!.onViewLayout(parentHeight)
     if (currentState == HIDDEN) {
@@ -235,12 +243,12 @@ class BottomSheetBehavior : CoordinatorLayout.Behavior<View>() {
   }
   
   enum class State {
-    SHOWN, HIDDEN
+    SHOWN, SLIDING, HIDDEN
   }
   
   companion object {
-    
-    private const val DURATION_SLIDE = 225L
+  
+    private const val DURATION_SLIDE = 5000L
     private const val FLING_VELOCITY_THRESHOLD = 0.18f
     
     val View.asBottomSheet get() = getBehavior<BottomSheetBehavior>()

@@ -69,9 +69,11 @@ class InfoDialog(context: Context) : SimpleDialog(context) {
     titleRes: Int,
     messageRes: Int,
     textPositiveRes: Int,
+    onCancel: () -> Unit = { hide() },
     onOkClicked: () -> Unit = { hide() }
   ) {
     show()
+    this.onHide = onCancel
     textView(DialogInfoTitle).text(titleRes)
     textView(DialogInfoMessage).text(messageRes)
     textView(DialogInfoText1).gone()
@@ -80,21 +82,25 @@ class InfoDialog(context: Context) : SimpleDialog(context) {
     textView(DialogInfoText2).onClick(onOkClicked)
   }
   
-  fun showWithDeleteAndCancelOption(
+  fun showWithCancelAndProceedOption(
     titleRes: Int,
     messageRes: CharSequence,
-    onDeleteClicked: () -> Unit,
+    cancelTextRes: Int = R.string.text_cancel,
+    proceedTextRes: Int = R.string.text_delete,
+    onCancel: () -> Unit = { hide() },
+    onProceed: () -> Unit = {},
   ) {
     show()
+    this.onHide = onCancel
     textView(DialogInfoTitle).text(titleRes)
     textView(DialogInfoMessage).text(messageRes)
     textView(DialogInfoText1).apply(ClickableTextView())
     textView(DialogInfoText1).visible()
-    textView(DialogInfoText1).text(R.string.text_cancel)
-    textView(DialogInfoText1).onClick { hide() }
+    textView(DialogInfoText1).text(cancelTextRes)
+    textView(DialogInfoText1).onClick(onCancel)
     textView(DialogInfoText2).apply(ClickableErrorTextView)
-    textView(DialogInfoText2).text(R.string.text_delete)
-    textView(DialogInfoText2).onClick(onDeleteClicked)
+    textView(DialogInfoText2).text(proceedTextRes)
+    textView(DialogInfoText2).onClick(onProceed)
   }
   
   companion object {

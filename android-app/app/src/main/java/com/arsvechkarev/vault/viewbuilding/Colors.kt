@@ -27,7 +27,7 @@ object Colors {
   val PasswordStrong = "DAAF14".color
   val PasswordVeryStrong = "069A15".color
   val Disabled = "AFAFAF".color
-  val Divider = "AFAFAF".color
+  val Divider = "2B4453".color
   val Shadow = "BB000000".color
   
   private inline val String.color: Int

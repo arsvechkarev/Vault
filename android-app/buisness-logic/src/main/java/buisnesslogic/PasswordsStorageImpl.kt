@@ -17,10 +17,17 @@ class PasswordsStorageImpl(
     return getFromString(json)
   }
   
+  override suspend fun savePasswords(
+    masterPassword: String,
+    passwords: List<PasswordInfo>
+  ) {
+    savePasswordsToFile(masterPassword, passwords.toMutableList())
+  }
+  
   override suspend fun savePassword(masterPassword: String, passwordInfo: PasswordInfo) {
     val passwords = getPasswords(masterPassword).toMutableList()
     passwords.add(passwordInfo)
-    savePasswordsToFile(passwords, masterPassword)
+    savePasswordsToFile(masterPassword, passwords)
   }
   
   override suspend fun updatePasswordInfo(masterPassword: String, passwordInfo: PasswordInfo) {
@@ -31,7 +38,7 @@ class PasswordsStorageImpl(
         break
       }
     }
-    savePasswordsToFile(passwords, masterPassword)
+    savePasswordsToFile(masterPassword, passwords)
   }
   
   override suspend fun deletePassword(masterPassword: String, passwordInfo: PasswordInfo) {
@@ -39,17 +46,20 @@ class PasswordsStorageImpl(
     val oldSize = passwords.size
     removePasswordById(passwords, passwordInfo.id)
     require(passwords.size == oldSize - 1)
-    savePasswordsToFile(passwords, masterPassword)
+    savePasswordsToFile(masterPassword, passwords)
   }
   
-  private suspend fun savePasswordsToFile(servicesList: MutableList<PasswordInfo>, password: String) {
-    val passwordsInfoJson = convertToString(servicesList)
+  private suspend fun savePasswordsToFile(
+    password: String,
+    passwordsList: MutableList<PasswordInfo>
+  ) {
+    val passwordsInfoJson = convertToString(passwordsList)
     val encryptedText = cryptography.encryptData(password, passwordsInfoJson)
     fileSaver.saveData(encryptedText)
   }
   
-  private fun removePasswordById(servicesList: MutableCollection<PasswordInfo>, id: String) {
-    val iterator = servicesList.iterator()
+  private fun removePasswordById(passwordsList: MutableCollection<PasswordInfo>, id: String) {
+    val iterator = passwordsList.iterator()
     while (iterator.hasNext()) {
       if (iterator.next().id == id) {
         iterator.remove()
@@ -70,13 +80,13 @@ class PasswordsStorageImpl(
   }
   
   private fun convertToString(list: List<PasswordInfo>): String {
-    return jsonConverter.convertToString(list, converter = { service ->
+    return jsonConverter.convertToString(list, converter = { password ->
       mapOf(
-        KEY_ITEM_ID to service.id,
-        KEY_WEBSITE_NAME to service.websiteName,
-        KEY_LOGIN to service.login,
-        KEY_EMAIL to service.notes,
-        KEY_NOTES to service.password
+        KEY_ITEM_ID to password.id,
+        KEY_WEBSITE_NAME to password.websiteName,
+        KEY_LOGIN to password.login,
+        KEY_EMAIL to password.notes,
+        KEY_NOTES to password.password
       )
     })
   }

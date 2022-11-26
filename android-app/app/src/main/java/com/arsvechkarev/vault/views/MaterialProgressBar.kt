@@ -7,24 +7,22 @@ import android.graphics.drawable.AnimatedVectorDrawable
 import android.view.View
 import com.arsvechkarev.vault.R
 import com.arsvechkarev.vault.viewbuilding.Colors
-import com.arsvechkarev.vault.views.MaterialProgressBar.Thickness.NORMAL
-import com.arsvechkarev.vault.views.MaterialProgressBar.Thickness.THICK
 import viewdsl.retrieveDrawable
 import viewdsl.startIfNotRunning
 import viewdsl.stopIfRunning
 
-class MaterialProgressBar(
-  context: Context,
-  color: Int = Colors.Accent,
-  thickness: Thickness = NORMAL,
-) : View(context) {
+class MaterialProgressBar(context: Context) : View(context) {
   
   private val drawable get() = background as AnimatedVectorDrawable
   
   init {
+    setup(Colors.Accent, Thickness.NORMAL)
+  }
+  
+  fun setup(color: Int, thickness: Thickness) {
     background = when (thickness) {
-      NORMAL -> context.retrieveDrawable(R.drawable.progress_anim_normal)
-      THICK -> context.retrieveDrawable(R.drawable.progress_anim_thick)
+      Thickness.NORMAL -> context.retrieveDrawable(R.drawable.progress_anim_normal)
+      Thickness.THICK -> context.retrieveDrawable(R.drawable.progress_anim_thick)
     }.apply {
       colorFilter = PorterDuffColorFilter(color, PorterDuff.Mode.SRC_ATOP)
     }

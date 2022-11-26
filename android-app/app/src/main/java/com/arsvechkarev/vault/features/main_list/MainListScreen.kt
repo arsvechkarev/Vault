@@ -41,7 +41,6 @@ import kotlinx.coroutines.launch
 import navigation.BaseFragmentScreen
 import viewdsl.Size.Companion.MatchParent
 import viewdsl.Size.Companion.WrapContent
-import viewdsl.addView
 import viewdsl.animateInvisible
 import viewdsl.animateVisible
 import viewdsl.backgroundColor
@@ -57,7 +56,6 @@ import viewdsl.margins
 import viewdsl.paddings
 import viewdsl.retrieveDrawable
 import viewdsl.setupWith
-import viewdsl.size
 import viewdsl.tag
 import viewdsl.text
 import viewdsl.textSize
@@ -93,11 +91,7 @@ class MainListScreen : BaseFragmentScreen() {
         invisible()
         layoutGravity(CENTER)
         gravity(CENTER)
-        addView {
-          MaterialProgressBar(context).apply {
-            size(ProgressBarSizeBig, ProgressBarSizeBig)
-          }
-        }
+        child<MaterialProgressBar>(ProgressBarSizeBig, ProgressBarSizeBig)
       }
       VerticalLayout(MatchParent, MatchParent) {
         tag(LayoutNoPasswords)

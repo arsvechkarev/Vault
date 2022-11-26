@@ -15,6 +15,14 @@ interface PasswordsStorage {
   suspend fun getPasswords(masterPassword: String): List<PasswordInfo>
   
   /**
+   * Saves list of passwords
+   *
+   * @param masterPassword Master password for encryption/decryption
+   * @param passwords Passwords to save
+   */
+  suspend fun savePasswords(masterPassword: String, passwords: List<PasswordInfo>)
+  
+  /**
    * Saves new password entity
    *
    * @param masterPassword Master password for encryption/decryption

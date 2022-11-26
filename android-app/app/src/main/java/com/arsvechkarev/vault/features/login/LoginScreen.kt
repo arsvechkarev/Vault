@@ -76,7 +76,7 @@ class LoginScreen : BaseFragmentScreen() {
         child<EditTextPassword>(MatchParent, WrapContent) {
           id(EditTextPasswordId)
           marginHorizontal(MarginNormal)
-          text("qwetu123") // TODO (7/22/2022): DELETE THIS!!!
+          text("qwetu1233") // TODO (7/22/2022): DELETE THIS!!!
           setHint(R.string.hint_enter_password)
           onTextChanged { store.tryDispatch(OnTypingText) }
           onSubmit { text -> store.tryDispatch(OnEnteredPassword(text)) }

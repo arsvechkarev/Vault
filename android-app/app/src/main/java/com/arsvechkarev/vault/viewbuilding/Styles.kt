@@ -6,7 +6,6 @@ import android.graphics.drawable.GradientDrawable
 import android.graphics.drawable.RippleDrawable
 import android.graphics.drawable.ShapeDrawable
 import android.graphics.drawable.shapes.RoundRectShape
-import android.text.InputType.TYPE_TEXT_VARIATION_PASSWORD
 import android.text.SpannableString
 import android.text.Spanned
 import android.text.TextUtils
@@ -21,7 +20,6 @@ import com.arsvechkarev.vault.R
 import com.arsvechkarev.vault.core.TypefaceSpan
 import com.arsvechkarev.vault.viewbuilding.Dimens.CornerRadiusSmall
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginMedium
-import com.arsvechkarev.vault.viewbuilding.Dimens.MarginNormal
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginSmall
 import com.arsvechkarev.vault.views.drawables.GradientBackgroundDrawable
 import viewdsl.DefaultStyles
@@ -73,7 +71,7 @@ object Styles : DefaultStyles {
     font(Typeface.DEFAULT_BOLD)
     paddingVertical(MarginSmall)
     textColor(Colors.AccentLight)
-    paddingHorizontal(MarginNormal)
+    paddingHorizontal(MarginMedium)
     rippleBackground(rippleColor, Colors.Transparent, CornerRadiusSmall)
   }
   
@@ -88,7 +86,9 @@ object Styles : DefaultStyles {
   ): TextView.() -> Unit = {
     apply(BoldTextView)
     val gradientDrawable = GradientDrawable(GradientDrawable.Orientation.TL_BR, intArrayOf(
-      colorStart, colorEnd))
+      colorStart, colorEnd
+    )
+    )
     val r = 120.dp.toFloat()
     val outerRadii = floatArrayOf(r, r, r, r, r, r, r, r)
     gradientDrawable.cornerRadii = outerRadii
@@ -119,17 +119,17 @@ object Styles : DefaultStyles {
   }
   
   fun BaseEditText(@StringRes hint: Int = 0): EditText.() -> Unit = {
-    font(Fonts.SegoeUiBold)
-    textSize(TextSizes.H3)
-    paddingVertical(MarginSmall)
+    textSize(TextSizes.H4)
     setSingleLine()
     background = null
-    inputType = TYPE_TEXT_VARIATION_PASSWORD
+    paddingHorizontal(0)
+    paddingVertical(MarginSmall)
     imeOptions = EditorInfo.IME_ACTION_DONE
     if (hint != 0) {
       val spannableString = SpannableString(context.getString(hint))
       spannableString.setSpan(TypefaceSpan(Fonts.SegoeUi), 0, spannableString.length,
-        Spanned.SPAN_INCLUSIVE_EXCLUSIVE)
+        Spanned.SPAN_INCLUSIVE_EXCLUSIVE
+      )
       setHint(spannableString)
     }
   }

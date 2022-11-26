@@ -30,8 +30,6 @@ sealed interface CreatingEntryCommand {
   ) : CreatingEntryCommand
   
   object NotifyEntryCreated : CreatingEntryCommand
-  
-  class GoToInfoScreen(val passwordInfoItem: PasswordInfoItem) : CreatingEntryCommand
 }
 
 data class CreatingEntryState(

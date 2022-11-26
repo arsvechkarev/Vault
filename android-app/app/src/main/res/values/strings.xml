@@ -49,11 +49,13 @@
   <string name="text_no_email">No email</string>
   <string name="text_no_passwords">No passwords saved</string>
   <string name="text_email">Email</string>
-  <string name="text_password_stub">•••••••••••••••</string>
+  <string name="text_password_stub">•••••••••••••••••••</string>
   <string name="text_copy">Copy</string>
   <string name="text_show">Show</string>
   <string name="text_hide">Hide</string>
   <string name="text_edit">Edit</string>
+  <string name="text_notes">Notes</string>
+  <string name="hint_notes">Add notes…</string>
   <string name="text_edit_password">Edit password</string>
   <string name="text_password_length">Length: %1$d</string>
   <string name="text_generate_password">Generate password</string>
@@ -67,17 +69,19 @@
   <string name="text_saving_password">Saving password</string>
   <string name="text_exit">Exit</string>
   <string name="text_do_you_want_to_leave">Do you want to leave without saving anything?</string>
-  <string name="text_password_is_the_same">You did not changedPassword has not changed</string>
   <string name="text_do_you_want_to_save_password">Do you want to accept the password?</string>
   <string name="text_service_already_exists">Service with this name already exists</string>
-  <string name="text_delete_service">Delete service</string>
-  <string name="text_delete_service_question">Do you want to delete %s?</string>
-  <string name="text_delete_service_question_prefix">Do you want to delete</string>
+  <string name="text_deleting_password">Deleting password</string>
+  <string name="text_deleting_password_question">Do you want to delete %s?</string>
+  <string name="text_deleting_password_question_prefix">Do you want to delete</string>
   <string name="text_click_plus">Click on the + button below to create new password</string>
   <string name="text_cancel">CANCEL</string>
   <string name="text_delete">DELETE</string>
   <string name="text_got_it">GOT IT</string>
+  <string name="text_website_name_copied">Website successfully copied!</string>
+  <string name="text_login_copied">Login successfully copied!</string>
   <string name="text_password_copied">Password successfully copied!</string>
+  <string name="text_notes_copied">Notes successfully copied!</string>
   <string name="text_adding_biometrics_data">Adding biometrics data</string>
   <string name="text_enter_with_fingerprint">Enter using your fingerprint</string>
   <string name="text_biometrics_added">Biometrics successfully added!</string>
@@ -92,5 +96,8 @@
   <string name="text_password_examples">Examples of good passwords:</string>
   <string name="text_welcome_to_vault">Vault</string>
   <string name="text_welcome_description">Simple, secure and fast password manager</string>
+  <string name="clipboard_label_website">website</string>
+  <string name="clipboard_label_login">login</string>
   <string name="clipboard_label_password">password</string>
+  <string name="clipboard_label_notes">notes</string>
 </resources>

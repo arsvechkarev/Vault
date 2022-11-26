@@ -4,7 +4,7 @@ import android.view.Gravity.CENTER
 import android.widget.ImageView
 import android.widget.TextView
 import com.arsvechkarev.vault.core.model.PasswordInfoItem
-import com.arsvechkarev.vault.core.setServiceIcon
+import com.arsvechkarev.vault.core.setWebsiteIcon
 import com.arsvechkarev.vault.recycler.BaseListAdapter
 import com.arsvechkarev.vault.recycler.delegate
 import com.arsvechkarev.vault.viewbuilding.Colors
@@ -52,7 +52,7 @@ class MainListAdapter(
           itemView.onClick { onItemClick(item) }
         }
         onBind {
-          itemView.viewAs<ImageView>(ItemServiceInfoImage).setServiceIcon(item.websiteName)
+          itemView.viewAs<ImageView>(ItemServiceInfoImage).setWebsiteIcon(item.websiteName)
           itemView.viewAs<TextView>(ItemServiceInfoTextServiceName).text(item.websiteName)
         }
       }

@@ -2,5 +2,5 @@ package com.arsvechkarev.vault.core
 
 interface Clipboard {
   
-  fun copyToClipboard(text: String)
+  fun copyToClipboard(labelRes: Int, text: String)
 }

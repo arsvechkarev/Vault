@@ -24,6 +24,8 @@ abstract class BaseFragmentScreen : Fragment() {
   
   open fun onAppearedOnScreen() = Unit
   
+  open fun onViewCreated() = Unit
+  
   open fun onAppearedOnScreenAfterAnimation() = Unit
   
   open fun onDisappearedFromScreen() = Unit
@@ -31,6 +33,11 @@ abstract class BaseFragmentScreen : Fragment() {
   open fun onDisappearedFromScreenAfterAnimation() = Unit
   
   open fun onRelease() = Unit
+  
+  override fun onCreate(savedInstanceState: Bundle?) {
+    super.onCreate(savedInstanceState)
+    onInit()
+  }
   
   override fun onCreateView(
     inflater: LayoutInflater,
@@ -40,9 +47,8 @@ abstract class BaseFragmentScreen : Fragment() {
     return buildLayout(requireContext())
   }
   
-  override fun onCreate(savedInstanceState: Bundle?) {
-    super.onCreate(savedInstanceState)
-    onInit()
+  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    onViewCreated()
   }
   
   override fun onStart() {

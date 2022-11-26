@@ -105,7 +105,7 @@ class FragmentNavigatorImpl(
     val newFragment = Class.forName(name).newInstance() as BaseFragmentScreen
     newFragment.screenKey = screenKey
     newFragment.arguments = arguments
-    applyForwardAnimations()
+    setCustomAnimations(R.anim.slide_in, R.anim.fade_out)
     add(containerViewId, newFragment, screenKey.toString())
   }
   
@@ -124,7 +124,4 @@ class FragmentNavigatorImpl(
         .commitAllowingStateLoss()
   }
   
-  private fun FragmentTransaction.applyForwardAnimations() {
-    setCustomAnimations(R.anim.slide_in, R.anim.fade_out)
-  }
 }

@@ -7,7 +7,7 @@ import android.view.Gravity.CENTER
 import android.view.Gravity.CENTER_HORIZONTAL
 import android.view.Gravity.END
 import com.arsvechkarev.vault.R
-import com.arsvechkarev.vault.core.setServiceIcon
+import com.arsvechkarev.vault.core.setWebsiteIcon
 import com.arsvechkarev.vault.viewbuilding.Colors
 import com.arsvechkarev.vault.viewbuilding.Dimens
 import com.arsvechkarev.vault.viewbuilding.Dimens.DividerHeight
@@ -188,7 +188,7 @@ class InfoScreen : BaseFragmentScreen(), InfoView {
   }
   
   override fun showServiceIcon(serviceName: String) {
-    imageView(ImageServiceName).setServiceIcon(serviceName)
+    imageView(ImageServiceName).setWebsiteIcon(serviceName)
   }
   
   override fun showUsername(username: String) {
@@ -238,11 +238,11 @@ class InfoScreen : BaseFragmentScreen(), InfoView {
   }
   
   override fun showDeleteDialog(serviceName: String) {
-    //    infoDialog.onHide = { presenter.onHideDeleteDialog() }
-    //    infoDialog.showWithDeleteAndCancelOption(
-    //      R.string.text_delete_service, getDeleteMessageText(serviceName),
-    //      onDeleteClicked = { }
-    //    )
+    //        infoDialog.onHide = { presenter.onHideDeleteDialog() }
+    //        infoDialog.showWithDeleteAndCancelOption(
+    //          R.string.text_delete_service, getDeleteMessageText(serviceName),
+    //          onDeleteClicked = { }
+    //        )
   }
   
   override fun hideDeleteDialog() {

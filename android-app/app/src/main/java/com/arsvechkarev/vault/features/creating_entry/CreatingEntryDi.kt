@@ -3,7 +3,6 @@ package com.arsvechkarev.vault.features.creating_entry
 import com.arsvechkarev.vault.core.di.AppComponent
 import com.arsvechkarev.vault.core.mvi.tea.TeaStore
 import com.arsvechkarev.vault.core.mvi.tea.TeaStoreImpl
-import com.arsvechkarev.vault.features.creating_entry.actors.GoingToInfoScreenCommandHandler
 import com.arsvechkarev.vault.features.creating_entry.actors.ReceivingPasswordCommunicationActor
 import com.arsvechkarev.vault.features.creating_entry.actors.SavingEntryActor
 import com.arsvechkarev.vault.features.creating_entry.actors.SendingLoadingStatusCommunicatingActor
@@ -20,7 +19,6 @@ fun CreatingEntryStore(
       ValidateInputActor(communicatorHolder),
       ReceivingPasswordCommunicationActor(communicatorHolder.communicator),
       SendingLoadingStatusCommunicatingActor(communicatorHolder.communicator),
-      GoingToInfoScreenCommandHandler(appComponent.router),
       SavingEntryActor(
         appComponent.listenableCachedPasswordStorage,
         appComponent.masterPasswordProvider

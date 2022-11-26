@@ -68,6 +68,16 @@ class ViewBuilder(val context: Context) {
     VerticalLayout(MatchParent, WrapContent, compositeStyle, block)
   }
   
+  fun Any.RootScrollableConstraintLayout(
+    width: Size = MatchParent,
+    height: Size = MatchParent,
+    style: Style<ConstraintLayout> = {},
+    block: Style<ConstraintLayout> = {}
+  ) = ScrollView(context).size(width, height).apply {
+    val compositeStyle = DefaultStyles.BaseRootBackground thenApply style
+    child(MatchParent, MatchParent, compositeStyle, block)
+  }
+  
   fun Any.RootFrameLayout(
     width: Size = MatchParent,
     height: Size = MatchParent,
@@ -243,6 +253,21 @@ class ViewBuilder(val context: Context) {
         orientation(LinearLayout.VERTICAL)
       }
     }
+  }
+  
+  fun ViewGroup.ScrollableConstraintLayout(
+    width: Size = MatchParent,
+    height: Size = MatchParent,
+    style: Style<ConstraintLayout> = {},
+    block: Style<ConstraintLayout>,
+  ): ScrollView {
+    val layout = when (this) {
+      is FrameLayout -> child<ScrollView, FrameLayoutParams>(width, height, {}, {})
+      is LinearLayout -> child<ScrollView, LinearLayoutParams>(width, height, {}, {})
+      is CoordinatorLayout -> child<ScrollView, CoordLayoutParams>(width, height, {}, {})
+      else -> child<ScrollView, ViewGroupLayoutParams>(width, height, {}, {})
+    }
+    return layout.apply { child(MatchParent, MatchParent, style, block) }
   }
   
   fun ViewGroup.HorizontalLayout(

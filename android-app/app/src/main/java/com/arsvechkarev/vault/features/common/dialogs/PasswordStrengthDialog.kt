@@ -1,4 +1,4 @@
-package com.arsvechkarev.vault.views.dialogs
+package com.arsvechkarev.vault.features.common.dialogs
 
 import android.content.Context
 import android.view.Gravity
@@ -69,7 +69,9 @@ class PasswordStrengthDialog(context: Context) : SimpleDialog(context) {
   
     val BaseFragmentScreen.passwordStrengthDialog get() = viewAs<PasswordStrengthDialog>()
   
-    fun ViewGroup.PasswordStrengthDialog(block: PasswordStrengthDialog.() -> Unit = {}) = withViewBuilder {
+    fun ViewGroup.PasswordStrengthDialog(
+      block: PasswordStrengthDialog.() -> Unit = {}
+    ) = withViewBuilder {
       child<PasswordStrengthDialog, ViewGroup.LayoutParams>(MatchParent, MatchParent, block) {
         classNameTag()
       }

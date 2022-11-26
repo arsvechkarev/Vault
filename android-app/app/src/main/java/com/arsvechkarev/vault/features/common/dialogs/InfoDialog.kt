@@ -1,4 +1,4 @@
-package com.arsvechkarev.vault.views.dialogs
+package com.arsvechkarev.vault.features.common.dialogs
 
 import android.content.Context
 import android.view.Gravity

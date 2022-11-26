@@ -6,6 +6,7 @@
   <string name="text_settings">Settings</string>
   <string name="text_import_passwords">Import passwords</string>
   <string name="text_export_passwords">Export passwords</string>
+  <string name="text_export">Export</string>
   <string name="text_create_master_password">Create master password</string>
   <string name="text_weak">Weak</string>
   <string name="text_medium">Medium</string>
@@ -32,6 +33,7 @@
   <string name="text_login_cant_be_empty">Login cannot be empty</string>
   <string name="text_new_password">New password</string>
   <string name="text_enter_master_password">Enter master password</string>
+  <string name="text_enter_master_password_to_proceed">Enter master password to proceed</string>
   <string name="text_enter_service_name">Enter service name</string>
   <string name="text_service_name_cannot_be_empty">Service name cannot be empty</string>
   <string name="text_no_username">No username</string>
@@ -98,6 +100,10 @@
   <string name="text_welcome_to_vault">Vault</string>
   <string name="text_welcome_description">Simple, secure and fast password manager</string>
   <string name="text_change">Change</string>
+  <string name="text_folder">Folder</string>
+  <string name="text_select_folder">Select folder</string>
+  <string name="text_filename">Filename</string>
+  <string name="hint_filename">Enter filename…</string>
   <string name="clipboard_label_website">website</string>
   <string name="clipboard_label_login">login</string>
   <string name="clipboard_label_password">password</string>

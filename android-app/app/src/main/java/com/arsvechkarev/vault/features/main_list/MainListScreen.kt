@@ -25,6 +25,7 @@ import com.arsvechkarev.vault.features.main_list.MenuItemType.IMPORT_PASSWORDS
 import com.arsvechkarev.vault.features.main_list.MenuItemType.NEW_PASSWORD
 import com.arsvechkarev.vault.features.main_list.MenuItemType.SETTINGS
 import com.arsvechkarev.vault.viewbuilding.Colors
+import com.arsvechkarev.vault.viewbuilding.Dimens.GradientDrawableHeight
 import com.arsvechkarev.vault.viewbuilding.Dimens.ImageNoServicesSize
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginLarge
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginNormal
@@ -54,7 +55,6 @@ import viewdsl.margin
 import viewdsl.marginHorizontal
 import viewdsl.margins
 import viewdsl.paddings
-import viewdsl.retrieveDrawable
 import viewdsl.setupWith
 import viewdsl.tag
 import viewdsl.text
@@ -68,12 +68,7 @@ class MainListScreen : BaseFragmentScreen() {
       backgroundColor(Colors.Background)
       RecyclerView(MatchParent, WrapContent) {
         classNameTag()
-        val drawable = context.retrieveDrawable(R.drawable.bg_gradient)
-        val gradientHeight = drawable.intrinsicHeight / 1.4
-        paddings(
-          top = gradientHeight.toInt(),
-          bottom = 80.dp
-        )
+        paddings(top = GradientDrawableHeight, bottom = 80.dp)
         clipToPadding = false
         setupWith(this@MainListScreen.adapter)
       }

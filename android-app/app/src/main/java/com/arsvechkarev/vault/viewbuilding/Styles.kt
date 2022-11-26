@@ -134,6 +134,7 @@ object Styles : DefaultStyles {
     paddingHorizontal(0)
     paddingVertical(MarginSmall)
     imeOptions = EditorInfo.IME_ACTION_DONE
+    setHintTextColor(Colors.TextSecondary)
     if (hint != 0) {
       val spannableString = SpannableString(context.getString(hint))
       spannableString.setSpan(TypefaceSpan(Fonts.SegoeUi), 0, spannableString.length,

@@ -41,6 +41,7 @@ import viewdsl.behavior
 import viewdsl.classNameTag
 import viewdsl.clearText
 import viewdsl.hideKeyboard
+import viewdsl.id
 import viewdsl.invisible
 import viewdsl.isVisible
 import viewdsl.layoutGravity
@@ -49,7 +50,6 @@ import viewdsl.onClick
 import viewdsl.padding
 import viewdsl.parentView
 import viewdsl.showKeyboard
-import viewdsl.tag
 import viewdsl.text
 import viewdsl.textColor
 import viewdsl.textSize
@@ -65,12 +65,12 @@ class CheckMasterPasswordDialog(context: Context) : FrameLayout(context) {
     withViewBuilder {
       backgroundRoundTopRect(MarginNormal, Colors.Dialog)
       VerticalLayout(MatchParent, WrapContent) {
-        tag(BottomSheetLayout)
+        id(BottomSheetLayout)
         padding(MarginNormal)
         layoutGravity(BOTTOM)
         child<FrameLayout>(MatchParent, MatchParent) {
           TextView(WrapContent, WrapContent, style = BoldTextView) {
-            text(R.string.text_enter_master_password)
+            text(R.string.text_enter_master_password_to_proceed)
             textSize(TextSizes.H1)
             layoutGravity(CENTER_VERTICAL)
           }
@@ -87,14 +87,14 @@ class CheckMasterPasswordDialog(context: Context) : FrameLayout(context) {
           onSubmit { password -> checkMasterPassword(password) }
         }
         TextView(MatchParent, WrapContent) {
-          tag(TextError)
+          id(TextError)
           textColor(Colors.Error)
           margins(start = MarginTiny, top = MarginSmall)
         }
         FrameLayout(MatchParent, WrapContent) {
           margins(top = MarginExtraLarge)
           TextView(MatchParent, WrapContent, style = Button()) {
-            tag(ButtonCheck)
+            id(ButtonCheck)
             text(R.string.text_check)
             onClick {
               val editTextPassword = parentView.parentView.viewAs<EditTextPassword>()
@@ -154,7 +154,7 @@ class CheckMasterPasswordDialog(context: Context) : FrameLayout(context) {
       block: CheckMasterPasswordDialog.() -> Unit = {}
     ) = withViewBuilder {
       val shadowLayout = child<FrameLayout>(MatchParent, MatchParent) {
-        tag(ShadowLayout)
+        id(ShadowLayout)
       }
       child<CheckMasterPasswordDialog, ViewGroup.LayoutParams>(MatchParent, WrapContent, block) {
         classNameTag()

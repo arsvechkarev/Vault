@@ -53,7 +53,7 @@ class BottomSheetBehavior : CoordinatorLayout.Behavior<View>() {
   var onSlidePercentageChanged: (Float) -> Unit = {}
   
   fun show() {
-    bottomSheet!!.post {
+    bottomSheet?.post {
       if (currentState == SHOWN || slideAnimator.isRunning) return@post
       currentState = SLIDING
       slideAnimator.duration = DURATION_SLIDE
@@ -65,7 +65,7 @@ class BottomSheetBehavior : CoordinatorLayout.Behavior<View>() {
   }
   
   fun hide() {
-    bottomSheet!!.post {
+    bottomSheet?.post {
       if (currentState == HIDDEN || slideAnimator.isRunning) return@post
       currentState = SLIDING
       slideAnimator.duration = DURATION_SLIDE

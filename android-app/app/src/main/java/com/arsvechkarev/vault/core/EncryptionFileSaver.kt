@@ -33,6 +33,12 @@ class EncryptionFileSaver(
     }
   }
   
+  override suspend fun getFileUri(): String {
+    val file = File(context.filesDir, filename)
+    check(file.exists())
+    return file.toURI().toString()
+  }
+  
   override suspend fun delete(): Unit = withContext(dispatchersFacade.IO) {
     context.getFileStreamPath(filename).delete()
   }

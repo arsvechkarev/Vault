@@ -5,36 +5,32 @@ import android.view.Gravity.CENTER
 import android.view.Gravity.CENTER_VERTICAL
 import android.view.View
 import android.view.WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE
-import android.widget.ImageView.ScaleType.FIT_XY
 import androidx.annotation.StringRes
 import com.arsvechkarev.vault.R
 import com.arsvechkarev.vault.core.di.appComponent
 import com.arsvechkarev.vault.core.mvi.ext.subscribe
 import com.arsvechkarev.vault.core.mvi.ext.viewModelStore
-import com.arsvechkarev.vault.core.setWebsiteIcon
 import com.arsvechkarev.vault.features.creating_entry.CreatingEntryUiEvent.OnBackButtonClicked
 import com.arsvechkarev.vault.features.creating_entry.CreatingEntryUiEvent.OnContinueClicked
 import com.arsvechkarev.vault.features.creating_entry.CreatingEntryUiEvent.OnLoginTextChanged
 import com.arsvechkarev.vault.features.creating_entry.CreatingEntryUiEvent.OnWebsiteNameTextChanged
 import com.arsvechkarev.vault.viewbuilding.Colors
-import com.arsvechkarev.vault.viewbuilding.Dimens.IconPadding
-import com.arsvechkarev.vault.viewbuilding.Dimens.ImageServiceNameSize
+import com.arsvechkarev.vault.viewbuilding.Dimens.GradientDrawableHeight
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginLarge
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginNormal
 import com.arsvechkarev.vault.viewbuilding.Styles.AccentTextView
 import com.arsvechkarev.vault.viewbuilding.Styles.BaseEditText
 import com.arsvechkarev.vault.viewbuilding.Styles.BoldTextView
 import com.arsvechkarev.vault.viewbuilding.Styles.Button
+import com.arsvechkarev.vault.viewbuilding.Styles.ImageBack
 import com.arsvechkarev.vault.viewbuilding.TextSizes
 import navigation.BaseFragmentScreen
 import viewdsl.Size.Companion.MatchParent
 import viewdsl.Size.Companion.WrapContent
-import viewdsl.circleRippleBackground
 import viewdsl.constraints
 import viewdsl.gravity
 import viewdsl.hideKeyboard
 import viewdsl.id
-import viewdsl.image
 import viewdsl.invisible
 import viewdsl.layoutGravity
 import viewdsl.margin
@@ -43,7 +39,6 @@ import viewdsl.onClick
 import viewdsl.onLayoutChanged
 import viewdsl.onSubmit
 import viewdsl.onTextChanged
-import viewdsl.padding
 import viewdsl.setSoftInputMode
 import viewdsl.showKeyboard
 import viewdsl.text
@@ -51,7 +46,6 @@ import viewdsl.textColor
 import viewdsl.textSize
 import viewdsl.visible
 import viewdsl.withViewBuilder
-import kotlin.math.abs
 
 class CreatingEntryScreen : BaseFragmentScreen() {
   
@@ -66,12 +60,9 @@ class CreatingEntryScreen : BaseFragmentScreen() {
         constraints {
           topToTopOf(parent)
         }
-        ImageView(WrapContent, WrapContent) {
-          image(R.drawable.ic_back)
+        ImageView(WrapContent, WrapContent, style = ImageBack) {
           margin(MarginNormal)
           gravity(CENTER_VERTICAL)
-          padding(IconPadding)
-          circleRippleBackground(Colors.Ripple)
           onClick { store.tryDispatch(OnBackButtonClicked) }
         }
         TextView(WrapContent, WrapContent, style = BoldTextView) {
@@ -80,22 +71,12 @@ class CreatingEntryScreen : BaseFragmentScreen() {
           textSize(TextSizes.H1)
         }
       }
-      ImageView(ImageServiceNameSize, ImageServiceNameSize) {
-        id(ImageId)
-        scaleType = FIT_XY
-        constraints {
-          startToStartOf(parent)
-          endToEndOf(parent)
-          topToBottomOf(ToolbarId)
-          bottomToTopOf(EditTextLayoutsId)
-        }
-      }
       VerticalLayout(MatchParent, WrapContent) {
         id(EditTextLayoutsId)
         constraints {
-          centeredWithin(parent)
+          topToTopOf(parent)
         }
-        margins(top = ImageServiceNameSize * 2)
+        margins(top = GradientDrawableHeight)
         TextView(WrapContent, WrapContent, style = AccentTextView) {
           id(TextWebsiteName)
           margins(start = MarginNormal)
@@ -124,8 +105,6 @@ class CreatingEntryScreen : BaseFragmentScreen() {
         id(ButtonContinue)
         margins(start = MarginNormal, end = MarginNormal, bottom = MarginNormal)
         constraints {
-          startToStartOf(parent)
-          endToEndOf(parent)
           bottomToBottomOf(parent)
         }
         text(R.string.text_continue)
@@ -148,7 +127,6 @@ class CreatingEntryScreen : BaseFragmentScreen() {
   }
   
   private fun render(state: CreatingEntryState) {
-    imageView(ImageId).setWebsiteIcon(state.websiteName)
     if (state.websiteNameEmpty) {
       showAccentTextViewError(TextWebsiteName, R.string.text_website_name_cant_be_empty)
     } else {
@@ -169,13 +147,6 @@ class CreatingEntryScreen : BaseFragmentScreen() {
   }
   
   private fun showOrHideViewsBasedOnLayout() {
-    val imageView = imageView(ImageId)
-    val spaceForImage = abs(view(TextWebsiteName).top - view(ToolbarId).bottom)
-    if (spaceForImage < imageView.height) {
-      imageView.invisible()
-    } else {
-      imageView.visible()
-    }
     val continueButton = view(ButtonContinue)
     val marginBetweenButtonAndText = continueButton.top - view(EditTextLayoutsId).bottom
     if (marginBetweenButtonAndText < continueButton.height) {
@@ -209,7 +180,6 @@ class CreatingEntryScreen : BaseFragmentScreen() {
     
     val ToolbarId = View.generateViewId()
     val EditTextLayoutsId = View.generateViewId()
-    val ImageId = View.generateViewId()
     val TextWebsiteName = View.generateViewId()
     val TextLogin = View.generateViewId()
     val ButtonContinue = View.generateViewId()

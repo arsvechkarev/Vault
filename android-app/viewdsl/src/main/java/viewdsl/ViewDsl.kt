@@ -5,7 +5,11 @@ import android.graphics.drawable.GradientDrawable
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup.MarginLayoutParams
-import android.widget.*
+import android.widget.EditText
+import android.widget.FrameLayout
+import android.widget.ImageView
+import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.annotation.ColorInt
 import androidx.annotation.DrawableRes
 import androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -224,15 +228,17 @@ inline fun View.onLayoutChanged(crossinline block: () -> Unit) {
   addOnLayoutChangeListener { _, _, _, _, _, _, _, _, _ -> block() }
 }
 
-@Suppress("UNCHECKED_CAST")
 inline fun <reified T : View> View.viewAs(tag: Any = T::class.java.name): T {
+  if (tag is Int) {
+    return findViewById(tag)
+  }
   return findViewWithTag(tag)
 }
 
-fun View.view(tag: Any): View = findViewWithTag(tag)
+fun View.view(tag: Any): View = viewAs(tag)
 
-fun View.textView(tag: Any): TextView = findViewWithTag(tag)
+fun View.textView(tag: Any): TextView = viewAs(tag)
 
-fun View.editText(tag: Any): EditText = findViewWithTag(tag)
+fun View.editText(tag: Any): EditText = viewAs(tag)
 
-fun View.imageView(tag: Any): ImageView = findViewWithTag(tag)
+fun View.imageView(tag: Any): ImageView = viewAs(tag)

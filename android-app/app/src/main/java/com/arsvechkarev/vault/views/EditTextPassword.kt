@@ -15,6 +15,7 @@ import com.arsvechkarev.vault.viewbuilding.Fonts
 import com.arsvechkarev.vault.viewbuilding.TextSizes
 import viewdsl.Size.Companion.MatchParent
 import viewdsl.Size.Companion.WrapContent
+import viewdsl.clearText
 import viewdsl.font
 import viewdsl.image
 import viewdsl.layoutGravity
@@ -28,7 +29,7 @@ import viewdsl.withViewBuilder
 
 class EditTextPassword(context: Context) : FrameLayout(context) {
   
-  private val editText get() = getChildAt(0) as EditText
+  val editText get() = getChildAt(0) as EditText
   
   private var isPasswordHidden = true
   
@@ -78,6 +79,11 @@ class EditTextPassword(context: Context) : FrameLayout(context) {
   fun requestEditTextFocus() = editText.requestFocus()
   
   fun text(text: String) = editText.setText(text)
+  
+  fun clear() {
+    editText.clearFocus()
+    editText.clearText()
+  }
   
   fun text(textResId: Int) = editText.setText(textResId)
   

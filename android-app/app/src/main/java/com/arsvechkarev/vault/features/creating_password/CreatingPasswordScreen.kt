@@ -250,11 +250,11 @@ class CreatingPasswordScreen : BaseFragmentScreen() {
   
   private fun showPasswordAcceptingDialog() {
     requireContext().hideKeyboard()
-    infoDialog.onHide = { store.tryDispatch(OnDeclinePasswordSavingClicked) }
     infoDialog.showWithOkOption(
       R.string.text_saving_password,
       R.string.text_do_you_want_to_save_password,
       R.string.text_yes,
+      onCancel = { store.tryDispatch(OnDeclinePasswordSavingClicked) },
       onOkClicked = { store.tryDispatch(OnConfirmPasswordSavingClicked) }
     )
   }

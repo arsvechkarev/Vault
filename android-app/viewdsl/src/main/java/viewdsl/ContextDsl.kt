@@ -45,7 +45,7 @@ val Context.statusBarHeight: Int
 fun Context.showKeyboard(editText: EditText? = null) {
   val inputMethodManager =
       getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager?
-  val view = editText ?: View(this)
+  val view = editText ?: (this as Activity).window.decorView
   inputMethodManager!!.showSoftInput(view, 0)
 }
 

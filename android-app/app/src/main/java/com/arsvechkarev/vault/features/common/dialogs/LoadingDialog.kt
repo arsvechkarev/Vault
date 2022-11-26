@@ -15,17 +15,14 @@ const val DialogProgressBar = "DialogProgressBar"
 
 val BaseFragmentScreen.loadingDialog get() = viewAs<SimpleDialog>(DialogProgressBar)
 
-fun ViewGroup.LoadingDialog() = withViewBuilder {
+fun ViewGroup.LoadingDialog(block: SimpleDialog.() -> Unit = {}) = withViewBuilder {
   addView {
     SimpleDialog(context).apply {
       isCancellable = false
       size(MatchParent, MatchParent)
       tag(DialogProgressBar)
-      addView {
-        MaterialProgressBar(context).apply {
-          size(ProgressBarSizeBig, ProgressBarSizeBig)
-        }
-      }
+      child<MaterialProgressBar>(ProgressBarSizeBig, ProgressBarSizeBig)
+      apply(block)
     }
   }
 }

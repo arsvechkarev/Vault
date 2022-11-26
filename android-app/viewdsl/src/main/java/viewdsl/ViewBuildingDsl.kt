@@ -102,35 +102,35 @@ class ViewBuilder(val context: Context) {
       .apply(block)
   
   inline fun <reified T : View> FrameLayout.child(
-    width: Size, height: Size, style: T.() -> Unit = {}, block: T.() -> Unit,
+    width: Size, height: Size, style: T.() -> Unit = {}, block: T.() -> Unit = {},
   ) = child<T, FrameLayoutParams>(width, height, style, block)
   
   inline fun <reified T : View> FrameLayout.child(
-    width: Int, height: Int, style: T.() -> Unit = {}, block: T.() -> Unit
+    width: Int, height: Int, style: T.() -> Unit = {}, block: T.() -> Unit = {}
   ) = child<T, FrameLayoutParams>(IntSize(width), IntSize(height), style, block)
   
   inline fun <reified T : View> LinearLayout.child(
-    width: Size, height: Size, style: T.() -> Unit = {}, block: T.() -> Unit
+    width: Size, height: Size, style: T.() -> Unit = {}, block: T.() -> Unit = {}
   ) = child<T, LinearLayoutParams>(width, height, style, block)
   
   inline fun <reified T : View> LinearLayout.child(
-    width: Int, height: Int, style: T.() -> Unit = {}, block: T.() -> Unit
+    width: Int, height: Int, style: T.() -> Unit = {}, block: T.() -> Unit = {}
   ) = child<T, LinearLayoutParams>(IntSize(width), IntSize(height), style, block)
   
   inline fun <reified T : View> CoordinatorLayout.child(
-    width: Size, height: Size, style: T.() -> Unit = {}, block: T.() -> Unit,
+    width: Size, height: Size, style: T.() -> Unit = {}, block: T.() -> Unit = {},
   ) = child<T, CoordLayoutParams>(width, height, style, block)
   
   inline fun <reified T : View> CoordinatorLayout.child(
-    width: Int, height: Int, style: T.() -> Unit = {}, block: T.() -> Unit,
+    width: Int, height: Int, style: T.() -> Unit = {}, block: T.() -> Unit = {},
   ) = child<T, CoordLayoutParams>(IntSize(width), IntSize(height), style, block)
   
   inline fun <reified T : View> ConstraintLayout.child(
-    width: Size, height: Size, style: T.() -> Unit = {}, block: T.() -> Unit,
+    width: Size, height: Size, style: T.() -> Unit = {}, block: T.() -> Unit = {},
   ) = child<T, ConstraintLayoutParams>(width, height, style, block)
   
   inline fun <reified T : View> ConstraintLayout.child(
-    width: Int, height: Int, style: T.() -> Unit = {}, block: T.() -> Unit,
+    width: Int, height: Int, style: T.() -> Unit = {}, block: T.() -> Unit = {},
   ) = child<T, ConstraintLayoutParams>(IntSize(width), IntSize(height), style, block)
   
   fun ViewGroup.View(

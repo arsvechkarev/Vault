@@ -5,6 +5,7 @@ import buisnesslogic.PasswordsStorage
 import com.arsvechkarev.vault.core.model.PasswordInfoItem
 import com.arsvechkarev.vault.core.model.toInfoItemsList
 import com.arsvechkarev.vault.core.model.toPasswordInfo
+import com.arsvechkarev.vault.core.model.toPasswordInfoList
 import java.util.Locale
 
 class CachedPasswordsStorage(
@@ -20,6 +21,11 @@ class CachedPasswordsStorage(
       sortList()
     }
     return ArrayList(passwords)
+  }
+  
+  suspend fun savePasswords(masterPassword: String, passwords: List<PasswordInfoItem>) {
+    this.passwords = passwords.toMutableList()
+    storage.savePasswords(masterPassword, passwords.toPasswordInfoList())
   }
   
   suspend fun savePassword(

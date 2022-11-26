@@ -53,6 +53,11 @@ object Styles : DefaultStyles {
     ellipsize = TextUtils.TruncateAt.END
   }
   
+  val SecondaryTextView: TextView.() -> Unit = {
+    apply(BaseTextView)
+    textColor(Colors.TextSecondary)
+  }
+  
   val BoldTextView: TextView.() -> Unit = {
     apply(BaseTextView)
     font(Fonts.SegoeUiBold)

@@ -19,6 +19,7 @@
   <string name="text_password_is_incorrect">Password is incorrect</string>
   <string name="text_password_is_too_weak">Password is too weak</string>
   <string name="text_passwords_dont_match">Passwords don\'t match</string>
+  <string name="text_password_is_the_same_as_current">Entered password is the same as current</string>
   <string name="text_repeat_password">Repeat password</string>
   <string name="hint_password">Password</string>
   <string name="hint_enter_password">Enter password</string>
@@ -30,18 +31,6 @@
   <string name="text_website_name_cant_be_empty">Website name cannot be empty</string>
   <string name="text_login_cant_be_empty">Login cannot be empty</string>
   <string name="text_new_password">New password</string>
-  <string name="text_do_you_want_to_save_password_locally">Do you want to save password locally?</string>
-  <string name="text_save_password_or_not">
-    You can either save master password locally, which is less safe, because everybody who has access to
-    your phone can open the app, or you can enter the password every time you open the app, which is safer,
-    but less convenient. You can change your option later in settings
-  </string>
-  <string name="text_do_not_save_password">No, I will enter password every time I open the app, although it is
-    less convenient
-  </string>
-  <string name="text_save_password_locally">Yes, I want password to be saved locally, although it is less
-    safe
-  </string>
   <string name="text_enter_master_password">Enter master password</string>
   <string name="text_enter_service_name">Enter service name</string>
   <string name="text_service_name_cannot_be_empty">Service name cannot be empty</string>
@@ -68,6 +57,17 @@
   <string name="text_yes">YES</string>
   <string name="text_oops">Oops</string>
   <string name="text_saving_password">Saving password</string>
+  <string name="text_change_master_password">Change master password</string>
+  <string name="text_change_master_password_description">
+    Change the master password you use to open the app
+  </string>
+  <string name="text_confirmation">Confirmation</string>
+  <string name="text_proceed">PROCEED</string>
+  <string name="text_confirmation_message">Are you sure you want to change master password? This action cannot
+    be undone and old password will not work anymore
+  </string>
+  <string name="text_done">Done!</string>
+  <string name="text_master_password_changed">Master password successfully changed</string>
   <string name="text_exit">Exit</string>
   <string name="text_do_you_want_to_leave">Do you want to leave without saving anything?</string>
   <string name="text_do_you_want_to_save_password">Do you want to accept the password?</string>
@@ -97,6 +97,7 @@
   <string name="text_password_examples">Examples of good passwords:</string>
   <string name="text_welcome_to_vault">Vault</string>
   <string name="text_welcome_description">Simple, secure and fast password manager</string>
+  <string name="text_change">Change</string>
   <string name="clipboard_label_website">website</string>
   <string name="clipboard_label_login">login</string>
   <string name="clipboard_label_password">password</string>

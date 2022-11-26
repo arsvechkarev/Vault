@@ -27,19 +27,20 @@ import com.arsvechkarev.vault.viewbuilding.Styles.ImageCross
 import com.arsvechkarev.vault.viewbuilding.TextSizes
 import com.arsvechkarev.vault.views.EditTextPassword
 import com.arsvechkarev.vault.views.MaterialProgressBar
+import com.arsvechkarev.vault.views.MaterialProgressBar.Thickness
 import com.arsvechkarev.vault.views.behaviors.BottomSheetBehavior
 import com.arsvechkarev.vault.views.behaviors.BottomSheetBehavior.Companion.asBottomSheet
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import navigation.BaseFragmentScreen
 import viewdsl.Size.Companion.MatchParent
 import viewdsl.Size.Companion.WrapContent
 import viewdsl.ViewBuilder
-import viewdsl.addView
 import viewdsl.backgroundRoundTopRect
 import viewdsl.behavior
 import viewdsl.classNameTag
 import viewdsl.clearText
-import viewdsl.gravity
+import viewdsl.hideKeyboard
 import viewdsl.invisible
 import viewdsl.isVisible
 import viewdsl.layoutGravity
@@ -47,7 +48,7 @@ import viewdsl.margins
 import viewdsl.onClick
 import viewdsl.padding
 import viewdsl.parentView
-import viewdsl.size
+import viewdsl.showKeyboard
 import viewdsl.tag
 import viewdsl.text
 import viewdsl.textColor
@@ -67,7 +68,7 @@ class CheckMasterPasswordDialog(context: Context) : FrameLayout(context) {
         tag(BottomSheetLayout)
         padding(MarginNormal)
         layoutGravity(BOTTOM)
-        FrameLayout(MatchParent, MatchParent) {
+        child<FrameLayout>(MatchParent, MatchParent) {
           TextView(WrapContent, WrapContent, style = BoldTextView) {
             text(R.string.text_enter_master_password)
             textSize(TextSizes.H1)
@@ -91,27 +92,27 @@ class CheckMasterPasswordDialog(context: Context) : FrameLayout(context) {
           margins(start = MarginTiny, top = MarginSmall)
         }
         FrameLayout(MatchParent, WrapContent) {
-          gravity(CENTER)
+          margins(top = MarginExtraLarge)
           TextView(MatchParent, WrapContent, style = Button()) {
             tag(ButtonCheck)
-            margins(top = MarginExtraLarge)
             text(R.string.text_check)
             onClick {
               val editTextPassword = parentView.parentView.viewAs<EditTextPassword>()
               checkMasterPassword(editTextPassword.getText())
             }
           }
-          addView {
-            MaterialProgressBar(context, color = Colors.TextPrimary).apply {
-              size(ProgressBarSizeSmall, ProgressBarSizeSmall)
-              classNameTag()
-              invisible()
-            }
+          child<MaterialProgressBar>(ProgressBarSizeSmall, ProgressBarSizeSmall) {
+            layoutGravity(CENTER)
+            classNameTag()
+            invisible()
+            setup(Colors.TextPrimary, Thickness.THICK)
           }
         }
       }
     }
   }
+  
+  val isDialogShown get() = asBottomSheet.isShown
   
   fun show() {
     asBottomSheet.show()
@@ -127,6 +128,7 @@ class CheckMasterPasswordDialog(context: Context) : FrameLayout(context) {
       val passwordChecker = appComponent.masterPasswordChecker
       viewAs<MaterialProgressBar>().isVisible = true
       textView(ButtonCheck).clearText()
+      delay(500)
       if (passwordChecker.isCorrect(password)) {
         onCheckSuccessful()
       } else {
@@ -144,11 +146,11 @@ class CheckMasterPasswordDialog(context: Context) : FrameLayout(context) {
     private val TextError = View.generateViewId()
     private val ButtonCheck = View.generateViewId()
   
-    val BaseFragmentScreen.checkMasterPasswordDialog get() = viewAs<PasswordStrengthDialog>()
+    val BaseFragmentScreen.checkMasterPasswordDialog get() = viewAs<CheckMasterPasswordDialog>()
   
     fun CoordinatorLayout.CheckMasterPasswordDialog(
-      onCheckSuccessful: () -> Unit,
-      onDialogClosed: () -> Unit,
+      onCheckSuccessful: () -> Unit = {},
+      onDialogClosed: () -> Unit = {},
       block: CheckMasterPasswordDialog.() -> Unit = {}
     ) = withViewBuilder {
       val shadowLayout = child<FrameLayout>(MatchParent, MatchParent) {
@@ -157,7 +159,15 @@ class CheckMasterPasswordDialog(context: Context) : FrameLayout(context) {
       child<CheckMasterPasswordDialog, ViewGroup.LayoutParams>(MatchParent, WrapContent, block) {
         classNameTag()
         behavior(BottomSheetBehavior().apply {
-          onHide = onDialogClosed
+          onShow = {
+            viewAs<EditTextPassword>().requestEditTextFocus()
+            context.showKeyboard(viewAs<EditTextPassword>().editText)
+          }
+          onHide = {
+            viewAs<EditTextPassword>().clear()
+            context.hideKeyboard()
+            onDialogClosed()
+          }
           onSlidePercentageChanged = { fraction ->
             val color = ColorUtils.blendARGB(Color.TRANSPARENT, Colors.Shadow, fraction)
             shadowLayout.setBackgroundColor(color)

@@ -335,11 +335,11 @@ class InfoScreen : BaseFragmentScreen() {
   
   
   private fun showInfoDialog(state: InfoScreenState) {
-    infoDialog.onHide = { store.tryDispatch(InfoScreenUiEvent.OnDialogHidden) }
-    infoDialog.showWithDeleteAndCancelOption(
-      R.string.text_deleting_password,
-      getDeleteMessageText(state.websiteNameState.initialText),
-      onDeleteClicked = { store.tryDispatch(OnConfirmedDeletion) }
+    infoDialog.showWithCancelAndProceedOption(
+      titleRes = R.string.text_deleting_password,
+      messageRes = getDeleteMessageText(state.websiteNameState.initialText),
+      onCancel = { store.tryDispatch(InfoScreenUiEvent.OnDialogHidden) },
+      onProceed = { store.tryDispatch(OnConfirmedDeletion) }
     )
   }
   

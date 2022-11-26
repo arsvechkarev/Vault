@@ -5,16 +5,24 @@ import android.view.Gravity
 import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.arsvechkarev.vault.R
-import com.arsvechkarev.vault.features.common.dialogs.CheckMasterPasswordDialog
+import com.arsvechkarev.vault.core.Screens.ChangeMasterPasswordScreen
+import com.arsvechkarev.vault.core.di.appComponent
 import com.arsvechkarev.vault.features.common.dialogs.CheckMasterPasswordDialog.Companion.CheckMasterPasswordDialog
+import com.arsvechkarev.vault.features.common.dialogs.CheckMasterPasswordDialog.Companion.checkMasterPasswordDialog
+import com.arsvechkarev.vault.viewbuilding.Colors
+import com.arsvechkarev.vault.viewbuilding.Dimens.DividerHeight
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginNormal
-import com.arsvechkarev.vault.viewbuilding.Styles
+import com.arsvechkarev.vault.viewbuilding.Dimens.MarginSmall
+import com.arsvechkarev.vault.viewbuilding.Styles.AccentTextView
+import com.arsvechkarev.vault.viewbuilding.Styles.BoldTextView
 import com.arsvechkarev.vault.viewbuilding.Styles.ImageBack
+import com.arsvechkarev.vault.viewbuilding.Styles.SecondaryTextView
 import com.arsvechkarev.vault.viewbuilding.TextSizes
-import com.arsvechkarev.vault.views.behaviors.BottomSheetBehavior.Companion.asBottomSheet
 import navigation.BaseFragmentScreen
 import viewdsl.Size.Companion.MatchParent
 import viewdsl.Size.Companion.WrapContent
+import viewdsl.Size.IntSize
+import viewdsl.backgroundColor
 import viewdsl.constraints
 import viewdsl.gravity
 import viewdsl.id
@@ -22,6 +30,9 @@ import viewdsl.layoutGravity
 import viewdsl.margin
 import viewdsl.margins
 import viewdsl.onClick
+import viewdsl.padding
+import viewdsl.retrieveDrawable
+import viewdsl.rippleBackground
 import viewdsl.text
 import viewdsl.textSize
 import viewdsl.withViewBuilder
@@ -32,7 +43,7 @@ class SettingsScreen : BaseFragmentScreen() {
     RootCoordinatorLayout {
       child<ConstraintLayout>(MatchParent, WrapContent) {
         HorizontalLayout(MatchParent, WrapContent) {
-          id(ToolbarId)
+          id(Toolbar)
           margins(top = StatusBarHeight)
           constraints {
             topToTopOf(parent)
@@ -40,25 +51,69 @@ class SettingsScreen : BaseFragmentScreen() {
           ImageView(WrapContent, WrapContent, style = ImageBack) {
             margin(MarginNormal)
             gravity(Gravity.CENTER_VERTICAL)
-            onClick { viewAs<CheckMasterPasswordDialog>().asBottomSheet.show() }
-            //            onClick { store.tryDispatch(CreatingEntryUiEvent.OnBackButtonClicked) }
+            onClick { handleBackPress() }
           }
-          TextView(WrapContent, WrapContent, style = Styles.BoldTextView) {
+          TextView(WrapContent, WrapContent, style = BoldTextView) {
             layoutGravity(Gravity.CENTER)
             text(R.string.text_settings)
             textSize(TextSizes.H1)
           }
         }
+        View(MatchParent, IntSize(DividerHeight)) {
+          id(FirstDivider)
+          val drawable = context.retrieveDrawable(R.drawable.bg_gradient)
+          val gradientHeight = drawable.intrinsicHeight / 1.5
+          margins(top = gradientHeight.toInt())
+          backgroundColor(Colors.Divider)
+          constraints {
+            topToTopOf(Toolbar)
+          }
+        }
+        VerticalLayout(MatchParent, WrapContent) {
+          id(ItemChangePassword)
+          padding(MarginNormal)
+          rippleBackground(Colors.Ripple)
+          onClick { checkMasterPasswordDialog.show() }
+          constraints {
+            topToBottomOf(FirstDivider)
+          }
+          TextView(WrapContent, WrapContent, style = AccentTextView) {
+            text(R.string.text_change_master_password)
+          }
+          TextView(WrapContent, WrapContent, style = SecondaryTextView) {
+            text(R.string.text_change_master_password_description)
+            textSize(TextSizes.H4)
+            margins(top = MarginSmall)
+          }
+        }
+        View(MatchParent, IntSize(DividerHeight)) {
+          id(SecondDivider)
+          backgroundColor(Colors.Divider)
+          constraints {
+            topToBottomOf(ItemChangePassword)
+          }
+        }
       }
       CheckMasterPasswordDialog(
-        onCheckSuccessful = { println("checkSuccessfulll") },
-        onDialogClosed = { println("dialogClosed") }
+        onCheckSuccessful = { appComponent.router.goForward(ChangeMasterPasswordScreen) },
       )
     }
   }
   
-  private companion object {
+  override fun handleBackPress(): Boolean {
+    if (checkMasterPasswordDialog.isDialogShown) {
+      checkMasterPasswordDialog.hide()
+    } else {
+      appComponent.router.goBack()
+    }
+    return true
+  }
   
-    val ToolbarId = View.generateViewId()
+  private companion object {
+    
+    val Toolbar = View.generateViewId()
+    val FirstDivider = View.generateViewId()
+    val ItemChangePassword = View.generateViewId()
+    val SecondDivider = View.generateViewId()
   }
 }

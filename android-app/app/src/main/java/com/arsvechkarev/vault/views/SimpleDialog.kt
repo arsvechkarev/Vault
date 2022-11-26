@@ -54,10 +54,6 @@ open class SimpleDialog(context: Context) : FrameLayout(context) {
     invisible()
   }
   
-  fun setShadowColor(color: Int) {
-    shadowColor = color
-  }
-  
   fun show() {
     if (isOpened) return
     isOpened = true

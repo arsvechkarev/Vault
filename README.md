@@ -17,9 +17,8 @@
 #### Technology stack:
 
 - Kotlin
-- MVP (Moxy)
 - Unit testing (junit)
-- Custom navigation
+- Custom cicerone-like navigation
 - Custom UI library
 
 #### Main features:

@@ -1,4 +1,4 @@
-package com.arsvechkarev.vault.features.common.check_master_password
+package com.arsvechkarev.vault.features.common.dialogs
 
 import android.content.Context
 import android.view.Gravity.CENTER
@@ -11,7 +11,6 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import com.arsvechkarev.vault.R
 import com.arsvechkarev.vault.core.di.AppComponentProvider
-import com.arsvechkarev.vault.features.common.dialogs.PasswordStrengthDialog
 import com.arsvechkarev.vault.viewbuilding.Colors
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginExtraLarge
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginNormal

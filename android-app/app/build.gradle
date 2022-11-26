@@ -60,14 +60,11 @@ dependencies {
   implementation appDependencies.coordinatorLayout
   implementation appDependencies.constraintLayout
   implementation appDependencies.recyclerView
-  implementation appDependencies.moxy
-  implementation appDependencies.moxyAndroidx
   implementation appDependencies.zxcvbn
   implementation appDependencies.androidSecurity
   implementation appDependencies.biometric
   implementation appDependencies.timber
   implementation appDependencies.lifecycleRuntime
-  kapt appDependencies.moxyCompiler
 
   def testDependencies = rootProject.ext.testDependencies
   testImplementation testDependencies.junit

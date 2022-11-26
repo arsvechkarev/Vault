@@ -1,7 +1,6 @@
 ext {
 
   coroutines_version = '1.6.3'
-  moxy_version = '2.2.0'
 
   applicationDependencies = [
       kotlin           : "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version",
@@ -11,9 +10,6 @@ ext {
       coordinatorLayout: "androidx.coordinatorlayout:coordinatorlayout:1.1.0",
       constraintLayout : "androidx.constraintlayout:constraintlayout:2.0.4",
       recyclerView     : "androidx.recyclerview:recyclerview:1.1.0",
-      moxy             : "com.github.moxy-community:moxy:$moxy_version",
-      moxyCompiler     : "com.github.moxy-community:moxy-compiler:$moxy_version",
-      moxyAndroidx     : "com.github.moxy-community:moxy-androidx:$moxy_version",
       zxcvbn           : "com.nulab-inc:zxcvbn:1.3.1",
       androidSecurity  : "androidx.security:security-crypto:1.1.0-alpha03",
       biometric        : "androidx.biometric:biometric:1.0.1",

@@ -1,8 +1,10 @@
 package com.arsvechkarev.vault.viewbuilding
 
 import com.arsvechkarev.vault.R
+import viewdsl.ViewBuilder
 import viewdsl.ViewDslConfiguration
 import viewdsl.dp
+import viewdsl.retrieveDrawable
 import viewdsl.screenHeight
 import viewdsl.screenWidth
 
@@ -41,6 +43,12 @@ object Dimens {
   val FingerprintIconSize get() = adjust(60.dp)
   val FabSize get() = adjust(60.dp)
   val HorizontalMarginPasswordsActionView get() = adjustHorizontal(24.dp)
+  
+  val ViewBuilder.GradientDrawableHeight: Int
+    get() {
+      val drawable = context.retrieveDrawable(R.drawable.bg_gradient)
+      return (drawable.intrinsicHeight / 1.4).toInt()
+    }
   
   private fun adjust(size: Int): Int {
     val type = ViewDslConfiguration.applicationContext.resources.getInteger(R.integer.screen_type)

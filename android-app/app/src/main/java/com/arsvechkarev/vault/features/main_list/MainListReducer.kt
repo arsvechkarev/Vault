@@ -2,6 +2,7 @@ package com.arsvechkarev.vault.features.main_list
 
 import com.arsvechkarev.vault.core.Router
 import com.arsvechkarev.vault.core.Screens.CreatingEntryScreen
+import com.arsvechkarev.vault.core.Screens.ExportPasswordsScreen
 import com.arsvechkarev.vault.core.Screens.InfoScreen
 import com.arsvechkarev.vault.core.Screens.SettingsScreen
 import com.arsvechkarev.vault.core.mvi.tea.DslReducer
@@ -47,7 +48,7 @@ class MainListReducer(
         state { copy(menuOpened = false) }
         when (event.itemType) {
           EXPORT_PASSWORDS -> {
-            TODO("Add export passwords screen")
+            router.goForwardWithDelay(ExportPasswordsScreen, DurationsConfigurator.MenuOpening)
           }
           IMPORT_PASSWORDS -> {
             TODO("Add import passwords screen")

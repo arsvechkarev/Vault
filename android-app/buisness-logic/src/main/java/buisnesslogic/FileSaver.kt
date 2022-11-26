@@ -18,6 +18,11 @@ interface FileSaver {
   suspend fun readData(): ByteArray?
   
   /**
+   * Returns uri of the file. Throws [IllegalStateException] if file does not exist
+   */
+  suspend fun getFileUri(): String
+  
+  /**
    * Deletes file. If file is already deleted, does nothing
    */
   suspend fun delete()

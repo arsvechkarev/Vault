@@ -11,6 +11,7 @@ import com.arsvechkarev.vault.features.common.dialogs.CheckMasterPasswordDialog.
 import com.arsvechkarev.vault.features.common.dialogs.CheckMasterPasswordDialog.Companion.checkMasterPasswordDialog
 import com.arsvechkarev.vault.viewbuilding.Colors
 import com.arsvechkarev.vault.viewbuilding.Dimens.DividerHeight
+import com.arsvechkarev.vault.viewbuilding.Dimens.GradientDrawableHeight
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginNormal
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginSmall
 import com.arsvechkarev.vault.viewbuilding.Styles.AccentTextView
@@ -31,7 +32,6 @@ import viewdsl.margin
 import viewdsl.margins
 import viewdsl.onClick
 import viewdsl.padding
-import viewdsl.retrieveDrawable
 import viewdsl.rippleBackground
 import viewdsl.text
 import viewdsl.textSize
@@ -61,9 +61,7 @@ class SettingsScreen : BaseFragmentScreen() {
         }
         View(MatchParent, IntSize(DividerHeight)) {
           id(FirstDivider)
-          val drawable = context.retrieveDrawable(R.drawable.bg_gradient)
-          val gradientHeight = drawable.intrinsicHeight / 1.5
-          margins(top = gradientHeight.toInt())
+          margins(top = GradientDrawableHeight)
           backgroundColor(Colors.Divider)
           constraints {
             topToTopOf(Toolbar)

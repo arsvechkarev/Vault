@@ -18,6 +18,8 @@ import com.arsvechkarev.vault.core.di.AppComponentProvider
 import com.arsvechkarev.vault.viewbuilding.Colors
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginExtraLarge
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginNormal
+import com.arsvechkarev.vault.viewbuilding.Dimens.MarginSmall
+import com.arsvechkarev.vault.viewbuilding.Dimens.MarginTiny
 import com.arsvechkarev.vault.viewbuilding.Dimens.ProgressBarSizeSmall
 import com.arsvechkarev.vault.viewbuilding.Styles.BoldTextView
 import com.arsvechkarev.vault.viewbuilding.Styles.Button
@@ -32,6 +34,7 @@ import navigation.BaseFragmentScreen
 import viewdsl.Size.Companion.MatchParent
 import viewdsl.Size.Companion.WrapContent
 import viewdsl.ViewBuilder
+import viewdsl.addView
 import viewdsl.backgroundRoundTopRect
 import viewdsl.behavior
 import viewdsl.classNameTag
@@ -43,6 +46,7 @@ import viewdsl.layoutGravity
 import viewdsl.margins
 import viewdsl.onClick
 import viewdsl.padding
+import viewdsl.parentView
 import viewdsl.size
 import viewdsl.tag
 import viewdsl.text
@@ -75,16 +79,16 @@ class CheckMasterPasswordDialog(context: Context) : FrameLayout(context) {
           }
         }
         child<EditTextPassword>(MatchParent, WrapContent) {
-          margins(top = MarginExtraLarge)
+          margins(top = MarginExtraLarge + MarginNormal)
           classNameTag()
           setHint(R.string.hint_enter_password)
-          onTextChanged { textView(TextError).clearText() }
+          onTextChanged { parentView.textView(TextError).clearText() }
           onSubmit { password -> checkMasterPassword(password) }
         }
-        TextView(WrapContent, WrapContent) {
+        TextView(MatchParent, WrapContent) {
           tag(TextError)
           textColor(Colors.Error)
-          margins(top = MarginNormal)
+          margins(start = MarginTiny, top = MarginSmall)
         }
         FrameLayout(MatchParent, WrapContent) {
           gravity(CENTER)
@@ -92,12 +96,17 @@ class CheckMasterPasswordDialog(context: Context) : FrameLayout(context) {
             tag(ButtonCheck)
             margins(top = MarginExtraLarge)
             text(R.string.text_check)
-            onClick { checkMasterPassword(viewAs<EditTextPassword>().getText()) }
+            onClick {
+              val editTextPassword = parentView.parentView.viewAs<EditTextPassword>()
+              checkMasterPassword(editTextPassword.getText())
+            }
           }
-          MaterialProgressBar(context).apply {
-            size(ProgressBarSizeSmall, ProgressBarSizeSmall)
-            classNameTag()
-            invisible()
+          addView {
+            MaterialProgressBar(context, color = Colors.TextPrimary).apply {
+              size(ProgressBarSizeSmall, ProgressBarSizeSmall)
+              classNameTag()
+              invisible()
+            }
           }
         }
       }

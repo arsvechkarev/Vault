@@ -14,45 +14,45 @@ import viewdsl.startIfNotRunning
 import viewdsl.stopIfRunning
 
 class MaterialProgressBar(
-    context: Context,
-    color: Int = Colors.Accent,
-    thickness: Thickness = NORMAL,
+  context: Context,
+  color: Int = Colors.Accent,
+  thickness: Thickness = NORMAL,
 ) : View(context) {
-
-    private val drawable get() = background as AnimatedVectorDrawable
-
-    init {
-        background = when (thickness) {
-            NORMAL -> context.retrieveDrawable(R.drawable.progress_anim_normal)
-            THICK -> context.retrieveDrawable(R.drawable.progress_anim_thick)
-        }.apply {
-            colorFilter = PorterDuffColorFilter(color, PorterDuff.Mode.SRC_ATOP)
-        }
+  
+  private val drawable get() = background as AnimatedVectorDrawable
+  
+  init {
+    background = when (thickness) {
+      NORMAL -> context.retrieveDrawable(R.drawable.progress_anim_normal)
+      THICK -> context.retrieveDrawable(R.drawable.progress_anim_thick)
+    }.apply {
+      colorFilter = PorterDuffColorFilter(color, PorterDuff.Mode.SRC_ATOP)
     }
-
-    override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
-        drawable.setBounds(0, 0, w, h)
+  }
+  
+  override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
+    drawable.setBounds(0, 0, w, h)
+  }
+  
+  override fun onVisibilityChanged(changedView: View, visibility: Int) {
+    if (visibility == VISIBLE) {
+      drawable.startIfNotRunning()
+    } else {
+      drawable.stopIfRunning()
     }
-
-    override fun onVisibilityChanged(changedView: View, visibility: Int) {
-        if (visibility == VISIBLE) {
-            drawable.startIfNotRunning()
-        } else {
-            drawable.stopIfRunning()
-        }
-    }
-
-    override fun onAttachedToWindow() {
-        super.onAttachedToWindow()
-        drawable.startIfNotRunning()
-    }
-
-    override fun onDetachedFromWindow() {
-        super.onDetachedFromWindow()
-        drawable.stopIfRunning()
-    }
-
-    enum class Thickness {
-        NORMAL, THICK
-    }
+  }
+  
+  override fun onAttachedToWindow() {
+    super.onAttachedToWindow()
+    drawable.startIfNotRunning()
+  }
+  
+  override fun onDetachedFromWindow() {
+    super.onDetachedFromWindow()
+    drawable.stopIfRunning()
+  }
+  
+  enum class Thickness {
+    NORMAL, THICK
+  }
 }

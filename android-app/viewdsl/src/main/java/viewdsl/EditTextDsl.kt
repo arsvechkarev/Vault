@@ -6,7 +6,7 @@ import android.text.TextWatcher
 import android.view.inputmethod.EditorInfo.IME_ACTION_DONE
 import android.widget.EditText
 
-interface BaseTextWatcher : TextWatcher {
+fun interface BaseTextWatcher : TextWatcher {
   
   override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) = Unit
   override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) = Unit
@@ -20,10 +20,8 @@ fun EditText.setMaxLength(max: Int) {
 }
 
 fun EditText.onTextChanged(block: (text: String) -> Unit) {
-  addTextChangedListener(object : BaseTextWatcher {
-    override fun onTextChange(text: String) {
-      block(text)
-    }
+  addTextChangedListener(BaseTextWatcher {
+    block(it)
   })
 }
 

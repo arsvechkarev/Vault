@@ -130,7 +130,7 @@ class InfoPresenter constructor(
   }
   
   fun onCopyClicked() {
-    clipboard.copyToClipboard(passwordInfoItem.notes)
+//    clipboard.copyToClipboard(passwordInfoItem.notes)
     viewState.showCopiedPassword()
   }
   

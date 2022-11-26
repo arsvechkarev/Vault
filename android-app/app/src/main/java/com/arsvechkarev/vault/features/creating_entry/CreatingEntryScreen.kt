@@ -11,7 +11,7 @@ import com.arsvechkarev.vault.R
 import com.arsvechkarev.vault.core.di.appComponent
 import com.arsvechkarev.vault.core.mvi.ext.subscribe
 import com.arsvechkarev.vault.core.mvi.ext.viewModelStore
-import com.arsvechkarev.vault.core.setServiceIcon
+import com.arsvechkarev.vault.core.setWebsiteIcon
 import com.arsvechkarev.vault.features.creating_entry.CreatingEntryUiEvent.OnBackButtonClicked
 import com.arsvechkarev.vault.features.creating_entry.CreatingEntryUiEvent.OnContinueClicked
 import com.arsvechkarev.vault.features.creating_entry.CreatingEntryUiEvent.OnLoginTextChanged
@@ -21,7 +21,6 @@ import com.arsvechkarev.vault.viewbuilding.Dimens.IconPadding
 import com.arsvechkarev.vault.viewbuilding.Dimens.ImageServiceNameSize
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginLarge
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginNormal
-import com.arsvechkarev.vault.viewbuilding.Dimens.MarginTiny
 import com.arsvechkarev.vault.viewbuilding.Styles.AccentTextView
 import com.arsvechkarev.vault.viewbuilding.Styles.BaseEditText
 import com.arsvechkarev.vault.viewbuilding.Styles.BoldTextView
@@ -105,8 +104,7 @@ class CreatingEntryScreen : BaseFragmentScreen() {
         EditText(MatchParent, WrapContent) {
           apply(BaseEditText(hint = R.string.hint_website_name))
           id(EditTextWebsiteName)
-          // TODO (8/14/2022): Figure out problem with EditText margins
-          margins(start = MarginNormal - MarginTiny, end = MarginNormal)
+          margins(start = MarginNormal, end = MarginNormal)
           onTextChanged { text -> store.tryDispatch(OnWebsiteNameTextChanged(text)) }
           onSubmit { editText(EditTextLogin).requestFocus() }
         }
@@ -117,7 +115,7 @@ class CreatingEntryScreen : BaseFragmentScreen() {
         }
         EditText(MatchParent, WrapContent, style = BaseEditText(hint = R.string.hint_login)) {
           id(EditTextLogin)
-          margins(start = MarginNormal - MarginTiny, end = MarginNormal)
+          margins(start = MarginNormal, end = MarginNormal)
           onTextChanged { text -> store.tryDispatch(OnLoginTextChanged(text)) }
           onSubmit { continueWithCreating() }
         }
@@ -150,7 +148,7 @@ class CreatingEntryScreen : BaseFragmentScreen() {
   }
   
   private fun render(state: CreatingEntryState) {
-    imageView(ImageId).setServiceIcon(state.websiteName)
+    imageView(ImageId).setWebsiteIcon(state.websiteName)
     if (state.websiteNameEmpty) {
       showAccentTextViewError(TextWebsiteName, R.string.text_website_name_cant_be_empty)
     } else {

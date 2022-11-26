@@ -6,7 +6,6 @@ import android.view.ViewGroup
 import com.arsvechkarev.vault.R
 import com.arsvechkarev.vault.viewbuilding.Colors.Dialog
 import com.arsvechkarev.vault.viewbuilding.Dimens.CornerRadiusDefault
-import com.arsvechkarev.vault.viewbuilding.Dimens.HorizontalMarginVerySmall
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginExtraLarge
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginLarge
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginNormal
@@ -39,6 +38,7 @@ class InfoDialog(context: Context) : SimpleDialog(context) {
     withViewBuilder {
       VerticalLayout(WrapContent, WrapContent) {
         layoutGravity(Gravity.CENTER)
+        minimumWidth = (context.resources.displayMetrics.widthPixels / 1.5).toInt()
         marginHorizontal(MarginExtraLarge)
         backgroundRoundRect(CornerRadiusDefault, Dialog)
         TextView(WrapContent, WrapContent, style = BoldTextView) {
@@ -56,7 +56,6 @@ class InfoDialog(context: Context) : SimpleDialog(context) {
           )
           TextView(WrapContent, WrapContent, style = ClickableTextView()) {
             tag(DialogInfoText1)
-            margins(end = HorizontalMarginVerySmall)
           }
           TextView(WrapContent, WrapContent, style = ClickableTextView()) {
             tag(DialogInfoText2)

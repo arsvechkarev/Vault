@@ -54,7 +54,7 @@ class EditableTextInfoViewGroup(context: Context) : ViewGroup(context) {
   
   var transferTextToEditTextWhenSwitching = true
   var allowSavingWhenEmpty = false
-  var onEditClickAllowed: () -> Boolean = { true }
+  var onEditAllowed: () -> Boolean = { true }
   var onSwitchToEditMode: () -> Unit = {}
   var onTextSaved: (String) -> Unit = {}
   
@@ -75,16 +75,16 @@ class EditableTextInfoViewGroup(context: Context) : ViewGroup(context) {
       }
       ImageView(WrapContent, WrapContent) {
         padding(IconPadding)
-        image(R.drawable.ic_edit)
+        image(R.drawable.ic_copy)
         circleRippleBackground(Colors.Ripple)
-        onClick { changeModeIfPossible() }
+        onClick { toggleMode() }
       }
       ImageView(WrapContent, WrapContent) {
         invisible()
         padding(IconPadding)
         image(R.drawable.ic_checmark)
         circleRippleBackground(Colors.Ripple)
-        onClick { changeModeIfPossible() }
+        onClick { toggleMode() }
       }
     }
   }
@@ -112,7 +112,7 @@ class EditableTextInfoViewGroup(context: Context) : ViewGroup(context) {
   
   private fun changeModeToEditing() {
     if (mode == EDITING) return
-    if (!onEditClickAllowed()) return
+    if (!onEditAllowed()) return
     mode = EDITING
     if (transferTextToEditTextWhenSwitching) {
       editText.text(textView.text)
@@ -175,7 +175,7 @@ class EditableTextInfoViewGroup(context: Context) : ViewGroup(context) {
     imageSave.layoutLeftTop(left, top)
   }
   
-  private fun changeModeIfPossible() {
+  private fun toggleMode() {
     if (mode == SHOWING) {
       changeModeToEditing()
     } else {

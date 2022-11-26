@@ -7,7 +7,7 @@ object Colors {
   
   val Transparent = Color.TRANSPARENT
   val Background = "17212B".color
-  val Surface = "383838".color
+  val Snackbar = "20475E".color
   val Dialog = "17212B".color
   val Icon = "FFFFFF".color
   val Ripple = "C6FFFFFF".color

@@ -17,6 +17,8 @@ import com.arsvechkarev.vault.features.creating_password.CreatingPasswordEvent.P
 import com.arsvechkarev.vault.features.creating_password.CreatingPasswordEvent.Setup
 import com.arsvechkarev.vault.features.creating_password.CreatingPasswordEvent.ShowLoadingDialog
 import com.arsvechkarev.vault.features.creating_password.CreatingPasswordNews.ShowGeneratedPassword
+import com.arsvechkarev.vault.features.creating_password.CreatingPasswordReceiveEvent.Setup.PasswordConfigurationMode.EditPassword
+import com.arsvechkarev.vault.features.creating_password.CreatingPasswordReceiveEvent.Setup.PasswordConfigurationMode.NewPassword
 import com.arsvechkarev.vault.features.creating_password.CreatingPasswordUiEvent.OnBackClicked
 import com.arsvechkarev.vault.features.creating_password.CreatingPasswordUiEvent.OnConfirmPasswordSavingClicked
 import com.arsvechkarev.vault.features.creating_password.CreatingPasswordUiEvent.OnDeclinePasswordSavingClicked
@@ -71,8 +73,20 @@ class CreatingPasswordReducer(
     when (event) {
       SetupCompleted -> {
         state { copy(setupCompleted = true) }
-        val characteristics = EnumSet.allOf(PasswordCharacteristic::class.java)
-        commands(GeneratePassword(state.passwordLength, characteristics))
+        when (val mode = state.mode) {
+          NewPassword -> {
+            val characteristics = EnumSet.allOf(PasswordCharacteristic::class.java)
+            commands(GeneratePassword(state.passwordLength, characteristics))
+          }
+          is EditPassword -> {
+            state { copy(password = mode.password) }
+            commands(
+              CheckPasswordStrength(mode.password),
+              ComputePasswordCharacteristics(mode.password),
+            )
+          }
+          else -> Unit
+        }
       }
       is OnPasswordChanged -> {
         state { copy(password = event.password) }
@@ -92,7 +106,9 @@ class CreatingPasswordReducer(
         commands(GeneratePassword(state.passwordLength, characteristics))
       }
       OnSavePasswordClicked -> {
-        state { copy(showConfirmationDialog = true) }
+        if (state.password.isNotBlank()) {
+          state { copy(showConfirmationDialog = true) }
+        }
       }
       OnDeclinePasswordSavingClicked -> {
         state { copy(showConfirmationDialog = false) }

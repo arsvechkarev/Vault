@@ -6,7 +6,6 @@ import android.text.style.RelativeSizeSpan
 import android.view.Gravity.CENTER
 import android.view.Gravity.CENTER_HORIZONTAL
 import android.view.View
-import android.widget.ImageView.ScaleType.CENTER_CROP
 import androidx.recyclerview.widget.RecyclerView
 import com.arsvechkarev.vault.R
 import com.arsvechkarev.vault.VaultApplication.Companion.AppMainCoroutineScope
@@ -25,7 +24,6 @@ import com.arsvechkarev.vault.features.main_list.MenuItemType.EXPORT_PASSWORDS
 import com.arsvechkarev.vault.features.main_list.MenuItemType.IMPORT_PASSWORDS
 import com.arsvechkarev.vault.features.main_list.MenuItemType.NEW_PASSWORD
 import com.arsvechkarev.vault.features.main_list.MenuItemType.SETTINGS
-import com.arsvechkarev.vault.viewbuilding.Colors
 import com.arsvechkarev.vault.viewbuilding.Dimens.ImageNoServicesSize
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginLarge
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginNormal
@@ -45,7 +43,6 @@ import viewdsl.Size.Companion.WrapContent
 import viewdsl.addView
 import viewdsl.animateInvisible
 import viewdsl.animateVisible
-import viewdsl.backgroundColor
 import viewdsl.classNameTag
 import viewdsl.getDrawableHeight
 import viewdsl.gravity
@@ -67,17 +64,12 @@ class MainListScreen : BaseFragmentScreen() {
   
   override fun buildLayout(context: Context) = context.withViewBuilder {
     RootFrameLayout {
-      backgroundColor(Colors.Background)
       RecyclerView(MatchParent, WrapContent) {
         classNameTag()
         val gradientHeight = context.getDrawableHeight(R.drawable.bg_gradient) * 0.8
         paddings(top = gradientHeight.toInt())
         clipToPadding = false
         setupWith(this@MainListScreen.adapter)
-      }
-      ImageView(MatchParent, WrapContent) {
-        image(R.drawable.bg_gradient)
-        scaleType = CENTER_CROP
       }
       TextView(WrapContent, WrapContent, style = TitleTextView) {
         margins(top = MarginNormal + StatusBarHeight)

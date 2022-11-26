@@ -5,7 +5,6 @@ import android.view.View
 import androidx.appcompat.widget.SwitchCompat
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.arsvechkarev.vault.R
-import com.arsvechkarev.vault.features.password_checking.PasswordCheckingDialog.Companion.PasswordCheckingDialog
 import com.arsvechkarev.vault.features.settings.SettingsScreenSingleEvents.ShowBiometricsAddedSuccessfully
 import com.arsvechkarev.vault.viewbuilding.Colors
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginNormal
@@ -89,10 +88,10 @@ class SettingsScreen : BaseFragmentScreen() {
           }
         }
       }
-      PasswordCheckingDialog {
-        id(PasswordCheckingDialogId)
-        //        onHide = { presenter.applyAction(HidePasswordCheckingDialog) }
-      }
+      //      PasswordCheckingDialog {
+      //        id(PasswordCheckingDialogId)
+      //        onHide = { presenter.applyAction(HidePasswordCheckingDialog) }
+      //      }
       child<Snackbar>(MatchParent, WrapContent) {
         id(SnackbarId)
         margin(MarginNormal)

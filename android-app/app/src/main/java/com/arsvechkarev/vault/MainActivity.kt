@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.view.View
 import android.view.View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
 import android.view.View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-import com.arsvechkarev.vault.core.BaseActivity
+import androidx.appcompat.app.AppCompatActivity
 import com.arsvechkarev.vault.core.Screens
 import com.arsvechkarev.vault.core.di.AppComponent
 import com.arsvechkarev.vault.core.di.AppComponentProvider
@@ -16,7 +16,7 @@ import viewdsl.id
 import viewdsl.size
 import viewdsl.withViewBuilder
 
-class MainActivity : BaseActivity(), AppComponentProvider {
+class MainActivity : AppCompatActivity(), AppComponentProvider {
   
   private val mainActivityLayout
     get() = withViewBuilder {

@@ -20,6 +20,7 @@ import viewdsl.ViewDslConfiguration.applicationContext
 import viewdsl.doOnEnd
 import viewdsl.getBehavior
 import kotlin.math.abs
+import kotlin.math.hypot
 
 class BottomSheetBehavior : CoordinatorLayout.Behavior<View>() {
   
@@ -27,7 +28,9 @@ class BottomSheetBehavior : CoordinatorLayout.Behavior<View>() {
       .scaledMaximumFlingVelocity
   private val touchSlop = ViewConfiguration.get(applicationContext).scaledTouchSlop
   private var isBeingDragged = false
-  private var latestY = -1
+  private var latestInsideY = -1
+  private var latestAnyX = 0f
+  private var latestAnyY = 0f
   private var velocityTracker: VelocityTracker? = null
   private var bottomSheetOffsetHelper: BottomSheetOffsetHelper? = null
   private var currentState = HIDDEN
@@ -86,7 +89,7 @@ class BottomSheetBehavior : CoordinatorLayout.Behavior<View>() {
         })
     }
     bottomSheetOffsetHelper!!.onViewLayout(parentHeight)
-    if (currentState == HIDDEN) {
+    if (currentState != SHOWN) {
       bottomSheet!!.top = parentHeight
     }
     return true
@@ -103,26 +106,30 @@ class BottomSheetBehavior : CoordinatorLayout.Behavior<View>() {
         isBeingDragged = false
         val x = event.x.toInt()
         val y = event.y.toInt()
+        latestAnyX = event.x
+        latestAnyY = event.y
         if (parent.isPointInChildBounds(child, x, y)) {
           activePointerId = event.getPointerId(0)
-          latestY = y
+          latestInsideY = y
           ensureVelocityTracker()
         }
       }
       ACTION_POINTER_DOWN -> {
         activePointerId = event.getPointerId(event.actionIndex)
-        latestY = event.getY(event.actionIndex).toInt()
+        latestInsideY = event.getY(event.actionIndex).toInt()
       }
       ACTION_MOVE -> {
+        latestAnyX = event.x
+        latestAnyY = event.y
         val pointerIndex = event.findPointerIndex(activePointerId)
         if (pointerIndex == -1) {
           return false
         }
         val y = event.getY(pointerIndex).toInt()
-        val yDiff = abs(y - latestY)
+        val yDiff = abs(y - latestInsideY)
         if (yDiff > touchSlop) {
           isBeingDragged = true
-          latestY = y
+          latestInsideY = y
         }
       }
       ACTION_POINTER_UP -> {
@@ -142,23 +149,27 @@ class BottomSheetBehavior : CoordinatorLayout.Behavior<View>() {
       ACTION_DOWN -> {
         val x = event.x.toInt()
         val y = event.y.toInt()
+        latestAnyX = event.x
+        latestAnyY = event.y
         if (parent.isPointInChildBounds(child, x, y)) {
-          latestY = y
+          latestInsideY = y
           activePointerId = event.getPointerId(0)
           ensureVelocityTracker()
         }
       }
       ACTION_POINTER_DOWN -> {
         activePointerId = event.getPointerId(event.actionIndex)
-        latestY = event.getY(event.actionIndex).toInt()
+        latestInsideY = event.getY(event.actionIndex).toInt()
       }
       ACTION_MOVE -> {
+        latestAnyX = event.x
+        latestAnyY = event.y
         val pointerIndex = event.findPointerIndex(activePointerId)
         if (pointerIndex == -1) {
           return true
         }
         val y = event.getY(pointerIndex).toInt()
-        var dy = y - latestY
+        var dy = y - latestInsideY
         if (!isBeingDragged && abs(dy) > touchSlop) {
           isBeingDragged = true
           if (dy > 0) {
@@ -168,7 +179,7 @@ class BottomSheetBehavior : CoordinatorLayout.Behavior<View>() {
           }
         }
         if (isBeingDragged) {
-          latestY = y
+          latestInsideY = y
           // We're being dragged so scroll the view
           updateDyOffset(dy)
         }
@@ -177,7 +188,7 @@ class BottomSheetBehavior : CoordinatorLayout.Behavior<View>() {
         onPointerUp(event)
       }
       ACTION_UP -> {
-        handleUpEvent(event)
+        handleUpEvent(parent, child, event)
       }
       ACTION_CANCEL -> {
         endTouch()
@@ -192,11 +203,14 @@ class BottomSheetBehavior : CoordinatorLayout.Behavior<View>() {
     if (event.getPointerId(actionIndex) == activePointerId) {
       val newIndex = if (actionIndex == 0) 1 else 0
       activePointerId = event.getPointerId(newIndex)
-      latestY = event.getY(newIndex).toInt()
+      latestInsideY = event.getY(newIndex).toInt()
     }
   }
   
-  private fun handleUpEvent(event: MotionEvent) {
+  private fun handleUpEvent(parent: CoordinatorLayout, child: View, event: MotionEvent) {
+    if (handleOutsideEvent(parent, child, event)) {
+      return
+    }
     velocityTracker?.addMovement(event)
     velocityTracker?.computeCurrentVelocity(1000)
     val yVelocity = velocityTracker?.getYVelocity(activePointerId) ?: 0f
@@ -225,6 +239,22 @@ class BottomSheetBehavior : CoordinatorLayout.Behavior<View>() {
     endTouch()
   }
   
+  private fun handleOutsideEvent(
+    parent: CoordinatorLayout,
+    child: View,
+    event: MotionEvent
+  ): Boolean {
+    val dx = abs(event.x - latestAnyX)
+    val dy = abs(event.y - latestAnyY)
+    val scaledTouchSlop = ViewConfiguration.get(applicationContext).scaledTouchSlop
+    val outsideOfBottomSheet = !parent.isPointInChildBounds(child, event.x.toInt(), event.y.toInt())
+    if (hypot(dx, dy) < scaledTouchSlop && outsideOfBottomSheet) {
+      hide()
+      return true
+    }
+    return false
+  }
+  
   private fun updateDyOffset(dy: Int) {
     bottomSheetOffsetHelper!!.updateDyOffset(dy)
   }
@@ -248,9 +278,9 @@ class BottomSheetBehavior : CoordinatorLayout.Behavior<View>() {
   
   companion object {
   
-    private const val DURATION_SLIDE = 5000L
+    private const val DURATION_SLIDE = 225L
     private const val FLING_VELOCITY_THRESHOLD = 0.18f
-    
+  
     val View.asBottomSheet get() = getBehavior<BottomSheetBehavior>()
   }
 }

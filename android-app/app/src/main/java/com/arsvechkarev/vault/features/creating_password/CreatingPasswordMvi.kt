@@ -9,8 +9,6 @@ import java.util.EnumSet
 sealed interface CreatingPasswordEvent {
   class GeneratedPassword(val password: String) : CreatingPasswordEvent
   class Setup(val mode: PasswordConfigurationMode) : CreatingPasswordEvent
-  object ShowLoadingDialog : CreatingPasswordEvent
-  object HideLoadingDialog : CreatingPasswordEvent
   class PasswordStrengthChanged(val strength: PasswordStrength?) : CreatingPasswordEvent
   class ComputedPasswordCharacteristics(
     val characteristics: EnumSet<PasswordCharacteristic>
@@ -56,6 +54,5 @@ data class CreatingPasswordState(
   val specialSymbolsEnabled: Boolean = true,
   val passwordLength: Int = DEFAULT_PASSWORD_LENGTH,
   val showConfirmationDialog: Boolean = false,
-  val showLoadingDialog: Boolean = false,
   val passwordStrength: PasswordStrength? = null,
 )

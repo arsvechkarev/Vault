@@ -47,9 +47,6 @@ sealed interface InfoScreenCommand {
     class UpdateNotes(passwordInfoItem: PasswordInfoItem) : UpdateItem(passwordInfoItem)
   }
   
-  object ShowPasswordLoadingDialog : InfoScreenCommand
-  object HidePasswordLoadingDialog : InfoScreenCommand
-  
   class DeletePasswordInfo(val passwordInfoItem: PasswordInfoItem) : InfoScreenCommand
 }
 
@@ -60,7 +57,7 @@ sealed interface InfoScreenNews {
   object ShowNotesCopied : InfoScreenNews
 }
 
-data class Info2ScreenState(
+data class InfoScreenState(
   val passwordInfoItem: PasswordInfoItem,
   val websiteNameState: TextState =
       TextState(passwordInfoItem.websiteName, passwordInfoItem.websiteName),

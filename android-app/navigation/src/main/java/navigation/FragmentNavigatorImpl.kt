@@ -46,11 +46,15 @@ class FragmentNavigatorImpl(
     screensToRemove: Int
   ) {
     fragmentManager.transaction {
-      repeat(screensToRemove) { index ->
-        remove(fragmentManager.fragments[fragmentManager.fragments.lastIndex - index])
-      }
       addNewFragment(screenKey, arguments)
     }
+    activity.window.decorView.postDelayed({
+      fragmentManager.transaction {
+        repeat(screensToRemove) { index ->
+          remove(fragmentManager.fragments[fragmentManager.fragments.lastIndex - 1 - index])
+        }
+      }
+    }, (animationDuration * 1.2).toLong())
   }
   
   private fun performSwitchToNewRoot(screenKey: ScreenKey, arguments: Bundle) {
@@ -124,4 +128,6 @@ class FragmentNavigatorImpl(
         .commitAllowingStateLoss()
   }
   
+  private val animationDuration
+    get() = activity.resources.getInteger(R.integer.navigation_animation_duration)
 }

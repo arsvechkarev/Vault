@@ -8,9 +8,7 @@ import com.arsvechkarev.vault.core.model.PasswordInfoItem
 import com.arsvechkarev.vault.core.mvi.tea.DslReducer
 import com.arsvechkarev.vault.features.info.InfoScreenCommand.Copy
 import com.arsvechkarev.vault.features.info.InfoScreenCommand.DeletePasswordInfo
-import com.arsvechkarev.vault.features.info.InfoScreenCommand.HidePasswordLoadingDialog
 import com.arsvechkarev.vault.features.info.InfoScreenCommand.OpenEditPasswordScreen
-import com.arsvechkarev.vault.features.info.InfoScreenCommand.ShowPasswordLoadingDialog
 import com.arsvechkarev.vault.features.info.InfoScreenCommand.UpdateItem
 import com.arsvechkarev.vault.features.info.InfoScreenCommand.UpdateItem.UpdateLogin
 import com.arsvechkarev.vault.features.info.InfoScreenCommand.UpdateItem.UpdateNotes
@@ -41,7 +39,7 @@ import com.arsvechkarev.vault.features.info.InfoScreenUiEvent.OnWebsiteNameTextC
 
 class InfoScreenReducer(
   private val router: Router
-) : DslReducer<Info2ScreenState, InfoScreenEvent, InfoScreenCommand, InfoScreenNews>() {
+) : DslReducer<InfoScreenState, InfoScreenEvent, InfoScreenCommand, InfoScreenNews>() {
   
   override fun dslReduce(event: InfoScreenEvent) {
     when (event) {
@@ -142,13 +140,12 @@ class InfoScreenReducer(
       }
       is UpdatedPassword -> {
         state { copy(passwordInfoItem = event.passwordInfoItem) }
-        commands(HidePasswordLoadingDialog)
         router.goBack()
       }
       is SavePasswordEventReceived -> {
         if (event.password != state.password) {
           val item = state.passwordInfoItem.copy(password = event.password)
-          commands(UpdatePassword(item), ShowPasswordLoadingDialog)
+          commands(UpdatePassword(item))
         } else {
           router.goBack()
         }
@@ -161,7 +158,7 @@ class InfoScreenReducer(
   
   private fun handleAction(
     textState: TextState,
-    stateReset: Info2ScreenState.(TextState) -> Info2ScreenState,
+    stateReset: InfoScreenState.(TextState) -> InfoScreenState,
     itemCopy: PasswordInfoItem.() -> PasswordInfoItem,
     command: (PasswordInfoItem) -> UpdateItem,
     allowEmptySave: Boolean = false,
@@ -187,10 +184,10 @@ class InfoScreenReducer(
     news(news)
   }
   
-  private fun Info2ScreenState.update(
+  private fun InfoScreenState.update(
     passwordInfoItem: PasswordInfoItem,
-    copyTextState: Info2ScreenState.() -> Info2ScreenState
-  ): Info2ScreenState {
+    copyTextState: InfoScreenState.() -> InfoScreenState
+  ): InfoScreenState {
     return copyTextState(copy(passwordInfoItem = passwordInfoItem))
   }
   

@@ -73,11 +73,6 @@ class LoginScreen : BaseFragmentScreen() {
         constraints {
           centeredWithin(parent)
         }
-        TextView(MatchParent, WrapContent, style = BaseTextView) {
-          id(TextErrorId)
-          margins(start = MarginNormal + MarginTiny, bottom = MarginSmall)
-          textColor(Colors.Error)
-        }
         child<EditTextPassword>(MatchParent, WrapContent) {
           id(EditTextPasswordId)
           marginHorizontal(MarginNormal)
@@ -85,6 +80,11 @@ class LoginScreen : BaseFragmentScreen() {
           setHint(R.string.hint_enter_password)
           onTextChanged { store.tryDispatch(OnTypingText) }
           onSubmit { text -> store.tryDispatch(OnEnteredPassword(text)) }
+        }
+        TextView(MatchParent, WrapContent, style = BaseTextView) {
+          id(TextErrorId)
+          margins(start = MarginNormal + MarginTiny, top = MarginSmall)
+          textColor(Colors.Error)
         }
       }
       TextView(MatchParent, WrapContent, style = Button()) {

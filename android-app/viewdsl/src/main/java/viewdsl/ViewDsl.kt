@@ -10,6 +10,8 @@ import androidx.annotation.ColorInt
 import androidx.annotation.DrawableRes
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 
+val View.parentView get() = parent as View
+
 operator fun View.contains(event: MotionEvent): Boolean {
   val x = event.x
   val y = event.y

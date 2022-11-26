@@ -13,7 +13,6 @@ import com.arsvechkarev.vault.viewbuilding.Dimens.MarginLarge
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginSmall
 import com.arsvechkarev.vault.viewbuilding.Fonts
 import com.arsvechkarev.vault.viewbuilding.TextSizes
-import viewdsl.BaseTextWatcher
 import viewdsl.Size.Companion.MatchParent
 import viewdsl.Size.Companion.WrapContent
 import viewdsl.font
@@ -83,12 +82,4 @@ class EditTextPassword(context: Context) : FrameLayout(context) {
   fun text(textResId: Int) = editText.setText(textResId)
   
   fun getText() = editText.text.toString()
-  
-  fun addTextChangedListener(textWatcher: BaseTextWatcher) {
-    editText.addTextChangedListener(textWatcher)
-  }
-  
-  fun removeTextChangedListener(textWatcher: BaseTextWatcher) {
-    editText.removeTextChangedListener(textWatcher)
-  }
 }

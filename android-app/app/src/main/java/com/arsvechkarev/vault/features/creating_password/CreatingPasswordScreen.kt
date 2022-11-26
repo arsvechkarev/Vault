@@ -44,8 +44,6 @@ import com.arsvechkarev.vault.views.CheckmarkAndTextViewGroup.Companion.Checkmar
 import com.arsvechkarev.vault.views.PasswordStrengthMeterWithText
 import com.arsvechkarev.vault.views.dialogs.InfoDialog.Companion.InfoDialog
 import com.arsvechkarev.vault.views.dialogs.InfoDialog.Companion.infoDialog
-import com.arsvechkarev.vault.views.dialogs.LoadingDialog
-import com.arsvechkarev.vault.views.dialogs.loadingDialog
 import navigation.BaseFragmentScreen
 import viewdsl.Size.Companion.MatchParent
 import viewdsl.Size.Companion.WrapContent
@@ -162,7 +160,6 @@ class CreatingPasswordScreen : BaseFragmentScreen() {
         onClick { store.tryDispatch(OnSavePasswordClicked) }
       }
       InfoDialog()
-      LoadingDialog()
     }
   }
   
@@ -200,11 +197,6 @@ class CreatingPasswordScreen : BaseFragmentScreen() {
       showPasswordAcceptingDialog()
     } else {
       hidePasswordAcceptingDialog()
-    }
-    if (state.showLoadingDialog) {
-      loadingDialog.show()
-    } else {
-      loadingDialog.hide()
     }
   }
   

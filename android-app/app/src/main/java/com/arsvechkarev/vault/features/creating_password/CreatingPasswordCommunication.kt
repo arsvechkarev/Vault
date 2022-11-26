@@ -9,9 +9,6 @@ sealed interface CreatingPasswordReceiveEvent {
       class EditPassword(val password: String) : PasswordConfigurationMode
     }
   }
-  
-  object ShowLoading : CreatingPasswordReceiveEvent
-  object HideLoading : CreatingPasswordReceiveEvent
 }
 
 sealed interface CreatingPasswordSendEvent {

@@ -12,10 +12,8 @@ import com.arsvechkarev.vault.features.creating_password.CreatingPasswordCommand
 import com.arsvechkarev.vault.features.creating_password.CreatingPasswordCommand.GeneratePassword
 import com.arsvechkarev.vault.features.creating_password.CreatingPasswordEvent.ComputedPasswordCharacteristics
 import com.arsvechkarev.vault.features.creating_password.CreatingPasswordEvent.GeneratedPassword
-import com.arsvechkarev.vault.features.creating_password.CreatingPasswordEvent.HideLoadingDialog
 import com.arsvechkarev.vault.features.creating_password.CreatingPasswordEvent.PasswordStrengthChanged
 import com.arsvechkarev.vault.features.creating_password.CreatingPasswordEvent.Setup
-import com.arsvechkarev.vault.features.creating_password.CreatingPasswordEvent.ShowLoadingDialog
 import com.arsvechkarev.vault.features.creating_password.CreatingPasswordNews.ShowGeneratedPassword
 import com.arsvechkarev.vault.features.creating_password.CreatingPasswordReceiveEvent.Setup.PasswordConfigurationMode.EditPassword
 import com.arsvechkarev.vault.features.creating_password.CreatingPasswordReceiveEvent.Setup.PasswordConfigurationMode.NewPassword
@@ -59,12 +57,6 @@ class CreatingPasswordReducer(
             specialSymbolsEnabled = event.characteristics.contains(SPECIAL_SYMBOLS)
           )
         }
-      }
-      ShowLoadingDialog -> {
-        state { copy(showLoadingDialog = true) }
-      }
-      HideLoadingDialog -> {
-        state { copy(showLoadingDialog = false) }
       }
     }
   }

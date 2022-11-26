@@ -5,7 +5,7 @@ import com.arsvechkarev.vault.core.model.PasswordInfoItem
 import com.arsvechkarev.vault.features.creating_entry.CreatingEntryScreen
 import com.arsvechkarev.vault.features.creating_master_password.CreatingMasterPasswordScreen
 import com.arsvechkarev.vault.features.creating_password.CreatingPasswordScreen
-import com.arsvechkarev.vault.features.info.InfoScreen2
+import com.arsvechkarev.vault.features.info.InfoScreen
 import com.arsvechkarev.vault.features.initial.InitialScreen
 import com.arsvechkarev.vault.features.login.LoginScreen
 import com.arsvechkarev.vault.features.main_list.MainListScreen
@@ -27,7 +27,7 @@ object Screens {
   
   fun InfoScreen(passwordInfoItem: PasswordInfoItem): ScreenInfo {
     val pair = PasswordInfoItem::class.qualifiedName!! to passwordInfoItem
-    return Screen(arguments = bundleOf(pair)) { InfoScreen2::class }
+    return Screen(arguments = bundleOf(pair)) { InfoScreen::class }
   }
   
   val CreatingPasswordScreen = Screen { CreatingPasswordScreen::class }

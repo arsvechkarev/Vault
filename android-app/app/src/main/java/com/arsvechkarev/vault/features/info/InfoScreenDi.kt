@@ -9,13 +9,12 @@ import com.arsvechkarev.vault.features.info.actors.CopyInfoCommandHandler
 import com.arsvechkarev.vault.features.info.actors.DeletePasswordInfoActor
 import com.arsvechkarev.vault.features.info.actors.OpenEditPasswordScreenActor
 import com.arsvechkarev.vault.features.info.actors.ReceivingPasswordCommunicationActor
-import com.arsvechkarev.vault.features.info.actors.SendingLoadingStatusCommunicatingActor
 import com.arsvechkarev.vault.features.info.actors.UpdatePasswordInfoActor
 
 fun InfoScreenStore(
   appComponent: AppComponent,
   passwordInfoItem: PasswordInfoItem,
-): TeaStore<Info2ScreenState, InfoScreenUiEvent, InfoScreenNews> {
+): TeaStore<InfoScreenState, InfoScreenUiEvent, InfoScreenNews> {
   val communicatorHolder = CreatingPasswordCommunication.communicatorHolder
   communicatorHolder.startNewCommunication()
   return TeaStoreImpl(
@@ -31,9 +30,8 @@ fun InfoScreenStore(
       OpenEditPasswordScreenActor(communicatorHolder),
       CopyInfoCommandHandler(appComponent.clipboard),
       ReceivingPasswordCommunicationActor(communicatorHolder.communicator),
-      SendingLoadingStatusCommunicatingActor(communicatorHolder.communicator),
     ),
     reducer = InfoScreenReducer(appComponent.router),
-    initialState = Info2ScreenState(passwordInfoItem)
+    initialState = InfoScreenState(passwordInfoItem)
   )
 }

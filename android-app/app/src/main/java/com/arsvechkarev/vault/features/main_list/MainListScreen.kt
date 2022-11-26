@@ -24,6 +24,7 @@ import com.arsvechkarev.vault.features.main_list.MenuItemType.EXPORT_PASSWORDS
 import com.arsvechkarev.vault.features.main_list.MenuItemType.IMPORT_PASSWORDS
 import com.arsvechkarev.vault.features.main_list.MenuItemType.NEW_PASSWORD
 import com.arsvechkarev.vault.features.main_list.MenuItemType.SETTINGS
+import com.arsvechkarev.vault.viewbuilding.Colors
 import com.arsvechkarev.vault.viewbuilding.Dimens.ImageNoServicesSize
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginLarge
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginNormal
@@ -43,8 +44,9 @@ import viewdsl.Size.Companion.WrapContent
 import viewdsl.addView
 import viewdsl.animateInvisible
 import viewdsl.animateVisible
+import viewdsl.backgroundColor
 import viewdsl.classNameTag
-import viewdsl.getDrawableHeight
+import viewdsl.dp
 import viewdsl.gravity
 import viewdsl.image
 import viewdsl.invisible
@@ -53,6 +55,7 @@ import viewdsl.margin
 import viewdsl.marginHorizontal
 import viewdsl.margins
 import viewdsl.paddings
+import viewdsl.retrieveDrawable
 import viewdsl.setupWith
 import viewdsl.size
 import viewdsl.tag
@@ -64,12 +67,21 @@ class MainListScreen : BaseFragmentScreen() {
   
   override fun buildLayout(context: Context) = context.withViewBuilder {
     RootFrameLayout {
+      backgroundColor(Colors.Background)
       RecyclerView(MatchParent, WrapContent) {
         classNameTag()
-        val gradientHeight = context.getDrawableHeight(R.drawable.bg_gradient) * 0.8
-        paddings(top = gradientHeight.toInt())
+        val drawable = context.retrieveDrawable(R.drawable.bg_gradient)
+        val gradientHeight = drawable.intrinsicHeight / 1.4
+        paddings(
+          top = gradientHeight.toInt(),
+          bottom = 80.dp
+        )
         clipToPadding = false
         setupWith(this@MainListScreen.adapter)
+      }
+      ImageView(MatchParent, WrapContent) {
+        image(R.drawable.bg_gradient)
+        scaleType = android.widget.ImageView.ScaleType.CENTER_CROP
       }
       TextView(WrapContent, WrapContent, style = TitleTextView) {
         margins(top = MarginNormal + StatusBarHeight)

@@ -150,7 +150,6 @@ class CheckMasterPasswordDialog(context: Context) : FrameLayout(context) {
         behavior(BottomSheetBehavior().apply {
           onHide = onDialogClosed
           onSlidePercentageChanged = { fraction ->
-            println("fraaaaction = $fraction")
             val color = ColorUtils.blendARGB(Color.TRANSPARENT, Colors.Shadow, fraction)
             shadowLayout.setBackgroundColor(color)
           }

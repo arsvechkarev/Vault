@@ -85,9 +85,8 @@ object Styles : DefaultStyles {
     colorEnd: Int = Colors.AccentLight,
   ): TextView.() -> Unit = {
     apply(BoldTextView)
-    val gradientDrawable = GradientDrawable(GradientDrawable.Orientation.TL_BR, intArrayOf(
-      colorStart, colorEnd
-    )
+    val gradientDrawable = GradientDrawable(
+      GradientDrawable.Orientation.TL_BR, intArrayOf(colorStart, colorEnd)
     )
     val r = 120.dp.toFloat()
     val outerRadii = floatArrayOf(r, r, r, r, r, r, r, r)
@@ -116,6 +115,11 @@ object Styles : DefaultStyles {
     image(R.drawable.ic_back)
     padding(Dimens.IconPadding)
     circleRippleBackground(rippleColor = Colors.Ripple)
+  }
+  
+  val ImageCross: ImageView.() -> Unit = {
+    apply(ImageBack)
+    image(R.drawable.ic_cross)
   }
   
   fun BaseEditText(@StringRes hint: Int = 0): EditText.() -> Unit = {

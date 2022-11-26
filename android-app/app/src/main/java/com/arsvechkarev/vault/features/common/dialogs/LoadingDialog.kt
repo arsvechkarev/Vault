@@ -1,4 +1,4 @@
-package com.arsvechkarev.vault.views.dialogs
+package com.arsvechkarev.vault.features.common.dialogs
 
 import android.view.ViewGroup
 import com.arsvechkarev.vault.viewbuilding.Dimens.ProgressBarSizeBig

@@ -20,8 +20,18 @@ fun Drawable.applyColor(color: Int) {
 
 fun View.backgroundRoundRect(cornerRadius: Int, color: Int) {
   val r = cornerRadius.toFloat()
-  val outerRadii = floatArrayOf(r, r, r, r, r, r, r, r)
-  val roundRectShape = RoundRectShape(outerRadii, null, null)
+  val outerRadius = floatArrayOf(r, r, r, r, r, r, r, r)
+  backgroundRectWithRadius(outerRadius, color)
+}
+
+fun View.backgroundRoundTopRect(cornerRadius: Int, color: Int) {
+  val r = cornerRadius.toFloat()
+  val outerRadius = floatArrayOf(r, r, r, r, 0f, 0f, 0f, 0f)
+  backgroundRectWithRadius(outerRadius, color)
+}
+
+private fun View.backgroundRectWithRadius(outerRadius: FloatArray, color: Int) {
+  val roundRectShape = RoundRectShape(outerRadius, null, null)
   val backgroundRect = ShapeDrawable().apply {
     shape = roundRectShape
     paint.color = color

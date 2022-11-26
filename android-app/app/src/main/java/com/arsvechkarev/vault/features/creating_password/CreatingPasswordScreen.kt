@@ -1,8 +1,10 @@
 package com.arsvechkarev.vault.features.creating_password
 
 import android.content.Context
-import android.view.Gravity
+import android.view.Gravity.BOTTOM
 import android.view.Gravity.CENTER
+import android.view.Gravity.CENTER_HORIZONTAL
+import android.view.Gravity.END
 import android.view.View
 import android.view.WindowManager
 import android.widget.SeekBar
@@ -14,6 +16,8 @@ import com.arsvechkarev.vault.R
 import com.arsvechkarev.vault.core.di.appComponent
 import com.arsvechkarev.vault.core.mvi.ext.subscribe
 import com.arsvechkarev.vault.core.mvi.ext.viewModelStore
+import com.arsvechkarev.vault.features.common.dialogs.InfoDialog.Companion.InfoDialog
+import com.arsvechkarev.vault.features.common.dialogs.InfoDialog.Companion.infoDialog
 import com.arsvechkarev.vault.features.creating_password.CreatingPasswordNews.ShowGeneratedPassword
 import com.arsvechkarev.vault.features.creating_password.CreatingPasswordReceiveEvent.Setup.PasswordConfigurationMode.EditPassword
 import com.arsvechkarev.vault.features.creating_password.CreatingPasswordReceiveEvent.Setup.PasswordConfigurationMode.NewPassword
@@ -38,16 +42,14 @@ import com.arsvechkarev.vault.viewbuilding.Styles.BaseEditText
 import com.arsvechkarev.vault.viewbuilding.Styles.BoldTextView
 import com.arsvechkarev.vault.viewbuilding.Styles.Button
 import com.arsvechkarev.vault.viewbuilding.Styles.ClickableTextView
+import com.arsvechkarev.vault.viewbuilding.Styles.ImageCross
 import com.arsvechkarev.vault.viewbuilding.TextSizes
 import com.arsvechkarev.vault.views.CheckmarkAndTextViewGroup
 import com.arsvechkarev.vault.views.CheckmarkAndTextViewGroup.Companion.CheckmarkAndTextViewGroup
 import com.arsvechkarev.vault.views.PasswordStrengthMeterWithText
-import com.arsvechkarev.vault.views.dialogs.InfoDialog.Companion.InfoDialog
-import com.arsvechkarev.vault.views.dialogs.InfoDialog.Companion.infoDialog
 import navigation.BaseFragmentScreen
 import viewdsl.Size.Companion.MatchParent
 import viewdsl.Size.Companion.WrapContent
-import viewdsl.circleRippleBackground
 import viewdsl.classNameTag
 import viewdsl.clearText
 import viewdsl.drawablePadding
@@ -55,7 +57,6 @@ import viewdsl.drawables
 import viewdsl.gravity
 import viewdsl.hideKeyboard
 import viewdsl.id
-import viewdsl.image
 import viewdsl.layoutGravity
 import viewdsl.margin
 import viewdsl.margins
@@ -63,7 +64,6 @@ import viewdsl.onClick
 import viewdsl.onProgressChanged
 import viewdsl.onSubmit
 import viewdsl.onTextChanged
-import viewdsl.padding
 import viewdsl.setMaxLength
 import viewdsl.setSoftInputMode
 import viewdsl.text
@@ -84,12 +84,9 @@ class CreatingPasswordScreen : BaseFragmentScreen() {
             textSize(TextSizes.H1)
             layoutGravity(CENTER)
           }
-          ImageView(WrapContent, WrapContent) {
-            image(R.drawable.ic_cross)
-            circleRippleBackground(Colors.Ripple)
+          ImageView(WrapContent, WrapContent, style = ImageCross) {
             margins(end = ImageBackMargin, top = MarginSmall, bottom = MarginSmall)
-            layoutGravity(CENTER or Gravity.END)
-            padding(Dimens.IconPadding)
+            layoutGravity(CENTER or END)
             onClick { store.tryDispatch(OnBackClicked) }
           }
         }
@@ -144,7 +141,7 @@ class CreatingPasswordScreen : BaseFragmentScreen() {
         }
         TextView(WrapContent, WrapContent, style = ClickableTextView()) {
           margins(top = MarginNormal)
-          layoutGravity(Gravity.CENTER_HORIZONTAL)
+          layoutGravity(CENTER_HORIZONTAL)
           gravity(CENTER)
           drawables(start = R.drawable.ic_generate, color = Colors.AccentLight)
           drawablePadding(MarginSmall)
@@ -154,7 +151,7 @@ class CreatingPasswordScreen : BaseFragmentScreen() {
         }
       }
       TextView(MatchParent, WrapContent, style = Button()) {
-        layoutGravity(CENTER or Gravity.BOTTOM)
+        layoutGravity(CENTER or BOTTOM)
         margin(MarginNormal)
         text(R.string.text_save_password)
         onClick { store.tryDispatch(OnSavePasswordClicked) }

@@ -35,9 +35,6 @@ android {
 //      shrinkResources ext.shrinkResources
 //      proguardFiles(getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro')
 //    }
-//    mock {
-//      initWith debug
-//    }
 //  }
   kotlinOptions {
     jvmTarget = "1.8"

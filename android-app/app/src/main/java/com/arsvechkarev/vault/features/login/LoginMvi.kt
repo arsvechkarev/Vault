@@ -6,7 +6,6 @@ sealed interface LoginEvent {
 }
 
 sealed interface LoginUiEvent : LoginEvent {
-  object OnAppearedOnScreen : LoginUiEvent
   class OnEnteredPassword(val password: String) : LoginUiEvent
   object OnTypingText : LoginUiEvent
 }
@@ -19,5 +18,4 @@ sealed interface LoginCommand {
 data class LoginState(
   val isLoading: Boolean = false,
   val showPasswordIsIncorrect: Boolean = false,
-  val showKeyboard: Boolean = false,
 )

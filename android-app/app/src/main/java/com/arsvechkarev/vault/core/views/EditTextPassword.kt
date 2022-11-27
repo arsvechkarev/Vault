@@ -24,6 +24,7 @@ import viewdsl.onClick
 import viewdsl.onSubmit
 import viewdsl.onTextChanged
 import viewdsl.paddings
+import viewdsl.showKeyboard
 import viewdsl.textSize
 import viewdsl.withViewBuilder
 
@@ -68,6 +69,11 @@ class EditTextPassword(context: Context) : FrameLayout(context) {
         }
       }
     }
+  }
+  
+  fun showKeyboard() {
+    editText.requestFocus()
+    context.showKeyboard(editText)
   }
   
   fun setHint(hintResId: Int) = editText.setHint(hintResId)

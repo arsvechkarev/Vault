@@ -1,10 +1,10 @@
 package com.arsvechkarev.vault.features.main_list
 
-import com.arsvechkarev.vault.core.State
+import com.arsvechkarev.vault.core.ScreenState
 import com.arsvechkarev.vault.core.model.PasswordInfoItem
 
 sealed interface MainListEvent {
-  class UpdateData(val data: State<List<PasswordInfoItem>>) : MainListEvent
+  class UpdateData(val data: ScreenState<List<PasswordInfoItem>>) : MainListEvent
 }
 
 sealed interface MainListUiEvent : MainListEvent {
@@ -28,7 +28,7 @@ sealed interface MainListCommand {
 }
 
 data class MainListState(
-  val data: State<List<PasswordInfoItem>>? = null,
+  val data: ScreenState<List<PasswordInfoItem>> = ScreenState.loading(),
   val menuOpened: Boolean = false,
 )
 

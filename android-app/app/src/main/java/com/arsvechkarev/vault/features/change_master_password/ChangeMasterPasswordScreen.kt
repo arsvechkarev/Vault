@@ -48,7 +48,6 @@ import viewdsl.margin
 import viewdsl.margins
 import viewdsl.onClick
 import viewdsl.parentView
-import viewdsl.showKeyboard
 import viewdsl.text
 import viewdsl.textColor
 import viewdsl.textSize
@@ -136,10 +135,7 @@ class ChangeMasterPasswordScreen : BaseFragmentScreen() {
   }
   
   override fun onAppearedOnScreen() {
-    viewAs<EditTextPassword>(EditTextEnterNewPassword).apply {
-      requestEditTextFocus()
-      requireContext().showKeyboard(editText)
-    }
+    viewAs<EditTextPassword>(EditTextEnterNewPassword).showKeyboard()
   }
   
   private fun render(state: ChangeMasterPasswordState) {

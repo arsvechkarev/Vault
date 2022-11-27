@@ -1,6 +1,6 @@
 package com.arsvechkarev.vault.features.main_list.actors
 
-import com.arsvechkarev.vault.core.State
+import com.arsvechkarev.vault.core.ScreenState
 import com.arsvechkarev.vault.core.mvi.tea.Actor
 import com.arsvechkarev.vault.features.common.data.storage.ListenableCachedPasswordsStorage
 import com.arsvechkarev.vault.features.common.domain.MasterPasswordProvider
@@ -22,7 +22,7 @@ class LoadMainDataActor(
         .mapLatest {
           val masterPassword = masterPasswordProvider.provideMasterPassword()
           val passwords = passwordStorage.getPasswords(masterPassword)
-          val state = if (passwords.isNotEmpty()) State.success(passwords) else State.empty()
+          val state = if (passwords.isNotEmpty()) ScreenState.success(passwords) else ScreenState.empty()
           MainListEvent.UpdateData(state)
         }
   }

@@ -6,7 +6,6 @@ import buisnesslogic.model.PasswordCharacteristic.SPECIAL_SYMBOLS
 import buisnesslogic.model.PasswordCharacteristic.UPPERCASE_SYMBOLS
 import java.util.EnumSet
 
-// TODO (8/15/2022): Write unit test
 class PasswordGeneratorImpl(private val randomGenerator: RandomGenerator) : PasswordGenerator {
   
   private val uppercaseSymbolsGenerator = UppercaseSymbolsGenerator(randomGenerator)

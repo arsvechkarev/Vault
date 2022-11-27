@@ -12,7 +12,6 @@ import com.arsvechkarev.vault.features.creating_master_password.CreatingMasterPa
 import com.arsvechkarev.vault.features.creating_master_password.CreatingMasterPasswordEvent.UpdatePasswordError
 import com.arsvechkarev.vault.features.creating_master_password.CreatingMasterPasswordEvent.UpdatePasswordStrength
 import com.arsvechkarev.vault.features.creating_master_password.CreatingMasterPasswordNews.FinishingAuthorization
-import com.arsvechkarev.vault.features.creating_master_password.CreatingMasterPasswordUiEvent.OnBackButtonClicked
 import com.arsvechkarev.vault.features.creating_master_password.CreatingMasterPasswordUiEvent.OnBackPressed
 import com.arsvechkarev.vault.features.creating_master_password.CreatingMasterPasswordUiEvent.OnContinueClicked
 import com.arsvechkarev.vault.features.creating_master_password.CreatingMasterPasswordUiEvent.OnInitialPasswordTyping
@@ -67,20 +66,6 @@ class CreatingMasterPasswordReducer(
       is OnRepeatPasswordTyping -> {
         state { copy(repeatedPassword = event.password, showErrorText = false) }
       }
-      OnBackPressed, OnBackButtonClicked -> {
-        if (state.showPasswordStrengthDialog) {
-          state { copy(showPasswordStrengthDialog = false) }
-        } else {
-          when (state.passwordEnteringState) {
-            INITIAL -> {
-              commands(GoBack)
-            }
-            REPEATING -> {
-              state { copy(passwordEnteringState = INITIAL) }
-            }
-          }
-        }
-      }
       OnContinueClicked -> {
         when (state.passwordEnteringState) {
           INITIAL -> {
@@ -93,6 +78,20 @@ class CreatingMasterPasswordReducer(
               news(FinishingAuthorization)
             } else {
               state { copy(passwordStatus = PASSWORDS_DONT_MATCH, showErrorText = true) }
+            }
+          }
+        }
+      }
+      OnBackPressed -> {
+        if (state.showPasswordStrengthDialog) {
+          state { copy(showPasswordStrengthDialog = false) }
+        } else {
+          when (state.passwordEnteringState) {
+            INITIAL -> {
+              commands(GoBack)
+            }
+            REPEATING -> {
+              state { copy(passwordEnteringState = INITIAL) }
             }
           }
         }

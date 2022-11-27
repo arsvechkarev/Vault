@@ -52,7 +52,6 @@ import viewdsl.margins
 import viewdsl.onClick
 import viewdsl.padding
 import viewdsl.parentView
-import viewdsl.showKeyboard
 import viewdsl.text
 import viewdsl.textColor
 import viewdsl.textSize
@@ -136,8 +135,7 @@ class EnterPasswordDialog(context: Context) : FrameLayout(context) {
   private fun ViewBuilder.setupBehavior(shadowLayout: FrameLayout, onDialogClosed: () -> Unit = {}) {
     behavior(BottomSheetBehavior().apply {
       onShow = {
-        viewAs<EditTextPassword>().requestEditTextFocus()
-        context.showKeyboard(viewAs<EditTextPassword>().editText)
+        viewAs<EditTextPassword>().showKeyboard()
       }
       onHide = {
         viewAs<EditTextPassword>().clear()

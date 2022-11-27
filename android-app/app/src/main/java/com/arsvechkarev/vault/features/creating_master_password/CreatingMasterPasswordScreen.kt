@@ -21,7 +21,6 @@ import com.arsvechkarev.vault.features.common.dialogs.PasswordStrengthDialog.Com
 import com.arsvechkarev.vault.features.common.dialogs.PasswordStrengthDialog.Companion.passwordStrengthDialog
 import com.arsvechkarev.vault.features.common.dialogs.loadingDialog
 import com.arsvechkarev.vault.features.creating_master_password.CreatingMasterPasswordNews.FinishingAuthorization
-import com.arsvechkarev.vault.features.creating_master_password.CreatingMasterPasswordUiEvent.OnBackButtonClicked
 import com.arsvechkarev.vault.features.creating_master_password.CreatingMasterPasswordUiEvent.OnBackPressed
 import com.arsvechkarev.vault.features.creating_master_password.CreatingMasterPasswordUiEvent.OnContinueClicked
 import com.arsvechkarev.vault.features.creating_master_password.CreatingMasterPasswordUiEvent.OnInitialPasswordTyping
@@ -62,7 +61,6 @@ import viewdsl.layoutGravity
 import viewdsl.marginHorizontal
 import viewdsl.margins
 import viewdsl.onClick
-import viewdsl.showKeyboard
 import viewdsl.tag
 import viewdsl.text
 import viewdsl.textColor
@@ -79,7 +77,7 @@ class CreatingMasterPasswordScreen : BaseFragmentScreen() {
         invisible()
         margins(top = MarginNormal + StatusBarHeight, start = MarginNormal, end = MarginNormal)
         ImageView(WrapContent, WrapContent, style = ImageBack) {
-          onClick { store.tryDispatch(OnBackButtonClicked) }
+          onClick { store.tryDispatch(OnBackPressed) }
         }
         TextView(WrapContent, WrapContent, style = BoldTextView) {
           layoutGravity(CENTER)
@@ -160,9 +158,8 @@ class CreatingMasterPasswordScreen : BaseFragmentScreen() {
     store.subscribe(this, ::render, ::handleNews)
   }
   
-  override fun onAppearedOnScreenAfterAnimation() {
-    requireContext().showKeyboard()
-    viewAs<EditTextPassword>(EditTextEnterPassword).requestEditTextFocus()
+  override fun onAppearedOnScreen() {
+    viewAs<EditTextPassword>(EditTextEnterPassword).showKeyboard()
   }
   
   private fun render(state: CreatingMasterPasswordState) {

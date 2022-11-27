@@ -24,6 +24,7 @@ sealed interface ExportPasswordsCommand {
   class ExportPasswords(val uri: Uri) : ExportPasswordsCommand
   object GetPasswordsFileUri : ExportPasswordsCommand
   class CalculateFilenameFromUri(val uri: Uri, val fallback: String) : ExportPasswordsCommand
+  object GoBack : ExportPasswordsCommand
 }
 
 sealed interface ExportPasswordsNews {

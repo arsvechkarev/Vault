@@ -4,6 +4,7 @@ import com.arsvechkarev.vault.core.mvi.tea.TeaStore
 import com.arsvechkarev.vault.core.mvi.tea.TeaStoreImpl
 import com.arsvechkarev.vault.features.common.di.CoreComponent
 import com.arsvechkarev.vault.features.export_passwords.actors.ExportPasswordsActor
+import com.arsvechkarev.vault.features.export_passwords.actors.ExportPasswordsRouterActor
 import com.arsvechkarev.vault.features.export_passwords.actors.GetFilenameFromUriActor
 import com.arsvechkarev.vault.features.export_passwords.actors.GetPasswordsFileUriActor
 
@@ -19,8 +20,9 @@ fun ExportPasswordsStore(
         coreComponent.fileSaver,
         coreComponent.dispatchersFacade,
       ),
+      ExportPasswordsRouterActor(coreComponent.router),
     ),
-    reducer = ExportPasswordsReducer(coreComponent.router),
+    reducer = ExportPasswordsReducer(),
     initialState = ExportPasswordsState()
   )
 }

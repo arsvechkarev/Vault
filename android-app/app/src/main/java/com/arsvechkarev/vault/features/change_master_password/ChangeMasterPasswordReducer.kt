@@ -3,6 +3,7 @@ package com.arsvechkarev.vault.features.change_master_password
 import com.arsvechkarev.vault.core.mvi.tea.DslReducer
 import com.arsvechkarev.vault.features.change_master_password.ChangeMasterPasswordCommand.ChangeMasterPassword
 import com.arsvechkarev.vault.features.change_master_password.ChangeMasterPasswordCommand.CheckPassword
+import com.arsvechkarev.vault.features.change_master_password.ChangeMasterPasswordCommand.GoBack
 import com.arsvechkarev.vault.features.change_master_password.ChangeMasterPasswordDialogType.CONFIRMATION
 import com.arsvechkarev.vault.features.change_master_password.ChangeMasterPasswordDialogType.NOTIFICATION_AFTER
 import com.arsvechkarev.vault.features.change_master_password.ChangeMasterPasswordError.PASSWORD_SAME_AS_CURRENT
@@ -16,11 +17,8 @@ import com.arsvechkarev.vault.features.change_master_password.ChangeMasterPasswo
 import com.arsvechkarev.vault.features.change_master_password.ChangeMasterPasswordUiEvent.OnInitialPasswordChanged
 import com.arsvechkarev.vault.features.change_master_password.ChangeMasterPasswordUiEvent.OnNotificationOkClicked
 import com.arsvechkarev.vault.features.change_master_password.ChangeMasterPasswordUiEvent.OnRepeatedPasswordChanged
-import com.arsvechkarev.vault.features.common.Router
 
-class ChangeMasterPasswordReducer(
-  private val router: Router
-) : DslReducer<ChangeMasterPasswordState, ChangeMasterPasswordEvent,
+class ChangeMasterPasswordReducer : DslReducer<ChangeMasterPasswordState, ChangeMasterPasswordEvent,
     ChangeMasterPasswordCommand, Nothing>() {
   
   override fun dslReduce(event: ChangeMasterPasswordEvent) {
@@ -49,13 +47,13 @@ class ChangeMasterPasswordReducer(
         state { copy(dialogType = null) }
       }
       OnNotificationOkClicked -> {
-        router.goBack()
+        commands(GoBack)
       }
       OnBackPressed -> {
         when (state.dialogType) {
           CONFIRMATION -> state { copy(dialogType = null) }
-          NOTIFICATION_AFTER -> router.goBack()
-          else -> router.goBack()
+          NOTIFICATION_AFTER -> commands(GoBack)
+          else -> commands(GoBack)
         }
       }
       MasterPasswordIsSameAsCurrent -> {

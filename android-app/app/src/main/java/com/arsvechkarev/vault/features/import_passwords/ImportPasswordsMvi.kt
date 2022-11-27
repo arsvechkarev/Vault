@@ -19,6 +19,7 @@ sealed interface ImportPasswordsUiEvent : ImportPasswordsEvent {
 
 sealed interface ImportPasswordsCommand {
   class TryImportPasswords(val uri: Uri, val password: String) : ImportPasswordsCommand
+  object GoBack : ImportPasswordsCommand
 }
 
 data class ImportPasswordsState(

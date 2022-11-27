@@ -4,12 +4,12 @@ import buisnesslogic.model.PasswordCharacteristic
 import buisnesslogic.model.PasswordCharacteristic.NUMBERS
 import buisnesslogic.model.PasswordCharacteristic.SPECIAL_SYMBOLS
 import buisnesslogic.model.PasswordCharacteristic.UPPERCASE_SYMBOLS
-import com.arsvechkarev.vault.features.common.Router
 import com.arsvechkarev.vault.core.mvi.tea.DslReducer
 import com.arsvechkarev.vault.features.creating_password.CreatingPasswordCommand.CheckPasswordStrength
 import com.arsvechkarev.vault.features.creating_password.CreatingPasswordCommand.ComputePasswordCharacteristics
 import com.arsvechkarev.vault.features.creating_password.CreatingPasswordCommand.ConfirmSavePassword
 import com.arsvechkarev.vault.features.creating_password.CreatingPasswordCommand.GeneratePassword
+import com.arsvechkarev.vault.features.creating_password.CreatingPasswordCommand.GoBack
 import com.arsvechkarev.vault.features.creating_password.CreatingPasswordEvent.ComputedPasswordCharacteristics
 import com.arsvechkarev.vault.features.creating_password.CreatingPasswordEvent.GeneratedPassword
 import com.arsvechkarev.vault.features.creating_password.CreatingPasswordEvent.PasswordStrengthChanged
@@ -30,11 +30,8 @@ import com.arsvechkarev.vault.features.creating_password.CreatingPasswordUiEvent
 import com.arsvechkarev.vault.features.creating_password.CreatingPasswordUiEvent.SetupCompleted
 import java.util.EnumSet
 
-private typealias CPState = CreatingPasswordState
-
-class CreatingPasswordReducer(
-  private val router: Router
-) : DslReducer<CPState, CreatingPasswordEvent, CreatingPasswordCommand, CreatingPasswordNews>() {
+class CreatingPasswordReducer : DslReducer<CreatingPasswordState, CreatingPasswordEvent,
+    CreatingPasswordCommand, CreatingPasswordNews>() {
   
   override fun dslReduce(event: CreatingPasswordEvent) {
     when (event) {
@@ -121,7 +118,7 @@ class CreatingPasswordReducer(
         if (state.showConfirmationDialog) {
           state { copy(showConfirmationDialog = false) }
         } else {
-          router.goBack()
+          commands(GoBack)
         }
       }
     }

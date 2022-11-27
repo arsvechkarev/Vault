@@ -1,18 +1,15 @@
 package com.arsvechkarev.vault.features.login
 
-import com.arsvechkarev.vault.features.common.Router
-import com.arsvechkarev.vault.features.common.Screens
 import com.arsvechkarev.vault.core.mvi.tea.DslReducer
 import com.arsvechkarev.vault.features.login.LoginCommand.EnterWithMasterPassword
+import com.arsvechkarev.vault.features.login.LoginCommand.GoToMainListScreen
 import com.arsvechkarev.vault.features.login.LoginEvent.ShowFailureCheckingPassword
 import com.arsvechkarev.vault.features.login.LoginEvent.ShowSuccessCheckingPassword
 import com.arsvechkarev.vault.features.login.LoginUiEvent.OnAppearedOnScreen
 import com.arsvechkarev.vault.features.login.LoginUiEvent.OnEnteredPassword
 import com.arsvechkarev.vault.features.login.LoginUiEvent.OnTypingText
 
-class LoginReducer(
-  private val router: Router
-) : DslReducer<LoginState, LoginEvent, LoginCommand, Nothing>() {
+class LoginReducer : DslReducer<LoginState, LoginEvent, LoginCommand, Nothing>() {
   
   override fun dslReduce(event: LoginEvent) {
     when (event) {
@@ -31,7 +28,7 @@ class LoginReducer(
       }
       ShowSuccessCheckingPassword -> {
         state { copy(isLoading = false, showKeyboard = false) }
-        router.switchToNewRoot(Screens.MainListScreen)
+        commands(GoToMainListScreen)
       }
     }
   }

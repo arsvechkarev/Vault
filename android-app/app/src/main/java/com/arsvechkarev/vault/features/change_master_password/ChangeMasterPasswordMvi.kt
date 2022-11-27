@@ -20,9 +20,9 @@ sealed interface ChangeMasterPasswordUiEvent : ChangeMasterPasswordEvent {
 }
 
 sealed interface ChangeMasterPasswordCommand {
-  
   class CheckPassword(val password: String) : ChangeMasterPasswordCommand
   class ChangeMasterPassword(val password: String) : ChangeMasterPasswordCommand
+  object GoBack : ChangeMasterPasswordCommand
 }
 
 data class ChangeMasterPasswordState(

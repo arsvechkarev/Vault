@@ -14,7 +14,6 @@
             <option value="$PROJECT_DIR$/android-app" />
             <option value="$PROJECT_DIR$/android-app/app" />
             <option value="$PROJECT_DIR$/android-app/buisness-logic" />
-            <option value="$PROJECT_DIR$/android-app/kotea" />
             <option value="$PROJECT_DIR$/android-app/navigation" />
             <option value="$PROJECT_DIR$/android-app/viewdsl" />
             <option value="$PROJECT_DIR$/common-crypto" />

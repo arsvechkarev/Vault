@@ -3,15 +3,18 @@ package com.arsvechkarev.vault.core.di.modules
 import androidx.security.crypto.MasterKey
 import buisnesslogic.FileSaver
 import com.arsvechkarev.vault.features.common.data.EncryptionFileSaver
+import com.arsvechkarev.vault.features.common.data.FilenameFromUriRetriever
+import com.arsvechkarev.vault.features.common.data.FilenameFromUriRetrieverImpl
 import com.arsvechkarev.vault.features.common.domain.PASSWORDS_FILENAME
 
-interface FileSaverModule {
+interface IoModule {
   val fileSaver: FileSaver
+  val filenameFromUriRetriever: FilenameFromUriRetriever
 }
 
-class FileSaverModuleImpl(
+class IoModuleImpl(
   coreModule: CoreModule
-) : FileSaverModule {
+) : IoModule {
   
   private val masterKey = MasterKey.Builder(coreModule.application)
       .setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
@@ -23,4 +26,6 @@ class FileSaverModuleImpl(
     masterKey,
     coreModule.dispatchersFacade
   )
+  
+  override val filenameFromUriRetriever = FilenameFromUriRetrieverImpl(coreModule.application)
 }

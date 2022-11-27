@@ -10,6 +10,7 @@ import navigation.Navigator
 interface NavigationModule {
   val router: Router
   val navigationController: NavigationController
+  // TODO (27.11.2022): Extract navigator to separate di module
   val navigator: Navigator
 }
 

@@ -15,15 +15,16 @@ import com.arsvechkarev.vault.features.common.dialogs.CheckMasterPasswordDialog.
 import com.arsvechkarev.vault.features.common.dialogs.CheckMasterPasswordDialog.Companion.checkMasterPasswordDialog
 import com.arsvechkarev.vault.features.common.dialogs.InfoDialog.Companion.InfoDialog
 import com.arsvechkarev.vault.features.common.dialogs.InfoDialog.Companion.infoDialog
-import com.arsvechkarev.vault.features.common.dialogs.LoadingDialog
-import com.arsvechkarev.vault.features.common.dialogs.loadingDialog
 import com.arsvechkarev.vault.features.export_passwords.ExportPasswordsNews.TryExportPasswords
 import com.arsvechkarev.vault.features.export_passwords.ExportPasswordsUiEvent.OnBackPressed
 import com.arsvechkarev.vault.features.export_passwords.ExportPasswordsUiEvent.OnExportPasswordClicked
 import com.arsvechkarev.vault.features.export_passwords.ExportPasswordsUiEvent.OnFilenameTextChanged
 import com.arsvechkarev.vault.features.export_passwords.ExportPasswordsUiEvent.OnHideMasterPasswordCheckDialog
+import com.arsvechkarev.vault.features.export_passwords.ExportPasswordsUiEvent.OnHideViewExportedFileDialog
 import com.arsvechkarev.vault.features.export_passwords.ExportPasswordsUiEvent.OnMasterPasswordCheckPassed
+import com.arsvechkarev.vault.features.export_passwords.ExportPasswordsUiEvent.OnPasswordsExported
 import com.arsvechkarev.vault.features.export_passwords.ExportPasswordsUiEvent.OnSelectedFolder
+import com.arsvechkarev.vault.viewbuilding.Colors
 import com.arsvechkarev.vault.viewbuilding.Dimens.GradientDrawableHeight
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginLarge
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginNormal
@@ -46,9 +47,9 @@ import viewdsl.margins
 import viewdsl.onClick
 import viewdsl.onTextChanged
 import viewdsl.text
+import viewdsl.textColor
 import viewdsl.textSize
 import viewdsl.withViewBuilder
-
 
 class ExportPasswordsScreen : BaseFragmentScreen() {
   
@@ -73,14 +74,14 @@ class ExportPasswordsScreen : BaseFragmentScreen() {
           }
         }
         VerticalLayout(MatchParent, WrapContent) {
-          id(LayoutFolderName)
+          id(LayoutFolder)
           margins(start = MarginNormal, top = GradientDrawableHeight)
           onClick { selectFolder() }
           constraints {
             topToTopOf(parent)
           }
           TextView(WrapContent, WrapContent, style = AccentTextView) {
-            id(TitleFolderName)
+            id(TitleFolder)
             text(R.string.text_folder)
           }
           TextView(MatchParent, WrapContent, style = SecondaryTextView) {
@@ -95,12 +96,12 @@ class ExportPasswordsScreen : BaseFragmentScreen() {
           text(R.string.text_filename)
           margins(start = MarginNormal, top = MarginLarge)
           constraints {
-            topToBottomOf(LayoutFolderName)
+            topToBottomOf(LayoutFolder)
             startToStartOf(parent)
           }
         }
         EditText(MatchParent, WrapContent, style = BaseEditText(hint = R.string.hint_filename)) {
-          id(EditTextLogin)
+          id(EditTextFilename)
           margins(start = MarginNormal, end = MarginNormal)
           onTextChanged { text -> store.tryDispatch(OnFilenameTextChanged(text)) }
           constraints {
@@ -116,7 +117,6 @@ class ExportPasswordsScreen : BaseFragmentScreen() {
           }
           text(R.string.text_export_passwords)
           onClick { store.tryDispatch(OnExportPasswordClicked) }
-          //        onClick { continueWithCreating() }
         }
       }
       CheckMasterPasswordDialog(
@@ -124,10 +124,8 @@ class ExportPasswordsScreen : BaseFragmentScreen() {
         onCheckSuccessful = { store.tryDispatch(OnMasterPasswordCheckPassed) }
       )
       InfoDialog()
-      LoadingDialog()
     }
   }
-  
   
   private val store by viewModelStore { ExportPasswordsStore(appComponent) }
   
@@ -136,40 +134,67 @@ class ExportPasswordsScreen : BaseFragmentScreen() {
   }
   
   private fun render(state: ExportPasswordsState) {
-    textView(TextFolderPath).text(getFolderPath(state.folderPath))
-    when (state.dialogType) {
-      ExportPasswordsDialogType.CHECKING_MASTER_PASSWORD -> {
-        checkMasterPasswordDialog.show()
-      }
-      ExportPasswordsDialogType.LOADING -> {
-        checkMasterPasswordDialog.hide()
-        loadingDialog.show()
-      }
-      ExportPasswordsDialogType.SUCCESS_EXPORT -> {
-        loadingDialog.show()
-        //        infoDialog.showWithOkOption(
-        //
-        //        )
-      }
-      null -> {
-        checkMasterPasswordDialog.hide()
-        infoDialog.hide()
-        loadingDialog.hide()
+    renderTexts(state)
+    renderErrors(state)
+    renderDialogs(state)
+  }
+  
+  private fun renderTexts(state: ExportPasswordsState) {
+    val folderText = if (state.folderPath.isEmpty()) {
+      getString(R.string.text_select_folder)
+    } else {
+      state.folderPath.removePrefix(CONTENT_PREFIX)
+    }
+    textView(TextFolderPath).text(folderText)
+    editText(EditTextFilename).apply {
+      if (state.filename != text.toString()) {
+        setText(state.filename)
       }
     }
   }
   
-  private fun getFolderPath(folderPath: String): String {
-    if (folderPath.isEmpty()) {
-      return getString(R.string.text_select_folder)
+  private fun renderErrors(state: ExportPasswordsState) {
+    if (state.showSelectFolderError) {
+      textView(TitleFolder).textColor(Colors.Error)
+      textView(TitleFolder).text(R.string.text_error_folder_is_not_selected)
+    } else {
+      textView(TitleFolder).textColor(Colors.Accent)
+      textView(TitleFolder).text(R.string.text_folder)
     }
-    return folderPath.removePrefix("content://")
+    if (state.showEnterFilenameError) {
+      textView(TitleFilename).textColor(Colors.Error)
+      textView(TitleFilename).text(R.string.text_error_filename_is_empty)
+    } else {
+      textView(TitleFilename).textColor(Colors.Accent)
+      textView(TitleFilename).text(R.string.text_filename)
+    }
+  }
+  
+  private fun renderDialogs(state: ExportPasswordsState) {
+    when (state.dialogType) {
+      ExportPasswordsDialogType.CHECKING_MASTER_PASSWORD -> {
+        checkMasterPasswordDialog.show()
+      }
+      ExportPasswordsDialogType.SUCCESS_EXPORT -> {
+        checkMasterPasswordDialog.hide()
+        infoDialog.showWithOkOption(
+          titleRes = R.string.text_done,
+          messageRes = R.string.text_export_successful,
+          textPositiveRes = R.string.text_export_share_file,
+          onCancel = { store.tryDispatch(OnHideViewExportedFileDialog) },
+          onOkClicked = { shareExportedFile(state.exportedFileUri) }
+        )
+      }
+      null -> {
+        checkMasterPasswordDialog.hide()
+        infoDialog.hide()
+      }
+    }
   }
   
   private fun handleNews(news: ExportPasswordsNews) {
     when (news) {
       is TryExportPasswords -> {
-        println("qqqq: fileUri=${news.fileUri}, folder=${news.folderPath}, file=${news.filename}")
         tryExportPasswords(news)
       }
     }
@@ -178,9 +203,9 @@ class ExportPasswordsScreen : BaseFragmentScreen() {
   private fun tryExportPasswords(news: TryExportPasswords) {
     val intent = Intent(Intent.ACTION_CREATE_DOCUMENT).apply {
       addCategory(Intent.CATEGORY_OPENABLE)
-      type = "content/unknown"
+      type = CONTENT_TYPE
       putExtra(Intent.EXTRA_TITLE, news.filename)
-      putExtra(DocumentsContract.EXTRA_INITIAL_URI, Uri.decode(news.fileUri))
+      putExtra(DocumentsContract.EXTRA_INITIAL_URI, Uri.decode(news.passwordsFileUri))
     }
     startActivityForResult(intent, CREATE_FILE_REQUEST_CODE)
   }
@@ -193,14 +218,26 @@ class ExportPasswordsScreen : BaseFragmentScreen() {
     startActivityForResult(chooser, SELECT_FOLDER_REQUEST_CODE)
   }
   
+  private fun shareExportedFile(filePath: Uri?) {
+    if (filePath == null) {
+      return
+    }
+    val shareIntent = Intent().apply {
+      action = Intent.ACTION_SEND
+      putExtra(Intent.EXTRA_STREAM, filePath)
+      type = CONTENT_TYPE
+    }
+    startActivity(Intent.createChooser(shareIntent, getString(R.string.text_export_share)))
+  }
+  
   override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+    val uri = data?.data ?: return
     when (requestCode) {
       SELECT_FOLDER_REQUEST_CODE -> {
-        val folderPath = data?.data ?: return
-        store.tryDispatch(OnSelectedFolder(folderPath.toString()))
+        store.tryDispatch(OnSelectedFolder(uri.toString()))
       }
       CREATE_FILE_REQUEST_CODE -> {
-        println("qqq: ${data?.data}")
+        store.tryDispatch(OnPasswordsExported(uri))
       }
     }
   }
@@ -212,15 +249,18 @@ class ExportPasswordsScreen : BaseFragmentScreen() {
   
   private companion object {
     
-    const val SELECT_FOLDER_REQUEST_CODE = 3762
-    const val CREATE_FILE_REQUEST_CODE = 9846
+    const val CONTENT_TYPE = "content/unknown"
+    const val CONTENT_PREFIX = "content://"
+    
+    const val SELECT_FOLDER_REQUEST_CODE = 2
+    const val CREATE_FILE_REQUEST_CODE = 3
     
     val ToolbarId = View.generateViewId()
-    val TitleFolderName = View.generateViewId()
-    val LayoutFolderName = View.generateViewId()
+    val LayoutFolder = View.generateViewId()
+    val TitleFolder = View.generateViewId()
     val TitleFilename = View.generateViewId()
+    val EditTextFilename = View.generateViewId()
     val ButtonContinue = View.generateViewId()
     val TextFolderPath = View.generateViewId()
-    val EditTextLogin = View.generateViewId()
   }
 }

@@ -1,8 +1,10 @@
 package com.arsvechkarev.vault.features.export_passwords
 
+import android.net.Uri
+
 sealed interface ExportPasswordsEvent {
   class PasswordsFileUriReceived(val uri: String) : ExportPasswordsEvent
-  class ExportSuccessful(val uri: String) : ExportPasswordsEvent
+  class CalculatedFilenameFromUri(val filename: String) : ExportPasswordsEvent
 }
 
 sealed interface ExportPasswordsUiEvent : ExportPasswordsEvent {
@@ -13,30 +15,33 @@ sealed interface ExportPasswordsUiEvent : ExportPasswordsEvent {
   object OnMasterPasswordCheckPassed : ExportPasswordsUiEvent
   object OnHideMasterPasswordCheckDialog : ExportPasswordsUiEvent
   object OnHideViewExportedFileDialog : ExportPasswordsUiEvent
+  class OnPasswordsExported(val uri: Uri) : ExportPasswordsUiEvent
   object OnBackPressed : ExportPasswordsUiEvent
 }
 
 sealed interface ExportPasswordsCommand {
   object GetPasswordsFileUri : ExportPasswordsCommand
-  class ViewExportedPasswords(val uri: String) : ExportPasswordsCommand
+  class CalculateFilenameFromUri(val uri: Uri, val fallback: String) : ExportPasswordsCommand
 }
 
 sealed interface ExportPasswordsNews {
   
-  class TryExportPasswords(
+  data class TryExportPasswords(
     val folderPath: String,
     val filename: String,
-    val fileUri: String
+    val passwordsFileUri: String
   ) : ExportPasswordsNews
 }
 
 data class ExportPasswordsState(
   val folderPath: String = "",
   val filename: String = "",
-  val exportedFilePath: String = "",
-  val dialogType: ExportPasswordsDialogType? = null
+  val exportedFileUri: Uri? = null,
+  val dialogType: ExportPasswordsDialogType? = null,
+  val showSelectFolderError: Boolean = false,
+  val showEnterFilenameError: Boolean = false,
 )
 
 enum class ExportPasswordsDialogType {
-  CHECKING_MASTER_PASSWORD, LOADING, SUCCESS_EXPORT
+  CHECKING_MASTER_PASSWORD, SUCCESS_EXPORT
 }

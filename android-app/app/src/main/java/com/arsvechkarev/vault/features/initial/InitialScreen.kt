@@ -5,7 +5,7 @@ import android.view.Gravity.BOTTOM
 import android.view.Gravity.CENTER
 import com.arsvechkarev.vault.R
 import com.arsvechkarev.vault.features.common.Screens
-import com.arsvechkarev.vault.features.common.di.appComponent
+import com.arsvechkarev.vault.features.common.di.CoreComponentHolder.coreComponent
 import com.arsvechkarev.vault.viewbuilding.Dimens.ImageLogoSize
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginExtraLarge
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginNormal
@@ -55,7 +55,9 @@ class InitialScreen : BaseFragmentScreen() {
         margin(MarginNormal)
         layoutGravity(BOTTOM)
         text(R.string.text_create_master_password)
-        onClick { appComponent.router.goForward(Screens.CreateMasterPasswordScreen) }
+        onClick {
+          coreComponent.router.goForward(Screens.CreateMasterPasswordScreen)
+        }
       }
     }
   }

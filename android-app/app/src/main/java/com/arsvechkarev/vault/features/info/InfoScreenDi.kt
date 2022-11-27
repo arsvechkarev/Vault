@@ -3,7 +3,7 @@ package com.arsvechkarev.vault.features.info
 import com.arsvechkarev.vault.core.model.PasswordInfoItem
 import com.arsvechkarev.vault.core.mvi.tea.TeaStore
 import com.arsvechkarev.vault.core.mvi.tea.TeaStoreImpl
-import com.arsvechkarev.vault.features.common.di.AppComponent
+import com.arsvechkarev.vault.features.common.di.CoreComponent
 import com.arsvechkarev.vault.features.creating_password.CreatingPasswordCommunication
 import com.arsvechkarev.vault.features.info.actors.CopyInfoCommandHandler
 import com.arsvechkarev.vault.features.info.actors.DeletePasswordInfoActor
@@ -12,26 +12,27 @@ import com.arsvechkarev.vault.features.info.actors.ReceivingPasswordCommunicatio
 import com.arsvechkarev.vault.features.info.actors.UpdatePasswordInfoActor
 
 fun InfoScreenStore(
-  appComponent: AppComponent,
+  coreComponent: CoreComponent,
   passwordInfoItem: PasswordInfoItem,
 ): TeaStore<InfoScreenState, InfoScreenUiEvent, InfoScreenNews> {
   val communicatorHolder = CreatingPasswordCommunication.communicatorHolder
+  // TODO (27.11.2022): Figure out a good way to start and stop communication
   communicatorHolder.startNewCommunication()
   return TeaStoreImpl(
     actors = listOf(
       UpdatePasswordInfoActor(
-        appComponent.listenableCachedPasswordsStorage,
-        appComponent.masterPasswordProvider
+        coreComponent.listenableCachedPasswordsStorage,
+        coreComponent.masterPasswordProvider
       ),
       DeletePasswordInfoActor(
-        appComponent.listenableCachedPasswordsStorage,
-        appComponent.masterPasswordProvider
+        coreComponent.listenableCachedPasswordsStorage,
+        coreComponent.masterPasswordProvider
       ),
       OpenEditPasswordScreenActor(communicatorHolder),
-      CopyInfoCommandHandler(appComponent.clipboard),
+      CopyInfoCommandHandler(coreComponent.clipboard),
       ReceivingPasswordCommunicationActor(communicatorHolder.communicator),
     ),
-    reducer = InfoScreenReducer(appComponent.router),
+    reducer = InfoScreenReducer(coreComponent.router),
     initialState = InfoScreenState(passwordInfoItem)
   )
 }

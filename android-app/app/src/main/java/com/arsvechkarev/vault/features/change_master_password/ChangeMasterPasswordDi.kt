@@ -4,21 +4,21 @@ import com.arsvechkarev.vault.core.mvi.tea.TeaStore
 import com.arsvechkarev.vault.core.mvi.tea.TeaStoreImpl
 import com.arsvechkarev.vault.features.change_master_password.actors.ChangeMasterPasswordActor
 import com.arsvechkarev.vault.features.change_master_password.actors.ValidatePasswordActor
-import com.arsvechkarev.vault.features.common.di.AppComponent
+import com.arsvechkarev.vault.features.common.di.CoreComponent
 
 fun ChangeMasterPasswordStore(
-  appComponent: AppComponent
+  coreComponent: CoreComponent,
 ): TeaStore<ChangeMasterPasswordState, ChangeMasterPasswordUiEvent, Nothing> {
   return TeaStoreImpl(
     actors = listOf(
       ChangeMasterPasswordActor(
-        appComponent.masterPasswordChecker,
-        appComponent.masterPasswordProvider,
-        appComponent.listenableCachedPasswordsStorage,
+        coreComponent.masterPasswordChecker,
+        coreComponent.masterPasswordProvider,
+        coreComponent.listenableCachedPasswordsStorage,
       ),
-      ValidatePasswordActor(appComponent.masterPasswordProvider)
+      ValidatePasswordActor(coreComponent.masterPasswordProvider)
     ),
-    reducer = ChangeMasterPasswordReducer(appComponent.router),
+    reducer = ChangeMasterPasswordReducer(coreComponent.router),
     initialState = ChangeMasterPasswordState()
   )
 }

@@ -15,7 +15,7 @@ import com.arsvechkarev.vault.core.mvi.ext.viewModelStore
 import com.arsvechkarev.vault.core.views.MaterialProgressBar
 import com.arsvechkarev.vault.core.views.menu.MenuItem
 import com.arsvechkarev.vault.core.views.menu.MenuView
-import com.arsvechkarev.vault.features.common.di.appComponent
+import com.arsvechkarev.vault.features.common.di.CoreComponentHolder.coreComponent
 import com.arsvechkarev.vault.features.main_list.MainListUiEvent.OnBackPressed
 import com.arsvechkarev.vault.features.main_list.MainListUiEvent.OnCloseMenuClicked
 import com.arsvechkarev.vault.features.main_list.MainListUiEvent.OnInit
@@ -132,7 +132,7 @@ class MainListScreen : BaseFragmentScreen() {
     }
   }
   
-  private val store by viewModelStore { MainListStore(appComponent) }
+  private val store by viewModelStore { MainListStore(coreComponent) }
   
   private val adapter by lazy {
     MainListAdapter(

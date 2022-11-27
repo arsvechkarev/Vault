@@ -15,7 +15,7 @@ import com.arsvechkarev.vault.core.mvi.ext.subscribe
 import com.arsvechkarev.vault.core.mvi.ext.viewModelStore
 import com.arsvechkarev.vault.core.views.EditTextPassword
 import com.arsvechkarev.vault.core.views.PasswordStrengthMeter
-import com.arsvechkarev.vault.features.common.di.appComponent
+import com.arsvechkarev.vault.features.common.di.CoreComponentHolder.coreComponent
 import com.arsvechkarev.vault.features.common.dialogs.LoadingDialog
 import com.arsvechkarev.vault.features.common.dialogs.PasswordStrengthDialog.Companion.PasswordStrengthDialog
 import com.arsvechkarev.vault.features.common.dialogs.PasswordStrengthDialog.Companion.passwordStrengthDialog
@@ -154,7 +154,7 @@ class CreatingMasterPasswordScreen : BaseFragmentScreen() {
   
   private var passwordEnteringState = INITIAL
   
-  private val store by viewModelStore { CreatingMasterPasswordStore(appComponent) }
+  private val store by viewModelStore { CreatingMasterPasswordStore(coreComponent) }
   
   override fun onInit() {
     store.subscribe(this, ::render, ::handleNews)

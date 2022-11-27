@@ -19,7 +19,7 @@ import com.arsvechkarev.vault.core.views.MaterialProgressBar
 import com.arsvechkarev.vault.core.views.MaterialProgressBar.Thickness
 import com.arsvechkarev.vault.core.views.behaviors.BottomSheetBehavior
 import com.arsvechkarev.vault.core.views.behaviors.BottomSheetBehavior.Companion.asBottomSheet
-import com.arsvechkarev.vault.features.common.di.AppComponentProvider
+import com.arsvechkarev.vault.features.common.di.CoreComponentHolder.coreComponent
 import com.arsvechkarev.vault.features.common.dialogs.EnterPasswordDialog.Mode.CHECK_MASTER_PASSWORD
 import com.arsvechkarev.vault.features.common.dialogs.EnterPasswordDialog.Mode.IMPORTING_PASSWORDS
 import com.arsvechkarev.vault.viewbuilding.Colors
@@ -178,8 +178,7 @@ class EnterPasswordDialog(context: Context) : FrameLayout(context) {
   
   private fun ViewBuilder.checkMasterPassword(password: String) {
     (context as LifecycleOwner).lifecycleScope.launch {
-      val appComponent = (context as AppComponentProvider).appComponent
-      val passwordChecker = appComponent.masterPasswordChecker
+      val passwordChecker = coreComponent.masterPasswordChecker
       viewAs<MaterialProgressBar>().isVisible = true
       textView(ButtonCheck).clearText()
       delay(500)

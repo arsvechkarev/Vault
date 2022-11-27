@@ -6,7 +6,7 @@ import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.arsvechkarev.vault.R
 import com.arsvechkarev.vault.features.common.Screens.ChangeMasterPasswordScreen
-import com.arsvechkarev.vault.features.common.di.appComponent
+import com.arsvechkarev.vault.features.common.di.CoreComponentHolder.coreComponent
 import com.arsvechkarev.vault.features.common.dialogs.EnterPasswordDialog.Companion.EnterPasswordDialog
 import com.arsvechkarev.vault.features.common.dialogs.EnterPasswordDialog.Companion.enterPasswordDialog
 import com.arsvechkarev.vault.features.common.dialogs.EnterPasswordDialog.Mode.CHECK_MASTER_PASSWORD
@@ -95,7 +95,9 @@ class SettingsScreen : BaseFragmentScreen() {
       }
       EnterPasswordDialog(
         mode = CHECK_MASTER_PASSWORD,
-        onCheckSuccessful = { appComponent.router.goForward(ChangeMasterPasswordScreen) },
+        onCheckSuccessful = {
+          coreComponent.router.goForward(ChangeMasterPasswordScreen)
+        },
       )
     }
   }
@@ -104,7 +106,7 @@ class SettingsScreen : BaseFragmentScreen() {
     if (enterPasswordDialog.isDialogShown) {
       enterPasswordDialog.hide()
     } else {
-      appComponent.router.goBack()
+      coreComponent.router.goBack()
     }
     return true
   }

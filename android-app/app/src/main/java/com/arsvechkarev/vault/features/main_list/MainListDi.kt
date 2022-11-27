@@ -2,22 +2,22 @@ package com.arsvechkarev.vault.features.main_list
 
 import com.arsvechkarev.vault.core.mvi.tea.TeaStore
 import com.arsvechkarev.vault.core.mvi.tea.TeaStoreImpl
-import com.arsvechkarev.vault.features.common.di.AppComponent
+import com.arsvechkarev.vault.features.common.di.CoreComponent
 import com.arsvechkarev.vault.features.main_list.actors.ListeningServicesChangesActor
 import com.arsvechkarev.vault.features.main_list.actors.LoadMainDataActor
 
 fun MainListStore(
-  appComponent: AppComponent
+  coreComponent: CoreComponent
 ): TeaStore<MainListState, MainListUiEvent, Nothing> {
   return TeaStoreImpl(
     actors = listOf(
       LoadMainDataActor(
-        appComponent.listenableCachedPasswordsStorage,
-        appComponent.masterPasswordProvider
+        coreComponent.listenableCachedPasswordsStorage,
+        coreComponent.masterPasswordProvider
       ),
-      ListeningServicesChangesActor(appComponent.listenableCachedPasswordsStorage),
+      ListeningServicesChangesActor(coreComponent.listenableCachedPasswordsStorage),
     ),
-    reducer = MainListReducer(appComponent.router),
+    reducer = MainListReducer(coreComponent.router),
     initialState = MainListState()
   )
 }

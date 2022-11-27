@@ -7,16 +7,15 @@ import android.view.View.SYSTEM_UI_FLAG_LAYOUT_STABLE
 import androidx.appcompat.app.AppCompatActivity
 import com.arsvechkarev.vault.core.views.RootView
 import com.arsvechkarev.vault.features.common.Screens
-import com.arsvechkarev.vault.features.common.di.AppComponent
-import com.arsvechkarev.vault.features.common.di.AppComponentProvider
-import com.arsvechkarev.vault.features.common.di.CoreComponentHolder
+import com.arsvechkarev.vault.features.common.di.ActivityComponent
+import com.arsvechkarev.vault.features.common.di.CoreComponentHolder.coreComponent
 import viewdsl.Size.Companion.MatchParent
 import viewdsl.ViewDslConfiguration
 import viewdsl.id
 import viewdsl.size
 import viewdsl.withViewBuilder
 
-class MainActivity : AppCompatActivity(), AppComponentProvider {
+class MainActivity : AppCompatActivity() {
   
   private val mainActivityLayout
     get() = withViewBuilder {
@@ -27,12 +26,7 @@ class MainActivity : AppCompatActivity(), AppComponentProvider {
       }
     }
   
-  private var _appComponent: AppComponent? = null
-  
-  override val appComponent: AppComponent
-    get() = checkNotNull(_appComponent) {
-      "App component cannot be accessed before onCreate() or after onDestroy()"
-    }
+  private var _activityComponent: ActivityComponent? = null
   
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
@@ -40,7 +34,8 @@ class MainActivity : AppCompatActivity(), AppComponentProvider {
     window.decorView.systemUiVisibility = (SYSTEM_UI_FLAG_LAYOUT_STABLE
         or SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN)
     setContentView(mainActivityLayout)
-    _appComponent = AppComponent.create(CoreComponentHolder.coreComponent, rootViewId, this)
+    _activityComponent =
+        ActivityComponent.create(coreComponent, rootViewId, this)
     figureOutScreenToGo(savedInstanceState)
   }
   
@@ -49,32 +44,33 @@ class MainActivity : AppCompatActivity(), AppComponentProvider {
       // Activity is recreated, navigator handles this case automatically
       return
     }
-    if (appComponent.authChecker.isUserLoggedIn()) {
-      appComponent.router.goForward(Screens.LoginScreen)
+    if (coreComponent.authChecker.isUserLoggedIn()) {
+      coreComponent.router.goForward(Screens.LoginScreen)
     } else {
-      appComponent.router.goForward(Screens.InitialScreen)
+      coreComponent.router.goForward(Screens.InitialScreen)
     }
   }
   
   override fun onResume() {
     super.onResume()
-    appComponent.navigationController.getNavigatorHolder().setNavigator(appComponent.navigator)
+    val navigator = checkNotNull(_activityComponent).navigator
+    coreComponent.navigationController.getNavigatorHolder().setNavigator(navigator)
   }
   
   override fun onPause() {
     super.onPause()
-    appComponent.navigationController.getNavigatorHolder().removeNavigator()
+    coreComponent.navigationController.getNavigatorHolder().removeNavigator()
   }
   
   override fun onBackPressed() {
-    if (!appComponent.navigator.handleGoBack()) {
+    if (!checkNotNull(_activityComponent).navigator.handleGoBack()) {
       super.onBackPressed()
     }
   }
   
   override fun onDestroy() {
     super.onDestroy()
-    _appComponent = null
+    _activityComponent = null
   }
   
   private companion object {

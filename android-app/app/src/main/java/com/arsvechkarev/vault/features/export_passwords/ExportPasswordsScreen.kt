@@ -9,7 +9,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import com.arsvechkarev.vault.R
 import com.arsvechkarev.vault.core.mvi.ext.subscribe
 import com.arsvechkarev.vault.core.mvi.ext.viewModelStore
-import com.arsvechkarev.vault.features.common.di.appComponent
+import com.arsvechkarev.vault.features.common.di.CoreComponentHolder.coreComponent
 import com.arsvechkarev.vault.features.common.dialogs.EnterPasswordDialog.Companion.EnterPasswordDialog
 import com.arsvechkarev.vault.features.common.dialogs.EnterPasswordDialog.Companion.enterPasswordDialog
 import com.arsvechkarev.vault.features.common.dialogs.EnterPasswordDialog.Mode.CHECK_MASTER_PASSWORD
@@ -128,7 +128,7 @@ class ExportPasswordsScreen : BaseFragmentScreen() {
     }
   }
   
-  private val store by viewModelStore { ExportPasswordsStore(appComponent) }
+  private val store by viewModelStore { ExportPasswordsStore(coreComponent) }
   
   override fun onInit() {
     store.subscribe(this, ::render, ::handleNews)

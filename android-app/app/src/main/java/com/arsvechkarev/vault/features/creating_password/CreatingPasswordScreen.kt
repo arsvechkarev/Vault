@@ -18,7 +18,7 @@ import com.arsvechkarev.vault.core.mvi.ext.viewModelStore
 import com.arsvechkarev.vault.core.views.CheckmarkAndTextViewGroup
 import com.arsvechkarev.vault.core.views.CheckmarkAndTextViewGroup.Companion.CheckmarkAndTextViewGroup
 import com.arsvechkarev.vault.core.views.PasswordStrengthMeterWithText
-import com.arsvechkarev.vault.features.common.di.appComponent
+import com.arsvechkarev.vault.features.common.di.CoreComponentHolder.coreComponent
 import com.arsvechkarev.vault.features.common.dialogs.InfoDialog.Companion.InfoDialog
 import com.arsvechkarev.vault.features.common.dialogs.InfoDialog.Companion.infoDialog
 import com.arsvechkarev.vault.features.creating_password.CreatingPasswordNews.ShowGeneratedPassword
@@ -160,7 +160,7 @@ class CreatingPasswordScreen : BaseFragmentScreen() {
     }
   }
   
-  private val store by viewModelStore { CreatingPasswordStore(appComponent) }
+  private val store by viewModelStore { CreatingPasswordStore(coreComponent) }
   
   override fun onInit() {
     store.subscribe(this, ::render, ::handleNews)

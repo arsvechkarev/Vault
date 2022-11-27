@@ -8,7 +8,7 @@ import com.arsvechkarev.vault.VaultApplication.Companion.AppMainCoroutineScope
 import com.arsvechkarev.vault.core.mvi.ext.subscribe
 import com.arsvechkarev.vault.core.mvi.ext.viewModelStore
 import com.arsvechkarev.vault.core.views.EditTextPassword
-import com.arsvechkarev.vault.features.common.di.appComponent
+import com.arsvechkarev.vault.features.common.di.CoreComponentHolder.coreComponent
 import com.arsvechkarev.vault.features.common.dialogs.LoadingDialog
 import com.arsvechkarev.vault.features.common.dialogs.loadingDialog
 import com.arsvechkarev.vault.features.login.LoginUiEvent.OnAppearedOnScreen
@@ -105,7 +105,7 @@ class LoginScreen : BaseFragmentScreen() {
     }
   }
   
-  private val store by viewModelStore { LoginStore(appComponent) }
+  private val store by viewModelStore { LoginStore(coreComponent) }
   
   override fun onInit() {
     store.subscribe(this, ::render)

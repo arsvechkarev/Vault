@@ -8,7 +8,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import com.arsvechkarev.vault.R
 import com.arsvechkarev.vault.core.mvi.ext.subscribe
 import com.arsvechkarev.vault.core.mvi.ext.viewModelStore
-import com.arsvechkarev.vault.features.common.di.appComponent
+import com.arsvechkarev.vault.features.common.di.CoreComponentHolder.coreComponent
 import com.arsvechkarev.vault.features.common.dialogs.EnterPasswordDialog.Companion.EnterPasswordDialog
 import com.arsvechkarev.vault.features.common.dialogs.EnterPasswordDialog.Companion.enterPasswordDialog
 import com.arsvechkarev.vault.features.common.dialogs.EnterPasswordDialog.Mode.IMPORTING_PASSWORDS
@@ -107,7 +107,7 @@ class ImportPasswordsScreen : BaseFragmentScreen() {
     }
   }
   
-  private val store by viewModelStore { ImportPasswordsStore(appComponent) }
+  private val store by viewModelStore { ImportPasswordsStore(coreComponent) }
   
   override fun onInit() {
     store.subscribe(this, ::render)

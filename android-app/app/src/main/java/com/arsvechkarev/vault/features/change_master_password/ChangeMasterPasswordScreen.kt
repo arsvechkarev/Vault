@@ -20,7 +20,7 @@ import com.arsvechkarev.vault.features.change_master_password.ChangeMasterPasswo
 import com.arsvechkarev.vault.features.change_master_password.ChangeMasterPasswordUiEvent.OnInitialPasswordChanged
 import com.arsvechkarev.vault.features.change_master_password.ChangeMasterPasswordUiEvent.OnNotificationOkClicked
 import com.arsvechkarev.vault.features.change_master_password.ChangeMasterPasswordUiEvent.OnRepeatedPasswordChanged
-import com.arsvechkarev.vault.features.common.di.appComponent
+import com.arsvechkarev.vault.features.common.di.CoreComponentHolder.coreComponent
 import com.arsvechkarev.vault.features.common.dialogs.EnterPasswordDialog
 import com.arsvechkarev.vault.features.common.dialogs.InfoDialog.Companion.InfoDialog
 import com.arsvechkarev.vault.features.common.dialogs.InfoDialog.Companion.infoDialog
@@ -129,7 +129,7 @@ class ChangeMasterPasswordScreen : BaseFragmentScreen() {
     }
   }
   
-  private val store by viewModelStore { ChangeMasterPasswordStore(appComponent) }
+  private val store by viewModelStore { ChangeMasterPasswordStore(coreComponent) }
   
   override fun onInit() {
     store.subscribe(this, ::render)

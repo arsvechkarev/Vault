@@ -13,7 +13,7 @@ import com.arsvechkarev.vault.core.model.PasswordInfoItem
 import com.arsvechkarev.vault.core.mvi.ext.subscribe
 import com.arsvechkarev.vault.core.mvi.ext.viewModelStore
 import com.arsvechkarev.vault.core.views.Snackbar
-import com.arsvechkarev.vault.features.common.di.appComponent
+import com.arsvechkarev.vault.features.common.di.CoreComponentHolder.coreComponent
 import com.arsvechkarev.vault.features.common.dialogs.InfoDialog.Companion.InfoDialog
 import com.arsvechkarev.vault.features.common.dialogs.InfoDialog.Companion.infoDialog
 import com.arsvechkarev.vault.features.common.dialogs.LoadingDialog
@@ -275,7 +275,7 @@ class InfoScreen : BaseFragmentScreen() {
   }
   
   private val store by viewModelStore {
-    InfoScreenStore(appComponent, arg(PasswordInfoItem::class))
+    InfoScreenStore(coreComponent, arg(PasswordInfoItem::class))
   }
   
   override fun onInit() {

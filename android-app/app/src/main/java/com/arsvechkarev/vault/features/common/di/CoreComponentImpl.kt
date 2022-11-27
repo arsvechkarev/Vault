@@ -9,6 +9,8 @@ import com.arsvechkarev.vault.features.common.di.modules.CryptographyModule
 import com.arsvechkarev.vault.features.common.di.modules.CryptographyModuleImpl
 import com.arsvechkarev.vault.features.common.di.modules.IoModule
 import com.arsvechkarev.vault.features.common.di.modules.IoModuleImpl
+import com.arsvechkarev.vault.features.common.di.modules.NavigationModule
+import com.arsvechkarev.vault.features.common.di.modules.NavigationModuleImpl
 import com.arsvechkarev.vault.features.common.di.modules.PasswordsModule
 import com.arsvechkarev.vault.features.common.di.modules.PasswordsModuleImpl
 
@@ -17,7 +19,8 @@ interface CoreComponent :
   CryptographyModule,
   IoModule,
   PasswordsModule,
-  AuthModule {
+  AuthModule,
+  NavigationModule {
   
   companion object {
     
@@ -28,7 +31,7 @@ interface CoreComponent :
       val passwordsModule = PasswordsModuleImpl(coreModule, cryptographyModule, fileSaverModule)
       val authModule = AuthModuleImpl(coreModule)
       return CoreComponentImpl(coreModule, cryptographyModule, fileSaverModule,
-        passwordsModule, authModule)
+        passwordsModule, authModule, NavigationModuleImpl())
     }
   }
 }
@@ -39,9 +42,11 @@ class CoreComponentImpl(
   private val ioModule: IoModule,
   private val passwordsModule: PasswordsModule,
   private val authModule: AuthModule,
+  private val navigationModule: NavigationModule,
 ) : CoreComponent,
   CoreModule by coreModule,
   CryptographyModule by cryptographyModule,
   IoModule by ioModule,
   PasswordsModule by passwordsModule,
-  AuthModule by authModule
+  AuthModule by authModule,
+  NavigationModule by navigationModule

@@ -8,10 +8,10 @@ import buisnesslogic.PasswordsStorageImpl
 import buisnesslogic.ZxcvbnPasswordInfoChecker
 import buisnesslogic.generator.PasswordGenerator
 import buisnesslogic.generator.PasswordGeneratorImpl
-import com.arsvechkarev.vault.core.CachedPasswordsStorage
-import com.arsvechkarev.vault.core.ListenableCachedPasswordStorage
-import com.arsvechkarev.vault.core.MasterPasswordProvider
-import com.arsvechkarev.vault.core.MasterPasswordProviderImpl
+import com.arsvechkarev.vault.features.common.data.CachedPasswordsStorage
+import com.arsvechkarev.vault.features.common.data.ListenableCachedPasswordStorage
+import com.arsvechkarev.vault.features.common.domain.MasterPasswordProvider
+import com.arsvechkarev.vault.features.common.domain.MasterPasswordProviderImpl
 import com.nulabinc.zxcvbn.Zxcvbn
 import java.security.SecureRandom
 

@@ -1,6 +1,6 @@
 package com.arsvechkarev.vault.features.export_passwords.actors
 
-import com.arsvechkarev.vault.core.Router
+import com.arsvechkarev.vault.features.common.Router
 import com.arsvechkarev.vault.core.mvi.tea.Actor
 import com.arsvechkarev.vault.features.export_passwords.ExportPasswordsCommand
 import com.arsvechkarev.vault.features.export_passwords.ExportPasswordsEvent

@@ -1,7 +1,7 @@
 package com.arsvechkarev.vault.core.di.modules
 
-import com.arsvechkarev.vault.core.AuthChecker
-import com.arsvechkarev.vault.core.AuthCheckerImpl
+import com.arsvechkarev.vault.features.common.domain.AuthChecker
+import com.arsvechkarev.vault.features.common.domain.AuthCheckerImpl
 
 interface AuthModule {
   val authChecker: AuthChecker

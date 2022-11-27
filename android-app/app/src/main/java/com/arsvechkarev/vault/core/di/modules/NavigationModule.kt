@@ -2,7 +2,7 @@ package com.arsvechkarev.vault.core.di.modules
 
 import androidx.fragment.app.FragmentActivity
 import com.arsvechkarev.vault.VaultApplication
-import com.arsvechkarev.vault.core.Router
+import com.arsvechkarev.vault.features.common.Router
 import navigation.FragmentNavigatorImpl
 import navigation.NavigationController
 import navigation.Navigator

@@ -1,8 +1,8 @@
 package com.arsvechkarev.vault.features.creating_master_password
 
 import buisnesslogic.PasswordError
-import com.arsvechkarev.vault.core.Router
-import com.arsvechkarev.vault.core.Screens
+import com.arsvechkarev.vault.features.common.Router
+import com.arsvechkarev.vault.features.common.Screens
 import com.arsvechkarev.vault.core.mvi.tea.DslReducer
 import com.arsvechkarev.vault.features.creating_master_password.CreatingMasterPasswordCommand.FinishAuth
 import com.arsvechkarev.vault.features.creating_master_password.CreatingMasterPasswordCommand.PasswordCommand.CheckPasswordForErrors

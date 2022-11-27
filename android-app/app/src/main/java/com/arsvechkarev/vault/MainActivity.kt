@@ -5,11 +5,11 @@ import android.view.View
 import android.view.View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
 import android.view.View.SYSTEM_UI_FLAG_LAYOUT_STABLE
 import androidx.appcompat.app.AppCompatActivity
-import com.arsvechkarev.vault.core.Screens
+import com.arsvechkarev.vault.features.common.Screens
 import com.arsvechkarev.vault.core.di.AppComponent
 import com.arsvechkarev.vault.core.di.AppComponentProvider
 import com.arsvechkarev.vault.core.di.CoreComponentHolder
-import com.arsvechkarev.vault.views.RootView
+import com.arsvechkarev.vault.core.views.RootView
 import viewdsl.Size.Companion.MatchParent
 import viewdsl.ViewDslConfiguration
 import viewdsl.id

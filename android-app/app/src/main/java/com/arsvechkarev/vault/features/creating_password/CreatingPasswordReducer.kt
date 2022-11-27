@@ -4,7 +4,7 @@ import buisnesslogic.model.PasswordCharacteristic
 import buisnesslogic.model.PasswordCharacteristic.NUMBERS
 import buisnesslogic.model.PasswordCharacteristic.SPECIAL_SYMBOLS
 import buisnesslogic.model.PasswordCharacteristic.UPPERCASE_SYMBOLS
-import com.arsvechkarev.vault.core.Router
+import com.arsvechkarev.vault.features.common.Router
 import com.arsvechkarev.vault.core.mvi.tea.DslReducer
 import com.arsvechkarev.vault.features.creating_password.CreatingPasswordCommand.CheckPasswordStrength
 import com.arsvechkarev.vault.features.creating_password.CreatingPasswordCommand.ComputePasswordCharacteristics

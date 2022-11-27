@@ -4,7 +4,7 @@ import android.content.Context
 import android.view.Gravity.BOTTOM
 import android.view.Gravity.CENTER
 import com.arsvechkarev.vault.R
-import com.arsvechkarev.vault.core.Screens
+import com.arsvechkarev.vault.features.common.Screens
 import com.arsvechkarev.vault.core.di.appComponent
 import com.arsvechkarev.vault.viewbuilding.Dimens.ImageLogoSize
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginExtraLarge

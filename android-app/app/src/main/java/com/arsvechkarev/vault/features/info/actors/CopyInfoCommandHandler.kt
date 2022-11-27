@@ -1,6 +1,6 @@
 package com.arsvechkarev.vault.features.info.actors
 
-import com.arsvechkarev.vault.core.Clipboard
+import com.arsvechkarev.vault.features.common.domain.Clipboard
 import com.arsvechkarev.vault.core.extensions.emptyMap
 import com.arsvechkarev.vault.core.mvi.tea.Actor
 import com.arsvechkarev.vault.features.info.InfoScreenCommand

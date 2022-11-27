@@ -1,7 +1,7 @@
 package com.arsvechkarev.vault.features.creating_entry.actors
 
-import com.arsvechkarev.vault.core.ListenableCachedPasswordStorage
-import com.arsvechkarev.vault.core.MasterPasswordProvider
+import com.arsvechkarev.vault.features.common.data.ListenableCachedPasswordStorage
+import com.arsvechkarev.vault.features.common.domain.MasterPasswordProvider
 import com.arsvechkarev.vault.core.mvi.tea.Actor
 import com.arsvechkarev.vault.features.creating_entry.CreatingEntryCommand
 import com.arsvechkarev.vault.features.creating_entry.CreatingEntryCommand.SaveEntry

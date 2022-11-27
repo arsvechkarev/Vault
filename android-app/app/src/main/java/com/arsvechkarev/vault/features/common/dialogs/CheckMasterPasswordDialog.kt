@@ -25,11 +25,11 @@ import com.arsvechkarev.vault.viewbuilding.Styles.BoldTextView
 import com.arsvechkarev.vault.viewbuilding.Styles.Button
 import com.arsvechkarev.vault.viewbuilding.Styles.ImageCross
 import com.arsvechkarev.vault.viewbuilding.TextSizes
-import com.arsvechkarev.vault.views.EditTextPassword
-import com.arsvechkarev.vault.views.MaterialProgressBar
-import com.arsvechkarev.vault.views.MaterialProgressBar.Thickness
-import com.arsvechkarev.vault.views.behaviors.BottomSheetBehavior
-import com.arsvechkarev.vault.views.behaviors.BottomSheetBehavior.Companion.asBottomSheet
+import com.arsvechkarev.vault.core.views.EditTextPassword
+import com.arsvechkarev.vault.core.views.MaterialProgressBar
+import com.arsvechkarev.vault.core.views.MaterialProgressBar.Thickness
+import com.arsvechkarev.vault.core.views.behaviors.BottomSheetBehavior
+import com.arsvechkarev.vault.core.views.behaviors.BottomSheetBehavior.Companion.asBottomSheet
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import navigation.BaseFragmentScreen

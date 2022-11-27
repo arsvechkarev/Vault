@@ -1,7 +1,7 @@
 package com.arsvechkarev.vault.features.login
 
-import com.arsvechkarev.vault.core.Router
-import com.arsvechkarev.vault.core.Screens
+import com.arsvechkarev.vault.features.common.Router
+import com.arsvechkarev.vault.features.common.Screens
 import com.arsvechkarev.vault.core.mvi.tea.DslReducer
 import com.arsvechkarev.vault.features.login.LoginCommand.EnterWithMasterPassword
 import com.arsvechkarev.vault.features.login.LoginEvent.ShowFailureCheckingPassword

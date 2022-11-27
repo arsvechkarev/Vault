@@ -2,8 +2,8 @@ package com.arsvechkarev.vault.core.extensions
 
 import android.text.SpannableString
 import com.arsvechkarev.vault.R
-import com.arsvechkarev.vault.core.TypefaceSpan
 import com.arsvechkarev.vault.viewbuilding.Fonts
+import com.arsvechkarev.vault.viewbuilding.TypefaceSpan
 import navigation.BaseFragmentScreen
 
 fun BaseFragmentScreen.getDeleteMessageText(serviceName: String): CharSequence {

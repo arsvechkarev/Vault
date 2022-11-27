@@ -48,6 +48,11 @@ sealed interface InfoScreenCommand {
   }
   
   class DeletePasswordInfo(val passwordInfoItem: PasswordInfoItem) : InfoScreenCommand
+  
+  sealed interface RouterCommand : InfoScreenCommand {
+    object GoToCreatePasswordScreen : RouterCommand
+    object GoBack : RouterCommand
+  }
 }
 
 sealed interface InfoScreenNews {

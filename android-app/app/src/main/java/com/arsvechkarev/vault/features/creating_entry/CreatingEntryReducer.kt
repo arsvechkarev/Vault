@@ -1,9 +1,10 @@
 package com.arsvechkarev.vault.features.creating_entry
 
-import com.arsvechkarev.vault.features.common.Router
-import com.arsvechkarev.vault.features.common.Screens
 import com.arsvechkarev.vault.core.mvi.tea.DslReducer
 import com.arsvechkarev.vault.features.creating_entry.CreatingEntryCommand.NotifyEntryCreated
+import com.arsvechkarev.vault.features.creating_entry.CreatingEntryCommand.RouterCommand.GoBack
+import com.arsvechkarev.vault.features.creating_entry.CreatingEntryCommand.RouterCommand.GoToCreatePasswordScreen
+import com.arsvechkarev.vault.features.creating_entry.CreatingEntryCommand.RouterCommand.GoToInfoScreen
 import com.arsvechkarev.vault.features.creating_entry.CreatingEntryCommand.SaveEntry
 import com.arsvechkarev.vault.features.creating_entry.CreatingEntryCommand.ValidateInput
 import com.arsvechkarev.vault.features.creating_entry.CreatingEntryEvent.EntryCreated
@@ -16,9 +17,8 @@ import com.arsvechkarev.vault.features.creating_entry.CreatingEntryUiEvent.OnCon
 import com.arsvechkarev.vault.features.creating_entry.CreatingEntryUiEvent.OnLoginTextChanged
 import com.arsvechkarev.vault.features.creating_entry.CreatingEntryUiEvent.OnWebsiteNameTextChanged
 
-class CreatingEntryReducer(
-  private val router: Router
-) : DslReducer<CreatingEntryState, CreatingEntryEvent, CreatingEntryCommand, Nothing>() {
+class CreatingEntryReducer : DslReducer<CreatingEntryState, CreatingEntryEvent,
+    CreatingEntryCommand, Nothing>() {
   
   override fun dslReduce(event: CreatingEntryEvent) {
     when (event) {
@@ -32,7 +32,7 @@ class CreatingEntryReducer(
         commands(ValidateInput(event.websiteName, event.login))
       }
       OnBackButtonClicked -> {
-        router.goBack()
+        commands(GoBack)
       }
       is SendValidationResult -> {
         when (val result = event.validationResult) {
@@ -45,7 +45,7 @@ class CreatingEntryReducer(
             }
           }
           Success -> {
-            router.goForward(Screens.CreatingPasswordScreen)
+            commands(GoToCreatePasswordScreen)
           }
         }
       }
@@ -53,8 +53,7 @@ class CreatingEntryReducer(
         commands(SaveEntry(state.websiteName, state.login, event.password))
       }
       is EntryCreated -> {
-        commands(NotifyEntryCreated)
-        router.goForwardWithRemovalOf(Screens.InfoScreen(event.passwordInfoItem), 2)
+        commands(NotifyEntryCreated, GoToInfoScreen(event.passwordInfoItem))
       }
     }
   }

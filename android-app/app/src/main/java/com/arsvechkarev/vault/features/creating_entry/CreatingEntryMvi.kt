@@ -30,6 +30,12 @@ sealed interface CreatingEntryCommand {
   ) : CreatingEntryCommand
   
   object NotifyEntryCreated : CreatingEntryCommand
+  
+  sealed interface RouterCommand : CreatingEntryCommand {
+    object GoToCreatePasswordScreen : RouterCommand
+    class GoToInfoScreen(val passwordInfoItem: PasswordInfoItem) : RouterCommand
+    object GoBack : RouterCommand
+  }
 }
 
 data class CreatingEntryState(

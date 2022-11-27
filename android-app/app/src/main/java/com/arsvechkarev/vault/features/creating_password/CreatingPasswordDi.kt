@@ -5,6 +5,7 @@ import com.arsvechkarev.vault.core.mvi.tea.TeaStore
 import com.arsvechkarev.vault.core.mvi.tea.TeaStoreImpl
 import com.arsvechkarev.vault.features.common.di.CoreComponent
 import com.arsvechkarev.vault.features.creating_password.actors.CheckPasswordStrengthActor
+import com.arsvechkarev.vault.features.creating_password.actors.CreatingPasswordRouterActor
 import com.arsvechkarev.vault.features.creating_password.actors.GeneratePasswordActor
 import com.arsvechkarev.vault.features.creating_password.actors.ReceivingInputCreatingPasswordActor
 import com.arsvechkarev.vault.features.creating_password.actors.SendingOutputCreatingPasswordActor
@@ -18,9 +19,10 @@ fun CreatingPasswordStore(
       GeneratePasswordActor(coreComponent.passwordGenerator),
       CheckPasswordStrengthActor(coreComponent.passwordInfoChecker),
       ReceivingInputCreatingPasswordActor(communicator),
-      SendingOutputCreatingPasswordActor(communicator)
+      SendingOutputCreatingPasswordActor(communicator),
+      CreatingPasswordRouterActor(coreComponent.router)
     ),
-    reducer = CreatingPasswordReducer(coreComponent.router),
+    reducer = CreatingPasswordReducer(),
     initialState = CreatingPasswordState()
   )
 }

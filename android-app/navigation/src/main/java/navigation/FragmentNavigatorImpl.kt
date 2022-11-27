@@ -16,14 +16,16 @@ class FragmentNavigatorImpl(
   override fun applyCommands(commands: Array<out Command>) {
     commands.forEach { command ->
       when (command) {
-        is Forward -> performForward(command.screenInfo.screenKey,
-          command.screenInfo.arguments
-        )
+        is Forward -> performForward(command.screenInfo.screenKey, command.screenInfo.arguments)
         is Back -> performBack()
         is BackTo -> performBackTo(command.screenInfo.screenKey)
-        is ForwardWithRemovalOf -> performForwardWithRemovalOf(command.screenInfo.screenKey,
-          command.screenInfo.arguments, command.screensCount
-        )
+        is ForwardWithRemovalOf -> {
+          performForwardWithRemovalOf(
+            command.screenInfo.screenKey,
+            command.screenInfo.arguments,
+            command.screensCount
+          )
+        }
         is SwitchToNewRoot -> performSwitchToNewRoot(command.screenInfo.screenKey,
           command.screenInfo.arguments
         )

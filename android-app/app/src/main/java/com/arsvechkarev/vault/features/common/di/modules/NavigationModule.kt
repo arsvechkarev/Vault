@@ -1,6 +1,5 @@
 package com.arsvechkarev.vault.features.common.di.modules
 
-import com.arsvechkarev.vault.VaultApplication
 import com.arsvechkarev.vault.features.common.Router
 import navigation.NavigationController
 
@@ -11,7 +10,7 @@ interface NavigationModule {
 
 class NavigationModuleImpl : NavigationModule {
   
-  override val router = Router(VaultApplication.AppMainCoroutineScope)
+  override val router = Router()
   
   override val navigationController = NavigationController.create(router)
 }

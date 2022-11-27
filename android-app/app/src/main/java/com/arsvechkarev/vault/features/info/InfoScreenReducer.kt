@@ -2,13 +2,13 @@ package com.arsvechkarev.vault.features.info
 
 import androidx.annotation.StringRes
 import com.arsvechkarev.vault.R
-import com.arsvechkarev.vault.features.common.Router
-import com.arsvechkarev.vault.features.common.Screens
 import com.arsvechkarev.vault.core.model.PasswordInfoItem
 import com.arsvechkarev.vault.core.mvi.tea.DslReducer
 import com.arsvechkarev.vault.features.info.InfoScreenCommand.Copy
 import com.arsvechkarev.vault.features.info.InfoScreenCommand.DeletePasswordInfo
 import com.arsvechkarev.vault.features.info.InfoScreenCommand.OpenEditPasswordScreen
+import com.arsvechkarev.vault.features.info.InfoScreenCommand.RouterCommand.GoBack
+import com.arsvechkarev.vault.features.info.InfoScreenCommand.RouterCommand.GoToCreatePasswordScreen
 import com.arsvechkarev.vault.features.info.InfoScreenCommand.UpdateItem
 import com.arsvechkarev.vault.features.info.InfoScreenCommand.UpdateItem.UpdateLogin
 import com.arsvechkarev.vault.features.info.InfoScreenCommand.UpdateItem.UpdateNotes
@@ -37,9 +37,8 @@ import com.arsvechkarev.vault.features.info.InfoScreenUiEvent.OnOpenPasswordScre
 import com.arsvechkarev.vault.features.info.InfoScreenUiEvent.OnWebsiteNameActionClicked
 import com.arsvechkarev.vault.features.info.InfoScreenUiEvent.OnWebsiteNameTextChanged
 
-class InfoScreenReducer(
-  private val router: Router
-) : DslReducer<InfoScreenState, InfoScreenEvent, InfoScreenCommand, InfoScreenNews>() {
+class InfoScreenReducer : DslReducer<InfoScreenState, InfoScreenEvent, InfoScreenCommand,
+    InfoScreenNews>() {
   
   override fun dslReduce(event: InfoScreenEvent) {
     when (event) {
@@ -80,8 +79,10 @@ class InfoScreenReducer(
         handleCopy(R.string.clipboard_label_password, state.password, ShowPasswordCopied)
       }
       OnOpenPasswordScreenClicked -> {
-        commands(OpenEditPasswordScreen(state.password))
-        router.goForward(Screens.CreatingPasswordScreen)
+        commands(
+          OpenEditPasswordScreen(state.password),
+          GoToCreatePasswordScreen,
+        )
       }
       is OnWebsiteNameTextChanged -> {
         state { copy(websiteNameState = websiteNameState.edit(event.text)) }
@@ -114,7 +115,7 @@ class InfoScreenReducer(
         } else if (state.showDeletePasswordDialog) {
           state { copy(showDeletePasswordDialog = false) }
         } else {
-          router.goBack()
+          commands(GoBack)
         }
       }
       is UpdatedWebsiteName -> {
@@ -140,18 +141,18 @@ class InfoScreenReducer(
       }
       is UpdatedPassword -> {
         state { copy(passwordInfoItem = event.passwordInfoItem) }
-        router.goBack()
+        commands(GoBack)
       }
       is SavePasswordEventReceived -> {
         if (event.password != state.password) {
           val item = state.passwordInfoItem.copy(password = event.password)
           commands(UpdatePassword(item))
         } else {
-          router.goBack()
+          commands(GoBack)
         }
       }
       DeletedPasswordInfo -> {
-        router.goBack()
+        commands(GoBack)
       }
     }
   }

@@ -7,6 +7,7 @@ import com.arsvechkarev.vault.features.common.di.CoreComponent
 import com.arsvechkarev.vault.features.creating_password.CreatingPasswordCommunication
 import com.arsvechkarev.vault.features.info.actors.CopyInfoCommandHandler
 import com.arsvechkarev.vault.features.info.actors.DeletePasswordInfoActor
+import com.arsvechkarev.vault.features.info.actors.InfoRouterActor
 import com.arsvechkarev.vault.features.info.actors.OpenEditPasswordScreenActor
 import com.arsvechkarev.vault.features.info.actors.ReceivingPasswordCommunicationActor
 import com.arsvechkarev.vault.features.info.actors.UpdatePasswordInfoActor
@@ -31,8 +32,9 @@ fun InfoScreenStore(
       OpenEditPasswordScreenActor(communicatorHolder),
       CopyInfoCommandHandler(coreComponent.clipboard),
       ReceivingPasswordCommunicationActor(communicatorHolder.communicator),
+      InfoRouterActor(coreComponent.router),
     ),
-    reducer = InfoScreenReducer(coreComponent.router),
+    reducer = InfoScreenReducer(),
     initialState = InfoScreenState(passwordInfoItem)
   )
 }

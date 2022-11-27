@@ -37,6 +37,11 @@ sealed interface CreatingMasterPasswordCommand {
   }
   
   class FinishAuth(val password: String) : CreatingMasterPasswordCommand
+  
+  sealed interface RouterCommand : CreatingMasterPasswordCommand {
+    object GoBack : RouterCommand
+    object GoToMainListScreen : RouterCommand
+  }
 }
 
 data class CreatingMasterPasswordState(

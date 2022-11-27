@@ -1,10 +1,10 @@
 package com.arsvechkarev.vault.features.export_passwords
 
 import com.arsvechkarev.vault.core.mvi.tea.DslReducer
-import com.arsvechkarev.vault.features.common.Router
 import com.arsvechkarev.vault.features.export_passwords.ExportPasswordsCommand.CalculateFilenameFromUri
 import com.arsvechkarev.vault.features.export_passwords.ExportPasswordsCommand.ExportPasswords
 import com.arsvechkarev.vault.features.export_passwords.ExportPasswordsCommand.GetPasswordsFileUri
+import com.arsvechkarev.vault.features.export_passwords.ExportPasswordsCommand.GoBack
 import com.arsvechkarev.vault.features.export_passwords.ExportPasswordsEvent.CalculatedFilenameFromUri
 import com.arsvechkarev.vault.features.export_passwords.ExportPasswordsEvent.ExportedPasswords
 import com.arsvechkarev.vault.features.export_passwords.ExportPasswordsEvent.PasswordsFileUriReceived
@@ -19,9 +19,7 @@ import com.arsvechkarev.vault.features.export_passwords.ExportPasswordsUiEvent.O
 import com.arsvechkarev.vault.features.export_passwords.ExportPasswordsUiEvent.OnSelectedFolder
 import com.arsvechkarev.vault.features.export_passwords.ExportPasswordsUiEvent.OnViewExportedFileClicked
 
-class ExportPasswordsReducer(
-  private val router: Router
-) : DslReducer<ExportPasswordsState, ExportPasswordsEvent,
+class ExportPasswordsReducer : DslReducer<ExportPasswordsState, ExportPasswordsEvent,
     ExportPasswordsCommand, ExportPasswordsNews>() {
   
   override fun dslReduce(event: ExportPasswordsEvent) {
@@ -56,7 +54,7 @@ class ExportPasswordsReducer(
       }
       OnBackPressed -> {
         if (state.dialogType == null) {
-          router.goBack()
+          commands(GoBack)
         } else {
           state { copy(dialogType = null) }
         }

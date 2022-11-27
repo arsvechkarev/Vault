@@ -1,12 +1,13 @@
 package com.arsvechkarev.vault.features.creating_master_password
 
 import buisnesslogic.PasswordError
-import com.arsvechkarev.vault.features.common.Router
-import com.arsvechkarev.vault.features.common.Screens
 import com.arsvechkarev.vault.core.mvi.tea.DslReducer
+import com.arsvechkarev.vault.features.common.Router
 import com.arsvechkarev.vault.features.creating_master_password.CreatingMasterPasswordCommand.FinishAuth
 import com.arsvechkarev.vault.features.creating_master_password.CreatingMasterPasswordCommand.PasswordCommand.CheckPasswordForErrors
 import com.arsvechkarev.vault.features.creating_master_password.CreatingMasterPasswordCommand.PasswordCommand.CheckPasswordStrength
+import com.arsvechkarev.vault.features.creating_master_password.CreatingMasterPasswordCommand.RouterCommand.GoBack
+import com.arsvechkarev.vault.features.creating_master_password.CreatingMasterPasswordCommand.RouterCommand.GoToMainListScreen
 import com.arsvechkarev.vault.features.creating_master_password.CreatingMasterPasswordEvent.FinishedAuth
 import com.arsvechkarev.vault.features.creating_master_password.CreatingMasterPasswordEvent.UpdatePasswordError
 import com.arsvechkarev.vault.features.creating_master_password.CreatingMasterPasswordEvent.UpdatePasswordStrength
@@ -52,7 +53,7 @@ class CreatingMasterPasswordReducer(
         state { copy(passwordStrength = event.passwordStrength) }
       }
       FinishedAuth -> {
-        router.switchToNewRoot(Screens.MainListScreen)
+        commands(GoToMainListScreen)
       }
     }
   }
@@ -72,7 +73,7 @@ class CreatingMasterPasswordReducer(
         } else {
           when (state.passwordEnteringState) {
             INITIAL -> {
-              router.goBack()
+              commands(GoBack)
             }
             REPEATING -> {
               state { copy(passwordEnteringState = INITIAL) }

@@ -13,6 +13,7 @@ sealed interface LoginUiEvent : LoginEvent {
 
 sealed interface LoginCommand {
   class EnterWithMasterPassword(val password: String) : LoginCommand
+  object GoToMainListScreen : LoginCommand
 }
 
 data class LoginState(

@@ -38,6 +38,7 @@ sealed interface CreatingPasswordCommand {
   ) : CreatingPasswordCommand
   
   class ConfirmSavePassword(val password: String) : CreatingPasswordCommand
+  object GoBack : CreatingPasswordCommand
 }
 
 sealed interface CreatingPasswordNews {

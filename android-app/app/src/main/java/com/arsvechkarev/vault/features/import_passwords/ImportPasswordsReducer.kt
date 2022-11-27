@@ -1,7 +1,7 @@
 package com.arsvechkarev.vault.features.import_passwords
 
 import com.arsvechkarev.vault.core.mvi.tea.DslReducer
-import com.arsvechkarev.vault.features.common.Router
+import com.arsvechkarev.vault.features.import_passwords.ImportPasswordsCommand.GoBack
 import com.arsvechkarev.vault.features.import_passwords.ImportPasswordsCommand.TryImportPasswords
 import com.arsvechkarev.vault.features.import_passwords.ImportPasswordsEvent.PasswordsImportFailure
 import com.arsvechkarev.vault.features.import_passwords.ImportPasswordsEvent.PasswordsImportSuccess
@@ -16,9 +16,8 @@ import com.arsvechkarev.vault.features.import_passwords.ImportPasswordsUiEvent.O
 import com.arsvechkarev.vault.features.import_passwords.ImportPasswordsUiEvent.OnPasswordEntered
 import com.arsvechkarev.vault.features.import_passwords.ImportPasswordsUiEvent.OnSelectedFile
 
-class ImportPasswordsReducer(
-  private val router: Router
-) : DslReducer<ImportPasswordsState, ImportPasswordsEvent, ImportPasswordsCommand, Nothing>() {
+class ImportPasswordsReducer : DslReducer<ImportPasswordsState, ImportPasswordsEvent,
+    ImportPasswordsCommand, Nothing>() {
   
   override fun dslReduce(event: ImportPasswordsEvent) {
     when (event) {
@@ -50,7 +49,7 @@ class ImportPasswordsReducer(
           state.showLoading -> return
           state.infoDialog != null -> state { copy(infoDialog = null) }
           state.showEnteringPassword -> state { copy(showEnteringPassword = false) }
-          else -> router.goBack()
+          else -> commands(GoBack)
         }
       }
       PasswordsImportFailure -> {

@@ -13,11 +13,18 @@ sealed interface MainListUiEvent : MainListEvent {
   object OnCloseMenuClicked : MainListUiEvent
   object OnBackPressed : MainListUiEvent
   class OnPasswordItemClicked(val passwordInfoItem: PasswordInfoItem) : MainListUiEvent
-  class OnMenuItemClicked(val itemType: MenuItemType) : MainListUiEvent
+  class OnMenuItemClicked(val item: MenuItemType) : MainListUiEvent
 }
 
 sealed interface MainListCommand {
+  
   object LoadData : MainListCommand
+  
+  sealed interface RouterCommand : MainListCommand {
+    class OpenMenuItem(val item: MenuItemType) : RouterCommand
+    class GoToInfoScreen(val passwordInfoItem: PasswordInfoItem) : RouterCommand
+    object GoBack : RouterCommand
+  }
 }
 
 data class MainListState(

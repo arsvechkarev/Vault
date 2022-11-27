@@ -22,7 +22,6 @@ sealed interface CreatingMasterPasswordUiEvent : CreatingMasterPasswordEvent {
   object RequestHidePasswordStrengthDialog : CreatingMasterPasswordUiEvent
   object OnContinueClicked : CreatingMasterPasswordUiEvent
   object OnBackPressed : CreatingMasterPasswordUiEvent
-  object OnBackButtonClicked : CreatingMasterPasswordUiEvent
 }
 
 sealed interface CreatingMasterPasswordNews {

@@ -12,7 +12,7 @@ import com.arsvechkarev.vault.features.creating_entry.CreatingEntryEvent.Passwor
 import com.arsvechkarev.vault.features.creating_entry.CreatingEntryEvent.SendValidationResult
 import com.arsvechkarev.vault.features.creating_entry.CreatingEntryEvent.ValidationResult.Fail
 import com.arsvechkarev.vault.features.creating_entry.CreatingEntryEvent.ValidationResult.Success
-import com.arsvechkarev.vault.features.creating_entry.CreatingEntryUiEvent.OnBackButtonClicked
+import com.arsvechkarev.vault.features.creating_entry.CreatingEntryUiEvent.OnBackPressed
 import com.arsvechkarev.vault.features.creating_entry.CreatingEntryUiEvent.OnContinueClicked
 import com.arsvechkarev.vault.features.creating_entry.CreatingEntryUiEvent.OnLoginTextChanged
 import com.arsvechkarev.vault.features.creating_entry.CreatingEntryUiEvent.OnWebsiteNameTextChanged
@@ -31,7 +31,7 @@ class CreatingEntryReducer : DslReducer<CreatingEntryState, CreatingEntryEvent,
       is OnContinueClicked -> {
         commands(ValidateInput(event.websiteName, event.login))
       }
-      OnBackButtonClicked -> {
+      OnBackPressed -> {
         commands(GoBack)
       }
       is SendValidationResult -> {

@@ -3,7 +3,7 @@ package com.arsvechkarev.vault.features.main_list.actors
 import com.arsvechkarev.vault.core.mvi.tea.Actor
 import com.arsvechkarev.vault.features.common.DurationsConfigurator
 import com.arsvechkarev.vault.features.common.Router
-import com.arsvechkarev.vault.features.common.Screens
+import com.arsvechkarev.vault.features.common.Screens.CreatingEntryScreen
 import com.arsvechkarev.vault.features.common.Screens.ExportPasswordsScreen
 import com.arsvechkarev.vault.features.common.Screens.ImportPasswordsScreen
 import com.arsvechkarev.vault.features.common.Screens.InfoScreen
@@ -27,7 +27,7 @@ fun MainListRouterActor(router: Router): Actor<MainListCommand, MainListEvent> {
           MenuItemType.EXPORT_PASSWORDS -> goForward(ExportPasswordsScreen)
           MenuItemType.IMPORT_PASSWORDS -> goForward(ImportPasswordsScreen)
           MenuItemType.SETTINGS -> goForward(SettingsScreen)
-          MenuItemType.NEW_PASSWORD -> goForward(Screens.CreatingPasswordScreen)
+          MenuItemType.NEW_PASSWORD -> goForward(CreatingEntryScreen)
         }
       }
       is GoToInfoScreen -> {

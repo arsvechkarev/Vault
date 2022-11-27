@@ -22,11 +22,9 @@ abstract class BaseFragmentScreen : Fragment() {
   
   open fun onInit() = Unit
   
-  open fun onAppearedOnScreen() = Unit
-  
   open fun onViewCreated() = Unit
   
-  open fun onAppearedOnScreenAfterAnimation() = Unit
+  open fun onAppearedOnScreen() = Unit
   
   open fun onDisappearedFromScreen() = Unit
   
@@ -51,14 +49,9 @@ abstract class BaseFragmentScreen : Fragment() {
     onViewCreated()
   }
   
-  override fun onStart() {
-    super.onStart()
-    onAppearedOnScreen()
-  }
-  
   override fun onResume() {
+    onAppearedOnScreen()
     super.onResume()
-    onAppearedOnScreenAfterAnimation()
   }
   
   override fun onStop() {

@@ -15,7 +15,6 @@ object Dimens {
   private const val SCREEN_TYPE_LARGE = 2
   private const val SCREEN_TYPE_XLARGE = 3
   
-  // TODO (8/13/2022): Rework margins system
   val VerticalMarginSmall get() = adjustVertical(8.dp)
   val HorizontalMarginSmall get() = adjust(8.dp)
   val HorizontalMarginVerySmall get() = adjustHorizontal(4.dp)

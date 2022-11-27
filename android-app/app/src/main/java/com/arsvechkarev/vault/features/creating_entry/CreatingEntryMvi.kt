@@ -17,7 +17,7 @@ sealed interface CreatingEntryUiEvent : CreatingEntryEvent {
   class OnWebsiteNameTextChanged(val text: String) : CreatingEntryUiEvent
   class OnLoginTextChanged(val text: String) : CreatingEntryUiEvent
   class OnContinueClicked(val websiteName: String, val login: String) : CreatingEntryUiEvent
-  object OnBackButtonClicked : CreatingEntryUiEvent
+  object OnBackPressed : CreatingEntryUiEvent
 }
 
 sealed interface CreatingEntryCommand {

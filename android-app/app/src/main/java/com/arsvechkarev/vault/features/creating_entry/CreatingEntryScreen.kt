@@ -10,7 +10,7 @@ import com.arsvechkarev.vault.R
 import com.arsvechkarev.vault.core.mvi.ext.subscribe
 import com.arsvechkarev.vault.core.mvi.ext.viewModelStore
 import com.arsvechkarev.vault.features.common.di.CoreComponentHolder.coreComponent
-import com.arsvechkarev.vault.features.creating_entry.CreatingEntryUiEvent.OnBackButtonClicked
+import com.arsvechkarev.vault.features.creating_entry.CreatingEntryUiEvent.OnBackPressed
 import com.arsvechkarev.vault.features.creating_entry.CreatingEntryUiEvent.OnContinueClicked
 import com.arsvechkarev.vault.features.creating_entry.CreatingEntryUiEvent.OnLoginTextChanged
 import com.arsvechkarev.vault.features.creating_entry.CreatingEntryUiEvent.OnWebsiteNameTextChanged
@@ -63,7 +63,7 @@ class CreatingEntryScreen : BaseFragmentScreen() {
         ImageView(WrapContent, WrapContent, style = ImageBack) {
           margin(MarginNormal)
           gravity(CENTER_VERTICAL)
-          onClick { store.tryDispatch(OnBackButtonClicked) }
+          onClick { store.tryDispatch(OnBackPressed) }
         }
         TextView(WrapContent, WrapContent, style = BoldTextView) {
           layoutGravity(CENTER)
@@ -119,7 +119,7 @@ class CreatingEntryScreen : BaseFragmentScreen() {
     store.subscribe(this, ::render)
   }
   
-  override fun onAppearedOnScreenAfterAnimation() {
+  override fun onAppearedOnScreen() {
     editText(EditTextWebsiteName).apply {
       requestFocus()
       requireContext().showKeyboard(this)

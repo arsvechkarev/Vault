@@ -4,14 +4,12 @@ import android.content.Context
 import android.view.Gravity.CENTER
 import android.view.View
 import com.arsvechkarev.vault.R
-import com.arsvechkarev.vault.VaultApplication.Companion.AppMainCoroutineScope
 import com.arsvechkarev.vault.core.mvi.ext.subscribe
 import com.arsvechkarev.vault.core.mvi.ext.viewModelStore
 import com.arsvechkarev.vault.core.views.EditTextPassword
 import com.arsvechkarev.vault.features.common.di.CoreComponentHolder.coreComponent
 import com.arsvechkarev.vault.features.common.dialogs.LoadingDialog
 import com.arsvechkarev.vault.features.common.dialogs.loadingDialog
-import com.arsvechkarev.vault.features.login.LoginUiEvent.OnAppearedOnScreen
 import com.arsvechkarev.vault.features.login.LoginUiEvent.OnEnteredPassword
 import com.arsvechkarev.vault.features.login.LoginUiEvent.OnTypingText
 import com.arsvechkarev.vault.viewbuilding.Colors
@@ -24,7 +22,6 @@ import com.arsvechkarev.vault.viewbuilding.Styles.BaseTextView
 import com.arsvechkarev.vault.viewbuilding.Styles.BoldTextView
 import com.arsvechkarev.vault.viewbuilding.Styles.Button
 import com.arsvechkarev.vault.viewbuilding.TextSizes
-import kotlinx.coroutines.launch
 import navigation.BaseFragmentScreen
 import viewdsl.Size.Companion.MatchParent
 import viewdsl.Size.Companion.WrapContent
@@ -38,13 +35,11 @@ import viewdsl.margin
 import viewdsl.marginHorizontal
 import viewdsl.margins
 import viewdsl.onClick
-import viewdsl.showKeyboard
 import viewdsl.text
 import viewdsl.textColor
 import viewdsl.textSize
 import viewdsl.withViewBuilder
 
-// TODO (7/21/2022): Add support for entering code instead of master password
 class LoginScreen : BaseFragmentScreen() {
   
   override fun buildLayout(context: Context) = context.withViewBuilder {
@@ -111,23 +106,20 @@ class LoginScreen : BaseFragmentScreen() {
     store.subscribe(this, ::render)
   }
   
-  override fun onAppearedOnScreenAfterAnimation() {
-    // TODO (8/6/2022): Maybe create custom scope for screens
-    AppMainCoroutineScope.launch { store.dispatch(OnAppearedOnScreen) }
+  override fun onAppearedOnScreen() {
+    viewAs<EditTextPassword>(EditTextPasswordId).showKeyboard()
   }
   
   private fun render(state: LoginState) {
-    if (state.isLoading) loadingDialog.show() else loadingDialog.hide()
+    if (state.isLoading) {
+      loadingDialog.show()
+    } else {
+      loadingDialog.hide()
+    }
     if (state.showPasswordIsIncorrect) {
       textView(TextErrorId).text(R.string.text_password_is_incorrect)
     } else {
       textView(TextErrorId).clearText()
-    }
-    if (state.showKeyboard) {
-      requireContext().showKeyboard()
-      viewAs<EditTextPassword>(EditTextPasswordId).requestEditTextFocus()
-    } else {
-      requireContext().hideKeyboard()
     }
   }
   

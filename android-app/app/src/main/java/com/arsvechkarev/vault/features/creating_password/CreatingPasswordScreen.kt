@@ -166,7 +166,7 @@ class CreatingPasswordScreen : BaseFragmentScreen() {
     store.subscribe(this, ::render, ::handleNews)
   }
   
-  override fun onAppearedOnScreenAfterAnimation() {
+  override fun onAppearedOnScreen() {
     requireContext().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING)
     requireContext().hideKeyboard()
   }

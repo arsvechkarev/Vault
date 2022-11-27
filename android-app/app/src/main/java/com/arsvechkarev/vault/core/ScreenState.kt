@@ -9,9 +9,7 @@ package com.arsvechkarev.vault.core
  * @see Type
  * @see ResultConsumer
  */
-// TODO (7/21/2022): Refactor to "ContentState" (Success, Empty) and
-//  "ScreenState" (Success,Loading, Empty)
-class State<S> private constructor(
+class ScreenState<S> private constructor(
   private val data: Any?,
   private val type: Type
 ) {
@@ -31,27 +29,18 @@ class State<S> private constructor(
       Type.FAILURE -> consumer.onFailure.invoke(data as Throwable)
     }
   }
-  
-  val isLoading get() = type == Type.LOADING
-  
-  val isSuccess get() = type == Type.SUCCESS
-  
-  val isEmpty get() = type == Type.EMPTY
-  
-  val isFailure get() = type == Type.FAILURE
-  
   companion object {
   
-    fun <S> loading(): State<S> = State(null, Type.LOADING)
+    fun <S> loading(): ScreenState<S> = ScreenState(null, Type.LOADING)
   
-    fun <S> success(value: S): State<S> = State(value, Type.SUCCESS)
+    fun <S> success(value: S): ScreenState<S> = ScreenState(value, Type.SUCCESS)
   
-    fun <S> empty(): State<S> = State(null, Type.EMPTY)
+    fun <S> empty(): ScreenState<S> = ScreenState(null, Type.EMPTY)
   }
 }
 
 /**
- * Represents a result type that [State] could have
+ * Represents a result type that [ScreenState] could have
  */
 private enum class Type {
   SUCCESS, FAILURE, LOADING, EMPTY
@@ -74,9 +63,5 @@ class ResultConsumer<S> {
   
   fun onSuccess(action: (S) -> Unit) {
     this.onSuccess = action
-  }
-  
-  fun onFailure(action: (Throwable) -> Unit) {
-    this.onFailure = action
   }
 }

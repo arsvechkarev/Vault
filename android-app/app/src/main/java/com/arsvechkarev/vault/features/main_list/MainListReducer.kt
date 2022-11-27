@@ -1,11 +1,12 @@
 package com.arsvechkarev.vault.features.main_list
 
+import com.arsvechkarev.vault.core.mvi.tea.DslReducer
+import com.arsvechkarev.vault.features.common.DurationsConfigurator
 import com.arsvechkarev.vault.features.common.Router
 import com.arsvechkarev.vault.features.common.Screens.CreatingEntryScreen
 import com.arsvechkarev.vault.features.common.Screens.ExportPasswordsScreen
 import com.arsvechkarev.vault.features.common.Screens.InfoScreen
 import com.arsvechkarev.vault.features.common.Screens.SettingsScreen
-import com.arsvechkarev.vault.core.mvi.tea.DslReducer
 import com.arsvechkarev.vault.features.main_list.MainListCommand.LoadData
 import com.arsvechkarev.vault.features.main_list.MainListEvent.UpdateData
 import com.arsvechkarev.vault.features.main_list.MainListUiEvent.OnBackPressed
@@ -18,7 +19,6 @@ import com.arsvechkarev.vault.features.main_list.MenuItemType.EXPORT_PASSWORDS
 import com.arsvechkarev.vault.features.main_list.MenuItemType.IMPORT_PASSWORDS
 import com.arsvechkarev.vault.features.main_list.MenuItemType.NEW_PASSWORD
 import com.arsvechkarev.vault.features.main_list.MenuItemType.SETTINGS
-import config.DurationsConfigurator
 
 class MainListReducer(
   private val router: Router

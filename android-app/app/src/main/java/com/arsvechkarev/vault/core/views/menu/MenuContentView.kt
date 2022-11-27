@@ -12,9 +12,9 @@ import android.view.ViewConfiguration
 import android.view.ViewGroup
 import com.arsvechkarev.vault.R
 import com.arsvechkarev.vault.core.extensions.Paint
+import com.arsvechkarev.vault.features.common.DurationsConfigurator
 import com.arsvechkarev.vault.viewbuilding.Colors
 import com.arsvechkarev.vault.viewbuilding.TextSizes
-import config.DurationsConfigurator
 import viewdsl.AccelerateDecelerateInterpolator
 import viewdsl.cancelIfRunning
 import viewdsl.children

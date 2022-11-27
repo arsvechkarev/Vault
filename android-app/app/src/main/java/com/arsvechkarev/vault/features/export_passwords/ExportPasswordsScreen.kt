@@ -200,8 +200,7 @@ class ExportPasswordsScreen : BaseFragmentScreen() {
         store.tryDispatch(OnSelectedFolder(folderPath.toString()))
       }
       CREATE_FILE_REQUEST_CODE -> {
-        
-        println(data?.data) ?: return
+        println("qqq: ${data?.data}")
       }
     }
   }

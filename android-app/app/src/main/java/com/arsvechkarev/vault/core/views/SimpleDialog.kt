@@ -11,8 +11,8 @@ import android.view.View
 import android.view.ViewConfiguration
 import android.widget.FrameLayout
 import androidx.core.graphics.ColorUtils
+import com.arsvechkarev.vault.features.common.DurationsConfigurator
 import com.arsvechkarev.vault.viewbuilding.Colors
-import config.DurationsConfigurator
 import viewdsl.AccelerateDecelerateInterpolator
 import viewdsl.cancelIfRunning
 import viewdsl.contains

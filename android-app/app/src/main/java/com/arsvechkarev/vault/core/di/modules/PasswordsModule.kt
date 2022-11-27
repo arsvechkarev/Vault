@@ -26,7 +26,7 @@ interface PasswordsModule {
 class PasswordsModuleImpl(
   coreModule: CoreModule,
   cryptographyModule: CryptographyModule,
-  fileSaverModule: FileSaverModule,
+  ioModule: IoModule,
 ) : PasswordsModule {
   
   private val secureRandom = SecureRandom()
@@ -35,13 +35,13 @@ class PasswordsModuleImpl(
   override val passwordGenerator = PasswordGeneratorImpl { secureRandom.nextInt(it) }
   override val masterPasswordProvider = MasterPasswordProviderImpl
   override val masterPasswordChecker =
-      MasterPasswordCheckerImpl(cryptographyModule.cryptography, fileSaverModule.fileSaver)
+      MasterPasswordCheckerImpl(cryptographyModule.cryptography, ioModule.fileSaver)
   
   override val listenableCachedPasswordStorage = ListenableCachedPasswordStorage(
     CachedPasswordsStorage(
       storage = PasswordsStorageImpl(
         cryptographyModule.cryptography,
-        fileSaverModule.fileSaver,
+        ioModule.fileSaver,
         coreModule.jsonConverter
       ),
       idGenerator = IdGeneratorImpl

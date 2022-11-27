@@ -15,6 +15,11 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import com.arsvechkarev.vault.R
 import com.arsvechkarev.vault.core.di.AppComponentProvider
+import com.arsvechkarev.vault.core.views.EditTextPassword
+import com.arsvechkarev.vault.core.views.MaterialProgressBar
+import com.arsvechkarev.vault.core.views.MaterialProgressBar.Thickness
+import com.arsvechkarev.vault.core.views.behaviors.BottomSheetBehavior
+import com.arsvechkarev.vault.core.views.behaviors.BottomSheetBehavior.Companion.asBottomSheet
 import com.arsvechkarev.vault.viewbuilding.Colors
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginExtraLarge
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginNormal
@@ -25,11 +30,6 @@ import com.arsvechkarev.vault.viewbuilding.Styles.BoldTextView
 import com.arsvechkarev.vault.viewbuilding.Styles.Button
 import com.arsvechkarev.vault.viewbuilding.Styles.ImageCross
 import com.arsvechkarev.vault.viewbuilding.TextSizes
-import com.arsvechkarev.vault.core.views.EditTextPassword
-import com.arsvechkarev.vault.core.views.MaterialProgressBar
-import com.arsvechkarev.vault.core.views.MaterialProgressBar.Thickness
-import com.arsvechkarev.vault.core.views.behaviors.BottomSheetBehavior
-import com.arsvechkarev.vault.core.views.behaviors.BottomSheetBehavior.Companion.asBottomSheet
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import navigation.BaseFragmentScreen
@@ -82,6 +82,7 @@ class CheckMasterPasswordDialog(context: Context) : FrameLayout(context) {
         child<EditTextPassword>(MatchParent, WrapContent) {
           margins(top = MarginExtraLarge + MarginNormal)
           classNameTag()
+          text("qwetu1233") // TODO (27.11.2022): REMOVE THIS!
           setHint(R.string.hint_enter_password)
           onTextChanged { parentView.textView(TextError).clearText() }
           onSubmit { password -> checkMasterPassword(password) }

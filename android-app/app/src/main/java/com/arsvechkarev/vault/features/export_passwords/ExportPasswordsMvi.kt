@@ -3,6 +3,7 @@ package com.arsvechkarev.vault.features.export_passwords
 import android.net.Uri
 
 sealed interface ExportPasswordsEvent {
+  object ExportedPasswords : ExportPasswordsEvent
   class PasswordsFileUriReceived(val uri: String) : ExportPasswordsEvent
   class CalculatedFilenameFromUri(val filename: String) : ExportPasswordsEvent
 }
@@ -15,11 +16,12 @@ sealed interface ExportPasswordsUiEvent : ExportPasswordsEvent {
   object OnMasterPasswordCheckPassed : ExportPasswordsUiEvent
   object OnHideMasterPasswordCheckDialog : ExportPasswordsUiEvent
   object OnHideViewExportedFileDialog : ExportPasswordsUiEvent
-  class OnPasswordsExported(val uri: Uri) : ExportPasswordsUiEvent
+  class OnFileForPasswordsExportCreated(val uri: Uri) : ExportPasswordsUiEvent
   object OnBackPressed : ExportPasswordsUiEvent
 }
 
 sealed interface ExportPasswordsCommand {
+  class ExportPasswords(val uri: Uri) : ExportPasswordsCommand
   object GetPasswordsFileUri : ExportPasswordsCommand
   class CalculateFilenameFromUri(val uri: Uri, val fallback: String) : ExportPasswordsCommand
 }

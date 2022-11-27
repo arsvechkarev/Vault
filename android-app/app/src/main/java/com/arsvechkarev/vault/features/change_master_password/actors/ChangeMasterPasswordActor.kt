@@ -7,7 +7,7 @@ import com.arsvechkarev.vault.features.change_master_password.ChangeMasterPasswo
 import com.arsvechkarev.vault.features.change_master_password.ChangeMasterPasswordCommand.ChangeMasterPassword
 import com.arsvechkarev.vault.features.change_master_password.ChangeMasterPasswordEvent
 import com.arsvechkarev.vault.features.change_master_password.ChangeMasterPasswordEvent.NewMasterPasswordSaved
-import com.arsvechkarev.vault.features.common.data.ListenableCachedPasswordStorage
+import com.arsvechkarev.vault.features.common.data.storage.ListenableCachedPasswordsStorage
 import com.arsvechkarev.vault.features.common.domain.MasterPasswordProvider
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.filterIsInstance
@@ -16,7 +16,7 @@ import kotlinx.coroutines.flow.mapLatest
 class ChangeMasterPasswordActor(
   private val masterPasswordChecker: MasterPasswordChecker,
   private val masterPasswordProvider: MasterPasswordProvider,
-  private val storage: ListenableCachedPasswordStorage,
+  private val storage: ListenableCachedPasswordsStorage,
 ) : Actor<ChangeMasterPasswordCommand, ChangeMasterPasswordEvent> {
   
   override fun handle(commands: Flow<ChangeMasterPasswordCommand>): Flow<ChangeMasterPasswordEvent> {

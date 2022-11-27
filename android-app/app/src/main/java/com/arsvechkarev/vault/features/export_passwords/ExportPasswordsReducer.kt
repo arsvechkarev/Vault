@@ -3,17 +3,19 @@ package com.arsvechkarev.vault.features.export_passwords
 import com.arsvechkarev.vault.core.mvi.tea.DslReducer
 import com.arsvechkarev.vault.features.common.Router
 import com.arsvechkarev.vault.features.export_passwords.ExportPasswordsCommand.CalculateFilenameFromUri
+import com.arsvechkarev.vault.features.export_passwords.ExportPasswordsCommand.ExportPasswords
 import com.arsvechkarev.vault.features.export_passwords.ExportPasswordsCommand.GetPasswordsFileUri
 import com.arsvechkarev.vault.features.export_passwords.ExportPasswordsEvent.CalculatedFilenameFromUri
+import com.arsvechkarev.vault.features.export_passwords.ExportPasswordsEvent.ExportedPasswords
 import com.arsvechkarev.vault.features.export_passwords.ExportPasswordsEvent.PasswordsFileUriReceived
 import com.arsvechkarev.vault.features.export_passwords.ExportPasswordsNews.TryExportPasswords
 import com.arsvechkarev.vault.features.export_passwords.ExportPasswordsUiEvent.OnBackPressed
 import com.arsvechkarev.vault.features.export_passwords.ExportPasswordsUiEvent.OnExportPasswordClicked
+import com.arsvechkarev.vault.features.export_passwords.ExportPasswordsUiEvent.OnFileForPasswordsExportCreated
 import com.arsvechkarev.vault.features.export_passwords.ExportPasswordsUiEvent.OnFilenameTextChanged
 import com.arsvechkarev.vault.features.export_passwords.ExportPasswordsUiEvent.OnHideMasterPasswordCheckDialog
 import com.arsvechkarev.vault.features.export_passwords.ExportPasswordsUiEvent.OnHideViewExportedFileDialog
 import com.arsvechkarev.vault.features.export_passwords.ExportPasswordsUiEvent.OnMasterPasswordCheckPassed
-import com.arsvechkarev.vault.features.export_passwords.ExportPasswordsUiEvent.OnPasswordsExported
 import com.arsvechkarev.vault.features.export_passwords.ExportPasswordsUiEvent.OnSelectedFolder
 import com.arsvechkarev.vault.features.export_passwords.ExportPasswordsUiEvent.OnViewExportedFileClicked
 
@@ -65,14 +67,15 @@ class ExportPasswordsReducer(
       is PasswordsFileUriReceived -> {
         news(TryExportPasswords(state.folderPath, state.filename, event.uri))
       }
-      is OnPasswordsExported -> {
-        state {
-          copy(
-            dialogType = ExportPasswordsDialogType.SUCCESS_EXPORT,
-            exportedFileUri = event.uri
-          )
-        }
-        commands(CalculateFilenameFromUri(event.uri, fallback = state.filename))
+      is OnFileForPasswordsExportCreated -> {
+        state { copy(exportedFileUri = event.uri) }
+        commands(
+          ExportPasswords(event.uri),
+          CalculateFilenameFromUri(event.uri, fallback = state.filename),
+        )
+      }
+      ExportedPasswords -> {
+        state { copy(dialogType = ExportPasswordsDialogType.SUCCESS_EXPORT) }
       }
     }
   }

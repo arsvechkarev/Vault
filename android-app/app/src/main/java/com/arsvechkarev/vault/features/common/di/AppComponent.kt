@@ -1,8 +1,8 @@
-package com.arsvechkarev.vault.core.di
+package com.arsvechkarev.vault.features.common.di
 
 import androidx.fragment.app.FragmentActivity
-import com.arsvechkarev.vault.core.di.modules.NavigationModule
-import com.arsvechkarev.vault.core.di.modules.NavigationModuleImpl
+import com.arsvechkarev.vault.features.common.di.modules.NavigationModule
+import com.arsvechkarev.vault.features.common.di.modules.NavigationModuleImpl
 
 class AppComponent(
   private val coreComponent: CoreComponent,

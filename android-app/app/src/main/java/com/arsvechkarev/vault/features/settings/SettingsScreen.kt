@@ -6,9 +6,10 @@ import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.arsvechkarev.vault.R
 import com.arsvechkarev.vault.features.common.Screens.ChangeMasterPasswordScreen
-import com.arsvechkarev.vault.core.di.appComponent
-import com.arsvechkarev.vault.features.common.dialogs.CheckMasterPasswordDialog.Companion.CheckMasterPasswordDialog
-import com.arsvechkarev.vault.features.common.dialogs.CheckMasterPasswordDialog.Companion.checkMasterPasswordDialog
+import com.arsvechkarev.vault.features.common.di.appComponent
+import com.arsvechkarev.vault.features.common.dialogs.EnterPasswordDialog.Companion.EnterPasswordDialog
+import com.arsvechkarev.vault.features.common.dialogs.EnterPasswordDialog.Companion.enterPasswordDialog
+import com.arsvechkarev.vault.features.common.dialogs.EnterPasswordDialog.Mode.CHECK_MASTER_PASSWORD
 import com.arsvechkarev.vault.viewbuilding.Colors
 import com.arsvechkarev.vault.viewbuilding.Dimens.DividerHeight
 import com.arsvechkarev.vault.viewbuilding.Dimens.GradientDrawableHeight
@@ -71,7 +72,7 @@ class SettingsScreen : BaseFragmentScreen() {
           id(ItemChangePassword)
           padding(MarginNormal)
           rippleBackground(Colors.Ripple)
-          onClick { checkMasterPasswordDialog.show() }
+          onClick { enterPasswordDialog.show() }
           constraints {
             topToBottomOf(FirstDivider)
           }
@@ -92,15 +93,16 @@ class SettingsScreen : BaseFragmentScreen() {
           }
         }
       }
-      CheckMasterPasswordDialog(
+      EnterPasswordDialog(
+        mode = CHECK_MASTER_PASSWORD,
         onCheckSuccessful = { appComponent.router.goForward(ChangeMasterPasswordScreen) },
       )
     }
   }
   
   override fun handleBackPress(): Boolean {
-    if (checkMasterPasswordDialog.isDialogShown) {
-      checkMasterPasswordDialog.hide()
+    if (enterPasswordDialog.isDialogShown) {
+      enterPasswordDialog.hide()
     } else {
       appComponent.router.goBack()
     }

@@ -11,9 +11,11 @@ import buisnesslogic.PasswordStrength.STRONG
 import buisnesslogic.PasswordStrength.VERY_STRONG
 import buisnesslogic.PasswordStrength.WEAK
 import com.arsvechkarev.vault.R
-import com.arsvechkarev.vault.core.di.appComponent
 import com.arsvechkarev.vault.core.mvi.ext.subscribe
 import com.arsvechkarev.vault.core.mvi.ext.viewModelStore
+import com.arsvechkarev.vault.core.views.EditTextPassword
+import com.arsvechkarev.vault.core.views.PasswordStrengthMeter
+import com.arsvechkarev.vault.features.common.di.appComponent
 import com.arsvechkarev.vault.features.common.dialogs.LoadingDialog
 import com.arsvechkarev.vault.features.common.dialogs.PasswordStrengthDialog.Companion.PasswordStrengthDialog
 import com.arsvechkarev.vault.features.common.dialogs.PasswordStrengthDialog.Companion.passwordStrengthDialog
@@ -43,8 +45,6 @@ import com.arsvechkarev.vault.viewbuilding.Styles.BoldTextView
 import com.arsvechkarev.vault.viewbuilding.Styles.Button
 import com.arsvechkarev.vault.viewbuilding.Styles.ImageBack
 import com.arsvechkarev.vault.viewbuilding.TextSizes
-import com.arsvechkarev.vault.core.views.EditTextPassword
-import com.arsvechkarev.vault.core.views.PasswordStrengthMeter
 import navigation.BaseFragmentScreen
 import viewdsl.Size.Companion.MatchParent
 import viewdsl.Size.Companion.WrapContent

@@ -9,11 +9,13 @@ import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import com.arsvechkarev.vault.R
 import com.arsvechkarev.vault.VaultApplication.Companion.AppMainCoroutineScope
-import com.arsvechkarev.vault.viewbuilding.TypefaceSpan
-import com.arsvechkarev.vault.core.di.appComponent
 import com.arsvechkarev.vault.core.extensions.ifTrue
 import com.arsvechkarev.vault.core.mvi.ext.subscribe
 import com.arsvechkarev.vault.core.mvi.ext.viewModelStore
+import com.arsvechkarev.vault.core.views.MaterialProgressBar
+import com.arsvechkarev.vault.core.views.menu.MenuItem
+import com.arsvechkarev.vault.core.views.menu.MenuView
+import com.arsvechkarev.vault.features.common.di.appComponent
 import com.arsvechkarev.vault.features.main_list.MainListUiEvent.OnBackPressed
 import com.arsvechkarev.vault.features.main_list.MainListUiEvent.OnCloseMenuClicked
 import com.arsvechkarev.vault.features.main_list.MainListUiEvent.OnInit
@@ -35,9 +37,7 @@ import com.arsvechkarev.vault.viewbuilding.Styles.BaseTextView
 import com.arsvechkarev.vault.viewbuilding.Styles.BoldTextView
 import com.arsvechkarev.vault.viewbuilding.Styles.TitleTextView
 import com.arsvechkarev.vault.viewbuilding.TextSizes
-import com.arsvechkarev.vault.core.views.MaterialProgressBar
-import com.arsvechkarev.vault.core.views.menu.MenuItem
-import com.arsvechkarev.vault.core.views.menu.MenuView
+import com.arsvechkarev.vault.viewbuilding.TypefaceSpan
 import kotlinx.coroutines.launch
 import navigation.BaseFragmentScreen
 import viewdsl.Size.Companion.MatchParent

@@ -1,10 +1,10 @@
-package com.arsvechkarev.vault.features.common.data
+package com.arsvechkarev.vault.features.common.data.storage
 
 import com.arsvechkarev.vault.core.model.PasswordInfoItem
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 
-class ListenableCachedPasswordStorage(private val cachedPasswordStorage: CachedPasswordsStorage) {
+class ListenableCachedPasswordsStorage(private val cachedPasswordStorage: CachedPasswordsStorage) {
   
   private val _passwords = MutableSharedFlow<List<PasswordInfoItem>>()
   val passwords: SharedFlow<List<PasswordInfoItem>> get() = _passwords
@@ -15,6 +15,7 @@ class ListenableCachedPasswordStorage(private val cachedPasswordStorage: CachedP
   
   suspend fun savePasswords(masterPassword: String, passwords: List<PasswordInfoItem>) {
     cachedPasswordStorage.savePasswords(masterPassword, passwords)
+    notifySubscribers(masterPassword)
   }
   
   suspend fun savePassword(
@@ -38,7 +39,7 @@ class ListenableCachedPasswordStorage(private val cachedPasswordStorage: CachedP
     notifySubscribers(masterPassword)
   }
   
-  private suspend fun notifySubscribers(masterPassword: String) {
+  suspend fun notifySubscribers(masterPassword: String) {
     _passwords.emit(cachedPasswordStorage.getPasswords(masterPassword))
   }
 }

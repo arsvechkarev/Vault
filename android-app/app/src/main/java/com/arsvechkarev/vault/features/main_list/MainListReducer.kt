@@ -5,6 +5,7 @@ import com.arsvechkarev.vault.features.common.DurationsConfigurator
 import com.arsvechkarev.vault.features.common.Router
 import com.arsvechkarev.vault.features.common.Screens.CreatingEntryScreen
 import com.arsvechkarev.vault.features.common.Screens.ExportPasswordsScreen
+import com.arsvechkarev.vault.features.common.Screens.ImportPasswordsScreen
 import com.arsvechkarev.vault.features.common.Screens.InfoScreen
 import com.arsvechkarev.vault.features.common.Screens.SettingsScreen
 import com.arsvechkarev.vault.features.main_list.MainListCommand.LoadData
@@ -51,7 +52,7 @@ class MainListReducer(
             router.goForwardWithDelay(ExportPasswordsScreen, DurationsConfigurator.MenuOpening)
           }
           IMPORT_PASSWORDS -> {
-            TODO("Add import passwords screen")
+            router.goForwardWithDelay(ImportPasswordsScreen, DurationsConfigurator.MenuOpening)
           }
           SETTINGS -> {
             // TODO (8/12/2022): Figure out closing menu with animating to next screen.

@@ -1,8 +1,9 @@
-package com.arsvechkarev.vault.core.di.modules
+package com.arsvechkarev.vault.features.common.di.modules
 
-import androidx.security.crypto.MasterKey
 import buisnesslogic.FileSaver
-import com.arsvechkarev.vault.features.common.data.EncryptionFileSaver
+import com.arsvechkarev.vault.features.common.data.FileReader
+import com.arsvechkarev.vault.features.common.data.FileReaderImpl
+import com.arsvechkarev.vault.features.common.data.FileSaverImpl
 import com.arsvechkarev.vault.features.common.data.FilenameFromUriRetriever
 import com.arsvechkarev.vault.features.common.data.FilenameFromUriRetrieverImpl
 import com.arsvechkarev.vault.features.common.domain.PASSWORDS_FILENAME
@@ -10,22 +11,20 @@ import com.arsvechkarev.vault.features.common.domain.PASSWORDS_FILENAME
 interface IoModule {
   val fileSaver: FileSaver
   val filenameFromUriRetriever: FilenameFromUriRetriever
+  val fileReader: FileReader
 }
 
 class IoModuleImpl(
   coreModule: CoreModule
 ) : IoModule {
   
-  private val masterKey = MasterKey.Builder(coreModule.application)
-      .setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
-      .build()
-  
-  override val fileSaver = EncryptionFileSaver(
+  override val fileSaver = FileSaverImpl(
     PASSWORDS_FILENAME,
     coreModule.application,
-    masterKey,
     coreModule.dispatchersFacade
   )
   
   override val filenameFromUriRetriever = FilenameFromUriRetrieverImpl(coreModule.application)
+  
+  override val fileReader = FileReaderImpl(coreModule.application)
 }

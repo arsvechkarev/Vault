@@ -2,7 +2,7 @@ package com.arsvechkarev.vault.features.main_list.actors
 
 import com.arsvechkarev.vault.core.State
 import com.arsvechkarev.vault.core.mvi.tea.Actor
-import com.arsvechkarev.vault.features.common.data.ListenableCachedPasswordStorage
+import com.arsvechkarev.vault.features.common.data.storage.ListenableCachedPasswordsStorage
 import com.arsvechkarev.vault.features.common.domain.MasterPasswordProvider
 import com.arsvechkarev.vault.features.main_list.MainListCommand
 import com.arsvechkarev.vault.features.main_list.MainListCommand.LoadData
@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.flow.mapLatest
 
 class LoadMainDataActor(
-  private val passwordStorage: ListenableCachedPasswordStorage,
+  private val passwordStorage: ListenableCachedPasswordsStorage,
   private val masterPasswordProvider: MasterPasswordProvider,
 ) : Actor<MainListCommand, MainListEvent> {
   

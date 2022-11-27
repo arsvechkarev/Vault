@@ -7,17 +7,18 @@ import android.view.View
 import android.widget.ImageView
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.arsvechkarev.vault.R
-import com.arsvechkarev.vault.core.di.appComponent
 import com.arsvechkarev.vault.core.extensions.arg
 import com.arsvechkarev.vault.core.extensions.getDeleteMessageText
 import com.arsvechkarev.vault.core.model.PasswordInfoItem
 import com.arsvechkarev.vault.core.mvi.ext.subscribe
 import com.arsvechkarev.vault.core.mvi.ext.viewModelStore
-import com.arsvechkarev.vault.features.common.setWebsiteIcon
+import com.arsvechkarev.vault.core.views.Snackbar
+import com.arsvechkarev.vault.features.common.di.appComponent
 import com.arsvechkarev.vault.features.common.dialogs.InfoDialog.Companion.InfoDialog
 import com.arsvechkarev.vault.features.common.dialogs.InfoDialog.Companion.infoDialog
 import com.arsvechkarev.vault.features.common.dialogs.LoadingDialog
 import com.arsvechkarev.vault.features.common.dialogs.loadingDialog
+import com.arsvechkarev.vault.features.common.setWebsiteIcon
 import com.arsvechkarev.vault.features.info.InfoScreen.ImageType.COPY
 import com.arsvechkarev.vault.features.info.InfoScreen.ImageType.OPEN_IN_NEW
 import com.arsvechkarev.vault.features.info.InfoScreenNews.ShowLoginCopied
@@ -49,7 +50,6 @@ import com.arsvechkarev.vault.viewbuilding.Styles.AccentTextView
 import com.arsvechkarev.vault.viewbuilding.Styles.BaseEditText
 import com.arsvechkarev.vault.viewbuilding.Styles.BoldTextView
 import com.arsvechkarev.vault.viewbuilding.TextSizes
-import com.arsvechkarev.vault.core.views.Snackbar
 import navigation.BaseFragmentScreen
 import viewdsl.BaseTextWatcher
 import viewdsl.Size.Companion.MatchParent
@@ -326,7 +326,7 @@ class InfoScreen : BaseFragmentScreen() {
     }
     editText(editTextId).apply {
       removeTextChangedListener(textWatcher)
-      if (text.toString() != textState.editedText) {
+      if (text.toString().trim() != textState.editedText) {
         setText(textState.editedText)
       }
       addTextChangedListener(textWatcher)

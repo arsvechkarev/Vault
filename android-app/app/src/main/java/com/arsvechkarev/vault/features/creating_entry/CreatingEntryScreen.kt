@@ -120,10 +120,12 @@ class CreatingEntryScreen : BaseFragmentScreen() {
   }
   
   override fun onAppearedOnScreen() {
-    editText(EditTextWebsiteName).apply {
-      requestFocus()
-      requireContext().showKeyboard(this)
-    }
+    requireView().postDelayed({
+      editText(EditTextWebsiteName).apply {
+        requestFocus()
+        requireContext().showKeyboard(this)
+      }
+    }, 100)
   }
   
   private fun render(state: CreatingEntryState) {

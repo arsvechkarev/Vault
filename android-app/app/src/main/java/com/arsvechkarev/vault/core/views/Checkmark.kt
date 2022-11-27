@@ -12,8 +12,8 @@ import android.view.View
 import androidx.core.content.ContextCompat
 import com.arsvechkarev.vault.R
 import com.arsvechkarev.vault.core.extensions.TEMP_RECT
+import com.arsvechkarev.vault.features.common.DurationsConfigurator
 import com.arsvechkarev.vault.viewbuilding.Colors
-import config.DurationsConfigurator
 import viewdsl.AccelerateDecelerateInterpolator
 
 class Checkmark(context: Context) : View(context) {

@@ -19,13 +19,13 @@ class PasswordsStorageImplTest {
     GsonJsonConverter)
   
   @Before
-  fun setUp() {
+  fun setUp() = runBlocking {
     val encryptedText = AesSivTinkCryptography.encryptData(testPassword, "")
     testFileSaver.saveData(encryptedText)
   }
   
   @After
-  fun tearDown() {
+  fun tearDown() = runBlocking {
     testFileSaver.delete()
   }
   
@@ -39,11 +39,11 @@ class PasswordsStorageImplTest {
   fun `Saving new services`() = runBlocking {
     val service1 = PasswordInfo("id", "google", "pro", "", "po39,x//2")
     val service2 = PasswordInfo("id2", "netflix", "lol", "", "wsald0k")
-  
+    
     storage.savePassword(testPassword, service1)
     storage.savePassword(testPassword, service2)
     val services = storage.getPasswords(testPassword)
-  
+    
     assertTrue(services.size == 2)
     assertTrue(services.contains(service1))
     assertTrue(services.contains(service2))
@@ -54,12 +54,12 @@ class PasswordsStorageImplTest {
     val service1 = PasswordInfo("id", "google", "pro", "", "po39,x//2")
     val service2 = PasswordInfo("id2", "netflix", "lol", "", "wasp")
     val service2Updated = PasswordInfo("id2", "netflix", "newUser", "", "wasp")
-  
+    
     storage.savePassword(testPassword, service1)
     storage.savePassword(testPassword, service2)
     storage.updatePasswordInfo(testPassword, service2Updated)
     val services = storage.getPasswords(testPassword)
-  
+    
     assertTrue(services.size == 2)
     assertTrue(services.contains(service1))
     assertTrue(services.contains(service2Updated))
@@ -69,12 +69,12 @@ class PasswordsStorageImplTest {
   fun `Deleting services`() = runBlocking {
     val service1 = PasswordInfo("id", "google", "pro", "", "po39,x//2")
     val service2 = PasswordInfo("id2", "netflix", "lol", "", "wasp")
-  
+    
     storage.savePassword(testPassword, service1)
     storage.savePassword(testPassword, service2)
     storage.deletePassword(testPassword, service2)
     val actualServices = storage.getPasswords(testPassword)
-  
+    
     assertTrue(actualServices.size == 1)
     assertTrue(actualServices.contains(service1))
   }

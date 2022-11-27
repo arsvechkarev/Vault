@@ -7,8 +7,8 @@ import android.graphics.Canvas
 import android.view.View
 import buisnesslogic.PasswordStrength
 import com.arsvechkarev.vault.core.extensions.Paint
+import com.arsvechkarev.vault.features.common.DurationsConfigurator
 import com.arsvechkarev.vault.viewbuilding.Colors
-import config.DurationsConfigurator
 import viewdsl.AccelerateDecelerateInterpolator
 
 class PasswordStrengthMeter(context: Context) : View(context) {

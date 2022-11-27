@@ -1,4 +1,4 @@
-package config
+package com.arsvechkarev.vault.features.common
 
 /**
  * Represents duration values for animations

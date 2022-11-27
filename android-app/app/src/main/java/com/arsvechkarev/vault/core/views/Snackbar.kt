@@ -3,6 +3,7 @@ package com.arsvechkarev.vault.core.views
 import android.content.Context
 import android.view.ViewGroup
 import android.widget.TextView
+import com.arsvechkarev.vault.features.common.DurationsConfigurator
 import com.arsvechkarev.vault.viewbuilding.Colors
 import com.arsvechkarev.vault.viewbuilding.Dimens
 import com.arsvechkarev.vault.viewbuilding.Dimens.CheckmarkSize
@@ -10,7 +11,6 @@ import com.arsvechkarev.vault.viewbuilding.Dimens.MarginNormal
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginSmall
 import com.arsvechkarev.vault.viewbuilding.Styles.BaseTextView
 import com.arsvechkarev.vault.viewbuilding.TextSizes
-import config.DurationsConfigurator
 import viewdsl.AccelerateDecelerateInterpolator
 import viewdsl.animateVisible
 import viewdsl.atMost

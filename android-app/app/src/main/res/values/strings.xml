@@ -32,7 +32,6 @@
   <string name="text_website_name_cant_be_empty">Website name cannot be empty</string>
   <string name="text_login_cant_be_empty">Login cannot be empty</string>
   <string name="text_new_password">New password</string>
-  <string name="text_enter_master_password">Enter master password</string>
   <string name="text_enter_master_password_to_proceed">Enter master password to proceed</string>
   <string name="text_enter_service_name">Enter service name</string>
   <string name="text_service_name_cannot_be_empty">Service name cannot be empty</string>
@@ -65,10 +64,12 @@
   </string>
   <string name="text_confirmation">Confirmation</string>
   <string name="text_proceed">PROCEED</string>
+  <string name="text_confirm">CONFIRM</string>
   <string name="text_confirmation_message">Are you sure you want to change master password? This action cannot
     be undone and old password will not work anymore
   </string>
   <string name="text_done">Done!</string>
+  <string name="text_success">Success!</string>
   <string name="text_master_password_changed">Master password successfully changed</string>
   <string name="text_exit">Exit</string>
   <string name="text_do_you_want_to_leave">Do you want to leave without saving anything?</string>
@@ -109,6 +110,18 @@
   <string name="text_export_successful">Exported passwords successfully</string>
   <string name="text_export_share_file">SHARE FILE</string>
   <string name="hint_filename">Enter filename…</string>
+  <string name="text_file">File</string>
+  <string name="text_select_file">Select file</string>
+  <string name="text_error_file_is_not_selected">You have not selected file</string>
+  <string name="text_import_successful">Imported passwords successfully</string>
+  <string name="text_confirm_import_passwords_message">Importing passwords will cause all your current content
+    to be replaced by contents of the file you will choose. If you want to preserve your current passwords,
+    you should export them before you import new ones. Are you sure you want to proceed?
+  </string>
+  <string name="text_error_import_message">Import is unsuccessful. Either you selected the wrong file or
+    the entered password is incorrect
+  </string>
+  <string name="text_enter_password_to_import">Enter password to import</string>
   <string name="clipboard_label_website">website</string>
   <string name="clipboard_label_login">login</string>
   <string name="clipboard_label_password">password</string>

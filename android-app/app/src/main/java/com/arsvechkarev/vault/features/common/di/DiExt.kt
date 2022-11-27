@@ -1,4 +1,4 @@
-package com.arsvechkarev.vault.core.di
+package com.arsvechkarev.vault.features.common.di
 
 import navigation.BaseFragmentScreen
 

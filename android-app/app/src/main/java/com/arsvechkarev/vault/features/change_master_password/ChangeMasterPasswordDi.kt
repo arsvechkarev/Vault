@@ -1,10 +1,10 @@
 package com.arsvechkarev.vault.features.change_master_password
 
-import com.arsvechkarev.vault.core.di.AppComponent
 import com.arsvechkarev.vault.core.mvi.tea.TeaStore
 import com.arsvechkarev.vault.core.mvi.tea.TeaStoreImpl
 import com.arsvechkarev.vault.features.change_master_password.actors.ChangeMasterPasswordActor
 import com.arsvechkarev.vault.features.change_master_password.actors.ValidatePasswordActor
+import com.arsvechkarev.vault.features.common.di.AppComponent
 
 fun ChangeMasterPasswordStore(
   appComponent: AppComponent
@@ -14,7 +14,7 @@ fun ChangeMasterPasswordStore(
       ChangeMasterPasswordActor(
         appComponent.masterPasswordChecker,
         appComponent.masterPasswordProvider,
-        appComponent.listenableCachedPasswordStorage,
+        appComponent.listenableCachedPasswordsStorage,
       ),
       ValidatePasswordActor(appComponent.masterPasswordProvider)
     ),

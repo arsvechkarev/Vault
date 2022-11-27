@@ -1,4 +1,4 @@
-package com.arsvechkarev.vault.core.di.modules
+package com.arsvechkarev.vault.features.common.di.modules
 
 import buisnesslogic.IdGeneratorImpl
 import buisnesslogic.MasterPasswordChecker
@@ -8,8 +8,8 @@ import buisnesslogic.PasswordsStorageImpl
 import buisnesslogic.ZxcvbnPasswordInfoChecker
 import buisnesslogic.generator.PasswordGenerator
 import buisnesslogic.generator.PasswordGeneratorImpl
-import com.arsvechkarev.vault.features.common.data.CachedPasswordsStorage
-import com.arsvechkarev.vault.features.common.data.ListenableCachedPasswordStorage
+import com.arsvechkarev.vault.features.common.data.storage.CachedPasswordsStorage
+import com.arsvechkarev.vault.features.common.data.storage.ListenableCachedPasswordsStorage
 import com.arsvechkarev.vault.features.common.domain.MasterPasswordProvider
 import com.arsvechkarev.vault.features.common.domain.MasterPasswordProviderImpl
 import com.nulabinc.zxcvbn.Zxcvbn
@@ -20,7 +20,7 @@ interface PasswordsModule {
   val passwordGenerator: PasswordGenerator
   val masterPasswordChecker: MasterPasswordChecker
   val masterPasswordProvider: MasterPasswordProvider
-  val listenableCachedPasswordStorage: ListenableCachedPasswordStorage
+  val listenableCachedPasswordsStorage: ListenableCachedPasswordsStorage
 }
 
 class PasswordsModuleImpl(
@@ -37,7 +37,7 @@ class PasswordsModuleImpl(
   override val masterPasswordChecker =
       MasterPasswordCheckerImpl(cryptographyModule.cryptography, ioModule.fileSaver)
   
-  override val listenableCachedPasswordStorage = ListenableCachedPasswordStorage(
+  override val listenableCachedPasswordsStorage = ListenableCachedPasswordsStorage(
     CachedPasswordsStorage(
       storage = PasswordsStorageImpl(
         cryptographyModule.cryptography,

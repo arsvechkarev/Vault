@@ -1,16 +1,16 @@
-package com.arsvechkarev.vault.core.di
+package com.arsvechkarev.vault.features.common.di
 
 import android.app.Application
-import com.arsvechkarev.vault.core.di.modules.AuthModule
-import com.arsvechkarev.vault.core.di.modules.AuthModuleImpl
-import com.arsvechkarev.vault.core.di.modules.CoreModule
-import com.arsvechkarev.vault.core.di.modules.CoreModuleImpl
-import com.arsvechkarev.vault.core.di.modules.CryptographyModule
-import com.arsvechkarev.vault.core.di.modules.CryptographyModuleImpl
-import com.arsvechkarev.vault.core.di.modules.IoModule
-import com.arsvechkarev.vault.core.di.modules.IoModuleImpl
-import com.arsvechkarev.vault.core.di.modules.PasswordsModule
-import com.arsvechkarev.vault.core.di.modules.PasswordsModuleImpl
+import com.arsvechkarev.vault.features.common.di.modules.AuthModule
+import com.arsvechkarev.vault.features.common.di.modules.AuthModuleImpl
+import com.arsvechkarev.vault.features.common.di.modules.CoreModule
+import com.arsvechkarev.vault.features.common.di.modules.CoreModuleImpl
+import com.arsvechkarev.vault.features.common.di.modules.CryptographyModule
+import com.arsvechkarev.vault.features.common.di.modules.CryptographyModuleImpl
+import com.arsvechkarev.vault.features.common.di.modules.IoModule
+import com.arsvechkarev.vault.features.common.di.modules.IoModuleImpl
+import com.arsvechkarev.vault.features.common.di.modules.PasswordsModule
+import com.arsvechkarev.vault.features.common.di.modules.PasswordsModuleImpl
 
 interface CoreComponent :
   CoreModule,

@@ -4,9 +4,10 @@ import android.content.Context
 import android.view.Gravity
 import android.view.View
 import com.arsvechkarev.vault.R
-import com.arsvechkarev.vault.core.di.appComponent
 import com.arsvechkarev.vault.core.mvi.ext.subscribe
 import com.arsvechkarev.vault.core.mvi.ext.viewModelStore
+import com.arsvechkarev.vault.core.views.EditTextPassword
+import com.arsvechkarev.vault.core.views.behaviors.BottomSheetBehavior.Companion.asBottomSheet
 import com.arsvechkarev.vault.features.change_master_password.ChangeMasterPasswordDialogType.CONFIRMATION
 import com.arsvechkarev.vault.features.change_master_password.ChangeMasterPasswordDialogType.LOADING
 import com.arsvechkarev.vault.features.change_master_password.ChangeMasterPasswordDialogType.NOTIFICATION_AFTER
@@ -19,7 +20,8 @@ import com.arsvechkarev.vault.features.change_master_password.ChangeMasterPasswo
 import com.arsvechkarev.vault.features.change_master_password.ChangeMasterPasswordUiEvent.OnInitialPasswordChanged
 import com.arsvechkarev.vault.features.change_master_password.ChangeMasterPasswordUiEvent.OnNotificationOkClicked
 import com.arsvechkarev.vault.features.change_master_password.ChangeMasterPasswordUiEvent.OnRepeatedPasswordChanged
-import com.arsvechkarev.vault.features.common.dialogs.CheckMasterPasswordDialog
+import com.arsvechkarev.vault.features.common.di.appComponent
+import com.arsvechkarev.vault.features.common.dialogs.EnterPasswordDialog
 import com.arsvechkarev.vault.features.common.dialogs.InfoDialog.Companion.InfoDialog
 import com.arsvechkarev.vault.features.common.dialogs.InfoDialog.Companion.infoDialog
 import com.arsvechkarev.vault.features.common.dialogs.LoadingDialog
@@ -33,8 +35,6 @@ import com.arsvechkarev.vault.viewbuilding.Styles.BoldTextView
 import com.arsvechkarev.vault.viewbuilding.Styles.Button
 import com.arsvechkarev.vault.viewbuilding.Styles.ImageBack
 import com.arsvechkarev.vault.viewbuilding.TextSizes
-import com.arsvechkarev.vault.core.views.EditTextPassword
-import com.arsvechkarev.vault.core.views.behaviors.BottomSheetBehavior.Companion.asBottomSheet
 import navigation.BaseFragmentScreen
 import viewdsl.Size.Companion.MatchParent
 import viewdsl.Size.Companion.WrapContent
@@ -68,7 +68,7 @@ class ChangeMasterPasswordScreen : BaseFragmentScreen() {
         ImageView(WrapContent, WrapContent, style = ImageBack) {
           margins(end = MarginNormal)
           gravity(Gravity.CENTER_VERTICAL)
-          onClick { viewAs<CheckMasterPasswordDialog>().asBottomSheet.show() }
+          onClick { viewAs<EnterPasswordDialog>().asBottomSheet.show() }
           onClick { store.tryDispatch(OnBackPressed) }
         }
         TextView(WrapContent, WrapContent, style = BoldTextView) {

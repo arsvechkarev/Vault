@@ -1,9 +1,9 @@
 package com.arsvechkarev.vault.features.creating_password
 
 import com.arsvechkarev.vault.core.communicators.CommunicatorHolder
-import com.arsvechkarev.vault.core.di.AppComponent
 import com.arsvechkarev.vault.core.mvi.tea.TeaStore
 import com.arsvechkarev.vault.core.mvi.tea.TeaStoreImpl
+import com.arsvechkarev.vault.features.common.di.AppComponent
 import com.arsvechkarev.vault.features.creating_password.actors.CheckPasswordStrengthActor
 import com.arsvechkarev.vault.features.creating_password.actors.GeneratePasswordActor
 import com.arsvechkarev.vault.features.creating_password.actors.ReceivingInputCreatingPasswordActor

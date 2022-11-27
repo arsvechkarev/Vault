@@ -99,6 +99,10 @@ open class SimpleDialog(context: Context) : FrameLayout(context) {
     }
   }
   
+  override fun onInterceptTouchEvent(ev: MotionEvent): Boolean {
+    return isOpened && ev !in dialogView
+  }
+  
   override fun onTouchEvent(event: MotionEvent): Boolean {
     when (event.action) {
       ACTION_DOWN -> {

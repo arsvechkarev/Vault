@@ -13,9 +13,12 @@ import buisnesslogic.MAX_PASSWORD_LENGTH
 import buisnesslogic.MIN_PASSWORD_LENGTH
 import buisnesslogic.PasswordStrength
 import com.arsvechkarev.vault.R
-import com.arsvechkarev.vault.core.di.appComponent
 import com.arsvechkarev.vault.core.mvi.ext.subscribe
 import com.arsvechkarev.vault.core.mvi.ext.viewModelStore
+import com.arsvechkarev.vault.core.views.CheckmarkAndTextViewGroup
+import com.arsvechkarev.vault.core.views.CheckmarkAndTextViewGroup.Companion.CheckmarkAndTextViewGroup
+import com.arsvechkarev.vault.core.views.PasswordStrengthMeterWithText
+import com.arsvechkarev.vault.features.common.di.appComponent
 import com.arsvechkarev.vault.features.common.dialogs.InfoDialog.Companion.InfoDialog
 import com.arsvechkarev.vault.features.common.dialogs.InfoDialog.Companion.infoDialog
 import com.arsvechkarev.vault.features.creating_password.CreatingPasswordNews.ShowGeneratedPassword
@@ -44,9 +47,6 @@ import com.arsvechkarev.vault.viewbuilding.Styles.Button
 import com.arsvechkarev.vault.viewbuilding.Styles.ClickableTextView
 import com.arsvechkarev.vault.viewbuilding.Styles.ImageCross
 import com.arsvechkarev.vault.viewbuilding.TextSizes
-import com.arsvechkarev.vault.core.views.CheckmarkAndTextViewGroup
-import com.arsvechkarev.vault.core.views.CheckmarkAndTextViewGroup.Companion.CheckmarkAndTextViewGroup
-import com.arsvechkarev.vault.core.views.PasswordStrengthMeterWithText
 import navigation.BaseFragmentScreen
 import viewdsl.Size.Companion.MatchParent
 import viewdsl.Size.Companion.WrapContent

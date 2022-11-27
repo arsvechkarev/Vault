@@ -1,8 +1,8 @@
 package com.arsvechkarev.vault.features.creating_master_password
 
-import com.arsvechkarev.vault.core.di.AppComponent
 import com.arsvechkarev.vault.core.mvi.tea.TeaStore
 import com.arsvechkarev.vault.core.mvi.tea.TeaStoreImpl
+import com.arsvechkarev.vault.features.common.di.AppComponent
 import com.arsvechkarev.vault.features.creating_master_password.actors.FinishAuthActor
 import com.arsvechkarev.vault.features.creating_master_password.actors.PasswordCheckingActor
 

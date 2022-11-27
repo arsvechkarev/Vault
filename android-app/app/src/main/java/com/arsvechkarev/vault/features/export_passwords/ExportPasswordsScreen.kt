@@ -3,26 +3,26 @@ package com.arsvechkarev.vault.features.export_passwords
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
-import android.provider.DocumentsContract
 import android.view.Gravity
 import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.arsvechkarev.vault.R
-import com.arsvechkarev.vault.core.di.appComponent
 import com.arsvechkarev.vault.core.mvi.ext.subscribe
 import com.arsvechkarev.vault.core.mvi.ext.viewModelStore
-import com.arsvechkarev.vault.features.common.dialogs.CheckMasterPasswordDialog.Companion.CheckMasterPasswordDialog
-import com.arsvechkarev.vault.features.common.dialogs.CheckMasterPasswordDialog.Companion.checkMasterPasswordDialog
+import com.arsvechkarev.vault.features.common.di.appComponent
+import com.arsvechkarev.vault.features.common.dialogs.EnterPasswordDialog.Companion.EnterPasswordDialog
+import com.arsvechkarev.vault.features.common.dialogs.EnterPasswordDialog.Companion.enterPasswordDialog
+import com.arsvechkarev.vault.features.common.dialogs.EnterPasswordDialog.Mode.CHECK_MASTER_PASSWORD
 import com.arsvechkarev.vault.features.common.dialogs.InfoDialog.Companion.InfoDialog
 import com.arsvechkarev.vault.features.common.dialogs.InfoDialog.Companion.infoDialog
 import com.arsvechkarev.vault.features.export_passwords.ExportPasswordsNews.TryExportPasswords
 import com.arsvechkarev.vault.features.export_passwords.ExportPasswordsUiEvent.OnBackPressed
 import com.arsvechkarev.vault.features.export_passwords.ExportPasswordsUiEvent.OnExportPasswordClicked
+import com.arsvechkarev.vault.features.export_passwords.ExportPasswordsUiEvent.OnFileForPasswordsExportCreated
 import com.arsvechkarev.vault.features.export_passwords.ExportPasswordsUiEvent.OnFilenameTextChanged
 import com.arsvechkarev.vault.features.export_passwords.ExportPasswordsUiEvent.OnHideMasterPasswordCheckDialog
 import com.arsvechkarev.vault.features.export_passwords.ExportPasswordsUiEvent.OnHideViewExportedFileDialog
 import com.arsvechkarev.vault.features.export_passwords.ExportPasswordsUiEvent.OnMasterPasswordCheckPassed
-import com.arsvechkarev.vault.features.export_passwords.ExportPasswordsUiEvent.OnPasswordsExported
 import com.arsvechkarev.vault.features.export_passwords.ExportPasswordsUiEvent.OnSelectedFolder
 import com.arsvechkarev.vault.viewbuilding.Colors
 import com.arsvechkarev.vault.viewbuilding.Dimens.GradientDrawableHeight
@@ -85,7 +85,7 @@ class ExportPasswordsScreen : BaseFragmentScreen() {
             text(R.string.text_folder)
           }
           TextView(MatchParent, WrapContent, style = SecondaryTextView) {
-            id(TextFolderPath)
+            id(TextFolder)
             textSize(TextSizes.H4)
             text(R.string.text_select_folder)
             margins(top = MarginSmall, end = MarginNormal)
@@ -119,7 +119,8 @@ class ExportPasswordsScreen : BaseFragmentScreen() {
           onClick { store.tryDispatch(OnExportPasswordClicked) }
         }
       }
-      CheckMasterPasswordDialog(
+      EnterPasswordDialog(
+        mode = CHECK_MASTER_PASSWORD,
         onDialogClosed = { store.tryDispatch(OnHideMasterPasswordCheckDialog) },
         onCheckSuccessful = { store.tryDispatch(OnMasterPasswordCheckPassed) }
       )
@@ -145,7 +146,7 @@ class ExportPasswordsScreen : BaseFragmentScreen() {
     } else {
       state.folderPath.removePrefix(CONTENT_PREFIX)
     }
-    textView(TextFolderPath).text(folderText)
+    textView(TextFolder).text(folderText)
     editText(EditTextFilename).apply {
       if (state.filename != text.toString()) {
         setText(state.filename)
@@ -173,10 +174,10 @@ class ExportPasswordsScreen : BaseFragmentScreen() {
   private fun renderDialogs(state: ExportPasswordsState) {
     when (state.dialogType) {
       ExportPasswordsDialogType.CHECKING_MASTER_PASSWORD -> {
-        checkMasterPasswordDialog.show()
+        enterPasswordDialog.show()
       }
       ExportPasswordsDialogType.SUCCESS_EXPORT -> {
-        checkMasterPasswordDialog.hide()
+        enterPasswordDialog.hide()
         infoDialog.showWithOkOption(
           titleRes = R.string.text_done,
           messageRes = R.string.text_export_successful,
@@ -186,7 +187,7 @@ class ExportPasswordsScreen : BaseFragmentScreen() {
         )
       }
       null -> {
-        checkMasterPasswordDialog.hide()
+        enterPasswordDialog.hide()
         infoDialog.hide()
       }
     }
@@ -205,7 +206,6 @@ class ExportPasswordsScreen : BaseFragmentScreen() {
       addCategory(Intent.CATEGORY_OPENABLE)
       type = CONTENT_TYPE
       putExtra(Intent.EXTRA_TITLE, news.filename)
-      putExtra(DocumentsContract.EXTRA_INITIAL_URI, Uri.decode(news.passwordsFileUri))
     }
     startActivityForResult(intent, CREATE_FILE_REQUEST_CODE)
   }
@@ -237,7 +237,7 @@ class ExportPasswordsScreen : BaseFragmentScreen() {
         store.tryDispatch(OnSelectedFolder(uri.toString()))
       }
       CREATE_FILE_REQUEST_CODE -> {
-        store.tryDispatch(OnPasswordsExported(uri))
+        store.tryDispatch(OnFileForPasswordsExportCreated(uri))
       }
     }
   }
@@ -258,9 +258,9 @@ class ExportPasswordsScreen : BaseFragmentScreen() {
     val ToolbarId = View.generateViewId()
     val LayoutFolder = View.generateViewId()
     val TitleFolder = View.generateViewId()
+    val TextFolder = View.generateViewId()
     val TitleFilename = View.generateViewId()
     val EditTextFilename = View.generateViewId()
     val ButtonContinue = View.generateViewId()
-    val TextFolderPath = View.generateViewId()
   }
 }

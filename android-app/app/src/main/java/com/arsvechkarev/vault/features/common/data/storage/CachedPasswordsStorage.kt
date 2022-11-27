@@ -1,4 +1,4 @@
-package com.arsvechkarev.vault.features.common.data
+package com.arsvechkarev.vault.features.common.data.storage
 
 import buisnesslogic.IdGenerator
 import buisnesslogic.PasswordsStorage

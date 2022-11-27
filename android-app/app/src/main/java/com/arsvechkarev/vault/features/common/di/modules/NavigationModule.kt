@@ -1,4 +1,4 @@
-package com.arsvechkarev.vault.core.di.modules
+package com.arsvechkarev.vault.features.common.di.modules
 
 import androidx.fragment.app.FragmentActivity
 import com.arsvechkarev.vault.VaultApplication

@@ -1,6 +1,5 @@
 package com.arsvechkarev.vault.features.change_master_password
 
-import com.arsvechkarev.vault.core.Router
 import com.arsvechkarev.vault.core.mvi.tea.DslReducer
 import com.arsvechkarev.vault.features.change_master_password.ChangeMasterPasswordCommand.ChangeMasterPassword
 import com.arsvechkarev.vault.features.change_master_password.ChangeMasterPasswordCommand.CheckPassword
@@ -17,6 +16,7 @@ import com.arsvechkarev.vault.features.change_master_password.ChangeMasterPasswo
 import com.arsvechkarev.vault.features.change_master_password.ChangeMasterPasswordUiEvent.OnInitialPasswordChanged
 import com.arsvechkarev.vault.features.change_master_password.ChangeMasterPasswordUiEvent.OnNotificationOkClicked
 import com.arsvechkarev.vault.features.change_master_password.ChangeMasterPasswordUiEvent.OnRepeatedPasswordChanged
+import com.arsvechkarev.vault.features.common.Router
 
 class ChangeMasterPasswordReducer(
   private val router: Router

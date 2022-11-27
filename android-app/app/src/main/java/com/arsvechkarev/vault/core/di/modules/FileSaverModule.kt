@@ -2,8 +2,8 @@ package com.arsvechkarev.vault.core.di.modules
 
 import androidx.security.crypto.MasterKey
 import buisnesslogic.FileSaver
-import com.arsvechkarev.vault.core.EncryptionFileSaver
-import com.arsvechkarev.vault.core.PASSWORDS_FILENAME
+import com.arsvechkarev.vault.features.common.data.EncryptionFileSaver
+import com.arsvechkarev.vault.features.common.domain.PASSWORDS_FILENAME
 
 interface FileSaverModule {
   val fileSaver: FileSaver

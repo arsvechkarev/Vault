@@ -1,6 +1,6 @@
 package com.arsvechkarev.vault.features.export_passwords
 
-import com.arsvechkarev.vault.core.Router
+import com.arsvechkarev.vault.features.common.Router
 import com.arsvechkarev.vault.core.mvi.tea.DslReducer
 import com.arsvechkarev.vault.features.export_passwords.ExportPasswordsCommand.GetPasswordsFileUri
 import com.arsvechkarev.vault.features.export_passwords.ExportPasswordsEvent.ExportSuccessful

@@ -44,9 +44,9 @@ import com.arsvechkarev.vault.viewbuilding.Styles.Button
 import com.arsvechkarev.vault.viewbuilding.Styles.ClickableTextView
 import com.arsvechkarev.vault.viewbuilding.Styles.ImageCross
 import com.arsvechkarev.vault.viewbuilding.TextSizes
-import com.arsvechkarev.vault.views.CheckmarkAndTextViewGroup
-import com.arsvechkarev.vault.views.CheckmarkAndTextViewGroup.Companion.CheckmarkAndTextViewGroup
-import com.arsvechkarev.vault.views.PasswordStrengthMeterWithText
+import com.arsvechkarev.vault.core.views.CheckmarkAndTextViewGroup
+import com.arsvechkarev.vault.core.views.CheckmarkAndTextViewGroup.Companion.CheckmarkAndTextViewGroup
+import com.arsvechkarev.vault.core.views.PasswordStrengthMeterWithText
 import navigation.BaseFragmentScreen
 import viewdsl.Size.Companion.MatchParent
 import viewdsl.Size.Companion.WrapContent

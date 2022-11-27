@@ -9,7 +9,7 @@ import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import com.arsvechkarev.vault.R
 import com.arsvechkarev.vault.VaultApplication.Companion.AppMainCoroutineScope
-import com.arsvechkarev.vault.core.TypefaceSpan
+import com.arsvechkarev.vault.viewbuilding.TypefaceSpan
 import com.arsvechkarev.vault.core.di.appComponent
 import com.arsvechkarev.vault.core.extensions.ifTrue
 import com.arsvechkarev.vault.core.mvi.ext.subscribe
@@ -35,9 +35,9 @@ import com.arsvechkarev.vault.viewbuilding.Styles.BaseTextView
 import com.arsvechkarev.vault.viewbuilding.Styles.BoldTextView
 import com.arsvechkarev.vault.viewbuilding.Styles.TitleTextView
 import com.arsvechkarev.vault.viewbuilding.TextSizes
-import com.arsvechkarev.vault.views.MaterialProgressBar
-import com.arsvechkarev.vault.views.menu.MenuItem
-import com.arsvechkarev.vault.views.menu.MenuView
+import com.arsvechkarev.vault.core.views.MaterialProgressBar
+import com.arsvechkarev.vault.core.views.menu.MenuItem
+import com.arsvechkarev.vault.core.views.menu.MenuView
 import kotlinx.coroutines.launch
 import navigation.BaseFragmentScreen
 import viewdsl.Size.Companion.MatchParent
@@ -109,7 +109,8 @@ class MainListScreen : BaseFragmentScreen() {
           gravity(CENTER)
           val spannableString = SpannableString(context.getString(R.string.text_click_plus))
           val index = spannableString.indexOf('+')
-          spannableString.setSpan(TypefaceSpan(Fonts.SegoeUiBold), index, index + 1, 0)
+          spannableString.setSpan(
+            TypefaceSpan(Fonts.SegoeUiBold), index, index + 1, 0)
           spannableString.setSpan(RelativeSizeSpan(1.3f), index, index + 1, 0)
           text(spannableString)
         }

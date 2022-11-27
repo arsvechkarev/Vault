@@ -5,7 +5,7 @@ import android.view.Gravity
 import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.arsvechkarev.vault.R
-import com.arsvechkarev.vault.core.Screens.ChangeMasterPasswordScreen
+import com.arsvechkarev.vault.features.common.Screens.ChangeMasterPasswordScreen
 import com.arsvechkarev.vault.core.di.appComponent
 import com.arsvechkarev.vault.features.common.dialogs.CheckMasterPasswordDialog.Companion.CheckMasterPasswordDialog
 import com.arsvechkarev.vault.features.common.dialogs.CheckMasterPasswordDialog.Companion.checkMasterPasswordDialog

@@ -2,13 +2,13 @@ package com.arsvechkarev.vault.features.change_master_password.actors
 
 import buisnesslogic.MasterPasswordChecker
 import buisnesslogic.MasterPasswordHolder
-import com.arsvechkarev.vault.core.ListenableCachedPasswordStorage
-import com.arsvechkarev.vault.core.MasterPasswordProvider
 import com.arsvechkarev.vault.core.mvi.tea.Actor
 import com.arsvechkarev.vault.features.change_master_password.ChangeMasterPasswordCommand
 import com.arsvechkarev.vault.features.change_master_password.ChangeMasterPasswordCommand.ChangeMasterPassword
 import com.arsvechkarev.vault.features.change_master_password.ChangeMasterPasswordEvent
 import com.arsvechkarev.vault.features.change_master_password.ChangeMasterPasswordEvent.NewMasterPasswordSaved
+import com.arsvechkarev.vault.features.common.data.ListenableCachedPasswordStorage
+import com.arsvechkarev.vault.features.common.domain.MasterPasswordProvider
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.flow.mapLatest

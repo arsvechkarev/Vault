@@ -2,9 +2,9 @@ package com.arsvechkarev.vault.features.creating_master_password.actors
 
 import buisnesslogic.MasterPasswordChecker
 import buisnesslogic.MasterPasswordHolder
-import com.arsvechkarev.vault.core.AuthChecker
 import com.arsvechkarev.vault.core.DispatchersFacade
 import com.arsvechkarev.vault.core.mvi.tea.Actor
+import com.arsvechkarev.vault.features.common.domain.AuthChecker
 import com.arsvechkarev.vault.features.creating_master_password.CMPCommands
 import com.arsvechkarev.vault.features.creating_master_password.CMPEvents
 import com.arsvechkarev.vault.features.creating_master_password.CreatingMasterPasswordCommand.FinishAuth

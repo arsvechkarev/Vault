@@ -23,7 +23,7 @@ import com.arsvechkarev.vault.viewbuilding.Styles.BaseTextView
 import com.arsvechkarev.vault.viewbuilding.Styles.BoldTextView
 import com.arsvechkarev.vault.viewbuilding.Styles.Button
 import com.arsvechkarev.vault.viewbuilding.TextSizes
-import com.arsvechkarev.vault.views.EditTextPassword
+import com.arsvechkarev.vault.core.views.EditTextPassword
 import kotlinx.coroutines.launch
 import navigation.BaseFragmentScreen
 import viewdsl.Size.Companion.MatchParent

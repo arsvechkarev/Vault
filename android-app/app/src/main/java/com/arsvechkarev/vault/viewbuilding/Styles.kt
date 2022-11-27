@@ -17,11 +17,10 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.StringRes
 import com.arsvechkarev.vault.R
-import com.arsvechkarev.vault.core.TypefaceSpan
 import com.arsvechkarev.vault.viewbuilding.Dimens.CornerRadiusSmall
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginMedium
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginSmall
-import com.arsvechkarev.vault.views.drawables.GradientBackgroundDrawable
+import com.arsvechkarev.vault.core.views.drawables.GradientBackgroundDrawable
 import viewdsl.DefaultStyles
 import viewdsl.Style
 import viewdsl.background
@@ -137,7 +136,8 @@ object Styles : DefaultStyles {
     setHintTextColor(Colors.TextSecondary)
     if (hint != 0) {
       val spannableString = SpannableString(context.getString(hint))
-      spannableString.setSpan(TypefaceSpan(Fonts.SegoeUi), 0, spannableString.length,
+      spannableString.setSpan(
+        TypefaceSpan(Fonts.SegoeUi), 0, spannableString.length,
         Spanned.SPAN_INCLUSIVE_EXCLUSIVE
       )
       setHint(spannableString)

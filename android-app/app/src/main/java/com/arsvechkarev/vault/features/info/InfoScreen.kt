@@ -13,7 +13,7 @@ import com.arsvechkarev.vault.core.extensions.getDeleteMessageText
 import com.arsvechkarev.vault.core.model.PasswordInfoItem
 import com.arsvechkarev.vault.core.mvi.ext.subscribe
 import com.arsvechkarev.vault.core.mvi.ext.viewModelStore
-import com.arsvechkarev.vault.core.setWebsiteIcon
+import com.arsvechkarev.vault.features.common.setWebsiteIcon
 import com.arsvechkarev.vault.features.common.dialogs.InfoDialog.Companion.InfoDialog
 import com.arsvechkarev.vault.features.common.dialogs.InfoDialog.Companion.infoDialog
 import com.arsvechkarev.vault.features.common.dialogs.LoadingDialog
@@ -49,7 +49,7 @@ import com.arsvechkarev.vault.viewbuilding.Styles.AccentTextView
 import com.arsvechkarev.vault.viewbuilding.Styles.BaseEditText
 import com.arsvechkarev.vault.viewbuilding.Styles.BoldTextView
 import com.arsvechkarev.vault.viewbuilding.TextSizes
-import com.arsvechkarev.vault.views.Snackbar
+import com.arsvechkarev.vault.core.views.Snackbar
 import navigation.BaseFragmentScreen
 import viewdsl.BaseTextWatcher
 import viewdsl.Size.Companion.MatchParent

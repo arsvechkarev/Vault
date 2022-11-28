@@ -77,10 +77,12 @@ class MenuContentView(context: Context) : ViewGroup(context) {
     val iconSize = (crossBaseSize * 0.75f).toInt()
     addView(
       AnimatableCircleIconView(
-        context, iconSize,
-        R.drawable.avd_plus_to_cross,
-        R.drawable.avd_cross_to_plus,
-        Colors.Accent, Colors.Icon
+        context = context,
+        size = iconSize,
+        circleColor = Colors.Accent,
+        drawableRes1 = R.drawable.avd_plus_to_cross,
+        drawableRes2 = R.drawable.avd_cross_to_plus,
+        iconColor = Colors.Icon
       )
     )
   }
@@ -197,6 +199,9 @@ class MenuContentView(context: Context) : ViewGroup(context) {
   
   override fun onTouchEvent(event: MotionEvent): Boolean {
     val touchEvent = super.onTouchEvent(event)
+    if (!opened && event !in openCloseView) {
+      return false
+    }
     when (event.action) {
       ACTION_DOWN -> {
         wasDownEventInView = event in openCloseView

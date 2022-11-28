@@ -6,16 +6,6 @@ plugins {
 }
 
 android {
-  signingConfigs {
-//    Properties properties = new Properties()
-//    properties.load(new FileInputStream(file("../local.properties")))
-//    release {
-//      storeFile file(properties["storeFile"])
-//      storePassword properties["storePassword"]
-//      keyAlias properties["keyAlias"]
-//      keyPassword properties["keyPassword"]
-//    }
-  }
   def ext = rootProject.ext
   compileSdkVersion ext.compileSdkVersion
   defaultConfig {
@@ -24,18 +14,17 @@ android {
     targetSdkVersion ext.targetSdkVersion
     versionCode ext.versionCode
     versionName ext.versionName
-//    signingConfig signingConfigs.release
   }
-//  buildTypes {
-//    debug {
-//      applicationIdSuffix ".debug"
-//    }
-//    release {
-//      minifyEnabled ext.minifyEnabled
-//      shrinkResources ext.shrinkResources
-//      proguardFiles(getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro')
-//    }
-//  }
+  buildTypes {
+    debug {
+      applicationIdSuffix ".debug"
+    }
+    release {
+      minifyEnabled ext.minifyEnabled
+      shrinkResources ext.shrinkResources
+      proguardFiles(getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro')
+    }
+  }
   kotlinOptions {
     jvmTarget = "1.8"
   }

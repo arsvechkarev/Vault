@@ -41,7 +41,7 @@ class InitialScreen : BaseFragmentScreen() {
         }
         TextView(WrapContent, WrapContent, style = BoldTextView) {
           margins(top = MarginNormal)
-          text(R.string.text_welcome_to_vault)
+          text(R.string.app_name)
           textSize(TextSizes.MainHeader)
         }
         TextView(WrapContent, WrapContent, style = BaseTextView) {

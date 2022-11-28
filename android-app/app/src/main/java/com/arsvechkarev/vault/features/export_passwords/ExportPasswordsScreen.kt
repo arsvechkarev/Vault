@@ -10,9 +10,6 @@ import com.arsvechkarev.vault.R
 import com.arsvechkarev.vault.core.mvi.ext.subscribe
 import com.arsvechkarev.vault.core.mvi.ext.viewModelStore
 import com.arsvechkarev.vault.features.common.di.CoreComponentHolder.coreComponent
-import com.arsvechkarev.vault.features.common.dialogs.EnterPasswordDialog.Companion.EnterPasswordDialog
-import com.arsvechkarev.vault.features.common.dialogs.EnterPasswordDialog.Companion.enterPasswordDialog
-import com.arsvechkarev.vault.features.common.dialogs.EnterPasswordDialog.Mode.CHECK_MASTER_PASSWORD
 import com.arsvechkarev.vault.features.common.dialogs.InfoDialog.Companion.InfoDialog
 import com.arsvechkarev.vault.features.common.dialogs.InfoDialog.Companion.infoDialog
 import com.arsvechkarev.vault.features.export_passwords.ExportPasswordsNews.TryExportPasswords
@@ -20,9 +17,7 @@ import com.arsvechkarev.vault.features.export_passwords.ExportPasswordsUiEvent.O
 import com.arsvechkarev.vault.features.export_passwords.ExportPasswordsUiEvent.OnExportPasswordClicked
 import com.arsvechkarev.vault.features.export_passwords.ExportPasswordsUiEvent.OnFileForPasswordsExportCreated
 import com.arsvechkarev.vault.features.export_passwords.ExportPasswordsUiEvent.OnFilenameTextChanged
-import com.arsvechkarev.vault.features.export_passwords.ExportPasswordsUiEvent.OnHideMasterPasswordCheckDialog
 import com.arsvechkarev.vault.features.export_passwords.ExportPasswordsUiEvent.OnHideViewExportedFileDialog
-import com.arsvechkarev.vault.features.export_passwords.ExportPasswordsUiEvent.OnMasterPasswordCheckPassed
 import com.arsvechkarev.vault.features.export_passwords.ExportPasswordsUiEvent.OnSelectedFolder
 import com.arsvechkarev.vault.viewbuilding.Colors
 import com.arsvechkarev.vault.viewbuilding.Dimens.GradientDrawableHeight
@@ -119,11 +114,6 @@ class ExportPasswordsScreen : BaseFragmentScreen() {
           onClick { store.tryDispatch(OnExportPasswordClicked) }
         }
       }
-      EnterPasswordDialog(
-        mode = CHECK_MASTER_PASSWORD,
-        onDialogClosed = { store.tryDispatch(OnHideMasterPasswordCheckDialog) },
-        onCheckSuccessful = { store.tryDispatch(OnMasterPasswordCheckPassed) }
-      )
       InfoDialog()
     }
   }
@@ -172,24 +162,16 @@ class ExportPasswordsScreen : BaseFragmentScreen() {
   }
   
   private fun renderDialogs(state: ExportPasswordsState) {
-    when (state.dialogType) {
-      ExportPasswordsDialogType.CHECKING_MASTER_PASSWORD -> {
-        enterPasswordDialog.show()
-      }
-      ExportPasswordsDialogType.SUCCESS_EXPORT -> {
-        enterPasswordDialog.hide()
-        infoDialog.showWithOkOption(
-          titleRes = R.string.text_done,
-          messageRes = R.string.text_export_successful,
-          textPositiveRes = R.string.text_export_share_file,
-          onCancel = { store.tryDispatch(OnHideViewExportedFileDialog) },
-          onOkClicked = { shareExportedFile(state.exportedFileUri) }
-        )
-      }
-      null -> {
-        enterPasswordDialog.hide()
-        infoDialog.hide()
-      }
+    if (state.showSuccessDialog) {
+      infoDialog.showWithOkOption(
+        titleRes = R.string.text_done,
+        messageRes = R.string.text_export_successful,
+        textPositiveRes = R.string.text_export_share_file,
+        onCancel = { store.tryDispatch(OnHideViewExportedFileDialog) },
+        onOkClicked = { shareExportedFile(state.exportedFileUri) }
+      )
+    } else {
+      infoDialog.hide()
     }
   }
   

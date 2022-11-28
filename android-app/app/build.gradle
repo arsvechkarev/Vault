@@ -6,6 +6,16 @@ plugins {
 }
 
 android {
+  signingConfigs {
+    Properties properties = new Properties()
+    properties.load(new FileInputStream(file("../../local.properties")))
+    release {
+      storeFile file(properties["keystoreFile"])
+      storePassword properties["keystorePassword"]
+      keyAlias properties["keyAlias"]
+      keyPassword properties["keyPassword"]
+    }
+  }
   def ext = rootProject.ext
   compileSdkVersion ext.compileSdkVersion
   defaultConfig {
@@ -14,6 +24,7 @@ android {
     targetSdkVersion ext.targetSdkVersion
     versionCode ext.versionCode
     versionName ext.versionName
+    signingConfig signingConfigs.release
   }
   buildTypes {
     debug {
@@ -21,7 +32,7 @@ android {
       applicationIdSuffix ".debug"
     }
     release {
-      buildConfigField("String", "STUB_PASSWORD", "")
+      buildConfigField("String", "STUB_PASSWORD", "\"\"")
       minifyEnabled ext.minifyEnabled
       shrinkResources ext.shrinkResources
       proguardFiles(getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro')

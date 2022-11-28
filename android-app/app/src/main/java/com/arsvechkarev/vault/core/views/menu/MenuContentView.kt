@@ -12,7 +12,7 @@ import android.view.ViewConfiguration
 import android.view.ViewGroup
 import com.arsvechkarev.vault.R
 import com.arsvechkarev.vault.core.extensions.Paint
-import com.arsvechkarev.vault.features.common.DurationsConfigurator
+import com.arsvechkarev.vault.features.common.Durations
 import com.arsvechkarev.vault.viewbuilding.Colors
 import com.arsvechkarev.vault.viewbuilding.TextSizes
 import viewdsl.AccelerateDecelerateInterpolator
@@ -51,7 +51,7 @@ class MenuContentView(context: Context) : ViewGroup(context) {
   private var opened = false
   
   private val coefficientAnimator = ValueAnimator().apply {
-    duration = DurationsConfigurator.MenuOpening
+    duration = Durations.MenuOpening
     interpolator = AccelerateDecelerateInterpolator
     addUpdateListener {
       animCoefficient = it.animatedValue as Float

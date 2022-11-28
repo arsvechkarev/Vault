@@ -2,6 +2,8 @@ package viewdsl
 
 import android.R.attr.state_checked
 import android.content.res.ColorStateList
+import android.graphics.PorterDuff
+import android.graphics.PorterDuffColorFilter
 import android.graphics.drawable.Drawable
 import android.widget.CompoundButton
 import android.widget.ImageView
@@ -20,6 +22,13 @@ fun ImageView.image(@DrawableRes resId: Int) {
   setImageResource(resId)
 }
 
+fun ImageView.image(@DrawableRes resId: Int, color: Int) {
+  val drawable = checkNotNull(context.retrieveDrawable(resId)).apply {
+    colorFilter = PorterDuffColorFilter(color, PorterDuff.Mode.SRC_ATOP)
+  }
+  setImageDrawable(drawable)
+}
+
 fun ImageView.image(drawable: Drawable) {
   setImageDrawable(drawable)
 }
@@ -33,13 +42,13 @@ inline fun SeekBar.onProgressChanged(crossinline block: (progress: Int) -> Unit)
     override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
       block(progress)
     }
-  
+    
     override fun onStartTrackingTouch(seekBar: SeekBar?) {
     }
-  
+    
     override fun onStopTrackingTouch(seekBar: SeekBar?) {
     }
-  
+    
   })
 }
 

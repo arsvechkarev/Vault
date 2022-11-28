@@ -1,6 +1,6 @@
 package viewdsl
 
-interface Durations {
+interface AnimationDurations {
   val VisibilityChange: Long get() = 300L
   val Rotation: Long get() = 1000L
 }

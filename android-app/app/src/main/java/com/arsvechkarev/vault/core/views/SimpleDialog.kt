@@ -11,7 +11,7 @@ import android.view.View
 import android.view.ViewConfiguration
 import android.widget.FrameLayout
 import androidx.core.graphics.ColorUtils
-import com.arsvechkarev.vault.features.common.DurationsConfigurator
+import com.arsvechkarev.vault.features.common.Durations
 import com.arsvechkarev.vault.viewbuilding.Colors
 import viewdsl.AccelerateDecelerateInterpolator
 import viewdsl.cancelIfRunning
@@ -32,7 +32,7 @@ open class SimpleDialog(context: Context) : FrameLayout(context) {
   private val dialogView get() = getChildAt(0)
   private val shadowAnimator = ValueAnimator().apply {
     interpolator = AccelerateDecelerateInterpolator
-    duration = DurationsConfigurator.Short
+    duration = Durations.Short
     addUpdateListener {
       currentShadowFraction = it.animatedValue as Float
       onShadowFractionChangedListener?.invoke(currentShadowFraction)
@@ -68,7 +68,7 @@ open class SimpleDialog(context: Context) : FrameLayout(context) {
         .scaleX(1f)
         .scaleY(1f)
         .alpha(1f)
-        .setDuration(DurationsConfigurator.Short)
+        .setDuration(Durations.Short)
         .withEndAction(onShown)
         .setInterpolator(AccelerateDecelerateInterpolator)
         .start()
@@ -85,7 +85,7 @@ open class SimpleDialog(context: Context) : FrameLayout(context) {
         .alpha(0f)
         .scaleX(SCALE_FACTOR)
         .scaleY(SCALE_FACTOR)
-        .setDuration(DurationsConfigurator.Short)
+        .setDuration(Durations.Short)
         .setInterpolator(AccelerateDecelerateInterpolator)
         .withEndAction { gone(); onHide() }
         .start()

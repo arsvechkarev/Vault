@@ -12,7 +12,7 @@ import android.view.View
 import androidx.core.content.ContextCompat
 import com.arsvechkarev.vault.R
 import com.arsvechkarev.vault.core.extensions.TEMP_RECT
-import com.arsvechkarev.vault.features.common.DurationsConfigurator
+import com.arsvechkarev.vault.features.common.Durations
 import com.arsvechkarev.vault.viewbuilding.Colors
 import viewdsl.AccelerateDecelerateInterpolator
 
@@ -39,7 +39,7 @@ class Checkmark(context: Context) : View(context) {
   private var _drawBorder = false
   
   private val animator = ValueAnimator().apply {
-    duration = DurationsConfigurator.Short
+    duration = Durations.Short
     interpolator = AccelerateDecelerateInterpolator
     addUpdateListener {
       circlePaint.strokeWidth = it.animatedValue as Float
@@ -48,7 +48,7 @@ class Checkmark(context: Context) : View(context) {
   }
   
   private val borderAnimator = ValueAnimator().apply {
-    duration = DurationsConfigurator.Short
+    duration = Durations.Short
     interpolator = AccelerateDecelerateInterpolator
     addUpdateListener {
       borderPaint.strokeWidth = it.animatedValue as Float

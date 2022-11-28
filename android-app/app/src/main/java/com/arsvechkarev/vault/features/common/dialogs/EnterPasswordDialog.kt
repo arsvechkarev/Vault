@@ -138,7 +138,7 @@ class EnterPasswordDialog(context: Context) : FrameLayout(context) {
         viewAs<EditTextPassword>().showKeyboard()
       }
       onHide = {
-        viewAs<EditTextPassword>().clear()
+        viewAs<EditTextPassword>().clearTextAndFocus()
         context.hideKeyboard()
         onDialogClosed()
       }

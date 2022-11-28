@@ -86,12 +86,16 @@ class EditTextPassword(context: Context) : FrameLayout(context) {
   
   fun text(text: String) = editText.setText(text)
   
-  fun clear() {
-    editText.clearFocus()
-    editText.clearText()
-  }
-  
   fun text(textResId: Int) = editText.setText(textResId)
   
   fun getText() = editText.text.toString()
+  
+  fun clearText() {
+    editText.clearText()
+  }
+  
+  fun clearTextAndFocus() {
+    editText.clearFocus()
+    editText.clearText()
+  }
 }

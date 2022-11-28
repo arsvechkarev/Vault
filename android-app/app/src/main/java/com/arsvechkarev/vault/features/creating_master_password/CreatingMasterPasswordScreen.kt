@@ -3,6 +3,7 @@ package com.arsvechkarev.vault.features.creating_master_password
 import android.content.Context
 import android.view.Gravity
 import android.view.Gravity.CENTER
+import android.view.View
 import android.view.animation.AnimationUtils
 import android.widget.ViewSwitcher
 import buisnesslogic.MIN_PASSWORD_LENGTH
@@ -11,10 +12,13 @@ import buisnesslogic.PasswordStrength.STRONG
 import buisnesslogic.PasswordStrength.VERY_STRONG
 import buisnesslogic.PasswordStrength.WEAK
 import com.arsvechkarev.vault.R
+import com.arsvechkarev.vault.core.extensions.TextPaint
+import com.arsvechkarev.vault.core.extensions.getTextHeight
 import com.arsvechkarev.vault.core.mvi.ext.subscribe
 import com.arsvechkarev.vault.core.mvi.ext.viewModelStore
 import com.arsvechkarev.vault.core.views.EditTextPassword
 import com.arsvechkarev.vault.core.views.PasswordStrengthMeter
+import com.arsvechkarev.vault.features.common.Durations
 import com.arsvechkarev.vault.features.common.di.CoreComponentHolder.coreComponent
 import com.arsvechkarev.vault.features.common.dialogs.LoadingDialog
 import com.arsvechkarev.vault.features.common.dialogs.PasswordStrengthDialog.Companion.PasswordStrengthDialog
@@ -35,8 +39,10 @@ import com.arsvechkarev.vault.features.creating_master_password.UiPasswordStatus
 import com.arsvechkarev.vault.features.creating_master_password.UiPasswordStatus.TOO_SHORT
 import com.arsvechkarev.vault.features.creating_master_password.UiPasswordStatus.TOO_WEAK
 import com.arsvechkarev.vault.viewbuilding.Colors
+import com.arsvechkarev.vault.viewbuilding.Dimens
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginLarge
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginNormal
+import com.arsvechkarev.vault.viewbuilding.Dimens.MarginSmall
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginTiny
 import com.arsvechkarev.vault.viewbuilding.Dimens.PasswordStrengthMeterHeight
 import com.arsvechkarev.vault.viewbuilding.Styles.BaseTextView
@@ -52,16 +58,16 @@ import viewdsl.animateInvisible
 import viewdsl.animateVisible
 import viewdsl.classNameTag
 import viewdsl.clearOnClick
-import viewdsl.drawablePadding
-import viewdsl.drawables
+import viewdsl.clearText
 import viewdsl.gravity
 import viewdsl.hideKeyboard
+import viewdsl.id
+import viewdsl.image
 import viewdsl.invisible
 import viewdsl.layoutGravity
 import viewdsl.marginHorizontal
 import viewdsl.margins
 import viewdsl.onClick
-import viewdsl.tag
 import viewdsl.text
 import viewdsl.textColor
 import viewdsl.textSize
@@ -73,7 +79,7 @@ class CreatingMasterPasswordScreen : BaseFragmentScreen() {
   override fun buildLayout(context: Context) = context.withViewBuilder {
     RootFrameLayout(MatchParent, MatchParent) {
       HorizontalLayout(MatchParent, WrapContent) {
-        tag(RepeatPasswordLayout)
+        id(RepeatPasswordLayout)
         invisible()
         margins(top = MarginNormal + StatusBarHeight, start = MarginNormal, end = MarginNormal)
         ImageView(WrapContent, WrapContent, style = ImageBack) {
@@ -88,7 +94,7 @@ class CreatingMasterPasswordScreen : BaseFragmentScreen() {
         }
       }
       TextView(MatchParent, WrapContent, style = BoldTextView) {
-        tag(TextTitle)
+        id(TextTitle)
         text(R.string.text_create_master_password)
         margins(top = MarginNormal + StatusBarHeight, start = MarginNormal, end = MarginNormal)
         gravity(CENTER)
@@ -97,7 +103,7 @@ class CreatingMasterPasswordScreen : BaseFragmentScreen() {
       VerticalLayout(MatchParent, WrapContent) {
         layoutGravity(CENTER)
         TextView(WrapContent, WrapContent, style = BaseTextView) {
-          tag(TextPasswordStrength)
+          id(TextPasswordStrength)
           margins(start = MarginNormal)
         }
         child<PasswordStrengthMeter>(MatchParent, IntSize(PasswordStrengthMeterHeight)) {
@@ -110,7 +116,7 @@ class CreatingMasterPasswordScreen : BaseFragmentScreen() {
           inAnimation = AnimationUtils.loadAnimation(context, R.anim.slide_out_left)
           outAnimation = AnimationUtils.loadAnimation(context, R.anim.slide_in_right)
           child<EditTextPassword>(MatchParent, WrapContent) {
-            tag(EditTextEnterPassword)
+            id(EditTextEnterPassword)
             marginHorizontal(MarginNormal - MarginTiny)
             setHint(R.string.hint_enter_password)
             onTextChanged { text ->
@@ -118,7 +124,7 @@ class CreatingMasterPasswordScreen : BaseFragmentScreen() {
             }
           }
           child<EditTextPassword>(MatchParent, WrapContent) {
-            tag(EditTextRepeatPassword)
+            id(EditTextRepeatPassword)
             marginHorizontal(MarginNormal - MarginTiny)
             setHint(R.string.hint_repeat_password)
             onTextChanged { text ->
@@ -126,17 +132,29 @@ class CreatingMasterPasswordScreen : BaseFragmentScreen() {
             }
           }
         }
-        TextView(WrapContent, WrapContent, style = BaseTextView) {
-          tag(TextError)
-          gravity(CENTER)
-          drawablePadding(MarginNormal)
-          drawables(end = R.drawable.ic_question, color = Colors.Background)
-          textColor(Colors.Error)
-          margins(start = MarginNormal, end = MarginNormal, top = MarginNormal)
+        // Setting fixed height, because text view sometimes can take up two lines, in which
+        // case layout will jump, which is not good UX
+        val textHeight = TextPaint(TextSizes.H5)
+            .getTextHeight(getString(R.string.text_password_is_too_weak))
+        HorizontalLayout(MatchParent, WrapContent) {
+          id(LayoutError)
+          margins(start = MarginNormal)
+          gravity(Gravity.CENTER_VERTICAL)
+          TextView(WrapContent, IntSize((textHeight * 2.5).toInt()), style = BaseTextView) {
+            id(TextError)
+            margins(top = ((Dimens.IconSize - textHeight) / 2).coerceAtLeast(0))
+            textColor(Colors.Error)
+          }
+          ImageView(WrapContent, WrapContent) {
+            id(ImageErrorQuestion)
+            margins(start = MarginSmall)
+            image(R.drawable.ic_question, Colors.Error)
+            invisible()
+          }
         }
       }
       TextView(MatchParent, WrapContent, style = Button()) {
-        tag(TextContinue)
+        id(TextContinue)
         layoutGravity(Gravity.BOTTOM)
         text(R.string.text_continue)
         margins(start = MarginNormal, end = MarginNormal, bottom = MarginNormal)
@@ -159,7 +177,9 @@ class CreatingMasterPasswordScreen : BaseFragmentScreen() {
   }
   
   override fun onAppearedOnScreen() {
-    viewAs<EditTextPassword>(EditTextEnterPassword).showKeyboard()
+    requireView().postDelayed({
+      viewAs<EditTextPassword>(EditTextEnterPassword).showKeyboard()
+    }, Durations.DelayOpenKeyboard)
   }
   
   private fun render(state: CreatingMasterPasswordState) {
@@ -178,8 +198,8 @@ class CreatingMasterPasswordScreen : BaseFragmentScreen() {
     if (state.showErrorText) {
       state.passwordStatus?.let(::showPasswordStatus)
     } else {
-      textView(TextError).text("")
-      textView(TextError).drawables(end = R.drawable.ic_question, color = Colors.Background)
+      view(ImageErrorQuestion).invisible()
+      textView(TextError).clearText()
     }
     showPasswordStrength(state)
   }
@@ -214,18 +234,18 @@ class CreatingMasterPasswordScreen : BaseFragmentScreen() {
       }
     }
     if (passwordStatus == TOO_WEAK) {
-      textView(TextError).drawables(end = R.drawable.ic_question, color = Colors.Error)
-      textView(TextError).onClick { store.tryDispatch(RequestShowPasswordStrengthDialog) }
+      view(ImageErrorQuestion).visible()
+      view(LayoutError).onClick { store.tryDispatch(RequestShowPasswordStrengthDialog) }
     } else {
-      textView(TextError).drawables(end = R.drawable.ic_question, color = Colors.Background)
-      textView(TextError).clearOnClick()
+      view(ImageErrorQuestion).invisible()
+      view(LayoutError).clearOnClick()
     }
     textView(TextError).text(text)
   }
   
   private fun showPasswordStrength(state: CreatingMasterPasswordState) {
     if (state.passwordEnteringState == REPEATING) {
-      textView(TextPasswordStrength).text("")
+      textView(TextPasswordStrength).clearText()
       return
     }
     viewAs<PasswordStrengthMeter>().setStrength(state.passwordStrength)
@@ -253,8 +273,8 @@ class CreatingMasterPasswordScreen : BaseFragmentScreen() {
   }
   
   private fun switchToRepeatPasswordState() {
-    viewAs<EditTextPassword>(EditTextRepeatPassword).text("")
-    textView(TextError).text("")
+    viewAs<EditTextPassword>(EditTextRepeatPassword).clearText()
+    textView(TextError).clearText()
     textView(TextPasswordStrength).animateInvisible()
     view(TextTitle).animateInvisible()
     view(RepeatPasswordLayout).animateVisible()
@@ -266,14 +286,16 @@ class CreatingMasterPasswordScreen : BaseFragmentScreen() {
     }
   }
   
-  companion object {
+  private companion object {
     
-    const val TextPasswordStrength = "TextPasswordStrength"
-    const val TextError = "TextError"
-    const val TextTitle = "TextTitle"
-    const val TextContinue = "TextContinue"
-    const val RepeatPasswordLayout = "RepeatPasswordLayout"
-    const val EditTextEnterPassword = "EditTextEnterPassword"
-    const val EditTextRepeatPassword = "EditTextRepeatPassword"
+    val TextPasswordStrength = View.generateViewId()
+    val LayoutError = View.generateViewId()
+    val TextError = View.generateViewId()
+    val ImageErrorQuestion = View.generateViewId()
+    val TextTitle = View.generateViewId()
+    val TextContinue = View.generateViewId()
+    val RepeatPasswordLayout = View.generateViewId()
+    val EditTextEnterPassword = View.generateViewId()
+    val EditTextRepeatPassword = View.generateViewId()
   }
 }

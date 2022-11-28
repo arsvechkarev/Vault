@@ -9,10 +9,10 @@ object ViewDslConfiguration {
   private var _application: Application? = null
   private var _statusBarHeight: Int = 0
   private var _defaultStyles: DefaultStyles = object : DefaultStyles {}
-  private var _durations: Durations = object : Durations {}
+  private var _Animation_durations: AnimationDurations = object : AnimationDurations {}
   
   val DefaultStyles: DefaultStyles get() = _defaultStyles
-  val Durations: Durations get() = _durations
+  val AnimationDurations: AnimationDurations get() = _Animation_durations
   val statusBarHeight: Int get() = _statusBarHeight
   val applicationContext: Context
     get() = checkNotNull(_application?.applicationContext) {
@@ -31,8 +31,8 @@ object ViewDslConfiguration {
     _defaultStyles = defaultStyles
   }
   
-  fun setDurations(durations: Durations) {
-    _durations = durations
+  fun setDurations(animationDurations: AnimationDurations) {
+    _Animation_durations = animationDurations
   }
   
   fun setStatusBarHeight(statusBarHeight: Int) {

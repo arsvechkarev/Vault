@@ -13,8 +13,6 @@ sealed interface ExportPasswordsUiEvent : ExportPasswordsEvent {
   class OnFilenameTextChanged(val text: String) : ExportPasswordsUiEvent
   class OnViewExportedFileClicked(val path: String) : ExportPasswordsUiEvent
   object OnExportPasswordClicked : ExportPasswordsUiEvent
-  object OnMasterPasswordCheckPassed : ExportPasswordsUiEvent
-  object OnHideMasterPasswordCheckDialog : ExportPasswordsUiEvent
   object OnHideViewExportedFileDialog : ExportPasswordsUiEvent
   class OnFileForPasswordsExportCreated(val uri: Uri) : ExportPasswordsUiEvent
   object OnBackPressed : ExportPasswordsUiEvent
@@ -40,11 +38,7 @@ data class ExportPasswordsState(
   val folderPath: String = "",
   val filename: String = "",
   val exportedFileUri: Uri? = null,
-  val dialogType: ExportPasswordsDialogType? = null,
+  val showSuccessDialog: Boolean = false,
   val showSelectFolderError: Boolean = false,
   val showEnterFilenameError: Boolean = false,
 )
-
-enum class ExportPasswordsDialogType {
-  CHECKING_MASTER_PASSWORD, SUCCESS_EXPORT
-}

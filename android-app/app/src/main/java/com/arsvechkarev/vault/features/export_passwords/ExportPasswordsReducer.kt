@@ -13,9 +13,7 @@ import com.arsvechkarev.vault.features.export_passwords.ExportPasswordsUiEvent.O
 import com.arsvechkarev.vault.features.export_passwords.ExportPasswordsUiEvent.OnExportPasswordClicked
 import com.arsvechkarev.vault.features.export_passwords.ExportPasswordsUiEvent.OnFileForPasswordsExportCreated
 import com.arsvechkarev.vault.features.export_passwords.ExportPasswordsUiEvent.OnFilenameTextChanged
-import com.arsvechkarev.vault.features.export_passwords.ExportPasswordsUiEvent.OnHideMasterPasswordCheckDialog
 import com.arsvechkarev.vault.features.export_passwords.ExportPasswordsUiEvent.OnHideViewExportedFileDialog
-import com.arsvechkarev.vault.features.export_passwords.ExportPasswordsUiEvent.OnMasterPasswordCheckPassed
 import com.arsvechkarev.vault.features.export_passwords.ExportPasswordsUiEvent.OnSelectedFolder
 import com.arsvechkarev.vault.features.export_passwords.ExportPasswordsUiEvent.OnViewExportedFileClicked
 
@@ -32,7 +30,7 @@ class ExportPasswordsReducer : DslReducer<ExportPasswordsState, ExportPasswordsE
       }
       OnExportPasswordClicked -> {
         if (state.folderPath.isNotBlank() && state.filename.isNotBlank()) {
-          state { copy(dialogType = ExportPasswordsDialogType.CHECKING_MASTER_PASSWORD) }
+          commands(GetPasswordsFileUri)
         } else {
           state {
             copy(
@@ -42,21 +40,17 @@ class ExportPasswordsReducer : DslReducer<ExportPasswordsState, ExportPasswordsE
           }
         }
       }
-      OnMasterPasswordCheckPassed -> {
-        state { copy(dialogType = null) }
-        commands(GetPasswordsFileUri)
-      }
       is OnViewExportedFileClicked -> {
         commands()
       }
-      OnHideMasterPasswordCheckDialog, OnHideViewExportedFileDialog -> {
-        state { copy(dialogType = null) }
+      OnHideViewExportedFileDialog -> {
+        state { copy(showSuccessDialog = false) }
       }
       OnBackPressed -> {
-        if (state.dialogType == null) {
-          commands(GoBack)
+        if (state.showSuccessDialog) {
+          state { copy(showSuccessDialog = false) }
         } else {
-          state { copy(dialogType = null) }
+          commands(GoBack)
         }
       }
       is CalculatedFilenameFromUri -> {
@@ -73,7 +67,7 @@ class ExportPasswordsReducer : DslReducer<ExportPasswordsState, ExportPasswordsE
         )
       }
       ExportedPasswords -> {
-        state { copy(dialogType = ExportPasswordsDialogType.SUCCESS_EXPORT) }
+        state { copy(showSuccessDialog = true) }
       }
     }
   }

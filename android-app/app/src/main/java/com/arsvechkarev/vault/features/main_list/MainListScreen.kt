@@ -1,17 +1,10 @@
 package com.arsvechkarev.vault.features.main_list
 
 import android.content.Context
-import android.text.SpannableString
-import android.text.style.RelativeSizeSpan
-import android.view.Gravity.CENTER
 import android.view.Gravity.CENTER_HORIZONTAL
-import android.view.View
-import androidx.recyclerview.widget.RecyclerView
 import com.arsvechkarev.vault.R
-import com.arsvechkarev.vault.core.extensions.ifTrue
 import com.arsvechkarev.vault.core.mvi.ext.subscribe
 import com.arsvechkarev.vault.core.mvi.ext.viewModelStore
-import com.arsvechkarev.vault.core.views.MaterialProgressBar
 import com.arsvechkarev.vault.core.views.menu.MenuItem
 import com.arsvechkarev.vault.core.views.menu.MenuView
 import com.arsvechkarev.vault.features.common.di.CoreComponentHolder.coreComponent
@@ -25,38 +18,25 @@ import com.arsvechkarev.vault.features.main_list.MenuItemType.EXPORT_PASSWORDS
 import com.arsvechkarev.vault.features.main_list.MenuItemType.IMPORT_PASSWORDS
 import com.arsvechkarev.vault.features.main_list.MenuItemType.NEW_PASSWORD
 import com.arsvechkarev.vault.features.main_list.MenuItemType.SETTINGS
+import com.arsvechkarev.vault.features.main_list.recycler.Empty
+import com.arsvechkarev.vault.features.main_list.recycler.Loading
+import com.arsvechkarev.vault.features.main_list.recycler.MainListAdapter
 import com.arsvechkarev.vault.viewbuilding.Colors
 import com.arsvechkarev.vault.viewbuilding.Dimens.GradientDrawableHeight
-import com.arsvechkarev.vault.viewbuilding.Dimens.ImageNoServicesSize
-import com.arsvechkarev.vault.viewbuilding.Dimens.MarginLarge
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginNormal
-import com.arsvechkarev.vault.viewbuilding.Dimens.ProgressBarSizeBig
-import com.arsvechkarev.vault.viewbuilding.Fonts
-import com.arsvechkarev.vault.viewbuilding.Styles.BaseTextView
-import com.arsvechkarev.vault.viewbuilding.Styles.BoldTextView
 import com.arsvechkarev.vault.viewbuilding.Styles.TitleTextView
-import com.arsvechkarev.vault.viewbuilding.TextSizes
-import com.arsvechkarev.vault.viewbuilding.TypefaceSpan
 import navigation.BaseFragmentScreen
 import viewdsl.Size.Companion.MatchParent
 import viewdsl.Size.Companion.WrapContent
-import viewdsl.animateInvisible
-import viewdsl.animateVisible
 import viewdsl.backgroundColor
 import viewdsl.classNameTag
 import viewdsl.dp
-import viewdsl.gravity
 import viewdsl.image
-import viewdsl.invisible
 import viewdsl.layoutGravity
-import viewdsl.margin
-import viewdsl.marginHorizontal
 import viewdsl.margins
 import viewdsl.paddings
 import viewdsl.setupWith
-import viewdsl.tag
 import viewdsl.text
-import viewdsl.textSize
 import viewdsl.withViewBuilder
 
 class MainListScreen : BaseFragmentScreen() {
@@ -64,7 +44,7 @@ class MainListScreen : BaseFragmentScreen() {
   override fun buildLayout(context: Context) = context.withViewBuilder {
     RootFrameLayout {
       backgroundColor(Colors.Background)
-      RecyclerView(MatchParent, WrapContent) {
+      RecyclerView(MatchParent, MatchParent) {
         classNameTag()
         paddings(top = GradientDrawableHeight, bottom = 80.dp)
         clipToPadding = false
@@ -78,40 +58,6 @@ class MainListScreen : BaseFragmentScreen() {
         margins(top = MarginNormal + StatusBarHeight)
         text(R.string.app_name)
         layoutGravity(CENTER_HORIZONTAL)
-      }
-      VerticalLayout(MatchParent, MatchParent) {
-        tag(LayoutLoading)
-        invisible()
-        layoutGravity(CENTER)
-        gravity(CENTER)
-        child<MaterialProgressBar>(ProgressBarSizeBig, ProgressBarSizeBig)
-      }
-      VerticalLayout(MatchParent, MatchParent) {
-        tag(LayoutNoPasswords)
-        invisible()
-        marginHorizontal(MarginLarge)
-        layoutGravity(CENTER)
-        gravity(CENTER)
-        ImageView(ImageNoServicesSize, ImageNoServicesSize) {
-          image(R.drawable.ic_lists)
-          margin(MarginNormal)
-        }
-        TextView(WrapContent, WrapContent, style = BoldTextView) {
-          marginHorizontal(MarginNormal)
-          textSize(TextSizes.H3)
-          text(R.string.text_no_passwords)
-        }
-        TextView(WrapContent, WrapContent, style = BaseTextView) {
-          textSize(TextSizes.H4)
-          margin(MarginNormal)
-          gravity(CENTER)
-          val spannableString = SpannableString(context.getString(R.string.text_click_plus))
-          val index = spannableString.indexOf('+')
-          spannableString.setSpan(
-            TypefaceSpan(Fonts.SegoeUiBold), index, index + 1, 0)
-          spannableString.setSpan(RelativeSizeSpan(1.3f), index, index + 1, 0)
-          text(spannableString)
-        }
       }
       child<MenuView>(MatchParent, MatchParent) {
         classNameTag()
@@ -149,31 +95,15 @@ class MainListScreen : BaseFragmentScreen() {
     } else {
       viewAs<MenuView>().closeMenu()
     }
-    state.data?.handle {
-      onLoading { showView(view(LayoutLoading)) }
-      onEmpty { showView(view(LayoutNoPasswords)) }
-      onSuccess { list ->
-        showView(viewAs<RecyclerView>())
-        adapter.submitList(list)
-      }
-    }
+    adapter.submitList(state.data.getItems(
+      successItems = { it },
+      loadingItems = { listOf(Loading) },
+      emptyItems = { listOf(Empty) }
+    ))
   }
   
   override fun handleBackPress(): Boolean {
     store.tryDispatch(OnBackPressed)
     return true
-  }
-  
-  private fun showView(layout: View) {
-    viewAs<RecyclerView>().ifTrue({ it !== layout }, { animateInvisible() })
-    view(LayoutLoading).ifTrue({ it !== layout }, { animateInvisible() })
-    view(LayoutNoPasswords).ifTrue({ it !== layout }, { animateInvisible() })
-    layout.animateVisible()
-  }
-  
-  private companion object {
-    
-    const val LayoutLoading = "LayoutLoading"
-    const val LayoutNoPasswords = "LayoutNoPasswords"
   }
 }

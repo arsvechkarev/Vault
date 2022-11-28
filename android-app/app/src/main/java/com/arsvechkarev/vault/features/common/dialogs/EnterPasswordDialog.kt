@@ -13,6 +13,7 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.graphics.ColorUtils
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
+import com.arsvechkarev.vault.BuildConfig
 import com.arsvechkarev.vault.R
 import com.arsvechkarev.vault.core.views.EditTextPassword
 import com.arsvechkarev.vault.core.views.MaterialProgressBar
@@ -90,7 +91,9 @@ class EnterPasswordDialog(context: Context) : FrameLayout(context) {
         child<EditTextPassword>(MatchParent, WrapContent) {
           margins(top = MarginExtraLarge + MarginNormal)
           classNameTag()
-          text("qwetu1233") // TODO (27.11.2022): REMOVE THIS!
+          if (BuildConfig.DEBUG) {
+            text("qwetu1233")
+          }
           setHint(R.string.hint_enter_password)
           onTextChanged { parentView.textView(TextError).clearText() }
           onSubmit { password -> handleContinueClick(password) }

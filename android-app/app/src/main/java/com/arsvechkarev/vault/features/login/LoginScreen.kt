@@ -3,6 +3,7 @@ package com.arsvechkarev.vault.features.login
 import android.content.Context
 import android.view.Gravity.CENTER
 import android.view.View
+import com.arsvechkarev.vault.BuildConfig
 import com.arsvechkarev.vault.R
 import com.arsvechkarev.vault.core.mvi.ext.subscribe
 import com.arsvechkarev.vault.core.mvi.ext.viewModelStore
@@ -71,7 +72,9 @@ class LoginScreen : BaseFragmentScreen() {
         child<EditTextPassword>(MatchParent, WrapContent) {
           id(EditTextPasswordId)
           marginHorizontal(MarginNormal)
-          text("qwetu1233") // TODO (7/22/2022): DELETE THIS!!!
+          if (BuildConfig.DEBUG) {
+            text("qwetu1233")
+          }
           setHint(R.string.hint_enter_password)
           onTextChanged { store.tryDispatch(OnTypingText) }
           onSubmit { text -> store.tryDispatch(OnEnteredPassword(text)) }

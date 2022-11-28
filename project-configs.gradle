@@ -1,9 +1,9 @@
 ext {
-  compileSdkVersion = 32
+  compileSdkVersion = 33
   applicationId = 'com.arsvechkarev.vault'
   // TODO: Maybe lower minSdkVersion
   minSdkVersion = 26
-  targetSdkVersion = 32
+  targetSdkVersion = 33
   versionCode = 1
   versionName = '1.0.0'
 

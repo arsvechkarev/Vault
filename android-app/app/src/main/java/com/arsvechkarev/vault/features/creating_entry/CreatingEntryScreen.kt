@@ -9,6 +9,7 @@ import androidx.annotation.StringRes
 import com.arsvechkarev.vault.R
 import com.arsvechkarev.vault.core.mvi.ext.subscribe
 import com.arsvechkarev.vault.core.mvi.ext.viewModelStore
+import com.arsvechkarev.vault.features.common.Durations
 import com.arsvechkarev.vault.features.common.di.CoreComponentHolder.coreComponent
 import com.arsvechkarev.vault.features.creating_entry.CreatingEntryUiEvent.OnBackPressed
 import com.arsvechkarev.vault.features.creating_entry.CreatingEntryUiEvent.OnContinueClicked
@@ -125,7 +126,7 @@ class CreatingEntryScreen : BaseFragmentScreen() {
         requestFocus()
         requireContext().showKeyboard(this)
       }
-    }, 100)
+    }, Durations.DelayOpenKeyboard)
   }
   
   private fun render(state: CreatingEntryState) {

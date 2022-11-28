@@ -3,7 +3,7 @@ package com.arsvechkarev.vault.core.views
 import android.content.Context
 import android.view.ViewGroup
 import android.widget.TextView
-import com.arsvechkarev.vault.features.common.DurationsConfigurator
+import com.arsvechkarev.vault.features.common.Durations
 import com.arsvechkarev.vault.viewbuilding.Colors
 import com.arsvechkarev.vault.viewbuilding.Dimens
 import com.arsvechkarev.vault.viewbuilding.Dimens.CheckmarkSize
@@ -54,11 +54,11 @@ class Snackbar(context: Context) : ViewGroup(context) {
     checkmarkView.animateCheckmark()
     animate().translationY(0f)
         .setInterpolator(AccelerateDecelerateInterpolator)
-        .setDuration(DurationsConfigurator.Short)
+        .setDuration(Durations.Short)
         .withLayer()
         .start()
-    val delay = DurationsConfigurator.Short + DurationsConfigurator.Checkmark +
-        DurationsConfigurator.Snackbar
+    val delay = Durations.Short + Durations.Checkmark +
+        Durations.Snackbar
     postDelayed({ hide() }, delay)
   }
   
@@ -67,7 +67,7 @@ class Snackbar(context: Context) : ViewGroup(context) {
     opened = false
     animate().translationY(height * 1.8f)
         .setInterpolator(AccelerateDecelerateInterpolator)
-        .setDuration(DurationsConfigurator.Short)
+        .setDuration(Durations.Short)
         .withLayer()
         .withEndAction { checkmarkView.invisible() }
         .start()

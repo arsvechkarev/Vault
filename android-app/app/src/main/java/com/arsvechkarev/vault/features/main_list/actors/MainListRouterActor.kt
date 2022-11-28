@@ -1,7 +1,7 @@
 package com.arsvechkarev.vault.features.main_list.actors
 
 import com.arsvechkarev.vault.core.mvi.tea.Actor
-import com.arsvechkarev.vault.features.common.DurationsConfigurator
+import com.arsvechkarev.vault.features.common.Durations
 import com.arsvechkarev.vault.features.common.Router
 import com.arsvechkarev.vault.features.common.Screens.CreatingEntryScreen
 import com.arsvechkarev.vault.features.common.Screens.ExportPasswordsScreen
@@ -22,7 +22,7 @@ fun MainListRouterActor(router: Router): Actor<MainListCommand, MainListEvent> {
   return RouterActor<MainListCommand, RouterCommand, MainListEvent>(router) { command ->
     when (command) {
       is OpenMenuItem -> {
-        delay(DurationsConfigurator.MenuOpening)
+        delay(Durations.MenuOpening)
         when (command.item) {
           MenuItemType.EXPORT_PASSWORDS -> goForward(ExportPasswordsScreen)
           MenuItemType.IMPORT_PASSWORDS -> goForward(ImportPasswordsScreen)

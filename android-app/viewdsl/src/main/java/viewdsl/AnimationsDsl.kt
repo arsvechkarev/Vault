@@ -8,7 +8,7 @@ import android.graphics.drawable.Animatable
 import android.view.View
 import android.view.animation.AccelerateDecelerateInterpolator
 import android.view.animation.OvershootInterpolator
-import viewdsl.ViewDslConfiguration.Durations
+import viewdsl.ViewDslConfiguration.AnimationDurations
 
 val AccelerateDecelerateInterpolator = AccelerateDecelerateInterpolator()
 val OvershootInterpolator = OvershootInterpolator()
@@ -40,7 +40,7 @@ fun Animator.doOnEnd(block: () -> Unit) {
 
 fun View.animateVisible(
   andThen: () -> Unit = {},
-  duration: Long = Durations.VisibilityChange
+  duration: Long = AnimationDurations.VisibilityChange
 ) {
   if (visibility == View.VISIBLE && alpha == 1f) return
   alpha = 0f
@@ -53,7 +53,7 @@ fun View.animateVisible(
 
 fun View.animateInvisible(
   andThen: () -> Unit = {},
-  duration: Long = Durations.VisibilityChange
+  duration: Long = AnimationDurations.VisibilityChange
 ) {
   if (visibility != View.VISIBLE) return
   animate().alpha(0f).setDuration(duration)
@@ -72,7 +72,7 @@ fun View.rotate() {
   tag = "isRotating"
   animate().rotation(540f)
       .withLayer()
-      .setDuration(Durations.Rotation)
+      .setDuration(AnimationDurations.Rotation)
       .setInterpolator(AccelerateDecelerateInterpolator)
       .withEndAction {
         tag("isNotRotating")

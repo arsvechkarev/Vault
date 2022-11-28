@@ -7,7 +7,7 @@ import android.graphics.Canvas
 import android.view.View
 import buisnesslogic.PasswordStrength
 import com.arsvechkarev.vault.core.extensions.Paint
-import com.arsvechkarev.vault.features.common.DurationsConfigurator
+import com.arsvechkarev.vault.features.common.Durations
 import com.arsvechkarev.vault.viewbuilding.Colors
 import viewdsl.AccelerateDecelerateInterpolator
 
@@ -17,14 +17,14 @@ class PasswordStrengthMeter(context: Context) : View(context) {
   private var percentage = 0f
   private val paint = Paint(Colors.Transparent)
   private val colorAnimator = ValueAnimator().apply {
-    duration = DurationsConfigurator.Default
+    duration = Durations.Default
     interpolator = AccelerateDecelerateInterpolator
     addUpdateListener {
       paint.color = it.animatedValue as Int
     }
   }
   private val percentageAnimator = ValueAnimator().apply {
-    duration = DurationsConfigurator.Default
+    duration = Durations.Default
     interpolator = AccelerateDecelerateInterpolator
     addUpdateListener {
       percentage = it.animatedValue as Float

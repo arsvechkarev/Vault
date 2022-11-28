@@ -6,7 +6,6 @@ import com.arsvechkarev.vault.features.common.data.FileReaderImpl
 import com.arsvechkarev.vault.features.common.data.FileSaverImpl
 import com.arsvechkarev.vault.features.common.data.FilenameFromUriRetriever
 import com.arsvechkarev.vault.features.common.data.FilenameFromUriRetrieverImpl
-import com.arsvechkarev.vault.features.common.domain.PASSWORDS_FILENAME
 
 interface IoModule {
   val fileSaver: FileSaver
@@ -19,7 +18,7 @@ class IoModuleImpl(
 ) : IoModule {
   
   override val fileSaver = FileSaverImpl(
-    PASSWORDS_FILENAME,
+    filename = "passwords.vault",
     coreModule.application,
     coreModule.dispatchersFacade
   )

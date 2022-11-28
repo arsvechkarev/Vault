@@ -102,7 +102,9 @@ class FragmentNavigatorImpl(
       return true
     }
     val hasScreensYet = fragmentManager.fragments.size > 1
-    fragmentManager.removeTopFragmentWithAnimation()
+    if (hasScreensYet) {
+      fragmentManager.removeTopFragmentWithAnimation()
+    }
     return hasScreensYet
   }
   

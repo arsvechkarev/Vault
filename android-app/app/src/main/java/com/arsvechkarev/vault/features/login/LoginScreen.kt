@@ -8,6 +8,7 @@ import com.arsvechkarev.vault.R
 import com.arsvechkarev.vault.core.mvi.ext.subscribe
 import com.arsvechkarev.vault.core.mvi.ext.viewModelStore
 import com.arsvechkarev.vault.core.views.EditTextPassword
+import com.arsvechkarev.vault.features.common.Durations
 import com.arsvechkarev.vault.features.common.di.CoreComponentHolder.coreComponent
 import com.arsvechkarev.vault.features.common.dialogs.LoadingDialog
 import com.arsvechkarev.vault.features.common.dialogs.loadingDialog
@@ -73,7 +74,8 @@ class LoginScreen : BaseFragmentScreen() {
           id(EditTextPasswordId)
           marginHorizontal(MarginNormal)
           if (BuildConfig.DEBUG) {
-            text("qwetu1233")
+            text(BuildConfig.STUB_PASSWORD)
+            editText.setSelection(BuildConfig.STUB_PASSWORD.length)
           }
           setHint(R.string.hint_enter_password)
           onTextChanged { store.tryDispatch(OnTypingText) }
@@ -110,7 +112,9 @@ class LoginScreen : BaseFragmentScreen() {
   }
   
   override fun onAppearedOnScreen() {
-    viewAs<EditTextPassword>(EditTextPasswordId).showKeyboard()
+    requireView().postDelayed({
+      viewAs<EditTextPassword>(EditTextPasswordId).showKeyboard()
+    }, Durations.DelayOpenKeyboard)
   }
   
   private fun render(state: LoginState) {

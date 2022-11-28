@@ -95,8 +95,10 @@ class SettingsScreen : BaseFragmentScreen() {
       }
       EnterPasswordDialog(
         mode = CHECK_MASTER_PASSWORD,
+        hideKeyboardOnClose = false,
         onCheckSuccessful = {
           coreComponent.router.goForward(ChangeMasterPasswordScreen)
+          enterPasswordDialog.hide()
         },
       )
     }

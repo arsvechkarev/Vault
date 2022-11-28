@@ -17,9 +17,11 @@ android {
   }
   buildTypes {
     debug {
+      buildConfigField("String", "STUB_PASSWORD", "\"qwetu1233\"")
       applicationIdSuffix ".debug"
     }
     release {
+      buildConfigField("String", "STUB_PASSWORD", "")
       minifyEnabled ext.minifyEnabled
       shrinkResources ext.shrinkResources
       proguardFiles(getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro')

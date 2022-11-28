@@ -121,7 +121,7 @@
   <string name="text_error_import_message">Import is unsuccessful. Either you selected the wrong file or
     the entered password is incorrect
   </string>
-  <string name="text_enter_password_to_import">Enter password to import</string>
+  <string name="text_enter_password_to_import">Enter password to decipher the file with</string>
   <string name="clipboard_label_website">website</string>
   <string name="clipboard_label_login">login</string>
   <string name="clipboard_label_password">password</string>

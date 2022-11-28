@@ -64,6 +64,7 @@ class EnterPasswordDialog(context: Context) : FrameLayout(context) {
   
   private var mode: Mode? = null
   
+  private var hideKeyboardOnClose = true
   private var onCheckSuccessful: () -> Unit = {}
   private var onPasswordEntered: (String) -> Unit = {}
   
@@ -91,9 +92,6 @@ class EnterPasswordDialog(context: Context) : FrameLayout(context) {
         child<EditTextPassword>(MatchParent, WrapContent) {
           margins(top = MarginExtraLarge + MarginNormal)
           classNameTag()
-          if (BuildConfig.DEBUG) {
-            text("qwetu1233")
-          }
           setHint(R.string.hint_enter_password)
           onTextChanged { parentView.textView(TextError).clearText() }
           onSubmit { password -> handleContinueClick(password) }
@@ -139,10 +137,15 @@ class EnterPasswordDialog(context: Context) : FrameLayout(context) {
     behavior(BottomSheetBehavior().apply {
       onShow = {
         viewAs<EditTextPassword>().showKeyboard()
+        if (BuildConfig.DEBUG) {
+          viewAs<EditTextPassword>().text(BuildConfig.STUB_PASSWORD)
+        }
       }
       onHide = {
         viewAs<EditTextPassword>().clearTextAndFocus()
-        context.hideKeyboard()
+        if (hideKeyboardOnClose) {
+          context.hideKeyboard()
+        }
         onDialogClosed()
       }
       onSlidePercentageChanged = { fraction ->
@@ -154,12 +157,14 @@ class EnterPasswordDialog(context: Context) : FrameLayout(context) {
   
   private fun setupMode(
     mode: Mode,
+    hideKeyboardOnClose: Boolean,
     onCheckSuccessful: () -> Unit,
     onPasswordEntered: (String) -> Unit
   ) {
     this.mode = mode
     this.onCheckSuccessful = onCheckSuccessful
     this.onPasswordEntered = onPasswordEntered
+    this.hideKeyboardOnClose = hideKeyboardOnClose
     when (mode) {
       IMPORTING_PASSWORDS -> {
         textView(Title).text(R.string.text_enter_password_to_import)
@@ -209,6 +214,7 @@ class EnterPasswordDialog(context: Context) : FrameLayout(context) {
     
     fun CoordinatorLayout.EnterPasswordDialog(
       mode: Mode,
+      hideKeyboardOnClose: Boolean = true,
       onCheckSuccessful: () -> Unit = {},
       onPasswordEntered: (String) -> Unit = {},
       onDialogClosed: () -> Unit = {},
@@ -220,7 +226,7 @@ class EnterPasswordDialog(context: Context) : FrameLayout(context) {
       child<EnterPasswordDialog, ViewGroup.LayoutParams>(MatchParent, WrapContent, block) {
         classNameTag()
         setupBehavior(shadowLayout, onDialogClosed)
-        setupMode(mode, onCheckSuccessful, onPasswordEntered)
+        setupMode(mode, hideKeyboardOnClose, onCheckSuccessful, onPasswordEntered)
       }
     }
   }

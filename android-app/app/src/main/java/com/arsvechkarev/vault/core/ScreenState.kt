@@ -2,7 +2,7 @@ package com.arsvechkarev.vault.core
 
 /**
  * Result class that facilitates working with different result types, such as Success,
- * Empty, Loading, Failure
+ * Empty, Loading
  *
  * @param S type of success result
  *
@@ -26,15 +26,28 @@ class ScreenState<S> private constructor(
       Type.LOADING -> consumer.onLoading.invoke()
       Type.EMPTY -> consumer.onEmpty.invoke()
       Type.SUCCESS -> consumer.onSuccess.invoke(data as S)
-      Type.FAILURE -> consumer.onFailure.invoke(data as Throwable)
     }
   }
+  
+  @Suppress("UNCHECKED_CAST")
+  fun <T> getItems(
+    successItems: (data: S) -> List<T>,
+    loadingItems: () -> List<T>,
+    emptyItems: () -> List<T>,
+  ): List<T> {
+    return when (type) {
+      Type.SUCCESS -> successItems(data as S)
+      Type.LOADING -> loadingItems()
+      Type.EMPTY -> emptyItems()
+    }
+  }
+  
   companion object {
-  
+    
     fun <S> loading(): ScreenState<S> = ScreenState(null, Type.LOADING)
-  
+    
     fun <S> success(value: S): ScreenState<S> = ScreenState(value, Type.SUCCESS)
-  
+    
     fun <S> empty(): ScreenState<S> = ScreenState(null, Type.EMPTY)
   }
 }
@@ -43,7 +56,7 @@ class ScreenState<S> private constructor(
  * Represents a result type that [ScreenState] could have
  */
 private enum class Type {
-  SUCCESS, FAILURE, LOADING, EMPTY
+  SUCCESS, LOADING, EMPTY
 }
 
 class ResultConsumer<S> {
@@ -51,7 +64,6 @@ class ResultConsumer<S> {
   internal var onLoading: () -> Unit = {}
   internal var onEmpty: () -> Unit = {}
   internal var onSuccess: (S) -> Unit = {}
-  internal var onFailure: (Throwable) -> Unit = {}
   
   fun onLoading(action: () -> Unit) {
     this.onLoading = action

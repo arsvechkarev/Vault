@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.res.ColorStateList
 import android.view.Gravity
 import android.view.View
+import android.widget.EditText
 import android.widget.ImageView
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.arsvechkarev.vault.R
@@ -21,6 +22,9 @@ import com.arsvechkarev.vault.features.common.dialogs.loadingDialog
 import com.arsvechkarev.vault.features.common.setWebsiteIcon
 import com.arsvechkarev.vault.features.info.InfoScreen.ImageType.COPY
 import com.arsvechkarev.vault.features.info.InfoScreen.ImageType.OPEN_IN_NEW
+import com.arsvechkarev.vault.features.info.InfoScreenNews.SetLogin
+import com.arsvechkarev.vault.features.info.InfoScreenNews.SetNotes
+import com.arsvechkarev.vault.features.info.InfoScreenNews.SetWebsiteName
 import com.arsvechkarev.vault.features.info.InfoScreenNews.ShowLoginCopied
 import com.arsvechkarev.vault.features.info.InfoScreenNews.ShowNotesCopied
 import com.arsvechkarev.vault.features.info.InfoScreenNews.ShowPasswordCopied
@@ -29,6 +33,7 @@ import com.arsvechkarev.vault.features.info.InfoScreenUiEvent.OnBackPressed
 import com.arsvechkarev.vault.features.info.InfoScreenUiEvent.OnConfirmedDeletion
 import com.arsvechkarev.vault.features.info.InfoScreenUiEvent.OnCopyPasswordClicked
 import com.arsvechkarev.vault.features.info.InfoScreenUiEvent.OnDeleteClicked
+import com.arsvechkarev.vault.features.info.InfoScreenUiEvent.OnInit
 import com.arsvechkarev.vault.features.info.InfoScreenUiEvent.OnLoginActionClicked
 import com.arsvechkarev.vault.features.info.InfoScreenUiEvent.OnLoginTextChanged
 import com.arsvechkarev.vault.features.info.InfoScreenUiEvent.OnNotesActionClicked
@@ -85,12 +90,10 @@ class InfoScreen : BaseFragmentScreen() {
     ) {
       ImageView(WrapContent, WrapContent) {
         id(id)
-        image(
-          when (type) {
-            OPEN_IN_NEW -> R.drawable.ic_open_in_new
-            COPY -> R.drawable.ic_copy
-          }
-        )
+        image(when (type) {
+          OPEN_IN_NEW -> R.drawable.ic_open_in_new
+          COPY -> R.drawable.ic_copy
+        })
         padding(Dimens.IconPadding)
         circleRippleBackground(rippleColor = Colors.Ripple)
         onClick { store.tryDispatch(event) }
@@ -280,6 +283,7 @@ class InfoScreen : BaseFragmentScreen() {
   
   override fun onInit() {
     store.subscribe(this, ::render, ::handleNews)
+    store.tryDispatch(OnInit)
   }
   
   private val websiteNameTextWatcher =
@@ -294,10 +298,9 @@ class InfoScreen : BaseFragmentScreen() {
   private fun render(state: InfoScreenState) {
     imageView(ImageWebsite).setWebsiteIcon(state.websiteNameState.editedText)
     textView(TextWebsiteName).text(state.websiteNameState.editedText)
-    renderTextState(EditTextWebsiteName, state.websiteNameState,
-      websiteNameTextWatcher, ImageWebsiteNameAction)
-    renderTextState(EditTextLogin, state.loginState, loginTextWatcher, ImageLoginAction)
-    renderTextState(EditTextNotes, state.notesState, notesTextWatcher, ImageNotesAction)
+    renderTextState(EditTextWebsiteName, state.websiteNameState, ImageWebsiteNameAction)
+    renderTextState(EditTextLogin, state.loginState, ImageLoginAction)
+    renderTextState(EditTextNotes, state.notesState, ImageNotesAction)
     if (!state.isEditingSomething) {
       requireContext().hideKeyboard()
     }
@@ -316,20 +319,12 @@ class InfoScreen : BaseFragmentScreen() {
   private fun renderTextState(
     editTextId: Int,
     textState: TextState,
-    textWatcher: BaseTextWatcher,
-    imageId: Int
+    actionImageId: Int
   ) {
     val icon = if (textState.isEditingNow) R.drawable.ic_checmark else R.drawable.ic_copy
-    imageView(imageId).image(icon)
+    imageView(actionImageId).image(icon)
     if (!textState.isEditingNow) {
       editText(editTextId).clearFocus()
-    }
-    editText(editTextId).apply {
-      removeTextChangedListener(textWatcher)
-      if (text.toString().trim() != textState.editedText) {
-        setText(textState.editedText)
-      }
-      addTextChangedListener(textWatcher)
     }
   }
   
@@ -346,11 +341,34 @@ class InfoScreen : BaseFragmentScreen() {
   private fun handleNews(news: InfoScreenNews) {
     val snackbar = viewAs<Snackbar>()
     when (news) {
-      ShowWebsiteNameCopied -> snackbar.show(R.string.text_website_name_copied)
-      ShowLoginCopied -> snackbar.show(R.string.text_login_copied)
-      ShowPasswordCopied -> snackbar.show(R.string.text_password_copied)
-      ShowNotesCopied -> snackbar.show(R.string.text_notes_copied)
+      is SetWebsiteName -> {
+        editText(EditTextWebsiteName).setTextSilently(news.websiteName, websiteNameTextWatcher)
+      }
+      is SetLogin -> {
+        editText(EditTextLogin).setTextSilently(news.login, loginTextWatcher)
+      }
+      is SetNotes -> {
+        editText(EditTextNotes).setTextSilently(news.notes, notesTextWatcher)
+      }
+      ShowWebsiteNameCopied -> {
+        snackbar.show(R.string.text_website_name_copied)
+      }
+      ShowLoginCopied -> {
+        snackbar.show(R.string.text_login_copied)
+      }
+      ShowPasswordCopied -> {
+        snackbar.show(R.string.text_password_copied)
+      }
+      ShowNotesCopied -> {
+        snackbar.show(R.string.text_notes_copied)
+      }
     }
+  }
+  
+  private fun EditText.setTextSilently(newText: String, textWatcher: BaseTextWatcher) {
+    removeTextChangedListener(textWatcher)
+    setText(newText)
+    addTextChangedListener(textWatcher)
   }
   
   override fun handleBackPress(): Boolean {

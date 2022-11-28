@@ -1,11 +1,9 @@
 package com.arsvechkarev.vault
 
 import android.app.Application
-import com.arsvechkarev.vault.core.DefaultDispatchersFacade
 import com.arsvechkarev.vault.features.common.di.CoreComponentHolder
 import com.arsvechkarev.vault.viewbuilding.Fonts
 import com.arsvechkarev.vault.viewbuilding.Styles
-import kotlinx.coroutines.CoroutineScope
 import timber.log.Timber
 import viewdsl.ViewDslConfiguration
 
@@ -18,10 +16,5 @@ class VaultApplication : Application() {
     ViewDslConfiguration.setDefaultStyles(Styles)
     Fonts.init(applicationContext)
     CoreComponentHolder.createCoreComponent(this)
-  }
-  
-  companion object {
-    
-    val AppMainCoroutineScope = CoroutineScope(DefaultDispatchersFacade.Main)
   }
 }

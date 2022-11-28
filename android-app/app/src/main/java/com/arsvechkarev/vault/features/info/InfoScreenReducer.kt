@@ -20,6 +20,9 @@ import com.arsvechkarev.vault.features.info.InfoScreenEvent.UpdatedInfo.UpdatedL
 import com.arsvechkarev.vault.features.info.InfoScreenEvent.UpdatedInfo.UpdatedNotes
 import com.arsvechkarev.vault.features.info.InfoScreenEvent.UpdatedInfo.UpdatedPassword
 import com.arsvechkarev.vault.features.info.InfoScreenEvent.UpdatedInfo.UpdatedWebsiteName
+import com.arsvechkarev.vault.features.info.InfoScreenNews.SetLogin
+import com.arsvechkarev.vault.features.info.InfoScreenNews.SetNotes
+import com.arsvechkarev.vault.features.info.InfoScreenNews.SetWebsiteName
 import com.arsvechkarev.vault.features.info.InfoScreenNews.ShowLoginCopied
 import com.arsvechkarev.vault.features.info.InfoScreenNews.ShowNotesCopied
 import com.arsvechkarev.vault.features.info.InfoScreenNews.ShowPasswordCopied
@@ -29,6 +32,7 @@ import com.arsvechkarev.vault.features.info.InfoScreenUiEvent.OnConfirmedDeletio
 import com.arsvechkarev.vault.features.info.InfoScreenUiEvent.OnCopyPasswordClicked
 import com.arsvechkarev.vault.features.info.InfoScreenUiEvent.OnDeleteClicked
 import com.arsvechkarev.vault.features.info.InfoScreenUiEvent.OnDialogHidden
+import com.arsvechkarev.vault.features.info.InfoScreenUiEvent.OnInit
 import com.arsvechkarev.vault.features.info.InfoScreenUiEvent.OnLoginActionClicked
 import com.arsvechkarev.vault.features.info.InfoScreenUiEvent.OnLoginTextChanged
 import com.arsvechkarev.vault.features.info.InfoScreenUiEvent.OnNotesActionClicked
@@ -42,37 +46,43 @@ class InfoScreenReducer : DslReducer<InfoScreenState, InfoScreenEvent, InfoScree
   
   override fun dslReduce(event: InfoScreenEvent) {
     when (event) {
+      OnInit -> {
+        sendResetTextsNews()
+      }
       OnWebsiteNameActionClicked -> {
         handleAction(
           textState = state.websiteNameState,
-          stateReset = { copy(websiteNameState = it) },
-          itemCopy = { copy(websiteName = state.websiteNameState.editedText) },
-          command = ::UpdateWebsiteName,
+          stateResetAction = { state -> copy(websiteNameState = state) },
+          setTextAction = { text -> copy(websiteName = text) },
+          updateCommand = ::UpdateWebsiteName,
           allowEmptySave = false,
           copyLabelRes = R.string.clipboard_label_website,
-          copyNews = ShowWebsiteNameCopied
+          copyNews = ShowWebsiteNameCopied,
+          setTextNews = ::SetWebsiteName
         )
       }
       OnLoginActionClicked -> {
         handleAction(
           textState = state.loginState,
-          stateReset = { copy(loginState = it) },
-          itemCopy = { copy(login = state.loginState.editedText) },
-          command = ::UpdateLogin,
+          stateResetAction = { state -> copy(loginState = state) },
+          setTextAction = { text -> copy(login = text) },
+          updateCommand = ::UpdateLogin,
           allowEmptySave = false,
           copyLabelRes = R.string.clipboard_label_login,
-          copyNews = ShowLoginCopied
+          copyNews = ShowLoginCopied,
+          setTextNews = ::SetLogin
         )
       }
       OnNotesActionClicked -> {
         handleAction(
           textState = state.notesState,
-          stateReset = { copy(notesState = it) },
-          itemCopy = { copy(notes = state.notesState.editedText) },
-          command = ::UpdateNotes,
+          stateResetAction = { state -> copy(notesState = state) },
+          setTextAction = { text -> copy(notes = text) },
+          updateCommand = ::UpdateNotes,
           allowEmptySave = true,
           copyLabelRes = R.string.clipboard_label_notes,
-          copyNews = ShowNotesCopied
+          copyNews = ShowNotesCopied,
+          setTextNews = ::SetNotes
         )
       }
       OnCopyPasswordClicked -> {
@@ -104,18 +114,23 @@ class InfoScreenReducer : DslReducer<InfoScreenState, InfoScreenEvent, InfoScree
         commands(DeletePasswordInfo(state.passwordInfoItem))
       }
       OnBackPressed -> {
-        if (state.isEditingSomething) {
-          state {
-            copy(
-              websiteNameState = websiteNameState.reset(),
-              loginState = loginState.reset(),
-              notesState = notesState.reset()
-            )
+        when {
+          state.showDeletePasswordDialog -> {
+            state { copy(showDeletePasswordDialog = false) }
           }
-        } else if (state.showDeletePasswordDialog) {
-          state { copy(showDeletePasswordDialog = false) }
-        } else {
-          commands(GoBack)
+          state.isEditingSomething -> {
+            state {
+              copy(
+                websiteNameState = websiteNameState.reset(),
+                loginState = loginState.reset(),
+                notesState = notesState.reset()
+              )
+            }
+            sendResetTextsNews()
+          }
+          else -> {
+            commands(GoBack)
+          }
         }
       }
       is UpdatedWebsiteName -> {
@@ -159,25 +174,38 @@ class InfoScreenReducer : DslReducer<InfoScreenState, InfoScreenEvent, InfoScree
   
   private fun handleAction(
     textState: TextState,
-    stateReset: InfoScreenState.(TextState) -> InfoScreenState,
-    itemCopy: PasswordInfoItem.() -> PasswordInfoItem,
-    command: (PasswordInfoItem) -> UpdateItem,
+    stateResetAction: InfoScreenState.(TextState) -> InfoScreenState,
+    setTextAction: PasswordInfoItem.(String) -> PasswordInfoItem,
+    updateCommand: (PasswordInfoItem) -> UpdateItem,
     allowEmptySave: Boolean = false,
     @StringRes copyLabelRes: Int,
-    copyNews: InfoScreenNews
+    copyNews: InfoScreenNews,
+    setTextNews: (String) -> InfoScreenNews,
   ) {
     with(textState) {
       if (isEditingNow) {
-        if (!allowEmptySave && editedText.isBlank()) return
-        if (editedText == initialText) {
-          state { stateReset(state, textState.reset()) }
+        if (!allowEmptySave && editedText.isBlank()) {
+          return
+        }
+        val trimmedText = editedText.trim()
+        if (trimmedText == initialText) {
+          state { stateResetAction(state, textState.reset()) }
         } else {
-          commands(command(itemCopy(state.passwordInfoItem)))
+          commands(updateCommand(setTextAction(state.passwordInfoItem, trimmedText)))
+          news(setTextNews(trimmedText))
         }
       } else {
         handleCopy(copyLabelRes, editedText, copyNews)
       }
     }
+  }
+  
+  private fun sendResetTextsNews() {
+    news(
+      SetWebsiteName(state.passwordInfoItem.websiteName),
+      SetLogin(state.passwordInfoItem.login),
+      SetNotes(state.passwordInfoItem.notes),
+    )
   }
   
   private fun handleCopy(@StringRes labelRes: Int, text: String, news: InfoScreenNews) {

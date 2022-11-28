@@ -8,7 +8,6 @@ import android.view.Gravity.CENTER_HORIZONTAL
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import com.arsvechkarev.vault.R
-import com.arsvechkarev.vault.VaultApplication.Companion.AppMainCoroutineScope
 import com.arsvechkarev.vault.core.extensions.ifTrue
 import com.arsvechkarev.vault.core.mvi.ext.subscribe
 import com.arsvechkarev.vault.core.mvi.ext.viewModelStore
@@ -38,7 +37,6 @@ import com.arsvechkarev.vault.viewbuilding.Styles.BoldTextView
 import com.arsvechkarev.vault.viewbuilding.Styles.TitleTextView
 import com.arsvechkarev.vault.viewbuilding.TextSizes
 import com.arsvechkarev.vault.viewbuilding.TypefaceSpan
-import kotlinx.coroutines.launch
 import navigation.BaseFragmentScreen
 import viewdsl.Size.Companion.MatchParent
 import viewdsl.Size.Companion.WrapContent
@@ -142,10 +140,7 @@ class MainListScreen : BaseFragmentScreen() {
   
   override fun onInit() {
     store.subscribe(this, ::render)
-  }
-  
-  override fun onAppearedOnScreen() {
-    AppMainCoroutineScope.launch { store.dispatch(OnInit) }
+    store.tryDispatch(OnInit)
   }
   
   private fun render(state: MainListState) {

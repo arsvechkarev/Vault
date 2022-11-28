@@ -16,11 +16,12 @@ sealed interface InfoScreenEvent {
 }
 
 sealed interface InfoScreenUiEvent : InfoScreenEvent {
+  object OnInit : InfoScreenUiEvent
   object OnWebsiteNameActionClicked : InfoScreenUiEvent
   object OnLoginActionClicked : InfoScreenUiEvent
+  object OnNotesActionClicked : InfoScreenUiEvent
   object OnOpenPasswordScreenClicked : InfoScreenUiEvent
   object OnCopyPasswordClicked : InfoScreenUiEvent
-  object OnNotesActionClicked : InfoScreenUiEvent
   object OnDeleteClicked : InfoScreenUiEvent
   object OnConfirmedDeletion : InfoScreenUiEvent
   object OnDialogHidden : InfoScreenUiEvent
@@ -56,6 +57,9 @@ sealed interface InfoScreenCommand {
 }
 
 sealed interface InfoScreenNews {
+  class SetWebsiteName(val websiteName: String) : InfoScreenNews
+  class SetLogin(val login: String) : InfoScreenNews
+  class SetNotes(val notes: String) : InfoScreenNews
   object ShowWebsiteNameCopied : InfoScreenNews
   object ShowLoginCopied : InfoScreenNews
   object ShowPasswordCopied : InfoScreenNews

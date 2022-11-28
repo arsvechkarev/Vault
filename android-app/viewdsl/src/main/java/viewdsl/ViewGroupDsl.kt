@@ -5,10 +5,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.LayoutRes
 
-fun ViewGroup.addViews(vararg views: View) {
-  views.forEach { addView(it) }
-}
-
 fun ViewGroup.addView(block: () -> View): View {
   val view = block()
   addView(view)
@@ -34,10 +30,6 @@ val ViewGroup.children: Iterable<View>
       }
     }
   }
-
-inline fun ViewGroup.forEachChild(action: (child: View) -> Unit) {
-  for (i in 0 until childCount) action(getChildAt(i))
-}
 
 fun ViewGroup.inflate(@LayoutRes layoutRes: Int): View {
   return LayoutInflater.from(context).inflate(layoutRes, this, false)

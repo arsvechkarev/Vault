@@ -5,6 +5,7 @@ import android.graphics.Canvas
 import android.graphics.PorterDuff
 import android.graphics.PorterDuffColorFilter
 import android.graphics.drawable.AnimatedVectorDrawable
+import android.graphics.drawable.Drawable
 import android.view.Gravity
 import android.view.View
 import android.widget.FrameLayout
@@ -16,16 +17,19 @@ import viewdsl.size
 class AnimatableCircleIconView(
   context: Context,
   size: Int,
-  drawableRes1: Int,
-  drawableRes2: Int,
   circleColor: Int,
-  iconColor: Int,
+  private val drawableRes1: Int,
+  private val drawableRes2: Int,
+  private val iconColor: Int,
 ) : FrameLayout(context) {
   
-  private val drawable1 = context.retrieveDrawable(drawableRes1)
-      .apply { colorFilter = PorterDuffColorFilter(iconColor, PorterDuff.Mode.SRC_ATOP) }
-  private val drawable2 = context.retrieveDrawable(drawableRes2)
-      .apply { colorFilter = PorterDuffColorFilter(iconColor, PorterDuff.Mode.SRC_ATOP) }
+  private val drawable1: Drawable
+    get() = context.retrieveDrawable(drawableRes1).mutate()
+        .apply { colorFilter = PorterDuffColorFilter(iconColor, PorterDuff.Mode.SRC_ATOP) }
+  
+  private val drawable2: Drawable
+    get() = context.retrieveDrawable(drawableRes2).mutate()
+        .apply { colorFilter = PorterDuffColorFilter(iconColor, PorterDuff.Mode.SRC_ATOP) }
   
   private val animatableView get() = getChildAt(0)
   private val circlePaint = Paint(circleColor)

@@ -24,7 +24,6 @@ android {
 
 dependencies {
   def dependencies = rootProject.ext.applicationDependencies
-
   implementation dependencies.kotlin
   implementation dependencies.appCompat
 }

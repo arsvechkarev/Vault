@@ -31,7 +31,7 @@ fun Animatable.stopIfRunning() {
 
 fun Animator.doOnEnd(block: () -> Unit) {
   addListener(object : AnimatorListenerAdapter() {
-    override fun onAnimationEnd(animation: Animator?) {
+    override fun onAnimationEnd(animation: Animator) {
       block()
       removeListener(this)
     }

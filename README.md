@@ -2,9 +2,9 @@
 
 ### Secure, simple and fast password manager
 
-Vault uses modern AES-SIV encryption algorithm with two keys 256 bits each. The app stores your password
+Vault uses modern AES-SIV encryption algorithm with two keys 256 bits each. The app stores your passwords
 locally, without uploading them to a remote server, so you have full control over what happens to
-your file. It is fast, secure and has an intuitive UX – everything you need from a reliable password manager.
+your data. It is fast, secure and has an intuitive UX – everything you need from a reliable password manager.
 
 ### [Download apk](android-app/apk/vault.apk)
 

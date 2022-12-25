@@ -53,6 +53,7 @@ dependencies {
   def appDependencies = rootProject.ext.applicationDependencies
   implementation appDependencies.kotlin
   implementation appDependencies.appCompat
+  implementation appDependencies.gson
   implementation appDependencies.coroutinesCore
   implementation appDependencies.coroutinesAndroid
   implementation appDependencies.coordinatorLayout

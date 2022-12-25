@@ -3,7 +3,6 @@ package com.arsvechkarev.vault.features.main_list
 import android.content.Context
 import android.view.Gravity.CENTER_HORIZONTAL
 import com.arsvechkarev.vault.R
-import com.arsvechkarev.vault.core.model.PasswordInfoItem
 import com.arsvechkarev.vault.core.mvi.ext.subscribe
 import com.arsvechkarev.vault.core.mvi.ext.viewModelStore
 import com.arsvechkarev.vault.core.views.menu.MenuItem
@@ -99,21 +98,8 @@ class MainListScreen : BaseFragmentScreen() {
     adapter.submitList(state.data.getItems(
       successItems = { it },
       loadingItems = { listOf(Loading) },
-      emptyItems = { getSuccessItems() }
+      emptyItems = { listOf(Empty) }
     ))
-  }
-  
-  private fun getSuccessItems(): List<PasswordInfoItem> {
-    return listOf(
-      PasswordInfoItem("1", "google", "", "", ""),
-      PasswordInfoItem("2", "instagram", "", "", ""),
-      PasswordInfoItem("3", "twitter", "", "", ""),
-      PasswordInfoItem("4", "netflix", "", "", ""),
-      PasswordInfoItem("5", "dropbox", "", "", ""),
-      PasswordInfoItem("6", "amazon", "", "", ""),
-      PasswordInfoItem("7", "telegram", "", "", ""),
-      PasswordInfoItem("8", "snapchat", "", "", ""),
-    )
   }
   
   override fun handleBackPress(): Boolean {

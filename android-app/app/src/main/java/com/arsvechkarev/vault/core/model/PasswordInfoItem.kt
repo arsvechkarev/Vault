@@ -23,9 +23,25 @@ fun PasswordInfoItem.toPasswordInfo(): PasswordInfo {
 }
 
 fun List<PasswordInfo>.toInfoItemsList(): List<PasswordInfoItem> {
-  return map { PasswordInfoItem(it.id, it.websiteName, it.login, it.notes, it.password) }
+  return map {
+    PasswordInfoItem(
+      id = it.id,
+      websiteName = it.websiteName,
+      login = it.login,
+      password = it.password,
+      notes = it.notes
+    )
+  }
 }
 
 fun List<PasswordInfoItem>.toPasswordInfoList(): List<PasswordInfo> {
-  return map { PasswordInfo(it.id, it.websiteName, it.login, it.password, it.notes) }
+  return map {
+    PasswordInfo(
+      id = it.id,
+      websiteName = it.websiteName,
+      login = it.login,
+      password = it.password,
+      notes = it.notes
+    )
+  }
 }

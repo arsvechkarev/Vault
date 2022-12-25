@@ -1,9 +1,9 @@
 package busnesslogic
 
 import buisnesslogic.AesSivTinkCryptography
-import buisnesslogic.GsonJsonConverter
 import buisnesslogic.PasswordsStorageImpl
 import buisnesslogic.model.PasswordInfo
+import com.google.gson.Gson
 import kotlinx.coroutines.runBlocking
 import org.junit.After
 import org.junit.Assert.assertTrue
@@ -15,8 +15,11 @@ class PasswordsStorageImplTest {
   private val testFileSaver = TestFileSaver()
   private val testPassword = "pAsSw0rd"
   
-  private val storage = PasswordsStorageImpl(AesSivTinkCryptography, testFileSaver,
-    GsonJsonConverter)
+  private val storage = PasswordsStorageImpl(
+    AesSivTinkCryptography,
+    testFileSaver,
+    Gson(),
+  )
   
   @Before
   fun setUp() = runBlocking {

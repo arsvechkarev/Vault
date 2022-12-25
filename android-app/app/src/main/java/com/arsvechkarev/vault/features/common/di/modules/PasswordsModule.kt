@@ -42,7 +42,7 @@ class PasswordsModuleImpl(
       storage = PasswordsStorageImpl(
         cryptographyModule.cryptography,
         ioModule.fileSaver,
-        coreModule.jsonConverter
+        coreModule.gson,
       ),
       idGenerator = IdGeneratorImpl
     )

@@ -2,7 +2,7 @@ package com.arsvechkarev.vault.test.common.views.dialog
 
 import com.arsvechkarev.vault.R
 import com.arsvechkarev.vault.features.common.dialogs.PasswordStrengthDialog
-import com.arsvechkarev.vault.test.common.ext.withClassNameTag
+import com.arsvechkarev.vault.test.common.utils.withClassNameTag
 import io.github.kakaocup.kakao.common.views.KBaseView
 import io.github.kakaocup.kakao.text.KTextView
 

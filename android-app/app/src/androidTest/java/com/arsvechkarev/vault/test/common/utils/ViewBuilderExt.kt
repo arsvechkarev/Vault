@@ -1,4 +1,4 @@
-package com.arsvechkarev.vault.test.common.ext
+package com.arsvechkarev.vault.test.common.utils
 
 import android.view.View
 import io.github.kakaocup.kakao.common.builders.ViewBuilder

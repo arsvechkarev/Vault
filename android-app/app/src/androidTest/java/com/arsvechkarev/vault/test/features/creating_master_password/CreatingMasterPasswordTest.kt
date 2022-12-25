@@ -8,7 +8,7 @@ import com.kaspersky.kaspresso.testcases.api.testcase.TestCase
 import org.junit.Rule
 import org.junit.Test
 
-class CreateMasterPasswordTest : TestCase() {
+class CreatingMasterPasswordTest : TestCase() {
   
   @get:Rule
   val rule = VaultAutotestRule()

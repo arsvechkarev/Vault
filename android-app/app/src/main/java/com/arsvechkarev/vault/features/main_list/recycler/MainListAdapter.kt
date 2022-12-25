@@ -57,12 +57,12 @@ class MainListAdapter(
             paddingHorizontal(HorizontalMarginSmall)
             paddingVertical(MarginSmall)
             ImageView(ItemServiceInfoImageSize, ItemServiceInfoImageSize) {
-              id(ItemServiceInfoImage)
+              id(ItemPasswordInfoImage)
               layoutGravity(CENTER)
               margins(start = MarginNormal, end = MarginNormal)
             }
             TextView(WrapContent, WrapContent, style = BoldTextView) {
-              id(ItemServiceInfoTextServiceName)
+              id(ItemPasswordInfoTextPasswordName)
               layoutGravity(CENTER)
             }
           }
@@ -71,8 +71,8 @@ class MainListAdapter(
           itemView.onClick { onItemClick(item) }
         }
         onBind {
-          itemView.viewAs<ImageView>(ItemServiceInfoImage).setWebsiteIcon(item.websiteName)
-          itemView.viewAs<TextView>(ItemServiceInfoTextServiceName).text(item.websiteName)
+          itemView.viewAs<ImageView>(ItemPasswordInfoImage).setWebsiteIcon(item.websiteName)
+          itemView.viewAs<TextView>(ItemPasswordInfoTextPasswordName).text(item.websiteName)
         }
       },
       delegate<Loading> {
@@ -115,9 +115,9 @@ class MainListAdapter(
     )
   }
   
-  private companion object {
+  companion object {
     
-    val ItemServiceInfoImage = View.generateViewId()
-    val ItemServiceInfoTextServiceName = View.generateViewId()
+    val ItemPasswordInfoImage = View.generateViewId()
+    val ItemPasswordInfoTextPasswordName = View.generateViewId()
   }
 }

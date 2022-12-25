@@ -5,7 +5,7 @@ import com.arsvechkarev.vault.features.common.dialogs.InfoDialog.Companion.Dialo
 import com.arsvechkarev.vault.features.common.dialogs.InfoDialog.Companion.DialogInfoText1
 import com.arsvechkarev.vault.features.common.dialogs.InfoDialog.Companion.DialogInfoText2
 import com.arsvechkarev.vault.features.common.dialogs.InfoDialog.Companion.DialogInfoTitle
-import com.arsvechkarev.vault.test.common.ext.withClassNameTag
+import com.arsvechkarev.vault.test.common.utils.withClassNameTag
 import io.github.kakaocup.kakao.common.views.KBaseView
 import io.github.kakaocup.kakao.text.KTextView
 

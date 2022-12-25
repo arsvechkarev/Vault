@@ -2,8 +2,10 @@ package com.arsvechkarev.vault.features.common.dialogs
 
 import android.content.Context
 import android.view.Gravity
+import android.view.View
 import android.view.ViewGroup
 import com.arsvechkarev.vault.R
+import com.arsvechkarev.vault.core.views.SimpleDialog
 import com.arsvechkarev.vault.viewbuilding.Colors.Dialog
 import com.arsvechkarev.vault.viewbuilding.Dimens.CornerRadiusDefault
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginExtraLarge
@@ -14,19 +16,18 @@ import com.arsvechkarev.vault.viewbuilding.Styles.BaseTextView
 import com.arsvechkarev.vault.viewbuilding.Styles.BoldTextView
 import com.arsvechkarev.vault.viewbuilding.Styles.ClickableErrorTextView
 import com.arsvechkarev.vault.viewbuilding.Styles.ClickableTextView
-import com.arsvechkarev.vault.core.views.SimpleDialog
 import navigation.BaseFragmentScreen
 import viewdsl.Size.Companion.MatchParent
 import viewdsl.Size.Companion.WrapContent
 import viewdsl.backgroundRoundRect
 import viewdsl.classNameTag
 import viewdsl.gone
+import viewdsl.id
 import viewdsl.layoutGravity
 import viewdsl.marginHorizontal
 import viewdsl.margins
 import viewdsl.onClick
 import viewdsl.size
-import viewdsl.tag
 import viewdsl.text
 import viewdsl.textView
 import viewdsl.visible
@@ -43,10 +44,10 @@ class InfoDialog(context: Context) : SimpleDialog(context) {
         backgroundRoundRect(CornerRadiusDefault, Dialog)
         TextView(WrapContent, WrapContent, style = BoldTextView) {
           margins(top = MarginNormal, start = MarginNormal)
-          tag(DialogInfoTitle)
+          id(DialogInfoTitle)
         }
         TextView(WrapContent, WrapContent, style = BaseTextView) {
-          tag(DialogInfoMessage)
+          id(DialogInfoMessage)
           margins(top = MarginLarge, start = MarginNormal, end = MarginNormal)
         }
         HorizontalLayout(WrapContent, WrapContent) {
@@ -55,10 +56,10 @@ class InfoDialog(context: Context) : SimpleDialog(context) {
             end = MarginSmall
           )
           TextView(WrapContent, WrapContent, style = ClickableTextView()) {
-            tag(DialogInfoText1)
+            id(DialogInfoText1)
           }
           TextView(WrapContent, WrapContent, style = ClickableTextView()) {
-            tag(DialogInfoText2)
+            id(DialogInfoText2)
           }
         }
       }
@@ -76,10 +77,10 @@ class InfoDialog(context: Context) : SimpleDialog(context) {
     this.onHide = onCancel
     textView(DialogInfoTitle).text(titleRes)
     textView(DialogInfoMessage).text(messageRes)
-    textView(DialogInfoText1).gone()
-    textView(DialogInfoText2).apply(ClickableTextView())
-    textView(DialogInfoText2).text(textPositiveRes)
-    textView(DialogInfoText2).onClick(onOkClicked)
+    textView(DialogInfoText2).gone()
+    textView(DialogInfoText1).apply(ClickableTextView())
+    textView(DialogInfoText1).text(textPositiveRes)
+    textView(DialogInfoText1).onClick(onOkClicked)
   }
   
   fun showWithCancelAndProceedOption(
@@ -104,14 +105,14 @@ class InfoDialog(context: Context) : SimpleDialog(context) {
   }
   
   companion object {
-  
-    private const val DialogInfoTitle = "DialogInfoTitle"
-    private const val DialogInfoText1 = "DialogErrorText1"
-    private const val DialogInfoText2 = "DialogErrorText2"
-    private const val DialogInfoMessage = "DialogInfoMessage"
-  
+    
+    val DialogInfoTitle = View.generateViewId()
+    val DialogInfoText1 = View.generateViewId()
+    val DialogInfoText2 = View.generateViewId()
+    val DialogInfoMessage = View.generateViewId()
+    
     val BaseFragmentScreen.infoDialog get() = viewAs<InfoDialog>()
-  
+    
     fun ViewGroup.InfoDialog(block: InfoDialog.() -> Unit = {}) = withViewBuilder {
       val infoDialog = InfoDialog(context)
       infoDialog.size(MatchParent, MatchParent)

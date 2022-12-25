@@ -13,7 +13,6 @@ import viewdsl.AccelerateDecelerateInterpolator
 
 class PasswordStrengthMeter(context: Context) : View(context) {
   
-  private var strength: PasswordStrength? = null
   private var percentage = 0f
   private val paint = Paint(Colors.Transparent)
   private val colorAnimator = ValueAnimator().apply {
@@ -32,6 +31,10 @@ class PasswordStrengthMeter(context: Context) : View(context) {
     }
   }
   
+  var strength: PasswordStrength? = null
+    private set
+  
+  
   fun setStrength(strength: PasswordStrength?, animate: Boolean = true) {
     if (this.strength == strength) return
     this.strength = strength
@@ -39,7 +42,7 @@ class PasswordStrengthMeter(context: Context) : View(context) {
       PasswordStrength.WEAK -> Pair(0.25f, Colors.PasswordWeak)
       PasswordStrength.MEDIUM -> Pair(0.50f, Colors.PasswordMedium)
       PasswordStrength.STRONG -> Pair(0.75f, Colors.PasswordStrong)
-      PasswordStrength.VERY_STRONG -> Pair(1f, Colors.PasswordVeryStrong)
+      PasswordStrength.SECURE -> Pair(1f, Colors.PasswordVeryStrong)
       null -> Pair(0f, Colors.Transparent)
     }
     if (animate) {

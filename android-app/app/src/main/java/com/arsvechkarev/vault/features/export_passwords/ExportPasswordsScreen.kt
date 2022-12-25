@@ -28,7 +28,7 @@ import com.arsvechkarev.vault.viewbuilding.Styles.AccentTextView
 import com.arsvechkarev.vault.viewbuilding.Styles.BaseEditText
 import com.arsvechkarev.vault.viewbuilding.Styles.BoldTextView
 import com.arsvechkarev.vault.viewbuilding.Styles.Button
-import com.arsvechkarev.vault.viewbuilding.Styles.ImageBack
+import com.arsvechkarev.vault.viewbuilding.Styles.IconBack
 import com.arsvechkarev.vault.viewbuilding.Styles.SecondaryTextView
 import com.arsvechkarev.vault.viewbuilding.TextSizes
 import navigation.BaseFragmentScreen
@@ -57,7 +57,7 @@ class ExportPasswordsScreen : BaseFragmentScreen() {
           constraints {
             topToTopOf(parent)
           }
-          ImageView(WrapContent, WrapContent, style = ImageBack) {
+          ImageView(WrapContent, WrapContent, style = IconBack) {
             margins(start = MarginNormal, end = MarginNormal)
             gravity(Gravity.CENTER_VERTICAL)
             onClick { store.tryDispatch(OnBackPressed) }

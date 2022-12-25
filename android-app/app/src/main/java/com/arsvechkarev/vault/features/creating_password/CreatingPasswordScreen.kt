@@ -45,7 +45,7 @@ import com.arsvechkarev.vault.viewbuilding.Styles.BaseEditText
 import com.arsvechkarev.vault.viewbuilding.Styles.BoldTextView
 import com.arsvechkarev.vault.viewbuilding.Styles.Button
 import com.arsvechkarev.vault.viewbuilding.Styles.ClickableTextView
-import com.arsvechkarev.vault.viewbuilding.Styles.ImageCross
+import com.arsvechkarev.vault.viewbuilding.Styles.IconCross
 import com.arsvechkarev.vault.viewbuilding.TextSizes
 import navigation.BaseFragmentScreen
 import viewdsl.Size.Companion.MatchParent
@@ -84,7 +84,7 @@ class CreatingPasswordScreen : BaseFragmentScreen() {
             textSize(TextSizes.H1)
             layoutGravity(CENTER)
           }
-          ImageView(WrapContent, WrapContent, style = ImageCross) {
+          ImageView(WrapContent, WrapContent, style = IconCross) {
             margins(end = ImageBackMargin, top = MarginSmall, bottom = MarginSmall)
             layoutGravity(CENTER or END)
             onClick { store.tryDispatch(OnBackClicked) }
@@ -242,7 +242,7 @@ class CreatingPasswordScreen : BaseFragmentScreen() {
       PasswordStrength.WEAK -> R.string.text_weak
       PasswordStrength.MEDIUM -> R.string.text_medium
       PasswordStrength.STRONG -> R.string.text_strong
-      PasswordStrength.VERY_STRONG -> R.string.text_secure
+      PasswordStrength.SECURE -> R.string.text_secure
     }
     viewAs<PasswordStrengthMeterWithText>().setText(textResId)
     viewAs<PasswordStrengthMeterWithText>().setStrength(strength)

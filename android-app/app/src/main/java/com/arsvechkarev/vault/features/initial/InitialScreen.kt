@@ -56,7 +56,7 @@ class InitialScreen : BaseFragmentScreen() {
         layoutGravity(BOTTOM)
         text(R.string.text_create_master_password)
         onClick {
-          coreComponent.router.goForward(Screens.CreateMasterPasswordScreen)
+          coreComponent.router.goForward(Screens.CreatingMasterPasswordScreen)
         }
       }
     }

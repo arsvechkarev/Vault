@@ -15,6 +15,7 @@ import com.arsvechkarev.vault.viewbuilding.Fonts
 import com.arsvechkarev.vault.viewbuilding.TextSizes
 import viewdsl.Size.Companion.MatchParent
 import viewdsl.Size.Companion.WrapContent
+import viewdsl.classNameTag
 import viewdsl.clearText
 import viewdsl.font
 import viewdsl.image
@@ -32,7 +33,8 @@ class EditTextPassword(context: Context) : FrameLayout(context) {
   
   val editText get() = getChildAt(0) as EditText
   
-  private var isPasswordHidden = true
+  var isPasswordHidden = true
+    private set
   
   init {
     withViewBuilder {
@@ -48,6 +50,7 @@ class EditTextPassword(context: Context) : FrameLayout(context) {
         transformationMethod = PasswordTransformationMethod.getInstance()
       }
       ImageView(WrapContent, WrapContent) {
+        classNameTag()
         margins(start = iconMarginStart, top = MarginSmall, bottom = MarginSmall, end = MarginSmall)
         layoutGravity(Gravity.END)
         image(R.drawable.ic_eye_closed)

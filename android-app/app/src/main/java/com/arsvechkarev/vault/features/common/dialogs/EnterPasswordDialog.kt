@@ -32,7 +32,7 @@ import com.arsvechkarev.vault.viewbuilding.Dimens.MarginTiny
 import com.arsvechkarev.vault.viewbuilding.Dimens.ProgressBarSizeSmall
 import com.arsvechkarev.vault.viewbuilding.Styles.BoldTextView
 import com.arsvechkarev.vault.viewbuilding.Styles.Button
-import com.arsvechkarev.vault.viewbuilding.Styles.ImageCross
+import com.arsvechkarev.vault.viewbuilding.Styles.IconCross
 import com.arsvechkarev.vault.viewbuilding.TextSizes
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -84,7 +84,7 @@ class EnterPasswordDialog(context: Context) : FrameLayout(context) {
             margins(end = IconSize * 2)
             layoutGravity(CENTER_VERTICAL)
           }
-          ImageView(WrapContent, WrapContent, style = ImageCross) {
+          ImageView(WrapContent, WrapContent, style = IconCross) {
             layoutGravity(CENTER_VERTICAL or END)
             onClick { hide() }
           }

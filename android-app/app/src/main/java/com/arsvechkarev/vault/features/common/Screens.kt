@@ -20,7 +20,7 @@ object Screens {
   
   val InitialScreen = Screen { InitialScreen::class }
   
-  val CreateMasterPasswordScreen = Screen { CreatingMasterPasswordScreen::class }
+  val CreatingMasterPasswordScreen = Screen { CreatingMasterPasswordScreen::class }
   
   val LoginScreen = Screen { LoginScreen::class }
   

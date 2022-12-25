@@ -16,7 +16,7 @@ class ZxcvbnPasswordInfoChecker(
     return when (zxcvbn.measure(password).score) {
       2 -> PasswordStrength.MEDIUM
       3 -> PasswordStrength.STRONG
-      in 4..Int.MAX_VALUE -> PasswordStrength.VERY_STRONG
+      in 4..Int.MAX_VALUE -> PasswordStrength.SECURE
       else -> PasswordStrength.WEAK
     }
   }

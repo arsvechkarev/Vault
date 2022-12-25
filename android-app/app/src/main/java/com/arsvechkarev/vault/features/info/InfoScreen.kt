@@ -111,7 +111,7 @@ class InfoScreen : BaseFragmentScreen() {
           bottom = MarginNormal,
         )
         clipToPadding = false
-        ImageView(WrapContent, WrapContent, style = Styles.ImageBack) {
+        ImageView(WrapContent, WrapContent, style = Styles.IconBack) {
           id(ImageBack)
           onClick { store.tryDispatch(OnBackPressed) }
           constraints {

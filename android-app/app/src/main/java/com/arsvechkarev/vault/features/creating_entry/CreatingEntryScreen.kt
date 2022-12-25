@@ -23,7 +23,7 @@ import com.arsvechkarev.vault.viewbuilding.Styles.AccentTextView
 import com.arsvechkarev.vault.viewbuilding.Styles.BaseEditText
 import com.arsvechkarev.vault.viewbuilding.Styles.BoldTextView
 import com.arsvechkarev.vault.viewbuilding.Styles.Button
-import com.arsvechkarev.vault.viewbuilding.Styles.ImageBack
+import com.arsvechkarev.vault.viewbuilding.Styles.IconBack
 import com.arsvechkarev.vault.viewbuilding.TextSizes
 import navigation.BaseFragmentScreen
 import viewdsl.Size.Companion.MatchParent
@@ -61,7 +61,7 @@ class CreatingEntryScreen : BaseFragmentScreen() {
         constraints {
           topToTopOf(parent)
         }
-        ImageView(WrapContent, WrapContent, style = ImageBack) {
+        ImageView(WrapContent, WrapContent, style = IconBack) {
           margin(MarginNormal)
           gravity(CENTER_VERTICAL)
           onClick { store.tryDispatch(OnBackPressed) }

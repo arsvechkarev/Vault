@@ -17,10 +17,10 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.StringRes
 import com.arsvechkarev.vault.R
+import com.arsvechkarev.vault.core.views.drawables.GradientBackgroundDrawable
 import com.arsvechkarev.vault.viewbuilding.Dimens.CornerRadiusSmall
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginMedium
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginSmall
-import com.arsvechkarev.vault.core.views.drawables.GradientBackgroundDrawable
 import viewdsl.DefaultStyles
 import viewdsl.Style
 import viewdsl.background
@@ -115,14 +115,14 @@ object Styles : DefaultStyles {
     textSize(TextSizes.H5)
   }
   
-  val ImageBack: ImageView.() -> Unit = {
+  val IconBack: ImageView.() -> Unit = {
     image(R.drawable.ic_back)
     padding(Dimens.IconPadding)
     circleRippleBackground(rippleColor = Colors.Ripple)
   }
   
-  val ImageCross: ImageView.() -> Unit = {
-    apply(ImageBack)
+  val IconCross: ImageView.() -> Unit = {
+    apply(IconBack)
     image(R.drawable.ic_cross)
   }
   

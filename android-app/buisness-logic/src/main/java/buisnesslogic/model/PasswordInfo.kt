@@ -1,5 +1,7 @@
 package buisnesslogic.model
 
+import com.google.gson.annotations.SerializedName
+
 /**
  * Represents a password info that user can have. List of such items is created, encrypted
  * and stored in json format
@@ -11,9 +13,14 @@ package buisnesslogic.model
  * @param notes Additional notes/info for the password. Can be empty
  */
 data class PasswordInfo(
+  @SerializedName("id")
   val id: String,
+  @SerializedName("website")
   val websiteName: String,
+  @SerializedName("login")
   val login: String,
+  @SerializedName("password")
   val password: String,
+  @SerializedName("notes")
   val notes: String,
 )

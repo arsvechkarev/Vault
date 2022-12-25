@@ -1,11 +1,13 @@
 package buisnesslogic
 
 import buisnesslogic.model.PasswordInfo
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 
 class PasswordsStorageImpl(
   private val cryptography: Cryptography,
   private val fileSaver: FileSaver,
-  private val jsonConverter: JsonConverter
+  private val gson: Gson
 ) : PasswordsStorage {
   
   override suspend fun getPasswords(masterPassword: String): List<PasswordInfo> {
@@ -14,7 +16,7 @@ class PasswordsStorageImpl(
     require(ciphertext.isNotEmpty())
     val json = cryptography.decryptData(masterPassword, ciphertext)
     if (json == "") return ArrayList()
-    return getFromString(json)
+    return gson.fromJson(json, type)
   }
   
   override suspend fun savePasswords(
@@ -53,7 +55,7 @@ class PasswordsStorageImpl(
     password: String,
     passwordsList: MutableList<PasswordInfo>
   ) {
-    val passwordsInfoJson = convertToString(passwordsList)
+    val passwordsInfoJson = gson.toJson(passwordsList, type)
     val encryptedText = cryptography.encryptData(password, passwordsInfoJson)
     fileSaver.saveData(encryptedText)
   }
@@ -67,36 +69,7 @@ class PasswordsStorageImpl(
     }
   }
   
-  private fun getFromString(json: String): List<PasswordInfo> {
-    return jsonConverter.getFromString(json, mapper = { map ->
-      PasswordInfo(
-        map.getValue(KEY_ITEM_ID),
-        map.getValue(KEY_WEBSITE_NAME),
-        map.getValue(KEY_LOGIN),
-        map.getValue(KEY_EMAIL),
-        map.getValue(KEY_NOTES)
-      )
-    })
-  }
-  
-  private fun convertToString(list: List<PasswordInfo>): String {
-    return jsonConverter.convertToString(list, converter = { password ->
-      mapOf(
-        KEY_ITEM_ID to password.id,
-        KEY_WEBSITE_NAME to password.websiteName,
-        KEY_LOGIN to password.login,
-        KEY_EMAIL to password.notes,
-        KEY_NOTES to password.password
-      )
-    })
-  }
-  
-  private companion object {
-    
-    const val KEY_ITEM_ID = "id"
-    const val KEY_WEBSITE_NAME = "website_name"
-    const val KEY_LOGIN = "login"
-    const val KEY_EMAIL = "email"
-    const val KEY_NOTES = "notes"
+  companion object {
+    private val type = TypeToken.getParameterized(List::class.java, PasswordInfo::class.java).type
   }
 }

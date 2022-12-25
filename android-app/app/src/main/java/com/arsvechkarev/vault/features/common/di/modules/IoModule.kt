@@ -18,7 +18,7 @@ class IoModuleImpl(
 ) : IoModule {
   
   override val fileSaver = FileSaverImpl(
-    filename = "passwords.vault",
+    FILENAME,
     coreModule.application,
     coreModule.dispatchersFacade
   )
@@ -26,4 +26,9 @@ class IoModuleImpl(
   override val filenameFromUriRetriever = FilenameFromUriRetrieverImpl(coreModule.application)
   
   override val fileReader = FileReaderImpl(coreModule.application)
+  
+  companion object {
+    
+    const val FILENAME = "passwords.vault"
+  }
 }

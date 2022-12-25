@@ -33,6 +33,7 @@ import com.arsvechkarev.vault.features.info.InfoScreenUiEvent.OnBackPressed
 import com.arsvechkarev.vault.features.info.InfoScreenUiEvent.OnConfirmedDeletion
 import com.arsvechkarev.vault.features.info.InfoScreenUiEvent.OnCopyPasswordClicked
 import com.arsvechkarev.vault.features.info.InfoScreenUiEvent.OnDeleteClicked
+import com.arsvechkarev.vault.features.info.InfoScreenUiEvent.OnDialogHidden
 import com.arsvechkarev.vault.features.info.InfoScreenUiEvent.OnInit
 import com.arsvechkarev.vault.features.info.InfoScreenUiEvent.OnLoginActionClicked
 import com.arsvechkarev.vault.features.info.InfoScreenUiEvent.OnLoginTextChanged
@@ -333,7 +334,7 @@ class InfoScreen : BaseFragmentScreen() {
     infoDialog.showWithCancelAndProceedOption(
       titleRes = R.string.text_deleting_password,
       messageRes = getDeleteMessageText(state.websiteNameState.initialText),
-      onCancel = { store.tryDispatch(InfoScreenUiEvent.OnDialogHidden) },
+      onCancel = { store.tryDispatch(OnDialogHidden) },
       onProceed = { store.tryDispatch(OnConfirmedDeletion) }
     )
   }
@@ -382,22 +383,22 @@ class InfoScreen : BaseFragmentScreen() {
   
   companion object {
     
-    private val ImageBack = View.generateViewId()
-    private val ImageDelete = View.generateViewId()
-    private val ImageWebsite = View.generateViewId()
-    private val TextWebsiteName = View.generateViewId()
-    private val TitleWebsiteName = View.generateViewId()
-    private val EditTextWebsiteName = View.generateViewId()
-    private val TitleLogin = View.generateViewId()
-    private val EditTextLogin = View.generateViewId()
-    private val TitlePassword = View.generateViewId()
-    private val TextHiddenPassword = View.generateViewId()
-    private val ImageWebsiteNameAction = View.generateViewId()
-    private val ImageLoginAction = View.generateViewId()
-    private val ImageShowPassword = View.generateViewId()
-    private val ImageCopyPassword = View.generateViewId()
-    private val ImageNotesAction = View.generateViewId()
-    private val EditTextNotes = View.generateViewId()
-    private val TitleNotes = View.generateViewId()
+    val ImageBack = View.generateViewId()
+    val ImageDelete = View.generateViewId()
+    val ImageWebsite = View.generateViewId()
+    val TextWebsiteName = View.generateViewId()
+    val TitleWebsiteName = View.generateViewId()
+    val EditTextWebsiteName = View.generateViewId()
+    val TitleLogin = View.generateViewId()
+    val EditTextLogin = View.generateViewId()
+    val TitlePassword = View.generateViewId()
+    val TextHiddenPassword = View.generateViewId()
+    val ImageWebsiteNameAction = View.generateViewId()
+    val ImageLoginAction = View.generateViewId()
+    val ImageShowPassword = View.generateViewId()
+    val ImageCopyPassword = View.generateViewId()
+    val ImageNotesAction = View.generateViewId()
+    val EditTextNotes = View.generateViewId()
+    val TitleNotes = View.generateViewId()
   }
 }

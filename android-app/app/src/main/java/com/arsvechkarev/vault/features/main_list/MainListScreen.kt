@@ -5,7 +5,7 @@ import android.view.Gravity.CENTER_HORIZONTAL
 import com.arsvechkarev.vault.R
 import com.arsvechkarev.vault.core.mvi.ext.subscribe
 import com.arsvechkarev.vault.core.mvi.ext.viewModelStore
-import com.arsvechkarev.vault.core.views.menu.MenuItem
+import com.arsvechkarev.vault.core.views.menu.MenuItemModel
 import com.arsvechkarev.vault.core.views.menu.MenuView
 import com.arsvechkarev.vault.features.common.di.CoreComponentHolder.coreComponent
 import com.arsvechkarev.vault.features.main_list.MainListUiEvent.OnBackPressed
@@ -61,14 +61,14 @@ class MainListScreen : BaseFragmentScreen() {
       }
       child<MenuView>(MatchParent, MatchParent) {
         classNameTag()
-        val menuItem: (Int, Int, MenuItemType) -> MenuItem = { iconRes, titleRes, itemType ->
-          MenuItem(iconRes, titleRes) { store.tryDispatch(OnMenuItemClicked(itemType)) }
+        val menuItemModel: (Int, Int, MenuItemType) -> MenuItemModel = { iconRes, titleRes, itemType ->
+          MenuItemModel(iconRes, titleRes) { store.tryDispatch(OnMenuItemClicked(itemType)) }
         }
         items(
-          menuItem(R.drawable.ic_import, R.string.text_import_passwords, IMPORT_PASSWORDS),
-          menuItem(R.drawable.ic_export, R.string.text_export_passwords, EXPORT_PASSWORDS),
-          menuItem(R.drawable.ic_settings, R.string.text_settings, SETTINGS),
-          menuItem(R.drawable.ic_new_password, R.string.text_new_password, NEW_PASSWORD),
+          menuItemModel(R.drawable.ic_import, R.string.text_import_passwords, IMPORT_PASSWORDS),
+          menuItemModel(R.drawable.ic_export, R.string.text_export_passwords, EXPORT_PASSWORDS),
+          menuItemModel(R.drawable.ic_settings, R.string.text_settings, SETTINGS),
+          menuItemModel(R.drawable.ic_new_password, R.string.text_new_password, NEW_PASSWORD),
         )
         onMenuOpenClick { store.tryDispatch(OnOpenMenuClicked) }
         onMenuCloseClick { store.tryDispatch(OnCloseMenuClicked) }

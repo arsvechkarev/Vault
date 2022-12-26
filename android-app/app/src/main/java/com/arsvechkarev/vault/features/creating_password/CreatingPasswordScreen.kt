@@ -36,8 +36,8 @@ import com.arsvechkarev.vault.features.creating_password.CreatingPasswordUiEvent
 import com.arsvechkarev.vault.features.creating_password.CreatingPasswordUiEvent.OnToggledUppercaseSymbols
 import com.arsvechkarev.vault.features.creating_password.CreatingPasswordUiEvent.SetupCompleted
 import com.arsvechkarev.vault.viewbuilding.Colors
-import com.arsvechkarev.vault.viewbuilding.Dimens
 import com.arsvechkarev.vault.viewbuilding.Dimens.ImageBackMargin
+import com.arsvechkarev.vault.viewbuilding.Dimens.MarginExtraLarge
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginNormal
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginSmall
 import com.arsvechkarev.vault.viewbuilding.Styles
@@ -126,7 +126,7 @@ class CreatingPasswordScreen : BaseFragmentScreen() {
         CheckmarkAndTextViewGroup(R.string.text_special_symbols, commonBlock)
         TextView(WrapContent, WrapContent, style = BoldTextView) {
           id(TextPasswordLength)
-          margins(start = MarginNormal, top = Dimens.MarginExtraLarge)
+          margins(start = MarginNormal, top = MarginExtraLarge)
           textSize(TextSizes.H3)
           text(context.getString(R.string.text_password_length, DEFAULT_PASSWORD_LENGTH))
         }
@@ -271,10 +271,10 @@ class CreatingPasswordScreen : BaseFragmentScreen() {
   
   companion object {
     
-    private val Root = View.generateViewId()
-    private val Title = View.generateViewId()
-    private val TextPasswordLength = View.generateViewId()
-    private val TextError = View.generateViewId()
-    private val EditTextPassword = View.generateViewId()
+    val Root = View.generateViewId()
+    val Title = View.generateViewId()
+    val TextPasswordLength = View.generateViewId()
+    val TextError = View.generateViewId()
+    val EditTextPassword = View.generateViewId()
   }
 }

@@ -2,11 +2,12 @@ package com.arsvechkarev.vault.test.features.main_list
 
 import com.arsvechkarev.vault.R
 import com.arsvechkarev.vault.core.views.drawables.LetterInCircleDrawable
-import com.arsvechkarev.vault.test.common.VaultAutotestRule
-import com.arsvechkarev.vault.test.common.utils.setUserLoggedIn
-import com.arsvechkarev.vault.test.common.utils.writeVaultFileFromAssets
+import com.arsvechkarev.vault.test.core.VaultAutotestRule
+import com.arsvechkarev.vault.test.core.ext.setUserLoggedIn
+import com.arsvechkarev.vault.test.core.ext.writeVaultFileFromAssets
 import com.arsvechkarev.vault.test.features.info.KInfoScreen
 import com.arsvechkarev.vault.test.features.login.KLoginScreen
+import com.arsvechkarev.vault.test.features.main_list.KMainListScreen.EmptyItem
 import com.arsvechkarev.vault.test.features.main_list.KMainListScreen.PasswordItem
 import com.kaspersky.kaspresso.testcases.api.testcase.TestCase
 import kotlinx.coroutines.runBlocking
@@ -21,7 +22,7 @@ class MainListScreenTest : TestCase() {
   
   @Before
   fun setup() = runBlocking {
-    writeVaultFileFromAssets("test_two_items.file")
+    writeVaultFileFromAssets("file_two_items")
     setUserLoggedIn()
     rule.launchActivity()
   }
@@ -48,7 +49,7 @@ class MainListScreenTest : TestCase() {
       recycler.emptyFirstChild { click() }
       KInfoScreen {
         iconDelete.click()
-        confirmationDialog.text2.click()
+        confirmationDialog.action2.click()
       }
       recycler {
         hasSize(1)
@@ -57,6 +58,19 @@ class MainListScreenTest : TestCase() {
             text.hasText("test.com")
             icon.hasDrawable(LetterInCircleDrawable("t"))
           }
+        }
+      }
+      recycler.emptyFirstChild { click() }
+      KInfoScreen {
+        iconDelete.click()
+        confirmationDialog.action2.click()
+      }
+      recycler {
+        hasSize(1)
+        firstChild<EmptyItem> {
+          image.isDisplayed()
+          title.isDisplayed()
+          message.isDisplayed()
         }
       }
     }

@@ -56,7 +56,7 @@ class CreatingEntryScreen : BaseFragmentScreen() {
         showOrHideViewsBasedOnLayout()
       }
       HorizontalLayout(MatchParent, WrapContent) {
-        id(ToolbarId)
+        id(Toolbar)
         margins(top = StatusBarHeight)
         constraints {
           topToTopOf(parent)
@@ -73,7 +73,7 @@ class CreatingEntryScreen : BaseFragmentScreen() {
         }
       }
       VerticalLayout(MatchParent, WrapContent) {
-        id(EditTextLayoutsId)
+        id(EditTextLayouts)
         constraints {
           topToTopOf(parent)
         }
@@ -151,7 +151,7 @@ class CreatingEntryScreen : BaseFragmentScreen() {
   
   private fun showOrHideViewsBasedOnLayout() {
     val continueButton = view(ButtonContinue)
-    val marginBetweenButtonAndText = continueButton.top - view(EditTextLayoutsId).bottom
+    val marginBetweenButtonAndText = continueButton.top - view(EditTextLayouts).bottom
     if (marginBetweenButtonAndText < continueButton.height) {
       continueButton.invisible()
     } else {
@@ -179,14 +179,14 @@ class CreatingEntryScreen : BaseFragmentScreen() {
     }
   }
   
-  private companion object {
+  companion object {
     
-    val ToolbarId = View.generateViewId()
-    val EditTextLayoutsId = View.generateViewId()
+    val Toolbar = View.generateViewId()
+    val EditTextLayouts = View.generateViewId()
     val TextWebsiteName = View.generateViewId()
-    val TextLogin = View.generateViewId()
-    val ButtonContinue = View.generateViewId()
     val EditTextWebsiteName = View.generateViewId()
+    val TextLogin = View.generateViewId()
     val EditTextLogin = View.generateViewId()
+    val ButtonContinue = View.generateViewId()
   }
 }

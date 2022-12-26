@@ -6,8 +6,9 @@ import com.arsvechkarev.vault.R
 import com.arsvechkarev.vault.features.main_list.MainListScreen
 import com.arsvechkarev.vault.features.main_list.recycler.MainListAdapter.Companion.ItemPasswordInfoImage
 import com.arsvechkarev.vault.features.main_list.recycler.MainListAdapter.Companion.ItemPasswordInfoTextPasswordName
-import com.arsvechkarev.vault.test.common.base.BaseScreen
-import com.arsvechkarev.vault.test.common.utils.withClassNameTag
+import com.arsvechkarev.vault.test.core.base.BaseScreen
+import com.arsvechkarev.vault.test.core.ext.withClassNameTag
+import com.arsvechkarev.vault.test.core.views.menu.KMenuView
 import io.github.kakaocup.kakao.image.KImageView
 import io.github.kakaocup.kakao.recycler.KRecyclerItem
 import io.github.kakaocup.kakao.recycler.KRecyclerView
@@ -18,7 +19,7 @@ object KMainListScreen : BaseScreen<KMainListScreen>() {
   
   override val viewClass = MainListScreen::class.java
   
-  val title = KTextView { withText("Vault") }
+  val menu = KMenuView()
   
   val recycler = KRecyclerView(
     builder = { withClassNameTag<RecyclerView>() },
@@ -35,7 +36,7 @@ object KMainListScreen : BaseScreen<KMainListScreen>() {
   class EmptyItem(parent: Matcher<View>) : KRecyclerItem<EmptyItem>(parent) {
     val image = KImageView(parent) { withDrawable(R.drawable.ic_lists) }
     val title = KTextView(parent) { withText("No passwords saved") }
-    val description = KTextView(parent) {
+    val message = KTextView(parent) {
       withText("Click on the + button below to create new password")
     }
   }

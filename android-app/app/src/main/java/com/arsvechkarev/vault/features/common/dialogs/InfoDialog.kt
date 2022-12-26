@@ -77,10 +77,10 @@ class InfoDialog(context: Context) : SimpleDialog(context) {
     this.onHide = onCancel
     textView(DialogInfoTitle).text(titleRes)
     textView(DialogInfoMessage).text(messageRes)
-    textView(DialogInfoText2).gone()
-    textView(DialogInfoText1).apply(ClickableTextView())
-    textView(DialogInfoText1).text(textPositiveRes)
-    textView(DialogInfoText1).onClick(onOkClicked)
+    textView(DialogInfoText1).gone()
+    textView(DialogInfoText2).apply(ClickableTextView())
+    textView(DialogInfoText2).text(textPositiveRes)
+    textView(DialogInfoText2).onClick(onOkClicked)
   }
   
   fun showWithCancelAndProceedOption(

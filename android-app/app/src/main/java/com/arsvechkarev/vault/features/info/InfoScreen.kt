@@ -113,7 +113,7 @@ class InfoScreen : BaseFragmentScreen() {
         )
         clipToPadding = false
         ImageView(WrapContent, WrapContent, style = Styles.IconBack) {
-          id(ImageBack)
+          id(IconBack)
           onClick { store.tryDispatch(OnBackPressed) }
           constraints {
             topToTopOf(parent)
@@ -121,7 +121,7 @@ class InfoScreen : BaseFragmentScreen() {
           }
         }
         ImageView(WrapContent, WrapContent) {
-          id(ImageDelete)
+          id(IconDelete)
           image(R.drawable.ic_delete)
           imageTintList = ColorStateList.valueOf(Colors.Error)
           padding(Dimens.IconPadding)
@@ -142,6 +142,16 @@ class InfoScreen : BaseFragmentScreen() {
             topToTopOf(parent)
           }
         }
+        TextView(WrapContent, WrapContent, style = AccentTextView) {
+          id(TitleWebsiteName)
+          val gradientHeight = context.getDrawableHeight(R.drawable.bg_gradient) * 0.8
+          margins(top = gradientHeight.toInt())
+          text(R.string.text_website_name)
+          constraints {
+            topToTopOf(parent)
+            startToStartOf(parent)
+          }
+        }
         TextView(WrapContent, WrapContent, style = BoldTextView) {
           id(TextWebsiteName)
           setSingleLine()
@@ -151,16 +161,6 @@ class InfoScreen : BaseFragmentScreen() {
             topToBottomOf(ImageWebsite)
             startToStartOf(parent)
             endToEndOf(parent)
-          }
-        }
-        TextView(WrapContent, WrapContent, style = AccentTextView) {
-          id(TitleWebsiteName)
-          val gradientHeight = context.getDrawableHeight(R.drawable.bg_gradient) * 0.8
-          margins(top = gradientHeight.toInt())
-          text(R.string.text_website_name)
-          constraints {
-            topToTopOf(parent)
-            startToStartOf(parent)
           }
         }
         EditText(ZERO, WrapContent, BaseEditText(hint = R.string.hint_website_name)) {
@@ -383,11 +383,11 @@ class InfoScreen : BaseFragmentScreen() {
   
   companion object {
     
-    val ImageBack = View.generateViewId()
-    val ImageDelete = View.generateViewId()
+    val IconBack = View.generateViewId()
+    val IconDelete = View.generateViewId()
     val ImageWebsite = View.generateViewId()
-    val TextWebsiteName = View.generateViewId()
     val TitleWebsiteName = View.generateViewId()
+    val TextWebsiteName = View.generateViewId()
     val EditTextWebsiteName = View.generateViewId()
     val TitleLogin = View.generateViewId()
     val EditTextLogin = View.generateViewId()

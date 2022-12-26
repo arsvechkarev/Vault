@@ -78,7 +78,7 @@ class CreatingPasswordReducer : DslReducer<CreatingPasswordState, CreatingPasswo
         }
       }
       is OnPasswordChanged -> {
-        state { copy(password = event.password) }
+        state { copy(password = event.password, showPasswordCantBeEmpty = false) }
         commands(
           CheckPasswordStrength(event.password),
           ComputePasswordCharacteristics(event.password)
@@ -88,6 +88,7 @@ class CreatingPasswordReducer : DslReducer<CreatingPasswordState, CreatingPasswo
         state { copy(passwordLength = event.length) }
       }
       OnGeneratePasswordClicked -> {
+        state { copy(showPasswordCantBeEmpty = false) }
         val characteristics = EnumSet.noneOf(PasswordCharacteristic::class.java)
         if (state.uppercaseSymbolsEnabled) characteristics.add(UPPERCASE_SYMBOLS)
         if (state.numbersEnabled) characteristics.add(NUMBERS)
@@ -97,6 +98,8 @@ class CreatingPasswordReducer : DslReducer<CreatingPasswordState, CreatingPasswo
       OnSavePasswordClicked -> {
         if (state.password.isNotBlank()) {
           state { copy(showConfirmationDialog = true) }
+        } else {
+          state { copy(showPasswordCantBeEmpty = true) }
         }
       }
       OnDeclinePasswordSavingClicked -> {

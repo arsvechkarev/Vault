@@ -48,7 +48,6 @@ class MenuContentView(context: Context) : ViewGroup(context) {
   private var maxItemHeight = 0
   private val path = Path()
   private var animCoefficient = 0f
-  private var opened = false
   
   private val coefficientAnimator = ValueAnimator().apply {
     duration = Durations.MenuOpening
@@ -65,6 +64,9 @@ class MenuContentView(context: Context) : ViewGroup(context) {
   private val secondMenuItem get() = getChildAt(2) as MenuItemView
   private val thirdMenuItem get() = getChildAt(3) as MenuItemView
   private val fourthMenuItem get() = getChildAt(4) as MenuItemView
+  
+  var opened = false
+    private set
   
   var onMenuOpenClick: () -> Unit = {}
   var onMenuCloseClick: () -> Unit = {}
@@ -119,15 +121,15 @@ class MenuContentView(context: Context) : ViewGroup(context) {
     }
   }
   
-  fun addItems(vararg items: MenuItem) {
+  fun addItems(vararg items: MenuItemModel) {
     assert(items.size == 4)
-    val menuItemView: (MenuItem) -> MenuItemView = { menuItem ->
+    val menuItemView: (MenuItemModel) -> MenuItemView = { menuItem ->
       MenuItemView(
         context = context,
         iconRes = menuItem.iconRes,
+        text = context.getString(menuItem.titleRes),
         textSize = textSize,
         circleSize = itemSize,
-        text = context.getString(menuItem.titleRes)
       ).apply { setOnClickListener { menuItem.onClick() } }
     }
     addView(menuItemView(items[0]))

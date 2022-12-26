@@ -2,7 +2,7 @@ package com.arsvechkarev.vault.test.features.initial
 
 import com.arsvechkarev.vault.R
 import com.arsvechkarev.vault.features.initial.InitialScreen
-import com.arsvechkarev.vault.test.common.base.BaseScreen
+import com.arsvechkarev.vault.test.core.base.BaseScreen
 import io.github.kakaocup.kakao.common.views.KView
 
 object KInitialScreen : BaseScreen<KInitialScreen>() {

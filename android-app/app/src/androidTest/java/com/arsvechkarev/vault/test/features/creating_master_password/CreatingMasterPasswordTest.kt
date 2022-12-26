@@ -1,9 +1,10 @@
 package com.arsvechkarev.vault.test.features.creating_master_password
 
 import buisnesslogic.PasswordStrength
-import com.arsvechkarev.vault.test.common.VaultAutotestRule
+import com.arsvechkarev.vault.features.main_list.MainListScreen
+import com.arsvechkarev.vault.test.core.VaultAutotestRule
+import com.arsvechkarev.vault.test.core.ext.currentScreenIs
 import com.arsvechkarev.vault.test.features.initial.KInitialScreen
-import com.arsvechkarev.vault.test.features.main_list.KMainListScreen
 import com.kaspersky.kaspresso.testcases.api.testcase.TestCase
 import org.junit.Rule
 import org.junit.Test
@@ -14,7 +15,7 @@ class CreatingMasterPasswordTest : TestCase() {
   val rule = VaultAutotestRule()
   
   @Test
-  fun testCreateMasterPasswordFlow() = run {
+  fun testCreatingMasterPasswordFlow() = run {
     KInitialScreen {
       buttonCreateMasterPassword.click()
     }
@@ -116,7 +117,7 @@ class CreatingMasterPasswordTest : TestCase() {
         hasText("Passwords don't match")
       }
       
-      editTextRepeatPassword.typeText("od")
+      editTextRepeatPassword.typeText("o")
       
       textError.isNotDisplayed()
       
@@ -136,8 +137,6 @@ class CreatingMasterPasswordTest : TestCase() {
       
       buttonContinue.click()
     }
-    KMainListScreen {
-      title.isDisplayed()
-    }
+    currentScreenIs(MainListScreen::class)
   }
 }

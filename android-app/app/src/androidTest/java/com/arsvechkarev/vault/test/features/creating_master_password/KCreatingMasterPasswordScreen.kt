@@ -10,10 +10,10 @@ import com.arsvechkarev.vault.features.creating_master_password.CreatingMasterPa
 import com.arsvechkarev.vault.features.creating_master_password.CreatingMasterPasswordScreen.Companion.TextError
 import com.arsvechkarev.vault.features.creating_master_password.CreatingMasterPasswordScreen.Companion.TextPasswordStrength
 import com.arsvechkarev.vault.features.creating_master_password.CreatingMasterPasswordScreen.Companion.TextTitle
-import com.arsvechkarev.vault.test.common.base.BaseScreen
-import com.arsvechkarev.vault.test.common.views.dialog.KPasswordStrengthDialog
-import com.arsvechkarev.vault.test.common.views.edit_text_password.KEditTextPassword
-import com.arsvechkarev.vault.test.common.views.password_strength_meter.KPasswordStrengthMeter
+import com.arsvechkarev.vault.test.core.base.BaseScreen
+import com.arsvechkarev.vault.test.core.views.dialog.KPasswordStrengthDialog
+import com.arsvechkarev.vault.test.core.views.edit_text_password.KEditTextPassword
+import com.arsvechkarev.vault.test.core.views.password_strength_meter.KPasswordStrengthMeter
 import io.github.kakaocup.kakao.common.views.KView
 import io.github.kakaocup.kakao.image.KImageView
 import io.github.kakaocup.kakao.text.KTextView

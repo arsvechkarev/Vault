@@ -17,10 +17,10 @@ import viewdsl.rippleBackground
 
 class MenuItemView(
   context: Context,
-  iconRes: Int,
+  val iconRes: Int,
+  val text: String,
   textSize: Float,
   private val circleSize: Int,
-  private val text: String,
 ) : View(context) {
   
   private val icon = context.retrieveDrawable(iconRes)

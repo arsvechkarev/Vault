@@ -47,12 +47,12 @@ class LoginScreen : BaseFragmentScreen() {
   override fun buildLayout(context: Context) = context.withViewBuilder {
     RootConstraintLayout {
       VerticalLayout(WrapContent, WrapContent) {
-        id(LogoLayoutId)
+        id(LogoLayout)
         constraints {
           topToTopOf(parent)
           startToStartOf(parent)
           endToEndOf(parent)
-          bottomToTopOf(ContentLayoutId)
+          bottomToTopOf(ContentLayout)
         }
         gravity(CENTER)
         ImageView(ImageLogoSize, ImageLogoSize) {
@@ -65,7 +65,7 @@ class LoginScreen : BaseFragmentScreen() {
         }
       }
       VerticalLayout(MatchParent, WrapContent) {
-        id(ContentLayoutId)
+        id(ContentLayout)
         margins(top = MarginExtraLarge * 2)
         constraints {
           centeredWithin(parent)
@@ -82,7 +82,7 @@ class LoginScreen : BaseFragmentScreen() {
           onSubmit { text -> store.tryDispatch(OnEnteredPassword(text)) }
         }
         TextView(MatchParent, WrapContent, style = BaseTextView) {
-          id(TextErrorId)
+          id(TextError)
           margins(start = MarginNormal + MarginTiny, top = MarginSmall)
           textColor(Colors.Error)
         }
@@ -124,9 +124,9 @@ class LoginScreen : BaseFragmentScreen() {
       loadingDialog.hide()
     }
     if (state.showPasswordIsIncorrect) {
-      textView(TextErrorId).text(R.string.text_password_is_incorrect)
+      textView(TextError).text(R.string.text_password_is_incorrect)
     } else {
-      textView(TextErrorId).clearText()
+      textView(TextError).clearText()
     }
   }
   
@@ -137,9 +137,9 @@ class LoginScreen : BaseFragmentScreen() {
   
   companion object {
     
-    val LogoLayoutId = View.generateViewId()
-    val ContentLayoutId = View.generateViewId()
-    val TextErrorId = View.generateViewId()
+    val LogoLayout = View.generateViewId()
+    val ContentLayout = View.generateViewId()
+    val TextError = View.generateViewId()
     val EditTextPassword = View.generateViewId()
     val ButtonContinue = View.generateViewId()
   }

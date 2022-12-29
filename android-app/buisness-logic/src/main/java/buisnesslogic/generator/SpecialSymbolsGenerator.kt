@@ -1,6 +1,6 @@
 package buisnesslogic.generator
 
-import buisnesslogic.SPECIAL_SYMBOLS_STRING
+private const val SPECIAL_SYMBOLS_STRING = "!@#\$%^&*\"()_\\-=+/.><?,';"
 
 class SpecialSymbolsGenerator(private val randomGenerator: RandomGenerator) : SymbolsGenerator {
   

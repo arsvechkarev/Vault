@@ -102,6 +102,7 @@ class InfoScreen : BaseFragmentScreen() {
       }
     }
     RootFrameLayout {
+      id(InfoScreenRoot)
       backgroundColor(Colors.Background)
       ScrollableConstraintLayout(MatchParent, MatchParent) {
         apply(Styles.BaseRootBackground)
@@ -169,10 +170,10 @@ class InfoScreen : BaseFragmentScreen() {
           constraints {
             topToBottomOf(TitleWebsiteName)
             startToStartOf(TitleWebsiteName)
-            endToStartOf(ImageWebsiteNameAction)
+            endToStartOf(ButtonWebsiteNameAction)
           }
         }
-        Image(COPY, ImageWebsiteNameAction, OnWebsiteNameActionClicked) {
+        Image(COPY, ButtonWebsiteNameAction, OnWebsiteNameActionClicked) {
           constraints {
             topToTopOf(EditTextWebsiteName)
             bottomToBottomOf(EditTextWebsiteName)
@@ -194,10 +195,10 @@ class InfoScreen : BaseFragmentScreen() {
           constraints {
             topToBottomOf(TitleLogin)
             startToStartOf(TitleLogin)
-            endToStartOf(ImageLoginAction)
+            endToStartOf(ButtonLoginAction)
           }
         }
-        Image(COPY, ImageLoginAction, OnLoginActionClicked) {
+        Image(COPY, ButtonLoginAction, OnLoginActionClicked) {
           constraints {
             topToTopOf(EditTextLogin)
             bottomToBottomOf(EditTextLogin)
@@ -223,15 +224,15 @@ class InfoScreen : BaseFragmentScreen() {
             startToStartOf(parent)
           }
         }
-        Image(OPEN_IN_NEW, ImageShowPassword, OnOpenPasswordScreenClicked) {
+        Image(OPEN_IN_NEW, ButtonEditPassword, OnOpenPasswordScreenClicked) {
           margins(end = MarginMedium)
           constraints {
             topToTopOf(TextHiddenPassword)
             bottomToBottomOf(TextHiddenPassword)
-            endToStartOf(ImageCopyPassword)
+            endToStartOf(ButtonCopyPassword)
           }
         }
-        Image(COPY, ImageCopyPassword, OnCopyPasswordClicked) {
+        Image(COPY, ButtonCopyPassword, OnCopyPasswordClicked) {
           constraints {
             topToTopOf(TextHiddenPassword)
             bottomToBottomOf(TextHiddenPassword)
@@ -257,10 +258,10 @@ class InfoScreen : BaseFragmentScreen() {
           constraints {
             topToBottomOf(TitleNotes)
             startToStartOf(TitleNotes)
-            endToStartOf(ImageNotesAction)
+            endToStartOf(ButtonNotesAction)
           }
         }
-        Image(COPY, ImageNotesAction, OnNotesActionClicked) {
+        Image(COPY, ButtonNotesAction, OnNotesActionClicked) {
           paddings(top = MarginSmall)
           constraints {
             topToTopOf(EditTextNotes)
@@ -299,9 +300,9 @@ class InfoScreen : BaseFragmentScreen() {
   private fun render(state: InfoScreenState) {
     imageView(ImageWebsite).setWebsiteIcon(state.websiteNameState.editedText)
     textView(TextWebsiteName).text(state.websiteNameState.editedText)
-    renderTextState(EditTextWebsiteName, state.websiteNameState, ImageWebsiteNameAction)
-    renderTextState(EditTextLogin, state.loginState, ImageLoginAction)
-    renderTextState(EditTextNotes, state.notesState, ImageNotesAction)
+    renderTextState(EditTextWebsiteName, state.websiteNameState, ButtonWebsiteNameAction)
+    renderTextState(EditTextLogin, state.loginState, ButtonLoginAction)
+    renderTextState(EditTextNotes, state.notesState, ButtonNotesAction)
     if (!state.isEditingSomething) {
       requireContext().hideKeyboard()
     }
@@ -345,21 +346,27 @@ class InfoScreen : BaseFragmentScreen() {
       is SetWebsiteName -> {
         editText(EditTextWebsiteName).setTextSilently(news.websiteName, websiteNameTextWatcher)
       }
+  
       is SetLogin -> {
         editText(EditTextLogin).setTextSilently(news.login, loginTextWatcher)
       }
+  
       is SetNotes -> {
         editText(EditTextNotes).setTextSilently(news.notes, notesTextWatcher)
       }
+  
       ShowWebsiteNameCopied -> {
         snackbar.show(R.string.text_website_name_copied)
       }
+  
       ShowLoginCopied -> {
         snackbar.show(R.string.text_login_copied)
       }
+  
       ShowPasswordCopied -> {
         snackbar.show(R.string.text_password_copied)
       }
+  
       ShowNotesCopied -> {
         snackbar.show(R.string.text_notes_copied)
       }
@@ -382,23 +389,24 @@ class InfoScreen : BaseFragmentScreen() {
   }
   
   companion object {
-    
+  
+    val InfoScreenRoot = View.generateViewId()
     val IconBack = View.generateViewId()
     val IconDelete = View.generateViewId()
     val ImageWebsite = View.generateViewId()
-    val TitleWebsiteName = View.generateViewId()
     val TextWebsiteName = View.generateViewId()
+    val TitleWebsiteName = View.generateViewId()
     val EditTextWebsiteName = View.generateViewId()
+    val ButtonWebsiteNameAction = View.generateViewId()
     val TitleLogin = View.generateViewId()
     val EditTextLogin = View.generateViewId()
+    val ButtonLoginAction = View.generateViewId()
     val TitlePassword = View.generateViewId()
     val TextHiddenPassword = View.generateViewId()
-    val ImageWebsiteNameAction = View.generateViewId()
-    val ImageLoginAction = View.generateViewId()
-    val ImageShowPassword = View.generateViewId()
-    val ImageCopyPassword = View.generateViewId()
-    val ImageNotesAction = View.generateViewId()
-    val EditTextNotes = View.generateViewId()
+    val ButtonEditPassword = View.generateViewId()
+    val ButtonCopyPassword = View.generateViewId()
     val TitleNotes = View.generateViewId()
+    val EditTextNotes = View.generateViewId()
+    val ButtonNotesAction = View.generateViewId()
   }
 }

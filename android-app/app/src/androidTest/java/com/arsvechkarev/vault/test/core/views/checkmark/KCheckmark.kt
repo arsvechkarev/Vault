@@ -23,7 +23,7 @@ class KCheckmark(builder: ViewBuilder.() -> Unit) : KBaseView<KCheckmark>(builde
     view.check(
       ViewAssertions.matches(
         baseMatcher<Checkmark>(
-          descriptionText = "is checked",
+          descriptionText = "is not checked",
           matcher = { !it.isChecked }
         )
       )

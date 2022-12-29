@@ -192,22 +192,25 @@ class CreatingEntryTest : VaultTestCase() {
           checkmarkNumbers.click()
           checkmarkSpecialSymbols.click()
           buttonGeneratePassword.click()
-          
+  
           editTextPassword {
             hasTextLength(21)
             hasPasswordWithAllCharacteristics()
           }
-          
+  
           editTextPassword.replaceText("abcabcabcabcabc")
-          
+  
+          checkmarkUppercaseSymbols.isNotChecked()
+          checkmarkNumbers.isNotChecked()
+          checkmarkUppercaseSymbols.isNotChecked()
           textPasswordStrength.hasText("Weak")
           passwordStrengthMeter.hasPasswordStrength(WEAK)
-          
+  
           editTextPassword.clearText()
           buttonSavePassword.click()
-          
+  
           textError.hasText("Password cannot be empty")
-          
+  
           buttonGeneratePassword.click()
           
           textError.hasEmptyText()

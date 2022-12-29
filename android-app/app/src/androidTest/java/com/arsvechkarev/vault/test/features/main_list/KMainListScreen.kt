@@ -17,7 +17,7 @@ import org.hamcrest.Matcher
 
 object KMainListScreen : BaseScreen<KMainListScreen>() {
   
-  override val screen = MainListScreen::class
+  override val viewClass = MainListScreen::class.java
   
   val menu = KMenuView()
   

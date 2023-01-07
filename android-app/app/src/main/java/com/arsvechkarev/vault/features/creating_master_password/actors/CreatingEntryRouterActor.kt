@@ -3,7 +3,7 @@ package com.arsvechkarev.vault.features.creating_master_password.actors
 import com.arsvechkarev.vault.core.mvi.tea.Actor
 import com.arsvechkarev.vault.features.common.Router
 import com.arsvechkarev.vault.features.common.Screens
-import com.arsvechkarev.vault.features.common.presentation.RouterActor
+import com.arsvechkarev.vault.features.common.navigation.RouterActor
 import com.arsvechkarev.vault.features.creating_master_password.CreatingMasterPasswordCommand
 import com.arsvechkarev.vault.features.creating_master_password.CreatingMasterPasswordCommand.RouterCommand
 import com.arsvechkarev.vault.features.creating_master_password.CreatingMasterPasswordCommand.RouterCommand.GoBack

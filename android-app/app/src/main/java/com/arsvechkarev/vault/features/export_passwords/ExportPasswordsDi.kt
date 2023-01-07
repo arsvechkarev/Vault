@@ -16,9 +16,8 @@ fun ExportPasswordsStore(
       GetPasswordsFileUriActor(coreComponent.fileSaver),
       GetFilenameFromUriActor(coreComponent.filenameFromUriRetriever),
       ExportPasswordsActor(
-        coreComponent.application,
         coreComponent.fileSaver,
-        coreComponent.dispatchersFacade,
+        coreComponent.passwordsFileExporter,
       ),
       ExportPasswordsRouterActor(coreComponent.router),
     ),

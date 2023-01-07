@@ -8,7 +8,7 @@ import com.arsvechkarev.vault.features.common.Screens.ExportPasswordsScreen
 import com.arsvechkarev.vault.features.common.Screens.ImportPasswordsScreen
 import com.arsvechkarev.vault.features.common.Screens.InfoScreen
 import com.arsvechkarev.vault.features.common.Screens.SettingsScreen
-import com.arsvechkarev.vault.features.common.presentation.RouterActor
+import com.arsvechkarev.vault.features.common.navigation.RouterActor
 import com.arsvechkarev.vault.features.main_list.MainListCommand
 import com.arsvechkarev.vault.features.main_list.MainListCommand.RouterCommand
 import com.arsvechkarev.vault.features.main_list.MainListCommand.RouterCommand.GoBack

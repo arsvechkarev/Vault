@@ -57,7 +57,7 @@ class ExportPasswordsReducer : DslReducer<ExportPasswordsState, ExportPasswordsE
         state { copy(filename = event.filename) }
       }
       is PasswordsFileUriReceived -> {
-        news(TryExportPasswords(state.folderPath, state.filename, event.uri))
+        news(TryExportPasswords(state.filename))
       }
       is OnFileForPasswordsExportCreated -> {
         state { copy(exportedFileUri = event.uri) }

@@ -53,7 +53,6 @@ dependencies {
   def appDependencies = rootProject.ext.applicationDependencies
   implementation appDependencies.kotlin
   implementation appDependencies.appCompat
-  implementation appDependencies.gson
   implementation appDependencies.coroutinesCore
   implementation appDependencies.coroutinesAndroid
   implementation appDependencies.coordinatorLayout
@@ -62,6 +61,7 @@ dependencies {
   implementation appDependencies.zxcvbn
   implementation appDependencies.timber
   implementation appDependencies.lifecycleRuntime
+  implementation appDependencies.gson
 
   def testDependencies = rootProject.ext.testDependencies
 
@@ -69,6 +69,7 @@ dependencies {
   testImplementation testDependencies.gson
 
   androidTestImplementation testDependencies.kaspresso
+  androidTestImplementation testDependencies.espressoIntents
   androidTestImplementation testDependencies.androidTestRunner
   androidTestImplementation testDependencies.androidTestRules
   androidTestImplementation testDependencies.androidTestExt

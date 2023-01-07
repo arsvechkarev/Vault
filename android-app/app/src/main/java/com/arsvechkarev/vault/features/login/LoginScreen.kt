@@ -47,12 +47,12 @@ class LoginScreen : BaseFragmentScreen() {
   override fun buildLayout(context: Context) = context.withViewBuilder {
     RootConstraintLayout {
       VerticalLayout(WrapContent, WrapContent) {
-        id(LogoLayoutId)
+        id(LogoLayout)
         constraints {
           topToTopOf(parent)
           startToStartOf(parent)
           endToEndOf(parent)
-          bottomToTopOf(ContentLayoutId)
+          bottomToTopOf(ContentLayout)
         }
         gravity(CENTER)
         ImageView(ImageLogoSize, ImageLogoSize) {
@@ -65,13 +65,13 @@ class LoginScreen : BaseFragmentScreen() {
         }
       }
       VerticalLayout(MatchParent, WrapContent) {
-        id(ContentLayoutId)
+        id(ContentLayout)
         margins(top = MarginExtraLarge * 2)
         constraints {
           centeredWithin(parent)
         }
         child<EditTextPassword>(MatchParent, WrapContent) {
-          id(EditTextPasswordId)
+          id(EditTextPassword)
           marginHorizontal(MarginNormal)
           if (BuildConfig.DEBUG) {
             text(BuildConfig.STUB_PASSWORD)
@@ -82,13 +82,13 @@ class LoginScreen : BaseFragmentScreen() {
           onSubmit { text -> store.tryDispatch(OnEnteredPassword(text)) }
         }
         TextView(MatchParent, WrapContent, style = BaseTextView) {
-          id(TextErrorId)
+          id(TextError)
           margins(start = MarginNormal + MarginTiny, top = MarginSmall)
           textColor(Colors.Error)
         }
       }
       TextView(MatchParent, WrapContent, style = Button()) {
-        id(ContinueButtonId)
+        id(ButtonContinue)
         text(R.string.text_continue)
         margins(start = MarginNormal, end = MarginNormal, bottom = MarginNormal)
         constraints {
@@ -97,7 +97,7 @@ class LoginScreen : BaseFragmentScreen() {
           bottomToBottomOf(parent)
         }
         onClick {
-          val text = viewAs<EditTextPassword>(EditTextPasswordId).getText()
+          val text = viewAs<EditTextPassword>(EditTextPassword).getText()
           store.tryDispatch(OnEnteredPassword(text))
         }
       }
@@ -113,7 +113,7 @@ class LoginScreen : BaseFragmentScreen() {
   
   override fun onAppearedOnScreen() {
     requireView().postDelayed({
-      viewAs<EditTextPassword>(EditTextPasswordId).showKeyboard()
+      viewAs<EditTextPassword>(EditTextPassword).showKeyboard()
     }, Durations.DelayOpenKeyboard)
   }
   
@@ -124,9 +124,9 @@ class LoginScreen : BaseFragmentScreen() {
       loadingDialog.hide()
     }
     if (state.showPasswordIsIncorrect) {
-      textView(TextErrorId).text(R.string.text_password_is_incorrect)
+      textView(TextError).text(R.string.text_password_is_incorrect)
     } else {
-      textView(TextErrorId).clearText()
+      textView(TextError).clearText()
     }
   }
   
@@ -135,12 +135,12 @@ class LoginScreen : BaseFragmentScreen() {
     requireContext().hideKeyboard()
   }
   
-  private companion object {
+  companion object {
     
-    val LogoLayoutId = View.generateViewId()
-    val ContentLayoutId = View.generateViewId()
-    val TextErrorId = View.generateViewId()
-    val EditTextPasswordId = View.generateViewId()
-    val ContinueButtonId = View.generateViewId()
+    val LogoLayout = View.generateViewId()
+    val ContentLayout = View.generateViewId()
+    val TextError = View.generateViewId()
+    val EditTextPassword = View.generateViewId()
+    val ButtonContinue = View.generateViewId()
   }
 }

@@ -33,6 +33,7 @@ import com.arsvechkarev.vault.features.info.InfoScreenUiEvent.OnBackPressed
 import com.arsvechkarev.vault.features.info.InfoScreenUiEvent.OnConfirmedDeletion
 import com.arsvechkarev.vault.features.info.InfoScreenUiEvent.OnCopyPasswordClicked
 import com.arsvechkarev.vault.features.info.InfoScreenUiEvent.OnDeleteClicked
+import com.arsvechkarev.vault.features.info.InfoScreenUiEvent.OnDialogHidden
 import com.arsvechkarev.vault.features.info.InfoScreenUiEvent.OnInit
 import com.arsvechkarev.vault.features.info.InfoScreenUiEvent.OnLoginActionClicked
 import com.arsvechkarev.vault.features.info.InfoScreenUiEvent.OnLoginTextChanged
@@ -101,6 +102,7 @@ class InfoScreen : BaseFragmentScreen() {
       }
     }
     RootFrameLayout {
+      id(InfoScreenRoot)
       backgroundColor(Colors.Background)
       ScrollableConstraintLayout(MatchParent, MatchParent) {
         apply(Styles.BaseRootBackground)
@@ -111,8 +113,8 @@ class InfoScreen : BaseFragmentScreen() {
           bottom = MarginNormal,
         )
         clipToPadding = false
-        ImageView(WrapContent, WrapContent, style = Styles.ImageBack) {
-          id(ImageBack)
+        ImageView(WrapContent, WrapContent, style = Styles.IconBack) {
+          id(IconBack)
           onClick { store.tryDispatch(OnBackPressed) }
           constraints {
             topToTopOf(parent)
@@ -120,7 +122,7 @@ class InfoScreen : BaseFragmentScreen() {
           }
         }
         ImageView(WrapContent, WrapContent) {
-          id(ImageDelete)
+          id(IconDelete)
           image(R.drawable.ic_delete)
           imageTintList = ColorStateList.valueOf(Colors.Error)
           padding(Dimens.IconPadding)
@@ -141,6 +143,16 @@ class InfoScreen : BaseFragmentScreen() {
             topToTopOf(parent)
           }
         }
+        TextView(WrapContent, WrapContent, style = AccentTextView) {
+          id(TitleWebsiteName)
+          val gradientHeight = context.getDrawableHeight(R.drawable.bg_gradient) * 0.8
+          margins(top = gradientHeight.toInt())
+          text(R.string.text_website_name)
+          constraints {
+            topToTopOf(parent)
+            startToStartOf(parent)
+          }
+        }
         TextView(WrapContent, WrapContent, style = BoldTextView) {
           id(TextWebsiteName)
           setSingleLine()
@@ -152,26 +164,16 @@ class InfoScreen : BaseFragmentScreen() {
             endToEndOf(parent)
           }
         }
-        TextView(WrapContent, WrapContent, style = AccentTextView) {
-          id(TitleWebsiteName)
-          val gradientHeight = context.getDrawableHeight(R.drawable.bg_gradient) * 0.8
-          margins(top = gradientHeight.toInt())
-          text(R.string.text_website_name)
-          constraints {
-            topToTopOf(parent)
-            startToStartOf(parent)
-          }
-        }
         EditText(ZERO, WrapContent, BaseEditText(hint = R.string.hint_website_name)) {
           id(EditTextWebsiteName)
           margins(end = MarginNormal)
           constraints {
             topToBottomOf(TitleWebsiteName)
             startToStartOf(TitleWebsiteName)
-            endToStartOf(ImageWebsiteNameAction)
+            endToStartOf(ButtonWebsiteNameAction)
           }
         }
-        Image(COPY, ImageWebsiteNameAction, OnWebsiteNameActionClicked) {
+        Image(COPY, ButtonWebsiteNameAction, OnWebsiteNameActionClicked) {
           constraints {
             topToTopOf(EditTextWebsiteName)
             bottomToBottomOf(EditTextWebsiteName)
@@ -193,10 +195,10 @@ class InfoScreen : BaseFragmentScreen() {
           constraints {
             topToBottomOf(TitleLogin)
             startToStartOf(TitleLogin)
-            endToStartOf(ImageLoginAction)
+            endToStartOf(ButtonLoginAction)
           }
         }
-        Image(COPY, ImageLoginAction, OnLoginActionClicked) {
+        Image(COPY, ButtonLoginAction, OnLoginActionClicked) {
           constraints {
             topToTopOf(EditTextLogin)
             bottomToBottomOf(EditTextLogin)
@@ -222,15 +224,15 @@ class InfoScreen : BaseFragmentScreen() {
             startToStartOf(parent)
           }
         }
-        Image(OPEN_IN_NEW, ImageShowPassword, OnOpenPasswordScreenClicked) {
+        Image(OPEN_IN_NEW, ButtonEditPassword, OnOpenPasswordScreenClicked) {
           margins(end = MarginMedium)
           constraints {
             topToTopOf(TextHiddenPassword)
             bottomToBottomOf(TextHiddenPassword)
-            endToStartOf(ImageCopyPassword)
+            endToStartOf(ButtonCopyPassword)
           }
         }
-        Image(COPY, ImageCopyPassword, OnCopyPasswordClicked) {
+        Image(COPY, ButtonCopyPassword, OnCopyPasswordClicked) {
           constraints {
             topToTopOf(TextHiddenPassword)
             bottomToBottomOf(TextHiddenPassword)
@@ -256,10 +258,10 @@ class InfoScreen : BaseFragmentScreen() {
           constraints {
             topToBottomOf(TitleNotes)
             startToStartOf(TitleNotes)
-            endToStartOf(ImageNotesAction)
+            endToStartOf(ButtonNotesAction)
           }
         }
-        Image(COPY, ImageNotesAction, OnNotesActionClicked) {
+        Image(COPY, ButtonNotesAction, OnNotesActionClicked) {
           paddings(top = MarginSmall)
           constraints {
             topToTopOf(EditTextNotes)
@@ -298,9 +300,9 @@ class InfoScreen : BaseFragmentScreen() {
   private fun render(state: InfoScreenState) {
     imageView(ImageWebsite).setWebsiteIcon(state.websiteNameState.editedText)
     textView(TextWebsiteName).text(state.websiteNameState.editedText)
-    renderTextState(EditTextWebsiteName, state.websiteNameState, ImageWebsiteNameAction)
-    renderTextState(EditTextLogin, state.loginState, ImageLoginAction)
-    renderTextState(EditTextNotes, state.notesState, ImageNotesAction)
+    renderTextState(EditTextWebsiteName, state.websiteNameState, ButtonWebsiteNameAction)
+    renderTextState(EditTextLogin, state.loginState, ButtonLoginAction)
+    renderTextState(EditTextNotes, state.notesState, ButtonNotesAction)
     if (!state.isEditingSomething) {
       requireContext().hideKeyboard()
     }
@@ -333,7 +335,7 @@ class InfoScreen : BaseFragmentScreen() {
     infoDialog.showWithCancelAndProceedOption(
       titleRes = R.string.text_deleting_password,
       messageRes = getDeleteMessageText(state.websiteNameState.initialText),
-      onCancel = { store.tryDispatch(InfoScreenUiEvent.OnDialogHidden) },
+      onCancel = { store.tryDispatch(OnDialogHidden) },
       onProceed = { store.tryDispatch(OnConfirmedDeletion) }
     )
   }
@@ -344,21 +346,27 @@ class InfoScreen : BaseFragmentScreen() {
       is SetWebsiteName -> {
         editText(EditTextWebsiteName).setTextSilently(news.websiteName, websiteNameTextWatcher)
       }
+  
       is SetLogin -> {
         editText(EditTextLogin).setTextSilently(news.login, loginTextWatcher)
       }
+  
       is SetNotes -> {
         editText(EditTextNotes).setTextSilently(news.notes, notesTextWatcher)
       }
+  
       ShowWebsiteNameCopied -> {
         snackbar.show(R.string.text_website_name_copied)
       }
+  
       ShowLoginCopied -> {
         snackbar.show(R.string.text_login_copied)
       }
+  
       ShowPasswordCopied -> {
         snackbar.show(R.string.text_password_copied)
       }
+  
       ShowNotesCopied -> {
         snackbar.show(R.string.text_notes_copied)
       }
@@ -381,23 +389,24 @@ class InfoScreen : BaseFragmentScreen() {
   }
   
   companion object {
-    
-    private val ImageBack = View.generateViewId()
-    private val ImageDelete = View.generateViewId()
-    private val ImageWebsite = View.generateViewId()
-    private val TextWebsiteName = View.generateViewId()
-    private val TitleWebsiteName = View.generateViewId()
-    private val EditTextWebsiteName = View.generateViewId()
-    private val TitleLogin = View.generateViewId()
-    private val EditTextLogin = View.generateViewId()
-    private val TitlePassword = View.generateViewId()
-    private val TextHiddenPassword = View.generateViewId()
-    private val ImageWebsiteNameAction = View.generateViewId()
-    private val ImageLoginAction = View.generateViewId()
-    private val ImageShowPassword = View.generateViewId()
-    private val ImageCopyPassword = View.generateViewId()
-    private val ImageNotesAction = View.generateViewId()
-    private val EditTextNotes = View.generateViewId()
-    private val TitleNotes = View.generateViewId()
+  
+    val InfoScreenRoot = View.generateViewId()
+    val IconBack = View.generateViewId()
+    val IconDelete = View.generateViewId()
+    val ImageWebsite = View.generateViewId()
+    val TextWebsiteName = View.generateViewId()
+    val TitleWebsiteName = View.generateViewId()
+    val EditTextWebsiteName = View.generateViewId()
+    val ButtonWebsiteNameAction = View.generateViewId()
+    val TitleLogin = View.generateViewId()
+    val EditTextLogin = View.generateViewId()
+    val ButtonLoginAction = View.generateViewId()
+    val TitlePassword = View.generateViewId()
+    val TextHiddenPassword = View.generateViewId()
+    val ButtonEditPassword = View.generateViewId()
+    val ButtonCopyPassword = View.generateViewId()
+    val TitleNotes = View.generateViewId()
+    val EditTextNotes = View.generateViewId()
+    val ButtonNotesAction = View.generateViewId()
   }
 }

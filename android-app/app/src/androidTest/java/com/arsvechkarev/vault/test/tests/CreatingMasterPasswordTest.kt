@@ -1,10 +1,12 @@
-package com.arsvechkarev.vault.test.features.creating_master_password
+package com.arsvechkarev.vault.test.tests
 
 import buisnesslogic.PasswordStrength
+import com.arsvechkarev.vault.features.initial.InitialScreen
 import com.arsvechkarev.vault.features.main_list.MainListScreen
 import com.arsvechkarev.vault.test.core.VaultAutotestRule
 import com.arsvechkarev.vault.test.core.ext.currentScreenIs
-import com.arsvechkarev.vault.test.features.initial.KInitialScreen
+import com.arsvechkarev.vault.test.screens.KCreatingMasterPasswordScreen
+import com.arsvechkarev.vault.test.screens.KInitialScreen
 import com.kaspersky.kaspresso.testcases.api.testcase.TestCase
 import org.junit.Rule
 import org.junit.Test
@@ -12,10 +14,10 @@ import org.junit.Test
 class CreatingMasterPasswordTest : TestCase() {
   
   @get:Rule
-  val rule = VaultAutotestRule()
+  val rule = VaultAutotestRule(autoLaunch = true)
   
   @Test
-  fun testCreatingMasterPasswordFlow() = run {
+  fun testCreatingMasterPassword() = run {
     KInitialScreen {
       buttonCreateMasterPassword.click()
     }
@@ -23,12 +25,13 @@ class CreatingMasterPasswordTest : TestCase() {
       closeSoftKeyboard()
       pressBack()
     }
+    
+    currentScreenIs(InitialScreen::class)
+    
     KInitialScreen {
-      buttonCreateMasterPassword {
-        isVisible()
-        click()
-      }
+      buttonCreateMasterPassword.click()
     }
+    
     KCreatingMasterPasswordScreen {
       title.hasText("Create master password")
       buttonContinue.isCompletelyDisplayed()

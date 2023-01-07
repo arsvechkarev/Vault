@@ -1,4 +1,4 @@
-package com.arsvechkarev.vault.test.features.login
+package com.arsvechkarev.vault.test.screens
 
 import com.arsvechkarev.vault.features.login.LoginScreen
 import com.arsvechkarev.vault.features.login.LoginScreen.Companion.ButtonContinue

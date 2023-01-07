@@ -1,4 +1,4 @@
-package com.arsvechkarev.vault.test.features.creating_password
+package com.arsvechkarev.vault.test.screens
 
 import android.widget.SeekBar
 import android.widget.TextView

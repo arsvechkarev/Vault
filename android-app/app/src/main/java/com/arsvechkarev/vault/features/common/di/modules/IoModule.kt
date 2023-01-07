@@ -6,15 +6,18 @@ import com.arsvechkarev.vault.features.common.data.FileReaderImpl
 import com.arsvechkarev.vault.features.common.data.FileSaverImpl
 import com.arsvechkarev.vault.features.common.data.FilenameFromUriRetriever
 import com.arsvechkarev.vault.features.common.data.FilenameFromUriRetrieverImpl
+import com.arsvechkarev.vault.features.common.data.PasswordsFileExporter
 
 interface IoModule {
   val fileSaver: FileSaver
   val filenameFromUriRetriever: FilenameFromUriRetriever
   val fileReader: FileReader
+  val passwordsFileExporter: PasswordsFileExporter
 }
 
 class IoModuleImpl(
-  coreModule: CoreModule
+  coreModule: CoreModule,
+  override val passwordsFileExporter: PasswordsFileExporter
 ) : IoModule {
   
   override val fileSaver = FileSaverImpl(

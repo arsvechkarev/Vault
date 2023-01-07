@@ -6,6 +6,7 @@ import com.arsvechkarev.vault.MainActivity
 import com.arsvechkarev.vault.test.core.rule.ClearPreferencesRule
 import com.arsvechkarev.vault.test.core.rule.DeleteFilesRule
 import com.arsvechkarev.vault.test.core.rule.DisableAnimationsRule
+import com.arsvechkarev.vault.test.core.rule.InitIntentsRule
 import org.junit.rules.RuleChain
 import org.junit.rules.TestRule
 import org.junit.runner.Description
@@ -16,6 +17,7 @@ class VaultAutotestRule(
 ) : TestRule {
   
   private val disableAnimationsRule = DisableAnimationsRule()
+  private val initIntentsRule = InitIntentsRule()
   private val deleteFilesRule = DeleteFilesRule()
   private val clearPreferencesRule = ClearPreferencesRule()
   private val activityScenarioRule = ActivityScenarioRule(MainActivity::class.java)
@@ -26,7 +28,8 @@ class VaultAutotestRule(
   
   override fun apply(base: Statement, description: Description): Statement {
     var chain = RuleChain
-        .outerRule(disableAnimationsRule)
+        .outerRule(initIntentsRule)
+        .around(disableAnimationsRule)
         .around(deleteFilesRule)
         .around(clearPreferencesRule)
     if (autoLaunch) {

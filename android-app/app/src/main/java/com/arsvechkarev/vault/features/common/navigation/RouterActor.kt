@@ -1,4 +1,4 @@
-package com.arsvechkarev.vault.features.common.presentation
+package com.arsvechkarev.vault.features.common.navigation
 
 import com.arsvechkarev.vault.core.DefaultDispatchersFacade
 import com.arsvechkarev.vault.core.DispatchersFacade

@@ -3,6 +3,7 @@ package com.arsvechkarev.vault.features.initial
 import android.content.Context
 import android.view.Gravity.BOTTOM
 import android.view.Gravity.CENTER
+import android.view.View
 import com.arsvechkarev.vault.R
 import com.arsvechkarev.vault.features.common.Screens
 import com.arsvechkarev.vault.features.common.di.CoreComponentHolder.coreComponent
@@ -17,6 +18,7 @@ import navigation.BaseFragmentScreen
 import viewdsl.Size.Companion.MatchParent
 import viewdsl.Size.Companion.WrapContent
 import viewdsl.gravity
+import viewdsl.id
 import viewdsl.image
 import viewdsl.layoutGravity
 import viewdsl.margin
@@ -52,6 +54,7 @@ class InitialScreen : BaseFragmentScreen() {
         }
       }
       TextView(MatchParent, WrapContent, style = Button()) {
+        id(ButtonCreateMasterPassword)
         margin(MarginNormal)
         layoutGravity(BOTTOM)
         text(R.string.text_create_master_password)
@@ -60,5 +63,10 @@ class InitialScreen : BaseFragmentScreen() {
         }
       }
     }
+  }
+  
+  companion object {
+    
+    val ButtonCreateMasterPassword = View.generateViewId()
   }
 }

@@ -1,4 +1,4 @@
-package com.arsvechkarev.vault.test.features.main_list
+package com.arsvechkarev.vault.test.screens
 
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
@@ -24,8 +24,8 @@ object KMainListScreen : BaseScreen<KMainListScreen>() {
   val recycler = KRecyclerView(
     builder = { withClassNameTag<RecyclerView>() },
     itemTypeBuilder = {
-      itemType(::PasswordItem)
-      itemType(::EmptyItem)
+      itemType(KMainListScreen::PasswordItem)
+      itemType(KMainListScreen::EmptyItem)
     })
   
   class PasswordItem(parent: Matcher<View>) : KRecyclerItem<PasswordItem>(parent) {

@@ -1,4 +1,4 @@
-package com.arsvechkarev.vault.test.features.info
+package com.arsvechkarev.vault.test.tests
 
 import android.os.SystemClock.sleep
 import com.arsvechkarev.vault.R
@@ -13,19 +13,20 @@ import com.arsvechkarev.vault.test.core.ext.currentScreenIs
 import com.arsvechkarev.vault.test.core.ext.hasClipboardText
 import com.arsvechkarev.vault.test.core.ext.setUserLoggedIn
 import com.arsvechkarev.vault.test.core.ext.writeVaultFileFromAssets
-import com.arsvechkarev.vault.test.features.creating_password.KCreatingPasswordScreen
-import com.arsvechkarev.vault.test.features.login.KLoginScreen
-import com.arsvechkarev.vault.test.features.main_list.KMainListScreen
-import com.arsvechkarev.vault.test.features.main_list.KMainListScreen.PasswordItem
+import com.arsvechkarev.vault.test.screens.KCreatingPasswordScreen
+import com.arsvechkarev.vault.test.screens.KInfoScreen
+import com.arsvechkarev.vault.test.screens.KLoginScreen
+import com.arsvechkarev.vault.test.screens.KMainListScreen
+import com.arsvechkarev.vault.test.screens.KMainListScreen.PasswordItem
 import kotlinx.coroutines.runBlocking
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 
-class InfoTest : VaultTestCase() {
+class EditingInfoAndPasswordTest : VaultTestCase() {
   
   @get:Rule
-  val rule = VaultAutotestRule(lazyLaunch = true)
+  val rule = VaultAutotestRule()
   
   @Before
   fun setup() = runBlocking {
@@ -35,7 +36,7 @@ class InfoTest : VaultTestCase() {
   }
   
   @Test
-  fun testInfoFlow() = run {
+  fun testEditingInfoAndPassword() = run {
     KLoginScreen {
       editTextEnterPassword.replaceText("qwetu1233")
       buttonContinue.click()

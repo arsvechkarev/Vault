@@ -1,4 +1,4 @@
-package com.arsvechkarev.vault.test.features.creating_entry
+package com.arsvechkarev.vault.test.screens
 
 import com.arsvechkarev.vault.R
 import com.arsvechkarev.vault.features.creating_entry.CreatingEntryScreen

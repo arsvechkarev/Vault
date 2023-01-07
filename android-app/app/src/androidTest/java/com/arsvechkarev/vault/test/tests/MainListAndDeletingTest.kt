@@ -1,27 +1,28 @@
-package com.arsvechkarev.vault.test.features.main_list
+package com.arsvechkarev.vault.test.tests
 
 import com.arsvechkarev.vault.R
 import com.arsvechkarev.vault.core.views.drawables.LetterInCircleDrawable
 import com.arsvechkarev.vault.features.login.LoginScreen
 import com.arsvechkarev.vault.features.main_list.MainListScreen
 import com.arsvechkarev.vault.test.core.VaultAutotestRule
+import com.arsvechkarev.vault.test.core.base.VaultTestCase
 import com.arsvechkarev.vault.test.core.ext.currentScreenIs
 import com.arsvechkarev.vault.test.core.ext.setUserLoggedIn
 import com.arsvechkarev.vault.test.core.ext.writeVaultFileFromAssets
-import com.arsvechkarev.vault.test.features.info.KInfoScreen
-import com.arsvechkarev.vault.test.features.login.KLoginScreen
-import com.arsvechkarev.vault.test.features.main_list.KMainListScreen.EmptyItem
-import com.arsvechkarev.vault.test.features.main_list.KMainListScreen.PasswordItem
-import com.kaspersky.kaspresso.testcases.api.testcase.TestCase
+import com.arsvechkarev.vault.test.screens.KInfoScreen
+import com.arsvechkarev.vault.test.screens.KLoginScreen
+import com.arsvechkarev.vault.test.screens.KMainListScreen
+import com.arsvechkarev.vault.test.screens.KMainListScreen.EmptyItem
+import com.arsvechkarev.vault.test.screens.KMainListScreen.PasswordItem
 import kotlinx.coroutines.runBlocking
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 
-class MainListScreenTest : TestCase() {
+class MainListAndDeletingTest : VaultTestCase() {
   
   @get:Rule
-  val rule = VaultAutotestRule(lazyLaunch = true)
+  val rule = VaultAutotestRule()
   
   @Before
   fun setup() = runBlocking {
@@ -31,7 +32,7 @@ class MainListScreenTest : TestCase() {
   }
   
   @Test
-  fun testMainListScreenAndDeletingFlow() = run {
+  fun testMainListAndDeleting() = run {
     KLoginScreen {
       textError.hasEmptyText()
       editTextEnterPassword.hasHint("Enter password")

@@ -1,4 +1,4 @@
-package com.arsvechkarev.vault.test.features.info
+package com.arsvechkarev.vault.test.screens
 
 import com.arsvechkarev.vault.features.info.InfoScreen
 import com.arsvechkarev.vault.features.info.InfoScreen.Companion.ButtonCopyPassword

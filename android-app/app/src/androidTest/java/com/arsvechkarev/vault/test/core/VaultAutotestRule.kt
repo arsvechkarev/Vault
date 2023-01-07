@@ -12,7 +12,7 @@ import org.junit.runner.Description
 import org.junit.runners.model.Statement
 
 class VaultAutotestRule(
-  private val lazyLaunch: Boolean = false
+  private val autoLaunch: Boolean = false
 ) : TestRule {
   
   private val disableAnimationsRule = DisableAnimationsRule()
@@ -29,7 +29,7 @@ class VaultAutotestRule(
         .outerRule(disableAnimationsRule)
         .around(deleteFilesRule)
         .around(clearPreferencesRule)
-    if (!lazyLaunch) {
+    if (autoLaunch) {
       chain = chain.around(activityScenarioRule)
     }
     return chain.apply(base, description)

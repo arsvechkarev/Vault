@@ -1,4 +1,4 @@
-package com.arsvechkarev.vault.test.features.creating_entry
+package com.arsvechkarev.vault.test.tests
 
 import buisnesslogic.PasswordStrength.SECURE
 import buisnesslogic.PasswordStrength.WEAK
@@ -16,12 +16,13 @@ import com.arsvechkarev.vault.test.core.ext.hasTextColorInt
 import com.arsvechkarev.vault.test.core.ext.hasTextLength
 import com.arsvechkarev.vault.test.core.ext.setUserLoggedIn
 import com.arsvechkarev.vault.test.core.ext.writeVaultFileFromAssets
-import com.arsvechkarev.vault.test.features.creating_password.KCreatingPasswordScreen
-import com.arsvechkarev.vault.test.features.info.KInfoScreen
-import com.arsvechkarev.vault.test.features.login.KLoginScreen
-import com.arsvechkarev.vault.test.features.main_list.KMainListScreen
-import com.arsvechkarev.vault.test.features.main_list.KMainListScreen.EmptyItem
-import com.arsvechkarev.vault.test.features.main_list.KMainListScreen.PasswordItem
+import com.arsvechkarev.vault.test.screens.KCreatingEntryScreen
+import com.arsvechkarev.vault.test.screens.KCreatingPasswordScreen
+import com.arsvechkarev.vault.test.screens.KInfoScreen
+import com.arsvechkarev.vault.test.screens.KLoginScreen
+import com.arsvechkarev.vault.test.screens.KMainListScreen
+import com.arsvechkarev.vault.test.screens.KMainListScreen.EmptyItem
+import com.arsvechkarev.vault.test.screens.KMainListScreen.PasswordItem
 import com.arsvechkarev.vault.viewbuilding.Colors
 import kotlinx.coroutines.runBlocking
 import org.junit.Before
@@ -31,7 +32,7 @@ import org.junit.Test
 class CreatingEntryTest : VaultTestCase() {
   
   @get:Rule
-  val rule = VaultAutotestRule(lazyLaunch = true)
+  val rule = VaultAutotestRule()
   
   @Before
   fun setup() = runBlocking {
@@ -41,7 +42,7 @@ class CreatingEntryTest : VaultTestCase() {
   }
   
   @Test
-  fun testCreatingEntryFlow() = run {
+  fun testCreatingEntry() = run {
     KLoginScreen {
       editTextEnterPassword.replaceText("qwetu1233")
       buttonContinue.click()

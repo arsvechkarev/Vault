@@ -29,7 +29,7 @@ class Snackbar(context: Context) : ViewGroup(context) {
   private var opened = false
   
   val textInfo get() = getChildAt(0) as TextView
-  val checkmarkView get() = getChildAt(1) as com.arsvechkarev.vault.core.views.AnimatableCheckmark
+  val checkmarkView get() = getChildAt(1) as AnimatableCheckmark
   
   val isOpened get() = opened
   
@@ -40,7 +40,7 @@ class Snackbar(context: Context) : ViewGroup(context) {
     addView(TextView(context).apply(BaseTextView).apply {
       textSize(TextSizes.H5)
     })
-    addView(com.arsvechkarev.vault.core.views.AnimatableCheckmark(context).apply {
+    addView(AnimatableCheckmark(context).apply {
       val padding = MarginSmall
       setPadding(padding, padding, padding, padding)
     })

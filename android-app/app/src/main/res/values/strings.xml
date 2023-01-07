@@ -50,7 +50,6 @@
   <string name="text_password_length">Length: %1$d</string>
   <string name="text_generate_password">Generate password</string>
   <string name="text_save_password">Save password</string>
-  <string name="text_check">Check</string>
   <string name="text_uppercase_symbols">Uppercase symbols</string>
   <string name="text_numbers">Numbers</string>
   <string name="text_special_symbols">Special symbols</string>

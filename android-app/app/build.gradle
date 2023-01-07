@@ -1,7 +1,6 @@
 plugins {
   id 'com.android.application'
   id 'kotlin-android'
-  id 'kotlin-kapt'
   id 'kotlin-parcelize'
 }
 
@@ -25,6 +24,7 @@ android {
     versionCode ext.versionCode
     versionName ext.versionName
     signingConfig signingConfigs.release
+    testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
   }
   buildTypes {
     debug {
@@ -53,21 +53,25 @@ dependencies {
   def appDependencies = rootProject.ext.applicationDependencies
   implementation appDependencies.kotlin
   implementation appDependencies.appCompat
-  implementation appDependencies.gson
   implementation appDependencies.coroutinesCore
   implementation appDependencies.coroutinesAndroid
   implementation appDependencies.coordinatorLayout
   implementation appDependencies.constraintLayout
   implementation appDependencies.recyclerView
   implementation appDependencies.zxcvbn
-  implementation appDependencies.androidSecurity
-  implementation appDependencies.biometric
   implementation appDependencies.timber
   implementation appDependencies.lifecycleRuntime
+  implementation appDependencies.gson
 
   def testDependencies = rootProject.ext.testDependencies
+
   testImplementation testDependencies.junit
   testImplementation testDependencies.gson
 
-//  debugImplementation appDependencies.leakCanary
+  androidTestImplementation testDependencies.kaspresso
+  androidTestImplementation testDependencies.espressoIntents
+  androidTestImplementation testDependencies.androidTestRunner
+  androidTestImplementation testDependencies.androidTestRules
+  androidTestImplementation testDependencies.androidTestExt
+  androidTestImplementation testDependencies.androidTestCoreKtx
 }

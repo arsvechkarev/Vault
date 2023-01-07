@@ -27,11 +27,7 @@ sealed interface ExportPasswordsCommand {
 
 sealed interface ExportPasswordsNews {
   
-  data class TryExportPasswords(
-    val folderPath: String,
-    val filename: String,
-    val passwordsFileUri: String
-  ) : ExportPasswordsNews
+  class TryExportPasswords(val filename: String) : ExportPasswordsNews
 }
 
 data class ExportPasswordsState(

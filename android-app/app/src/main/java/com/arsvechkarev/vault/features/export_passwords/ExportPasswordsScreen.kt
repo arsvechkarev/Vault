@@ -28,7 +28,7 @@ import com.arsvechkarev.vault.viewbuilding.Styles.AccentTextView
 import com.arsvechkarev.vault.viewbuilding.Styles.BaseEditText
 import com.arsvechkarev.vault.viewbuilding.Styles.BoldTextView
 import com.arsvechkarev.vault.viewbuilding.Styles.Button
-import com.arsvechkarev.vault.viewbuilding.Styles.ImageBack
+import com.arsvechkarev.vault.viewbuilding.Styles.IconBack
 import com.arsvechkarev.vault.viewbuilding.Styles.SecondaryTextView
 import com.arsvechkarev.vault.viewbuilding.TextSizes
 import navigation.BaseFragmentScreen
@@ -50,14 +50,15 @@ class ExportPasswordsScreen : BaseFragmentScreen() {
   
   override fun buildLayout(context: Context): View = context.withViewBuilder {
     RootCoordinatorLayout {
+      id(ExportPasswordsScreenRoot)
       child<ConstraintLayout>(MatchParent, MatchParent) {
         HorizontalLayout(MatchParent, WrapContent) {
-          id(ToolbarId)
+          id(Toolbar)
           margins(top = StatusBarHeight + MarginNormal)
           constraints {
             topToTopOf(parent)
           }
-          ImageView(WrapContent, WrapContent, style = ImageBack) {
+          ImageView(WrapContent, WrapContent, style = IconBack) {
             margins(start = MarginNormal, end = MarginNormal)
             gravity(Gravity.CENTER_VERTICAL)
             onClick { store.tryDispatch(OnBackPressed) }
@@ -71,7 +72,7 @@ class ExportPasswordsScreen : BaseFragmentScreen() {
         VerticalLayout(MatchParent, WrapContent) {
           id(LayoutFolder)
           margins(start = MarginNormal, top = GradientDrawableHeight)
-          onClick { selectFolder() }
+          onClick { selectFolderResultLauncher.launch(null) }
           constraints {
             topToTopOf(parent)
           }
@@ -105,7 +106,7 @@ class ExportPasswordsScreen : BaseFragmentScreen() {
           }
         }
         TextView(MatchParent, WrapContent, style = Button()) {
-          id(ButtonContinue)
+          id(ButtonExportPasswords)
           margins(start = MarginNormal, end = MarginNormal, bottom = MarginNormal)
           constraints {
             bottomToBottomOf(parent)
@@ -117,6 +118,16 @@ class ExportPasswordsScreen : BaseFragmentScreen() {
       InfoDialog()
     }
   }
+  
+  private val selectFolderResultLauncher = coreComponent.activityResultSubstitutor
+      .wrapSelectFolderLauncher(this) { uri ->
+        store.tryDispatch(OnSelectedFolder(uri.toString()))
+      }
+  
+  private val createFileResultLauncher = coreComponent.activityResultSubstitutor
+      .wrapCreateFileLauncher(this, CONTENT_TYPE) { uri ->
+        store.tryDispatch(OnFileForPasswordsExportCreated(uri))
+      }
   
   private val store by viewModelStore { ExportPasswordsStore(coreComponent) }
   
@@ -177,27 +188,8 @@ class ExportPasswordsScreen : BaseFragmentScreen() {
   
   private fun handleNews(news: ExportPasswordsNews) {
     when (news) {
-      is TryExportPasswords -> {
-        tryExportPasswords(news)
-      }
+      is TryExportPasswords -> createFileResultLauncher.launch(news.filename)
     }
-  }
-  
-  private fun tryExportPasswords(news: TryExportPasswords) {
-    val intent = Intent(Intent.ACTION_CREATE_DOCUMENT).apply {
-      addCategory(Intent.CATEGORY_OPENABLE)
-      type = CONTENT_TYPE
-      putExtra(Intent.EXTRA_TITLE, news.filename)
-    }
-    startActivityForResult(intent, CREATE_FILE_REQUEST_CODE)
-  }
-  
-  private fun selectFolder() {
-    val intent = Intent(Intent.ACTION_OPEN_DOCUMENT_TREE).apply {
-      addCategory(Intent.CATEGORY_DEFAULT)
-    }
-    val chooser = Intent.createChooser(intent, getString(R.string.text_select_folder))
-    startActivityForResult(chooser, SELECT_FOLDER_REQUEST_CODE)
   }
   
   private fun shareExportedFile(filePath: Uri?) {
@@ -212,37 +204,23 @@ class ExportPasswordsScreen : BaseFragmentScreen() {
     startActivity(Intent.createChooser(shareIntent, getString(R.string.text_export_share)))
   }
   
-  override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-    val uri = data?.data ?: return
-    when (requestCode) {
-      SELECT_FOLDER_REQUEST_CODE -> {
-        store.tryDispatch(OnSelectedFolder(uri.toString()))
-      }
-      CREATE_FILE_REQUEST_CODE -> {
-        store.tryDispatch(OnFileForPasswordsExportCreated(uri))
-      }
-    }
-  }
-  
   override fun handleBackPress(): Boolean {
     store.tryDispatch(OnBackPressed)
     return true
   }
   
-  private companion object {
+  companion object {
     
     const val CONTENT_TYPE = "content/unknown"
     const val CONTENT_PREFIX = "content://"
     
-    const val SELECT_FOLDER_REQUEST_CODE = 2
-    const val CREATE_FILE_REQUEST_CODE = 3
-    
-    val ToolbarId = View.generateViewId()
+    val ExportPasswordsScreenRoot = View.generateViewId()
+    val Toolbar = View.generateViewId()
     val LayoutFolder = View.generateViewId()
     val TitleFolder = View.generateViewId()
     val TextFolder = View.generateViewId()
     val TitleFilename = View.generateViewId()
     val EditTextFilename = View.generateViewId()
-    val ButtonContinue = View.generateViewId()
+    val ButtonExportPasswords = View.generateViewId()
   }
 }

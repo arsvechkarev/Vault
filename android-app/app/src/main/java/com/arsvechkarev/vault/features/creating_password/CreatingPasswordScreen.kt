@@ -36,8 +36,8 @@ import com.arsvechkarev.vault.features.creating_password.CreatingPasswordUiEvent
 import com.arsvechkarev.vault.features.creating_password.CreatingPasswordUiEvent.OnToggledUppercaseSymbols
 import com.arsvechkarev.vault.features.creating_password.CreatingPasswordUiEvent.SetupCompleted
 import com.arsvechkarev.vault.viewbuilding.Colors
-import com.arsvechkarev.vault.viewbuilding.Dimens
 import com.arsvechkarev.vault.viewbuilding.Dimens.ImageBackMargin
+import com.arsvechkarev.vault.viewbuilding.Dimens.MarginExtraLarge
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginNormal
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginSmall
 import com.arsvechkarev.vault.viewbuilding.Styles
@@ -45,7 +45,7 @@ import com.arsvechkarev.vault.viewbuilding.Styles.BaseEditText
 import com.arsvechkarev.vault.viewbuilding.Styles.BoldTextView
 import com.arsvechkarev.vault.viewbuilding.Styles.Button
 import com.arsvechkarev.vault.viewbuilding.Styles.ClickableTextView
-import com.arsvechkarev.vault.viewbuilding.Styles.ImageCross
+import com.arsvechkarev.vault.viewbuilding.Styles.IconCross
 import com.arsvechkarev.vault.viewbuilding.TextSizes
 import navigation.BaseFragmentScreen
 import viewdsl.Size.Companion.MatchParent
@@ -75,7 +75,7 @@ class CreatingPasswordScreen : BaseFragmentScreen() {
   
   override fun buildLayout(context: Context) = context.withViewBuilder {
     RootFrameLayout {
-      id(Root)
+      id(CreatingPasswordScreenRoot)
       VerticalLayout(MatchParent, MatchParent) {
         FrameLayout(MatchParent, WrapContent) {
           margins(top = MarginSmall + StatusBarHeight)
@@ -84,7 +84,7 @@ class CreatingPasswordScreen : BaseFragmentScreen() {
             textSize(TextSizes.H1)
             layoutGravity(CENTER)
           }
-          ImageView(WrapContent, WrapContent, style = ImageCross) {
+          ImageView(WrapContent, WrapContent, style = IconCross) {
             margins(end = ImageBackMargin, top = MarginSmall, bottom = MarginSmall)
             layoutGravity(CENTER or END)
             onClick { store.tryDispatch(OnBackClicked) }
@@ -126,7 +126,7 @@ class CreatingPasswordScreen : BaseFragmentScreen() {
         CheckmarkAndTextViewGroup(R.string.text_special_symbols, commonBlock)
         TextView(WrapContent, WrapContent, style = BoldTextView) {
           id(TextPasswordLength)
-          margins(start = MarginNormal, top = Dimens.MarginExtraLarge)
+          margins(start = MarginNormal, top = MarginExtraLarge)
           textSize(TextSizes.H3)
           text(context.getString(R.string.text_password_length, DEFAULT_PASSWORD_LENGTH))
         }
@@ -242,7 +242,7 @@ class CreatingPasswordScreen : BaseFragmentScreen() {
       PasswordStrength.WEAK -> R.string.text_weak
       PasswordStrength.MEDIUM -> R.string.text_medium
       PasswordStrength.STRONG -> R.string.text_strong
-      PasswordStrength.VERY_STRONG -> R.string.text_secure
+      PasswordStrength.SECURE -> R.string.text_secure
     }
     viewAs<PasswordStrengthMeterWithText>().setText(textResId)
     viewAs<PasswordStrengthMeterWithText>().setStrength(strength)
@@ -270,11 +270,11 @@ class CreatingPasswordScreen : BaseFragmentScreen() {
   }
   
   companion object {
-    
-    private val Root = View.generateViewId()
-    private val Title = View.generateViewId()
-    private val TextPasswordLength = View.generateViewId()
-    private val TextError = View.generateViewId()
-    private val EditTextPassword = View.generateViewId()
+  
+    val CreatingPasswordScreenRoot = View.generateViewId()
+    val Title = View.generateViewId()
+    val TextPasswordLength = View.generateViewId()
+    val TextError = View.generateViewId()
+    val EditTextPassword = View.generateViewId()
   }
 }

@@ -8,16 +8,11 @@ import java.util.EnumSet
 
 class PasswordGeneratorImpl(private val randomGenerator: RandomGenerator) : PasswordGenerator {
   
-  private val uppercaseSymbolsGenerator = UppercaseSymbolsGenerator(randomGenerator)
-  private val lowercaseSymbolsGenerator = LowercaseSymbolsGenerator(randomGenerator)
-  private val numbersGenerator = NumbersGenerator(randomGenerator)
-  private val specialSymbolsGenerator = SpecialSymbolsGenerator(randomGenerator)
-  
   override fun generatePassword(
     length: Int,
     characteristics: EnumSet<PasswordCharacteristic>
   ): String {
-    val generators = getGeneratorsFrom(characteristics)
+    val generators = createSymbolsGeneratorsList(randomGenerator, characteristics)
     while (true) {
       val password = tryGeneratePassword(length, generators)
       if (hasAllCharacteristics(password, generators)) {
@@ -46,14 +41,22 @@ class PasswordGeneratorImpl(private val randomGenerator: RandomGenerator) : Pass
     return String(array)
   }
   
-  private fun getGeneratorsFrom(
-    characteristics: EnumSet<PasswordCharacteristic>
-  ): List<SymbolsGenerator> {
-    val generators = ArrayList<SymbolsGenerator>()
-    generators.add(lowercaseSymbolsGenerator)
-    if (characteristics.contains(UPPERCASE_SYMBOLS)) generators.add(uppercaseSymbolsGenerator)
-    if (characteristics.contains(NUMBERS)) generators.add(numbersGenerator)
-    if (characteristics.contains(SPECIAL_SYMBOLS)) generators.add(specialSymbolsGenerator)
-    return generators
+  companion object {
+    
+    fun createSymbolsGeneratorsList(
+      randomGenerator: RandomGenerator,
+      characteristics: EnumSet<PasswordCharacteristic>,
+    ): List<SymbolsGenerator> = listOfNotNull(
+      LowercaseSymbolsGenerator(randomGenerator),
+      UppercaseSymbolsGenerator(randomGenerator).takeIf {
+        characteristics.contains(UPPERCASE_SYMBOLS)
+      },
+      NumbersGenerator(randomGenerator).takeIf {
+        characteristics.contains(NUMBERS)
+      },
+      SpecialSymbolsGenerator(randomGenerator).takeIf {
+        characteristics.contains(SPECIAL_SYMBOLS)
+      },
+    )
   }
 }

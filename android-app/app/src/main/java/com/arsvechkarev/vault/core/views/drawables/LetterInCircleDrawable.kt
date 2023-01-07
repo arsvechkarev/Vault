@@ -31,7 +31,7 @@ class LetterInCircleDrawable(
   
   override fun onBoundsChange(bounds: Rect) {
     computeTextSize()
-    halfTextHeight = textPaint.getTextHeight() / 2f
+    halfTextHeight = textPaint.getTextHeight(letter) / 2f
   }
   
   override fun draw(canvas: Canvas) {
@@ -44,7 +44,7 @@ class LetterInCircleDrawable(
   private fun computeTextSize() {
     textPaint.textSize = TextSizes.H4
     while (true) {
-      val textHeight = textPaint.getTextHeight()
+      val textHeight = textPaint.getTextHeight(letter)
       if (textHeight > bounds.height() * 0.4f) {
         break
       }

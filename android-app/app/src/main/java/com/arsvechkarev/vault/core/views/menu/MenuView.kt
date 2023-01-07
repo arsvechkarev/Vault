@@ -7,12 +7,14 @@ import android.view.View
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.FrameLayout
+import androidx.annotation.VisibleForTesting
 import androidx.core.graphics.ColorUtils
 import com.arsvechkarev.vault.viewbuilding.Colors
 import viewdsl.addView
 
 class MenuView(context: Context) : FrameLayout(context) {
   
+  @VisibleForTesting
   private val menu get() = getChildAt(1) as MenuContentView
   
   init {
@@ -38,7 +40,7 @@ class MenuView(context: Context) : FrameLayout(context) {
     }
   }
   
-  fun items(vararg items: MenuItem) {
+  fun items(vararg items: MenuItemModel) {
     menu.addItems(*items)
   }
   

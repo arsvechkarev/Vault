@@ -8,8 +8,8 @@ import android.view.animation.AnimationUtils
 import android.widget.ViewSwitcher
 import buisnesslogic.MIN_PASSWORD_LENGTH
 import buisnesslogic.PasswordStrength.MEDIUM
+import buisnesslogic.PasswordStrength.SECURE
 import buisnesslogic.PasswordStrength.STRONG
-import buisnesslogic.PasswordStrength.VERY_STRONG
 import buisnesslogic.PasswordStrength.WEAK
 import com.arsvechkarev.vault.R
 import com.arsvechkarev.vault.core.extensions.TextPaint
@@ -48,7 +48,7 @@ import com.arsvechkarev.vault.viewbuilding.Dimens.PasswordStrengthMeterHeight
 import com.arsvechkarev.vault.viewbuilding.Styles.BaseTextView
 import com.arsvechkarev.vault.viewbuilding.Styles.BoldTextView
 import com.arsvechkarev.vault.viewbuilding.Styles.Button
-import com.arsvechkarev.vault.viewbuilding.Styles.ImageBack
+import com.arsvechkarev.vault.viewbuilding.Styles.IconBack
 import com.arsvechkarev.vault.viewbuilding.TextSizes
 import navigation.BaseFragmentScreen
 import viewdsl.Size.Companion.MatchParent
@@ -82,7 +82,7 @@ class CreatingMasterPasswordScreen : BaseFragmentScreen() {
         id(RepeatPasswordLayout)
         invisible()
         margins(top = MarginNormal + StatusBarHeight, start = MarginNormal, end = MarginNormal)
-        ImageView(WrapContent, WrapContent, style = ImageBack) {
+        ImageView(WrapContent, WrapContent, style = IconBack) {
           onClick { store.tryDispatch(OnBackPressed) }
         }
         TextView(WrapContent, WrapContent, style = BoldTextView) {
@@ -253,7 +253,7 @@ class CreatingMasterPasswordScreen : BaseFragmentScreen() {
       WEAK -> R.string.text_weak
       MEDIUM -> R.string.text_medium
       STRONG -> R.string.text_strong
-      VERY_STRONG -> R.string.text_secure
+      SECURE -> R.string.text_secure
       null -> R.string.text_empty
     }
     textView(TextPasswordStrength).text(textResId)
@@ -286,7 +286,7 @@ class CreatingMasterPasswordScreen : BaseFragmentScreen() {
     }
   }
   
-  private companion object {
+  companion object {
     
     val TextPasswordStrength = View.generateViewId()
     val LayoutError = View.generateViewId()

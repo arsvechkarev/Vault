@@ -15,6 +15,6 @@ class VaultApplication : Application() {
     ViewDslConfiguration.initializeWithAppContext(this)
     ViewDslConfiguration.setDefaultStyles(Styles)
     Fonts.init(applicationContext)
-    CoreComponentHolder.createCoreComponent(this)
+    CoreComponentHolder.initialize(this)
   }
 }

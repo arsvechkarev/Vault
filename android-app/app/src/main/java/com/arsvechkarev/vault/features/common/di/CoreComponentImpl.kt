@@ -1,6 +1,7 @@
 package com.arsvechkarev.vault.features.common.di
 
 import android.app.Application
+import com.arsvechkarev.vault.features.common.data.FileReader
 import com.arsvechkarev.vault.features.common.data.PasswordsFileExporter
 import com.arsvechkarev.vault.features.common.di.modules.AuthModule
 import com.arsvechkarev.vault.features.common.di.modules.AuthModuleImpl
@@ -30,10 +31,11 @@ interface CoreComponent :
       application: Application,
       activityResultSubstitutor: ActivityResultSubstitutor,
       passwordsFileExporter: PasswordsFileExporter,
+      fileReader: FileReader,
     ): CoreComponent {
       val coreModule = CoreModuleImpl(application)
       val cryptographyModule = CryptographyModuleImpl()
-      val fileSaverModule = IoModuleImpl(coreModule, passwordsFileExporter)
+      val fileSaverModule = IoModuleImpl(coreModule, fileReader, passwordsFileExporter)
       val passwordsModule = PasswordsModuleImpl(coreModule, cryptographyModule, fileSaverModule)
       val authModule = AuthModuleImpl(coreModule)
       return CoreComponentImpl(coreModule, cryptographyModule, fileSaverModule,

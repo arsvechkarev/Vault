@@ -7,12 +7,12 @@ interface FileReader {
   fun readFile(uri: Uri): ByteArray
 }
 
-class FileReaderImpl(
+class ContextFileReader(
   private val context: Context
 ) : FileReader {
   
   override fun readFile(uri: Uri): ByteArray {
-    return context.contentResolver?.openInputStream(uri)?.readBytes()
+    return context.contentResolver?.openInputStream(uri)?.use { it.readBytes() }
         ?: error("Problem with content resolver")
   }
 }

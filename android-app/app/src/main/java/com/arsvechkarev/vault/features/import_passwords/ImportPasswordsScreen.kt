@@ -1,7 +1,6 @@
 package com.arsvechkarev.vault.features.import_passwords
 
 import android.content.Context
-import android.content.Intent
 import android.view.Gravity
 import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -18,8 +17,10 @@ import com.arsvechkarev.vault.features.common.dialogs.LoadingDialog
 import com.arsvechkarev.vault.features.common.dialogs.loadingDialog
 import com.arsvechkarev.vault.features.import_passwords.ImportPasswordsUiEvent.OnBackPressed
 import com.arsvechkarev.vault.features.import_passwords.ImportPasswordsUiEvent.OnConfirmedImportClicked
+import com.arsvechkarev.vault.features.import_passwords.ImportPasswordsUiEvent.OnHideErrorDialog
 import com.arsvechkarev.vault.features.import_passwords.ImportPasswordsUiEvent.OnHideInfoDialog
 import com.arsvechkarev.vault.features.import_passwords.ImportPasswordsUiEvent.OnHidePasswordEnteringDialog
+import com.arsvechkarev.vault.features.import_passwords.ImportPasswordsUiEvent.OnHideSuccessDialog
 import com.arsvechkarev.vault.features.import_passwords.ImportPasswordsUiEvent.OnImportPasswordsClicked
 import com.arsvechkarev.vault.features.import_passwords.ImportPasswordsUiEvent.OnPasswordEntered
 import com.arsvechkarev.vault.features.import_passwords.ImportPasswordsUiEvent.OnSelectedFile
@@ -51,9 +52,10 @@ class ImportPasswordsScreen : BaseFragmentScreen() {
   
   override fun buildLayout(context: Context): View = context.withViewBuilder {
     RootCoordinatorLayout {
+      id(ImportPasswordsScreenRoot)
       child<ConstraintLayout>(MatchParent, MatchParent) {
         HorizontalLayout(MatchParent, WrapContent) {
-          id(ToolbarId)
+          id(Toolbar)
           margins(top = StatusBarHeight + MarginNormal)
           constraints {
             topToTopOf(parent)
@@ -72,7 +74,7 @@ class ImportPasswordsScreen : BaseFragmentScreen() {
         VerticalLayout(MatchParent, WrapContent) {
           id(LayoutSelectFile)
           margins(start = MarginNormal, top = GradientDrawableHeight)
-          onClick { selectFileForImport() }
+          onClick { selectFileResultLauncher.launch(CONTENT_TYPE) }
           constraints {
             topToTopOf(parent)
           }
@@ -88,7 +90,7 @@ class ImportPasswordsScreen : BaseFragmentScreen() {
           }
         }
         TextView(MatchParent, WrapContent, style = Button()) {
-          id(ButtonContinue)
+          id(ButtonImportPasswords)
           margins(start = MarginNormal, end = MarginNormal, bottom = MarginNormal)
           constraints {
             bottomToBottomOf(parent)
@@ -106,6 +108,9 @@ class ImportPasswordsScreen : BaseFragmentScreen() {
       LoadingDialog()
     }
   }
+  
+  private val selectFileResultLauncher = coreComponent.activityResultSubstitutor
+      .wrapGetFileLauncher(this) { uri -> store.tryDispatch(OnSelectedFile(uri)) }
   
   private val store by viewModelStore { ImportPasswordsStore(coreComponent) }
   
@@ -161,8 +166,8 @@ class ImportPasswordsScreen : BaseFragmentScreen() {
           titleRes = R.string.text_success,
           messageRes = R.string.text_import_successful,
           textPositiveRes = R.string.text_ok,
-          onCancel = { store.tryDispatch(OnHideInfoDialog) },
-          onOkClicked = { store.tryDispatch(OnHideInfoDialog) }
+          onCancel = { store.tryDispatch(OnHideSuccessDialog) },
+          onOkClicked = { store.tryDispatch(OnHideSuccessDialog) }
         )
       }
       ImportPasswordsInfoDialog.FAILURE -> {
@@ -170,27 +175,11 @@ class ImportPasswordsScreen : BaseFragmentScreen() {
           titleRes = R.string.text_error,
           messageRes = R.string.text_error_import_message,
           textPositiveRes = R.string.text_ok,
-          onCancel = { store.tryDispatch(OnHideInfoDialog) },
-          onOkClicked = { store.tryDispatch(OnHideInfoDialog) }
+          onCancel = { store.tryDispatch(OnHideErrorDialog) },
+          onOkClicked = { store.tryDispatch(OnHideErrorDialog) }
         )
       }
       null -> infoDialog.hide()
-    }
-  }
-  
-  private fun selectFileForImport() {
-    val intent = Intent(Intent.ACTION_GET_CONTENT).apply {
-      type = CONTENT_TYPE
-    }
-    startActivityForResult(intent, SELECT_FILE_REQUEST_CODE)
-  }
-  
-  override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-    val uri = data?.data ?: return
-    when (requestCode) {
-      SELECT_FILE_REQUEST_CODE -> {
-        store.tryDispatch(OnSelectedFile(uri))
-      }
     }
   }
   
@@ -199,17 +188,16 @@ class ImportPasswordsScreen : BaseFragmentScreen() {
     return true
   }
   
-  private companion object {
+  companion object {
     
     const val CONTENT_PREFIX = "content://"
     const val CONTENT_TYPE = "*/*"
     
-    const val SELECT_FILE_REQUEST_CODE = 645
-    
-    val ToolbarId = View.generateViewId()
+    val ImportPasswordsScreenRoot = View.generateViewId()
+    val Toolbar = View.generateViewId()
     val LayoutSelectFile = View.generateViewId()
     val TitleSelectFile = View.generateViewId()
     val TextSelectFile = View.generateViewId()
-    val ButtonContinue = View.generateViewId()
+    val ButtonImportPasswords = View.generateViewId()
   }
 }

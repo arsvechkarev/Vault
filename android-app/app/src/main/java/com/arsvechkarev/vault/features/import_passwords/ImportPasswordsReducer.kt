@@ -10,8 +10,10 @@ import com.arsvechkarev.vault.features.import_passwords.ImportPasswordsInfoDialo
 import com.arsvechkarev.vault.features.import_passwords.ImportPasswordsInfoDialog.SUCCESS
 import com.arsvechkarev.vault.features.import_passwords.ImportPasswordsUiEvent.OnBackPressed
 import com.arsvechkarev.vault.features.import_passwords.ImportPasswordsUiEvent.OnConfirmedImportClicked
+import com.arsvechkarev.vault.features.import_passwords.ImportPasswordsUiEvent.OnHideErrorDialog
 import com.arsvechkarev.vault.features.import_passwords.ImportPasswordsUiEvent.OnHideInfoDialog
 import com.arsvechkarev.vault.features.import_passwords.ImportPasswordsUiEvent.OnHidePasswordEnteringDialog
+import com.arsvechkarev.vault.features.import_passwords.ImportPasswordsUiEvent.OnHideSuccessDialog
 import com.arsvechkarev.vault.features.import_passwords.ImportPasswordsUiEvent.OnImportPasswordsClicked
 import com.arsvechkarev.vault.features.import_passwords.ImportPasswordsUiEvent.OnPasswordEntered
 import com.arsvechkarev.vault.features.import_passwords.ImportPasswordsUiEvent.OnSelectedFile
@@ -38,8 +40,11 @@ class ImportPasswordsReducer : DslReducer<ImportPasswordsState, ImportPasswordsE
         state { copy(enteredPassword = event.password, showLoading = true) }
         commands(TryImportPasswords(checkNotNull(state.selectedFileUri), event.password))
       }
-      OnHideInfoDialog -> {
+      OnHideInfoDialog, OnHideErrorDialog -> {
         state { copy(infoDialog = null) }
+      }
+      OnHideSuccessDialog -> {
+        commands(GoBack)
       }
       OnHidePasswordEnteringDialog -> {
         state { copy(showEnteringPassword = false) }

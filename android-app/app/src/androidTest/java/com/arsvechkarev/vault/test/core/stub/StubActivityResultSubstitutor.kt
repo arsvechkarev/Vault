@@ -5,14 +5,16 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.ActivityResultRegistry
 import androidx.activity.result.contract.ActivityResultContract
 import androidx.activity.result.contract.ActivityResultContracts.CreateDocument
+import androidx.activity.result.contract.ActivityResultContracts.GetContent
 import androidx.activity.result.contract.ActivityResultContracts.OpenDocumentTree
 import androidx.core.app.ActivityOptionsCompat
 import androidx.fragment.app.Fragment
 import com.arsvechkarev.vault.features.common.navigation.ActivityResultSubstitutor
 
 class StubActivityResultSubstitutor(
-  private val stubSelectedFolderUri: String,
-  private val stubCreatedFileUri: String
+  private val stubSelectedFolderUri: String = "",
+  private val stubCreatedFileUri: String = "",
+  private val stubGetFileUri: String = "",
 ) : ActivityResultSubstitutor {
   
   private fun getReturningUriTestRegistry(
@@ -50,6 +52,18 @@ class StubActivityResultSubstitutor(
     return fragment.registerForActivityResult(
       CreateDocument(contentType),
       getReturningUriTestRegistry(stubCreatedFileUri)
+    ) {
+      it?.apply(onSuccess)
+    }
+  }
+  
+  override fun wrapGetFileLauncher(
+    fragment: Fragment,
+    onSuccess: (Uri) -> Unit
+  ): ActivityResultLauncher<String> {
+    return fragment.registerForActivityResult(
+      GetContent(),
+      getReturningUriTestRegistry(stubGetFileUri)
     ) {
       it?.apply(onSuccess)
     }

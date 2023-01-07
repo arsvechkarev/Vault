@@ -7,7 +7,6 @@ import com.arsvechkarev.vault.R
 import com.arsvechkarev.vault.core.mvi.ext.subscribe
 import com.arsvechkarev.vault.core.mvi.ext.viewModelStore
 import com.arsvechkarev.vault.core.views.EditTextPassword
-import com.arsvechkarev.vault.core.views.behaviors.BottomSheetBehavior.Companion.asBottomSheet
 import com.arsvechkarev.vault.features.change_master_password.ChangeMasterPasswordDialogType.CONFIRMATION
 import com.arsvechkarev.vault.features.change_master_password.ChangeMasterPasswordDialogType.LOADING
 import com.arsvechkarev.vault.features.change_master_password.ChangeMasterPasswordDialogType.NOTIFICATION_AFTER
@@ -21,7 +20,6 @@ import com.arsvechkarev.vault.features.change_master_password.ChangeMasterPasswo
 import com.arsvechkarev.vault.features.change_master_password.ChangeMasterPasswordUiEvent.OnNotificationOkClicked
 import com.arsvechkarev.vault.features.change_master_password.ChangeMasterPasswordUiEvent.OnRepeatedPasswordChanged
 import com.arsvechkarev.vault.features.common.di.CoreComponentHolder.coreComponent
-import com.arsvechkarev.vault.features.common.dialogs.EnterPasswordDialog
 import com.arsvechkarev.vault.features.common.dialogs.InfoDialog.Companion.InfoDialog
 import com.arsvechkarev.vault.features.common.dialogs.InfoDialog.Companion.infoDialog
 import com.arsvechkarev.vault.features.common.dialogs.LoadingDialog
@@ -58,6 +56,7 @@ class ChangeMasterPasswordScreen : BaseFragmentScreen() {
   
   override fun buildLayout(context: Context): View = context.withViewBuilder {
     RootConstraintLayout {
+      id(ChangeMasterPasswordScreenRoot)
       HorizontalLayout(MatchParent, WrapContent) {
         id(Toolbar)
         margins(top = StatusBarHeight + MarginNormal, start = MarginNormal, end = MarginNormal)
@@ -67,7 +66,6 @@ class ChangeMasterPasswordScreen : BaseFragmentScreen() {
         ImageView(WrapContent, WrapContent, style = IconBack) {
           margins(end = MarginNormal)
           gravity(Gravity.CENTER_VERTICAL)
-          onClick { viewAs<EnterPasswordDialog>().asBottomSheet.show() }
           onClick { store.tryDispatch(OnBackPressed) }
         }
         TextView(WrapContent, WrapContent, style = BoldTextView) {
@@ -183,8 +181,9 @@ class ChangeMasterPasswordScreen : BaseFragmentScreen() {
     return true
   }
   
-  private companion object {
+  companion object {
     
+    val ChangeMasterPasswordScreenRoot = View.generateViewId()
     val Toolbar = View.generateViewId()
     val Guideline = View.generateViewId()
     val EditTextEnterNewPassword = View.generateViewId()

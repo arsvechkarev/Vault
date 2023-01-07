@@ -22,8 +22,14 @@ class VaultAutotestRule(
   private val clearPreferencesRule = ClearPreferencesRule()
   private val activityScenarioRule = ActivityScenarioRule(MainActivity::class.java)
   
+  private var scenario: ActivityScenario<MainActivity>? = null
+  
   fun launchActivity() {
-    ActivityScenario.launch(MainActivity::class.java)
+    scenario = ActivityScenario.launch(MainActivity::class.java)
+  }
+  
+  fun finishActivity() {
+    scenario?.close()
   }
   
   override fun apply(base: Statement, description: Description): Statement {

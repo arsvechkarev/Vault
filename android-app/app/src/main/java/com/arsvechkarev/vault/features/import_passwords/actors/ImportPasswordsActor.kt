@@ -44,7 +44,7 @@ class ImportPasswordsActor(
             bytes
           }.onSuccess { bytes ->
             fileSaver.saveData(bytes)
-            storage.notifySubscribers(command.password)
+            storage.notifySubscribers(command.password, reloadData = true)
             MasterPasswordHolder.setMasterPassword(command.password)
           }.onFailure {
             Timber.e(it)

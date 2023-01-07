@@ -15,8 +15,11 @@ class CachedPasswordsStorage(
   
   private var passwords: MutableList<PasswordInfoItem> = ArrayList()
   
-  suspend fun getPasswords(masterPassword: String): List<PasswordInfoItem> {
-    if (passwords.isEmpty()) {
+  suspend fun getPasswords(
+    masterPassword: String,
+    reloadData: Boolean = false
+  ): List<PasswordInfoItem> {
+    if (passwords.isEmpty() || reloadData) {
       passwords = storage.getPasswords(masterPassword).toInfoItemsList().toMutableList()
       sortList()
     }

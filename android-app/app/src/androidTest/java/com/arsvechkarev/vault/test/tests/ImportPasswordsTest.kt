@@ -18,7 +18,6 @@ import com.arsvechkarev.vault.test.core.stub.StubFileReader
 import com.arsvechkarev.vault.test.screens.KImportPasswordsScreen
 import com.arsvechkarev.vault.test.screens.KLoginScreen
 import com.arsvechkarev.vault.test.screens.KMainListScreen
-import com.arsvechkarev.vault.test.screens.KMainListScreen.EmptyItem
 import com.arsvechkarev.vault.test.screens.KMainListScreen.PasswordItem
 import com.arsvechkarev.vault.viewbuilding.Colors
 import kotlinx.coroutines.runBlocking
@@ -45,7 +44,7 @@ class ImportPasswordsTest : VaultTestCase() {
       ),
       fileReader = stubFileReader
     )
-    writeVaultFileFromAssets("file_no_items")
+    writeVaultFileFromAssets("file_one_item")
     setUserLoggedIn()
     rule.launchActivity()
   }
@@ -59,8 +58,8 @@ class ImportPasswordsTest : VaultTestCase() {
       KMainListScreen {
         recycler {
           hasSize(1)
-          firstChild<EmptyItem> {
-            image.isDisplayed()
+          firstChild<PasswordItem> {
+            text.hasText("aaa")
           }
         }
         

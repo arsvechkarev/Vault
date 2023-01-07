@@ -2,7 +2,6 @@ package com.arsvechkarev.vault.features.common.di.modules
 
 import buisnesslogic.FileSaver
 import com.arsvechkarev.vault.features.common.data.FileReader
-import com.arsvechkarev.vault.features.common.data.FileReaderImpl
 import com.arsvechkarev.vault.features.common.data.FileSaverImpl
 import com.arsvechkarev.vault.features.common.data.FilenameFromUriRetriever
 import com.arsvechkarev.vault.features.common.data.FilenameFromUriRetrieverImpl
@@ -17,6 +16,7 @@ interface IoModule {
 
 class IoModuleImpl(
   coreModule: CoreModule,
+  override val fileReader: FileReader,
   override val passwordsFileExporter: PasswordsFileExporter
 ) : IoModule {
   
@@ -27,8 +27,6 @@ class IoModuleImpl(
   )
   
   override val filenameFromUriRetriever = FilenameFromUriRetrieverImpl(coreModule.application)
-  
-  override val fileReader = FileReaderImpl(coreModule.application)
   
   companion object {
     

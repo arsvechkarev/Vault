@@ -74,7 +74,6 @@ class EnterPasswordDialog(context: Context) : FrameLayout(context) {
     withViewBuilder {
       backgroundRoundTopRect(MarginNormal, Colors.Dialog)
       VerticalLayout(MatchParent, WrapContent) {
-        id(BottomSheetLayout)
         padding(MarginNormal)
         layoutGravity(BOTTOM)
         child<FrameLayout>(MatchParent, MatchParent) {
@@ -104,7 +103,7 @@ class EnterPasswordDialog(context: Context) : FrameLayout(context) {
         FrameLayout(MatchParent, WrapContent) {
           margins(top = MarginExtraLarge)
           TextView(MatchParent, WrapContent, style = Button()) {
-            id(ButtonCheck)
+            id(ButtonContinue)
             text(R.string.text_continue)
             onClick {
               val editTextPassword = parentView.parentView.viewAs<EditTextPassword>()
@@ -186,14 +185,14 @@ class EnterPasswordDialog(context: Context) : FrameLayout(context) {
     (context as LifecycleOwner).lifecycleScope.launch {
       val passwordChecker = coreComponent.masterPasswordChecker
       viewAs<MaterialProgressBar>().isVisible = true
-      textView(ButtonCheck).clearText()
+      textView(ButtonContinue).clearText()
       delay(500)
       if (passwordChecker.isCorrect(password)) {
         onCheckSuccessful()
       } else {
         textView(TextError).text(R.string.text_password_is_incorrect)
       }
-      textView(ButtonCheck).text(R.string.text_check)
+      textView(ButtonContinue).text(R.string.text_continue)
       viewAs<MaterialProgressBar>().isVisible = false
     }
   }
@@ -203,15 +202,15 @@ class EnterPasswordDialog(context: Context) : FrameLayout(context) {
   }
   
   companion object {
-    
+  
     private val ShadowLayout = View.generateViewId()
-    private val Title = View.generateViewId()
-    private val BottomSheetLayout = View.generateViewId()
-    private val TextError = View.generateViewId()
-    private val ButtonCheck = View.generateViewId()
-    
+  
+    val Title = View.generateViewId()
+    val TextError = View.generateViewId()
+    val ButtonContinue = View.generateViewId()
+  
     val BaseFragmentScreen.enterPasswordDialog get() = viewAs<EnterPasswordDialog>()
-    
+  
     fun CoordinatorLayout.EnterPasswordDialog(
       mode: Mode,
       hideKeyboardOnClose: Boolean = true,

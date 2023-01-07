@@ -12,7 +12,9 @@ sealed interface ImportPasswordsUiEvent : ImportPasswordsEvent {
   object OnImportPasswordsClicked : ImportPasswordsUiEvent
   object OnConfirmedImportClicked : ImportPasswordsUiEvent
   class OnPasswordEntered(val password: String) : ImportPasswordsUiEvent
+  object OnHideErrorDialog : ImportPasswordsUiEvent
   object OnHideInfoDialog : ImportPasswordsUiEvent
+  object OnHideSuccessDialog : ImportPasswordsUiEvent
   object OnHidePasswordEnteringDialog : ImportPasswordsUiEvent
   object OnBackPressed : ImportPasswordsUiEvent
 }

@@ -40,6 +40,7 @@ class ListenableCachedPasswordsStorage(private val cachedPasswordStorage: Cached
   }
   
   suspend fun notifySubscribers(masterPassword: String) {
-    _passwords.emit(cachedPasswordStorage.getPasswords(masterPassword))
+    val value = cachedPasswordStorage.getPasswords(masterPassword)
+    _passwords.emit(value)
   }
 }

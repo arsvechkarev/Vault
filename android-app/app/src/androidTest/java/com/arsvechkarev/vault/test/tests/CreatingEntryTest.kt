@@ -6,7 +6,6 @@ import buisnesslogic.model.PasswordCharacteristic.NUMBERS
 import buisnesslogic.model.PasswordCharacteristic.SPECIAL_SYMBOLS
 import com.arsvechkarev.vault.core.views.drawables.LetterInCircleDrawable
 import com.arsvechkarev.vault.features.creating_entry.CreatingEntryScreen
-import com.arsvechkarev.vault.test.core.VaultAutotestRule
 import com.arsvechkarev.vault.test.core.base.VaultTestCase
 import com.arsvechkarev.vault.test.core.ext.currentScreenIs
 import com.arsvechkarev.vault.test.core.ext.hasPasswordWithAllCharacteristics
@@ -16,6 +15,7 @@ import com.arsvechkarev.vault.test.core.ext.hasTextColorInt
 import com.arsvechkarev.vault.test.core.ext.hasTextLength
 import com.arsvechkarev.vault.test.core.ext.setUserLoggedIn
 import com.arsvechkarev.vault.test.core.ext.writeVaultFileFromAssets
+import com.arsvechkarev.vault.test.core.rule.VaultAutotestRule
 import com.arsvechkarev.vault.test.screens.KCreatingEntryScreen
 import com.arsvechkarev.vault.test.screens.KCreatingPasswordScreen
 import com.arsvechkarev.vault.test.screens.KInfoScreen

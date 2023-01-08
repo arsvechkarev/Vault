@@ -4,8 +4,8 @@ import androidx.test.core.app.ApplicationProvider
 import buisnesslogic.AesSivTinkCryptography
 import buisnesslogic.model.PasswordInfo
 import com.arsvechkarev.vault.features.common.di.CoreComponentHolder
-import com.arsvechkarev.vault.test.core.VaultAutotestRule
 import com.arsvechkarev.vault.test.core.ext.context
+import com.arsvechkarev.vault.test.core.rule.VaultAutotestRule
 import com.arsvechkarev.vault.test.core.stub.StubActivityResultSubstitutor
 import com.arsvechkarev.vault.test.core.stub.StubPasswordsFileExporter
 import com.arsvechkarev.vault.test.screens.KCreatingEntryScreen

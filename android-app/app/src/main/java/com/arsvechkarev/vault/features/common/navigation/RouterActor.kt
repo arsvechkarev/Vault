@@ -11,19 +11,19 @@ import kotlinx.coroutines.withContext
 import kotlin.reflect.KClass
 import kotlin.reflect.cast
 
-inline fun <Command : Any, reified CommandToFilter : Command, Event : Any> RouterActor(
+inline fun <Command : Any, reified RouterCommand : Command, Event : Any> RouterActor(
   router: Router,
   dispatchersFacade: DispatchersFacade = DefaultDispatchersFacade,
-  noinline action: suspend Router.(CommandToFilter) -> Unit,
+  noinline action: suspend Router.(RouterCommand) -> Unit,
 ): Actor<Command, Event> {
-  return RouterActorImpl(router, CommandToFilter::class, dispatchersFacade, action)
+  return RouterActorImpl(router, RouterCommand::class, dispatchersFacade, action)
 }
 
-class RouterActorImpl<Command : Any, CommandToFilter : Command, Event : Any>(
+class RouterActorImpl<Command : Any, RouterCommand : Command, Event : Any>(
   private val router: Router,
-  private val commandToFilterClass: KClass<CommandToFilter>,
+  private val commandToFilterClass: KClass<RouterCommand>,
   private val dispatchersFacade: DispatchersFacade,
-  private val action: suspend Router.(CommandToFilter) -> Unit,
+  private val action: suspend Router.(RouterCommand) -> Unit,
 ) : Actor<Command, Event> {
   
   override fun handle(commands: Flow<Command>): Flow<Event> {

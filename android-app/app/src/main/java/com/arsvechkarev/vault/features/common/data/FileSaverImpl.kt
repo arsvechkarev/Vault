@@ -12,6 +12,10 @@ class FileSaverImpl(
   private val dispatchersFacade: DispatchersFacade,
 ) : FileSaver {
   
+  override fun doesFileExist(): Boolean {
+    return File(context.filesDir, filename).exists()
+  }
+  
   override suspend fun saveData(data: ByteArray) = withContext(dispatchersFacade.IO) {
     val file = File(context.filesDir, filename)
     file.delete()

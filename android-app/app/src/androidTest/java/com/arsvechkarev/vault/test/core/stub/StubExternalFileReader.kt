@@ -1,12 +1,12 @@
 package com.arsvechkarev.vault.test.core.stub
 
 import android.net.Uri
-import com.arsvechkarev.vault.features.common.data.FileReader
+import com.arsvechkarev.vault.features.common.data.ExternalFileReader
 
-class StubFileReader(
+class StubExternalFileReader(
   private val uriToMatch: String,
   private val bytesToRead: () -> ByteArray
-) : FileReader {
+) : ExternalFileReader {
   
   override fun readFile(uri: Uri): ByteArray {
     if (uri.toString() == uriToMatch) {

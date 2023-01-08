@@ -8,6 +8,8 @@
   <string name="text_export_passwords">Export passwords</string>
   <string name="text_export">Export</string>
   <string name="text_create_master_password">Create master password</string>
+  <string name="text_create_new_encrypted_vault">Create new encrypted vault</string>
+  <string name="text_import_existing_vault">Import existing vault</string>
   <string name="text_weak">Weak</string>
   <string name="text_medium">Medium</string>
   <string name="text_strong">Strong</string>

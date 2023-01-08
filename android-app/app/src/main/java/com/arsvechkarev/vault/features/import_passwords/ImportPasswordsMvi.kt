@@ -21,7 +21,11 @@ sealed interface ImportPasswordsUiEvent : ImportPasswordsEvent {
 
 sealed interface ImportPasswordsCommand {
   class TryImportPasswords(val uri: Uri, val password: String) : ImportPasswordsCommand
-  object GoBack : ImportPasswordsCommand
+  
+  sealed interface RouterCommand : ImportPasswordsCommand {
+    object GoBack : RouterCommand
+    object GoToMainListScreen : RouterCommand
+  }
 }
 
 data class ImportPasswordsState(

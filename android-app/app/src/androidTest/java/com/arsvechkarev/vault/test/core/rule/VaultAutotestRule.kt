@@ -1,12 +1,8 @@
-package com.arsvechkarev.vault.test.core
+package com.arsvechkarev.vault.test.core.rule
 
 import androidx.test.core.app.ActivityScenario
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import com.arsvechkarev.vault.MainActivity
-import com.arsvechkarev.vault.test.core.rule.ClearPreferencesRule
-import com.arsvechkarev.vault.test.core.rule.DeleteFilesRule
-import com.arsvechkarev.vault.test.core.rule.DisableAnimationsRule
-import com.arsvechkarev.vault.test.core.rule.InitIntentsRule
 import org.junit.rules.RuleChain
 import org.junit.rules.TestRule
 import org.junit.runner.Description
@@ -16,8 +12,9 @@ class VaultAutotestRule(
   private val autoLaunch: Boolean = false
 ) : TestRule {
   
+  private val initializeCoreComponentRule = InitializeCoreComponentRule()
   private val disableAnimationsRule = DisableAnimationsRule()
-  private val initIntentsRule = InitIntentsRule()
+  private val intentsRule = IntentsRule()
   private val deleteFilesRule = DeleteFilesRule()
   private val clearPreferencesRule = ClearPreferencesRule()
   private val activityScenarioRule = ActivityScenarioRule(MainActivity::class.java)
@@ -34,7 +31,8 @@ class VaultAutotestRule(
   
   override fun apply(base: Statement, description: Description): Statement {
     var chain = RuleChain
-        .outerRule(initIntentsRule)
+        .outerRule(initializeCoreComponentRule)
+        .around(intentsRule)
         .around(disableAnimationsRule)
         .around(deleteFilesRule)
         .around(clearPreferencesRule)

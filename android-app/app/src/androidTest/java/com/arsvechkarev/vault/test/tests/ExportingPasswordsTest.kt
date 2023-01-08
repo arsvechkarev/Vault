@@ -9,12 +9,12 @@ import androidx.test.espresso.intent.matcher.IntentMatchers.hasType
 import com.arsvechkarev.vault.features.common.di.CoreComponentHolder
 import com.arsvechkarev.vault.features.export_passwords.ExportPasswordsScreen
 import com.arsvechkarev.vault.features.main_list.MainListScreen
-import com.arsvechkarev.vault.test.core.VaultAutotestRule
 import com.arsvechkarev.vault.test.core.base.VaultTestCase
 import com.arsvechkarev.vault.test.core.ext.currentScreenIs
 import com.arsvechkarev.vault.test.core.ext.hasTextColorInt
 import com.arsvechkarev.vault.test.core.ext.setUserLoggedIn
 import com.arsvechkarev.vault.test.core.ext.writeVaultFileFromAssets
+import com.arsvechkarev.vault.test.core.rule.VaultAutotestRule
 import com.arsvechkarev.vault.test.core.stub.StubActivityResultSubstitutor
 import com.arsvechkarev.vault.test.core.stub.StubPasswordsFileExporter
 import com.arsvechkarev.vault.test.screens.KExportPasswordsScreen

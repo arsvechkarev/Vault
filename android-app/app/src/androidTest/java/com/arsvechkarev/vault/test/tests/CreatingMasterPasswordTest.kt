@@ -3,8 +3,8 @@ package com.arsvechkarev.vault.test.tests
 import buisnesslogic.PasswordStrength
 import com.arsvechkarev.vault.features.initial.InitialScreen
 import com.arsvechkarev.vault.features.main_list.MainListScreen
-import com.arsvechkarev.vault.test.core.VaultAutotestRule
 import com.arsvechkarev.vault.test.core.ext.currentScreenIs
+import com.arsvechkarev.vault.test.core.rule.VaultAutotestRule
 import com.arsvechkarev.vault.test.screens.KCreatingMasterPasswordScreen
 import com.arsvechkarev.vault.test.screens.KInitialScreen
 import com.kaspersky.kaspresso.testcases.api.testcase.TestCase

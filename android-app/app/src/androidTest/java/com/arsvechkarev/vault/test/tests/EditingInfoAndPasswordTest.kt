@@ -7,12 +7,12 @@ import com.arsvechkarev.vault.features.common.Durations
 import com.arsvechkarev.vault.features.creating_password.CreatingPasswordScreen
 import com.arsvechkarev.vault.features.info.InfoScreen
 import com.arsvechkarev.vault.features.main_list.MainListScreen
-import com.arsvechkarev.vault.test.core.VaultAutotestRule
 import com.arsvechkarev.vault.test.core.base.VaultTestCase
 import com.arsvechkarev.vault.test.core.ext.currentScreenIs
 import com.arsvechkarev.vault.test.core.ext.hasClipboardText
 import com.arsvechkarev.vault.test.core.ext.setUserLoggedIn
 import com.arsvechkarev.vault.test.core.ext.writeVaultFileFromAssets
+import com.arsvechkarev.vault.test.core.rule.VaultAutotestRule
 import com.arsvechkarev.vault.test.screens.KCreatingPasswordScreen
 import com.arsvechkarev.vault.test.screens.KInfoScreen
 import com.arsvechkarev.vault.test.screens.KLoginScreen

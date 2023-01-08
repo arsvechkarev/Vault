@@ -1,10 +1,8 @@
 package com.arsvechkarev.vault.features.common.di
 
 import android.app.Application
-import com.arsvechkarev.vault.features.common.data.FileReader
+import com.arsvechkarev.vault.features.common.data.ExternalFileReader
 import com.arsvechkarev.vault.features.common.data.PasswordsFileExporter
-import com.arsvechkarev.vault.features.common.di.modules.AuthModule
-import com.arsvechkarev.vault.features.common.di.modules.AuthModuleImpl
 import com.arsvechkarev.vault.features.common.di.modules.CoreModule
 import com.arsvechkarev.vault.features.common.di.modules.CoreModuleImpl
 import com.arsvechkarev.vault.features.common.di.modules.CryptographyModule
@@ -22,7 +20,6 @@ interface CoreComponent :
   CryptographyModule,
   IoModule,
   PasswordsModule,
-  AuthModule,
   NavigationModule {
   
   companion object {
@@ -31,15 +28,14 @@ interface CoreComponent :
       application: Application,
       activityResultSubstitutor: ActivityResultSubstitutor,
       passwordsFileExporter: PasswordsFileExporter,
-      fileReader: FileReader,
+      externalFileReader: ExternalFileReader,
     ): CoreComponent {
       val coreModule = CoreModuleImpl(application)
       val cryptographyModule = CryptographyModuleImpl()
-      val fileSaverModule = IoModuleImpl(coreModule, fileReader, passwordsFileExporter)
+      val fileSaverModule = IoModuleImpl(coreModule, externalFileReader, passwordsFileExporter)
       val passwordsModule = PasswordsModuleImpl(coreModule, cryptographyModule, fileSaverModule)
-      val authModule = AuthModuleImpl(coreModule)
       return CoreComponentImpl(coreModule, cryptographyModule, fileSaverModule,
-        passwordsModule, authModule, NavigationModuleImpl(activityResultSubstitutor))
+        passwordsModule, NavigationModuleImpl(activityResultSubstitutor))
     }
   }
 }
@@ -49,12 +45,10 @@ class CoreComponentImpl(
   private val cryptographyModule: CryptographyModule,
   private val ioModule: IoModule,
   private val passwordsModule: PasswordsModule,
-  private val authModule: AuthModule,
   private val navigationModule: NavigationModule,
 ) : CoreComponent,
   CoreModule by coreModule,
   CryptographyModule by cryptographyModule,
   IoModule by ioModule,
   PasswordsModule by passwordsModule,
-  AuthModule by authModule,
   NavigationModule by navigationModule

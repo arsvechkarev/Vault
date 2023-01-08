@@ -14,7 +14,6 @@ fun CreatingMasterPasswordStore(
     actors = listOf(
       PasswordCheckingActor(coreComponent.passwordInfoChecker),
       FinishAuthActor(
-        coreComponent.authChecker,
         coreComponent.masterPasswordChecker,
         coreComponent.dispatchersFacade
       ),

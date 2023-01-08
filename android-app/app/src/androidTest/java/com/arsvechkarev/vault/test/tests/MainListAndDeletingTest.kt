@@ -6,7 +6,6 @@ import com.arsvechkarev.vault.features.login.LoginScreen
 import com.arsvechkarev.vault.features.main_list.MainListScreen
 import com.arsvechkarev.vault.test.core.base.VaultTestCase
 import com.arsvechkarev.vault.test.core.ext.currentScreenIs
-import com.arsvechkarev.vault.test.core.ext.setUserLoggedIn
 import com.arsvechkarev.vault.test.core.ext.writeVaultFileFromAssets
 import com.arsvechkarev.vault.test.core.rule.VaultAutotestRule
 import com.arsvechkarev.vault.test.screens.KInfoScreen
@@ -27,7 +26,6 @@ class MainListAndDeletingTest : VaultTestCase() {
   @Before
   fun setup() = runBlocking {
     writeVaultFileFromAssets("file_two_items")
-    setUserLoggedIn()
     rule.launchActivity()
   }
   

@@ -1,7 +1,7 @@
 package com.arsvechkarev.vault.features.common.di.modules
 
 import buisnesslogic.FileSaver
-import com.arsvechkarev.vault.features.common.data.FileReader
+import com.arsvechkarev.vault.features.common.data.ExternalFileReader
 import com.arsvechkarev.vault.features.common.data.FileSaverImpl
 import com.arsvechkarev.vault.features.common.data.FilenameFromUriRetriever
 import com.arsvechkarev.vault.features.common.data.FilenameFromUriRetrieverImpl
@@ -10,13 +10,13 @@ import com.arsvechkarev.vault.features.common.data.PasswordsFileExporter
 interface IoModule {
   val fileSaver: FileSaver
   val filenameFromUriRetriever: FilenameFromUriRetriever
-  val fileReader: FileReader
+  val externalFileReader: ExternalFileReader
   val passwordsFileExporter: PasswordsFileExporter
 }
 
 class IoModuleImpl(
   coreModule: CoreModule,
-  override val fileReader: FileReader,
+  override val externalFileReader: ExternalFileReader,
   override val passwordsFileExporter: PasswordsFileExporter
 ) : IoModule {
   

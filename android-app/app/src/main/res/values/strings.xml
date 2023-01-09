@@ -33,7 +33,7 @@
   <string name="hint_login">Enter login</string>
   <string name="text_website_name_cant_be_empty">Website name cannot be empty</string>
   <string name="text_login_cant_be_empty">Login cannot be empty</string>
-  <string name="text_new_password">New password</string>
+  <string name="text_new_entry">New entry</string>
   <string name="text_enter_master_password_to_proceed">Enter master password to proceed</string>
   <string name="text_enter_service_name">Enter service name</string>
   <string name="text_service_name_cannot_be_empty">Service name cannot be empty</string>
@@ -126,4 +126,7 @@
   <string name="clipboard_label_login">login</string>
   <string name="clipboard_label_password">password</string>
   <string name="clipboard_label_notes">notes</string>
+  <string name="text_choose_entry_type">Choose entry type</string>
+  <string name="text_plain_text">Plain text</string>
+  <string name="text_credit_card">Debit or credit card</string>
 </resources>

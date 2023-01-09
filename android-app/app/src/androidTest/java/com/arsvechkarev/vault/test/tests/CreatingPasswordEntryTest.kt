@@ -80,10 +80,10 @@ class CreatingPasswordEntryTest : VaultTestCase() {
         textWebsiteName.hasText("Website name")
         textLogin.hasText("Login")
         buttonContinue.isDisplayed()
-    
+  
         closeSoftKeyboard()
         buttonContinue.click()
-    
+  
         textWebsiteName {
           hasTextColorInt(Colors.Error)
           hasText("Website name cannot be empty")

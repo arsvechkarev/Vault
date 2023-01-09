@@ -24,7 +24,7 @@ class MenuItemView(
 ) : View(context) {
   
   private val icon = context.retrieveDrawable(iconRes)
-  private val textPaint = TextPaint(textSize, font = Fonts.SegoeUiBold)
+  private val textPaint = TextPaint(textSize, font = Fonts.SegoeUi)
   private val circlePaint = Paint(Colors.Accent)
   
   private var firstWord: String? = null

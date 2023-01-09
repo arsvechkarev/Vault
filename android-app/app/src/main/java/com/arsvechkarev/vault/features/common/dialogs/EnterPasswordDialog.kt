@@ -40,7 +40,7 @@ import navigation.BaseFragmentScreen
 import viewdsl.Size.Companion.MatchParent
 import viewdsl.Size.Companion.WrapContent
 import viewdsl.ViewBuilder
-import viewdsl.backgroundRoundTopRect
+import viewdsl.backgroundTopRoundRect
 import viewdsl.behavior
 import viewdsl.classNameTag
 import viewdsl.clearText
@@ -72,7 +72,7 @@ class EnterPasswordDialog(context: Context) : FrameLayout(context) {
   
   init {
     withViewBuilder {
-      backgroundRoundTopRect(MarginNormal, Colors.Dialog)
+      backgroundTopRoundRect(MarginNormal, Colors.Dialog)
       VerticalLayout(MatchParent, WrapContent) {
         padding(MarginNormal)
         layoutGravity(BOTTOM)
@@ -203,8 +203,6 @@ class EnterPasswordDialog(context: Context) : FrameLayout(context) {
   
   companion object {
   
-    private val ShadowLayout = View.generateViewId()
-  
     val Title = View.generateViewId()
     val TextError = View.generateViewId()
     val ButtonContinue = View.generateViewId()
@@ -219,9 +217,7 @@ class EnterPasswordDialog(context: Context) : FrameLayout(context) {
       onDialogClosed: () -> Unit = {},
       block: EnterPasswordDialog.() -> Unit = {}
     ) = withViewBuilder {
-      val shadowLayout = child<FrameLayout>(MatchParent, MatchParent) {
-        id(ShadowLayout)
-      }
+      val shadowLayout = child<FrameLayout>(MatchParent, MatchParent)
       child<EnterPasswordDialog, ViewGroup.LayoutParams>(MatchParent, WrapContent, block) {
         classNameTag()
         setupBehavior(shadowLayout, onDialogClosed)

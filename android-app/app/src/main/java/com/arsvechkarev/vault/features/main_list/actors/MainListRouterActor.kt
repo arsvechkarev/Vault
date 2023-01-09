@@ -15,25 +15,27 @@ import com.arsvechkarev.vault.features.common.navigation.RouterActor
 import com.arsvechkarev.vault.features.main_list.MainListCommand
 import com.arsvechkarev.vault.features.main_list.MainListCommand.RouterCommand
 import com.arsvechkarev.vault.features.main_list.MainListCommand.RouterCommand.GoBack
-import com.arsvechkarev.vault.features.main_list.MainListCommand.RouterCommand.GoToInfoScreen
-import com.arsvechkarev.vault.features.main_list.MainListCommand.RouterCommand.OpenMenuItem
+import com.arsvechkarev.vault.features.main_list.MainListCommand.RouterCommand.GoToCorrespondingInfoScreen
+import com.arsvechkarev.vault.features.main_list.MainListCommand.RouterCommand.OpenScreen
 import com.arsvechkarev.vault.features.main_list.MainListEvent
-import com.arsvechkarev.vault.features.main_list.MenuItemType
+import com.arsvechkarev.vault.features.main_list.ScreenType
 import kotlinx.coroutines.delay
 
 fun MainListRouterActor(router: Router): Actor<MainListCommand, MainListEvent> {
   return RouterActor<MainListCommand, RouterCommand, MainListEvent>(router) { command ->
     when (command) {
-      is OpenMenuItem -> {
+      is OpenScreen -> {
         delay(Durations.MenuOpening)
-        when (command.item) {
-          MenuItemType.EXPORT_PASSWORDS -> goForward(ExportPasswordsScreen)
-          MenuItemType.IMPORT_PASSWORDS -> goForward(ImportPasswordsScreen)
-          MenuItemType.SETTINGS -> goForward(SettingsScreen)
-          MenuItemType.NEW_PASSWORD -> goForward(CreatingPasswordEntryScreen)
+        when (command.type) {
+          ScreenType.EXPORT_PASSWORDS -> goForward(ExportPasswordsScreen)
+          ScreenType.IMPORT_PASSWORDS -> goForward(ImportPasswordsScreen)
+          ScreenType.SETTINGS -> goForward(SettingsScreen)
+          ScreenType.NEW_PASSWORD -> goForward(CreatingPasswordEntryScreen)
+          ScreenType.NEW_CREDIT_CARD -> TODO()
+          ScreenType.NEW_PLAIN_TEXT -> TODO()
         }
       }
-      is GoToInfoScreen -> {
+      is GoToCorrespondingInfoScreen -> {
         when (command.entryItem) {
           is PasswordItem -> goForward(PasswordInfoScreen(command.entryItem))
           is CreditCardItem -> TODO()

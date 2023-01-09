@@ -21,7 +21,7 @@ class MenuView(context: Context) : FrameLayout(context) {
     val shadowView = addView {
       View(context).apply {
         layoutParams = LayoutParams(MATCH_PARENT, MATCH_PARENT)
-        setOnClickListener { menu.onMenuCloseClick() }
+        setOnClickListener { if (enableClicksHandling) menu.onMenuCloseClick() }
         isClickable = false
       }
     }
@@ -39,6 +39,8 @@ class MenuView(context: Context) : FrameLayout(context) {
       }
     }
   }
+  
+  var enableClicksHandling = true
   
   fun items(vararg items: MenuItemModel) {
     menu.addItems(*items)

@@ -1,48 +1,63 @@
 package com.arsvechkarev.vault.features.main_list
 
 import android.content.Context
+import android.graphics.Color
 import android.view.Gravity.CENTER_HORIZONTAL
+import android.view.View
+import androidx.core.graphics.ColorUtils
 import com.arsvechkarev.vault.R
 import com.arsvechkarev.vault.core.mvi.ext.subscribe
 import com.arsvechkarev.vault.core.mvi.ext.viewModelStore
+import com.arsvechkarev.vault.core.views.EntryTypeItemView
+import com.arsvechkarev.vault.core.views.behaviors.BottomSheetBehavior
+import com.arsvechkarev.vault.core.views.behaviors.BottomSheetBehavior.Companion.asBottomSheet
 import com.arsvechkarev.vault.core.views.menu.MenuItemModel
 import com.arsvechkarev.vault.core.views.menu.MenuView
 import com.arsvechkarev.vault.features.common.di.CoreComponentHolder.coreComponent
 import com.arsvechkarev.vault.features.main_list.MainListUiEvent.OnBackPressed
+import com.arsvechkarev.vault.features.main_list.MainListUiEvent.OnChooseEntryTypeDialogHidden
 import com.arsvechkarev.vault.features.main_list.MainListUiEvent.OnCloseMenuClicked
-import com.arsvechkarev.vault.features.main_list.MainListUiEvent.OnEntryItemClicked
+import com.arsvechkarev.vault.features.main_list.MainListUiEvent.OnEntryTypeSelected
 import com.arsvechkarev.vault.features.main_list.MainListUiEvent.OnInit
+import com.arsvechkarev.vault.features.main_list.MainListUiEvent.OnListItemClicked
 import com.arsvechkarev.vault.features.main_list.MainListUiEvent.OnMenuItemClicked
 import com.arsvechkarev.vault.features.main_list.MainListUiEvent.OnOpenMenuClicked
 import com.arsvechkarev.vault.features.main_list.MenuItemType.EXPORT_PASSWORDS
 import com.arsvechkarev.vault.features.main_list.MenuItemType.IMPORT_PASSWORDS
-import com.arsvechkarev.vault.features.main_list.MenuItemType.NEW_PASSWORD
+import com.arsvechkarev.vault.features.main_list.MenuItemType.NEW_ENTRY
 import com.arsvechkarev.vault.features.main_list.MenuItemType.SETTINGS
 import com.arsvechkarev.vault.features.main_list.recycler.Empty
 import com.arsvechkarev.vault.features.main_list.recycler.Loading
 import com.arsvechkarev.vault.features.main_list.recycler.MainListAdapter
 import com.arsvechkarev.vault.viewbuilding.Colors
 import com.arsvechkarev.vault.viewbuilding.Dimens.GradientDrawableHeight
+import com.arsvechkarev.vault.viewbuilding.Dimens.MarginLarge
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginNormal
+import com.arsvechkarev.vault.viewbuilding.Styles.BoldTextView
 import com.arsvechkarev.vault.viewbuilding.Styles.TitleTextView
+import com.arsvechkarev.vault.viewbuilding.TextSizes
 import navigation.BaseFragmentScreen
 import viewdsl.Size.Companion.MatchParent
 import viewdsl.Size.Companion.WrapContent
 import viewdsl.backgroundColor
+import viewdsl.backgroundTopRoundRect
+import viewdsl.behavior
 import viewdsl.classNameTag
 import viewdsl.dp
+import viewdsl.id
 import viewdsl.image
 import viewdsl.layoutGravity
 import viewdsl.margins
 import viewdsl.paddings
 import viewdsl.setupWith
 import viewdsl.text
+import viewdsl.textSize
 import viewdsl.withViewBuilder
 
 class MainListScreen : BaseFragmentScreen() {
   
   override fun buildLayout(context: Context) = context.withViewBuilder {
-    RootFrameLayout {
+    RootCoordinatorLayout {
       backgroundColor(Colors.Background)
       RecyclerView(MatchParent, MatchParent) {
         classNameTag()
@@ -59,7 +74,7 @@ class MainListScreen : BaseFragmentScreen() {
         text(R.string.app_name)
         layoutGravity(CENTER_HORIZONTAL)
       }
-      child<MenuView>(MatchParent, MatchParent) {
+      val menu = child<MenuView>(MatchParent, MatchParent) {
         classNameTag()
         val menuItemModel: (Int, Int, MenuItemType) -> MenuItemModel = { iconRes, titleRes, itemType ->
           MenuItemModel(iconRes, titleRes) { store.tryDispatch(OnMenuItemClicked(itemType)) }
@@ -68,10 +83,39 @@ class MainListScreen : BaseFragmentScreen() {
           menuItemModel(R.drawable.ic_import, R.string.text_import_passwords, IMPORT_PASSWORDS),
           menuItemModel(R.drawable.ic_export, R.string.text_export_passwords, EXPORT_PASSWORDS),
           menuItemModel(R.drawable.ic_settings, R.string.text_settings, SETTINGS),
-          menuItemModel(R.drawable.ic_new_password, R.string.text_new_password, NEW_PASSWORD),
+          menuItemModel(R.drawable.ic_new_entry, R.string.text_new_entry, NEW_ENTRY),
         )
         onMenuOpenClick { store.tryDispatch(OnOpenMenuClicked) }
         onMenuCloseClick { store.tryDispatch(OnCloseMenuClicked) }
+      }
+      val shadowLayout = FrameLayout(MatchParent, MatchParent)
+      VerticalLayout(MatchParent, WrapContent) {
+        id(ChooseEntryTypeBottomSheet)
+        backgroundTopRoundRect(MarginNormal, Colors.Dialog)
+        behavior(BottomSheetBehavior().apply {
+          onShow = {
+            menu.enableClicksHandling = false
+          }
+          onHide = {
+            menu.enableClicksHandling = true
+            store.tryDispatch(OnChooseEntryTypeDialogHidden)
+          }
+          onSlidePercentageChanged = { fraction ->
+            val color = ColorUtils.blendARGB(Color.TRANSPARENT, Colors.Shadow, fraction)
+            shadowLayout.setBackgroundColor(color)
+          }
+        })
+        TextView(WrapContent, WrapContent, style = BoldTextView) {
+          text(R.string.text_choose_entry_type)
+          textSize(TextSizes.H2)
+          margins(start = MarginNormal, top = MarginNormal, bottom = MarginLarge)
+        }
+        val entryItem: (EntryType, Int, Int) -> Unit = { entryType, iconRes, textRes ->
+          EntryTypeItemView(iconRes, textRes) { store.tryDispatch(OnEntryTypeSelected(entryType)) }
+        }
+        entryItem(EntryType.PASSWORD, R.drawable.ic_lock, R.string.text_password)
+        entryItem(EntryType.CREDIT_CARD, R.drawable.ic_credit_card, R.string.text_credit_card)
+        entryItem(EntryType.PLAIN_TEXT, R.drawable.ic_plain_text, R.string.text_plain_text)
       }
     }
   }
@@ -80,7 +124,7 @@ class MainListScreen : BaseFragmentScreen() {
   
   private val adapter by lazy {
     MainListAdapter(
-      onItemClick = { item -> store.tryDispatch(OnEntryItemClicked(item)) },
+      onItemClick = { item -> store.tryDispatch(OnListItemClicked(item)) },
     )
   }
   
@@ -95,6 +139,11 @@ class MainListScreen : BaseFragmentScreen() {
     } else {
       viewAs<MenuView>().closeMenu()
     }
+    if (state.showEntryTypeDialog) {
+      view(ChooseEntryTypeBottomSheet).asBottomSheet.show()
+    } else {
+      view(ChooseEntryTypeBottomSheet).asBottomSheet.hide()
+    }
     adapter.submitList(state.data.getItems(
       successItems = { it.passwordsItems },
       loadingItems = { listOf(Loading) },
@@ -105,5 +154,10 @@ class MainListScreen : BaseFragmentScreen() {
   override fun handleBackPress(): Boolean {
     store.tryDispatch(OnBackPressed)
     return true
+  }
+  
+  companion object {
+    
+    val ChooseEntryTypeBottomSheet = View.generateViewId()
   }
 }

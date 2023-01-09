@@ -12,9 +12,11 @@ sealed interface MainListUiEvent : MainListEvent {
   object OnInit : MainListUiEvent
   object OnOpenMenuClicked : MainListUiEvent
   object OnCloseMenuClicked : MainListUiEvent
+  object OnChooseEntryTypeDialogHidden : MainListUiEvent
   object OnBackPressed : MainListUiEvent
-  class OnEntryItemClicked(val entryItem: EntryItem) : MainListUiEvent
-  class OnMenuItemClicked(val item: MenuItemType) : MainListUiEvent
+  class OnListItemClicked(val item: EntryItem) : MainListUiEvent
+  class OnMenuItemClicked(val itemType: MenuItemType) : MainListUiEvent
+  class OnEntryTypeSelected(val type: EntryType) : MainListUiEvent
 }
 
 sealed interface MainListCommand {
@@ -22,8 +24,8 @@ sealed interface MainListCommand {
   object LoadData : MainListCommand
   
   sealed interface RouterCommand : MainListCommand {
-    class OpenMenuItem(val item: MenuItemType) : RouterCommand
-    class GoToInfoScreen(val entryItem: EntryItem) : RouterCommand
+    class OpenScreen(val type: ScreenType) : RouterCommand
+    class GoToCorrespondingInfoScreen(val entryItem: EntryItem) : RouterCommand
     object GoBack : RouterCommand
   }
 }
@@ -31,11 +33,27 @@ sealed interface MainListCommand {
 data class MainListState(
   val data: ScreenState<EntriesItems> = ScreenState.loading(),
   val menuOpened: Boolean = false,
+  val showEntryTypeDialog: Boolean = false,
 )
 
 enum class MenuItemType {
   IMPORT_PASSWORDS,
   EXPORT_PASSWORDS,
   SETTINGS,
-  NEW_PASSWORD
+  NEW_ENTRY,
+}
+
+enum class ScreenType {
+  IMPORT_PASSWORDS,
+  EXPORT_PASSWORDS,
+  SETTINGS,
+  NEW_PASSWORD,
+  NEW_CREDIT_CARD,
+  NEW_PLAIN_TEXT,
+}
+
+enum class EntryType {
+  PASSWORD,
+  CREDIT_CARD,
+  PLAIN_TEXT
 }

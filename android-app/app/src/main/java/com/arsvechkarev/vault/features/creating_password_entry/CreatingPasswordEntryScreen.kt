@@ -68,7 +68,7 @@ class CreatingPasswordEntryScreen : BaseFragmentScreen() {
         }
         TextView(WrapContent, WrapContent, style = BoldTextView) {
           layoutGravity(CENTER)
-          text(R.string.text_new_password)
+          text(R.string.text_new_entry)
           textSize(TextSizes.H1)
         }
       }

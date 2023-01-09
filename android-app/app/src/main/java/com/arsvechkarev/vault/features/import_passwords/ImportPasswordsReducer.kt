@@ -1,7 +1,8 @@
 package com.arsvechkarev.vault.features.import_passwords
 
 import com.arsvechkarev.vault.core.mvi.tea.DslReducer
-import com.arsvechkarev.vault.features.import_passwords.ImportPasswordsCommand.GoBack
+import com.arsvechkarev.vault.features.import_passwords.ImportPasswordsCommand.RouterCommand.GoBack
+import com.arsvechkarev.vault.features.import_passwords.ImportPasswordsCommand.RouterCommand.GoToMainListScreen
 import com.arsvechkarev.vault.features.import_passwords.ImportPasswordsCommand.TryImportPasswords
 import com.arsvechkarev.vault.features.import_passwords.ImportPasswordsEvent.PasswordsImportFailure
 import com.arsvechkarev.vault.features.import_passwords.ImportPasswordsEvent.PasswordsImportSuccess
@@ -44,7 +45,7 @@ class ImportPasswordsReducer : DslReducer<ImportPasswordsState, ImportPasswordsE
         state { copy(infoDialog = null) }
       }
       OnHideSuccessDialog -> {
-        commands(GoBack)
+        commands(GoToMainListScreen)
       }
       OnHidePasswordEnteringDialog -> {
         state { copy(showEnteringPassword = false) }

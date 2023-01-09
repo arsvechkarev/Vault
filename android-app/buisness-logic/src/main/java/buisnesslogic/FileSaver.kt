@@ -7,6 +7,11 @@ package buisnesslogic
 interface FileSaver {
   
   /**
+   * Checks whether the file exists
+   */
+  fun doesFileExist(): Boolean
+  
+  /**
    * Saves [data] to the file. If the file is didn't exist, creates it. If file was not empty prior
    * to this operation, removes old data and saves [data] afterwards
    */

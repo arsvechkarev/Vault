@@ -10,11 +10,10 @@ import com.arsvechkarev.vault.test.core.base.VaultTestCase
 import com.arsvechkarev.vault.test.core.ext.context
 import com.arsvechkarev.vault.test.core.ext.currentScreenIs
 import com.arsvechkarev.vault.test.core.ext.hasTextColorInt
-import com.arsvechkarev.vault.test.core.ext.setUserLoggedIn
 import com.arsvechkarev.vault.test.core.ext.writeVaultFileFromAssets
 import com.arsvechkarev.vault.test.core.rule.VaultAutotestRule
 import com.arsvechkarev.vault.test.core.stub.StubActivityResultSubstitutor
-import com.arsvechkarev.vault.test.core.stub.StubFileReader
+import com.arsvechkarev.vault.test.core.stub.StubExternalFileReader
 import com.arsvechkarev.vault.test.screens.KImportPasswordsScreen
 import com.arsvechkarev.vault.test.screens.KLoginScreen
 import com.arsvechkarev.vault.test.screens.KMainListScreen
@@ -30,7 +29,7 @@ class ImportPasswordsTest : VaultTestCase() {
   @get:Rule
   val rule = VaultAutotestRule()
   
-  private val stubFileReader = StubFileReader(
+  private val stubFileReader = StubExternalFileReader(
     uriToMatch = "content://myfolder/myfile.png",
     bytesToRead = { context.assets.open("file_two_items").readBytes() }
   )
@@ -42,10 +41,9 @@ class ImportPasswordsTest : VaultTestCase() {
       activityResultSubstitutor = StubActivityResultSubstitutor(
         stubGetFileUri = "content://myfolder/myfile.png"
       ),
-      fileReader = stubFileReader
+      externalFileReader = stubFileReader
     )
     writeVaultFileFromAssets("file_one_item")
-    setUserLoggedIn()
     rule.launchActivity()
   }
   

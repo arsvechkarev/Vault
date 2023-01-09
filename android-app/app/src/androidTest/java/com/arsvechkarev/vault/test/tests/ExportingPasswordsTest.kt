@@ -12,7 +12,6 @@ import com.arsvechkarev.vault.features.main_list.MainListScreen
 import com.arsvechkarev.vault.test.core.base.VaultTestCase
 import com.arsvechkarev.vault.test.core.ext.currentScreenIs
 import com.arsvechkarev.vault.test.core.ext.hasTextColorInt
-import com.arsvechkarev.vault.test.core.ext.setUserLoggedIn
 import com.arsvechkarev.vault.test.core.ext.writeVaultFileFromAssets
 import com.arsvechkarev.vault.test.core.rule.VaultAutotestRule
 import com.arsvechkarev.vault.test.core.stub.StubActivityResultSubstitutor
@@ -46,7 +45,6 @@ class ExportingPasswordsTest : VaultTestCase() {
       passwordsFileExporter = stubPasswordsFileExporter
     )
     writeVaultFileFromAssets("file_two_items")
-    setUserLoggedIn()
     rule.launchActivity()
   }
   

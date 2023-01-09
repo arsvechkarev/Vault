@@ -3,13 +3,14 @@ package com.arsvechkarev.vault.features.common.data
 import android.content.Context
 import android.net.Uri
 
-interface FileReader {
+interface ExternalFileReader {
+  
   fun readFile(uri: Uri): ByteArray
 }
 
-class ContextFileReader(
+class ContextExternalFileReader(
   private val context: Context
-) : FileReader {
+) : ExternalFileReader {
   
   override fun readFile(uri: Uri): ByteArray {
     return context.contentResolver?.openInputStream(uri)?.use { it.readBytes() }

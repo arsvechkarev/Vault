@@ -13,7 +13,6 @@ import com.arsvechkarev.vault.test.core.ext.hasPasswordWithCharacteristics
 import com.arsvechkarev.vault.test.core.ext.hasPasswordWithNoCharacteristics
 import com.arsvechkarev.vault.test.core.ext.hasTextColorInt
 import com.arsvechkarev.vault.test.core.ext.hasTextLength
-import com.arsvechkarev.vault.test.core.ext.setUserLoggedIn
 import com.arsvechkarev.vault.test.core.ext.writeVaultFileFromAssets
 import com.arsvechkarev.vault.test.core.rule.VaultAutotestRule
 import com.arsvechkarev.vault.test.screens.KCreatingEntryScreen
@@ -37,7 +36,6 @@ class CreatingEntryTest : VaultTestCase() {
   @Before
   fun setup() = runBlocking {
     writeVaultFileFromAssets("file_no_items")
-    setUserLoggedIn()
     rule.launchActivity()
   }
   

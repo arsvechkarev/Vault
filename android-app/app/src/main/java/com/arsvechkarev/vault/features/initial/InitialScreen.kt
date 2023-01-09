@@ -53,20 +53,31 @@ class InitialScreen : BaseFragmentScreen() {
           textSize(TextSizes.H3)
         }
       }
-      TextView(MatchParent, WrapContent, style = Button()) {
-        id(ButtonCreateMasterPassword)
+      VerticalLayout(MatchParent, WrapContent) {
         margin(MarginNormal)
         layoutGravity(BOTTOM)
-        text(R.string.text_create_master_password)
-        onClick {
-          coreComponent.router.goForward(Screens.CreatingMasterPasswordScreen)
+        TextView(MatchParent, WrapContent, style = Button()) {
+          id(ButtonCreateMasterPassword)
+          text(R.string.text_create_new_encrypted_vault)
+          margins(bottom = MarginNormal)
+          onClick {
+            coreComponent.router.goForward(Screens.CreatingMasterPasswordScreen)
+          }
+        }
+        TextView(MatchParent, WrapContent, style = Button()) {
+          id(ButtonImportPasswords)
+          text(R.string.text_import_existing_vault)
+          onClick {
+            coreComponent.router.goForward(Screens.ImportPasswordsScreen)
+          }
         }
       }
     }
   }
   
   companion object {
-    
+  
     val ButtonCreateMasterPassword = View.generateViewId()
+    val ButtonImportPasswords = View.generateViewId()
   }
 }

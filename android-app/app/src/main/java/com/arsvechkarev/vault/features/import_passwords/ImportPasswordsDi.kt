@@ -12,7 +12,7 @@ fun ImportPasswordsStore(
   return TeaStoreImpl(
     actors = listOf(
       ImportPasswordsActor(
-        coreComponent.fileReader,
+        coreComponent.externalFileReader,
         coreComponent.cryptography,
         coreComponent.fileSaver,
         coreComponent.listenableCachedPasswordsStorage,

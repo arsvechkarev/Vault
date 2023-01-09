@@ -136,7 +136,7 @@ class BottomSheetBehavior : CoordinatorLayout.Behavior<View>() {
         onPointerUp(event)
       }
       ACTION_CANCEL, ACTION_UP -> {
-        endTouch()
+        handleUpEvent(parent, child, event)
       }
     }
     velocityTracker?.addMovement(event)
@@ -187,11 +187,8 @@ class BottomSheetBehavior : CoordinatorLayout.Behavior<View>() {
       ACTION_POINTER_UP -> {
         onPointerUp(event)
       }
-      ACTION_UP -> {
+      ACTION_UP, ACTION_CANCEL -> {
         handleUpEvent(parent, child, event)
-      }
-      ACTION_CANCEL -> {
-        endTouch()
       }
     }
     velocityTracker?.addMovement(event)

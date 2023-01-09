@@ -25,7 +25,7 @@ object Dimens {
   val MarginLarge get() = adjust(24.dp)
   val MarginExtraLarge get() = adjust(32.dp)
   val IconSize get() = adjust(24.dp)
-  val ItemServiceInfoImageSize get() = adjust(36.dp)
+  val IconSizeBig get() = adjust(36.dp)
   val PasswordActionsViewImageSize get() = adjust(36.dp)
   val CheckmarkSize get() = adjust(20.dp)
   val IconPadding get() = adjust(6.dp)

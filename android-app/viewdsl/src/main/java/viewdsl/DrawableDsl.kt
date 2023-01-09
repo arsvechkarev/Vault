@@ -5,7 +5,6 @@ import android.graphics.Color
 import android.graphics.PorterDuff
 import android.graphics.PorterDuffColorFilter
 import android.graphics.drawable.Drawable
-import android.graphics.drawable.GradientDrawable
 import android.graphics.drawable.RippleDrawable
 import android.graphics.drawable.ShapeDrawable
 import android.graphics.drawable.shapes.OvalShape
@@ -24,7 +23,7 @@ fun View.backgroundRoundRect(cornerRadius: Int, color: Int) {
   backgroundRectWithRadius(outerRadius, color)
 }
 
-fun View.backgroundRoundTopRect(cornerRadius: Int, color: Int) {
+fun View.backgroundTopRoundRect(cornerRadius: Int, color: Int) {
   val r = cornerRadius.toFloat()
   val outerRadius = floatArrayOf(r, r, r, r, 0f, 0f, 0f, 0f)
   backgroundRectWithRadius(outerRadius, color)
@@ -39,18 +38,12 @@ private fun View.backgroundRectWithRadius(outerRadius: FloatArray, color: Int) {
   background(backgroundRect)
 }
 
-fun View.gradientRippleBackground(
-  cornerRadius: Int,
-  rippleColor: Int,
-  gradientStart: Int,
-  gradientEnd: Int,
-  orientation: GradientDrawable.Orientation
-) {
-  val bgDrawable = GradientDrawable(orientation, intArrayOf(gradientStart, gradientEnd))
-  val r = cornerRadius.toFloat()
-  val outerRadii = floatArrayOf(r, r, r, r, r, r, r, r)
-  bgDrawable.cornerRadii = outerRadii
-  rippleBackground(rippleColor, cornerRadius, bgDrawable)
+fun View.backgroundCircle(color: Int) {
+  val background = ShapeDrawable().apply {
+    shape = OvalShape()
+    paint.color = color
+  }
+  background(background)
 }
 
 fun View.rippleBackground(

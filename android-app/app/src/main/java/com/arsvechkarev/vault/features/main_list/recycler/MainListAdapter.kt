@@ -15,8 +15,8 @@ import com.arsvechkarev.vault.recycler.delegate
 import com.arsvechkarev.vault.viewbuilding.Colors
 import com.arsvechkarev.vault.viewbuilding.Dimens.GradientDrawableHeight
 import com.arsvechkarev.vault.viewbuilding.Dimens.HorizontalMarginSmall
+import com.arsvechkarev.vault.viewbuilding.Dimens.IconSizeBig
 import com.arsvechkarev.vault.viewbuilding.Dimens.ImageNoServicesSize
-import com.arsvechkarev.vault.viewbuilding.Dimens.ItemServiceInfoImageSize
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginLarge
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginNormal
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginSmall
@@ -56,7 +56,7 @@ class MainListAdapter(
             rippleBackground(Colors.Ripple)
             paddingHorizontal(HorizontalMarginSmall)
             paddingVertical(MarginSmall)
-            ImageView(ItemServiceInfoImageSize, ItemServiceInfoImageSize) {
+            ImageView(IconSizeBig, IconSizeBig) {
               id(ItemPasswordInfoImage)
               layoutGravity(CENTER)
               margins(start = MarginNormal, end = MarginNormal)

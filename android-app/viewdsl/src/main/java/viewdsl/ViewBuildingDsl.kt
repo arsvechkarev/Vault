@@ -213,7 +213,7 @@ class ViewBuilder(val context: Context) {
     width: Size,
     height: Size,
     style: Style<FrameLayout> = {},
-    block: Style<FrameLayout>,
+    block: Style<FrameLayout> = {},
   ) = when (this) {
     is FrameLayout -> child<FrameLayout, FrameLayoutParams>(width, height, style, block)
     is LinearLayout -> child<FrameLayout, LinearLayoutParams>(width, height, style, block)

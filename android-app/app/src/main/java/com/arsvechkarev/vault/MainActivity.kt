@@ -44,7 +44,7 @@ class MainActivity : AppCompatActivity() {
       // Activity is recreated, navigator handles this case automatically
       return
     }
-    if (coreComponent.authChecker.isUserLoggedIn()) {
+    if (coreComponent.fileSaver.doesFileExist()) {
       coreComponent.router.goForward(Screens.LoginScreen)
     } else {
       coreComponent.router.goForward(Screens.InitialScreen)

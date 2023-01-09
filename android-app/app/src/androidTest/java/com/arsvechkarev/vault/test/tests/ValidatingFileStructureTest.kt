@@ -2,21 +2,20 @@ package com.arsvechkarev.vault.test.tests
 
 import androidx.test.core.app.ApplicationProvider
 import buisnesslogic.AesSivTinkCryptography
-import buisnesslogic.model.PasswordInfo
+import buisnesslogic.model.Entries
 import com.arsvechkarev.vault.features.common.di.CoreComponentHolder
 import com.arsvechkarev.vault.test.core.ext.context
 import com.arsvechkarev.vault.test.core.rule.VaultAutotestRule
 import com.arsvechkarev.vault.test.core.stub.StubActivityResultSubstitutor
 import com.arsvechkarev.vault.test.core.stub.StubPasswordsFileExporter
-import com.arsvechkarev.vault.test.screens.KCreatingEntryScreen
 import com.arsvechkarev.vault.test.screens.KCreatingMasterPasswordScreen
+import com.arsvechkarev.vault.test.screens.KCreatingPasswordEntryScreen
 import com.arsvechkarev.vault.test.screens.KCreatingPasswordScreen
 import com.arsvechkarev.vault.test.screens.KExportPasswordsScreen
 import com.arsvechkarev.vault.test.screens.KInfoScreen
 import com.arsvechkarev.vault.test.screens.KInitialScreen
 import com.arsvechkarev.vault.test.screens.KMainListScreen
 import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
 import com.kaspersky.kaspresso.testcases.api.testcase.TestCase
 import junit.framework.Assert.assertEquals
 import org.junit.Before
@@ -58,7 +57,7 @@ class ValidatingFileStructureTest : TestCase() {
             open()
             newPasswordMenuItem.click()
           }
-          KCreatingEntryScreen {
+          KCreatingPasswordEntryScreen {
             editTextWebsiteName.replaceText("google")
             editTextLogin.replaceText("me@gmail.com")
             buttonContinue.click()
@@ -75,12 +74,12 @@ class ValidatingFileStructureTest : TestCase() {
             open()
             newPasswordMenuItem.click()
           }
-          KCreatingEntryScreen {
+          KCreatingPasswordEntryScreen {
             editTextWebsiteName.replaceText("test.com")
             editTextLogin.replaceText("abcd")
             buttonContinue.click()
             KCreatingPasswordScreen {
-              editTextPassword.replaceText("2ban1yV41&=z%\$Fy")
+              editTextPassword.replaceText("q3z;ob15/*8GK>Ed")
               buttonSavePassword.click()
               confirmationDialog.action2.click()
               KInfoScreen {
@@ -108,19 +107,19 @@ class ValidatingFileStructureTest : TestCase() {
     val expectedString = AesSivTinkCryptography.decryptData("qwetu1233", expectedBytes)
     val actualBytes = stubPasswordsFileExporter.exportedData!!
     val actualString = AesSivTinkCryptography.decryptData("qwetu1233", actualBytes)
-    
+  
     val gson = Gson()
-    val type = TypeToken.getParameterized(List::class.java, PasswordInfo::class.java).type
-    val expectedPasswords = gson.fromJson<List<PasswordInfo>>(expectedString, type)
-    val actualPasswords = gson.fromJson<List<PasswordInfo>>(actualString, type)
-    
-    assertEquals(expectedPasswords.size, actualPasswords.size)
-    expectedPasswords.forEach { expectedPasswordInfo ->
-      checkNotNull(actualPasswords.find { it.websiteName == expectedPasswordInfo.websiteName })
+    val expectedEntries = gson.fromJson(expectedString, Entries::class.java)
+    val actualEntries = gson.fromJson(actualString, Entries::class.java)
+  
+    // TODO (1/10/2023): Add credit cards and plain texts validation
+    assertEquals(expectedEntries.passwords.size, actualEntries.passwords.size)
+    expectedEntries.passwords.forEach { expectedPassword ->
+      checkNotNull(actualEntries.passwords.find { it.websiteName == expectedPassword.websiteName })
           .let { actualPasswordInfo ->
-            assertEquals(expectedPasswordInfo.login, actualPasswordInfo.login)
-            assertEquals(expectedPasswordInfo.password, actualPasswordInfo.password)
-            assertEquals(expectedPasswordInfo.notes, actualPasswordInfo.notes)
+            assertEquals(expectedPassword.login, actualPasswordInfo.login)
+            assertEquals(expectedPassword.password, actualPasswordInfo.password)
+            assertEquals(expectedPassword.notes, actualPasswordInfo.notes)
           }
     }
   }

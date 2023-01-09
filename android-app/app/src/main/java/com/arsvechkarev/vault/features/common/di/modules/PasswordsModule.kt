@@ -1,12 +1,12 @@
 package com.arsvechkarev.vault.features.common.di.modules
 
+import buisnesslogic.EntriesStorageImpl
 import buisnesslogic.IdGeneratorImpl
 import buisnesslogic.MasterPasswordChecker
 import buisnesslogic.MasterPasswordCheckerImpl
 import buisnesslogic.PasswordCharacteristicsProvider
 import buisnesslogic.PasswordCharacteristicsProviderImpl
 import buisnesslogic.PasswordInfoChecker
-import buisnesslogic.PasswordsStorageImpl
 import buisnesslogic.ZxcvbnPasswordInfoChecker
 import buisnesslogic.generator.NumbersGenerator
 import buisnesslogic.generator.PasswordGenerator
@@ -14,8 +14,8 @@ import buisnesslogic.generator.PasswordGeneratorImpl
 import buisnesslogic.generator.SecureRandomGenerator
 import buisnesslogic.generator.SpecialSymbolsGenerator
 import buisnesslogic.generator.UppercaseSymbolsGenerator
-import com.arsvechkarev.vault.features.common.data.storage.CachedPasswordsStorage
-import com.arsvechkarev.vault.features.common.data.storage.ListenableCachedPasswordsStorage
+import com.arsvechkarev.vault.features.common.data.storage.CachedEntriesStorage
+import com.arsvechkarev.vault.features.common.data.storage.ListenableCachedEntriesStorage
 import com.arsvechkarev.vault.features.common.domain.MasterPasswordProvider
 import com.arsvechkarev.vault.features.common.domain.MasterPasswordProviderImpl
 import com.nulabinc.zxcvbn.Zxcvbn
@@ -26,7 +26,7 @@ interface PasswordsModule {
   val passwordCharacteristicsProvider: PasswordCharacteristicsProvider
   val masterPasswordChecker: MasterPasswordChecker
   val masterPasswordProvider: MasterPasswordProvider
-  val listenableCachedPasswordsStorage: ListenableCachedPasswordsStorage
+  val listenableCachedEntriesStorage: ListenableCachedEntriesStorage
 }
 
 class PasswordsModuleImpl(
@@ -50,9 +50,9 @@ class PasswordsModuleImpl(
   override val masterPasswordChecker =
       MasterPasswordCheckerImpl(cryptographyModule.cryptography, ioModule.fileSaver)
   
-  override val listenableCachedPasswordsStorage = ListenableCachedPasswordsStorage(
-    CachedPasswordsStorage(
-      storage = PasswordsStorageImpl(
+  override val listenableCachedEntriesStorage = ListenableCachedEntriesStorage(
+    CachedEntriesStorage(
+      storage = EntriesStorageImpl(
         cryptographyModule.cryptography,
         ioModule.fileSaver,
         coreModule.gson,

@@ -153,7 +153,7 @@ class CreatingPasswordScreen : BaseFragmentScreen() {
       TextView(MatchParent, WrapContent, style = Button()) {
         layoutGravity(CENTER or BOTTOM)
         margin(MarginNormal)
-        text(R.string.text_save_password)
+        text(R.string.text_save)
         onClick { store.tryDispatch(OnSavePasswordClicked) }
       }
       InfoDialog()

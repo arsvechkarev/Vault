@@ -35,9 +35,9 @@ object KMainListScreen : BaseScreen<KMainListScreen>() {
   
   class EmptyItem(parent: Matcher<View>) : KRecyclerItem<EmptyItem>(parent) {
     val image = KImageView(parent) { withDrawable(R.drawable.ic_lists) }
-    val title = KTextView(parent) { withText("No passwords saved") }
+    val title = KTextView(parent) { withText("No entries yet") }
     val message = KTextView(parent) {
-      withText("Click on the + button below to create new password")
+      withText("Click on the + button below to create new entry")
     }
   }
 }

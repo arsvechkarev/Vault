@@ -6,6 +6,10 @@ class TestFileSaver : FileSaver {
   
   private var data: ByteArray? = null
   
+  override fun doesFileExist(): Boolean {
+    return data != null
+  }
+  
   override suspend fun saveData(data: ByteArray) {
     this.data = data
   }

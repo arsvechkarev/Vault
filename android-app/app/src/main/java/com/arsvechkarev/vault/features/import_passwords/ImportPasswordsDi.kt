@@ -15,7 +15,7 @@ fun ImportPasswordsStore(
         coreComponent.externalFileReader,
         coreComponent.cryptography,
         coreComponent.fileSaver,
-        coreComponent.listenableCachedPasswordsStorage,
+        coreComponent.listenableCachedEntriesStorage,
       ),
       ImportPasswordsRouterActor(coreComponent.router),
     ),

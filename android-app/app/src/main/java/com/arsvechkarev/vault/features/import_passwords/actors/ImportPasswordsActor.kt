@@ -5,7 +5,7 @@ import buisnesslogic.FileSaver
 import buisnesslogic.MasterPasswordHolder
 import com.arsvechkarev.vault.core.mvi.tea.Actor
 import com.arsvechkarev.vault.features.common.data.ExternalFileReader
-import com.arsvechkarev.vault.features.common.data.storage.ListenableCachedPasswordsStorage
+import com.arsvechkarev.vault.features.common.data.storage.ListenableCachedEntriesStorage
 import com.arsvechkarev.vault.features.import_passwords.ImportPasswordsCommand
 import com.arsvechkarev.vault.features.import_passwords.ImportPasswordsCommand.TryImportPasswords
 import com.arsvechkarev.vault.features.import_passwords.ImportPasswordsEvent
@@ -20,7 +20,7 @@ class ImportPasswordsActor(
   private val externalFileReader: ExternalFileReader,
   private val cryptography: Cryptography,
   private val fileSaver: FileSaver,
-  private val storage: ListenableCachedPasswordsStorage,
+  private val storage: ListenableCachedEntriesStorage,
 ) : Actor<ImportPasswordsCommand, ImportPasswordsEvent> {
   
   override fun handle(commands: Flow<ImportPasswordsCommand>): Flow<ImportPasswordsEvent> {
@@ -40,7 +40,7 @@ class ImportPasswordsActor(
     
             // Decryption is successful, trying to parse passwords to
             // make sure format is valid
-            storage.getPasswords(command.password)
+            storage.getEntries(command.password)
           }.onSuccess {
             storage.notifySubscribers(command.password, reloadData = true)
             MasterPasswordHolder.setMasterPassword(command.password)

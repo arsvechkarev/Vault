@@ -41,7 +41,7 @@ object KCreatingPasswordScreen : BaseScreen<KCreatingPasswordScreen>() {
   val checkmarkUppercaseSymbols = KCheckmarkAndTextView { withId(R.string.text_uppercase_symbols) }
   val checkmarkNumbers = KCheckmarkAndTextView { withId(R.string.text_numbers) }
   val buttonGeneratePassword = KTextView { withText("Generate password") }
-  val buttonSavePassword = KTextView { withText("Save password") }
+  val buttonSavePassword = KTextView { withText("Save") }
   val checkmarkSpecialSymbols = KCheckmarkAndTextView { withId(R.string.text_special_symbols) }
   val confirmationDialog = KInfoDialog(parentId = CreatingPasswordScreenRoot)
 }

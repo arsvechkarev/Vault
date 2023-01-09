@@ -3,20 +3,23 @@ package com.arsvechkarev.vault.features.main_list
 import com.arsvechkarev.vault.core.mvi.tea.TeaStore
 import com.arsvechkarev.vault.core.mvi.tea.TeaStoreImpl
 import com.arsvechkarev.vault.features.common.di.CoreComponent
-import com.arsvechkarev.vault.features.main_list.actors.ListeningServicesChangesActor
+import com.arsvechkarev.vault.features.main_list.actors.ListeningEntriesChangesActor
 import com.arsvechkarev.vault.features.main_list.actors.LoadMainDataActor
 import com.arsvechkarev.vault.features.main_list.actors.MainListRouterActor
+import com.arsvechkarev.vault.features.main_list.domain.EntriesMapper
 
 fun MainListStore(
   coreComponent: CoreComponent
 ): TeaStore<MainListState, MainListUiEvent, Nothing> {
+  val entriesMapper = EntriesMapper()
   return TeaStoreImpl(
     actors = listOf(
       LoadMainDataActor(
-        coreComponent.listenableCachedPasswordsStorage,
-        coreComponent.masterPasswordProvider
+        coreComponent.listenableCachedEntriesStorage,
+        coreComponent.masterPasswordProvider,
+        entriesMapper
       ),
-      ListeningServicesChangesActor(coreComponent.listenableCachedPasswordsStorage),
+      ListeningEntriesChangesActor(coreComponent.listenableCachedEntriesStorage, entriesMapper),
       MainListRouterActor(coreComponent.router),
     ),
     reducer = MainListReducer(),

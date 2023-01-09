@@ -1,24 +1,24 @@
 package com.arsvechkarev.vault.test.screens
 
-import com.arsvechkarev.vault.features.info.InfoScreen
-import com.arsvechkarev.vault.features.info.InfoScreen.Companion.ButtonCopyPassword
-import com.arsvechkarev.vault.features.info.InfoScreen.Companion.ButtonEditPassword
-import com.arsvechkarev.vault.features.info.InfoScreen.Companion.ButtonLoginAction
-import com.arsvechkarev.vault.features.info.InfoScreen.Companion.ButtonNotesAction
-import com.arsvechkarev.vault.features.info.InfoScreen.Companion.ButtonWebsiteNameAction
-import com.arsvechkarev.vault.features.info.InfoScreen.Companion.EditTextLogin
-import com.arsvechkarev.vault.features.info.InfoScreen.Companion.EditTextNotes
-import com.arsvechkarev.vault.features.info.InfoScreen.Companion.EditTextWebsiteName
-import com.arsvechkarev.vault.features.info.InfoScreen.Companion.IconBack
-import com.arsvechkarev.vault.features.info.InfoScreen.Companion.IconDelete
-import com.arsvechkarev.vault.features.info.InfoScreen.Companion.ImageWebsite
-import com.arsvechkarev.vault.features.info.InfoScreen.Companion.InfoScreenRoot
-import com.arsvechkarev.vault.features.info.InfoScreen.Companion.TextHiddenPassword
-import com.arsvechkarev.vault.features.info.InfoScreen.Companion.TextWebsiteName
-import com.arsvechkarev.vault.features.info.InfoScreen.Companion.TitleLogin
-import com.arsvechkarev.vault.features.info.InfoScreen.Companion.TitleNotes
-import com.arsvechkarev.vault.features.info.InfoScreen.Companion.TitlePassword
-import com.arsvechkarev.vault.features.info.InfoScreen.Companion.TitleWebsiteName
+import com.arsvechkarev.vault.features.password_info.PasswordInfoScreen
+import com.arsvechkarev.vault.features.password_info.PasswordInfoScreen.Companion.ButtonCopyPassword
+import com.arsvechkarev.vault.features.password_info.PasswordInfoScreen.Companion.ButtonEditPassword
+import com.arsvechkarev.vault.features.password_info.PasswordInfoScreen.Companion.ButtonLoginAction
+import com.arsvechkarev.vault.features.password_info.PasswordInfoScreen.Companion.ButtonNotesAction
+import com.arsvechkarev.vault.features.password_info.PasswordInfoScreen.Companion.ButtonWebsiteNameAction
+import com.arsvechkarev.vault.features.password_info.PasswordInfoScreen.Companion.EditTextLogin
+import com.arsvechkarev.vault.features.password_info.PasswordInfoScreen.Companion.EditTextNotes
+import com.arsvechkarev.vault.features.password_info.PasswordInfoScreen.Companion.EditTextWebsiteName
+import com.arsvechkarev.vault.features.password_info.PasswordInfoScreen.Companion.IconBack
+import com.arsvechkarev.vault.features.password_info.PasswordInfoScreen.Companion.IconDelete
+import com.arsvechkarev.vault.features.password_info.PasswordInfoScreen.Companion.ImageWebsite
+import com.arsvechkarev.vault.features.password_info.PasswordInfoScreen.Companion.InfoScreenRoot
+import com.arsvechkarev.vault.features.password_info.PasswordInfoScreen.Companion.TextHiddenPassword
+import com.arsvechkarev.vault.features.password_info.PasswordInfoScreen.Companion.TextWebsiteName
+import com.arsvechkarev.vault.features.password_info.PasswordInfoScreen.Companion.TitleLogin
+import com.arsvechkarev.vault.features.password_info.PasswordInfoScreen.Companion.TitleNotes
+import com.arsvechkarev.vault.features.password_info.PasswordInfoScreen.Companion.TitlePassword
+import com.arsvechkarev.vault.features.password_info.PasswordInfoScreen.Companion.TitleWebsiteName
 import com.arsvechkarev.vault.test.core.base.BaseScreen
 import com.arsvechkarev.vault.test.core.views.dialog.KInfoDialog
 import com.arsvechkarev.vault.test.core.views.snackbar.KSnackbar
@@ -28,7 +28,7 @@ import io.github.kakaocup.kakao.text.KTextView
 
 object KInfoScreen : BaseScreen<KInfoScreen>() {
   
-  override val viewClass = InfoScreen::class.java
+  override val viewClass = PasswordInfoScreen::class.java
   
   val iconDelete = KImageView { withId(IconDelete) }
   val iconBack = KImageView { withId(IconBack) }

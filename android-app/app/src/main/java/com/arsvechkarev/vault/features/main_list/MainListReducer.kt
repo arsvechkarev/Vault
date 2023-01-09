@@ -8,10 +8,10 @@ import com.arsvechkarev.vault.features.main_list.MainListCommand.RouterCommand.O
 import com.arsvechkarev.vault.features.main_list.MainListEvent.UpdateData
 import com.arsvechkarev.vault.features.main_list.MainListUiEvent.OnBackPressed
 import com.arsvechkarev.vault.features.main_list.MainListUiEvent.OnCloseMenuClicked
+import com.arsvechkarev.vault.features.main_list.MainListUiEvent.OnEntryItemClicked
 import com.arsvechkarev.vault.features.main_list.MainListUiEvent.OnInit
 import com.arsvechkarev.vault.features.main_list.MainListUiEvent.OnMenuItemClicked
 import com.arsvechkarev.vault.features.main_list.MainListUiEvent.OnOpenMenuClicked
-import com.arsvechkarev.vault.features.main_list.MainListUiEvent.OnPasswordItemClicked
 
 class MainListReducer : DslReducer<MainListState, MainListEvent, MainListCommand, Nothing>() {
   
@@ -30,8 +30,8 @@ class MainListReducer : DslReducer<MainListState, MainListEvent, MainListCommand
         state { copy(menuOpened = false) }
         commands(OpenMenuItem(event.item))
       }
-      is OnPasswordItemClicked -> {
-        commands(GoToInfoScreen(event.passwordInfoItem))
+      is OnEntryItemClicked -> {
+        commands(GoToInfoScreen(event.entryItem))
       }
       OnBackPressed -> {
         if (state.menuOpened) {

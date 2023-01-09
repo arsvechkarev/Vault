@@ -7,7 +7,7 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import com.arsvechkarev.vault.R
-import com.arsvechkarev.vault.core.model.PasswordInfoItem
+import com.arsvechkarev.vault.core.model.PasswordItem
 import com.arsvechkarev.vault.core.views.MaterialProgressBar
 import com.arsvechkarev.vault.features.common.setWebsiteIcon
 import com.arsvechkarev.vault.recycler.BaseListAdapter
@@ -45,12 +45,12 @@ import viewdsl.textSize
 import viewdsl.viewAs
 
 class MainListAdapter(
-  private val onItemClick: (PasswordInfoItem) -> Unit,
+  private val onItemClick: (PasswordItem) -> Unit,
 ) : BaseListAdapter() {
   
   init {
     addDelegates(
-      delegate<PasswordInfoItem> {
+      delegate<PasswordItem> {
         buildView {
           RootHorizontalLayout(MatchParent, WrapContent) {
             rippleBackground(Colors.Ripple)
@@ -96,7 +96,7 @@ class MainListAdapter(
             TextView(WrapContent, WrapContent, style = BoldTextView) {
               marginHorizontal(MarginNormal)
               textSize(TextSizes.H3)
-              text(R.string.text_no_passwords)
+              text(R.string.text_no_entries)
             }
             TextView(WrapContent, WrapContent, style = Styles.BaseTextView) {
               textSize(TextSizes.H4)

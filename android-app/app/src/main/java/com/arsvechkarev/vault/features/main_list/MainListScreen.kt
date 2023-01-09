@@ -10,10 +10,10 @@ import com.arsvechkarev.vault.core.views.menu.MenuView
 import com.arsvechkarev.vault.features.common.di.CoreComponentHolder.coreComponent
 import com.arsvechkarev.vault.features.main_list.MainListUiEvent.OnBackPressed
 import com.arsvechkarev.vault.features.main_list.MainListUiEvent.OnCloseMenuClicked
+import com.arsvechkarev.vault.features.main_list.MainListUiEvent.OnEntryItemClicked
 import com.arsvechkarev.vault.features.main_list.MainListUiEvent.OnInit
 import com.arsvechkarev.vault.features.main_list.MainListUiEvent.OnMenuItemClicked
 import com.arsvechkarev.vault.features.main_list.MainListUiEvent.OnOpenMenuClicked
-import com.arsvechkarev.vault.features.main_list.MainListUiEvent.OnPasswordItemClicked
 import com.arsvechkarev.vault.features.main_list.MenuItemType.EXPORT_PASSWORDS
 import com.arsvechkarev.vault.features.main_list.MenuItemType.IMPORT_PASSWORDS
 import com.arsvechkarev.vault.features.main_list.MenuItemType.NEW_PASSWORD
@@ -80,7 +80,7 @@ class MainListScreen : BaseFragmentScreen() {
   
   private val adapter by lazy {
     MainListAdapter(
-      onItemClick = { item -> store.tryDispatch(OnPasswordItemClicked(item)) },
+      onItemClick = { item -> store.tryDispatch(OnEntryItemClicked(item)) },
     )
   }
   
@@ -96,7 +96,7 @@ class MainListScreen : BaseFragmentScreen() {
       viewAs<MenuView>().closeMenu()
     }
     adapter.submitList(state.data.getItems(
-      successItems = { it },
+      successItems = { it.passwordsItems },
       loadingItems = { listOf(Loading) },
       emptyItems = { listOf(Empty) }
     ))

@@ -1,17 +1,17 @@
 package com.arsvechkarev.vault.features.common
 
 import com.arsvechkarev.vault.core.extensions.bundleOf
-import com.arsvechkarev.vault.core.model.PasswordInfoItem
+import com.arsvechkarev.vault.core.model.PasswordItem
 import com.arsvechkarev.vault.features.change_master_password.ChangeMasterPasswordScreen
-import com.arsvechkarev.vault.features.creating_entry.CreatingEntryScreen
 import com.arsvechkarev.vault.features.creating_master_password.CreatingMasterPasswordScreen
 import com.arsvechkarev.vault.features.creating_password.CreatingPasswordScreen
+import com.arsvechkarev.vault.features.creating_password_entry.CreatingPasswordEntryScreen
 import com.arsvechkarev.vault.features.export_passwords.ExportPasswordsScreen
 import com.arsvechkarev.vault.features.import_passwords.ImportPasswordsScreen
-import com.arsvechkarev.vault.features.info.InfoScreen
 import com.arsvechkarev.vault.features.initial.InitialScreen
 import com.arsvechkarev.vault.features.login.LoginScreen
 import com.arsvechkarev.vault.features.main_list.MainListScreen
+import com.arsvechkarev.vault.features.password_info.PasswordInfoScreen
 import com.arsvechkarev.vault.features.settings.SettingsScreen
 import navigation.Screen
 import navigation.ScreenInfo
@@ -26,11 +26,11 @@ object Screens {
   
   val MainListScreen = Screen { MainListScreen::class }
   
-  val CreatingEntryScreen = Screen { CreatingEntryScreen::class }
+  val CreatingPasswordEntryScreen = Screen { CreatingPasswordEntryScreen::class }
   
-  fun InfoScreen(passwordInfoItem: PasswordInfoItem): ScreenInfo {
-    val pair = PasswordInfoItem::class.qualifiedName!! to passwordInfoItem
-    return Screen(arguments = bundleOf(pair)) { InfoScreen::class }
+  fun PasswordInfoScreen(passwordItem: PasswordItem): ScreenInfo {
+    val pair = PasswordItem::class.qualifiedName!! to passwordItem
+    return Screen(arguments = bundleOf(pair)) { PasswordInfoScreen::class }
   }
   
   val CreatingPasswordScreen = Screen { CreatingPasswordScreen::class }

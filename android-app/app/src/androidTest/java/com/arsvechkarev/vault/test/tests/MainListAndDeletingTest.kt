@@ -67,10 +67,8 @@ class MainListAndDeletingTest : VaultTestCase() {
         recycler {
           hasSize(1)
           firstChild<PasswordItem> {
-            continuously {
-              text.hasText("test.com")
-              icon.hasDrawable(LetterInCircleDrawable("t"))
-            }
+            text.hasText("test.com")
+            icon.hasDrawable(LetterInCircleDrawable("t"))
           }
         }
         recycler.emptyFirstChild { click() }

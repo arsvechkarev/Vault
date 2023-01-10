@@ -74,7 +74,7 @@ class MainListScreen : BaseFragmentScreen() {
         text(R.string.app_name)
         layoutGravity(CENTER_HORIZONTAL)
       }
-      val menu = child<MenuView>(MatchParent, MatchParent) {
+      child<MenuView>(MatchParent, MatchParent) {
         classNameTag()
         val menuItemModel: (Int, Int, MenuItemType) -> MenuItemModel = { iconRes, titleRes, itemType ->
           MenuItemModel(iconRes, titleRes) { store.tryDispatch(OnMenuItemClicked(itemType)) }

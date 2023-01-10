@@ -57,6 +57,7 @@ class ValidatingFileStructureTest : TestCase() {
             open()
             newPasswordMenuItem.click()
           }
+          entryTypeDialog.passwordEntry.click()
           KCreatingPasswordEntryScreen {
             editTextWebsiteName.replaceText("google")
             editTextLogin.replaceText("me@gmail.com")
@@ -74,6 +75,7 @@ class ValidatingFileStructureTest : TestCase() {
             open()
             newPasswordMenuItem.click()
           }
+          entryTypeDialog.passwordEntry.click()
           KCreatingPasswordEntryScreen {
             editTextWebsiteName.replaceText("test.com")
             editTextLogin.replaceText("abcd")

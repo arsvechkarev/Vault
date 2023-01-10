@@ -4,10 +4,12 @@ import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import com.arsvechkarev.vault.R
 import com.arsvechkarev.vault.features.main_list.MainListScreen
+import com.arsvechkarev.vault.features.main_list.MainListScreen.Companion.ChooseEntryTypeBottomSheet
 import com.arsvechkarev.vault.features.main_list.recycler.MainListAdapter.Companion.ItemPasswordInfoImage
 import com.arsvechkarev.vault.features.main_list.recycler.MainListAdapter.Companion.ItemPasswordInfoTextPasswordName
 import com.arsvechkarev.vault.test.core.base.BaseScreen
 import com.arsvechkarev.vault.test.core.ext.withClassNameTag
+import com.arsvechkarev.vault.test.core.views.dialog.KEntryTypeDialog
 import com.arsvechkarev.vault.test.core.views.menu.KMenuView
 import io.github.kakaocup.kakao.image.KImageView
 import io.github.kakaocup.kakao.recycler.KRecyclerItem
@@ -20,6 +22,8 @@ object KMainListScreen : BaseScreen<KMainListScreen>() {
   override val viewClass = MainListScreen::class.java
   
   val menu = KMenuView()
+  
+  val entryTypeDialog = KEntryTypeDialog(ChooseEntryTypeBottomSheet)
   
   val recycler = KRecyclerView(
     builder = { withClassNameTag<RecyclerView>() },

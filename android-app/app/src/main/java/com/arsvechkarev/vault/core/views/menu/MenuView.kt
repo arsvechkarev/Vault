@@ -3,25 +3,31 @@ package com.arsvechkarev.vault.core.views.menu
 import android.content.Context
 import android.graphics.Color
 import android.view.Gravity
+import android.view.MotionEvent
 import android.view.View
+import android.view.ViewConfiguration
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.FrameLayout
-import androidx.annotation.VisibleForTesting
 import androidx.core.graphics.ColorUtils
 import com.arsvechkarev.vault.viewbuilding.Colors
 import viewdsl.addView
+import kotlin.math.abs
+import kotlin.math.hypot
 
 class MenuView(context: Context) : FrameLayout(context) {
   
-  @VisibleForTesting
+  private var touchedOutsideOfMenuContent = false
+  private var latestY = 0f
+  private var latestX = 0f
+  
   private val menu get() = getChildAt(1) as MenuContentView
   
   init {
+    clipChildren = false
     val shadowView = addView {
       View(context).apply {
         layoutParams = LayoutParams(MATCH_PARENT, MATCH_PARENT)
-        setOnClickListener { if (enableClicksHandling) menu.onMenuCloseClick() }
         isClickable = false
       }
     }
@@ -39,8 +45,6 @@ class MenuView(context: Context) : FrameLayout(context) {
       }
     }
   }
-  
-  var enableClicksHandling = true
   
   fun items(vararg items: MenuItemModel) {
     menu.addItems(*items)
@@ -60,5 +64,34 @@ class MenuView(context: Context) : FrameLayout(context) {
   
   fun closeMenu(animate: Boolean = true) {
     menu.closeMenu(animate)
+  }
+  
+  override fun onInterceptTouchEvent(event: MotionEvent): Boolean {
+    val eventOutsideOfContent = menu.isEventOutsideOfContent(event)
+    return menu.opened && event.action == MotionEvent.ACTION_DOWN && eventOutsideOfContent
+  }
+  
+  override fun onTouchEvent(event: MotionEvent): Boolean {
+    if (!menu.opened) {
+      return false
+    }
+    when (event.action) {
+      MotionEvent.ACTION_DOWN -> {
+        touchedOutsideOfMenuContent = menu.isEventOutsideOfContent(event)
+        latestX = event.x
+        latestY = event.y
+        return touchedOutsideOfMenuContent
+      }
+      MotionEvent.ACTION_UP -> {
+        val dx = abs(event.x - latestX)
+        val dy = abs(event.y - latestY)
+        val dst = hypot(dx, dy)
+        val scaledTouchSlop = ViewConfiguration.get(context).scaledTouchSlop
+        if (touchedOutsideOfMenuContent && dst < scaledTouchSlop && menu.opened) {
+          menu.onMenuCloseClick()
+        }
+      }
+    }
+    return super.onTouchEvent(event)
   }
 }

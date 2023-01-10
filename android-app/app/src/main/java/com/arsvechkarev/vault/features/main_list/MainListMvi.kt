@@ -12,7 +12,7 @@ sealed interface MainListUiEvent : MainListEvent {
   object OnInit : MainListUiEvent
   object OnOpenMenuClicked : MainListUiEvent
   object OnCloseMenuClicked : MainListUiEvent
-  object OnChooseEntryTypeDialogHidden : MainListUiEvent
+  object OnEntryTypeDialogHidden : MainListUiEvent
   object OnBackPressed : MainListUiEvent
   class OnListItemClicked(val item: EntryItem) : MainListUiEvent
   class OnMenuItemClicked(val itemType: MenuItemType) : MainListUiEvent

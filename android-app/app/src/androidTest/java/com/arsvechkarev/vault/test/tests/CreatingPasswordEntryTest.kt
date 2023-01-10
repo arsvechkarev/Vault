@@ -54,36 +54,40 @@ class CreatingPasswordEntryTest : VaultTestCase() {
           message.isDisplayed()
         }
       }
-      
+  
       menu {
         open()
         newPasswordMenuItem.click()
       }
   
+      entryTypeDialog.isDisplayed()
+  
+      entryTypeDialog.passwordEntry.click()
+  
       KCreatingPasswordEntryScreen {
-        iconBack {
-          isDisplayed()
-          click()
-        }
+        iconBack.click()
       }
-      
+  
       recycler.isDisplayed()
       menu.isClosed()
-      
+      entryTypeDialog.isNotDisplayed()
+  
       menu {
         open()
         newPasswordMenuItem.click()
       }
+  
+      entryTypeDialog.passwordEntry.click()
   
       KCreatingPasswordEntryScreen {
         title.isDisplayed()
         textWebsiteName.hasText("Website name")
         textLogin.hasText("Login")
         buttonContinue.isDisplayed()
-  
+    
         closeSoftKeyboard()
         buttonContinue.click()
-  
+    
         textWebsiteName {
           hasTextColorInt(Colors.Error)
           hasText("Website name cannot be empty")
@@ -116,7 +120,7 @@ class CreatingPasswordEntryTest : VaultTestCase() {
         KCreatingPasswordScreen {
           iconCross.click()
         }
-  
+    
         currentScreenIs(CreatingPasswordEntryScreen::class)
         
         buttonContinue.click()
@@ -259,10 +263,8 @@ class CreatingPasswordEntryTest : VaultTestCase() {
         isDisplayed()
         hasSize(1)
         firstChild<PasswordItem> {
-          continuously {
-            text.hasText("test.com")
-            icon.hasDrawable(LetterInCircleDrawable("t"))
-          }
+          text.hasText("test.com")
+          icon.hasDrawable(LetterInCircleDrawable("t"))
         }
       }
     }

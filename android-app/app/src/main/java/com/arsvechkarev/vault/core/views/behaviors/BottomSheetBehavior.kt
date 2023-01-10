@@ -17,6 +17,7 @@ import com.arsvechkarev.vault.core.views.behaviors.BottomSheetBehavior.State.HID
 import com.arsvechkarev.vault.core.views.behaviors.BottomSheetBehavior.State.SHOWN
 import com.arsvechkarev.vault.core.views.behaviors.BottomSheetBehavior.State.SLIDING
 import viewdsl.ViewDslConfiguration.applicationContext
+import viewdsl.cancelIfRunning
 import viewdsl.doOnEnd
 import viewdsl.getBehavior
 import kotlin.math.abs
@@ -54,8 +55,9 @@ class BottomSheetBehavior : CoordinatorLayout.Behavior<View>() {
   
   fun show() {
     bottomSheet?.post {
-      if (currentState == SHOWN || slideAnimator.isRunning) return@post
+      if (currentState == SHOWN) return@post
       currentState = SLIDING
+      slideAnimator.cancelIfRunning()
       slideAnimator.duration = DURATION_SLIDE
       slideAnimator.setIntValues(bottomSheet!!.top, parentHeight - slideRange)
       slideAnimator.doOnEnd(onShow)
@@ -66,8 +68,9 @@ class BottomSheetBehavior : CoordinatorLayout.Behavior<View>() {
   
   fun hide() {
     bottomSheet?.post {
-      if (currentState == HIDDEN || slideAnimator.isRunning) return@post
+      if (currentState == HIDDEN) return@post
       currentState = SLIDING
+      slideAnimator.cancelIfRunning()
       slideAnimator.duration = DURATION_SLIDE
       slideAnimator.setIntValues(bottomSheet!!.top, parentHeight)
       slideAnimator.doOnEnd(onHide)
@@ -77,6 +80,10 @@ class BottomSheetBehavior : CoordinatorLayout.Behavior<View>() {
   }
   
   override fun onLayoutChild(parent: CoordinatorLayout, child: View, layoutDirection: Int): Boolean {
+    // Should be made clickable because if it isn't, user will be able to click
+    // through bottomSheet in opened state, therefore clicking on elements, that
+    // he didn't expect to click on
+    child.isClickable = true
     child.layout(0, parent.height - child.measuredHeight, parent.width, parent.height)
     bottomSheet = child
     slideRange = child.height
@@ -136,7 +143,9 @@ class BottomSheetBehavior : CoordinatorLayout.Behavior<View>() {
         onPointerUp(event)
       }
       ACTION_CANCEL, ACTION_UP -> {
-        handleUpEvent(parent, child, event)
+        if (handleUpEvent(parent, child, event)) {
+          return true
+        }
       }
     }
     velocityTracker?.addMovement(event)
@@ -204,9 +213,9 @@ class BottomSheetBehavior : CoordinatorLayout.Behavior<View>() {
     }
   }
   
-  private fun handleUpEvent(parent: CoordinatorLayout, child: View, event: MotionEvent) {
+  private fun handleUpEvent(parent: CoordinatorLayout, child: View, event: MotionEvent): Boolean {
     if (handleOutsideEvent(parent, child, event)) {
-      return
+      return true
     }
     velocityTracker?.addMovement(event)
     velocityTracker?.computeCurrentVelocity(1000)
@@ -218,7 +227,7 @@ class BottomSheetBehavior : CoordinatorLayout.Behavior<View>() {
       slideAnimator.setIntValues(bottomSheet!!.top, parentHeight)
       slideAnimator.doOnEnd(onHide)
       slideAnimator.start()
-    } else {
+    } else if (isBeingDragged) {
       val middlePoint = parentHeight - slideRange * 0.65
       val endY = if (bottomSheet!!.top < middlePoint) {
         currentState = SHOWN
@@ -232,8 +241,10 @@ class BottomSheetBehavior : CoordinatorLayout.Behavior<View>() {
       slideAnimator.setIntValues(bottomSheet!!.top, endY)
       slideAnimator.duration = DURATION_SLIDE
       slideAnimator.start()
+      return true
     }
     endTouch()
+    return false
   }
   
   private fun handleOutsideEvent(

@@ -43,11 +43,11 @@ class MenuContentView(context: Context) : ViewGroup(context) {
   private val backgroundPaint = Paint(Colors.Dialog)
   private var latestY = 0f
   private var latestX = 0f
-  private var wasDownEventInView = false
+  private var wasDownEventInOpenCloseView = false
   private var maxItemWidth = 0
   private var maxItemHeight = 0
-  private val path = Path()
   private var animCoefficient = 0f
+  private val path = Path()
   
   private val coefficientAnimator = ValueAnimator().apply {
     duration = Durations.MenuOpening
@@ -138,6 +138,18 @@ class MenuContentView(context: Context) : ViewGroup(context) {
     addView(menuItemView(items[3]))
   }
   
+  fun isEventOutsideOfContent(event: MotionEvent): Boolean {
+    val x = event.x - left
+    val y = event.y - top
+    val insideOfOpenCloseView =
+        x >= openCloseView.left + openCloseView.translationX
+            && y >= openCloseView.top + openCloseView.translationY
+            && x <= openCloseView.right + openCloseView.translationX
+            && y <= openCloseView.bottom + openCloseView.translationY
+    val insideOfContentRectangle = opened && x > 0 && y > (crossOpenedSize + crossOpenedPadding)
+    return !insideOfOpenCloseView && !insideOfContentRectangle
+  }
+  
   override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
     openCloseView.measure(exactly(crossBaseSize), exactly(crossBaseSize))
     children.forEach { child ->
@@ -200,13 +212,12 @@ class MenuContentView(context: Context) : ViewGroup(context) {
   }
   
   override fun onTouchEvent(event: MotionEvent): Boolean {
-    val touchEvent = super.onTouchEvent(event)
     if (!opened && event !in openCloseView) {
       return false
     }
     when (event.action) {
       ACTION_DOWN -> {
-        wasDownEventInView = event in openCloseView
+        wasDownEventInOpenCloseView = event in openCloseView
         latestX = event.x
         latestY = event.y
         return true
@@ -216,13 +227,12 @@ class MenuContentView(context: Context) : ViewGroup(context) {
         val dy = abs(event.y - latestY)
         val dst = hypot(dx, dy)
         val scaledTouchSlop = ViewConfiguration.get(context).scaledTouchSlop
-        if (wasDownEventInView && dst < scaledTouchSlop) {
-          wasDownEventInView = false
+        if (wasDownEventInOpenCloseView && dst < scaledTouchSlop) {
           if (opened) onMenuCloseClick() else onMenuOpenClick()
         }
       }
     }
-    return touchEvent
+    return super.onTouchEvent(event)
   }
   
   private fun measurePortrait(widthMeasureSpec: Int, heightMeasureSpec: Int) {

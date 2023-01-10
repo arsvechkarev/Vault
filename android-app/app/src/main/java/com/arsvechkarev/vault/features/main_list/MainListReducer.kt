@@ -7,8 +7,8 @@ import com.arsvechkarev.vault.features.main_list.MainListCommand.RouterCommand.G
 import com.arsvechkarev.vault.features.main_list.MainListCommand.RouterCommand.OpenScreen
 import com.arsvechkarev.vault.features.main_list.MainListEvent.UpdateData
 import com.arsvechkarev.vault.features.main_list.MainListUiEvent.OnBackPressed
-import com.arsvechkarev.vault.features.main_list.MainListUiEvent.OnChooseEntryTypeDialogHidden
 import com.arsvechkarev.vault.features.main_list.MainListUiEvent.OnCloseMenuClicked
+import com.arsvechkarev.vault.features.main_list.MainListUiEvent.OnEntryTypeDialogHidden
 import com.arsvechkarev.vault.features.main_list.MainListUiEvent.OnEntryTypeSelected
 import com.arsvechkarev.vault.features.main_list.MainListUiEvent.OnInit
 import com.arsvechkarev.vault.features.main_list.MainListUiEvent.OnListItemClicked
@@ -54,7 +54,7 @@ class MainListReducer : DslReducer<MainListState, MainListEvent, MainListCommand
         }
         commands(OpenScreen(screenType))
       }
-      OnChooseEntryTypeDialogHidden -> {
+      OnEntryTypeDialogHidden -> {
         state { copy(showEntryTypeDialog = false) }
       }
       OnBackPressed -> {

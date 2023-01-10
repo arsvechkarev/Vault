@@ -15,8 +15,8 @@ import com.arsvechkarev.vault.core.views.menu.MenuItemModel
 import com.arsvechkarev.vault.core.views.menu.MenuView
 import com.arsvechkarev.vault.features.common.di.CoreComponentHolder.coreComponent
 import com.arsvechkarev.vault.features.main_list.MainListUiEvent.OnBackPressed
-import com.arsvechkarev.vault.features.main_list.MainListUiEvent.OnChooseEntryTypeDialogHidden
 import com.arsvechkarev.vault.features.main_list.MainListUiEvent.OnCloseMenuClicked
+import com.arsvechkarev.vault.features.main_list.MainListUiEvent.OnEntryTypeDialogHidden
 import com.arsvechkarev.vault.features.main_list.MainListUiEvent.OnEntryTypeSelected
 import com.arsvechkarev.vault.features.main_list.MainListUiEvent.OnInit
 import com.arsvechkarev.vault.features.main_list.MainListUiEvent.OnListItemClicked
@@ -93,13 +93,7 @@ class MainListScreen : BaseFragmentScreen() {
         id(ChooseEntryTypeBottomSheet)
         backgroundTopRoundRect(MarginNormal, Colors.Dialog)
         behavior(BottomSheetBehavior().apply {
-          onShow = {
-            menu.enableClicksHandling = false
-          }
-          onHide = {
-            menu.enableClicksHandling = true
-            store.tryDispatch(OnChooseEntryTypeDialogHidden)
-          }
+          onHide = { store.tryDispatch(OnEntryTypeDialogHidden) }
           onSlidePercentageChanged = { fraction ->
             val color = ColorUtils.blendARGB(Color.TRANSPARENT, Colors.Shadow, fraction)
             shadowLayout.setBackgroundColor(color)
@@ -107,6 +101,7 @@ class MainListScreen : BaseFragmentScreen() {
         })
         TextView(WrapContent, WrapContent, style = BoldTextView) {
           text(R.string.text_choose_entry_type)
+          isClickable = true
           textSize(TextSizes.H2)
           margins(start = MarginNormal, top = MarginNormal, bottom = MarginLarge)
         }

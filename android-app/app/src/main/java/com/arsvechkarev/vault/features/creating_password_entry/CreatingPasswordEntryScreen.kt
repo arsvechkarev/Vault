@@ -4,7 +4,6 @@ import android.content.Context
 import android.view.Gravity.CENTER
 import android.view.Gravity.CENTER_VERTICAL
 import android.view.View
-import android.view.WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE
 import androidx.annotation.StringRes
 import com.arsvechkarev.vault.R
 import com.arsvechkarev.vault.core.mvi.ext.subscribe
@@ -40,7 +39,6 @@ import viewdsl.onClick
 import viewdsl.onLayoutChanged
 import viewdsl.onSubmit
 import viewdsl.onTextChanged
-import viewdsl.setSoftInputMode
 import viewdsl.showKeyboard
 import viewdsl.text
 import viewdsl.textColor
@@ -79,7 +77,7 @@ class CreatingPasswordEntryScreen : BaseFragmentScreen() {
         }
         margins(top = GradientDrawableHeight)
         TextView(WrapContent, WrapContent, style = AccentTextView) {
-          id(TextWebsiteName)
+          id(TitleWebsiteName)
           margins(start = MarginNormal)
           text(R.string.text_website_name)
         }
@@ -91,7 +89,7 @@ class CreatingPasswordEntryScreen : BaseFragmentScreen() {
           onSubmit { editText(EditTextLogin).requestFocus() }
         }
         TextView(WrapContent, WrapContent, style = AccentTextView) {
-          id(TextLogin)
+          id(TitleLogin)
           text(R.string.text_login)
           margins(start = MarginNormal, top = MarginLarge)
         }
@@ -131,14 +129,14 @@ class CreatingPasswordEntryScreen : BaseFragmentScreen() {
   
   private fun render(state: CreatingPasswordEntryState) {
     if (state.websiteNameEmpty) {
-      showAccentTextViewError(TextWebsiteName, R.string.text_website_name_cant_be_empty)
+      showAccentTextViewError(TitleWebsiteName, R.string.text_website_name_cant_be_empty)
     } else {
-      showAccentTextViewDefault(TextWebsiteName, R.string.text_website_name)
+      showAccentTextViewDefault(TitleWebsiteName, R.string.text_website_name)
     }
     if (state.loginEmpty) {
-      showAccentTextViewError(TextLogin, R.string.text_login_cant_be_empty)
+      showAccentTextViewError(TitleLogin, R.string.text_login_cant_be_empty)
     } else {
-      showAccentTextViewDefault(TextLogin, R.string.text_login)
+      showAccentTextViewDefault(TitleLogin, R.string.text_login)
     }
   }
   
@@ -146,7 +144,6 @@ class CreatingPasswordEntryScreen : BaseFragmentScreen() {
     editText(EditTextWebsiteName).clearFocus()
     editText(EditTextLogin).clearFocus()
     requireContext().hideKeyboard()
-    requireContext().setSoftInputMode(SOFT_INPUT_ADJUST_RESIZE)
   }
   
   private fun showOrHideViewsBasedOnLayout() {
@@ -183,9 +180,9 @@ class CreatingPasswordEntryScreen : BaseFragmentScreen() {
     
     val Toolbar = View.generateViewId()
     val EditTextLayouts = View.generateViewId()
-    val TextWebsiteName = View.generateViewId()
+    val TitleWebsiteName = View.generateViewId()
     val EditTextWebsiteName = View.generateViewId()
-    val TextLogin = View.generateViewId()
+    val TitleLogin = View.generateViewId()
     val EditTextLogin = View.generateViewId()
     val ButtonContinue = View.generateViewId()
   }

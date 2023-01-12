@@ -7,17 +7,17 @@ import com.arsvechkarev.vault.features.creating_password.CreatingPasswordReceive
 import com.arsvechkarev.vault.features.creating_password.CreatingPasswordReceiveEvent.Setup
 import com.arsvechkarev.vault.features.creating_password.CreatingPasswordReceiveEvent.Setup.PasswordConfigurationMode.EditPassword
 import com.arsvechkarev.vault.features.creating_password.CreatingPasswordSendEvent
-import com.arsvechkarev.vault.features.password_info.InfoScreenCommand
-import com.arsvechkarev.vault.features.password_info.InfoScreenCommand.OpenEditPasswordScreen
+import com.arsvechkarev.vault.features.password_info.PasswordInfoScreenCommand
+import com.arsvechkarev.vault.features.password_info.PasswordInfoScreenCommand.OpenEditPasswordScreen
 import com.arsvechkarev.vault.features.password_info.PasswordInfoScreenEvent
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.filterIsInstance
 
 class OpenEditPasswordScreenActor(
   private val communicatorHolder: CommunicatorHolder<CreatingPasswordReceiveEvent, CreatingPasswordSendEvent>
-) : Actor<InfoScreenCommand, PasswordInfoScreenEvent> {
+) : Actor<PasswordInfoScreenCommand, PasswordInfoScreenEvent> {
   
-  override fun handle(commands: Flow<InfoScreenCommand>): Flow<PasswordInfoScreenEvent> {
+  override fun handle(commands: Flow<PasswordInfoScreenCommand>): Flow<PasswordInfoScreenEvent> {
     return commands.filterIsInstance<OpenEditPasswordScreen>()
         .emptyMap { communicatorHolder.communicator.input.emit(Setup(EditPassword(it.password))) }
   }

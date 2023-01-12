@@ -101,6 +101,13 @@ class ViewBuilder(val context: Context) {
   ) = ConstraintLayout(context).size(width, height).apply(defaultRootStyle).apply(style)
       .apply(block)
   
+  fun Any.RootTextView(
+    width: Size,
+    height: Size,
+    style: Style<TextView> = {},
+    block: Style<TextView> = {}
+  ) = TextView(context).size(width, height).apply(style).apply(block)
+  
   inline fun <reified T : View> FrameLayout.child(
     width: Size, height: Size, style: T.() -> Unit = {}, block: T.() -> Unit = {},
   ) = child<T, FrameLayoutParams>(width, height, style, block)

@@ -8,19 +8,19 @@ abstract class DslReducer<State : Any, Event : Any, Command : Any, News : Any>
   private var _commands: List<Command> = emptyList()
   private var _news: List<News> = emptyList()
   
-  protected val state: State get() = checkNotNull(_state)
+  val state: State get() = checkNotNull(_state)
   
-  protected abstract fun dslReduce(event: Event)
+  abstract fun dslReduce(event: Event)
   
-  protected fun state(supplier: State.() -> State) {
+  fun state(supplier: State.() -> State) {
     _state = supplier(checkNotNull(_state))
   }
   
-  protected fun commands(vararg commands: Command?) {
+  fun commands(vararg commands: Command?) {
     _commands = commands.filterNotNull()
   }
   
-  protected fun news(vararg news: News?) {
+  fun news(vararg news: News?) {
     _news = news.filterNotNull()
   }
   

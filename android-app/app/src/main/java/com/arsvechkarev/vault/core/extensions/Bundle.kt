@@ -12,6 +12,7 @@ fun bundleOf(vararg pairs: Pair<String, Any?>): Bundle {
         is Int -> putInt(pair.first, value)
         is Parcelable -> putParcelable(pair.first, value)
         is Serializable -> putSerializable(pair.first, value)
+        null -> putParcelable(pair.first, null)
         else -> throw IllegalStateException("Unknown type: $value")
       }
     }

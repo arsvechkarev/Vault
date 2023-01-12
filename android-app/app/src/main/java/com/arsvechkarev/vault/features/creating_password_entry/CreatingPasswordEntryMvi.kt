@@ -1,6 +1,6 @@
 package com.arsvechkarev.vault.features.creating_password_entry
 
-import com.arsvechkarev.vault.core.model.PasswordItem
+import com.arsvechkarev.vault.features.common.model.PasswordItem
 
 sealed interface CreatingPasswordEntryEvent {
   class PasswordEntered(val password: String) : CreatingPasswordEntryEvent
@@ -28,8 +28,6 @@ sealed interface CreatingPasswordEntryCommand {
     val login: String,
     val password: String
   ) : CreatingPasswordEntryCommand
-  
-  object NotifyPasswordEntryCreated : CreatingPasswordEntryCommand
   
   sealed interface RouterCommand : CreatingPasswordEntryCommand {
     object GoToCreatePasswordScreen : RouterCommand

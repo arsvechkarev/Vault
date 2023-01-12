@@ -35,3 +35,9 @@ fun EditText.onSubmit(block: (String) -> Unit) {
     return@setOnEditorActionListener false
   }
 }
+
+fun EditText.setTextSilently(newText: String, textWatcher: BaseTextWatcher) {
+  removeTextChangedListener(textWatcher)
+  setText(newText)
+  addTextChangedListener(textWatcher)
+}

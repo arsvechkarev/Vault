@@ -4,21 +4,21 @@ import android.content.Context
 import android.content.res.ColorStateList
 import android.view.Gravity
 import android.view.View
-import android.widget.EditText
 import android.widget.ImageView
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.arsvechkarev.vault.R
 import com.arsvechkarev.vault.core.extensions.arg
 import com.arsvechkarev.vault.core.extensions.getDeleteMessageText
-import com.arsvechkarev.vault.core.model.PasswordItem
 import com.arsvechkarev.vault.core.mvi.ext.subscribe
 import com.arsvechkarev.vault.core.mvi.ext.viewModelStore
 import com.arsvechkarev.vault.core.views.Snackbar
+import com.arsvechkarev.vault.features.common.TextState
 import com.arsvechkarev.vault.features.common.di.CoreComponentHolder.coreComponent
 import com.arsvechkarev.vault.features.common.dialogs.InfoDialog.Companion.InfoDialog
 import com.arsvechkarev.vault.features.common.dialogs.InfoDialog.Companion.infoDialog
 import com.arsvechkarev.vault.features.common.dialogs.LoadingDialog
 import com.arsvechkarev.vault.features.common.dialogs.loadingDialog
+import com.arsvechkarev.vault.features.common.model.PasswordItem
 import com.arsvechkarev.vault.features.common.setWebsiteIcon
 import com.arsvechkarev.vault.features.password_info.PasswordInfoScreen.ImageType.COPY
 import com.arsvechkarev.vault.features.password_info.PasswordInfoScreen.ImageType.OPEN_IN_NEW
@@ -55,13 +55,13 @@ import com.arsvechkarev.vault.viewbuilding.Styles
 import com.arsvechkarev.vault.viewbuilding.Styles.AccentTextView
 import com.arsvechkarev.vault.viewbuilding.Styles.BaseEditText
 import com.arsvechkarev.vault.viewbuilding.Styles.BoldTextView
+import com.arsvechkarev.vault.viewbuilding.Styles.IconBack
 import com.arsvechkarev.vault.viewbuilding.TextSizes
 import navigation.BaseFragmentScreen
 import viewdsl.BaseTextWatcher
 import viewdsl.Size.Companion.MatchParent
 import viewdsl.Size.Companion.WrapContent
 import viewdsl.Size.Companion.ZERO
-import viewdsl.backgroundColor
 import viewdsl.circleRippleBackground
 import viewdsl.classNameTag
 import viewdsl.constraints
@@ -76,6 +76,7 @@ import viewdsl.margins
 import viewdsl.onClick
 import viewdsl.padding
 import viewdsl.paddings
+import viewdsl.setTextSilently
 import viewdsl.text
 import viewdsl.textSize
 import viewdsl.withViewBuilder
@@ -103,7 +104,6 @@ class PasswordInfoScreen : BaseFragmentScreen() {
     }
     RootFrameLayout {
       id(InfoScreenRoot)
-      backgroundColor(Colors.Background)
       ScrollableConstraintLayout(MatchParent, MatchParent) {
         apply(Styles.BaseRootBackground)
         paddings(
@@ -113,8 +113,8 @@ class PasswordInfoScreen : BaseFragmentScreen() {
           bottom = MarginNormal,
         )
         clipToPadding = false
-        ImageView(WrapContent, WrapContent, style = Styles.IconBack) {
-          id(IconBack)
+        ImageView(WrapContent, WrapContent, style = IconBack) {
+          id(ImageBack)
           onClick { store.tryDispatch(OnBackPressed) }
           constraints {
             topToTopOf(parent)
@@ -122,7 +122,7 @@ class PasswordInfoScreen : BaseFragmentScreen() {
           }
         }
         ImageView(WrapContent, WrapContent) {
-          id(IconDelete)
+          id(ImageDelete)
           image(R.drawable.ic_delete)
           imageTintList = ColorStateList.valueOf(Colors.Error)
           padding(Dimens.IconPadding)
@@ -167,13 +167,14 @@ class PasswordInfoScreen : BaseFragmentScreen() {
         EditText(ZERO, WrapContent, BaseEditText(hint = R.string.hint_website_name)) {
           id(EditTextWebsiteName)
           margins(end = MarginNormal)
+          addTextChangedListener(websiteNameTextWatcher)
           constraints {
             topToBottomOf(TitleWebsiteName)
             startToStartOf(TitleWebsiteName)
-            endToStartOf(ButtonWebsiteNameAction)
+            endToStartOf(ImageWebsiteNameAction)
           }
         }
-        Image(COPY, ButtonWebsiteNameAction, OnWebsiteNameActionClicked) {
+        Image(COPY, ImageWebsiteNameAction, OnWebsiteNameActionClicked) {
           constraints {
             topToTopOf(EditTextWebsiteName)
             bottomToBottomOf(EditTextWebsiteName)
@@ -192,13 +193,14 @@ class PasswordInfoScreen : BaseFragmentScreen() {
         EditText(ZERO, WrapContent, style = BaseEditText(hint = R.string.hint_login)) {
           id(EditTextLogin)
           margins(end = MarginNormal)
+          addTextChangedListener(loginTextWatcher)
           constraints {
             topToBottomOf(TitleLogin)
             startToStartOf(TitleLogin)
-            endToStartOf(ButtonLoginAction)
+            endToStartOf(ImageLoginAction)
           }
         }
-        Image(COPY, ButtonLoginAction, OnLoginActionClicked) {
+        Image(COPY, ImageLoginAction, OnLoginActionClicked) {
           constraints {
             topToTopOf(EditTextLogin)
             bottomToBottomOf(EditTextLogin)
@@ -224,15 +226,15 @@ class PasswordInfoScreen : BaseFragmentScreen() {
             startToStartOf(parent)
           }
         }
-        Image(OPEN_IN_NEW, ButtonEditPassword, OnOpenPasswordScreenClicked) {
+        Image(OPEN_IN_NEW, ImageEditPassword, OnOpenPasswordScreenClicked) {
           margins(end = MarginMedium)
           constraints {
             topToTopOf(TextHiddenPassword)
             bottomToBottomOf(TextHiddenPassword)
-            endToStartOf(ButtonCopyPassword)
+            endToStartOf(ImageCopyPassword)
           }
         }
-        Image(COPY, ButtonCopyPassword, OnCopyPasswordClicked) {
+        Image(COPY, ImageCopyPassword, OnCopyPasswordClicked) {
           constraints {
             topToTopOf(TextHiddenPassword)
             bottomToBottomOf(TextHiddenPassword)
@@ -255,13 +257,14 @@ class PasswordInfoScreen : BaseFragmentScreen() {
           isSingleLine = false
           paddings(bottom = MarginExtraLarge)
           margins(end = MarginNormal)
+          addTextChangedListener(notesTextWatcher)
           constraints {
             topToBottomOf(TitleNotes)
             startToStartOf(TitleNotes)
-            endToStartOf(ButtonNotesAction)
+            endToStartOf(ImageNotesAction)
           }
         }
-        Image(COPY, ButtonNotesAction, OnNotesActionClicked) {
+        Image(COPY, ImageNotesAction, OnNotesActionClicked) {
           paddings(top = MarginSmall)
           constraints {
             topToTopOf(EditTextNotes)
@@ -280,7 +283,7 @@ class PasswordInfoScreen : BaseFragmentScreen() {
   }
   
   private val store by viewModelStore {
-    InfoScreenStore(coreComponent, arg(PasswordItem::class))
+    PasswordInfoScreenStore(coreComponent, arg(PasswordItem::class))
   }
   
   override fun onInit() {
@@ -297,12 +300,12 @@ class PasswordInfoScreen : BaseFragmentScreen() {
   private val notesTextWatcher =
       BaseTextWatcher { store.tryDispatch(OnNotesTextChanged(it)) }
   
-  private fun render(state: PasswordInfoScreenState) {
+  private fun render(state: PasswordInfoState) {
     imageView(ImageWebsite).setWebsiteIcon(state.websiteNameState.editedText)
     textView(TextWebsiteName).text(state.websiteNameState.editedText)
-    renderTextState(EditTextWebsiteName, state.websiteNameState, ButtonWebsiteNameAction)
-    renderTextState(EditTextLogin, state.loginState, ButtonLoginAction)
-    renderTextState(EditTextNotes, state.notesState, ButtonNotesAction)
+    renderTextState(EditTextWebsiteName, state.websiteNameState, ImageWebsiteNameAction)
+    renderTextState(EditTextLogin, state.loginState, ImageLoginAction)
+    renderTextState(EditTextNotes, state.notesState, ImageNotesAction)
     if (!state.isEditingSomething) {
       requireContext().hideKeyboard()
     }
@@ -331,9 +334,9 @@ class PasswordInfoScreen : BaseFragmentScreen() {
   }
   
   
-  private fun showInfoDialog(state: PasswordInfoScreenState) {
+  private fun showInfoDialog(state: PasswordInfoState) {
     infoDialog.showWithCancelAndProceedOption(
-      titleRes = R.string.text_deleting_password,
+      titleRes = R.string.text_deleting_entry,
       messageRes = getDeleteMessageText(state.websiteNameState.initialText),
       onCancel = { store.tryDispatch(OnDialogHidden) },
       onProceed = { store.tryDispatch(OnConfirmedDeletion) }
@@ -344,39 +347,16 @@ class PasswordInfoScreen : BaseFragmentScreen() {
     val snackbar = viewAs<Snackbar>()
     when (news) {
       is SetWebsiteName -> {
-        editText(EditTextWebsiteName).setTextSilently(news.websiteName, websiteNameTextWatcher)
+        editText(EditTextWebsiteName)
+            .setTextSilently(news.websiteName, websiteNameTextWatcher)
       }
-      
-      is SetLogin -> {
-        editText(EditTextLogin).setTextSilently(news.login, loginTextWatcher)
-      }
-  
-      is SetNotes -> {
-        editText(EditTextNotes).setTextSilently(news.notes, notesTextWatcher)
-      }
-  
-      ShowWebsiteNameCopied -> {
-        snackbar.show(R.string.text_website_name_copied)
-      }
-  
-      ShowLoginCopied -> {
-        snackbar.show(R.string.text_login_copied)
-      }
-  
-      ShowPasswordCopied -> {
-        snackbar.show(R.string.text_password_copied)
-      }
-  
-      ShowNotesCopied -> {
-        snackbar.show(R.string.text_notes_copied)
-      }
+      is SetLogin -> editText(EditTextLogin).setTextSilently(news.login, loginTextWatcher)
+      is SetNotes -> editText(EditTextNotes).setTextSilently(news.notes, notesTextWatcher)
+      ShowWebsiteNameCopied -> snackbar.show(R.string.text_website_name_copied)
+      ShowLoginCopied -> snackbar.show(R.string.text_login_copied)
+      ShowPasswordCopied -> snackbar.show(R.string.text_password_copied)
+      ShowNotesCopied -> snackbar.show(R.string.text_notes_copied)
     }
-  }
-  
-  private fun EditText.setTextSilently(newText: String, textWatcher: BaseTextWatcher) {
-    removeTextChangedListener(textWatcher)
-    setText(newText)
-    addTextChangedListener(textWatcher)
   }
   
   override fun handleBackPress(): Boolean {
@@ -391,22 +371,22 @@ class PasswordInfoScreen : BaseFragmentScreen() {
   companion object {
   
     val InfoScreenRoot = View.generateViewId()
-    val IconBack = View.generateViewId()
-    val IconDelete = View.generateViewId()
+    val ImageBack = View.generateViewId()
+    val ImageDelete = View.generateViewId()
     val ImageWebsite = View.generateViewId()
     val TextWebsiteName = View.generateViewId()
     val TitleWebsiteName = View.generateViewId()
     val EditTextWebsiteName = View.generateViewId()
-    val ButtonWebsiteNameAction = View.generateViewId()
+    val ImageWebsiteNameAction = View.generateViewId()
     val TitleLogin = View.generateViewId()
     val EditTextLogin = View.generateViewId()
-    val ButtonLoginAction = View.generateViewId()
+    val ImageLoginAction = View.generateViewId()
     val TitlePassword = View.generateViewId()
     val TextHiddenPassword = View.generateViewId()
-    val ButtonEditPassword = View.generateViewId()
-    val ButtonCopyPassword = View.generateViewId()
+    val ImageEditPassword = View.generateViewId()
+    val ImageCopyPassword = View.generateViewId()
     val TitleNotes = View.generateViewId()
     val EditTextNotes = View.generateViewId()
-    val ButtonNotesAction = View.generateViewId()
+    val ImageNotesAction = View.generateViewId()
   }
 }

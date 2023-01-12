@@ -12,9 +12,9 @@ import com.arsvechkarev.vault.test.screens.KCreatingMasterPasswordScreen
 import com.arsvechkarev.vault.test.screens.KCreatingPasswordEntryScreen
 import com.arsvechkarev.vault.test.screens.KCreatingPasswordScreen
 import com.arsvechkarev.vault.test.screens.KExportPasswordsScreen
-import com.arsvechkarev.vault.test.screens.KInfoScreen
 import com.arsvechkarev.vault.test.screens.KInitialScreen
 import com.arsvechkarev.vault.test.screens.KMainListScreen
+import com.arsvechkarev.vault.test.screens.KPasswordInfoScreen
 import com.google.gson.Gson
 import com.kaspersky.kaspresso.testcases.api.testcase.TestCase
 import junit.framework.Assert.assertEquals
@@ -66,7 +66,7 @@ class ValidatingFileStructureTest : TestCase() {
               editTextPassword.replaceText("F/<1#E(J=\\51=k")
               buttonSavePassword.click()
               confirmationDialog.action2.click()
-              KInfoScreen {
+              KPasswordInfoScreen {
                 iconBack.click()
               }
             }
@@ -84,7 +84,7 @@ class ValidatingFileStructureTest : TestCase() {
               editTextPassword.replaceText("q3z;ob15/*8GK>Ed")
               buttonSavePassword.click()
               confirmationDialog.action2.click()
-              KInfoScreen {
+              KPasswordInfoScreen {
                 iconBack.click()
               }
             }

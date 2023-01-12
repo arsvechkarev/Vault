@@ -1,19 +1,21 @@
 package com.arsvechkarev.vault.features.password_info
 
-import androidx.annotation.StringRes
 import com.arsvechkarev.vault.R
-import com.arsvechkarev.vault.core.model.PasswordItem
 import com.arsvechkarev.vault.core.mvi.tea.DslReducer
-import com.arsvechkarev.vault.features.password_info.InfoScreenCommand.Copy
-import com.arsvechkarev.vault.features.password_info.InfoScreenCommand.DeletePasswordInfo
-import com.arsvechkarev.vault.features.password_info.InfoScreenCommand.OpenEditPasswordScreen
-import com.arsvechkarev.vault.features.password_info.InfoScreenCommand.RouterCommand.GoBack
-import com.arsvechkarev.vault.features.password_info.InfoScreenCommand.RouterCommand.GoToCreatePasswordScreen
-import com.arsvechkarev.vault.features.password_info.InfoScreenCommand.UpdateItem
-import com.arsvechkarev.vault.features.password_info.InfoScreenCommand.UpdateItem.UpdateLogin
-import com.arsvechkarev.vault.features.password_info.InfoScreenCommand.UpdateItem.UpdateNotes
-import com.arsvechkarev.vault.features.password_info.InfoScreenCommand.UpdateItem.UpdatePassword
-import com.arsvechkarev.vault.features.password_info.InfoScreenCommand.UpdateItem.UpdateWebsiteName
+import com.arsvechkarev.vault.features.common.edit
+import com.arsvechkarev.vault.features.common.extensions.handleAction
+import com.arsvechkarev.vault.features.common.model.PasswordItem
+import com.arsvechkarev.vault.features.common.reset
+import com.arsvechkarev.vault.features.common.update
+import com.arsvechkarev.vault.features.password_info.PasswordInfoScreenCommand.Copy
+import com.arsvechkarev.vault.features.password_info.PasswordInfoScreenCommand.DeletePasswordItem
+import com.arsvechkarev.vault.features.password_info.PasswordInfoScreenCommand.OpenEditPasswordScreen
+import com.arsvechkarev.vault.features.password_info.PasswordInfoScreenCommand.RouterCommand.GoBack
+import com.arsvechkarev.vault.features.password_info.PasswordInfoScreenCommand.RouterCommand.GoToCreatePasswordScreen
+import com.arsvechkarev.vault.features.password_info.PasswordInfoScreenCommand.UpdateItem.UpdateLogin
+import com.arsvechkarev.vault.features.password_info.PasswordInfoScreenCommand.UpdateItem.UpdateNotes
+import com.arsvechkarev.vault.features.password_info.PasswordInfoScreenCommand.UpdateItem.UpdatePassword
+import com.arsvechkarev.vault.features.password_info.PasswordInfoScreenCommand.UpdateItem.UpdateWebsiteName
 import com.arsvechkarev.vault.features.password_info.PasswordInfoScreenEvent.DeletedPasswordInfo
 import com.arsvechkarev.vault.features.password_info.PasswordInfoScreenEvent.SavePasswordEventReceived
 import com.arsvechkarev.vault.features.password_info.PasswordInfoScreenEvent.UpdatedPasswordInfo.UpdatedLogin
@@ -42,52 +44,56 @@ import com.arsvechkarev.vault.features.password_info.PasswordInfoScreenUiEvent.O
 import com.arsvechkarev.vault.features.password_info.PasswordInfoScreenUiEvent.OnWebsiteNameTextChanged
 
 class PasswordInfoScreenReducer :
-  DslReducer<PasswordInfoScreenState, PasswordInfoScreenEvent, InfoScreenCommand,
+  DslReducer<PasswordInfoState, PasswordInfoScreenEvent, PasswordInfoScreenCommand,
       PasswordInfoScreenNews>() {
   
   override fun dslReduce(event: PasswordInfoScreenEvent) {
     when (event) {
       OnInit -> {
-        sendResetTextsNews()
+        sendSetInitialTextsNews()
       }
       OnWebsiteNameActionClicked -> {
         handleAction(
+          itemProvider = state::passwordItem,
           textState = state.websiteNameState,
-          stateResetAction = { state -> copy(websiteNameState = state) },
-          setTextAction = { text -> copy(websiteName = text) },
+          stateResetAction = { textState -> state.copy(websiteNameState = textState) },
+          updateAction = { text -> copy(websiteName = text) },
           updateCommand = ::UpdateWebsiteName,
           allowEmptySave = false,
-          copyLabelRes = R.string.clipboard_label_website,
+          copyCommand = { text -> Copy(R.string.clipboard_label_website, text) },
           copyNews = ShowWebsiteNameCopied,
           setTextNews = ::SetWebsiteName
         )
       }
       OnLoginActionClicked -> {
         handleAction(
+          itemProvider = state::passwordItem,
           textState = state.loginState,
-          stateResetAction = { state -> copy(loginState = state) },
-          setTextAction = { text -> copy(login = text) },
+          stateResetAction = { textState -> state.copy(loginState = textState) },
+          updateAction = { text -> copy(login = text) },
           updateCommand = ::UpdateLogin,
           allowEmptySave = false,
-          copyLabelRes = R.string.clipboard_label_login,
+          copyCommand = { text -> Copy(R.string.clipboard_label_login, text) },
           copyNews = ShowLoginCopied,
           setTextNews = ::SetLogin
         )
       }
       OnNotesActionClicked -> {
         handleAction(
+          itemProvider = state::passwordItem,
           textState = state.notesState,
-          stateResetAction = { state -> copy(notesState = state) },
-          setTextAction = { text -> copy(notes = text) },
+          stateResetAction = { textState -> state.copy(notesState = textState) },
+          updateAction = { text -> copy(notes = text) },
           updateCommand = ::UpdateNotes,
           allowEmptySave = true,
-          copyLabelRes = R.string.clipboard_label_notes,
+          copyCommand = { text -> Copy(R.string.clipboard_label_notes, text) },
           copyNews = ShowNotesCopied,
           setTextNews = ::SetNotes
         )
       }
       OnCopyPasswordClicked -> {
-        handleCopy(R.string.clipboard_label_password, state.password, ShowPasswordCopied)
+        commands(Copy(R.string.clipboard_label_password, state.password))
+        news(ShowPasswordCopied)
       }
       OnOpenPasswordScreenClicked -> {
         commands(
@@ -112,7 +118,7 @@ class PasswordInfoScreenReducer :
       }
       OnConfirmedDeletion -> {
         state { copy(showLoadingDialog = true, showDeletePasswordDialog = false) }
-        commands(DeletePasswordInfo(state.passwordItem))
+        commands(DeletePasswordItem(state.passwordItem))
       }
       OnBackPressed -> {
         when {
@@ -127,7 +133,7 @@ class PasswordInfoScreenReducer :
                 notesState = notesState.reset()
               )
             }
-            sendResetTextsNews()
+            sendSetInitialTextsNews()
           }
           else -> {
             commands(GoBack)
@@ -173,35 +179,7 @@ class PasswordInfoScreenReducer :
     }
   }
   
-  private fun handleAction(
-    textState: TextState,
-    stateResetAction: PasswordInfoScreenState.(TextState) -> PasswordInfoScreenState,
-    setTextAction: PasswordItem.(String) -> PasswordItem,
-    updateCommand: (PasswordItem) -> UpdateItem,
-    allowEmptySave: Boolean = false,
-    @StringRes copyLabelRes: Int,
-    copyNews: PasswordInfoScreenNews,
-    setTextNews: (String) -> PasswordInfoScreenNews,
-  ) {
-    with(textState) {
-      if (isEditingNow) {
-        if (!allowEmptySave && editedText.isBlank()) {
-          return
-        }
-        val trimmedText = editedText.trim()
-        if (trimmedText == initialText) {
-          state { stateResetAction(state, textState.reset()) }
-        } else {
-          commands(updateCommand(setTextAction(state.passwordItem, trimmedText)))
-          news(setTextNews(trimmedText))
-        }
-      } else {
-        handleCopy(copyLabelRes, editedText, copyNews)
-      }
-    }
-  }
-  
-  private fun sendResetTextsNews() {
+  private fun sendSetInitialTextsNews() {
     news(
       SetWebsiteName(state.passwordItem.websiteName),
       SetLogin(state.passwordItem.login),
@@ -209,27 +187,10 @@ class PasswordInfoScreenReducer :
     )
   }
   
-  private fun handleCopy(@StringRes labelRes: Int, text: String, news: PasswordInfoScreenNews) {
-    commands(Copy(labelRes, text))
-    news(news)
-  }
-  
-  private fun PasswordInfoScreenState.update(
+  private fun PasswordInfoState.update(
     passwordItem: PasswordItem,
-    copyTextState: PasswordInfoScreenState.() -> PasswordInfoScreenState
-  ): PasswordInfoScreenState {
+    copyTextState: PasswordInfoState.() -> PasswordInfoState
+  ): PasswordInfoState {
     return copyTextState(copy(passwordItem = passwordItem))
-  }
-  
-  private fun TextState.reset(): TextState {
-    return copy(editedText = initialText, isEditingNow = false)
-  }
-  
-  private fun TextState.update(newText: String): TextState {
-    return copy(initialText = newText, editedText = newText, isEditingNow = false)
-  }
-  
-  private fun TextState.edit(newText: String): TextState {
-    return copy(editedText = newText.trim(), isEditingNow = true)
   }
 }

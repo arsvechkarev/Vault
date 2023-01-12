@@ -1,4 +1,4 @@
-package com.arsvechkarev.vault.core.model
+package com.arsvechkarev.vault.features.common.model
 
 import buisnesslogic.model.CreditCard
 import buisnesslogic.model.Password

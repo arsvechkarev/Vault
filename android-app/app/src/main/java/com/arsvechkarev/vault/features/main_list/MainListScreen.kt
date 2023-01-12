@@ -14,6 +14,8 @@ import com.arsvechkarev.vault.core.views.behaviors.BottomSheetBehavior.Companion
 import com.arsvechkarev.vault.core.views.menu.MenuItemModel
 import com.arsvechkarev.vault.core.views.menu.MenuView
 import com.arsvechkarev.vault.features.common.di.CoreComponentHolder.coreComponent
+import com.arsvechkarev.vault.features.common.model.Empty
+import com.arsvechkarev.vault.features.common.model.Loading
 import com.arsvechkarev.vault.features.main_list.MainListUiEvent.OnBackPressed
 import com.arsvechkarev.vault.features.main_list.MainListUiEvent.OnCloseMenuClicked
 import com.arsvechkarev.vault.features.main_list.MainListUiEvent.OnEntryTypeDialogHidden
@@ -26,13 +28,12 @@ import com.arsvechkarev.vault.features.main_list.MenuItemType.EXPORT_PASSWORDS
 import com.arsvechkarev.vault.features.main_list.MenuItemType.IMPORT_PASSWORDS
 import com.arsvechkarev.vault.features.main_list.MenuItemType.NEW_ENTRY
 import com.arsvechkarev.vault.features.main_list.MenuItemType.SETTINGS
-import com.arsvechkarev.vault.features.main_list.recycler.Empty
-import com.arsvechkarev.vault.features.main_list.recycler.Loading
 import com.arsvechkarev.vault.features.main_list.recycler.MainListAdapter
 import com.arsvechkarev.vault.viewbuilding.Colors
 import com.arsvechkarev.vault.viewbuilding.Dimens.GradientDrawableHeight
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginLarge
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginNormal
+import com.arsvechkarev.vault.viewbuilding.Dimens.MarginSmall
 import com.arsvechkarev.vault.viewbuilding.Styles.BoldTextView
 import com.arsvechkarev.vault.viewbuilding.Styles.TitleTextView
 import com.arsvechkarev.vault.viewbuilding.TextSizes
@@ -61,7 +62,7 @@ class MainListScreen : BaseFragmentScreen() {
       backgroundColor(Colors.Background)
       RecyclerView(MatchParent, MatchParent) {
         classNameTag()
-        paddings(top = GradientDrawableHeight, bottom = 80.dp)
+        paddings(top = GradientDrawableHeight - MarginSmall, bottom = 80.dp)
         clipToPadding = false
         setupWith(this@MainListScreen.adapter)
       }
@@ -140,7 +141,7 @@ class MainListScreen : BaseFragmentScreen() {
       view(ChooseEntryTypeBottomSheet).asBottomSheet.hide()
     }
     adapter.submitList(state.data.getItems(
-      successItems = { it.passwordsItems },
+      successItems = { it },
       loadingItems = { listOf(Loading) },
       emptyItems = { listOf(Empty) }
     ))

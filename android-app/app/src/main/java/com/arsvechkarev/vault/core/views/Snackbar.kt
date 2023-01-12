@@ -11,10 +11,14 @@ import com.arsvechkarev.vault.viewbuilding.Dimens.MarginNormal
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginSmall
 import com.arsvechkarev.vault.viewbuilding.Styles.BaseTextView
 import com.arsvechkarev.vault.viewbuilding.TextSizes
+import navigation.BaseFragmentScreen
 import viewdsl.AccelerateDecelerateInterpolator
+import viewdsl.Size.Companion.MatchParent
+import viewdsl.Size.Companion.WrapContent
 import viewdsl.animateVisible
 import viewdsl.atMost
 import viewdsl.backgroundRoundRect
+import viewdsl.classNameTag
 import viewdsl.exactly
 import viewdsl.invisible
 import viewdsl.layoutLeftTop
@@ -22,6 +26,7 @@ import viewdsl.paddings
 import viewdsl.size
 import viewdsl.text
 import viewdsl.textSize
+import viewdsl.withViewBuilder
 
 class Snackbar(context: Context) : ViewGroup(context) {
   
@@ -91,6 +96,19 @@ class Snackbar(context: Context) : ViewGroup(context) {
     textInfo.layoutLeftTop(checkmarkView.right + innerPadding * 2, textInfoTop)
     if (!isOpened) {
       translationY = height * 1.5f
+    }
+  }
+  
+  companion object {
+    
+    val BaseFragmentScreen.snackbar get() = viewAs<Snackbar>()
+    
+    fun ViewGroup.Snackbar(block: Snackbar.() -> Unit) = withViewBuilder {
+      val snackbar = Snackbar(context)
+      snackbar.size(MatchParent, WrapContent)
+      snackbar.classNameTag()
+      addView(snackbar)
+      snackbar.apply(block)
     }
   }
 }

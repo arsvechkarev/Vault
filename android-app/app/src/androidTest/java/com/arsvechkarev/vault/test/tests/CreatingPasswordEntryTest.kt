@@ -17,11 +17,11 @@ import com.arsvechkarev.vault.test.core.ext.writeVaultFileFromAssets
 import com.arsvechkarev.vault.test.core.rule.VaultAutotestRule
 import com.arsvechkarev.vault.test.screens.KCreatingPasswordEntryScreen
 import com.arsvechkarev.vault.test.screens.KCreatingPasswordScreen
-import com.arsvechkarev.vault.test.screens.KInfoScreen
 import com.arsvechkarev.vault.test.screens.KLoginScreen
 import com.arsvechkarev.vault.test.screens.KMainListScreen
 import com.arsvechkarev.vault.test.screens.KMainListScreen.EmptyItem
 import com.arsvechkarev.vault.test.screens.KMainListScreen.PasswordItem
+import com.arsvechkarev.vault.test.screens.KPasswordInfoScreen
 import com.arsvechkarev.vault.viewbuilding.Colors
 import kotlinx.coroutines.runBlocking
 import org.junit.Before
@@ -243,8 +243,8 @@ class CreatingPasswordEntryTest : VaultTestCase() {
           
           buttonSavePassword.click()
           confirmationDialog.action2.click()
-          
-          KInfoScreen {
+  
+          KPasswordInfoScreen {
             imageWebsite {
               isDisplayed()
               hasDrawable(LetterInCircleDrawable("t"))
@@ -253,7 +253,7 @@ class CreatingPasswordEntryTest : VaultTestCase() {
             editTextWebsiteName.hasText("test.com")
             editTextLogin.hasText("mylogin")
             editTextNotes.hasEmptyText()
-            
+    
             pressBack()
           }
         }

@@ -1,10 +1,10 @@
-package com.arsvechkarev.vault.core.model
+package com.arsvechkarev.vault.features.common.model
 
 import android.os.Parcelable
 import com.arsvechkarev.vault.recycler.DifferentiableItem
 import kotlinx.parcelize.Parcelize
 
-sealed interface EntryItem
+sealed interface EntryItem : DifferentiableItem, Parcelable
 
 @Parcelize
 data class PasswordItem(
@@ -13,7 +13,7 @@ data class PasswordItem(
   val login: String,
   val password: String,
   val notes: String,
-) : EntryItem, DifferentiableItem, Parcelable
+) : EntryItem
 
 @Parcelize
 data class CreditCardItem(
@@ -24,11 +24,11 @@ data class CreditCardItem(
   val cvcCode: String,
   val pinCode: String,
   val notes: String,
-) : EntryItem, DifferentiableItem, Parcelable
+) : EntryItem
 
 @Parcelize
 data class PlainTextItem(
   override val id: String,
   val title: String,
   val text: String,
-) : EntryItem, DifferentiableItem, Parcelable
+) : EntryItem

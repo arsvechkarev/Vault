@@ -1,7 +1,6 @@
 package com.arsvechkarev.vault.features.creating_password_entry
 
 import com.arsvechkarev.vault.core.mvi.tea.DslReducer
-import com.arsvechkarev.vault.features.creating_password_entry.CreatingPasswordEntryCommand.NotifyPasswordEntryCreated
 import com.arsvechkarev.vault.features.creating_password_entry.CreatingPasswordEntryCommand.RouterCommand.GoBack
 import com.arsvechkarev.vault.features.creating_password_entry.CreatingPasswordEntryCommand.RouterCommand.GoToCreatePasswordScreen
 import com.arsvechkarev.vault.features.creating_password_entry.CreatingPasswordEntryCommand.RouterCommand.GoToInfoScreen
@@ -54,7 +53,7 @@ class CreatingPasswordEntryReducer :
         commands(SavePassword(state.websiteName, state.login, event.password))
       }
       is PasswordEntryCreated -> {
-        commands(NotifyPasswordEntryCreated, GoToInfoScreen(event.passwordItem))
+        commands(GoToInfoScreen(event.passwordItem))
       }
     }
   }

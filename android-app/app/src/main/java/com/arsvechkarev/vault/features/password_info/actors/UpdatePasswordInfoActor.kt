@@ -1,15 +1,15 @@
 package com.arsvechkarev.vault.features.password_info.actors
 
-import com.arsvechkarev.vault.core.model.toPassword
 import com.arsvechkarev.vault.core.mvi.tea.Actor
 import com.arsvechkarev.vault.features.common.data.storage.ListenableCachedEntriesStorage
 import com.arsvechkarev.vault.features.common.domain.MasterPasswordProvider
-import com.arsvechkarev.vault.features.password_info.InfoScreenCommand
-import com.arsvechkarev.vault.features.password_info.InfoScreenCommand.UpdateItem
-import com.arsvechkarev.vault.features.password_info.InfoScreenCommand.UpdateItem.UpdateLogin
-import com.arsvechkarev.vault.features.password_info.InfoScreenCommand.UpdateItem.UpdateNotes
-import com.arsvechkarev.vault.features.password_info.InfoScreenCommand.UpdateItem.UpdatePassword
-import com.arsvechkarev.vault.features.password_info.InfoScreenCommand.UpdateItem.UpdateWebsiteName
+import com.arsvechkarev.vault.features.common.model.toPassword
+import com.arsvechkarev.vault.features.password_info.PasswordInfoScreenCommand
+import com.arsvechkarev.vault.features.password_info.PasswordInfoScreenCommand.UpdateItem
+import com.arsvechkarev.vault.features.password_info.PasswordInfoScreenCommand.UpdateItem.UpdateLogin
+import com.arsvechkarev.vault.features.password_info.PasswordInfoScreenCommand.UpdateItem.UpdateNotes
+import com.arsvechkarev.vault.features.password_info.PasswordInfoScreenCommand.UpdateItem.UpdatePassword
+import com.arsvechkarev.vault.features.password_info.PasswordInfoScreenCommand.UpdateItem.UpdateWebsiteName
 import com.arsvechkarev.vault.features.password_info.PasswordInfoScreenEvent
 import com.arsvechkarev.vault.features.password_info.PasswordInfoScreenEvent.UpdatedPasswordInfo.UpdatedLogin
 import com.arsvechkarev.vault.features.password_info.PasswordInfoScreenEvent.UpdatedPasswordInfo.UpdatedNotes
@@ -22,9 +22,9 @@ import kotlinx.coroutines.flow.mapLatest
 class UpdatePasswordInfoActor(
   private val storage: ListenableCachedEntriesStorage,
   private val masterPasswordProvider: MasterPasswordProvider
-) : Actor<InfoScreenCommand, PasswordInfoScreenEvent> {
+) : Actor<PasswordInfoScreenCommand, PasswordInfoScreenEvent> {
   
-  override fun handle(commands: Flow<InfoScreenCommand>): Flow<PasswordInfoScreenEvent> {
+  override fun handle(commands: Flow<PasswordInfoScreenCommand>): Flow<PasswordInfoScreenEvent> {
     return commands.filterIsInstance<UpdateItem>()
         .mapLatest { command ->
           val masterPassword = masterPasswordProvider.provideMasterPassword()

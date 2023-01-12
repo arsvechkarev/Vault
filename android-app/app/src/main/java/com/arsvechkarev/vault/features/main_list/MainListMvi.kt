@@ -1,11 +1,11 @@
 package com.arsvechkarev.vault.features.main_list
 
 import com.arsvechkarev.vault.core.ScreenState
-import com.arsvechkarev.vault.core.model.EntryItem
-import com.arsvechkarev.vault.features.main_list.model.EntriesItems
+import com.arsvechkarev.vault.features.common.model.EntryItem
+import com.arsvechkarev.vault.recycler.DifferentiableItem
 
 sealed interface MainListEvent {
-  class UpdateData(val data: ScreenState<EntriesItems>) : MainListEvent
+  class UpdateData(val data: ScreenState<List<DifferentiableItem>>) : MainListEvent
 }
 
 sealed interface MainListUiEvent : MainListEvent {
@@ -31,7 +31,7 @@ sealed interface MainListCommand {
 }
 
 data class MainListState(
-  val data: ScreenState<EntriesItems> = ScreenState.loading(),
+  val data: ScreenState<List<DifferentiableItem>> = ScreenState.loading(),
   val menuOpened: Boolean = false,
   val showEntryTypeDialog: Boolean = false,
 )

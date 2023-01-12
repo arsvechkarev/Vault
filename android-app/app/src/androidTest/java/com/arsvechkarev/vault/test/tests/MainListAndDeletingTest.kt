@@ -8,11 +8,11 @@ import com.arsvechkarev.vault.test.core.base.VaultTestCase
 import com.arsvechkarev.vault.test.core.ext.currentScreenIs
 import com.arsvechkarev.vault.test.core.ext.writeVaultFileFromAssets
 import com.arsvechkarev.vault.test.core.rule.VaultAutotestRule
-import com.arsvechkarev.vault.test.screens.KInfoScreen
 import com.arsvechkarev.vault.test.screens.KLoginScreen
 import com.arsvechkarev.vault.test.screens.KMainListScreen
 import com.arsvechkarev.vault.test.screens.KMainListScreen.EmptyItem
 import com.arsvechkarev.vault.test.screens.KMainListScreen.PasswordItem
+import com.arsvechkarev.vault.test.screens.KPasswordInfoScreen
 import kotlinx.coroutines.runBlocking
 import org.junit.Before
 import org.junit.Rule
@@ -60,7 +60,7 @@ class MainListAndDeletingTest : VaultTestCase() {
           }
         }
         recycler.emptyFirstChild { click() }
-        KInfoScreen {
+        KPasswordInfoScreen {
           iconDelete.click()
           confirmationDialog.action2.click()
         }
@@ -72,7 +72,7 @@ class MainListAndDeletingTest : VaultTestCase() {
           }
         }
         recycler.emptyFirstChild { click() }
-        KInfoScreen {
+        KPasswordInfoScreen {
           iconDelete.click()
           confirmationDialog.action2.click()
         }

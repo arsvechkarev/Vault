@@ -2,12 +2,12 @@ package com.arsvechkarev.vault.features.common.data.storage
 
 import buisnesslogic.model.Entries
 import buisnesslogic.model.Entry
-import com.arsvechkarev.vault.core.model.CreditCardItem
-import com.arsvechkarev.vault.core.model.PasswordItem
-import com.arsvechkarev.vault.core.model.PlainTextItem
-import com.arsvechkarev.vault.core.model.toCreditCardItem
-import com.arsvechkarev.vault.core.model.toPasswordItem
-import com.arsvechkarev.vault.core.model.toPlainTextItem
+import com.arsvechkarev.vault.features.common.model.CreditCardItem
+import com.arsvechkarev.vault.features.common.model.PasswordItem
+import com.arsvechkarev.vault.features.common.model.PlainTextItem
+import com.arsvechkarev.vault.features.common.model.toCreditCardItem
+import com.arsvechkarev.vault.features.common.model.toPasswordItem
+import com.arsvechkarev.vault.features.common.model.toPlainTextItem
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 

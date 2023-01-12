@@ -1,6 +1,7 @@
 package com.arsvechkarev.vault.features.password_info
 
-import com.arsvechkarev.vault.core.model.PasswordItem
+import com.arsvechkarev.vault.features.common.TextState
+import com.arsvechkarev.vault.features.common.model.PasswordItem
 
 sealed interface PasswordInfoScreenEvent {
   class SavePasswordEventReceived(val password: String) : PasswordInfoScreenEvent
@@ -32,15 +33,15 @@ sealed interface PasswordInfoScreenUiEvent : PasswordInfoScreenEvent {
   class OnNotesTextChanged(val text: String) : PasswordInfoScreenUiEvent
 }
 
-sealed interface InfoScreenCommand {
+sealed interface PasswordInfoScreenCommand {
   class Copy(
     val labelRes: Int,
     val text: String
-  ) : InfoScreenCommand
+  ) : PasswordInfoScreenCommand
   
-  class OpenEditPasswordScreen(val password: String) : InfoScreenCommand
+  class OpenEditPasswordScreen(val password: String) : PasswordInfoScreenCommand
   
-  sealed class UpdateItem(val passwordItem: PasswordItem) : InfoScreenCommand {
+  sealed class UpdateItem(val passwordItem: PasswordItem) : PasswordInfoScreenCommand {
     
     class UpdateWebsiteName(passwordItem: PasswordItem) : UpdateItem(passwordItem)
     class UpdateLogin(passwordItem: PasswordItem) : UpdateItem(passwordItem)
@@ -48,9 +49,9 @@ sealed interface InfoScreenCommand {
     class UpdateNotes(passwordItem: PasswordItem) : UpdateItem(passwordItem)
   }
   
-  class DeletePasswordInfo(val passwordItem: PasswordItem) : InfoScreenCommand
+  class DeletePasswordItem(val passwordItem: PasswordItem) : PasswordInfoScreenCommand
   
-  sealed interface RouterCommand : InfoScreenCommand {
+  sealed interface RouterCommand : PasswordInfoScreenCommand {
     object GoToCreatePasswordScreen : RouterCommand
     object GoBack : RouterCommand
   }
@@ -66,7 +67,7 @@ sealed interface PasswordInfoScreenNews {
   object ShowNotesCopied : PasswordInfoScreenNews
 }
 
-data class PasswordInfoScreenState(
+data class PasswordInfoState(
   val passwordItem: PasswordItem,
   val websiteNameState: TextState = TextState(passwordItem.websiteName),
   val loginState: TextState = TextState(passwordItem.login),
@@ -82,9 +83,3 @@ data class PasswordInfoScreenState(
         || loginState.isEditingNow
         || notesState.isEditingNow
 }
-
-data class TextState(
-  val initialText: String,
-  val editedText: String = initialText,
-  val isEditingNow: Boolean = false
-)

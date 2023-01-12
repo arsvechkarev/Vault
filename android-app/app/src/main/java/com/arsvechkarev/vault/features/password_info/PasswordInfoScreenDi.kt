@@ -1,21 +1,21 @@
 package com.arsvechkarev.vault.features.password_info
 
-import com.arsvechkarev.vault.core.model.PasswordItem
 import com.arsvechkarev.vault.core.mvi.tea.TeaStore
 import com.arsvechkarev.vault.core.mvi.tea.TeaStoreImpl
 import com.arsvechkarev.vault.features.common.di.CoreComponent
+import com.arsvechkarev.vault.features.common.model.PasswordItem
 import com.arsvechkarev.vault.features.creating_password.CreatingPasswordCommunication
-import com.arsvechkarev.vault.features.password_info.actors.CopyInfoCommandHandler
+import com.arsvechkarev.vault.features.password_info.actors.CopyPasswordInfoActor
 import com.arsvechkarev.vault.features.password_info.actors.DeletePasswordInfoActor
 import com.arsvechkarev.vault.features.password_info.actors.OpenEditPasswordScreenActor
 import com.arsvechkarev.vault.features.password_info.actors.PasswordInfoRouterActor
 import com.arsvechkarev.vault.features.password_info.actors.ReceivingPasswordCommunicationActor
 import com.arsvechkarev.vault.features.password_info.actors.UpdatePasswordInfoActor
 
-fun InfoScreenStore(
+fun PasswordInfoScreenStore(
   coreComponent: CoreComponent,
   passwordItem: PasswordItem,
-): TeaStore<PasswordInfoScreenState, PasswordInfoScreenUiEvent, PasswordInfoScreenNews> {
+): TeaStore<PasswordInfoState, PasswordInfoScreenUiEvent, PasswordInfoScreenNews> {
   val communicatorHolder = CreatingPasswordCommunication.communicatorHolder
   // TODO (27.11.2022): Figure out a good way to start and stop communication
   communicatorHolder.startNewCommunication()
@@ -30,11 +30,11 @@ fun InfoScreenStore(
         coreComponent.masterPasswordProvider
       ),
       OpenEditPasswordScreenActor(communicatorHolder),
-      CopyInfoCommandHandler(coreComponent.clipboard),
+      CopyPasswordInfoActor(coreComponent.clipboard),
       ReceivingPasswordCommunicationActor(communicatorHolder.communicator),
       PasswordInfoRouterActor(coreComponent.router),
     ),
     reducer = PasswordInfoScreenReducer(),
-    initialState = PasswordInfoScreenState(passwordItem)
+    initialState = PasswordInfoState(passwordItem)
   )
 }

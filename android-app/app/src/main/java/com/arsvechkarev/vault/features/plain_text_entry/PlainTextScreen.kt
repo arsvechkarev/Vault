@@ -79,6 +79,7 @@ class PlainTextScreen : BaseFragmentScreen() {
   
   override fun buildLayout(context: Context) = context.withViewBuilder {
     RootFrameLayout {
+      id(PlainTextScreenRoot)
       ScrollableConstraintLayout {
         ImageView(WrapContent, WrapContent, style = IconBack) {
           id(ImageBack)
@@ -184,7 +185,7 @@ class PlainTextScreen : BaseFragmentScreen() {
         }
       }
       TextView(MatchParent, WrapContent, style = Button()) {
-        id(ButtonSaveEntry)
+        id(ButtonSave)
         margins(start = MarginNormal, end = MarginNormal, bottom = MarginNormal)
         layoutGravity(Gravity.BOTTOM)
         text(R.string.text_save)
@@ -223,7 +224,7 @@ class PlainTextScreen : BaseFragmentScreen() {
   }
   
   private fun render(state: PlainTextState) {
-    view(ButtonSaveEntry).isVisible = state is NewEntry
+    view(ButtonSave).isVisible = state is NewEntry
     view(ImageTitleAction).isVisible = state is ExistingEntry
     view(ImageTextAction).isVisible = state is ExistingEntry
     view(ImageDelete).isVisible = state is ExistingEntry
@@ -331,7 +332,8 @@ class PlainTextScreen : BaseFragmentScreen() {
   }
   
   companion object {
-    
+  
+    val PlainTextScreenRoot = View.generateViewId()
     val ImageBack = View.generateViewId()
     val MainTitle = View.generateViewId()
     val ImageDelete = View.generateViewId()
@@ -341,6 +343,6 @@ class PlainTextScreen : BaseFragmentScreen() {
     val Text = View.generateViewId()
     val EditTextText = View.generateViewId()
     val ImageTextAction = View.generateViewId()
-    val ButtonSaveEntry = View.generateViewId()
+    val ButtonSave = View.generateViewId()
   }
 }

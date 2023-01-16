@@ -12,7 +12,7 @@ import com.arsvechkarev.vault.features.password_info.PasswordInfoScreen.Companio
 import com.arsvechkarev.vault.features.password_info.PasswordInfoScreen.Companion.ImageNotesAction
 import com.arsvechkarev.vault.features.password_info.PasswordInfoScreen.Companion.ImageWebsite
 import com.arsvechkarev.vault.features.password_info.PasswordInfoScreen.Companion.ImageWebsiteNameAction
-import com.arsvechkarev.vault.features.password_info.PasswordInfoScreen.Companion.InfoScreenRoot
+import com.arsvechkarev.vault.features.password_info.PasswordInfoScreen.Companion.PasswordInfoScreenRoot
 import com.arsvechkarev.vault.features.password_info.PasswordInfoScreen.Companion.TextHiddenPassword
 import com.arsvechkarev.vault.features.password_info.PasswordInfoScreen.Companion.TextWebsiteName
 import com.arsvechkarev.vault.features.password_info.PasswordInfoScreen.Companion.TitleLogin
@@ -48,5 +48,5 @@ object KPasswordInfoScreen : BaseScreen<KPasswordInfoScreen>() {
   val editTextNotes = KEditText { withId(EditTextNotes) }
   val imageNotesAction = KImageView { withId(ImageNotesAction) }
   val snackbar = KSnackbar()
-  val confirmationDialog = KInfoDialog(parentId = InfoScreenRoot)
+  val confirmationDialog = KInfoDialog(parentId = PasswordInfoScreenRoot)
 }

@@ -44,7 +44,7 @@ class ExportingPasswordsTest : VaultTestCase() {
       ),
       passwordsFileExporter = stubPasswordsFileExporter
     )
-    writeVaultFileFromAssets("file_two_items")
+    writeVaultFileFromAssets("file_two_passwords")
     rule.launchActivity()
   }
   

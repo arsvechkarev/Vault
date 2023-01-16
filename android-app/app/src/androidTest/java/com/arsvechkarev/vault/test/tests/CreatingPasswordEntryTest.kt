@@ -40,7 +40,7 @@ class CreatingPasswordEntryTest : VaultTestCase() {
   }
   
   @Test
-  fun testCreatingEntry() = run {
+  fun testCreatingPassword() = run {
     KLoginScreen {
       editTextEnterPassword.replaceText("qwetu1233")
       buttonContinue.click()
@@ -57,7 +57,7 @@ class CreatingPasswordEntryTest : VaultTestCase() {
   
       menu {
         open()
-        newPasswordMenuItem.click()
+        newEntryMenuItem.click()
       }
   
       entryTypeDialog.isDisplayed()
@@ -74,7 +74,7 @@ class CreatingPasswordEntryTest : VaultTestCase() {
   
       menu {
         open()
-        newPasswordMenuItem.click()
+        newEntryMenuItem.click()
       }
   
       entryTypeDialog.passwordEntry.click()
@@ -261,8 +261,8 @@ class CreatingPasswordEntryTest : VaultTestCase() {
       
       recycler {
         isDisplayed()
-        hasSize(1)
-        firstChild<PasswordItem> {
+        hasSize(2)
+        childAt<PasswordItem>(1) {
           text.hasText("test.com")
           icon.hasDrawable(LetterInCircleDrawable("t"))
         }

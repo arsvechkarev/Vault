@@ -1,12 +1,14 @@
 package com.arsvechkarev.vault.test.screens
 
 import android.view.View
+import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.arsvechkarev.vault.R
 import com.arsvechkarev.vault.features.main_list.MainListScreen
 import com.arsvechkarev.vault.features.main_list.MainListScreen.Companion.ChooseEntryTypeBottomSheet
 import com.arsvechkarev.vault.features.main_list.recycler.MainListAdapter.Companion.ItemPasswordInfoImage
 import com.arsvechkarev.vault.features.main_list.recycler.MainListAdapter.Companion.ItemPasswordInfoTextPasswordName
+import com.arsvechkarev.vault.features.main_list.recycler.MainListAdapter.Companion.ItemPlainTextTitle
 import com.arsvechkarev.vault.test.core.base.BaseScreen
 import com.arsvechkarev.vault.test.core.ext.withClassNameTag
 import com.arsvechkarev.vault.test.core.views.dialog.KEntryTypeDialog
@@ -28,13 +30,26 @@ object KMainListScreen : BaseScreen<KMainListScreen>() {
   val recycler = KRecyclerView(
     builder = { withClassNameTag<RecyclerView>() },
     itemTypeBuilder = {
+      itemType(KMainListScreen::TitleItem)
       itemType(KMainListScreen::PasswordItem)
+      itemType(KMainListScreen::PlainTextItem)
       itemType(KMainListScreen::EmptyItem)
     })
+  
+  class TitleItem(parent: Matcher<View>) : KRecyclerItem<TitleItem>(parent) {
+    val title = KTextView {
+      withMatcher(parent)
+      isInstanceOf(TextView::class.java)
+    }
+  }
   
   class PasswordItem(parent: Matcher<View>) : KRecyclerItem<PasswordItem>(parent) {
     val icon = KImageView(parent) { withId(ItemPasswordInfoImage) }
     val text = KTextView(parent) { withId(ItemPasswordInfoTextPasswordName) }
+  }
+  
+  class PlainTextItem(parent: Matcher<View>) : KRecyclerItem<PlainTextItem>(parent) {
+    val title = KTextView(parent) { withId(ItemPlainTextTitle) }
   }
   
   class EmptyItem(parent: Matcher<View>) : KRecyclerItem<EmptyItem>(parent) {

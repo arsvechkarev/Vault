@@ -12,6 +12,7 @@ import com.arsvechkarev.vault.test.screens.KLoginScreen
 import com.arsvechkarev.vault.test.screens.KMainListScreen
 import com.arsvechkarev.vault.test.screens.KMainListScreen.EmptyItem
 import com.arsvechkarev.vault.test.screens.KMainListScreen.PasswordItem
+import com.arsvechkarev.vault.test.screens.KMainListScreen.TitleItem
 import com.arsvechkarev.vault.test.screens.KPasswordInfoScreen
 import kotlinx.coroutines.runBlocking
 import org.junit.Before
@@ -25,7 +26,7 @@ class MainListAndDeletingTest : VaultTestCase() {
   
   @Before
   fun setup() = runBlocking {
-    writeVaultFileFromAssets("file_two_items")
+    writeVaultFileFromAssets("file_two_passwords")
     rule.launchActivity()
   }
   
@@ -49,29 +50,32 @@ class MainListAndDeletingTest : VaultTestCase() {
         currentScreenIs(MainListScreen::class)
         recycler {
           isDisplayed()
-          hasSize(2)
-          childAt<PasswordItem>(0) {
+          hasSize(3)
+          childAt<TitleItem>(0) {
+            title.hasText("Passwords")
+          }
+          childAt<PasswordItem>(1) {
             text.hasText("google")
             icon.hasDrawable(R.drawable.icon_google)
           }
-          childAt<PasswordItem>(1) {
+          childAt<PasswordItem>(2) {
             text.hasText("test.com")
             icon.hasDrawable(LetterInCircleDrawable("t"))
           }
         }
-        recycler.emptyFirstChild { click() }
+        recycler.emptyChildAt(1) { click() }
         KPasswordInfoScreen {
           iconDelete.click()
           confirmationDialog.action2.click()
         }
         recycler {
-          hasSize(1)
-          firstChild<PasswordItem> {
+          hasSize(2)
+          childAt<PasswordItem>(1) {
             text.hasText("test.com")
             icon.hasDrawable(LetterInCircleDrawable("t"))
           }
         }
-        recycler.emptyFirstChild { click() }
+        recycler.emptyChildAt(1) { click() }
         KPasswordInfoScreen {
           iconDelete.click()
           confirmationDialog.action2.click()

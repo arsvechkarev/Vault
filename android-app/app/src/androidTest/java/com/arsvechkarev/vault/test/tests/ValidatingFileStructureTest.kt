@@ -15,6 +15,7 @@ import com.arsvechkarev.vault.test.screens.KExportPasswordsScreen
 import com.arsvechkarev.vault.test.screens.KInitialScreen
 import com.arsvechkarev.vault.test.screens.KMainListScreen
 import com.arsvechkarev.vault.test.screens.KPasswordInfoScreen
+import com.arsvechkarev.vault.test.screens.KPlainTextEntryScreen
 import com.google.gson.Gson
 import com.kaspersky.kaspresso.testcases.api.testcase.TestCase
 import junit.framework.Assert.assertEquals
@@ -55,7 +56,7 @@ class ValidatingFileStructureTest : TestCase() {
         KMainListScreen {
           menu {
             open()
-            newPasswordMenuItem.click()
+            newEntryMenuItem.click()
           }
           entryTypeDialog.passwordEntry.click()
           KCreatingPasswordEntryScreen {
@@ -73,7 +74,7 @@ class ValidatingFileStructureTest : TestCase() {
           }
           menu {
             open()
-            newPasswordMenuItem.click()
+            newEntryMenuItem.click()
           }
           entryTypeDialog.passwordEntry.click()
           KCreatingPasswordEntryScreen {
@@ -91,6 +92,18 @@ class ValidatingFileStructureTest : TestCase() {
           }
           menu {
             open()
+            newEntryMenuItem.click()
+          }
+          entryTypeDialog.plainTextEntry.click()
+          KPlainTextEntryScreen {
+            editTextTitle.replaceText("my title")
+            editTextText.replaceText("super secret content")
+            buttonSave.click()
+            confirmationDialog.action2.click()
+            iconBack.click()
+          }
+          menu {
+            open()
             exportPasswordsMenuItem.click()
           }
           KExportPasswordsScreen {
@@ -105,7 +118,7 @@ class ValidatingFileStructureTest : TestCase() {
   }
   
   private fun checkEqualExceptIds() {
-    val expectedBytes = context.assets.open("file_two_items").readBytes()
+    val expectedBytes = context.assets.open("file_two_passwords_and_plain_text").readBytes()
     val expectedString = AesSivTinkCryptography.decryptData("qwetu1233", expectedBytes)
     val actualBytes = stubPasswordsFileExporter.exportedData!!
     val actualString = AesSivTinkCryptography.decryptData("qwetu1233", actualBytes)
@@ -114,7 +127,6 @@ class ValidatingFileStructureTest : TestCase() {
     val expectedEntries = gson.fromJson(expectedString, Entries::class.java)
     val actualEntries = gson.fromJson(actualString, Entries::class.java)
   
-    // TODO (1/10/2023): Add credit cards and plain texts validation
     assertEquals(expectedEntries.passwords.size, actualEntries.passwords.size)
     expectedEntries.passwords.forEach { expectedPassword ->
       checkNotNull(actualEntries.passwords.find { it.websiteName == expectedPassword.websiteName })
@@ -124,5 +136,12 @@ class ValidatingFileStructureTest : TestCase() {
             assertEquals(expectedPassword.notes, actualPasswordInfo.notes)
           }
     }
+    assertEquals(expectedEntries.plainTexts.size, actualEntries.plainTexts.size)
+    expectedEntries.plainTexts.forEach { expectedPlainText ->
+      assertEquals(expectedPlainText.text,
+        checkNotNull(actualEntries.plainTexts.find { it.title == expectedPlainText.title }).text)
+    }
+    // TODO (1/10/2023): Add credit cards validation, restructure test
+    //  to check one item of each type
   }
 }

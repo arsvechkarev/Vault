@@ -35,7 +35,7 @@ class KMenuView : KBaseView<KMenuView>({
     withMatcher(this@KMenuView.menuItemMatcher(R.drawable.ic_settings))
   }
   
-  val newPasswordMenuItem = KView {
+  val newEntryMenuItem = KView {
     withMatcher(this@KMenuView.menuItemMatcher(R.drawable.ic_new_entry))
   }
   

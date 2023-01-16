@@ -31,7 +31,7 @@ class ImportPasswordsTest : VaultTestCase() {
   
   private val stubFileReader = StubExternalFileReader(
     uriToMatch = "content://myfolder/myfile.png",
-    bytesToRead = { context.assets.open("file_two_items").readBytes() }
+    bytesToRead = { context.assets.open("file_two_passwords").readBytes() }
   )
   
   @Test
@@ -44,7 +44,7 @@ class ImportPasswordsTest : VaultTestCase() {
         ),
         externalFileReader = stubFileReader
       )
-      writeVaultFileFromAssets("file_one_item")
+      writeVaultFileFromAssets("file_one_password")
       rule.launchActivity()
     }
   }.run {
@@ -54,8 +54,8 @@ class ImportPasswordsTest : VaultTestCase() {
       
       KMainListScreen {
         recycler {
-          hasSize(1)
-          firstChild<PasswordItem> {
+          hasSize(2)
+          childAt<PasswordItem>(1) {
             text.hasText("aaa")
           }
         }
@@ -178,12 +178,12 @@ class ImportPasswordsTest : VaultTestCase() {
         currentScreenIs(MainListScreen::class)
         
         recycler {
-          hasSize(2)
-          childAt<PasswordItem>(0) {
+          hasSize(3)
+          childAt<PasswordItem>(1) {
             text.hasText("google")
             icon.hasDrawable(R.drawable.icon_google)
           }
-          childAt<PasswordItem>(1) {
+          childAt<PasswordItem>(2) {
             text.hasText("test.com")
             icon.hasDrawable(LetterInCircleDrawable("t"))
           }
@@ -218,12 +218,12 @@ class ImportPasswordsTest : VaultTestCase() {
         KMainListScreen {
           currentScreenIs(MainListScreen::class)
           recycler {
-            hasSize(2)
-            childAt<PasswordItem>(0) {
+            hasSize(3)
+            childAt<PasswordItem>(1) {
               text.hasText("google")
               icon.hasDrawable(R.drawable.icon_google)
             }
-            childAt<PasswordItem>(1) {
+            childAt<PasswordItem>(2) {
               text.hasText("test.com")
               icon.hasDrawable(LetterInCircleDrawable("t"))
             }

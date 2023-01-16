@@ -25,7 +25,7 @@ class ChangingMasterPasswordTest : VaultTestCase() {
   
   @Before
   fun setup() = runBlocking {
-    writeVaultFileFromAssets("file_two_items")
+    writeVaultFileFromAssets("file_two_passwords")
     rule.launchActivity()
   }
   
@@ -161,12 +161,12 @@ class ChangingMasterPasswordTest : VaultTestCase() {
       
       KMainListScreen {
         recycler {
-          hasSize(2)
-          childAt<PasswordItem>(0) {
+          hasSize(3)
+          childAt<PasswordItem>(1) {
             text.hasText("google")
             icon.hasDrawable(R.drawable.icon_google)
           }
-          childAt<PasswordItem>(1) {
+          childAt<PasswordItem>(2) {
             text.hasText("test.com")
             icon.hasDrawable(LetterInCircleDrawable("t"))
           }

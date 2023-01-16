@@ -103,7 +103,7 @@ class PasswordInfoScreen : BaseFragmentScreen() {
       }
     }
     RootFrameLayout {
-      id(InfoScreenRoot)
+      id(PasswordInfoScreenRoot)
       ScrollableConstraintLayout(MatchParent, MatchParent) {
         apply(Styles.BaseRootBackground)
         paddings(
@@ -370,7 +370,7 @@ class PasswordInfoScreen : BaseFragmentScreen() {
   
   companion object {
   
-    val InfoScreenRoot = View.generateViewId()
+    val PasswordInfoScreenRoot = View.generateViewId()
     val ImageBack = View.generateViewId()
     val ImageDelete = View.generateViewId()
     val ImageWebsite = View.generateViewId()

@@ -179,7 +179,6 @@ class PlainTextScreen : BaseFragmentScreen() {
           onClick { store.tryDispatch(OnTextActionClicked) }
           constraints {
             topToTopOf(EditTextText)
-            bottomToBottomOf(EditTextText)
             endToEndOf(parent)
           }
         }

@@ -1,5 +1,6 @@
 package com.arsvechkarev.vault.features.creating_password
 
+import buisnesslogic.DEFAULT_PASSWORD_LENGTH
 import buisnesslogic.model.PasswordCharacteristic
 import buisnesslogic.model.PasswordCharacteristic.NUMBERS
 import buisnesslogic.model.PasswordCharacteristic.SPECIAL_SYMBOLS
@@ -37,7 +38,14 @@ class CreatingPasswordReducer : DslReducer<CreatingPasswordState, CreatingPasswo
     when (event) {
       is CreatingPasswordUiEvent -> handleUiEvent(event)
       is Setup -> {
-        state { copy(mode = event.mode) }
+        state {
+          val length = if (event.mode is EditPassword) {
+            event.mode.password.length
+          } else {
+            DEFAULT_PASSWORD_LENGTH
+          }
+          copy(mode = event.mode, passwordLength = length)
+        }
       }
       is GeneratedPassword -> {
         state { copy(password = event.password) }

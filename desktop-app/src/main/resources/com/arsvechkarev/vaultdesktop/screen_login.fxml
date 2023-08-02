@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.shape.Line?>
+<Pane
+  xmlns:fx="http://javafx.com/fxml"
+  fx:controller="com.arsvechkarev.vaultdesktop.controllers.LoginController"
+  xmlns="http://javafx.com/javafx/20.0.1"
+  maxHeight="-Infinity"
+  maxWidth="-Infinity"
+  minHeight="-Infinity"
+  minWidth="-Infinity"
+  prefHeight="331.0"
+  prefWidth="403.0">
+  <children>
+    <ImageView
+      fitHeight="94.0"
+      fitWidth="403.0"
+      pickOnBounds="true">
+      <image>
+        <Image url="@bg_gradient.png"/>
+      </image>
+    </ImageView>
+    <Label
+      text="Vault"
+      alignment="CENTER"
+      layoutY="22.0"
+      prefHeight="34.0"
+      prefWidth="403.0"
+      styleClass="main-title"
+      textAlignment="CENTER">
+    </Label>
+    <Label
+      text="File"
+      fx:id="filenameHeader"
+      alignment="TOP_LEFT"
+      layoutX="23.0"
+      layoutY="94.0"
+      prefHeight="18.0"
+      prefWidth="67.0"
+      textAlignment="CENTER"
+      styleClass="header">
+    </Label>
+    <Label
+      fx:id="filenameLabel"
+      text="Select file"
+      onMouseClicked="#onOpenFileClick"
+      alignment="TOP_LEFT"
+      layoutX="23.0"
+      layoutY="118.0"
+      prefHeight="18.0"
+      prefWidth="205.0"
+      textAlignment="CENTER"
+      styleClass="secondary">
+    </Label>
+    <Label
+      fx:id="masterPasswordLabel"
+      text="Master password"
+      alignment="TOP_LEFT"
+      layoutX="23.0"
+      layoutY="161.0"
+      prefHeight="18.0"
+      prefWidth="113.0"
+      textAlignment="CENTER"
+      styleClass="header">
+    </Label>
+    <PasswordField
+      focusTraversable="false"
+      layoutX="22.5"
+      layoutY="181.0"
+      prefHeight="26.0"
+      prefWidth="358.0"
+      promptText="Enter password"
+      styleClass="edit-text-password"/>
+    <Line
+      styleClass="underline"
+      layoutX="125"
+      layoutY="211"
+      startX="-101"
+      endX="253"/>
+    <Button
+      onMouseClicked="#onContinueClick"
+      layoutX="106.0"
+      layoutY="276.0"
+      mnemonicParsing="false"
+      prefHeight="30.0"
+      prefWidth="191.0"
+      styleClass="button"
+      text="Continue">
+    </Button>
+  </children>
+</Pane>

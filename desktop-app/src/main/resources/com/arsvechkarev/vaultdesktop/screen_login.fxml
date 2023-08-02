@@ -40,24 +40,29 @@
       fx:id="filenameHeader"
       alignment="TOP_LEFT"
       layoutX="23.0"
-      layoutY="94.0"
+      layoutY="84.0"
       prefHeight="18.0"
-      prefWidth="67.0"
+      prefWidth="358.0"
       textAlignment="CENTER"
       styleClass="header">
     </Label>
     <Label
       fx:id="filenameLabel"
-      text="Select file"
-      onMouseClicked="#onOpenFileClick"
+      text="Select file..."
       alignment="TOP_LEFT"
       layoutX="23.0"
-      layoutY="118.0"
+      layoutY="108.0"
       prefHeight="18.0"
-      prefWidth="205.0"
+      prefWidth="358.0"
       textAlignment="CENTER"
       styleClass="secondary">
     </Label>
+    <Pane
+      onMouseClicked="#onOpenFileClick"
+      layoutY="80.0"
+      layoutX="15.0"
+      prefHeight="50.0"
+      prefWidth="358.0"/>
     <Label
       fx:id="masterPasswordLabel"
       text="Master password"
@@ -65,17 +70,19 @@
       layoutX="23.0"
       layoutY="161.0"
       prefHeight="18.0"
-      prefWidth="113.0"
+      prefWidth="358.0"
       textAlignment="CENTER"
       styleClass="header">
     </Label>
     <PasswordField
+      fx:id="masterPasswordField"
       focusTraversable="false"
       layoutX="22.5"
       layoutY="181.0"
       prefHeight="26.0"
       prefWidth="358.0"
-      promptText="Enter password"
+      onKeyPressed="#onKeyPressed"
+      promptText="Enter password..."
       styleClass="edit-text-password"/>
     <Line
       styleClass="underline"

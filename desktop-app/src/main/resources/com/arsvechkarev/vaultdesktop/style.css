@@ -1,0 +1,42 @@
+@font-face {
+  src: url('fonts/segoe_ui.ttf');
+  src: url('fonts/segoe_ui_bold.ttf');
+}
+
+.root {
+  -fx-font-size: 14px;
+  -fx-font-family: 'Segoe UI';
+  -fx-background-color: #1F2B36;
+  -fx-text-background-color: #FFFFFF;
+}
+
+.main-title {
+  -fx-font-size: 30px;
+  -fx-font-family: 'Segoe UI Bold';
+}
+
+.header {
+  -fx-text-background-color: #3C80AE;
+}
+
+.secondary {
+  -fx-text-background-color: #A3A3A3
+}
+
+.button {
+  -fx-background-color: linear-gradient(to right, #3C80AE , #69ACD8);
+  -fx-background-radius: 50px;
+  -fx-font-family: 'Segoe UI Bold';
+  -fx-text-fill: #FFFFFF;
+}
+
+.edit-text-password {
+  -fx-background-color: transparent;
+  -fx-padding: 5px 0px 5px 0px;
+  -fx-text-fill: #FFFFFF;
+}
+
+.underline {
+  -fx-stroke: #3C80AE;
+  -fx-stroke-width: 2px;
+}

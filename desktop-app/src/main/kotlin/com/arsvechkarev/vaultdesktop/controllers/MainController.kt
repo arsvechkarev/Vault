@@ -1,0 +1,3 @@
+package com.arsvechkarev.vaultdesktop.controllers
+
+class MainController

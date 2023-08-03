@@ -1,14 +1,18 @@
 package com.arsvechkarev.vaultdesktop.controllers
 
 import com.arsvechkarev.commoncrypto.AesSivTinkCipher
+import com.arsvechkarev.vaultdesktop.ext.openNewScene
 import com.arsvechkarev.vaultdesktop.style.Colors
 import javafx.fxml.FXML
+import javafx.scene.Node
 import javafx.scene.control.Label
 import javafx.scene.control.PasswordField
+import javafx.scene.input.InputEvent
 import javafx.scene.input.KeyCode
 import javafx.scene.input.KeyEvent
 import javafx.scene.paint.Paint
 import javafx.stage.FileChooser
+import javafx.stage.Stage
 import java.io.File
 
 class LoginController {
@@ -39,7 +43,7 @@ class LoginController {
   @FXML
   fun onKeyPressed(event: KeyEvent) {
     if (event.code == KeyCode.ENTER) {
-      onContinueClick()
+      onContinueClick(event)
     } else {
       masterPasswordLabel.text = "Master password"
       masterPasswordLabel.textFill = Paint.valueOf(Colors.ACCENT)
@@ -47,7 +51,13 @@ class LoginController {
   }
   
   @FXML
-  fun onContinueClick() {
+  fun onContinueClick(event: InputEvent) {
+    openNewScene(
+      sceneFxml = "scene_main.fxml",
+      stage = (event.source as Node).scene.window as Stage,
+      closeCurrentStage = true
+    )
+    return
     val file = file
     if (file == null) {
       filenameHeader.text = "File is not selected"
@@ -68,9 +78,11 @@ class LoginController {
           masterPasswordLabel.textFill = Paint.valueOf(Colors.ERROR)
         }
         .onSuccess {
-          println("================================")
-          println(it)
-          println("================================")
+          openNewScene(
+            sceneFxml = "scene_main.fxml",
+            stage = (event.source as Node).scene.window as Stage,
+            closeCurrentStage = true
+          )
         }
   }
 }

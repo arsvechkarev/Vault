@@ -23,7 +23,7 @@
       fitWidth="403.0"
       pickOnBounds="true">
       <image>
-        <Image url="@bg_gradient.png"/>
+        <Image url="@icons/bg_gradient.png"/>
       </image>
     </ImageView>
     <Label

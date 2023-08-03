@@ -37,7 +37,7 @@
     </Label>
     <Label
       text="File"
-      fx:id="filenameHeader"
+      fx:id="labelFilenameTitle"
       alignment="TOP_LEFT"
       layoutX="23.0"
       layoutY="84.0"
@@ -47,7 +47,7 @@
       styleClass="header">
     </Label>
     <Label
-      fx:id="filenameLabel"
+      fx:id="labelFilenameValue"
       text="Select file..."
       alignment="TOP_LEFT"
       layoutX="23.0"
@@ -64,7 +64,7 @@
       prefHeight="50.0"
       prefWidth="358.0"/>
     <Label
-      fx:id="masterPasswordLabel"
+      fx:id="labelMasterPassword"
       text="Master password"
       alignment="TOP_LEFT"
       layoutX="23.0"

@@ -15,448 +15,128 @@
 <?import javafx.scene.text.Font?>
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
             prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/20.0.1"
-            xmlns:fx="http://javafx.com/fxml/1">
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.arsvechkarev.vaultdesktop.controllers.MainController">
   <left>
     <AnchorPane prefHeight="400.0" prefWidth="250.0" style="-fx-background-color: #1F2B36;"
                 BorderPane.alignment="CENTER">
-      <children>
-        <ScrollPane hbarPolicy="NEVER" prefHeight="600.0" prefWidth="250.0" styleClass="edge-to-edge">
-          <content>
-            <VBox fillWidth="false" maxHeight="1.7976931348623157E308" prefWidth="250.0"
-                  style="-fx-background-color: #1F2B36;">
-              <padding>
-                <Insets bottom="30.0" top="100.0"/>
-              </padding>
-              <children>
-                <Label prefHeight="22.0" prefWidth="250.0"
-                       style="-fx-text-fill: #FFFFFF; -fx-font-family: 'Segoe UI Semibold';" text="Passwords">
-                  <padding>
-                    <Insets bottom="5.0" left="10.0"/>
-                  </padding>
-                </Label>
-                <Pane layoutX="10.0" layoutY="110.0" prefHeight="44.0" prefWidth="250.0">
-                  <children>
-                    <Label layoutX="60.0" layoutY="9.0" prefHeight="25.0" prefWidth="184.0"
-                           style="-fx-text-fill: #FFFFFF; -fx-font-size: 16px; -fx-font-family: 'Segoe UI';"
-                           styleClass="main-title" text="google">
-                      <font>
-                        <Font name="Segoe UI Semibold" size="12.0"/>
-                      </font>
-                    </Label>
-                    <Circle fill="WHITE" layoutX="35.0" layoutY="21.0" radius="14.0" stroke="BLACK"
-                            strokeType="INSIDE" strokeWidth="0.0"/>
-                    <Label layoutX="29.0" layoutY="12.0" prefHeight="19.0" prefWidth="0.0"
-                           style="-fx-text-fill: #17212B; -fx-font-size: 16px; -fx-font-family: 'Segoe UI Bold';"
-                           styleClass="main-title" text="G">
-                      <font>
-                        <Font name="Segoe UI Semibold" size="12.0"/>
-                      </font>
-                    </Label>
-                  </children>
-                </Pane>
-                <Pane layoutX="10.0" layoutY="132.0" prefHeight="44.0" prefWidth="250.0">
-                  <children>
-                    <Label layoutX="60.0" layoutY="9.0" prefHeight="25.0" prefWidth="184.0"
-                           style="-fx-text-fill: #FFFFFF; -fx-font-size: 16px; -fx-font-family: 'Segoe UI';"
-                           styleClass="main-title" text="google">
-                      <font>
-                        <Font name="Segoe UI Semibold" size="12.0"/>
-                      </font>
-                    </Label>
-                    <Circle fill="WHITE" layoutX="35.0" layoutY="21.0" radius="14.0" stroke="BLACK"
-                            strokeType="INSIDE" strokeWidth="0.0"/>
-                    <Label layoutX="29.0" layoutY="12.0" prefHeight="19.0" prefWidth="0.0"
-                           style="-fx-text-fill: #17212B; -fx-font-size: 16px; -fx-font-family: 'Segoe UI Bold';"
-                           styleClass="main-title" text="G">
-                      <font>
-                        <Font name="Segoe UI Semibold" size="12.0"/>
-                      </font>
-                    </Label>
-                  </children>
-                </Pane>
-                <Pane layoutX="10.0" layoutY="176.0" prefHeight="44.0" prefWidth="250.0">
-                  <children>
-                    <Label layoutX="60.0" layoutY="9.0" prefHeight="25.0" prefWidth="184.0"
-                           style="-fx-text-fill: #FFFFFF; -fx-font-size: 16px; -fx-font-family: 'Segoe UI';"
-                           styleClass="main-title" text="google">
-                      <font>
-                        <Font name="Segoe UI Semibold" size="12.0"/>
-                      </font>
-                    </Label>
-                    <Circle fill="WHITE" layoutX="35.0" layoutY="21.0" radius="14.0" stroke="BLACK"
-                            strokeType="INSIDE" strokeWidth="0.0"/>
-                    <Label layoutX="29.0" layoutY="12.0" prefHeight="19.0" prefWidth="0.0"
-                           style="-fx-text-fill: #17212B; -fx-font-size: 16px; -fx-font-family: 'Segoe UI Bold';"
-                           styleClass="main-title" text="G">
-                      <font>
-                        <Font name="Segoe UI Semibold" size="12.0"/>
-                      </font>
-                    </Label>
-                  </children>
-                </Pane>
-                <Pane layoutX="10.0" layoutY="220.0" prefHeight="44.0" prefWidth="250.0">
-                  <children>
-                    <Label layoutX="60.0" layoutY="9.0" prefHeight="25.0" prefWidth="184.0"
-                           style="-fx-text-fill: #FFFFFF; -fx-font-size: 16px; -fx-font-family: 'Segoe UI';"
-                           styleClass="main-title" text="google">
-                      <font>
-                        <Font name="Segoe UI Semibold" size="12.0"/>
-                      </font>
-                    </Label>
-                    <Circle fill="WHITE" layoutX="35.0" layoutY="21.0" radius="14.0" stroke="BLACK"
-                            strokeType="INSIDE" strokeWidth="0.0"/>
-                    <Label layoutX="29.0" layoutY="12.0" prefHeight="19.0" prefWidth="0.0"
-                           style="-fx-text-fill: #17212B; -fx-font-size: 16px; -fx-font-family: 'Segoe UI Bold';"
-                           styleClass="main-title" text="G">
-                      <font>
-                        <Font name="Segoe UI Semibold" size="12.0"/>
-                      </font>
-                    </Label>
-                  </children>
-                </Pane>
-                <Pane layoutX="10.0" layoutY="264.0" prefHeight="44.0" prefWidth="250.0">
-                  <children>
-                    <Label layoutX="60.0" layoutY="9.0" prefHeight="25.0" prefWidth="184.0"
-                           style="-fx-text-fill: #FFFFFF; -fx-font-size: 16px; -fx-font-family: 'Segoe UI';"
-                           styleClass="main-title" text="google">
-                      <font>
-                        <Font name="Segoe UI Semibold" size="12.0"/>
-                      </font>
-                    </Label>
-                    <Circle fill="WHITE" layoutX="35.0" layoutY="21.0" radius="14.0" stroke="BLACK"
-                            strokeType="INSIDE" strokeWidth="0.0"/>
-                    <Label layoutX="29.0" layoutY="12.0" prefHeight="19.0" prefWidth="0.0"
-                           style="-fx-text-fill: #17212B; -fx-font-size: 16px; -fx-font-family: 'Segoe UI Bold';"
-                           styleClass="main-title" text="G">
-                      <font>
-                        <Font name="Segoe UI Semibold" size="12.0"/>
-                      </font>
-                    </Label>
-                  </children>
-                </Pane>
-                <Pane layoutX="10.0" layoutY="308.0" prefHeight="44.0" prefWidth="250.0">
-                  <children>
-                    <Label layoutX="60.0" layoutY="9.0" prefHeight="25.0" prefWidth="184.0"
-                           style="-fx-text-fill: #FFFFFF; -fx-font-size: 16px; -fx-font-family: 'Segoe UI';"
-                           styleClass="main-title" text="google">
-                      <font>
-                        <Font name="Segoe UI Semibold" size="12.0"/>
-                      </font>
-                    </Label>
-                    <Circle fill="WHITE" layoutX="35.0" layoutY="21.0" radius="14.0" stroke="BLACK"
-                            strokeType="INSIDE" strokeWidth="0.0"/>
-                    <Label layoutX="29.0" layoutY="12.0" prefHeight="19.0" prefWidth="0.0"
-                           style="-fx-text-fill: #17212B; -fx-font-size: 16px; -fx-font-family: 'Segoe UI Bold';"
-                           styleClass="main-title" text="G">
-                      <font>
-                        <Font name="Segoe UI Semibold" size="12.0"/>
-                      </font>
-                    </Label>
-                  </children>
-                </Pane>
-                <Pane layoutX="10.0" layoutY="352.0" prefHeight="44.0" prefWidth="250.0">
-                  <children>
-                    <Label layoutX="60.0" layoutY="9.0" prefHeight="25.0" prefWidth="184.0"
-                           style="-fx-text-fill: #FFFFFF; -fx-font-size: 16px; -fx-font-family: 'Segoe UI';"
-                           styleClass="main-title" text="google">
-                      <font>
-                        <Font name="Segoe UI Semibold" size="12.0"/>
-                      </font>
-                    </Label>
-                    <Circle fill="WHITE" layoutX="35.0" layoutY="21.0" radius="14.0" stroke="BLACK"
-                            strokeType="INSIDE" strokeWidth="0.0"/>
-                    <Label layoutX="29.0" layoutY="12.0" prefHeight="19.0" prefWidth="0.0"
-                           style="-fx-text-fill: #17212B; -fx-font-size: 16px; -fx-font-family: 'Segoe UI Bold';"
-                           styleClass="main-title" text="G">
-                      <font>
-                        <Font name="Segoe UI Semibold" size="12.0"/>
-                      </font>
-                    </Label>
-                  </children>
-                </Pane>
-                <Pane layoutX="10.0" layoutY="396.0" prefHeight="44.0" prefWidth="250.0">
-                  <children>
-                    <Label layoutX="60.0" layoutY="9.0" prefHeight="25.0" prefWidth="184.0"
-                           style="-fx-text-fill: #FFFFFF; -fx-font-size: 16px; -fx-font-family: 'Segoe UI';"
-                           styleClass="main-title" text="google">
-                      <font>
-                        <Font name="Segoe UI Semibold" size="12.0"/>
-                      </font>
-                    </Label>
-                    <Circle fill="WHITE" layoutX="35.0" layoutY="21.0" radius="14.0" stroke="BLACK"
-                            strokeType="INSIDE" strokeWidth="0.0"/>
-                    <Label layoutX="29.0" layoutY="12.0" prefHeight="19.0" prefWidth="0.0"
-                           style="-fx-text-fill: #17212B; -fx-font-size: 16px; -fx-font-family: 'Segoe UI Bold';"
-                           styleClass="main-title" text="G">
-                      <font>
-                        <Font name="Segoe UI Semibold" size="12.0"/>
-                      </font>
-                    </Label>
-                  </children>
-                </Pane>
-                <Pane layoutX="10.0" layoutY="396.0" prefHeight="44.0" prefWidth="250.0">
-                  <children>
-                    <Label layoutX="60.0" layoutY="9.0" prefHeight="25.0" prefWidth="184.0"
-                           style="-fx-text-fill: #FFFFFF; -fx-font-size: 16px; -fx-font-family: 'Segoe UI';"
-                           styleClass="main-title" text="google">
-                      <font>
-                        <Font name="Segoe UI Semibold" size="12.0"/>
-                      </font>
-                    </Label>
-                    <Circle fill="WHITE" layoutX="35.0" layoutY="21.0" radius="14.0" stroke="BLACK"
-                            strokeType="INSIDE" strokeWidth="0.0"/>
-                    <Label layoutX="29.0" layoutY="12.0" prefHeight="19.0" prefWidth="0.0"
-                           style="-fx-text-fill: #17212B; -fx-font-size: 16px; -fx-font-family: 'Segoe UI Bold';"
-                           styleClass="main-title" text="G">
-                      <font>
-                        <Font name="Segoe UI Semibold" size="12.0"/>
-                      </font>
-                    </Label>
-                  </children>
-                </Pane>
-                <Pane layoutX="10.0" layoutY="484.0" prefHeight="44.0" prefWidth="250.0">
-                  <children>
-                    <Label layoutX="60.0" layoutY="9.0" prefHeight="25.0" prefWidth="184.0"
-                           style="-fx-text-fill: #FFFFFF; -fx-font-size: 16px; -fx-font-family: 'Segoe UI';"
-                           styleClass="main-title" text="google">
-                      <font>
-                        <Font name="Segoe UI Semibold" size="12.0"/>
-                      </font>
-                    </Label>
-                    <Circle fill="WHITE" layoutX="35.0" layoutY="21.0" radius="14.0" stroke="BLACK"
-                            strokeType="INSIDE" strokeWidth="0.0"/>
-                    <Label layoutX="29.0" layoutY="12.0" prefHeight="19.0" prefWidth="0.0"
-                           style="-fx-text-fill: #17212B; -fx-font-size: 16px; -fx-font-family: 'Segoe UI Bold';"
-                           styleClass="main-title" text="G">
-                      <font>
-                        <Font name="Segoe UI Semibold" size="12.0"/>
-                      </font>
-                    </Label>
-                  </children>
-                </Pane>
-                <Pane layoutX="10.0" layoutY="528.0" prefHeight="44.0" prefWidth="250.0">
-                  <children>
-                    <Label layoutX="60.0" layoutY="9.0" prefHeight="25.0" prefWidth="184.0"
-                           style="-fx-text-fill: #FFFFFF; -fx-font-size: 16px; -fx-font-family: 'Segoe UI';"
-                           styleClass="main-title" text="google">
-                      <font>
-                        <Font name="Segoe UI Semibold" size="12.0"/>
-                      </font>
-                    </Label>
-                    <Circle fill="WHITE" layoutX="35.0" layoutY="21.0" radius="14.0" stroke="BLACK"
-                            strokeType="INSIDE" strokeWidth="0.0"/>
-                    <Label layoutX="29.0" layoutY="12.0" prefHeight="19.0" prefWidth="0.0"
-                           style="-fx-text-fill: #17212B; -fx-font-size: 16px; -fx-font-family: 'Segoe UI Bold';"
-                           styleClass="main-title" text="G">
-                      <font>
-                        <Font name="Segoe UI Semibold" size="12.0"/>
-                      </font>
-                    </Label>
-                  </children>
-                </Pane>
-                <Pane layoutX="10.0" layoutY="572.0" prefHeight="44.0" prefWidth="250.0">
-                  <children>
-                    <Label layoutX="60.0" layoutY="9.0" prefHeight="25.0" prefWidth="184.0"
-                           style="-fx-text-fill: #FFFFFF; -fx-font-size: 16px; -fx-font-family: 'Segoe UI';"
-                           styleClass="main-title" text="google">
-                      <font>
-                        <Font name="Segoe UI Semibold" size="12.0"/>
-                      </font>
-                    </Label>
-                    <Circle fill="WHITE" layoutX="35.0" layoutY="21.0" radius="14.0" stroke="BLACK"
-                            strokeType="INSIDE" strokeWidth="0.0"/>
-                    <Label layoutX="29.0" layoutY="12.0" prefHeight="19.0" prefWidth="0.0"
-                           style="-fx-text-fill: #17212B; -fx-font-size: 16px; -fx-font-family: 'Segoe UI Bold';"
-                           styleClass="main-title" text="G">
-                      <font>
-                        <Font name="Segoe UI Semibold" size="12.0"/>
-                      </font>
-                    </Label>
-                  </children>
-                </Pane>
-                <Pane layoutX="10.0" layoutY="616.0" prefHeight="44.0" prefWidth="250.0">
-                  <children>
-                    <Label layoutX="60.0" layoutY="9.0" prefHeight="25.0" prefWidth="184.0"
-                           style="-fx-text-fill: #FFFFFF; -fx-font-size: 16px; -fx-font-family: 'Segoe UI';"
-                           styleClass="main-title" text="google">
-                      <font>
-                        <Font name="Segoe UI Semibold" size="12.0"/>
-                      </font>
-                    </Label>
-                    <Circle fill="WHITE" layoutX="35.0" layoutY="21.0" radius="14.0" stroke="BLACK"
-                            strokeType="INSIDE" strokeWidth="0.0"/>
-                    <Label layoutX="29.0" layoutY="12.0" prefHeight="19.0" prefWidth="0.0"
-                           style="-fx-text-fill: #17212B; -fx-font-size: 16px; -fx-font-family: 'Segoe UI Bold';"
-                           styleClass="main-title" text="G">
-                      <font>
-                        <Font name="Segoe UI Semibold" size="12.0"/>
-                      </font>
-                    </Label>
-                  </children>
-                </Pane>
-                <Pane layoutX="10.0" layoutY="660.0" prefHeight="44.0" prefWidth="250.0">
-                  <children>
-                    <Label layoutX="60.0" layoutY="9.0" prefHeight="25.0" prefWidth="184.0"
-                           style="-fx-text-fill: #FFFFFF; -fx-font-size: 16px; -fx-font-family: 'Segoe UI';"
-                           styleClass="main-title" text="google">
-                      <font>
-                        <Font name="Segoe UI Semibold" size="12.0"/>
-                      </font>
-                    </Label>
-                    <Circle fill="WHITE" layoutX="35.0" layoutY="21.0" radius="14.0" stroke="BLACK"
-                            strokeType="INSIDE" strokeWidth="0.0"/>
-                    <Label layoutX="29.0" layoutY="12.0" prefHeight="19.0" prefWidth="0.0"
-                           style="-fx-text-fill: #17212B; -fx-font-size: 16px; -fx-font-family: 'Segoe UI Bold';"
-                           styleClass="main-title" text="G">
-                      <font>
-                        <Font name="Segoe UI Semibold" size="12.0"/>
-                      </font>
-                    </Label>
-                  </children>
-                </Pane>
-              </children>
-            </VBox>
-          </content>
-        </ScrollPane>
-        <ImageView fitHeight="100.0" fitWidth="250.0" pickOnBounds="true">
-          <image>
-            <Image url="@icons/bg_gradient.png"/>
-          </image>
-        </ImageView>
-        <Label alignment="CENTER" layoutY="21.0" prefHeight="38.0" prefWidth="250.0"
-               style="-fx-text-fill: #FFFFFF; -fx-font-size: 30px; -fx-font-family: 'Segoe UI Bold';"
-               styleClass="main-title" text="Vault">
+      <ScrollPane hbarPolicy="NEVER" prefHeight="600.0" prefWidth="250.0" styleClass="edge-to-edge">
+        <VBox fx:id="vBoxEntries" fillWidth="false" prefWidth="250.0"
+              style="-fx-background-color: #1F2B36;">
+          <padding>
+            <Insets bottom="30.0" top="85.0"/>
+          </padding>
+        </VBox>
+      </ScrollPane>
+      <ImageView fitHeight="100.0" fitWidth="250.0" pickOnBounds="true"
+                 mouseTransparent="true">
+        <Image url="@icons/bg_gradient.png"/>
+      </ImageView>
+      <Label alignment="CENTER" layoutY="21.0" prefHeight="38.0" prefWidth="250.0"
+             style="-fx-text-fill: #FFFFFF; -fx-font-size: 30px; -fx-font-family: 'Segoe UI Bold';"
+             styleClass="main-title" text="Vault">
+        <font>
+          <Font name="Segoe UI Semibold" size="12.0"/>
+        </font>
+      </Label>
+    </AnchorPane>
+  </left>
+  <right>
+    <AnchorPane fx:id="anchorPaneContent" prefHeight="400.0" prefWidth="550.0"
+                style="-fx-background-color: #17212B;">
+      <Pane fx:id="paneNothingSelected" prefHeight="600.0" prefWidth="550.0">
+        <Label layoutX="177.0" layoutY="291.0"
+               style="-fx-text-fill: #FFFFFF; -fx-font-size: 14px; -fx-font-family: 'Segoe UI';"
+               text="Click on an item for more info"/>
+      </Pane>
+      <Pane fx:id="panePlainText" prefHeight="600.0" prefWidth="550.0" visible="false">
+        <Label alignment="CENTER" layoutX="178.0" layoutY="29.0" prefHeight="38.0" prefWidth="194.0"
+               style="-fx-text-fill: #FFFFFF; -fx-font-size: 24px; -fx-font-family: 'Segoe UI Bold';"
+               styleClass="main-title" text="Plain text">
           <font>
             <Font name="Segoe UI Semibold" size="12.0"/>
           </font>
         </Label>
-      </children>
-    </AnchorPane>
-  </left>
-  <right>
-    <AnchorPane prefHeight="400.0" prefWidth="550.0" style="-fx-background-color: #17212B;"
-                BorderPane.alignment="CENTER">
-      <children>
-        <Pane fx:id="paneNothingSelected" prefHeight="600.0" prefWidth="550.0" visible="false">
-          <children>
-            <Label layoutX="177.0" layoutY="291.0"
-                   style="-fx-text-fill: #FFFFFF; -fx-font-size: 14px; -fx-font-family: 'Segoe UI';"
-                   text="Click on password for more info"/>
-          </children>
-        </Pane>
-        <Pane fx:id="panePlainText" prefHeight="600.0" prefWidth="550.0" visible="false">
-          <children>
-            <Label alignment="CENTER" layoutX="178.0" layoutY="29.0" prefHeight="38.0" prefWidth="194.0"
-                   style="-fx-text-fill: #FFFFFF; -fx-font-size: 24px; -fx-font-family: 'Segoe UI Bold';"
-                   styleClass="main-title" text="Plain text">
-              <font>
-                <Font name="Segoe UI Semibold" size="12.0"/>
-              </font>
-            </Label>
-            <Label layoutX="32.0" layoutY="101.0" style="-fx-text-fill: #3C80AE; -fx-font-size: 14px;"
-                   text="Title"/>
-            <ImageView fx:id="imageCopyTitle" fitHeight="18.0" fitWidth="18.0" layoutX="510.0" layoutY="125.0"
-                       pickOnBounds="true" preserveRatio="true">
-              <image>
-                <Image url="@icons/copy.png"/>
-              </image>
-            </ImageView>
-            <TextField fx:id="textFieldTitle" editable="false" layoutX="32.0" layoutY="121.0"
-                       prefHeight="25.0"
-                       prefWidth="460.0"
-                       style="-fx-background-color: transparent; -fx-font-family: 'Segoe UI Semibold'; -fx-text-fill: #FFFFFF; -fx-font-size: 16px; -fx-padding: 0px;"
-                       text="my data"/>
-            <Label layoutX="32.0" layoutY="173.0" style="-fx-text-fill: #3C80AE; -fx-font-size: 14px;"
-                   text="Text"/>
-            <ImageView fx:id="imageCopyText" fitHeight="18.0" fitWidth="18.0" layoutX="510.0" layoutY="202.0"
-                       pickOnBounds="true" preserveRatio="true">
-              <image>
-                <Image url="@icons/copy.png"/>
-              </image>
-            </ImageView>
-            <TextArea fx:id="textAreaText" editable="false" layoutX="31.0" layoutY="202.0" prefHeight="186"
-                      prefWidth="462.0" promptText="Add text..." style="-#17212B" wrapText="true"/>
-          </children>
-        </Pane>
-        <Pane fx:id="panePassword" prefHeight="600.0" prefWidth="550.0" visible="true">
-          <children>
-            <Circle fill="WHITE" layoutX="272.0" layoutY="54.0" radius="22.0" stroke="BLACK"
-                    strokeType="INSIDE" strokeWidth="0.0"/>
-            <Label fx:id="labelWebsiteNameLetter" alignment="CENTER" contentDisplay="CENTER" layoutX="257.0"
-                   layoutY="34.0" prefHeight="41.0" prefWidth="30.0"
-                   style="-fx-text-fill: #17212B; -fx-font-size: 24px; -fx-font-family: 'Segoe UI Bold';"
-                   styleClass="main-title" text="G" textOverrun="CLIP">
-              <font>
-                <Font name="Segoe UI Semibold" size="12.0"/>
-              </font>
-            </Label>
-            <Label fx:id="labelWebsiteName" alignment="CENTER" layoutX="175.0" layoutY="90.0"
-                   prefHeight="38.0"
-                   prefWidth="194.0"
-                   style="-fx-text-fill: #FFFFFF; -fx-font-size: 24px; -fx-font-family: 'Segoe UI Bold';"
-                   styleClass="main-title" text="Google">
-              <font>
-                <Font name="Segoe UI Semibold" size="12.0"/>
-              </font>
-            </Label>
-            <Label layoutX="33.0" layoutY="159.0" style="-fx-text-fill: #3C80AE; -fx-font-size: 14px;"
-                   text="Website name"/>
-            <ImageView fx:id="imageCopyWebsiteName" fitHeight="18.0" fitWidth="18.0" layoutX="502.0"
-                       layoutY="182.0" pickOnBounds="true" preserveRatio="true">
-              <image>
-                <Image url="@icons/copy.png"/>
-              </image>
-            </ImageView>
-            <Label layoutX="33.0" layoutY="230.0" style="-fx-text-fill: #3C80AE; -fx-font-size: 14px;"
-                   text="Login"/>
-            <ImageView fx:id="imageCopyLogin" fitHeight="18.0" fitWidth="18.0" layoutX="502.0" layoutY="253.0"
-                       pickOnBounds="true" preserveRatio="true">
-              <image>
-                <Image url="@icons/copy.png"/>
-              </image>
-            </ImageView>
-            <Label layoutX="33.0" layoutY="305.0" style="-fx-text-fill: #3C80AE; -fx-font-size: 14px;"
-                   text="Password"/>
-            <ImageView fx:id="imageCopyPassword" fitHeight="18.0" fitWidth="18.0" layoutX="502.0"
-                       layoutY="328.0"
-                       pickOnBounds="true" preserveRatio="true">
-              <image>
-                <Image url="@icons/copy.png"/>
-              </image>
-            </ImageView>
-            <TextField fx:id="textFieldWebsiteName" editable="false" focusTraversable="false" layoutX="33.0"
-                       layoutY="180.0" prefHeight="25.0" prefWidth="457.0"
-                       style="-fx-background-color: transparent; -fx-font-family: 'Segoe UI Semibold'; -fx-text-fill: #FFFFFF; -fx-font-size: 16px; -fx-padding: 0px;"
-                       text="google"/>
-            <TextField fx:id="textFieldLogin" editable="false" focusTraversable="false" layoutX="33.0"
-                       layoutY="251.0" prefHeight="25.0" prefWidth="451.0"
-                       style="-fx-background-color: transparent; -fx-font-family: 'Segoe UI Semibold'; -fx-text-fill: #FFFFFF; -fx-font-size: 16px; -fx-padding: 0px;"
-                       text="example@gmail.com"/>
-            <TextField fx:id="textFieldPassword" editable="false" focusTraversable="false" layoutX="33.0"
-                       layoutY="326.0" prefHeight="25.0" prefWidth="423.0"
-                       style="-fx-background-color: transparent; -fx-font-family: 'Segoe UI Semibold'; -fx-text-fill: #FFFFFF; -fx-font-size: 16px; -fx-padding: 0px;"
-                       text="•••••••••••••••••••"/>
-            <ImageView fx:id="imageTogglePassword" fitHeight="18.0" fitWidth="18.0" layoutX="467.0"
-                       layoutY="328.0" pickOnBounds="true" preserveRatio="true">
-              <image>
-                <Image url="@icons/eye.png"/>
-              </image>
-            </ImageView>
-            <Label layoutX="33.0" layoutY="378.0" style="-fx-text-fill: #3C80AE; -fx-font-size: 14px;"
-                   text="Notes"/>
-            <ImageView fx:id="imageCopyNotes" fitHeight="18.0" fitWidth="18.0" layoutX="502.0" layoutY="401.0"
-                       pickOnBounds="true" preserveRatio="true">
-              <image>
-                <Image url="@icons/copy.png"/>
-              </image>
-            </ImageView>
-            <TextArea fx:id="textFieldNotes" editable="false" focusTraversable="false" layoutX="33"
-                      layoutY="401"
-                      prefHeight="186" prefWidth="452" promptText="Add notes..." style="-#17212B"
-                      wrapText="true"/>
-          </children>
-        </Pane>
-      </children>
+        <Label layoutX="32.0" layoutY="101.0" style="-fx-text-fill: #3C80AE; -fx-font-size: 14px;"
+               text="Title"/>
+        <ImageView fx:id="imageCopyTitle" fitHeight="18.0" fitWidth="18.0" layoutX="510.0" layoutY="125.0"
+                   pickOnBounds="true" preserveRatio="true"
+                   onMouseClicked="#onCopyTitleClicked">
+          <Image url="@icons/copy.png"/>
+        </ImageView>
+        <TextField fx:id="textFieldTitle" editable="false" layoutX="32.0" layoutY="121.0" prefHeight="25.0"
+                   prefWidth="460.0"
+                   style="-fx-background-color: transparent; -fx-font-family: 'Segoe UI Semibold'; -fx-text-fill: #FFFFFF; -fx-font-size: 16px; -fx-padding: 0px;"
+                   text="my data"/>
+        <Label layoutX="32.0" layoutY="173.0" style="-fx-text-fill: #3C80AE; -fx-font-size: 14px;"
+               text="Text"/>
+        <ImageView fx:id="imageCopyText" fitHeight="18.0" fitWidth="18.0" layoutX="510.0" layoutY="202.0"
+                   pickOnBounds="true" preserveRatio="true"
+                   onMouseClicked="#onCopyTextClicked">
+          <Image url="@icons/copy.png"/>
+        </ImageView>
+        <TextArea fx:id="textAreaText" editable="false" layoutX="31.0" layoutY="202.0" prefHeight="186"
+                  prefWidth="462.0" promptText="Add text..." style="-#17212B" wrapText="true"/>
+      </Pane>
+      <Pane fx:id="panePassword" prefHeight="600.0" prefWidth="550.0" visible="false">
+        <Circle fill="WHITE" layoutX="272.0" layoutY="54.0" radius="22.0" stroke="BLACK" strokeType="INSIDE"
+                strokeWidth="0.0"/>
+        <Label fx:id="labelWebsiteNameLetter" alignment="CENTER" contentDisplay="CENTER" layoutX="257.0"
+               layoutY="34.0" prefHeight="41.0" prefWidth="30.0"
+               style="-fx-text-fill: #17212B; -fx-font-size: 24px; -fx-font-family: 'Segoe UI Bold';"
+               styleClass="main-title" textOverrun="CLIP">
+        </Label>
+        <Label fx:id="labelWebsiteName" alignment="CENTER" layoutX="20.0" layoutY="90.0" prefHeight="38.0"
+               prefWidth="535.0"
+               style="-fx-text-fill: #FFFFFF; -fx-font-size: 24px; -fx-font-family: 'Segoe UI Bold';"
+               styleClass="main-title">
+        </Label>
+        <Label layoutX="33.0" layoutY="159.0" style="-fx-text-fill: #3C80AE; -fx-font-size: 14px;"
+               text="Website name"/>
+        <ImageView fx:id="imageCopyWebsiteName" fitHeight="18.0" fitWidth="18.0" layoutX="502.0"
+                   layoutY="182.0" pickOnBounds="true" preserveRatio="true"
+                   onMouseClicked="#onCopyWebsiteNameClicked">
+          <Image url="@icons/copy.png"/>
+        </ImageView>
+        <Label layoutX="33.0" layoutY="230.0" style="-fx-text-fill: #3C80AE; -fx-font-size: 14px;"
+               text="Login"/>
+        <ImageView fx:id="imageCopyLogin" fitHeight="18.0" fitWidth="18.0" layoutX="502.0" layoutY="253.0"
+                   pickOnBounds="true" preserveRatio="true"
+                   onMouseClicked="#onCopyLoginClicked">
+          <Image url="@icons/copy.png"/>
+        </ImageView>
+        <Label layoutX="33.0" layoutY="305.0" style="-fx-text-fill: #3C80AE; -fx-font-size: 14px;"
+               text="Password"/>
+        <ImageView fx:id="imageCopyPassword" fitHeight="18.0" fitWidth="18.0" layoutX="502.0"
+                   layoutY="328.0" pickOnBounds="true" preserveRatio="true"
+                   onMouseClicked="#onCopyPasswordClicked">
+          <Image url="@icons/copy.png"/>
+        </ImageView>
+        <TextField fx:id="textFieldWebsiteName" editable="false" focusTraversable="false" layoutX="33.0"
+                   layoutY="180.0" prefHeight="25.0" prefWidth="457.0"
+                   style="-fx-background-color: transparent; -fx-font-family: 'Segoe UI Semibold'; -fx-text-fill: #FFFFFF; -fx-font-size: 16px; -fx-padding: 0px;"/>
+        <TextField fx:id="textFieldLogin" editable="false" focusTraversable="false" layoutX="33.0"
+                   layoutY="251.0" prefHeight="25.0" prefWidth="451.0"
+                   style="-fx-background-color: transparent; -fx-font-family: 'Segoe UI Semibold'; -fx-text-fill: #FFFFFF; -fx-font-size: 16px; -fx-padding: 0px;"/>
+        <TextField fx:id="textFieldPassword" editable="false" focusTraversable="false" layoutX="33.0"
+                   layoutY="326.0" prefHeight="25.0" prefWidth="423.0"
+                   style="-fx-background-color: transparent; -fx-font-family: 'Segoe UI Semibold'; -fx-text-fill: #FFFFFF; -fx-font-size: 16px; -fx-padding: 0px;"/>
+        <ImageView fx:id="imageTogglePassword" fitHeight="18.0" fitWidth="18.0" layoutX="467.0"
+                   layoutY="328.0" pickOnBounds="true" preserveRatio="true"
+                   onMouseClicked="#onTogglePasswordClicked">
+          <Image url="@icons/eye.png"/>
+        </ImageView>
+        <Label layoutX="33.0" layoutY="378.0" style="-fx-text-fill: #3C80AE; -fx-font-size: 14px;"
+               text="Notes"/>
+        <ImageView fx:id="imageCopyNotes" fitHeight="18.0" fitWidth="18.0" layoutX="502.0" layoutY="401.0"
+                   pickOnBounds="true" preserveRatio="true"
+                   onMouseClicked="#onCopyNotesClicked">
+          <Image url="@icons/copy.png"/>
+        </ImageView>
+        <TextArea fx:id="textAreaNotes" editable="false" focusTraversable="false" layoutX="33" layoutY="401"
+                  prefHeight="186" prefWidth="452" promptText="Add notes..." style="-#17212B"
+                  wrapText="true"/>
+      </Pane>
     </AnchorPane>
   </right>
 </BorderPane>

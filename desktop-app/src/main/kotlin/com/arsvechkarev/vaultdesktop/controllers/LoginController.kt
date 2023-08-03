@@ -1,8 +1,11 @@
 package com.arsvechkarev.vaultdesktop.controllers
 
 import com.arsvechkarev.commoncrypto.AesSivTinkCipher
+import com.arsvechkarev.vaultdesktop.EntriesHolder
 import com.arsvechkarev.vaultdesktop.ext.openNewScene
+import com.arsvechkarev.vaultdesktop.model.Entries
 import com.arsvechkarev.vaultdesktop.style.Colors
+import com.google.gson.Gson
 import javafx.fxml.FXML
 import javafx.scene.Node
 import javafx.scene.control.Label
@@ -18,26 +21,27 @@ import java.io.File
 class LoginController {
   
   @FXML
-  private lateinit var filenameHeader: Label
+  private lateinit var labelFilenameTitle: Label
   
   @FXML
-  private lateinit var filenameLabel: Label
+  private lateinit var labelFilenameValue: Label
   
   @FXML
-  private lateinit var masterPasswordLabel: Label
+  private lateinit var labelMasterPassword: Label
   
   @FXML
   private lateinit var masterPasswordField: PasswordField
   
   private var file: File? = null
+  private val gson = Gson()
   
   @FXML
   fun onOpenFileClick() {
-    filenameHeader.text = "File"
-    filenameHeader.textFill = Paint.valueOf(Colors.ACCENT)
+    labelFilenameTitle.text = "File"
+    labelFilenameTitle.textFill = Paint.valueOf(Colors.ACCENT)
     file = FileChooser().apply { title = "Select passwords vault" }
-        .showOpenDialog(filenameLabel.scene.window) ?: return
-    filenameLabel.text = file!!.absolutePath
+        .showOpenDialog(labelFilenameValue.scene.window) ?: return
+    labelFilenameValue.text = file!!.absolutePath
   }
   
   @FXML
@@ -45,39 +49,34 @@ class LoginController {
     if (event.code == KeyCode.ENTER) {
       onContinueClick(event)
     } else {
-      masterPasswordLabel.text = "Master password"
-      masterPasswordLabel.textFill = Paint.valueOf(Colors.ACCENT)
+      labelMasterPassword.text = "Master password"
+      labelMasterPassword.textFill = Paint.valueOf(Colors.ACCENT)
     }
   }
   
   @FXML
   fun onContinueClick(event: InputEvent) {
-    openNewScene(
-      sceneFxml = "scene_main.fxml",
-      stage = (event.source as Node).scene.window as Stage,
-      closeCurrentStage = true
-    )
-    return
     val file = file
     if (file == null) {
-      filenameHeader.text = "File is not selected"
-      filenameHeader.textFill = Paint.valueOf(Colors.ERROR)
+      labelFilenameTitle.text = "File is not selected"
+      labelFilenameTitle.textFill = Paint.valueOf(Colors.ERROR)
       return
     }
     val password = masterPasswordField.text
     if (password.isNullOrBlank()) {
-      masterPasswordLabel.text = "Password is empty"
-      masterPasswordLabel.textFill = Paint.valueOf(Colors.ERROR)
+      labelMasterPassword.text = "Password is empty"
+      labelMasterPassword.textFill = Paint.valueOf(Colors.ERROR)
       return
     }
     
     val data = file.readBytes()
     runCatching { AesSivTinkCipher.decrypt(password, data) }
         .onFailure {
-          masterPasswordLabel.text = "Password is incorrect"
-          masterPasswordLabel.textFill = Paint.valueOf(Colors.ERROR)
+          labelMasterPassword.text = "Password is incorrect"
+          labelMasterPassword.textFill = Paint.valueOf(Colors.ERROR)
         }
-        .onSuccess {
+        .onSuccess { json ->
+          EntriesHolder.entries = gson.fromJson(json, Entries::class.java)
           openNewScene(
             sceneFxml = "scene_main.fxml",
             stage = (event.source as Node).scene.window as Stage,

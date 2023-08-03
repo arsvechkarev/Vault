@@ -42,3 +42,47 @@
   -fx-stroke: #3C80AE;
   -fx-stroke-width: 2px;
 }
+
+.scroll-pane .viewport {
+  -fx-background-color: #1F2B36;
+}
+
+.scroll-bar .track {
+  -fx-background-color: #1F2B36;
+  -fx-border-color: transparent;
+  -fx-background-radius: 0em;
+}
+
+.scroll-bar .thumb {
+  -fx-background-color: #757575;
+  -fx-background-radius: 1em;
+}
+
+.increment-button, .decrement-button {
+  -fx-padding: 0 5 0 5;
+  -fx-background-insets: 0 0 0 0, 0 0 0 0, 0 0 0 0;
+}
+
+.decrement-arrow, .increment-arrow {
+  -fx-padding: 0 0 0 0;
+}
+
+.text-area {
+  -fx-background-color: #17212B;
+  -fx-font-family: 'Segoe UI';
+  -fx-text-fill: #FFFFFF;
+  -fx-font-size: 16px;
+}
+
+.text-area .scroll-pane {
+  -fx-background-color: transparent;
+}
+
+.text-area .scroll-pane .viewport {
+  -fx-background-color: transparent;
+}
+
+.text-area .scroll-pane .content {
+  -fx-background-color: transparent;
+  -fx-padding: 0px;
+}

@@ -86,3 +86,19 @@
   -fx-background-color: transparent;
   -fx-padding: 0px;
 }
+
+.title-content {
+  -fx-text-fill: #FFFFFF;
+  -fx-font-family: 'Segoe UI Semibold';
+}
+
+.capitalized-letter {
+  -fx-text-fill: #1F2B36;
+  -fx-alignment: 'CENTER';
+  -fx-font-family: 'Segoe UI Bold';
+}
+
+.notification-copy {
+  -fx-background-color: #20475E;
+  -fx-background-radius: 4px;
+}

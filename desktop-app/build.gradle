@@ -5,7 +5,10 @@ plugins {
   id 'org.javamodularity.moduleplugin' version '1.8.12'
   id 'org.openjfx.javafxplugin' version '0.0.13'
   id 'org.beryx.jlink' version '2.25.0'
+  id 'com.github.johnrengelman.shadow' version '7.1.2'
 }
+
+mainClassName = 'com.arsvechkarev.vaultdesktop.VaultLauncher'
 
 group 'com.arsvechkarev'
 version '1.0-SNAPSHOT'
@@ -19,15 +22,10 @@ ext {
   junitVersion = '5.9.2'
 }
 
-
 tasks.withType(JavaCompile).configureEach {
   options.encoding = 'UTF-8'
 }
 
-application {
-  mainModule = 'com.arsvechkarev.vaultdesktop'
-  mainClass = 'com.arsvechkarev.vaultdesktop.HelloApplication'
-}
 kotlin {
   jvmToolchain(11)
 }
@@ -43,6 +41,7 @@ dependencies {
   implementation('org.kordamp.bootstrapfx:bootstrapfx-core:0.4.0')
 
   implementation 'com.google.code.gson:gson:2.8.6'
+  implementation 'net.java.dev.jna:jna:5.13.0'
 
   testImplementation("org.junit.jupiter:junit-jupiter-api:${junitVersion}")
   testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:${junitVersion}")

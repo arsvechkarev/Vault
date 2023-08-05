@@ -31,10 +31,6 @@ object ViewDslConfiguration {
     _defaultStyles = defaultStyles
   }
   
-  fun setDurations(animationDurations: AnimationDurations) {
-    _Animation_durations = animationDurations
-  }
-  
   fun setStatusBarHeight(statusBarHeight: Int) {
     _statusBarHeight = statusBarHeight
   }

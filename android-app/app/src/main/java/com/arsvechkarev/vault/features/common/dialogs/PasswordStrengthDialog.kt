@@ -6,6 +6,7 @@ import android.view.Gravity.CENTER
 import android.view.ViewGroup
 import android.widget.TextView
 import com.arsvechkarev.vault.R
+import com.arsvechkarev.vault.core.views.SimpleDialog
 import com.arsvechkarev.vault.viewbuilding.Colors
 import com.arsvechkarev.vault.viewbuilding.Dimens.CornerRadiusDefault
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginExtraLarge
@@ -16,7 +17,6 @@ import com.arsvechkarev.vault.viewbuilding.Styles.BaseTextView
 import com.arsvechkarev.vault.viewbuilding.Styles.BoldTextView
 import com.arsvechkarev.vault.viewbuilding.Styles.ClickableTextView
 import com.arsvechkarev.vault.viewbuilding.TextSizes
-import com.arsvechkarev.vault.core.views.SimpleDialog
 import navigation.BaseFragmentScreen
 import viewdsl.Size.Companion.MatchParent
 import viewdsl.Size.Companion.WrapContent
@@ -66,9 +66,9 @@ class PasswordStrengthDialog(context: Context) : SimpleDialog(context) {
   }
   
   companion object {
-  
+    
     val BaseFragmentScreen.passwordStrengthDialog get() = viewAs<PasswordStrengthDialog>()
-  
+    
     fun ViewGroup.PasswordStrengthDialog(
       block: PasswordStrengthDialog.() -> Unit = {}
     ) = withViewBuilder {

@@ -8,6 +8,7 @@ import com.arsvechkarev.vault.features.login.LoginCommand.EnterWithMasterPasswor
 import com.arsvechkarev.vault.features.login.LoginEvent
 import com.arsvechkarev.vault.features.login.LoginEvent.ShowFailureCheckingPassword
 import com.arsvechkarev.vault.features.login.LoginEvent.ShowSuccessCheckingPassword
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.flow.mapLatest
@@ -16,6 +17,7 @@ class LoginActor(
   private val masterPasswordChecker: MasterPasswordChecker
 ) : Actor<LoginCommand, LoginEvent> {
   
+  @OptIn(ExperimentalCoroutinesApi::class)
   override fun handle(commands: Flow<LoginCommand>): Flow<LoginEvent> {
     return commands.filterIsInstance<EnterWithMasterPassword>()
         .mapLatest { command ->

@@ -7,6 +7,7 @@ import com.arsvechkarev.vault.features.creating_password_entry.CreatingPasswordE
 import com.arsvechkarev.vault.features.creating_password_entry.CreatingPasswordEntryCommand.SavePassword
 import com.arsvechkarev.vault.features.creating_password_entry.CreatingPasswordEntryEvent
 import com.arsvechkarev.vault.features.creating_password_entry.CreatingPasswordEntryEvent.PasswordEntryCreated
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.flow.mapLatest
@@ -16,6 +17,7 @@ class SavingPasswordEntryActor(
   private val masterPasswordProvider: MasterPasswordProvider,
 ) : Actor<CreatingPasswordEntryCommand, CreatingPasswordEntryEvent> {
   
+  @OptIn(ExperimentalCoroutinesApi::class)
   override fun handle(commands: Flow<CreatingPasswordEntryCommand>): Flow<CreatingPasswordEntryEvent> {
     return commands.filterIsInstance<SavePassword>()
         .mapLatest { command ->

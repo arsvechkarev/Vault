@@ -5,8 +5,6 @@ import viewdsl.ViewBuilder
 import viewdsl.ViewDslConfiguration
 import viewdsl.dp
 import viewdsl.retrieveDrawable
-import viewdsl.screenHeight
-import viewdsl.screenWidth
 
 object Dimens {
   
@@ -15,9 +13,7 @@ object Dimens {
   private const val SCREEN_TYPE_LARGE = 2
   private const val SCREEN_TYPE_XLARGE = 3
   
-  val VerticalMarginSmall get() = adjustVertical(8.dp)
   val HorizontalMarginSmall get() = adjust(8.dp)
-  val HorizontalMarginVerySmall get() = adjustHorizontal(4.dp)
   val MarginTiny get() = adjust(4.dp)
   val MarginSmall get() = adjust(8.dp)
   val MarginMedium get() = adjust(12.dp)
@@ -30,8 +26,8 @@ object Dimens {
   val CheckmarkSize get() = adjust(20.dp)
   val IconPadding get() = adjust(6.dp)
   val ImageLogoSize get() = adjust(90.dp)
-  val ImageNoServicesSize get() = adjust(100.dp)
-  val ImageServiceNameSize get() = adjust(45.dp)
+  val ImageNoEntriesSize get() = adjust(100.dp)
+  val ImageWebsiteSize get() = adjust(45.dp)
   val ImageBackMargin get() = adjust(16.dp)
   val CornerRadiusSmall get() = (3.dp)
   val CornerRadiusDefault get() = (6.dp)
@@ -39,9 +35,6 @@ object Dimens {
   val PasswordStrengthMeterHeight get() = adjust(6.dp)
   val ProgressBarSizeSmall get() = adjust(20.dp)
   val ProgressBarSizeBig get() = adjust(60.dp)
-  val FingerprintIconSize get() = adjust(60.dp)
-  val FabSize get() = adjust(60.dp)
-  val HorizontalMarginPasswordsActionView get() = adjustHorizontal(24.dp)
   
   val ViewBuilder.GradientDrawableHeight: Int
     get() {
@@ -58,30 +51,12 @@ object Dimens {
     return size
   }
   
-  private fun adjustVertical(size: Int): Int {
-    val height = maxOf(ViewDslConfiguration.applicationContext.screenHeight,
-      ViewDslConfiguration.applicationContext.screenWidth)
-    if (height < 1200) return size
-    if (height < 1800) return (size * 1.6f).toInt()
-    if (height < 2400) return (size * 2f).toInt()
-    return (size * 2.5f).toInt()
-  }
-  
   private fun adjustDivider(size: Int): Int {
     val type = ViewDslConfiguration.applicationContext.resources.getInteger(R.integer.screen_type)
     if (type == SCREEN_TYPE_SMALL) return size / 2
     if (type == SCREEN_TYPE_MEDIUM) return size
     if (type == SCREEN_TYPE_LARGE) return (size * 1.5f).toInt()
     if (type == SCREEN_TYPE_XLARGE) return size * 2
-    return size
-  }
-  
-  private fun adjustHorizontal(size: Int): Int {
-    val type = ViewDslConfiguration.applicationContext.resources.getInteger(R.integer.screen_type)
-    if (type == SCREEN_TYPE_SMALL) return size
-    if (type == SCREEN_TYPE_MEDIUM) return (size * 1.5f).toInt()
-    if (type == SCREEN_TYPE_LARGE) return (size * 2f).toInt()
-    if (type == SCREEN_TYPE_XLARGE) return (size * 2.5f).toInt()
     return size
   }
 }

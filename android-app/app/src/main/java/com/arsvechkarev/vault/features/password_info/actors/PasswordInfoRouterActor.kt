@@ -17,6 +17,7 @@ fun PasswordInfoRouterActor(router: Router): Actor<PasswordInfoScreenCommand, Pa
       GoToCreatePasswordScreen -> {
         goForward(CreatingPasswordScreen)
       }
+      
       GoBack -> {
         goBack()
       }

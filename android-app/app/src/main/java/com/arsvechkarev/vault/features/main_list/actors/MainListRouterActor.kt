@@ -36,6 +36,7 @@ fun MainListRouterActor(router: Router): Actor<MainListCommand, MainListEvent> {
           ScreenType.NEW_PLAIN_TEXT -> goForward(PlainTextScreen())
         }
       }
+      
       is GoToCorrespondingInfoScreen -> {
         when (command.entryItem) {
           is PasswordItem -> goForward(PasswordInfoScreen(command.entryItem))
@@ -43,6 +44,7 @@ fun MainListRouterActor(router: Router): Actor<MainListCommand, MainListEvent> {
           is PlainTextItem -> goForward(PlainTextScreen(command.entryItem))
         }
       }
+      
       GoBack -> {
         goBack()
       }

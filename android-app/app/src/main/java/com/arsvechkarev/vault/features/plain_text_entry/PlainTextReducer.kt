@@ -43,22 +43,27 @@ class PlainTextReducer : DslReducer<PlainTextState, PlainTextEvent,
       OnInit -> {
         sendSetInitialTextsNews()
       }
+      
       is OnTitleChanged -> when (state) {
         is NewEntry -> {
           state { state.copy(showTitleIsEmpty = false, title = event.title) }
         }
+        
         is ExistingEntry -> {
           state { state.copy(titleState = state.titleState.edit(event.title)) }
         }
       }
+      
       is OnTextChanged -> when (state) {
         is NewEntry -> {
           state { state.copy(text = event.text) }
         }
+        
         is ExistingEntry -> {
           state { state.copy(textState = state.textState.edit(event.text)) }
         }
       }
+      
       OnSaveClicked -> {
         check(state is NewEntry)
         if (state.title.isBlank()) {
@@ -67,15 +72,18 @@ class PlainTextReducer : DslReducer<PlainTextState, PlainTextEvent,
           state { state.copy(showConfirmSaveDialog = true) }
         }
       }
+      
       OnConfirmedSaving -> {
         check(state is NewEntry)
         commands(SavePlainText(state.title, state.text))
       }
+      
       is NotifyEntryCreated -> {
         check(state is NewEntry)
         state { ExistingEntry(plainTextItem = event.plainTextItem) }
         news(ShowEntryCreated)
       }
+      
       OnTitleActionClicked -> {
         check(state is ExistingEntry)
         handleAction(
@@ -90,6 +98,7 @@ class PlainTextReducer : DslReducer<PlainTextState, PlainTextEvent,
           setTextNews = ::SetTitle
         )
       }
+      
       OnTextActionClicked -> {
         check(state is ExistingEntry)
         handleAction(
@@ -104,34 +113,41 @@ class PlainTextReducer : DslReducer<PlainTextState, PlainTextEvent,
           setTextNews = ::SetText
         )
       }
+      
       is UpdatedTitle -> {
         check(state is ExistingEntry)
         state { ExistingEntry(plainTextItem = event.plainTextItem) }
       }
+      
       is UpdatedText -> {
         check(state is ExistingEntry)
         state { ExistingEntry(plainTextItem = event.plainTextItem) }
       }
+      
       OnDeleteClicked -> {
         check(state is ExistingEntry)
         state { state.copy(showConfirmDeleteDialog = true) }
       }
+      
       OnConfirmedDeleting -> {
         check(state is ExistingEntry)
         state { state.copy(showLoadingDialog = true, showConfirmDeleteDialog = false) }
         commands(DeletePlainText(state.plainTextItem))
       }
+      
       NotifyEntryDeleted -> {
         check(state is ExistingEntry)
         state { state.copy(showLoadingDialog = false) }
         commands(GoBack)
       }
+      
       OnDialogHidden -> {
         when (state) {
           is NewEntry -> state { state.copy(showConfirmSaveDialog = false) }
           is ExistingEntry -> state { state.copy(showConfirmDeleteDialog = false) }
         }
       }
+      
       OnBackPressed -> {
         when (state) {
           is NewEntry -> {
@@ -140,11 +156,13 @@ class PlainTextReducer : DslReducer<PlainTextState, PlainTextEvent,
               else -> commands(GoBack)
             }
           }
+          
           is ExistingEntry -> {
             when {
               state.showConfirmDeleteDialog -> {
                 state { state.copy(showConfirmDeleteDialog = false) }
               }
+              
               state.isEditingSomething -> {
                 state {
                   state.copy(
@@ -154,6 +172,7 @@ class PlainTextReducer : DslReducer<PlainTextState, PlainTextEvent,
                 }
                 sendSetInitialTextsNews()
               }
+              
               else -> {
                 commands(GoBack)
               }
@@ -169,6 +188,7 @@ class PlainTextReducer : DslReducer<PlainTextState, PlainTextEvent,
       is NewEntry -> {
         news(SetTitle(state.title), SetText(state.text))
       }
+      
       is ExistingEntry -> {
         news(SetTitle(state.titleState.initialText), SetText(state.textState.initialText))
       }

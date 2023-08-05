@@ -82,6 +82,7 @@ class MenuView(context: Context) : FrameLayout(context) {
         latestY = event.y
         return touchedOutsideOfMenuContent
       }
+      
       MotionEvent.ACTION_UP -> {
         val dx = abs(event.x - latestX)
         val dy = abs(event.y - latestY)

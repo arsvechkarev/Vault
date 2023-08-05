@@ -25,15 +25,19 @@ class CreatingPasswordEntryReducer :
       is OnWebsiteNameTextChanged -> {
         state { copy(websiteName = event.text, websiteNameEmpty = false) }
       }
+      
       is OnLoginTextChanged -> {
         state { copy(login = event.text, loginEmpty = false) }
       }
+      
       is OnContinueClicked -> {
         commands(ValidateInput(event.websiteName, event.login))
       }
+      
       OnBackPressed -> {
         commands(GoBack)
       }
+      
       is SendValidationResult -> {
         when (val result = event.validationResult) {
           is Fail -> {
@@ -44,14 +48,17 @@ class CreatingPasswordEntryReducer :
               )
             }
           }
+          
           Success -> {
             commands(GoToCreatePasswordScreen)
           }
         }
       }
+      
       is PasswordEntered -> {
         commands(SavePassword(state.websiteName, state.login, event.password))
       }
+      
       is PasswordEntryCreated -> {
         commands(GoToInfoScreen(event.passwordItem))
       }

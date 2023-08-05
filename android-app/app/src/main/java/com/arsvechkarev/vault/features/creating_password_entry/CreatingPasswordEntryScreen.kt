@@ -10,6 +10,7 @@ import com.arsvechkarev.vault.core.mvi.ext.subscribe
 import com.arsvechkarev.vault.core.mvi.ext.viewModelStore
 import com.arsvechkarev.vault.features.common.Durations
 import com.arsvechkarev.vault.features.common.di.CoreComponentHolder.coreComponent
+import com.arsvechkarev.vault.features.creating_password.CreatingPasswordCommunication
 import com.arsvechkarev.vault.features.creating_password_entry.CreatingPasswordEntryUiEvent.OnBackPressed
 import com.arsvechkarev.vault.features.creating_password_entry.CreatingPasswordEntryUiEvent.OnContinueClicked
 import com.arsvechkarev.vault.features.creating_password_entry.CreatingPasswordEntryUiEvent.OnLoginTextChanged
@@ -112,7 +113,7 @@ class CreatingPasswordEntryScreen : BaseFragmentScreen() {
     }
   }
   
-  private val store by viewModelStore { CreatingPasswrodEntryStore(coreComponent) }
+  private val store by viewModelStore { CreatingPasswordEntryStore(coreComponent) }
   
   override fun onInit() {
     store.subscribe(this, ::render)
@@ -144,6 +145,10 @@ class CreatingPasswordEntryScreen : BaseFragmentScreen() {
     editText(EditTextWebsiteName).clearFocus()
     editText(EditTextLogin).clearFocus()
     requireContext().hideKeyboard()
+  }
+  
+  override fun onRelease() {
+    CreatingPasswordCommunication.communicatorHolder.finishCommunication()
   }
   
   private fun showOrHideViewsBasedOnLayout() {

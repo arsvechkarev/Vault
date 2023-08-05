@@ -121,10 +121,12 @@ class BottomSheetBehavior : CoordinatorLayout.Behavior<View>() {
           ensureVelocityTracker()
         }
       }
+      
       ACTION_POINTER_DOWN -> {
         activePointerId = event.getPointerId(event.actionIndex)
         latestInsideY = event.getY(event.actionIndex).toInt()
       }
+      
       ACTION_MOVE -> {
         latestAnyX = event.x
         latestAnyY = event.y
@@ -139,9 +141,11 @@ class BottomSheetBehavior : CoordinatorLayout.Behavior<View>() {
           latestInsideY = y
         }
       }
+      
       ACTION_POINTER_UP -> {
         onPointerUp(event)
       }
+      
       ACTION_CANCEL, ACTION_UP -> {
         if (handleUpEvent(parent, child, event)) {
           return true
@@ -166,10 +170,12 @@ class BottomSheetBehavior : CoordinatorLayout.Behavior<View>() {
           ensureVelocityTracker()
         }
       }
+      
       ACTION_POINTER_DOWN -> {
         activePointerId = event.getPointerId(event.actionIndex)
         latestInsideY = event.getY(event.actionIndex).toInt()
       }
+      
       ACTION_MOVE -> {
         latestAnyX = event.x
         latestAnyY = event.y
@@ -193,9 +199,11 @@ class BottomSheetBehavior : CoordinatorLayout.Behavior<View>() {
           updateDyOffset(dy)
         }
       }
+      
       ACTION_POINTER_UP -> {
         onPointerUp(event)
       }
+      
       ACTION_UP, ACTION_CANCEL -> {
         handleUpEvent(parent, child, event)
       }
@@ -285,10 +293,10 @@ class BottomSheetBehavior : CoordinatorLayout.Behavior<View>() {
   }
   
   companion object {
-  
+    
     private const val DURATION_SLIDE = 225L
     private const val FLING_VELOCITY_THRESHOLD = 0.18f
-  
+    
     val View.asBottomSheet get() = getBehavior<BottomSheetBehavior>()
   }
 }

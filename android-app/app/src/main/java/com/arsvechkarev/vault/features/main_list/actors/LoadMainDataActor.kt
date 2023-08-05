@@ -8,6 +8,7 @@ import com.arsvechkarev.vault.features.main_list.MainListCommand
 import com.arsvechkarev.vault.features.main_list.MainListCommand.LoadData
 import com.arsvechkarev.vault.features.main_list.MainListEvent
 import com.arsvechkarev.vault.features.main_list.domain.EntriesMapper
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.flow.mapLatest
@@ -18,6 +19,7 @@ class LoadMainDataActor(
   private val entriesMapper: EntriesMapper,
 ) : Actor<MainListCommand, MainListEvent> {
   
+  @OptIn(ExperimentalCoroutinesApi::class)
   override fun handle(commands: Flow<MainListCommand>): Flow<MainListEvent> {
     return commands
         .filterIsInstance<LoadData>()

@@ -12,29 +12,28 @@ import viewdsl.stopIfRunning
 import viewdsl.visible
 
 class AnimatableCheckmark(context: Context) : View(context) {
-
-    private val drawable get() = background as AnimatedVectorDrawable
-
-    init {
-        background = context.retrieveDrawable(R.drawable.avd_checkmark).apply { }
-        background.colorFilter = PorterDuffColorFilter(Colors.Correct, PorterDuff.Mode.SRC_ATOP)
-    }
-
-    fun animateCheckmark(andThen: () -> Unit = {}) {
-        visible()
-        drawable.start()
-        invalidate()
-        handler.postDelayed(andThen,
-          com.arsvechkarev.vault.core.views.AnimatableCheckmark.Companion.CHECKMARK_DELAY)
-    }
-
-    override fun onDetachedFromWindow() {
-        super.onDetachedFromWindow()
-        drawable.stopIfRunning()
-    }
-
-    companion object {
-
-        const val CHECKMARK_DELAY = 1300L
-    }
+  
+  private val drawable get() = background as AnimatedVectorDrawable
+  
+  init {
+    background = context.retrieveDrawable(R.drawable.avd_checkmark).apply { }
+    background.colorFilter = PorterDuffColorFilter(Colors.Correct, PorterDuff.Mode.SRC_ATOP)
+  }
+  
+  fun animateCheckmark(andThen: () -> Unit = {}) {
+    visible()
+    drawable.start()
+    invalidate()
+    handler.postDelayed(andThen, CHECKMARK_DELAY)
+  }
+  
+  override fun onDetachedFromWindow() {
+    super.onDetachedFromWindow()
+    drawable.stopIfRunning()
+  }
+  
+  companion object {
+    
+    const val CHECKMARK_DELAY = 1300L
+  }
 }

@@ -8,6 +8,7 @@ import com.arsvechkarev.vault.features.creating_master_password.CMPCommands
 import com.arsvechkarev.vault.features.creating_master_password.CMPEvents
 import com.arsvechkarev.vault.features.creating_master_password.CreatingMasterPasswordCommand.FinishAuth
 import com.arsvechkarev.vault.features.creating_master_password.CreatingMasterPasswordEvent.FinishedAuth
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.flow.mapLatest
@@ -18,6 +19,7 @@ class FinishAuthActor(
   private val dispatchersFacade: DispatchersFacade,
 ) : Actor<CMPCommands, CMPEvents> {
   
+  @OptIn(ExperimentalCoroutinesApi::class)
   override fun handle(commands: Flow<CMPCommands>): Flow<CMPEvents> {
     return commands.filterIsInstance<FinishAuth>()
         .mapLatest { command ->

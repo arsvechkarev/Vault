@@ -222,6 +222,7 @@ class MenuContentView(context: Context) : ViewGroup(context) {
         latestY = event.y
         return true
       }
+      
       ACTION_UP -> {
         val dx = abs(event.x - latestX)
         val dy = abs(event.y - latestY)

@@ -2,7 +2,6 @@ package com.arsvechkarev.vault.features.creating_master_password
 
 import buisnesslogic.PasswordError
 import com.arsvechkarev.vault.core.mvi.tea.DslReducer
-import com.arsvechkarev.vault.features.common.Router
 import com.arsvechkarev.vault.features.creating_master_password.CreatingMasterPasswordCommand.FinishAuth
 import com.arsvechkarev.vault.features.creating_master_password.CreatingMasterPasswordCommand.PasswordCommand.CheckPasswordForErrors
 import com.arsvechkarev.vault.features.creating_master_password.CreatingMasterPasswordCommand.PasswordCommand.CheckPasswordStrength
@@ -22,15 +21,14 @@ import com.arsvechkarev.vault.features.creating_master_password.PasswordEntering
 import com.arsvechkarev.vault.features.creating_master_password.PasswordEnteringState.REPEATING
 import com.arsvechkarev.vault.features.creating_master_password.UiPasswordStatus.PASSWORDS_DONT_MATCH
 
-class CreatingMasterPasswordReducer(
-  private val router: Router
-) : DslReducer<CMPState, CMPEvents, CMPCommands, CMPNews>() {
+class CreatingMasterPasswordReducer : DslReducer<CMPState, CMPEvents, CMPCommands, CMPNews>() {
   
   override fun dslReduce(event: CreatingMasterPasswordEvent) {
     when (event) {
       is CMPUiEvent -> {
         handleUIEvent(event)
       }
+      
       is UpdatePasswordError -> {
         val showErrorText = event.passwordError != null
         val passwordEnteringState = if (event.passwordError != null) INITIAL else REPEATING
@@ -48,9 +46,11 @@ class CreatingMasterPasswordReducer(
           )
         }
       }
+      
       is UpdatePasswordStrength -> {
         state { copy(passwordStrength = event.passwordStrength) }
       }
+      
       FinishedAuth -> {
         commands(GoToMainListScreen)
       }
@@ -63,14 +63,17 @@ class CreatingMasterPasswordReducer(
         state { copy(initialPassword = event.password, showErrorText = false) }
         commands(CheckPasswordStrength(event.password))
       }
+      
       is OnRepeatPasswordTyping -> {
         state { copy(repeatedPassword = event.password, showErrorText = false) }
       }
+      
       OnContinueClicked -> {
         when (state.passwordEnteringState) {
           INITIAL -> {
             commands(CheckPasswordForErrors(state.initialPassword))
           }
+          
           REPEATING -> {
             if (state.repeatedPassword == state.initialPassword) {
               state { copy(showErrorText = false) }
@@ -82,6 +85,7 @@ class CreatingMasterPasswordReducer(
           }
         }
       }
+      
       OnBackPressed -> {
         if (state.showPasswordStrengthDialog) {
           state { copy(showPasswordStrengthDialog = false) }
@@ -90,15 +94,18 @@ class CreatingMasterPasswordReducer(
             INITIAL -> {
               commands(GoBack)
             }
+            
             REPEATING -> {
               state { copy(passwordEnteringState = INITIAL) }
             }
           }
         }
       }
+      
       RequestShowPasswordStrengthDialog -> {
         state { copy(showPasswordStrengthDialog = true) }
       }
+      
       RequestHidePasswordStrengthDialog -> {
         state { copy(showPasswordStrengthDialog = false) }
       }

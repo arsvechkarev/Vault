@@ -126,11 +126,11 @@ class EntriesStorageImplTest {
       password = "wasp",
       notes = ""
     )
-  
+    
     storage.saveEntry(testPassword, firstPasswordEntry)
     storage.saveEntry(testPassword, secondPasswordEntry)
     storage.deleteEntry(testPassword, secondPasswordEntry)
-  
+    
     val entries = storage.getEntries(testPassword)
     assertTrue(entries.passwords.size == 1)
     assertTrue(entries.passwords.contains(firstPasswordEntry))

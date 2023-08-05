@@ -112,6 +112,7 @@ open class SimpleDialog(context: Context) : FrameLayout(context) {
           return true
         }
       }
+      
       ACTION_UP -> {
         val dx = abs(event.x - latestX)
         val dy = abs(event.y - latestY)

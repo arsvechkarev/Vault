@@ -10,7 +10,7 @@ interface Navigator {
   fun applyCommands(commands: Array<out Command>)
   
   /**
-   * Handles going back in stack. Returns true, if there was any screens in stack to be removed
+   * Handles going back in stack. Returns true, if there were any screens in stack to be removed
    * (and removes screen), or if current screen handled back interaction. Returns false otherwise
    */
   fun handleGoBack(): Boolean

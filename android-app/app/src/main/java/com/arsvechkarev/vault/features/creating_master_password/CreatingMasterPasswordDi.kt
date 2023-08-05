@@ -19,7 +19,7 @@ fun CreatingMasterPasswordStore(
       ),
       CreatingMasterPasswordRouterActor(coreComponent.router),
     ),
-    reducer = CreatingMasterPasswordReducer(coreComponent.router),
+    reducer = CreatingMasterPasswordReducer(),
     initialState = CMPState()
   )
 }

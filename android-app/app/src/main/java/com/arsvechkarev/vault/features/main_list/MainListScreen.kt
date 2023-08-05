@@ -110,7 +110,6 @@ class MainListScreen : BaseFragmentScreen() {
           EntryTypeItemView(iconRes, textRes) { store.tryDispatch(OnEntryTypeSelected(entryType)) }
         }
         entryItem(EntryType.PASSWORD, R.drawable.ic_lock, R.string.text_password)
-        entryItem(EntryType.CREDIT_CARD, R.drawable.ic_credit_card, R.string.text_credit_card)
         entryItem(EntryType.PLAIN_TEXT, R.drawable.ic_plain_text, R.string.text_plain_text)
       }
     }

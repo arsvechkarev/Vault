@@ -52,6 +52,7 @@ class PasswordInfoScreenReducer :
       OnInit -> {
         sendSetInitialTextsNews()
       }
+      
       OnWebsiteNameActionClicked -> {
         handleAction(
           itemProvider = state::passwordItem,
@@ -65,6 +66,7 @@ class PasswordInfoScreenReducer :
           setTextNews = ::SetWebsiteName
         )
       }
+      
       OnLoginActionClicked -> {
         handleAction(
           itemProvider = state::passwordItem,
@@ -78,6 +80,7 @@ class PasswordInfoScreenReducer :
           setTextNews = ::SetLogin
         )
       }
+      
       OnNotesActionClicked -> {
         handleAction(
           itemProvider = state::passwordItem,
@@ -91,40 +94,50 @@ class PasswordInfoScreenReducer :
           setTextNews = ::SetNotes
         )
       }
+      
       OnCopyPasswordClicked -> {
         commands(Copy(R.string.clipboard_label_password, state.password))
         news(ShowPasswordCopied)
       }
+      
       OnOpenPasswordScreenClicked -> {
         commands(
           OpenEditPasswordScreen(state.password),
           GoToCreatePasswordScreen,
         )
       }
+      
       is OnWebsiteNameTextChanged -> {
         state { copy(websiteNameState = websiteNameState.edit(event.text)) }
       }
+      
       is OnLoginTextChanged -> {
         state { copy(loginState = loginState.edit(event.text)) }
       }
+      
       is OnNotesTextChanged -> {
         state { copy(notesState = notesState.edit(event.text)) }
       }
+      
       OnDeleteClicked -> {
         state { copy(showDeletePasswordDialog = true) }
       }
+      
       OnDialogHidden -> {
         state { copy(showDeletePasswordDialog = false) }
       }
+      
       OnConfirmedDeletion -> {
         state { copy(showLoadingDialog = true, showDeletePasswordDialog = false) }
         commands(DeletePasswordItem(state.passwordItem))
       }
+      
       OnBackPressed -> {
         when {
           state.showDeletePasswordDialog -> {
             state { copy(showDeletePasswordDialog = false) }
           }
+          
           state.isEditingSomething -> {
             state {
               copy(
@@ -135,11 +148,13 @@ class PasswordInfoScreenReducer :
             }
             sendSetInitialTextsNews()
           }
+          
           else -> {
             commands(GoBack)
           }
         }
       }
+      
       is UpdatedWebsiteName -> {
         state {
           update(event.passwordItem) {
@@ -147,6 +162,7 @@ class PasswordInfoScreenReducer :
           }
         }
       }
+      
       is UpdatedLogin -> {
         state {
           update(event.passwordItem) {
@@ -154,6 +170,7 @@ class PasswordInfoScreenReducer :
           }
         }
       }
+      
       is UpdatedNotes -> {
         state {
           update(event.passwordItem) {
@@ -161,10 +178,12 @@ class PasswordInfoScreenReducer :
           }
         }
       }
+      
       is UpdatedPassword -> {
         state { copy(passwordItem = event.passwordItem) }
         commands(GoBack)
       }
+      
       is SavePasswordEventReceived -> {
         if (event.password != state.password) {
           val item = state.passwordItem.copy(password = event.password)
@@ -173,6 +192,7 @@ class PasswordInfoScreenReducer :
           commands(GoBack)
         }
       }
+      
       DeletedPasswordInfo -> {
         commands(GoBack)
       }

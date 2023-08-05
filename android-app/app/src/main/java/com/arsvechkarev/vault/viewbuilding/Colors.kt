@@ -17,7 +17,6 @@ object Colors {
   val AccentHeavy = "235575".color
   val WhiteCircle = "FFFFFF".color
   val Correct = "29B500".color
-  val CorrectRipple = "70249802".color
   val Error = "D5301E".color
   val ErrorRipple = "70E64545".color
   val TextPrimary = "FFFFFF".color
@@ -26,7 +25,6 @@ object Colors {
   val PasswordMedium = "DA6314".color
   val PasswordStrong = "DAAF14".color
   val PasswordVeryStrong = "069A15".color
-  val Disabled = "AFAFAF".color
   val Divider = "2B4453".color
   val Shadow = "BB000000".color
   

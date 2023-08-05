@@ -3,7 +3,6 @@ package com.arsvechkarev.vault.features.common.domain
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
-import com.arsvechkarev.vault.features.common.domain.Clipboard
 import viewdsl.getSystemService
 
 class ClipboardImpl(private val context: Context) : Clipboard {

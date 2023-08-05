@@ -47,13 +47,16 @@ class CreatingPasswordReducer : DslReducer<CreatingPasswordState, CreatingPasswo
           copy(mode = event.mode, passwordLength = length)
         }
       }
+      
       is GeneratedPassword -> {
         state { copy(password = event.password) }
         news(ShowGeneratedPassword(event.password))
       }
+      
       is PasswordStrengthChanged -> {
         state { copy(passwordStrength = event.strength) }
       }
+      
       is ComputedPasswordCharacteristics -> {
         state {
           copy(
@@ -75,6 +78,7 @@ class CreatingPasswordReducer : DslReducer<CreatingPasswordState, CreatingPasswo
             val characteristics = EnumSet.allOf(PasswordCharacteristic::class.java)
             commands(GeneratePassword(state.passwordLength, characteristics))
           }
+          
           is EditPassword -> {
             state { copy(password = mode.password) }
             commands(
@@ -82,9 +86,11 @@ class CreatingPasswordReducer : DslReducer<CreatingPasswordState, CreatingPasswo
               ComputePasswordCharacteristics(mode.password),
             )
           }
+          
           else -> Unit
         }
       }
+      
       is OnPasswordChanged -> {
         state { copy(password = event.password, showPasswordCantBeEmpty = false) }
         commands(
@@ -92,9 +98,11 @@ class CreatingPasswordReducer : DslReducer<CreatingPasswordState, CreatingPasswo
           ComputePasswordCharacteristics(event.password)
         )
       }
+      
       is OnPasswordLengthChanged -> {
         state { copy(passwordLength = event.length) }
       }
+      
       OnGeneratePasswordClicked -> {
         state { copy(showPasswordCantBeEmpty = false) }
         val characteristics = EnumSet.noneOf(PasswordCharacteristic::class.java)
@@ -103,6 +111,7 @@ class CreatingPasswordReducer : DslReducer<CreatingPasswordState, CreatingPasswo
         if (state.specialSymbolsEnabled) characteristics.add(SPECIAL_SYMBOLS)
         commands(GeneratePassword(state.passwordLength, characteristics))
       }
+      
       OnSavePasswordClicked -> {
         if (state.password.isNotBlank()) {
           state { copy(showConfirmationDialog = true) }
@@ -110,21 +119,27 @@ class CreatingPasswordReducer : DslReducer<CreatingPasswordState, CreatingPasswo
           state { copy(showPasswordCantBeEmpty = true) }
         }
       }
+      
       OnDeclinePasswordSavingClicked -> {
         state { copy(showConfirmationDialog = false) }
       }
+      
       OnToggledUppercaseSymbols -> {
         state { copy(uppercaseSymbolsEnabled = !state.uppercaseSymbolsEnabled) }
       }
+      
       OnToggledNumbers -> {
         state { copy(numbersEnabled = !state.numbersEnabled) }
       }
+      
       OnToggledSpecialSymbols -> {
         state { copy(specialSymbolsEnabled = !state.specialSymbolsEnabled) }
       }
+      
       OnConfirmPasswordSavingClicked -> {
         commands(ConfirmSavePassword(state.password))
       }
+      
       OnBackClicked -> {
         if (state.showConfirmationDialog) {
           state { copy(showConfirmationDialog = false) }

@@ -1,5 +1,3 @@
-@file:Suppress("ObjectPropertyName")
-
 package viewdsl
 
 val Int.dp: Int get() = (Densities.density * this).toInt()

@@ -17,7 +17,6 @@ fun PasswordInfoScreenStore(
   passwordItem: PasswordItem,
 ): TeaStore<PasswordInfoState, PasswordInfoScreenUiEvent, PasswordInfoScreenNews> {
   val communicatorHolder = CreatingPasswordCommunication.communicatorHolder
-  // TODO (27.11.2022): Figure out a good way to start and stop communication
   communicatorHolder.startNewCommunication()
   return TeaStoreImpl(
     actors = listOf(

@@ -61,5 +61,5 @@ private fun ImageView.findExistingWebsiteIcon(text: String): Drawable? {
 }
 
 private infix fun String.has(text: String): Boolean {
-    return this.contains(text, ignoreCase = true)
+  return this.contains(text, ignoreCase = true)
 }

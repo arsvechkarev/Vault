@@ -16,12 +16,8 @@ fun CreatingMasterPasswordRouterActor(
   return RouterActor<CreatingMasterPasswordCommand, RouterCommand,
       CreatingMasterPasswordEvent>(router) { command ->
     when (command) {
-      GoBack -> {
-        goBack()
-      }
-      GoToMainListScreen -> {
-        switchToNewRoot(Screens.MainListScreen)
-      }
+      GoBack -> goBack()
+      GoToMainListScreen -> switchToNewRoot(Screens.MainListScreen)
     }
   }
 }

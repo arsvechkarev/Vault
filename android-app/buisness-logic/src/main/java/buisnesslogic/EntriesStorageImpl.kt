@@ -44,10 +44,12 @@ class EntriesStorageImpl(
         passwords = entries.passwords.toMutableList()
             .apply { removeAll { it.id == entry.id }; add(entry) }
       )
+      
       is CreditCard -> entries.copy(
         creditCards = entries.creditCards.toMutableList()
             .apply { removeAll { it.id == entry.id }; add(entry) }
       )
+      
       is PlainText -> entries.copy(
         plainTexts = entries.plainTexts.toMutableList()
             .apply { removeAll { it.id == entry.id }; add(entry) }
@@ -63,9 +65,11 @@ class EntriesStorageImpl(
       is Password -> entries.copy(
         passwords = entries.passwords.toMutableList().apply { removeAll { it.id == entry.id } }
       )
+      
       is CreditCard -> entries.copy(
         creditCards = entries.creditCards.toMutableList().apply { removeAll { it.id == entry.id } }
       )
+      
       is PlainText -> entries.copy(
         plainTexts = entries.plainTexts.toMutableList().apply { removeAll { it.id == entry.id } }
       )

@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
   <string name="app_name">Vault</string>
   <string name="text_empty"/>
   <string name="text_password">Password</string>
@@ -44,8 +44,6 @@
   <string name="text_new_password">New password</string>
   <string name="text_new_plain_text">New plain text</string>
   <string name="text_enter_master_password_to_proceed">Enter master password to proceed</string>
-  <string name="text_enter_service_name">Enter service name</string>
-  <string name="text_service_name_cannot_be_empty">Service name cannot be empty</string>
   <string name="text_no_username">No username</string>
   <string name="text_no_email">No email</string>
   <string name="text_no_entries">No entries yet</string>
@@ -85,12 +83,11 @@
   <string name="text_do_you_want_to_leave">Do you want to leave without saving anything?</string>
   <string name="text_do_you_want_to_save_password">Do you want to accept the password?</string>
   <string name="text_do_you_want_to_save_data">Do you want to save the data?</string>
-  <string name="text_service_already_exists">Service with this name already exists</string>
   <string name="text_deleting_entry">Deleting entry</string>
   <string name="text_deleting_password_question">Do you want to delete %s?</string>
   <string name="text_deleting_password_question_prefix">Do you want to delete</string>
   <string name="text_click_plus">Click on the + button below to create new entry</string>
-  <string name="text_cancel">CANCEL</string>
+  <string name="text_cancel" tools:ignore="ButtonCase">CANCEL</string>
   <string name="text_delete">DELETE</string>
   <string name="text_got_it">GOT IT</string>
   <string name="text_website_name_copied">Website successfully copied!</string>

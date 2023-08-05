@@ -5,10 +5,10 @@ package com.arsvechkarev.vault.features.common
  */
 object Durations {
   
-  val DelayOpenKeyboard = 80L
-  val Short = 170L
-  val Default = 300L
-  val Checkmark = 1300L
-  val Snackbar = 1000L
-  val MenuOpening = 300L
+  const val DelayOpenKeyboard = 80L
+  const val Short = 170L
+  const val Default = 300L
+  const val Checkmark = 1300L
+  const val Snackbar = 1000L
+  const val MenuOpening = 300L
 }

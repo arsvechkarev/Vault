@@ -9,6 +9,7 @@ import com.arsvechkarev.vault.features.creating_master_password.CreatingMasterPa
 import com.arsvechkarev.vault.features.creating_master_password.CreatingMasterPasswordCommand.PasswordCommand.CheckPasswordStrength
 import com.arsvechkarev.vault.features.creating_master_password.CreatingMasterPasswordEvent.UpdatePasswordError
 import com.arsvechkarev.vault.features.creating_master_password.CreatingMasterPasswordEvent.UpdatePasswordStrength
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.flow.mapLatest
@@ -17,15 +18,15 @@ class PasswordCheckingActor(
   private val passwordInfoChecker: PasswordInfoChecker,
 ) : Actor<CMPCommands, CMPEvents> {
   
-  override fun handle(
-    commands: Flow<CMPCommands>
-  ): Flow<CMPEvents> {
+  @OptIn(ExperimentalCoroutinesApi::class)
+  override fun handle(commands: Flow<CMPCommands>): Flow<CMPEvents> {
     return commands.filterIsInstance<PasswordCommand>()
         .mapLatest { command ->
           when (command) {
             is CheckPasswordStrength -> {
               UpdatePasswordStrength(passwordInfoChecker.checkStrength(command.password))
             }
+            
             is CheckPasswordForErrors -> {
               UpdatePasswordError(passwordInfoChecker.checkForErrors(command.password))
             }

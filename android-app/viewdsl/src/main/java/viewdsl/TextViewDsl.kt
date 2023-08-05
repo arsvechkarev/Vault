@@ -33,10 +33,6 @@ fun TextView.drawables(
   }
 }
 
-fun TextView.clearCompoundDrawables() {
-  setCompoundDrawablesWithIntrinsicBounds(null, null, null, null)
-}
-
 inline fun TextView.textSize(size: Float) {
   setTextSize(TypedValue.COMPLEX_UNIT_PX, size)
 }

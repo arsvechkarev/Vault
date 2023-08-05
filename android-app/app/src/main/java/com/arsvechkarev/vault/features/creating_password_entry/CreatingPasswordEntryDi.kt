@@ -9,7 +9,7 @@ import com.arsvechkarev.vault.features.creating_password_entry.actors.ReceivingP
 import com.arsvechkarev.vault.features.creating_password_entry.actors.SavingPasswordEntryActor
 import com.arsvechkarev.vault.features.creating_password_entry.actors.ValidateInputActor
 
-fun CreatingPasswrodEntryStore(
+fun CreatingPasswordEntryStore(
   coreComponent: CoreComponent
 ): TeaStore<CreatingPasswordEntryState, CreatingPasswordEntryUiEvent, Nothing> {
   val communicatorHolder = CreatingPasswordCommunication.communicatorHolder

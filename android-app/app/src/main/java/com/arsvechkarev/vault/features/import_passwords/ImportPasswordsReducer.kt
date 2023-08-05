@@ -27,6 +27,7 @@ class ImportPasswordsReducer : DslReducer<ImportPasswordsState, ImportPasswordsE
       is OnSelectedFile -> {
         state { copy(selectedFileUri = event.uri, showSelectFileError = false) }
       }
+      
       OnImportPasswordsClicked -> {
         if (state.selectedFileUri == null) {
           state { copy(showSelectFileError = true) }
@@ -34,22 +35,28 @@ class ImportPasswordsReducer : DslReducer<ImportPasswordsState, ImportPasswordsE
           state { copy(infoDialog = CONFIRMATION) }
         }
       }
+      
       OnConfirmedImportClicked -> {
         state { copy(infoDialog = null, showEnteringPassword = true) }
       }
+      
       is OnPasswordEntered -> {
         state { copy(enteredPassword = event.password, showLoading = true) }
         commands(TryImportPasswords(checkNotNull(state.selectedFileUri), event.password))
       }
+      
       OnHideInfoDialog, OnHideErrorDialog -> {
         state { copy(infoDialog = null) }
       }
+      
       OnHideSuccessDialog -> {
         commands(GoToMainListScreen)
       }
+      
       OnHidePasswordEnteringDialog -> {
         state { copy(showEnteringPassword = false) }
       }
+      
       OnBackPressed -> {
         when {
           state.showLoading -> return
@@ -58,9 +65,11 @@ class ImportPasswordsReducer : DslReducer<ImportPasswordsState, ImportPasswordsE
           else -> commands(GoBack)
         }
       }
+      
       PasswordsImportFailure -> {
         state { copy(infoDialog = FAILURE, showLoading = false) }
       }
+      
       PasswordsImportSuccess -> {
         state { copy(infoDialog = SUCCESS, showEnteringPassword = false, showLoading = false) }
       }

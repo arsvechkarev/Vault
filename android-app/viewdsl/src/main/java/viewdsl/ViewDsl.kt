@@ -1,7 +1,6 @@
 package viewdsl
 
 import android.graphics.drawable.Drawable
-import android.graphics.drawable.GradientDrawable
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup.MarginLayoutParams
@@ -11,7 +10,6 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.annotation.ColorInt
-import androidx.annotation.DrawableRes
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 
 val View.parentView get() = parent as View
@@ -168,10 +166,6 @@ fun onClick(vararg views: View, action: (View) -> Unit) {
   views.forEach { it.setOnClickListener(action) }
 }
 
-fun setClickable(isClickable: Boolean, vararg views: View) {
-  views.forEach { it.isClickable = isClickable }
-}
-
 fun View.clearOnClick() {
   setOnClickListener(null)
 }
@@ -200,16 +194,8 @@ fun View.background(drawable: Drawable?) {
   background = drawable
 }
 
-fun View.backgroundGradient(orientation: GradientDrawable.Orientation, vararg colors: Int) {
-  background = GradientDrawable(orientation, colors)
-}
-
 fun View.backgroundColor(@ColorInt color: Int) {
   setBackgroundColor(color)
-}
-
-fun View.background(@DrawableRes drawableRes: Int) {
-  background = context.retrieveDrawable(drawableRes)
 }
 
 fun View.behavior(behavior: CoordinatorLayout.Behavior<*>) {

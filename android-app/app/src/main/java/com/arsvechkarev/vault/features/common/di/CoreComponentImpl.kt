@@ -23,7 +23,7 @@ interface CoreComponent :
   NavigationModule {
   
   companion object {
-  
+    
     fun create(
       application: Application,
       activityResultSubstitutor: ActivityResultSubstitutor,

@@ -15,13 +15,16 @@ class LoginReducer : DslReducer<LoginState, LoginEvent, LoginCommand, Nothing>()
       OnTypingText -> {
         state { copy(showPasswordIsIncorrect = false) }
       }
+      
       is OnEnteredPassword -> {
         state { copy(isLoading = true, showPasswordIsIncorrect = false) }
         commands(EnterWithMasterPassword(event.password))
       }
+      
       ShowFailureCheckingPassword -> {
         state { copy(isLoading = false, showPasswordIsIncorrect = true) }
       }
+      
       ShowSuccessCheckingPassword -> {
         state { copy(isLoading = false) }
         commands(GoToMainListScreen)

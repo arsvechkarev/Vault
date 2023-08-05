@@ -122,11 +122,11 @@ class ValidatingFileStructureTest : TestCase() {
     val expectedString = AesSivTinkCryptography.decryptData("qwetu1233", expectedBytes)
     val actualBytes = stubPasswordsFileExporter.exportedData!!
     val actualString = AesSivTinkCryptography.decryptData("qwetu1233", actualBytes)
-  
+    
     val gson = Gson()
     val expectedEntries = gson.fromJson(expectedString, Entries::class.java)
     val actualEntries = gson.fromJson(actualString, Entries::class.java)
-  
+    
     assertEquals(expectedEntries.passwords.size, actualEntries.passwords.size)
     expectedEntries.passwords.forEach { expectedPassword ->
       checkNotNull(actualEntries.passwords.find { it.websiteName == expectedPassword.websiteName })

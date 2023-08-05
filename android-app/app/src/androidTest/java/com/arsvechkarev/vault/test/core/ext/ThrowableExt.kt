@@ -12,6 +12,7 @@ internal fun <T : Throwable> T.isAllowed(allowed: Set<Class<out Throwable>>): Bo
         allowed.find { it.isAssignableFrom(e.javaClass) } != null
       } != null
     }
+    
     else -> {
       allowed.find { it.isAssignableFrom(javaClass) } != null
     }

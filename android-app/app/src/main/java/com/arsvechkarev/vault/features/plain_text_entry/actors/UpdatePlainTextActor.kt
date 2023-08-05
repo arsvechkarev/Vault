@@ -8,6 +8,7 @@ import com.arsvechkarev.vault.features.plain_text_entry.PlainTextCommand
 import com.arsvechkarev.vault.features.plain_text_entry.PlainTextCommand.UpdateItem
 import com.arsvechkarev.vault.features.plain_text_entry.PlainTextEvent
 import com.arsvechkarev.vault.features.plain_text_entry.PlainTextEvent.UpdatedPlainText.UpdatedText
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.flow.mapLatest
@@ -17,6 +18,7 @@ class UpdatePlainTextActor(
   private val storage: ListenableCachedEntriesStorage,
 ) : Actor<PlainTextCommand, PlainTextEvent> {
   
+  @OptIn(ExperimentalCoroutinesApi::class)
   override fun handle(commands: Flow<PlainTextCommand>): Flow<PlainTextEvent> {
     return commands.filterIsInstance<UpdateItem>()
         .mapLatest { command ->

@@ -114,7 +114,7 @@ class SettingsScreen : BaseFragmentScreen() {
   }
   
   companion object {
-  
+    
     val Toolbar = View.generateViewId()
     val FirstDivider = View.generateViewId()
     val ItemChangePassword = View.generateViewId()

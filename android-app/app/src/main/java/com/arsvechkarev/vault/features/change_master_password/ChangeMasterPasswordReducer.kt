@@ -26,9 +26,11 @@ class ChangeMasterPasswordReducer : DslReducer<ChangeMasterPasswordState, Change
       is OnInitialPasswordChanged -> {
         state { copy(initialPassword = event.text, error = null) }
       }
+      
       is OnRepeatedPasswordChanged -> {
         state { copy(repeatedPassword = event.text, error = null) }
       }
+      
       OnChangeMasterPasswordClicked -> {
         if (state.initialPassword.isEmpty() && state.repeatedPassword.isEmpty()) {
           return
@@ -39,16 +41,20 @@ class ChangeMasterPasswordReducer : DslReducer<ChangeMasterPasswordState, Change
           commands(CheckPassword(state.repeatedPassword))
         }
       }
+      
       OnConfirmChangePassword -> {
         state { copy(dialogType = ChangeMasterPasswordDialogType.LOADING) }
         commands(ChangeMasterPassword(state.repeatedPassword))
       }
+      
       OnCancelChangePassword -> {
         state { copy(dialogType = null) }
       }
+      
       OnNotificationOkClicked -> {
         commands(GoBack)
       }
+      
       OnBackPressed -> {
         when (state.dialogType) {
           CONFIRMATION -> state { copy(dialogType = null) }
@@ -56,12 +62,15 @@ class ChangeMasterPasswordReducer : DslReducer<ChangeMasterPasswordState, Change
           else -> commands(GoBack)
         }
       }
+      
       MasterPasswordIsSameAsCurrent -> {
         state { copy(dialogType = null, error = PASSWORD_SAME_AS_CURRENT) }
       }
+      
       is Success -> {
         state { copy(dialogType = CONFIRMATION) }
       }
+      
       NewMasterPasswordSaved -> {
         state { copy(dialogType = NOTIFICATION_AFTER) }
       }

@@ -5,14 +5,17 @@ plugins {
 }
 
 android {
-  signingConfigs {
-    Properties properties = new Properties()
-    properties.load(new FileInputStream(file("../../local.properties")))
-    release {
-      storeFile file(properties["keystoreFile"])
-      storePassword properties["keystorePassword"]
-      keyAlias properties["keyAlias"]
-      keyPassword properties["keyPassword"]
+  File localProperties = file("../../local.properties")
+  if (localProperties != null) {
+    signingConfigs {
+      Properties properties = new Properties()
+      properties.load(new FileInputStream(localProperties))
+      release {
+        storeFile localProperties(properties["keystoreFile"])
+        storePassword properties["keystorePassword"]
+        keyAlias properties["keyAlias"]
+        keyPassword properties["keyPassword"]
+      }
     }
   }
   def ext = rootProject.ext
@@ -23,7 +26,11 @@ android {
     targetSdkVersion ext.targetSdkVersion
     versionCode ext.versionCode
     versionName ext.versionName
-    signingConfig signingConfigs.release
+    if (localProperties != null) {
+      signingConfig signingConfigs.release
+    } else {
+      signingConfig signingConfigs.debug
+    }
     testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
   }
   buildTypes {

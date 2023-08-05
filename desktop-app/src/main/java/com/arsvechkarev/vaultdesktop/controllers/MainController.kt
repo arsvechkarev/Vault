@@ -24,7 +24,7 @@ import javafx.scene.layout.VBox
 import javafx.scene.paint.Paint
 import javafx.scene.shape.Circle
 import javafx.util.Duration
-
+import java.util.Locale
 
 // TODO (8/3/2023): Extract separate controllers?
 class MainController {
@@ -101,7 +101,10 @@ class MainController {
     val entries = requireNotNull(EntriesHolder.entries)
     if (entries.passwords.isNotEmpty()) {
       vBoxEntries.children.add(createTitleLabel("Passwords"))
-      for (password in entries.passwords) {
+      val sortedPasswords = entries.passwords.sortedBy {
+        it.websiteName.lowercase(Locale.getDefault())
+      }
+      for (password in sortedPasswords) {
         vBoxEntries.children.add(
           createItem(id = password.id, text = password.websiteName, onClick = ::openPassword)
         )
@@ -109,7 +112,8 @@ class MainController {
     }
     if (entries.plainTexts.isNotEmpty()) {
       vBoxEntries.children.add(createTitleLabel("Plain texts"))
-      for (plainText in entries.plainTexts) {
+      val sortedPlainTexts = entries.plainTexts.sortedBy { it.title.lowercase(Locale.getDefault()) }
+      for (plainText in sortedPlainTexts) {
         vBoxEntries.children.add(
           createItem(id = plainText.id, text = plainText.title, onClick = ::openPlainText)
         )

@@ -1,6 +1,7 @@
 package com.arsvechkarev.vault.core.views.drawables
 
 import android.graphics.Canvas
+import android.graphics.Paint
 import android.graphics.Rect
 import com.arsvechkarev.vault.core.extensions.Paint
 import com.arsvechkarev.vault.core.extensions.TextPaint
@@ -15,9 +16,13 @@ class LetterInCircleDrawable(
   backgroundColor: Int = Colors.WhiteCircle
 ) : BaseDrawable() {
   
-  private val textPaint = TextPaint(color = textColor, font = Fonts.SegoeUiBold)
+  private val textPaint = TextPaint(
+    color = textColor,
+    font = Fonts.SegoeUiBold,
+    textAlign = Paint.Align.LEFT
+  )
   private val paint = Paint(color = backgroundColor)
-  private var halfTextHeight = 0f
+  private var textRect = Rect()
   
   init {
     require(letter.length == 1)
@@ -31,14 +36,16 @@ class LetterInCircleDrawable(
   
   override fun onBoundsChange(bounds: Rect) {
     computeTextSize()
-    halfTextHeight = textPaint.getTextHeight(letter) / 2f
+    textPaint.getTextBounds(letter, 0, letter.length, textRect)
   }
   
   override fun draw(canvas: Canvas) {
     val hw = bounds.width() / 2f
     val hh = bounds.height() / 2f
     canvas.drawCircle(hw, hh, minOf(hw, hh), paint)
-    canvas.drawText(letter, hw, hh + halfTextHeight - textPaint.descent() / 2, textPaint)
+    val x = hw - textRect.width() / 2f - textRect.left
+    val y = hh + textRect.height() / 2f - textRect.bottom
+    canvas.drawText(letter, x, y, textPaint)
   }
   
   private fun computeTextSize() {

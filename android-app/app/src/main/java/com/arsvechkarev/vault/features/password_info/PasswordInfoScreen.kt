@@ -20,6 +20,7 @@ import com.arsvechkarev.vault.features.common.dialogs.LoadingDialog
 import com.arsvechkarev.vault.features.common.dialogs.loadingDialog
 import com.arsvechkarev.vault.features.common.model.PasswordItem
 import com.arsvechkarev.vault.features.common.setWebsiteIcon
+import com.arsvechkarev.vault.features.creating_password.CreatingPasswordCommunication
 import com.arsvechkarev.vault.features.password_info.PasswordInfoScreen.ImageType.COPY
 import com.arsvechkarev.vault.features.password_info.PasswordInfoScreen.ImageType.OPEN_IN_NEW
 import com.arsvechkarev.vault.features.password_info.PasswordInfoScreenNews.SetLogin
@@ -44,7 +45,7 @@ import com.arsvechkarev.vault.features.password_info.PasswordInfoScreenUiEvent.O
 import com.arsvechkarev.vault.features.password_info.PasswordInfoScreenUiEvent.OnWebsiteNameTextChanged
 import com.arsvechkarev.vault.viewbuilding.Colors
 import com.arsvechkarev.vault.viewbuilding.Dimens
-import com.arsvechkarev.vault.viewbuilding.Dimens.ImageServiceNameSize
+import com.arsvechkarev.vault.viewbuilding.Dimens.ImageWebsiteSize
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginExtraLarge
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginLarge
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginMedium
@@ -133,7 +134,7 @@ class PasswordInfoScreen : BaseFragmentScreen() {
             endToEndOf(parent)
           }
         }
-        ImageView(ImageServiceNameSize, ImageServiceNameSize) {
+        ImageView(ImageWebsiteSize, ImageWebsiteSize) {
           id(ImageWebsite)
           scaleType = ImageView.ScaleType.FIT_XY
           margins(top = MarginExtraLarge)
@@ -286,11 +287,6 @@ class PasswordInfoScreen : BaseFragmentScreen() {
     PasswordInfoScreenStore(coreComponent, arg(PasswordItem::class))
   }
   
-  override fun onInit() {
-    store.subscribe(this, ::render, ::handleNews)
-    store.tryDispatch(OnInit)
-  }
-  
   private val websiteNameTextWatcher =
       BaseTextWatcher { store.tryDispatch(OnWebsiteNameTextChanged(it)) }
   
@@ -299,6 +295,15 @@ class PasswordInfoScreen : BaseFragmentScreen() {
   
   private val notesTextWatcher =
       BaseTextWatcher { store.tryDispatch(OnNotesTextChanged(it)) }
+  
+  override fun onInit() {
+    store.subscribe(this, ::render, ::handleNews)
+    store.tryDispatch(OnInit)
+  }
+  
+  override fun onRelease() {
+    CreatingPasswordCommunication.communicatorHolder.finishCommunication()
+  }
   
   private fun render(state: PasswordInfoState) {
     imageView(ImageWebsite).setWebsiteIcon(state.websiteNameState.editedText)
@@ -350,6 +355,7 @@ class PasswordInfoScreen : BaseFragmentScreen() {
         editText(EditTextWebsiteName)
             .setTextSilently(news.websiteName, websiteNameTextWatcher)
       }
+      
       is SetLogin -> editText(EditTextLogin).setTextSilently(news.login, loginTextWatcher)
       is SetNotes -> editText(EditTextNotes).setTextSilently(news.notes, notesTextWatcher)
       ShowWebsiteNameCopied -> snackbar.show(R.string.text_website_name_copied)
@@ -369,7 +375,7 @@ class PasswordInfoScreen : BaseFragmentScreen() {
   }
   
   companion object {
-  
+    
     val PasswordInfoScreenRoot = View.generateViewId()
     val ImageBack = View.generateViewId()
     val ImageDelete = View.generateViewId()

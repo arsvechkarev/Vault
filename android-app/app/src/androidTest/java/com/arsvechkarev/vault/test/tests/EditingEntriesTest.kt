@@ -69,27 +69,27 @@ class EditingEntriesTest : VaultTestCase() {
             currentScreenIs(MainListScreen::class)
             recycler.emptyChildAt(1) { click() }
           }
-  
+          
           currentScreenIs(PasswordInfoScreen::class)
-  
+          
           imageWebsiteNameAction.click()
           hasClipboardText("google")
           snackbar.isDisplayedWithText("Website successfully copied!")
           
           waitForSnackbarToHide()
-  
+          
           imageLoginAction.click()
           hasClipboardText("me@gmail.com")
           snackbar.isDisplayedWithText("Login successfully copied!")
           
           waitForSnackbarToHide()
-  
+          
           imageCopyPassword.click()
           hasClipboardText("F/<1#E(J=\\51=k")
           snackbar.isDisplayedWithText("Password successfully copied!")
           
           waitForSnackbarToHide()
-  
+          
           imageNotesAction.click()
           hasClipboardText("")
           snackbar.isDisplayedWithText("Notes successfully copied!")
@@ -97,21 +97,21 @@ class EditingEntriesTest : VaultTestCase() {
           waitForSnackbarToHide()
           
           editTextNotes.replaceText("my notes")
-  
+          
           imageNotesAction.hasDrawable(R.drawable.ic_checmark)
           
           iconBack.click()
-  
+          
           currentScreenIs(PasswordInfoScreen::class)
           imageNotesAction.hasDrawable(R.drawable.ic_copy)
           editTextNotes.hasEmptyText()
           
           editTextNotes.replaceText("my notes2")
-  
+          
           imageNotesAction.click()
           
           editTextNotes.hasText("my notes2")
-  
+          
           imageNotesAction.click()
           
           hasClipboardText("my notes2")
@@ -120,25 +120,25 @@ class EditingEntriesTest : VaultTestCase() {
           waitForSnackbarToHide()
           
           editTextWebsiteName.typeText("a")
-  
+          
           imageWebsiteNameAction.hasDrawable(R.drawable.ic_checmark)
           editTextWebsiteName.hasText("googlea")
           textWebsiteName.hasText("googlea")
           imageWebsite.hasDrawable(R.drawable.icon_google)
           
           iconBack.click()
-  
+          
           imageWebsiteNameAction.hasDrawable(R.drawable.ic_copy)
           editTextWebsiteName.hasText("google")
           textWebsiteName.hasText("google")
-  
+          
           editTextWebsiteName.replaceText("yabcd")
           imageWebsiteNameAction.click()
           
           imageWebsite.hasDrawable(LetterInCircleDrawable("y"))
           textWebsiteName.hasText("yabcd")
           editTextWebsiteName.hasText("yabcd")
-  
+          
           imageWebsiteNameAction.click()
           
           hasClipboardText("yabcd")
@@ -162,31 +162,31 @@ class EditingEntriesTest : VaultTestCase() {
                 title.hasText("my title")
               }
             }
-  
+            
             recycler.emptyChildAt(2) { click() }
           }
           
           editTextLogin.replaceText("qwerty")
-  
+          
           imageLoginAction.hasDrawable(R.drawable.ic_checmark)
           
           pressBack()
-  
+          
           imageLoginAction.hasDrawable(R.drawable.ic_copy)
           editTextLogin.hasText("me@gmail.com")
           
           editTextLogin.replaceText("kkk")
-  
+          
           imageLoginAction.click()
-  
+          
           imageLoginAction.hasDrawable(R.drawable.ic_copy)
           editTextLogin.hasText("kkk")
-  
+          
           imageLoginAction.click()
           
           hasClipboardText("kkk")
           snackbar.isDisplayedWithText("Login successfully copied!")
-  
+          
           imageEditPassword.click()
           
           KCreatingPasswordScreen {
@@ -196,18 +196,18 @@ class EditingEntriesTest : VaultTestCase() {
             
             pressBack()
           }
-  
+          
           currentScreenIs(PasswordInfoScreen::class)
-  
+          
           imageEditPassword.click()
           
           KCreatingPasswordScreen {
             editTextPassword.clearText()
             iconCross.click()
           }
-  
+          
           currentScreenIs(PasswordInfoScreen::class)
-  
+          
           imageEditPassword.click()
           
           KCreatingPasswordScreen {
@@ -219,14 +219,14 @@ class EditingEntriesTest : VaultTestCase() {
             
             confirmationDialog.action2.click()
           }
-  
+          
           currentScreenIs(PasswordInfoScreen::class)
-  
+          
           imageCopyPassword.click()
           hasClipboardText("qwerty222;")
-  
+          
           imageEditPassword.click()
-  
+          
           KCreatingPasswordScreen {
             checkmarkUppercaseSymbols.isNotChecked()
             checkmarkNumbers.isChecked()

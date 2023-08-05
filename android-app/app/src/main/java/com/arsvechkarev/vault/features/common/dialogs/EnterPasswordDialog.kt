@@ -168,6 +168,7 @@ class EnterPasswordDialog(context: Context) : FrameLayout(context) {
       IMPORTING_PASSWORDS -> {
         textView(Title).text(R.string.text_enter_password_to_import)
       }
+      
       CHECK_MASTER_PASSWORD -> {
         textView(Title).text(R.string.text_enter_master_password_to_proceed)
       }
@@ -202,13 +203,13 @@ class EnterPasswordDialog(context: Context) : FrameLayout(context) {
   }
   
   companion object {
-  
+    
     val Title = View.generateViewId()
     val TextError = View.generateViewId()
     val ButtonContinue = View.generateViewId()
-  
+    
     val BaseFragmentScreen.enterPasswordDialog get() = viewAs<EnterPasswordDialog>()
-  
+    
     fun CoordinatorLayout.EnterPasswordDialog(
       mode: Mode,
       hideKeyboardOnClose: Boolean = true,

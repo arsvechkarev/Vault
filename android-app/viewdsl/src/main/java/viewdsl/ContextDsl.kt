@@ -5,13 +5,10 @@ import android.content.Context
 import android.content.res.Configuration
 import android.graphics.drawable.Drawable
 import android.text.TextUtils
-import android.util.TypedValue
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
-import androidx.annotation.AttrRes
-import androidx.annotation.ColorInt
 import androidx.annotation.DrawableRes
 import androidx.core.content.ContextCompat
 import java.util.Locale
@@ -58,14 +55,6 @@ fun Context.hideKeyboard() {
 
 fun Context.setSoftInputMode(mode: Int) {
   (this as Activity).window.setSoftInputMode(mode)
-}
-
-@ColorInt
-fun Context.getAttrColor(@AttrRes resId: Int): Int {
-  val typedValue = TypedValue()
-  val resolved = theme.resolveAttribute(resId, typedValue, true)
-  require(resolved) { "Attribute cannot be resolved" }
-  return typedValue.data
 }
 
 fun Context.retrieveDrawable(@DrawableRes resId: Int): Drawable {

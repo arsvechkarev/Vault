@@ -9,5 +9,5 @@ java {
 }
 
 dependencies {
-  implementation 'com.google.crypto.tink:tink-android:1.6.1'
+  implementation 'com.google.crypto.tink:tink-android:1.7.0'
 }

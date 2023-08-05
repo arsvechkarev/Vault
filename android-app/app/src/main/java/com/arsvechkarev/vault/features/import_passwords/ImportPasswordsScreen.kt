@@ -161,6 +161,7 @@ class ImportPasswordsScreen : BaseFragmentScreen() {
           onProceed = { store.tryDispatch(OnConfirmedImportClicked) }
         )
       }
+      
       ImportPasswordsInfoDialog.SUCCESS -> {
         infoDialog.showWithOkOption(
           titleRes = R.string.text_success,
@@ -170,6 +171,7 @@ class ImportPasswordsScreen : BaseFragmentScreen() {
           onOkClicked = { store.tryDispatch(OnHideSuccessDialog) }
         )
       }
+      
       ImportPasswordsInfoDialog.FAILURE -> {
         infoDialog.showWithOkOption(
           titleRes = R.string.text_error,
@@ -179,6 +181,7 @@ class ImportPasswordsScreen : BaseFragmentScreen() {
           onOkClicked = { store.tryDispatch(OnHideErrorDialog) }
         )
       }
+      
       null -> infoDialog.hide()
     }
   }

@@ -25,15 +25,19 @@ class MainListReducer : DslReducer<MainListState, MainListEvent, MainListCommand
       OnInit -> {
         commands(LoadData)
       }
+      
       is OnListItemClicked -> {
         commands(GoToCorrespondingInfoScreen(event.item))
       }
+      
       OnOpenMenuClicked -> {
         state { copy(menuOpened = true) }
       }
+      
       OnCloseMenuClicked -> {
         state { copy(menuOpened = false) }
       }
+      
       is OnMenuItemClicked -> {
         if (event.itemType != MenuItemType.NEW_ENTRY) {
           state { copy(menuOpened = false) }
@@ -45,6 +49,7 @@ class MainListReducer : DslReducer<MainListState, MainListEvent, MainListCommand
           MenuItemType.NEW_ENTRY -> state { copy(showEntryTypeDialog = true) }
         }
       }
+      
       is OnEntryTypeSelected -> {
         state { copy(showEntryTypeDialog = false, menuOpened = false) }
         val screenType = when (event.type) {
@@ -54,9 +59,11 @@ class MainListReducer : DslReducer<MainListState, MainListEvent, MainListCommand
         }
         commands(OpenScreen(screenType))
       }
+      
       OnEntryTypeDialogHidden -> {
         state { copy(showEntryTypeDialog = false) }
       }
+      
       OnBackPressed -> {
         when {
           state.showEntryTypeDialog -> state { copy(showEntryTypeDialog = false) }
@@ -64,6 +71,7 @@ class MainListReducer : DslReducer<MainListState, MainListEvent, MainListCommand
           else -> commands(GoBack)
         }
       }
+      
       is UpdateData -> {
         state { copy(data = event.data) }
       }

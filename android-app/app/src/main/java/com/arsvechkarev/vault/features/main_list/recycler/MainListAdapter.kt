@@ -23,7 +23,7 @@ import com.arsvechkarev.vault.viewbuilding.Dimens.GradientDrawableHeight
 import com.arsvechkarev.vault.viewbuilding.Dimens.HorizontalMarginSmall
 import com.arsvechkarev.vault.viewbuilding.Dimens.IconSize
 import com.arsvechkarev.vault.viewbuilding.Dimens.IconSizeBig
-import com.arsvechkarev.vault.viewbuilding.Dimens.ImageNoServicesSize
+import com.arsvechkarev.vault.viewbuilding.Dimens.ImageNoEntriesSize
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginLarge
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginNormal
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginSmall
@@ -146,7 +146,7 @@ class MainListAdapter(
           RootVerticalLayout {
             marginHorizontal(MarginLarge)
             gravity(CENTER)
-            ImageView(ImageNoServicesSize, ImageNoServicesSize) {
+            ImageView(ImageNoEntriesSize, ImageNoEntriesSize) {
               image(R.drawable.ic_lists)
               margin(MarginNormal)
             }

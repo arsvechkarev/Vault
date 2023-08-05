@@ -5,7 +5,6 @@ import android.content.res.ColorStateList
 import android.graphics.PorterDuff
 import android.graphics.PorterDuffColorFilter
 import android.graphics.drawable.Drawable
-import android.widget.CompoundButton
 import android.widget.ImageView
 import android.widget.SeekBar
 import androidx.annotation.DrawableRes
@@ -33,10 +32,6 @@ fun ImageView.image(drawable: Drawable) {
   setImageDrawable(drawable)
 }
 
-fun ImageView.clearImage() {
-  setImageDrawable(null)
-}
-
 inline fun SeekBar.onProgressChanged(crossinline block: (progress: Int) -> Unit) {
   setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
     override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
@@ -50,10 +45,6 @@ inline fun SeekBar.onProgressChanged(crossinline block: (progress: Int) -> Unit)
     }
     
   })
-}
-
-fun CompoundButton.setCheckedSafe(checked: Boolean) {
-  if (isChecked != checked) isChecked = checked
 }
 
 fun SwitchCompat.setColors(

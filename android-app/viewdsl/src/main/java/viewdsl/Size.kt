@@ -9,7 +9,7 @@ sealed class Size {
   class Dimen(val dimenRes: Int) : Size()
   
   companion object {
-  
+    
     val ZERO = IntSize(0)
     val MatchParent get() = MATCH_PARENT
     val WrapContent get() = WRAP_CONTENT

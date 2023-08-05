@@ -270,7 +270,7 @@ class CreatingPasswordScreen : BaseFragmentScreen() {
   }
   
   companion object {
-  
+    
     val CreatingPasswordScreenRoot = View.generateViewId()
     val Title = View.generateViewId()
     val TextPasswordLength = View.generateViewId()

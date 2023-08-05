@@ -223,6 +223,7 @@ class CreatingMasterPasswordScreen : BaseFragmentScreen() {
       TOO_SHORT -> requireContext().getString(R.string.text_password_min_length,
         MIN_PASSWORD_LENGTH
       )
+      
       EMPTY -> requireContext().getString(R.string.text_password_cannot_be_empty)
       PASSWORDS_DONT_MATCH -> {
         if (passwordEnteringState == INITIAL) {

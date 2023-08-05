@@ -1,9 +1,9 @@
 package com.arsvechkarev.vault.features.common.dialogs
 
 import android.view.ViewGroup
-import com.arsvechkarev.vault.viewbuilding.Dimens.ProgressBarSizeBig
 import com.arsvechkarev.vault.core.views.MaterialProgressBar
 import com.arsvechkarev.vault.core.views.SimpleDialog
+import com.arsvechkarev.vault.viewbuilding.Dimens.ProgressBarSizeBig
 import navigation.BaseFragmentScreen
 import viewdsl.Size.Companion.MatchParent
 import viewdsl.addView

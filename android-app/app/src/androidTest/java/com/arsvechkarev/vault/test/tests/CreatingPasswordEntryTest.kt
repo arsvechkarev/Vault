@@ -54,40 +54,40 @@ class CreatingPasswordEntryTest : VaultTestCase() {
           message.isDisplayed()
         }
       }
-  
+      
       menu {
         open()
         newEntryMenuItem.click()
       }
-  
+      
       entryTypeDialog.isDisplayed()
-  
+      
       entryTypeDialog.passwordEntry.click()
-  
+      
       KCreatingPasswordEntryScreen {
         iconBack.click()
       }
-  
+      
       recycler.isDisplayed()
       menu.isClosed()
       entryTypeDialog.isNotDisplayed()
-  
+      
       menu {
         open()
         newEntryMenuItem.click()
       }
-  
+      
       entryTypeDialog.passwordEntry.click()
-  
+      
       KCreatingPasswordEntryScreen {
         title.isDisplayed()
         textWebsiteName.hasText("Website name")
         textLogin.hasText("Login")
         buttonContinue.isDisplayed()
-    
+        
         closeSoftKeyboard()
         buttonContinue.click()
-    
+        
         textWebsiteName {
           hasTextColorInt(Colors.Error)
           hasText("Website name cannot be empty")
@@ -120,7 +120,7 @@ class CreatingPasswordEntryTest : VaultTestCase() {
         KCreatingPasswordScreen {
           iconCross.click()
         }
-    
+        
         currentScreenIs(CreatingPasswordEntryScreen::class)
         
         buttonContinue.click()
@@ -195,25 +195,25 @@ class CreatingPasswordEntryTest : VaultTestCase() {
           checkmarkNumbers.click()
           checkmarkSpecialSymbols.click()
           buttonGeneratePassword.click()
-  
+          
           editTextPassword {
             hasTextLength(21)
             hasPasswordWithAllCharacteristics()
           }
-  
+          
           editTextPassword.replaceText("abcabcabcabcabc")
-  
+          
           checkmarkUppercaseSymbols.isNotChecked()
           checkmarkNumbers.isNotChecked()
           checkmarkUppercaseSymbols.isNotChecked()
           textPasswordStrength.hasText("Weak")
           passwordStrengthMeter.hasPasswordStrength(WEAK)
-  
+          
           editTextPassword.clearText()
           buttonSavePassword.click()
-  
+          
           textError.hasText("Password cannot be empty")
-  
+          
           buttonGeneratePassword.click()
           
           textError.hasEmptyText()
@@ -243,7 +243,7 @@ class CreatingPasswordEntryTest : VaultTestCase() {
           
           buttonSavePassword.click()
           confirmationDialog.action2.click()
-  
+          
           KPasswordInfoScreen {
             imageWebsite {
               isDisplayed()
@@ -253,7 +253,7 @@ class CreatingPasswordEntryTest : VaultTestCase() {
             editTextWebsiteName.hasText("test.com")
             editTextLogin.hasText("mylogin")
             editTextNotes.hasEmptyText()
-    
+            
             pressBack()
           }
         }

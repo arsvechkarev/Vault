@@ -25,9 +25,11 @@ class ExportPasswordsReducer : DslReducer<ExportPasswordsState, ExportPasswordsE
       is OnSelectedFolder -> {
         state { copy(folderPath = event.path, showSelectFolderError = false) }
       }
+      
       is OnFilenameTextChanged -> {
         state { copy(filename = event.text, showEnterFilenameError = false) }
       }
+      
       OnExportPasswordClicked -> {
         if (state.folderPath.isNotBlank() && state.filename.isNotBlank()) {
           commands(GetPasswordsFileUri)
@@ -40,12 +42,15 @@ class ExportPasswordsReducer : DslReducer<ExportPasswordsState, ExportPasswordsE
           }
         }
       }
+      
       is OnViewExportedFileClicked -> {
         commands()
       }
+      
       OnHideViewExportedFileDialog -> {
         state { copy(showSuccessDialog = false) }
       }
+      
       OnBackPressed -> {
         if (state.showSuccessDialog) {
           state { copy(showSuccessDialog = false) }
@@ -53,12 +58,15 @@ class ExportPasswordsReducer : DslReducer<ExportPasswordsState, ExportPasswordsE
           commands(GoBack)
         }
       }
+      
       is CalculatedFilenameFromUri -> {
         state { copy(filename = event.filename) }
       }
+      
       is PasswordsFileUriReceived -> {
         news(TryExportPasswords(state.filename))
       }
+      
       is OnFileForPasswordsExportCreated -> {
         state { copy(exportedFileUri = event.uri) }
         commands(
@@ -66,6 +74,7 @@ class ExportPasswordsReducer : DslReducer<ExportPasswordsState, ExportPasswordsE
           CalculateFilenameFromUri(event.uri, fallback = state.filename),
         )
       }
+      
       ExportedPasswords -> {
         state { copy(showSuccessDialog = true) }
       }

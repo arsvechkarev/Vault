@@ -155,10 +155,12 @@ class ChangeMasterPasswordScreen : BaseFragmentScreen() {
           onProceed = { store.tryDispatch(OnConfirmChangePassword) }
         )
       }
+      
       LOADING -> {
         infoDialog.hide()
         loadingDialog.show()
       }
+      
       NOTIFICATION_AFTER -> {
         loadingDialog.hide()
         infoDialog.showWithOkOption(
@@ -169,6 +171,7 @@ class ChangeMasterPasswordScreen : BaseFragmentScreen() {
           onOkClicked = { store.tryDispatch(OnNotificationOkClicked) }
         )
       }
+      
       null -> {
         infoDialog.hide()
         loadingDialog.hide()

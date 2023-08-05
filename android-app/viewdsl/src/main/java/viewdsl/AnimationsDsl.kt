@@ -1,5 +1,3 @@
-@file:Suppress("UsePropertyAccessSyntax")
-
 package viewdsl
 
 import android.animation.Animator
@@ -7,15 +5,9 @@ import android.animation.AnimatorListenerAdapter
 import android.graphics.drawable.Animatable
 import android.view.View
 import android.view.animation.AccelerateDecelerateInterpolator
-import android.view.animation.OvershootInterpolator
 import viewdsl.ViewDslConfiguration.AnimationDurations
 
 val AccelerateDecelerateInterpolator = AccelerateDecelerateInterpolator()
-val OvershootInterpolator = OvershootInterpolator()
-
-fun Animator.startIfNotRunning() {
-  if (!isRunning) start()
-}
 
 fun Animator.cancelIfRunning() {
   if (isRunning) cancel()

@@ -76,7 +76,7 @@ class InitialScreen : BaseFragmentScreen() {
   }
   
   companion object {
-  
+    
     val ButtonCreateMasterPassword = View.generateViewId()
     val ButtonImportPasswords = View.generateViewId()
   }

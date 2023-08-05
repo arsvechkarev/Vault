@@ -331,7 +331,7 @@ class PlainTextScreen : BaseFragmentScreen() {
   }
   
   companion object {
-  
+    
     val PlainTextScreenRoot = View.generateViewId()
     val ImageBack = View.generateViewId()
     val MainTitle = View.generateViewId()

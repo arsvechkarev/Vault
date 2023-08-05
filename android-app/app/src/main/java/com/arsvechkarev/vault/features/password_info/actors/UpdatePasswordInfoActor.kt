@@ -15,6 +15,7 @@ import com.arsvechkarev.vault.features.password_info.PasswordInfoScreenEvent.Upd
 import com.arsvechkarev.vault.features.password_info.PasswordInfoScreenEvent.UpdatedPasswordInfo.UpdatedNotes
 import com.arsvechkarev.vault.features.password_info.PasswordInfoScreenEvent.UpdatedPasswordInfo.UpdatedPassword
 import com.arsvechkarev.vault.features.password_info.PasswordInfoScreenEvent.UpdatedPasswordInfo.UpdatedWebsiteName
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.flow.mapLatest
@@ -24,6 +25,7 @@ class UpdatePasswordInfoActor(
   private val masterPasswordProvider: MasterPasswordProvider
 ) : Actor<PasswordInfoScreenCommand, PasswordInfoScreenEvent> {
   
+  @OptIn(ExperimentalCoroutinesApi::class)
   override fun handle(commands: Flow<PasswordInfoScreenCommand>): Flow<PasswordInfoScreenEvent> {
     return commands.filterIsInstance<UpdateItem>()
         .mapLatest { command ->

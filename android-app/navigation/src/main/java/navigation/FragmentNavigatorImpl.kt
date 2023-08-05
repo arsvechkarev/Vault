@@ -26,6 +26,7 @@ class FragmentNavigatorImpl(
             command.screensCount
           )
         }
+        
         is SwitchToNewRoot -> performSwitchToNewRoot(command.screenInfo.screenKey,
           command.screenInfo.arguments
         )

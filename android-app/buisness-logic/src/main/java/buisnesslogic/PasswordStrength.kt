@@ -1,5 +1,5 @@
 package buisnesslogic
 
 enum class PasswordStrength {
-    WEAK, MEDIUM, STRONG, SECURE
+  WEAK, MEDIUM, STRONG, SECURE
 }

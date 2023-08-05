@@ -44,11 +44,6 @@ class KMenuView : KBaseView<KMenuView>({
     circleCrossView.click()
   }
   
-  fun close() {
-    isOpened()
-    circleCrossView.click()
-  }
-  
   private fun menuItemMatcher(iconRes: Int) = baseMatcher<MenuItemView>(
     descriptionText = "menu item with icon $iconRes",
     matcher = { view -> view.iconRes == iconRes }

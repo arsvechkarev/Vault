@@ -11,6 +11,7 @@ import com.arsvechkarev.vault.features.import_passwords.ImportPasswordsCommand.T
 import com.arsvechkarev.vault.features.import_passwords.ImportPasswordsEvent
 import com.arsvechkarev.vault.features.import_passwords.ImportPasswordsEvent.PasswordsImportFailure
 import com.arsvechkarev.vault.features.import_passwords.ImportPasswordsEvent.PasswordsImportSuccess
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.flow.mapLatest
@@ -23,21 +24,22 @@ class ImportPasswordsActor(
   private val storage: ListenableCachedEntriesStorage,
 ) : Actor<ImportPasswordsCommand, ImportPasswordsEvent> {
   
+  @OptIn(ExperimentalCoroutinesApi::class)
   override fun handle(commands: Flow<ImportPasswordsCommand>): Flow<ImportPasswordsEvent> {
     return commands.filterIsInstance<TryImportPasswords>()
         .mapLatest { command ->
           val currentBytes = fileSaver.readData()
           val result = runCatching {
             val bytes = externalFileReader.readFile(command.uri)
-    
+            
             // Trying to decrypt data
             cryptography.decryptData(command.password, bytes)
-    
+            
             // Saving new bytes to file saver temporarily, this should be done because
             // storage reads from file saver
             // TODO (27.11.2022): Make storage independent of FileSaver ?
             fileSaver.saveData(bytes)
-    
+            
             // Decryption is successful, trying to parse passwords to
             // make sure format is valid
             storage.getEntries(command.password)

@@ -1,3 +1,5 @@
+@file:Suppress("FunctionName")
+
 package com.arsvechkarev.vault.features.creating_password_entry.actors
 
 import com.arsvechkarev.vault.core.mvi.tea.Actor
@@ -19,9 +21,11 @@ fun CreatingEntryRouterActor(router: Router): Actor<CreatingPasswordEntryCommand
       GoToCreatePasswordScreen -> {
         goForward(CreatingPasswordScreen)
       }
+      
       is GoToInfoScreen -> {
         goForwardWithRemovalOf(PasswordInfoScreen(command.passwordItem), 2)
       }
+      
       GoBack -> {
         goBack()
       }

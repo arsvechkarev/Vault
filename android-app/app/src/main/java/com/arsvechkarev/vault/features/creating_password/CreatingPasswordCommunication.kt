@@ -1,16 +1,11 @@
 package com.arsvechkarev.vault.features.creating_password
 
-sealed interface CreatingPasswordReceiveEvent {
+class CreatingPasswordReceiveEvent(val mode: PasswordConfigurationMode) {
   
-  class Setup(val mode: PasswordConfigurationMode) : CreatingPasswordReceiveEvent {
-    
     sealed interface PasswordConfigurationMode {
       object NewPassword : PasswordConfigurationMode
       class EditPassword(val password: String) : PasswordConfigurationMode
     }
-  }
 }
 
-sealed interface CreatingPasswordSendEvent {
-  class OnSavingPassword(val password: String) : CreatingPasswordSendEvent
-}
+class CreatingPasswordSendEvent(val password: String)

@@ -1,6 +1,7 @@
 package com.arsvechkarev.vault.features.creating_password
 
-import com.arsvechkarev.vault.core.communicators.CommunicatorHolder
+import com.arsvechkarev.vault.core.communicators.Communicator
+import com.arsvechkarev.vault.core.communicators.CommunicatorImpl
 import com.arsvechkarev.vault.core.mvi.tea.TeaStore
 import com.arsvechkarev.vault.core.mvi.tea.TeaStoreImpl
 import com.arsvechkarev.vault.features.common.di.CoreComponent
@@ -8,18 +9,16 @@ import com.arsvechkarev.vault.features.creating_password.actors.CheckPasswordStr
 import com.arsvechkarev.vault.features.creating_password.actors.ComputePasswordCharacteristicsActor
 import com.arsvechkarev.vault.features.creating_password.actors.CreatingPasswordRouterActor
 import com.arsvechkarev.vault.features.creating_password.actors.GeneratePasswordActor
-import com.arsvechkarev.vault.features.creating_password.actors.ReceivingInputCreatingPasswordActor
 import com.arsvechkarev.vault.features.creating_password.actors.SendingOutputCreatingPasswordActor
 
 fun CreatingPasswordStore(
   coreComponent: CoreComponent
 ): TeaStore<CreatingPasswordState, CreatingPasswordUiEvent, CreatingPasswordNews> {
-  val communicator = CreatingPasswordCommunication.communicatorHolder.communicator
+  val communicator = CreatingPasswordCommunication.communicator
   return TeaStoreImpl(
     actors = listOf(
       GeneratePasswordActor(coreComponent.passwordGenerator),
       CheckPasswordStrengthActor(coreComponent.passwordInfoChecker),
-      ReceivingInputCreatingPasswordActor(communicator),
       SendingOutputCreatingPasswordActor(communicator),
       ComputePasswordCharacteristicsActor(coreComponent.passwordCharacteristicsProvider),
       CreatingPasswordRouterActor(coreComponent.router)
@@ -30,6 +29,6 @@ fun CreatingPasswordStore(
 }
 
 object CreatingPasswordCommunication {
-  val communicatorHolder =
-      CommunicatorHolder<CreatingPasswordReceiveEvent, CreatingPasswordSendEvent>()
+  val communicator: Communicator<CreatingPasswordReceiveEvent,
+      CreatingPasswordSendEvent> = CommunicatorImpl()
 }

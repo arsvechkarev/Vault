@@ -37,7 +37,7 @@ class EditingEntriesTest : VaultTestCase() {
   }
   
   @Test
-  fun testEditingInfoAndPassword() = run {
+  fun testEditingPasswordInfo() = run {
     KLoginScreen {
       editTextEnterPassword.replaceText("qwetu1233")
       buttonContinue.click()
@@ -66,11 +66,11 @@ class EditingEntriesTest : VaultTestCase() {
           iconBack.click()
           
           KMainListScreen {
-            currentScreenIs(MainListScreen::class)
+            currentScreenIs<MainListScreen>()
             recycler.emptyChildAt(1) { click() }
           }
           
-          currentScreenIs(PasswordInfoScreen::class)
+          currentScreenIs<PasswordInfoScreen>()
           
           imageWebsiteNameAction.click()
           hasClipboardText("google")
@@ -102,7 +102,8 @@ class EditingEntriesTest : VaultTestCase() {
           
           iconBack.click()
           
-          currentScreenIs(PasswordInfoScreen::class)
+          currentScreenIs<PasswordInfoScreen>()
+          
           imageNotesAction.hasDrawable(R.drawable.ic_copy)
           editTextNotes.hasEmptyText()
           
@@ -147,6 +148,7 @@ class EditingEntriesTest : VaultTestCase() {
           iconBack.click()
           
           KMainListScreen {
+            currentScreenIs<MainListScreen>()
             recycler {
               isDisplayed()
               hasSize(5)
@@ -165,6 +167,8 @@ class EditingEntriesTest : VaultTestCase() {
             
             recycler.emptyChildAt(2) { click() }
           }
+          
+          currentScreenIs<PasswordInfoScreen>()
           
           editTextLogin.replaceText("qwerty")
           
@@ -190,14 +194,14 @@ class EditingEntriesTest : VaultTestCase() {
           imageEditPassword.click()
           
           KCreatingPasswordScreen {
-            currentScreenIs(CreatingPasswordScreen::class)
+            currentScreenIs<CreatingPasswordScreen>()
             editTextPassword.hasText("F/<1#E(J=\\51=k")
             title.hasText("Edit password")
             
             pressBack()
           }
           
-          currentScreenIs(PasswordInfoScreen::class)
+          currentScreenIs<PasswordInfoScreen>()
           
           imageEditPassword.click()
           
@@ -206,7 +210,7 @@ class EditingEntriesTest : VaultTestCase() {
             iconCross.click()
           }
           
-          currentScreenIs(PasswordInfoScreen::class)
+          currentScreenIs<PasswordInfoScreen>()
           
           imageEditPassword.click()
           
@@ -220,7 +224,7 @@ class EditingEntriesTest : VaultTestCase() {
             confirmationDialog.action2.click()
           }
           
-          currentScreenIs(PasswordInfoScreen::class)
+          currentScreenIs<PasswordInfoScreen>()
           
           imageCopyPassword.click()
           hasClipboardText("qwerty222;")
@@ -276,7 +280,7 @@ class EditingEntriesTest : VaultTestCase() {
           
           pressBack()
           
-          currentScreenIs(PlainTextScreen::class)
+          currentScreenIs<PlainTextScreen>()
           imageTextAction.hasDrawable(R.drawable.ic_copy)
           editTextText.hasText("super secret content")
           
@@ -304,7 +308,7 @@ class EditingEntriesTest : VaultTestCase() {
           
           iconBack.click()
           
-          currentScreenIs(PlainTextScreen::class)
+          currentScreenIs<PlainTextScreen>()
           imageTitleAction.hasDrawable(R.drawable.ic_copy)
           editTextTitle.hasText("my title")
           
@@ -322,6 +326,8 @@ class EditingEntriesTest : VaultTestCase() {
           
           pressBack()
         }
+        
+        currentScreenIs<MainListScreen>()
         
         recycler {
           childAt<PlainTextItem>(4) {
@@ -351,7 +357,8 @@ class EditingEntriesTest : VaultTestCase() {
           confirmationDialog.action2.click()
         }
         
-        currentScreenIs(MainListScreen::class)
+        currentScreenIs<MainListScreen>()
+        
         recycler {
           hasSize(3)
           childAt<PasswordItem>(1) {

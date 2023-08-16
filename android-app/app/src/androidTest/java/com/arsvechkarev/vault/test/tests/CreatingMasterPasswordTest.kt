@@ -26,7 +26,7 @@ class CreatingMasterPasswordTest : TestCase() {
       pressBack()
     }
     
-    currentScreenIs(InitialScreen::class)
+    currentScreenIs<InitialScreen>()
     
     KInitialScreen {
       buttonCreateMasterPassword.click()
@@ -140,6 +140,6 @@ class CreatingMasterPasswordTest : TestCase() {
       
       buttonContinue.click()
     }
-    currentScreenIs(MainListScreen::class)
+    currentScreenIs<MainListScreen>()
   }
 }

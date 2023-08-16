@@ -3,7 +3,6 @@ package com.arsvechkarev.vault.features.creating_password_entry
 import com.arsvechkarev.vault.features.common.model.PasswordItem
 
 sealed interface CreatingPasswordEntryEvent {
-  class PasswordEntered(val password: String) : CreatingPasswordEntryEvent
   class PasswordEntryCreated(val passwordItem: PasswordItem) : CreatingPasswordEntryEvent
   class SendValidationResult(val validationResult: ValidationResult) : CreatingPasswordEntryEvent
   
@@ -14,6 +13,7 @@ sealed interface CreatingPasswordEntryEvent {
 }
 
 sealed interface CreatingPasswordEntryUiEvent : CreatingPasswordEntryEvent {
+  class PasswordEntered(val password: String) : CreatingPasswordEntryUiEvent
   class OnWebsiteNameTextChanged(val text: String) : CreatingPasswordEntryUiEvent
   class OnLoginTextChanged(val text: String) : CreatingPasswordEntryUiEvent
   class OnContinueClicked(val websiteName: String, val login: String) : CreatingPasswordEntryUiEvent

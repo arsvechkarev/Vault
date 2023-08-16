@@ -3,12 +3,11 @@ package com.arsvechkarev.vault.features.creating_password
 import buisnesslogic.DEFAULT_PASSWORD_LENGTH
 import buisnesslogic.PasswordStrength
 import buisnesslogic.model.PasswordCharacteristic
-import com.arsvechkarev.vault.features.creating_password.CreatingPasswordReceiveEvent.Setup.PasswordConfigurationMode
+import com.arsvechkarev.vault.features.creating_password.CreatingPasswordReceiveEvent.PasswordConfigurationMode
 import java.util.EnumSet
 
 sealed interface CreatingPasswordEvent {
   class GeneratedPassword(val password: String) : CreatingPasswordEvent
-  class Setup(val mode: PasswordConfigurationMode) : CreatingPasswordEvent
   class PasswordStrengthChanged(val strength: PasswordStrength?) : CreatingPasswordEvent
   class ComputedPasswordCharacteristics(
     val characteristics: EnumSet<PasswordCharacteristic>
@@ -16,6 +15,7 @@ sealed interface CreatingPasswordEvent {
 }
 
 sealed interface CreatingPasswordUiEvent : CreatingPasswordEvent {
+  class Setup(val mode: PasswordConfigurationMode) : CreatingPasswordUiEvent
   object SetupCompleted : CreatingPasswordUiEvent
   class OnPasswordChanged(val password: String) : CreatingPasswordUiEvent
   object OnToggledUppercaseSymbols : CreatingPasswordUiEvent

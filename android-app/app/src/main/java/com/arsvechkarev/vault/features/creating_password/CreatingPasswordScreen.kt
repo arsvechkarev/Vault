@@ -8,6 +8,7 @@ import android.view.Gravity.END
 import android.view.View
 import android.view.WindowManager
 import android.widget.SeekBar
+import androidx.lifecycle.lifecycleScope
 import buisnesslogic.DEFAULT_PASSWORD_LENGTH
 import buisnesslogic.MAX_PASSWORD_LENGTH
 import buisnesslogic.MIN_PASSWORD_LENGTH
@@ -22,8 +23,8 @@ import com.arsvechkarev.vault.features.common.di.CoreComponentHolder.coreCompone
 import com.arsvechkarev.vault.features.common.dialogs.InfoDialog.Companion.InfoDialog
 import com.arsvechkarev.vault.features.common.dialogs.InfoDialog.Companion.infoDialog
 import com.arsvechkarev.vault.features.creating_password.CreatingPasswordNews.ShowGeneratedPassword
-import com.arsvechkarev.vault.features.creating_password.CreatingPasswordReceiveEvent.Setup.PasswordConfigurationMode.EditPassword
-import com.arsvechkarev.vault.features.creating_password.CreatingPasswordReceiveEvent.Setup.PasswordConfigurationMode.NewPassword
+import com.arsvechkarev.vault.features.creating_password.CreatingPasswordReceiveEvent.PasswordConfigurationMode.EditPassword
+import com.arsvechkarev.vault.features.creating_password.CreatingPasswordReceiveEvent.PasswordConfigurationMode.NewPassword
 import com.arsvechkarev.vault.features.creating_password.CreatingPasswordUiEvent.OnBackClicked
 import com.arsvechkarev.vault.features.creating_password.CreatingPasswordUiEvent.OnConfirmPasswordSavingClicked
 import com.arsvechkarev.vault.features.creating_password.CreatingPasswordUiEvent.OnDeclinePasswordSavingClicked
@@ -34,6 +35,7 @@ import com.arsvechkarev.vault.features.creating_password.CreatingPasswordUiEvent
 import com.arsvechkarev.vault.features.creating_password.CreatingPasswordUiEvent.OnToggledNumbers
 import com.arsvechkarev.vault.features.creating_password.CreatingPasswordUiEvent.OnToggledSpecialSymbols
 import com.arsvechkarev.vault.features.creating_password.CreatingPasswordUiEvent.OnToggledUppercaseSymbols
+import com.arsvechkarev.vault.features.creating_password.CreatingPasswordUiEvent.Setup
 import com.arsvechkarev.vault.features.creating_password.CreatingPasswordUiEvent.SetupCompleted
 import com.arsvechkarev.vault.viewbuilding.Colors
 import com.arsvechkarev.vault.viewbuilding.Dimens.ImageBackMargin
@@ -47,6 +49,8 @@ import com.arsvechkarev.vault.viewbuilding.Styles.Button
 import com.arsvechkarev.vault.viewbuilding.Styles.ClickableTextView
 import com.arsvechkarev.vault.viewbuilding.Styles.IconCross
 import com.arsvechkarev.vault.viewbuilding.TextSizes
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import navigation.BaseFragmentScreen
 import viewdsl.Size.Companion.MatchParent
 import viewdsl.Size.Companion.WrapContent
@@ -163,6 +167,9 @@ class CreatingPasswordScreen : BaseFragmentScreen() {
   private val store by viewModelStore { CreatingPasswordStore(coreComponent) }
   
   override fun onInit() {
+    CreatingPasswordCommunication.communicator.input
+        .onEach { event -> store.tryDispatch(Setup(event.mode)) }
+        .launchIn(lifecycleScope)
     store.subscribe(this, ::render, ::handleNews)
   }
   
@@ -212,7 +219,7 @@ class CreatingPasswordScreen : BaseFragmentScreen() {
     requireContext().hideKeyboard()
   }
   
-  override fun onDisappearedFromScreenAfterAnimation() {
+  override fun onRelease() {
     requireContext().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
   }
   

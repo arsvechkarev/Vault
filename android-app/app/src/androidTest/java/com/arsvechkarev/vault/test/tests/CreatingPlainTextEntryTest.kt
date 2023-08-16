@@ -39,11 +39,12 @@ class CreatingPlainTextEntryTest : VaultTestCase() {
         newEntryMenuItem.click()
       }
       entryTypeDialog.plainTextEntry.click()
+      
       KPlainTextEntryScreen {
         iconBack.click()
       }
       
-      currentScreenIs(MainListScreen::class)
+      currentScreenIs<MainListScreen>()
       
       menu {
         open()
@@ -83,7 +84,8 @@ class CreatingPlainTextEntryTest : VaultTestCase() {
         
         pressBack()
         
-        currentScreenIs(PlainTextScreen::class)
+        currentScreenIs<PlainTextScreen>()
+        
         confirmationDialog.isNotDisplayed()
         
         buttonSave.click()

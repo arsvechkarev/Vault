@@ -5,7 +5,10 @@ import buisnesslogic.PasswordStrength.WEAK
 import buisnesslogic.model.PasswordCharacteristic.NUMBERS
 import buisnesslogic.model.PasswordCharacteristic.SPECIAL_SYMBOLS
 import com.arsvechkarev.vault.core.views.drawables.LetterInCircleDrawable
+import com.arsvechkarev.vault.features.creating_password.CreatingPasswordScreen
 import com.arsvechkarev.vault.features.creating_password_entry.CreatingPasswordEntryScreen
+import com.arsvechkarev.vault.features.main_list.MainListScreen
+import com.arsvechkarev.vault.features.password_info.PasswordInfoScreen
 import com.arsvechkarev.vault.test.core.base.VaultTestCase
 import com.arsvechkarev.vault.test.core.ext.currentScreenIs
 import com.arsvechkarev.vault.test.core.ext.hasPasswordWithAllCharacteristics
@@ -68,6 +71,8 @@ class CreatingPasswordEntryTest : VaultTestCase() {
         iconBack.click()
       }
       
+      currentScreenIs<MainListScreen>()
+      
       recycler.isDisplayed()
       menu.isClosed()
       entryTypeDialog.isNotDisplayed()
@@ -121,7 +126,7 @@ class CreatingPasswordEntryTest : VaultTestCase() {
           iconCross.click()
         }
         
-        currentScreenIs(CreatingPasswordEntryScreen::class)
+        currentScreenIs<CreatingPasswordEntryScreen>()
         
         buttonContinue.click()
         
@@ -254,10 +259,20 @@ class CreatingPasswordEntryTest : VaultTestCase() {
             editTextLogin.hasText("mylogin")
             editTextNotes.hasEmptyText()
             
+            imageEditPassword.click()
+            
+            currentScreenIs<CreatingPasswordScreen>()
+            
+            pressBack()
+            
+            currentScreenIs<PasswordInfoScreen>()
+            
             pressBack()
           }
         }
       }
+      
+      currentScreenIs<MainListScreen>()
       
       recycler {
         isDisplayed()

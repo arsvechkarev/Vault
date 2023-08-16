@@ -40,14 +40,14 @@ class MainListAndDeletingTest : VaultTestCase() {
       buttonContinue.click()
       
       textError.hasText("Password is incorrect")
-      currentScreenIs(LoginScreen::class)
+      currentScreenIs<LoginScreen>()
       
       editTextEnterPassword.replaceText("qwetu1233")
       textError.hasEmptyText()
       buttonContinue.click()
       
       KMainListScreen {
-        currentScreenIs(MainListScreen::class)
+        currentScreenIs<MainListScreen>()
         recycler {
           isDisplayed()
           hasSize(3)
@@ -64,10 +64,14 @@ class MainListAndDeletingTest : VaultTestCase() {
           }
         }
         recycler.emptyChildAt(1) { click() }
+        
         KPasswordInfoScreen {
           iconDelete.click()
           confirmationDialog.action2.click()
         }
+        
+        currentScreenIs<MainListScreen>()
+        
         recycler {
           hasSize(2)
           childAt<PasswordItem>(1) {
@@ -75,11 +79,14 @@ class MainListAndDeletingTest : VaultTestCase() {
             icon.hasDrawable(LetterInCircleDrawable("t"))
           }
         }
+        
         recycler.emptyChildAt(1) { click() }
+        
         KPasswordInfoScreen {
           iconDelete.click()
           confirmationDialog.action2.click()
         }
+        
         recycler {
           hasSize(1)
           firstChild<EmptyItem> {

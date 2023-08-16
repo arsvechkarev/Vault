@@ -14,10 +14,9 @@ import com.arsvechkarev.vault.features.creating_password.CreatingPasswordCommand
 import com.arsvechkarev.vault.features.creating_password.CreatingPasswordEvent.ComputedPasswordCharacteristics
 import com.arsvechkarev.vault.features.creating_password.CreatingPasswordEvent.GeneratedPassword
 import com.arsvechkarev.vault.features.creating_password.CreatingPasswordEvent.PasswordStrengthChanged
-import com.arsvechkarev.vault.features.creating_password.CreatingPasswordEvent.Setup
 import com.arsvechkarev.vault.features.creating_password.CreatingPasswordNews.ShowGeneratedPassword
-import com.arsvechkarev.vault.features.creating_password.CreatingPasswordReceiveEvent.Setup.PasswordConfigurationMode.EditPassword
-import com.arsvechkarev.vault.features.creating_password.CreatingPasswordReceiveEvent.Setup.PasswordConfigurationMode.NewPassword
+import com.arsvechkarev.vault.features.creating_password.CreatingPasswordReceiveEvent.PasswordConfigurationMode.EditPassword
+import com.arsvechkarev.vault.features.creating_password.CreatingPasswordReceiveEvent.PasswordConfigurationMode.NewPassword
 import com.arsvechkarev.vault.features.creating_password.CreatingPasswordUiEvent.OnBackClicked
 import com.arsvechkarev.vault.features.creating_password.CreatingPasswordUiEvent.OnConfirmPasswordSavingClicked
 import com.arsvechkarev.vault.features.creating_password.CreatingPasswordUiEvent.OnDeclinePasswordSavingClicked
@@ -28,6 +27,7 @@ import com.arsvechkarev.vault.features.creating_password.CreatingPasswordUiEvent
 import com.arsvechkarev.vault.features.creating_password.CreatingPasswordUiEvent.OnToggledNumbers
 import com.arsvechkarev.vault.features.creating_password.CreatingPasswordUiEvent.OnToggledSpecialSymbols
 import com.arsvechkarev.vault.features.creating_password.CreatingPasswordUiEvent.OnToggledUppercaseSymbols
+import com.arsvechkarev.vault.features.creating_password.CreatingPasswordUiEvent.Setup
 import com.arsvechkarev.vault.features.creating_password.CreatingPasswordUiEvent.SetupCompleted
 import java.util.EnumSet
 
@@ -37,16 +37,6 @@ class CreatingPasswordReducer : DslReducer<CreatingPasswordState, CreatingPasswo
   override fun dslReduce(event: CreatingPasswordEvent) {
     when (event) {
       is CreatingPasswordUiEvent -> handleUiEvent(event)
-      is Setup -> {
-        state {
-          val length = if (event.mode is EditPassword) {
-            event.mode.password.length
-          } else {
-            DEFAULT_PASSWORD_LENGTH
-          }
-          copy(mode = event.mode, passwordLength = length)
-        }
-      }
       
       is GeneratedPassword -> {
         state { copy(password = event.password) }
@@ -71,6 +61,16 @@ class CreatingPasswordReducer : DslReducer<CreatingPasswordState, CreatingPasswo
   
   private fun handleUiEvent(event: CreatingPasswordUiEvent) {
     when (event) {
+      is Setup -> {
+        state {
+          val length = if (event.mode is EditPassword) {
+            event.mode.password.length
+          } else {
+            DEFAULT_PASSWORD_LENGTH
+          }
+          copy(mode = event.mode, passwordLength = length)
+        }
+      }
       SetupCompleted -> {
         state { copy(setupCompleted = true) }
         when (val mode = state.mode) {

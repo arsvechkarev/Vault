@@ -1,10 +1,9 @@
 package com.arsvechkarev.vault.features.creating_password_entry.actors
 
-import com.arsvechkarev.vault.core.communicators.CommunicatorHolder
+import com.arsvechkarev.vault.core.communicators.Communicator
 import com.arsvechkarev.vault.core.mvi.tea.Actor
 import com.arsvechkarev.vault.features.creating_password.CreatingPasswordReceiveEvent
-import com.arsvechkarev.vault.features.creating_password.CreatingPasswordReceiveEvent.Setup
-import com.arsvechkarev.vault.features.creating_password.CreatingPasswordReceiveEvent.Setup.PasswordConfigurationMode.NewPassword
+import com.arsvechkarev.vault.features.creating_password.CreatingPasswordReceiveEvent.PasswordConfigurationMode.NewPassword
 import com.arsvechkarev.vault.features.creating_password.CreatingPasswordSendEvent
 import com.arsvechkarev.vault.features.creating_password_entry.CreatingPasswordEntryCommand
 import com.arsvechkarev.vault.features.creating_password_entry.CreatingPasswordEntryCommand.ValidateInput
@@ -18,7 +17,7 @@ import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.flow.mapLatest
 
 class ValidateInputActor(
-  private val communicatorHolder: CommunicatorHolder<CreatingPasswordReceiveEvent, CreatingPasswordSendEvent>
+  private val communicator: Communicator<CreatingPasswordReceiveEvent, CreatingPasswordSendEvent>
 ) : Actor<CreatingPasswordEntryCommand, CreatingPasswordEntryEvent> {
   
   @OptIn(ExperimentalCoroutinesApi::class)
@@ -28,7 +27,7 @@ class ValidateInputActor(
           val websiteName = input.websiteName
           val login = input.login
           if (websiteName.isNotBlank() && login.isNotBlank()) {
-            communicatorHolder.communicator.input.emit(Setup(NewPassword))
+            communicator.input.emit(CreatingPasswordReceiveEvent(NewPassword))
             SendValidationResult(Success)
           } else {
             SendValidationResult(

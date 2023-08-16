@@ -66,11 +66,11 @@ class ImportPasswordsTest : VaultTestCase() {
         }
         
         KImportPasswordsScreen {
-          currentScreenIs(ImportPasswordsScreen::class)
+          currentScreenIs<ImportPasswordsScreen>()
           iconBack.click()
         }
         
-        currentScreenIs(MainListScreen::class)
+        currentScreenIs<MainListScreen>()
         
         menu {
           open()
@@ -112,7 +112,7 @@ class ImportPasswordsTest : VaultTestCase() {
           infoDialog.action1.click()
           
           infoDialog.isNotDisplayed()
-          currentScreenIs(ImportPasswordsScreen::class)
+          currentScreenIs<ImportPasswordsScreen>()
           
           buttonImportPasswords.click()
           
@@ -175,7 +175,7 @@ class ImportPasswordsTest : VaultTestCase() {
           infoDialog.action2.click()
         }
         
-        currentScreenIs(MainListScreen::class)
+        currentScreenIs<MainListScreen>()
         
         recycler {
           hasSize(3)
@@ -206,7 +206,7 @@ class ImportPasswordsTest : VaultTestCase() {
     KInitialScreen {
       buttonImportPasswords.click()
       KImportPasswordsScreen {
-        currentScreenIs(ImportPasswordsScreen::class)
+        currentScreenIs<ImportPasswordsScreen>()
         layoutSelectFile.click()
         buttonImportPasswords.click()
         infoDialog.action2.click()
@@ -216,7 +216,7 @@ class ImportPasswordsTest : VaultTestCase() {
         }
         infoDialog.action2.click()
         KMainListScreen {
-          currentScreenIs(MainListScreen::class)
+          currentScreenIs<MainListScreen>()
           recycler {
             hasSize(3)
             childAt<PasswordItem>(1) {

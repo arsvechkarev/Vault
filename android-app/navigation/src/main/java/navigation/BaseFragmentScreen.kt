@@ -28,8 +28,6 @@ abstract class BaseFragmentScreen : Fragment() {
   
   open fun onDisappearedFromScreen() = Unit
   
-  open fun onDisappearedFromScreenAfterAnimation() = Unit
-  
   open fun onRelease() = Unit
   
   override fun onCreate(savedInstanceState: Bundle?) {
@@ -61,7 +59,6 @@ abstract class BaseFragmentScreen : Fragment() {
   
   override fun onDestroy() {
     super.onDestroy()
-    onDisappearedFromScreenAfterAnimation()
     onRelease()
   }
   

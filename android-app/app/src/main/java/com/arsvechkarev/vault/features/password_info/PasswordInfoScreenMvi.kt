@@ -4,7 +4,6 @@ import com.arsvechkarev.vault.features.common.TextState
 import com.arsvechkarev.vault.features.common.model.PasswordItem
 
 sealed interface PasswordInfoScreenEvent {
-  class SavePasswordEventReceived(val password: String) : PasswordInfoScreenEvent
   
   object DeletedPasswordInfo : PasswordInfoScreenEvent
   
@@ -31,6 +30,7 @@ sealed interface PasswordInfoScreenUiEvent : PasswordInfoScreenEvent {
   class OnWebsiteNameTextChanged(val text: String) : PasswordInfoScreenUiEvent
   class OnLoginTextChanged(val text: String) : PasswordInfoScreenUiEvent
   class OnNotesTextChanged(val text: String) : PasswordInfoScreenUiEvent
+  class SavePasswordEventReceived(val password: String) : PasswordInfoScreenUiEvent
 }
 
 sealed interface PasswordInfoScreenCommand {

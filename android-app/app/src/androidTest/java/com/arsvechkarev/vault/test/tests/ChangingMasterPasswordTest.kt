@@ -46,7 +46,7 @@ class ChangingMasterPasswordTest : VaultTestCase() {
           pressBack()
         }
         
-        currentScreenIs(MainListScreen::class)
+        currentScreenIs<MainListScreen>()
         
         menu {
           open()
@@ -76,7 +76,7 @@ class ChangingMasterPasswordTest : VaultTestCase() {
             iconBack.click()
           }
           
-          currentScreenIs(SettingsScreen::class)
+          currentScreenIs<SettingsScreen>()
           
           itemChangePassword.click()
           
@@ -140,7 +140,7 @@ class ChangingMasterPasswordTest : VaultTestCase() {
             infoDialog.action2.click()
           }
           
-          currentScreenIs(SettingsScreen::class)
+          currentScreenIs<SettingsScreen>()
         }
       }
     }

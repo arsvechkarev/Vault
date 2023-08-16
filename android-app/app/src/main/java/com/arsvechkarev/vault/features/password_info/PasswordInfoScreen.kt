@@ -6,6 +6,7 @@ import android.view.Gravity
 import android.view.View
 import android.widget.ImageView
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.lifecycle.lifecycleScope
 import com.arsvechkarev.vault.R
 import com.arsvechkarev.vault.core.extensions.arg
 import com.arsvechkarev.vault.core.extensions.getDeleteMessageText
@@ -43,6 +44,7 @@ import com.arsvechkarev.vault.features.password_info.PasswordInfoScreenUiEvent.O
 import com.arsvechkarev.vault.features.password_info.PasswordInfoScreenUiEvent.OnOpenPasswordScreenClicked
 import com.arsvechkarev.vault.features.password_info.PasswordInfoScreenUiEvent.OnWebsiteNameActionClicked
 import com.arsvechkarev.vault.features.password_info.PasswordInfoScreenUiEvent.OnWebsiteNameTextChanged
+import com.arsvechkarev.vault.features.password_info.PasswordInfoScreenUiEvent.SavePasswordEventReceived
 import com.arsvechkarev.vault.viewbuilding.Colors
 import com.arsvechkarev.vault.viewbuilding.Dimens
 import com.arsvechkarev.vault.viewbuilding.Dimens.ImageWebsiteSize
@@ -58,6 +60,8 @@ import com.arsvechkarev.vault.viewbuilding.Styles.BaseEditText
 import com.arsvechkarev.vault.viewbuilding.Styles.BoldTextView
 import com.arsvechkarev.vault.viewbuilding.Styles.IconBack
 import com.arsvechkarev.vault.viewbuilding.TextSizes
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import navigation.BaseFragmentScreen
 import viewdsl.BaseTextWatcher
 import viewdsl.Size.Companion.MatchParent
@@ -297,12 +301,11 @@ class PasswordInfoScreen : BaseFragmentScreen() {
       BaseTextWatcher { store.tryDispatch(OnNotesTextChanged(it)) }
   
   override fun onInit() {
+    CreatingPasswordCommunication.communicator.output
+        .onEach { event -> store.tryDispatch(SavePasswordEventReceived(event.password)) }
+        .launchIn(lifecycleScope)
     store.subscribe(this, ::render, ::handleNews)
     store.tryDispatch(OnInit)
-  }
-  
-  override fun onRelease() {
-    CreatingPasswordCommunication.communicatorHolder.finishCommunication()
   }
   
   private fun render(state: PasswordInfoState) {

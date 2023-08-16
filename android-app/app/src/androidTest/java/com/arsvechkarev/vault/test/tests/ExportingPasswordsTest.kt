@@ -60,11 +60,11 @@ class ExportingPasswordsTest : VaultTestCase() {
         }
         
         KExportPasswordsScreen {
-          currentScreenIs(ExportPasswordsScreen::class)
+          currentScreenIs<ExportPasswordsScreen>()
           iconBack.click()
         }
         
-        currentScreenIs(MainListScreen::class)
+        currentScreenIs<MainListScreen>()
         
         menu {
           open()

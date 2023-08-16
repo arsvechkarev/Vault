@@ -5,6 +5,7 @@ import android.view.Gravity.CENTER
 import android.view.Gravity.CENTER_VERTICAL
 import android.view.View
 import androidx.annotation.StringRes
+import androidx.lifecycle.lifecycleScope
 import com.arsvechkarev.vault.R
 import com.arsvechkarev.vault.core.mvi.ext.subscribe
 import com.arsvechkarev.vault.core.mvi.ext.viewModelStore
@@ -15,6 +16,7 @@ import com.arsvechkarev.vault.features.creating_password_entry.CreatingPasswordE
 import com.arsvechkarev.vault.features.creating_password_entry.CreatingPasswordEntryUiEvent.OnContinueClicked
 import com.arsvechkarev.vault.features.creating_password_entry.CreatingPasswordEntryUiEvent.OnLoginTextChanged
 import com.arsvechkarev.vault.features.creating_password_entry.CreatingPasswordEntryUiEvent.OnWebsiteNameTextChanged
+import com.arsvechkarev.vault.features.creating_password_entry.CreatingPasswordEntryUiEvent.PasswordEntered
 import com.arsvechkarev.vault.viewbuilding.Colors
 import com.arsvechkarev.vault.viewbuilding.Dimens.GradientDrawableHeight
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginLarge
@@ -25,6 +27,8 @@ import com.arsvechkarev.vault.viewbuilding.Styles.BoldTextView
 import com.arsvechkarev.vault.viewbuilding.Styles.Button
 import com.arsvechkarev.vault.viewbuilding.Styles.IconBack
 import com.arsvechkarev.vault.viewbuilding.TextSizes
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import navigation.BaseFragmentScreen
 import viewdsl.Size.Companion.MatchParent
 import viewdsl.Size.Companion.WrapContent
@@ -116,6 +120,9 @@ class CreatingPasswordEntryScreen : BaseFragmentScreen() {
   private val store by viewModelStore { CreatingPasswordEntryStore(coreComponent) }
   
   override fun onInit() {
+    CreatingPasswordCommunication.communicator.output
+        .onEach { event -> store.tryDispatch(PasswordEntered(event.password)) }
+        .launchIn(lifecycleScope)
     store.subscribe(this, ::render)
   }
   
@@ -145,10 +152,6 @@ class CreatingPasswordEntryScreen : BaseFragmentScreen() {
     editText(EditTextWebsiteName).clearFocus()
     editText(EditTextLogin).clearFocus()
     requireContext().hideKeyboard()
-  }
-  
-  override fun onRelease() {
-    CreatingPasswordCommunication.communicatorHolder.finishCommunication()
   }
   
   private fun showOrHideViewsBasedOnLayout() {

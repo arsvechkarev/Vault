@@ -17,7 +17,6 @@ import com.arsvechkarev.vault.features.password_info.PasswordInfoScreenCommand.U
 import com.arsvechkarev.vault.features.password_info.PasswordInfoScreenCommand.UpdateItem.UpdatePassword
 import com.arsvechkarev.vault.features.password_info.PasswordInfoScreenCommand.UpdateItem.UpdateWebsiteName
 import com.arsvechkarev.vault.features.password_info.PasswordInfoScreenEvent.DeletedPasswordInfo
-import com.arsvechkarev.vault.features.password_info.PasswordInfoScreenEvent.SavePasswordEventReceived
 import com.arsvechkarev.vault.features.password_info.PasswordInfoScreenEvent.UpdatedPasswordInfo.UpdatedLogin
 import com.arsvechkarev.vault.features.password_info.PasswordInfoScreenEvent.UpdatedPasswordInfo.UpdatedNotes
 import com.arsvechkarev.vault.features.password_info.PasswordInfoScreenEvent.UpdatedPasswordInfo.UpdatedPassword
@@ -42,6 +41,7 @@ import com.arsvechkarev.vault.features.password_info.PasswordInfoScreenUiEvent.O
 import com.arsvechkarev.vault.features.password_info.PasswordInfoScreenUiEvent.OnOpenPasswordScreenClicked
 import com.arsvechkarev.vault.features.password_info.PasswordInfoScreenUiEvent.OnWebsiteNameActionClicked
 import com.arsvechkarev.vault.features.password_info.PasswordInfoScreenUiEvent.OnWebsiteNameTextChanged
+import com.arsvechkarev.vault.features.password_info.PasswordInfoScreenUiEvent.SavePasswordEventReceived
 
 class PasswordInfoScreenReducer :
   DslReducer<PasswordInfoState, PasswordInfoScreenEvent, PasswordInfoScreenCommand,
@@ -119,6 +119,15 @@ class PasswordInfoScreenReducer :
         state { copy(notesState = notesState.edit(event.text)) }
       }
       
+      is SavePasswordEventReceived -> {
+        if (event.password != state.password) {
+          val item = state.passwordItem.copy(password = event.password)
+          commands(UpdatePassword(item))
+        } else {
+          commands(GoBack)
+        }
+      }
+      
       OnDeleteClicked -> {
         state { copy(showDeletePasswordDialog = true) }
       }
@@ -182,15 +191,6 @@ class PasswordInfoScreenReducer :
       is UpdatedPassword -> {
         state { copy(passwordItem = event.passwordItem) }
         commands(GoBack)
-      }
-      
-      is SavePasswordEventReceived -> {
-        if (event.password != state.password) {
-          val item = state.passwordItem.copy(password = event.password)
-          commands(UpdatePassword(item))
-        } else {
-          commands(GoBack)
-        }
       }
       
       DeletedPasswordInfo -> {

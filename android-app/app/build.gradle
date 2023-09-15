@@ -4,6 +4,12 @@ plugins {
   id 'kotlin-parcelize'
 }
 
+java {
+  toolchain {
+    implementation = JvmImplementation.J9
+  }
+}
+
 android {
   File localProperties = file("../../local.properties")
   if (localProperties.exists()) {

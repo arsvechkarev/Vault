@@ -1,5 +1,7 @@
 # Vault
 
+## (16/09/2023) WARNING: The app is in alpha version, there will be potentially incompatible updates without the ability to migrate passwords. Do not store your data here yet.
+
 ### Secure, simple and fast password manager
 
 Vault uses modern AES-SIV encryption algorithm with two keys 256 bits each. The app stores your passwords

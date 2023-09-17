@@ -11,6 +11,11 @@ java {
 }
 
 android {
+  packagingOptions {
+    resources {
+      excludes += ['META-INF/LICENSE', 'META-INF/INDEX.LIST']
+    }
+  }
   File localProperties = file("../../local.properties")
   if (localProperties.exists()) {
     signingConfigs {
@@ -54,6 +59,7 @@ android {
   kotlinOptions {
     jvmTarget = "1.8"
   }
+  namespace 'com.arsvechkarev.vault'
 }
 
 dependencies {
@@ -71,6 +77,7 @@ dependencies {
   implementation appDependencies.coordinatorLayout
   implementation appDependencies.constraintLayout
   implementation appDependencies.recyclerView
+  implementation appDependencies.keePassJava
   implementation appDependencies.zxcvbn
   implementation appDependencies.timber
   implementation appDependencies.lifecycleRuntime

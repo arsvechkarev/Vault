@@ -15,14 +15,15 @@ ext {
       timber           : "com.jakewharton.timber:timber:4.7.1",
       leakCanary       : "com.squareup.leakcanary:leakcanary-android:2.7",
       lifecycleRuntime : "androidx.lifecycle:lifecycle-runtime-ktx:2.5.1",
-      gson: "com.google.code.gson:gson:2.8.9",
+      gson             : "com.google.code.gson:gson:2.8.9",
+      keePassJava      : "org.linguafranca.pwdb:KeePassJava2-simple:2.2.1",
   ]
 
   espresso_version = '3.4.0'
   androidTest_version = '1.1.0'
 
   testDependencies = [
-      junit: "junit:junit:4.13.1",
+      junit             : "junit:junit:4.13.1",
       gson              : "com.google.code.gson:gson:2.8.6",
       kaspresso         : "com.kaspersky.android-components:kaspresso:1.4.3",
       espressoIntents   : "androidx.test.espresso:espresso-intents:$espresso_version",

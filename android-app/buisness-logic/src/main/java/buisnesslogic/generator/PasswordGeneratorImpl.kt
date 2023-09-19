@@ -1,5 +1,6 @@
 package buisnesslogic.generator
 
+import buisnesslogic.Password
 import buisnesslogic.model.PasswordCharacteristic
 import buisnesslogic.model.PasswordCharacteristic.NUMBERS
 import buisnesslogic.model.PasswordCharacteristic.SPECIAL_SYMBOLS
@@ -11,12 +12,12 @@ class PasswordGeneratorImpl(private val randomGenerator: RandomGenerator) : Pass
   override fun generatePassword(
     length: Int,
     characteristics: EnumSet<PasswordCharacteristic>
-  ): String {
+  ): Password {
     val generators = createSymbolsGeneratorsList(randomGenerator, characteristics)
     while (true) {
       val password = tryGeneratePassword(length, generators)
       if (hasAllCharacteristics(password, generators)) {
-        return password
+        return Password.create(password)
       }
     }
   }

@@ -2,10 +2,11 @@ package com.arsvechkarev.vault.features.common.data.storage
 
 import buisnesslogic.EntriesStorage
 import buisnesslogic.IdGenerator
+import buisnesslogic.Password
 import buisnesslogic.model.CreditCard
 import buisnesslogic.model.Entries
 import buisnesslogic.model.Entry
-import buisnesslogic.model.Password
+import buisnesslogic.model.PasswordEntry
 import buisnesslogic.model.PlainText
 
 class CachedEntriesStorage(
@@ -16,7 +17,7 @@ class CachedEntriesStorage(
   private var entries: Entries? = null
   
   suspend fun getEntries(
-    masterPassword: String,
+    masterPassword: Password,
     reloadData: Boolean = false
   ): Entries {
     if (entries == null || reloadData) {
@@ -25,26 +26,26 @@ class CachedEntriesStorage(
     return checkNotNull(entries)
   }
   
-  suspend fun saveEntries(masterPassword: String, entries: Entries) {
+  suspend fun saveEntries(masterPassword: Password, entries: Entries) {
     storage.saveEntries(masterPassword, entries)
     this.entries = entries
   }
   
   suspend fun savePassword(
-    masterPassword: String,
+    masterPassword: Password,
     websiteName: String,
     login: String,
-    password: String,
+    password: Password,
     notes: String
-  ): Password {
+  ): PasswordEntry {
     val id = getUniqueId()
-    val item = Password(id, websiteName, login, password, notes)
+    val item = PasswordEntry(id, websiteName, login, password.rawValue, notes)
     entries = storage.saveEntry(masterPassword, item)
     return item
   }
   
   suspend fun saveCreditCard(
-    masterPassword: String,
+    masterPassword: Password,
     cardNumber: String,
     expirationDate: String,
     cardholderName: String,
@@ -58,18 +59,18 @@ class CachedEntriesStorage(
     return item
   }
   
-  suspend fun savePlainText(masterPassword: String, title: String, text: String): PlainText {
+  suspend fun savePlainText(masterPassword: Password, title: String, text: String): PlainText {
     val id = getUniqueId()
     val item = PlainText(id, title, text)
     entries = storage.saveEntry(masterPassword, item)
     return item
   }
   
-  suspend fun updateEntry(masterPassword: String, entry: Entry) {
+  suspend fun updateEntry(masterPassword: Password, entry: Entry) {
     entries = storage.updateEntry(masterPassword, entry)
   }
   
-  suspend fun deleteEntry(masterPassword: String, entry: Entry) {
+  suspend fun deleteEntry(masterPassword: Password, entry: Entry) {
     entries = storage.deleteEntry(masterPassword, entry)
   }
   

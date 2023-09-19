@@ -1,5 +1,6 @@
 package com.arsvechkarev.vault.features.password_info
 
+import buisnesslogic.Password
 import com.arsvechkarev.vault.features.common.TextState
 import com.arsvechkarev.vault.features.common.model.PasswordItem
 
@@ -30,7 +31,7 @@ sealed interface PasswordInfoScreenUiEvent : PasswordInfoScreenEvent {
   class OnWebsiteNameTextChanged(val text: String) : PasswordInfoScreenUiEvent
   class OnLoginTextChanged(val text: String) : PasswordInfoScreenUiEvent
   class OnNotesTextChanged(val text: String) : PasswordInfoScreenUiEvent
-  class SavePasswordEventReceived(val password: String) : PasswordInfoScreenUiEvent
+  class SavePasswordEventReceived(val password: Password) : PasswordInfoScreenUiEvent
 }
 
 sealed interface PasswordInfoScreenCommand {
@@ -39,7 +40,7 @@ sealed interface PasswordInfoScreenCommand {
     val text: String
   ) : PasswordInfoScreenCommand
   
-  class OpenEditPasswordScreen(val password: String) : PasswordInfoScreenCommand
+  class OpenEditPasswordScreen(val password: Password) : PasswordInfoScreenCommand
   
   sealed class UpdateItem(val passwordItem: PasswordItem) : PasswordInfoScreenCommand {
     
@@ -76,7 +77,7 @@ data class PasswordInfoState(
   val showLoadingDialog: Boolean = false,
 ) {
   
-  val password get() = passwordItem.password
+  val password get() = Password.create(passwordItem.password)
   
   val isEditingSomething
     get() = websiteNameState.isEditingNow

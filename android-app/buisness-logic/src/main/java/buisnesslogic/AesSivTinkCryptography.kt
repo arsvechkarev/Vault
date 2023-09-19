@@ -2,13 +2,14 @@ package buisnesslogic
 
 import com.arsvechkarev.commoncrypto.AesSivTinkCipher
 
+// TODO (9/19/23): Delete
 object AesSivTinkCryptography : Cryptography {
   
-  override fun encryptData(password: String, plaintext: String): ByteArray {
-    return AesSivTinkCipher.encrypt(password, plaintext)
+  override fun encryptData(password: Password, plaintext: String): ByteArray {
+    return AesSivTinkCipher.encrypt(password.rawValue, plaintext)
   }
   
-  override fun decryptData(password: String, ciphertext: ByteArray): String {
-    return AesSivTinkCipher.decrypt(password, ciphertext)
+  override fun decryptData(password: Password, ciphertext: ByteArray): String {
+    return AesSivTinkCipher.decrypt(password.rawValue, ciphertext)
   }
 }

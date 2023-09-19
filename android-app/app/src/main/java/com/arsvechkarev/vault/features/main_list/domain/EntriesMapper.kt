@@ -1,7 +1,7 @@
 package com.arsvechkarev.vault.features.main_list.domain
 
 import buisnesslogic.model.Entries
-import buisnesslogic.model.Password
+import buisnesslogic.model.PasswordEntry
 import buisnesslogic.model.PlainText
 import com.arsvechkarev.vault.R
 import com.arsvechkarev.vault.features.common.model.Title
@@ -17,7 +17,7 @@ class EntriesMapper {
         .map(PlainText::toPlainTextItem)
     val passwordsItems = entries.passwords
         .sortedBy { it.websiteName.lowercase() }
-        .map(Password::toPasswordItem)
+        .map(PasswordEntry::toPasswordItem)
     return buildList {
       if (passwordsItems.isNotEmpty()) {
         add(Title(R.string.text_passwords))

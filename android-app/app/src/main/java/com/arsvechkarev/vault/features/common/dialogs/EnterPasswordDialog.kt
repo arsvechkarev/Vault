@@ -13,6 +13,7 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.graphics.ColorUtils
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
+import buisnesslogic.Password
 import com.arsvechkarev.vault.BuildConfig
 import com.arsvechkarev.vault.R
 import com.arsvechkarev.vault.core.views.EditTextPassword
@@ -66,7 +67,7 @@ class EnterPasswordDialog(context: Context) : FrameLayout(context) {
   
   private var hideKeyboardOnClose = true
   private var onCheckSuccessful: () -> Unit = {}
-  private var onPasswordEntered: (String) -> Unit = {}
+  private var onPasswordEntered: (Password) -> Unit = {}
   
   val isDialogShown get() = asBottomSheet.isShown
   
@@ -107,8 +108,8 @@ class EnterPasswordDialog(context: Context) : FrameLayout(context) {
             text(R.string.text_continue)
             onClick {
               val editTextPassword = parentView.parentView.viewAs<EditTextPassword>()
-              val text = editTextPassword.getText()
-              if (text.isNotBlank()) {
+              val text = editTextPassword.getPassword()
+              if (text.rawValue.isNotBlank()) {
                 handleContinueClick(text)
               }
             }
@@ -137,7 +138,7 @@ class EnterPasswordDialog(context: Context) : FrameLayout(context) {
       onShow = {
         viewAs<EditTextPassword>().showKeyboard()
         if (BuildConfig.DEBUG) {
-          viewAs<EditTextPassword>().text(BuildConfig.STUB_PASSWORD)
+          viewAs<EditTextPassword>().setRawText(BuildConfig.STUB_PASSWORD)
         }
       }
       onHide = {
@@ -158,7 +159,7 @@ class EnterPasswordDialog(context: Context) : FrameLayout(context) {
     mode: Mode,
     hideKeyboardOnClose: Boolean,
     onCheckSuccessful: () -> Unit,
-    onPasswordEntered: (String) -> Unit
+    onPasswordEntered: (Password) -> Unit
   ) {
     this.mode = mode
     this.onCheckSuccessful = onCheckSuccessful
@@ -175,14 +176,14 @@ class EnterPasswordDialog(context: Context) : FrameLayout(context) {
     }
   }
   
-  private fun ViewBuilder.handleContinueClick(text: String) {
+  private fun ViewBuilder.handleContinueClick(text: Password) {
     when (checkNotNull(mode)) {
       IMPORTING_PASSWORDS -> onPasswordEntered(text)
       CHECK_MASTER_PASSWORD -> checkMasterPassword(text)
     }
   }
   
-  private fun ViewBuilder.checkMasterPassword(password: String) {
+  private fun ViewBuilder.checkMasterPassword(password: Password) {
     (context as LifecycleOwner).lifecycleScope.launch {
       val passwordChecker = coreComponent.masterPasswordChecker
       viewAs<MaterialProgressBar>().isVisible = true
@@ -214,7 +215,7 @@ class EnterPasswordDialog(context: Context) : FrameLayout(context) {
       mode: Mode,
       hideKeyboardOnClose: Boolean = true,
       onCheckSuccessful: () -> Unit = {},
-      onPasswordEntered: (String) -> Unit = {},
+      onPasswordEntered: (Password) -> Unit = {},
       onDialogClosed: () -> Unit = {},
       block: EnterPasswordDialog.() -> Unit = {}
     ) = withViewBuilder {

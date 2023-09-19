@@ -1,17 +1,19 @@
 package com.arsvechkarev.vault.features.login
 
+import buisnesslogic.Password
+
 sealed interface LoginEvent {
   object ShowSuccessCheckingPassword : LoginEvent
   object ShowFailureCheckingPassword : LoginEvent
 }
 
 sealed interface LoginUiEvent : LoginEvent {
-  class OnEnteredPassword(val password: String) : LoginUiEvent
+  class OnEnteredPassword(val password: Password) : LoginUiEvent
   object OnTypingText : LoginUiEvent
 }
 
 sealed interface LoginCommand {
-  class EnterWithMasterPassword(val password: String) : LoginCommand
+  class EnterWithMasterPassword(val password: Password) : LoginCommand
   object GoToMainListScreen : LoginCommand
 }
 

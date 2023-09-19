@@ -19,9 +19,8 @@ class ComputePasswordCharacteristicsActor(
   override fun handle(commands: Flow<CreatingPasswordCommand>): Flow<CreatingPasswordEvent> {
     return commands.filterIsInstance<ComputePasswordCharacteristics>()
         .mapLatest { command ->
-          ComputedPasswordCharacteristics(
-            passwordCharacteristicsProvider.getCharacteristics(command.password)
-          )
+          val characteristics = passwordCharacteristicsProvider.getCharacteristics(command.password)
+          ComputedPasswordCharacteristics(characteristics)
         }
   }
 }

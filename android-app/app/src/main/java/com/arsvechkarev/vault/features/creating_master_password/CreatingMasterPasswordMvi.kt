@@ -1,5 +1,6 @@
 package com.arsvechkarev.vault.features.creating_master_password
 
+import buisnesslogic.Password
 import buisnesslogic.PasswordError
 import buisnesslogic.PasswordStrength
 
@@ -16,8 +17,8 @@ sealed interface CreatingMasterPasswordEvent {
 }
 
 sealed interface CreatingMasterPasswordUiEvent : CreatingMasterPasswordEvent {
-  class OnInitialPasswordTyping(val password: String) : CMPUiEvent
-  class OnRepeatPasswordTyping(val password: String) : CreatingMasterPasswordUiEvent
+  class OnInitialPasswordTyping(val password: Password) : CMPUiEvent
+  class OnRepeatPasswordTyping(val password: Password) : CreatingMasterPasswordUiEvent
   object RequestShowPasswordStrengthDialog : CreatingMasterPasswordUiEvent
   object RequestHidePasswordStrengthDialog : CreatingMasterPasswordUiEvent
   object OnContinueClicked : CreatingMasterPasswordUiEvent
@@ -31,11 +32,11 @@ sealed interface CreatingMasterPasswordNews {
 sealed interface CreatingMasterPasswordCommand {
   
   sealed interface PasswordCommand : CreatingMasterPasswordCommand {
-    class CheckPasswordStrength(val password: String) : PasswordCommand
-    class CheckPasswordForErrors(val password: String) : PasswordCommand
+    class CheckPasswordStrength(val password: Password) : PasswordCommand
+    class CheckPasswordForErrors(val password: Password) : PasswordCommand
   }
   
-  class FinishAuth(val password: String) : CreatingMasterPasswordCommand
+  class FinishAuth(val password: Password) : CreatingMasterPasswordCommand
   
   sealed interface RouterCommand : CreatingMasterPasswordCommand {
     object GoBack : RouterCommand
@@ -48,8 +49,8 @@ data class CreatingMasterPasswordState(
   val passwordStatus: UiPasswordStatus? = null,
   val passwordStrength: PasswordStrength? = null,
   val showPasswordStrengthDialog: Boolean = false,
-  val initialPassword: String = "",
-  val repeatedPassword: String = "",
+  val initialPassword: Password = Password.empty(),
+  val repeatedPassword: Password = Password.empty(),
   val showErrorText: Boolean = false,
 )
 

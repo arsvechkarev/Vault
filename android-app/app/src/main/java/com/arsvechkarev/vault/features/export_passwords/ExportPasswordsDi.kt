@@ -13,10 +13,11 @@ fun ExportPasswordsStore(
 ): TeaStore<ExportPasswordsState, ExportPasswordsUiEvent, ExportPasswordsNews> {
   return TeaStoreImpl(
     actors = listOf(
-      GetPasswordsFileUriActor(coreComponent.fileSaver),
+      GetPasswordsFileUriActor(coreComponent.databaseSaver),
       GetFilenameFromUriActor(coreComponent.filenameFromUriRetriever),
       ExportPasswordsActor(
-        coreComponent.fileSaver,
+        coreComponent.masterPasswordProvider,
+        coreComponent.databaseSaver,
         coreComponent.passwordsFileExporter,
       ),
       ExportPasswordsRouterActor(coreComponent.router),

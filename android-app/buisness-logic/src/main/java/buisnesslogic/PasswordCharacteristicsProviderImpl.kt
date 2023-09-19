@@ -15,11 +15,12 @@ class PasswordCharacteristicsProviderImpl(
   private val specialSymbolsGenerator: SpecialSymbolsGenerator,
 ) : PasswordCharacteristicsProvider {
   
-  override fun getCharacteristics(password: String): EnumSet<PasswordCharacteristic> {
+  override fun getCharacteristics(password: Password): EnumSet<PasswordCharacteristic> {
+    val passwordString = password.rawValue
     val set = setOfNotNull(
-      UPPERCASE_SYMBOLS.takeIf { uppercaseSymbolsGenerator.isPresentInPassword(password) },
-      NUMBERS.takeIf { numbersGenerator.isPresentInPassword(password) },
-      SPECIAL_SYMBOLS.takeIf { specialSymbolsGenerator.isPresentInPassword(password) }
+      UPPERCASE_SYMBOLS.takeIf { uppercaseSymbolsGenerator.isPresentInPassword(passwordString) },
+      NUMBERS.takeIf { numbersGenerator.isPresentInPassword(passwordString) },
+      SPECIAL_SYMBOLS.takeIf { specialSymbolsGenerator.isPresentInPassword(passwordString) }
     )
     return if (set.isNotEmpty()) {
       EnumSet.copyOf(set)

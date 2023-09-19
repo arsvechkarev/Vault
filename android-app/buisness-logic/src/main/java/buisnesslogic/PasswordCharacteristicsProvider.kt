@@ -5,5 +5,5 @@ import java.util.EnumSet
 
 interface PasswordCharacteristicsProvider {
   
-  fun getCharacteristics(password: String): EnumSet<PasswordCharacteristic>
+  fun getCharacteristics(password: Password): EnumSet<PasswordCharacteristic>
 }

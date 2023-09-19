@@ -25,11 +25,11 @@ fun EditText.onTextChanged(block: (text: String) -> Unit) {
   })
 }
 
-fun EditText.onSubmit(block: (String) -> Unit) {
+fun EditText.onSubmit(block: (Editable) -> Unit) {
   imeOptions = IME_ACTION_DONE
   setOnEditorActionListener { _, actionId, _ ->
     if (actionId == IME_ACTION_DONE) {
-      block(text.toString())
+      block(text)
       return@setOnEditorActionListener true
     }
     return@setOnEditorActionListener false

@@ -7,11 +7,11 @@ interface Cryptography {
    *
    * @see decryptData
    */
-  fun encryptData(password: String, plaintext: String): ByteArray
+  fun encryptData(password: Password, plaintext: String): ByteArray
   
   /**
    * Decrypts [ciphertext] using given [password] and returns decrypted plaintext. If decryption
    * was unsuccessful, throws exception
    */
-  fun decryptData(password: String, ciphertext: ByteArray): String
+  fun decryptData(password: Password, ciphertext: ByteArray): String
 }

@@ -24,15 +24,15 @@ class ChangeMasterPasswordReducer : DslReducer<ChangeMasterPasswordState, Change
   override fun dslReduce(event: ChangeMasterPasswordEvent) {
     when (event) {
       is OnInitialPasswordChanged -> {
-        state { copy(initialPassword = event.text, error = null) }
+        state { copy(initialPassword = event.password, error = null) }
       }
       
       is OnRepeatedPasswordChanged -> {
-        state { copy(repeatedPassword = event.text, error = null) }
+        state { copy(repeatedPassword = event.password, error = null) }
       }
       
       OnChangeMasterPasswordClicked -> {
-        if (state.initialPassword.isEmpty() && state.repeatedPassword.isEmpty()) {
+        if (state.initialPassword.rawValue.isBlank() && state.repeatedPassword.rawValue.isBlank()) {
           return
         }
         if (state.initialPassword != state.repeatedPassword) {

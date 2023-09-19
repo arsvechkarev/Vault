@@ -3,7 +3,7 @@ package busnesslogic
 import buisnesslogic.AesSivTinkCryptography
 import buisnesslogic.EntriesStorageImpl
 import buisnesslogic.model.CreditCard
-import buisnesslogic.model.Password
+import buisnesslogic.model.PasswordEntry
 import buisnesslogic.model.PlainText
 import com.google.gson.Gson
 import kotlinx.coroutines.runBlocking
@@ -14,7 +14,7 @@ import org.junit.Test
 
 class EntriesStorageImplTest {
   
-  private val testFileSaver = TestFileSaver()
+  private val testFileSaver = TestDatabaseSaver()
   
   private val testPassword = "pAsSw0rd"
   
@@ -27,7 +27,7 @@ class EntriesStorageImplTest {
   @Before
   fun setup() = runBlocking {
     val encryptedText = AesSivTinkCryptography.encryptData(testPassword, "")
-    testFileSaver.saveData(encryptedText)
+    testFileSaver.save(encryptedText)
   }
   
   @After
@@ -45,7 +45,7 @@ class EntriesStorageImplTest {
   
   @Test
   fun `Saving entries`() = runBlocking {
-    val passwordEntry = Password(
+    val passwordEntry = PasswordEntry(
       id = ",cml29",
       websiteName = "google",
       login = "pro",
@@ -83,14 +83,14 @@ class EntriesStorageImplTest {
       title = "the title",
       text = "lalala"
     )
-    val passwordEntry = Password(
+    val passwordEntry = PasswordEntry(
       id = "sdofgi",
       websiteName = "netflix",
       login = "lol",
       password = "wasp",
       notes = ""
     )
-    val passwordEntryUpdated = Password(
+    val passwordEntryUpdated = PasswordEntry(
       id = "sdofgi",
       websiteName = "netflix",
       login = "newUser",
@@ -112,14 +112,14 @@ class EntriesStorageImplTest {
   
   @Test
   fun `Deleting services`() = runBlocking {
-    val firstPasswordEntry = Password(
+    val firstPasswordEntry = PasswordEntry(
       id = "23490uwriojefk",
       websiteName = "google",
       login = "pro",
       password = "po39,x//2",
       notes = ""
     )
-    val secondPasswordEntry = Password(
+    val secondPasswordEntry = PasswordEntry(
       id = ",;pl9oki87ju6hy5gt",
       websiteName = "netflix",
       login = "lol",

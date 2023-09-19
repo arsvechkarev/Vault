@@ -11,9 +11,10 @@ class ZxcvbnPasswordInfoChecker(
   private val zxcvbn: Zxcvbn
 ) : PasswordInfoChecker {
   
-  override fun checkStrength(password: String): PasswordStrength? {
-    if (password.isBlank()) return null
-    return when (zxcvbn.measure(password).score) {
+  override fun checkStrength(password: Password): PasswordStrength? {
+    val passwordString = password.rawValue
+    if (passwordString.isBlank()) return null
+    return when (zxcvbn.measure(passwordString).score) {
       2 -> PasswordStrength.MEDIUM
       3 -> PasswordStrength.STRONG
       in 4..Int.MAX_VALUE -> PasswordStrength.SECURE
@@ -21,11 +22,12 @@ class ZxcvbnPasswordInfoChecker(
     }
   }
   
-  override fun checkForErrors(password: String): PasswordError? {
-    if (password.isBlank()) {
+  override fun checkForErrors(password: Password): PasswordError? {
+    val passwordString = password.rawValue
+    if (passwordString.isBlank()) {
       return PasswordError.EMPTY
     }
-    if (password.length < MIN_PASSWORD_LENGTH) {
+    if (passwordString.length < MIN_PASSWORD_LENGTH) {
       return PasswordError.TOO_SHORT
     }
     if (checkStrength(password) == PasswordStrength.WEAK) {

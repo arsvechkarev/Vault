@@ -1,5 +1,6 @@
 package com.arsvechkarev.vault.features.common.data.storage
 
+import buisnesslogic.Password
 import buisnesslogic.model.Entries
 import buisnesslogic.model.Entry
 import com.arsvechkarev.vault.features.common.model.CreditCardItem
@@ -16,20 +17,20 @@ class ListenableCachedEntriesStorage(private val cachedPasswordStorage: CachedEn
   private val _entries = MutableSharedFlow<Entries>()
   val entries: SharedFlow<Entries> get() = _entries
   
-  suspend fun getEntries(masterPassword: String): Entries {
+  suspend fun getEntries(masterPassword: Password): Entries {
     return cachedPasswordStorage.getEntries(masterPassword)
   }
   
-  suspend fun saveEntries(masterPassword: String, entries: Entries) {
+  suspend fun saveEntries(masterPassword: Password, entries: Entries) {
     cachedPasswordStorage.saveEntries(masterPassword, entries)
     notifySubscribers(masterPassword)
   }
   
   suspend fun savePassword(
-    masterPassword: String,
+    masterPassword: Password,
     websiteName: String,
     login: String,
-    password: String
+    password: Password
   ): PasswordItem {
     val item = cachedPasswordStorage.savePassword(
       masterPassword = masterPassword,
@@ -43,7 +44,7 @@ class ListenableCachedEntriesStorage(private val cachedPasswordStorage: CachedEn
   }
   
   suspend fun saveCreditCard(
-    masterPassword: String,
+    masterPassword: Password,
     cardNumber: String,
     expirationDate: String,
     cardholderName: String,
@@ -57,23 +58,23 @@ class ListenableCachedEntriesStorage(private val cachedPasswordStorage: CachedEn
     return item.toCreditCardItem()
   }
   
-  suspend fun savePlainText(masterPassword: String, title: String, text: String): PlainTextItem {
+  suspend fun savePlainText(masterPassword: Password, title: String, text: String): PlainTextItem {
     val item = cachedPasswordStorage.savePlainText(masterPassword, title, text)
     notifySubscribers(masterPassword)
     return item.toPlainTextItem()
   }
   
-  suspend fun updateEntry(masterPassword: String, entry: Entry) {
+  suspend fun updateEntry(masterPassword: Password, entry: Entry) {
     cachedPasswordStorage.updateEntry(masterPassword, entry)
     notifySubscribers(masterPassword)
   }
   
-  suspend fun deleteEntry(masterPassword: String, entry: Entry) {
+  suspend fun deleteEntry(masterPassword: Password, entry: Entry) {
     cachedPasswordStorage.deleteEntry(masterPassword, entry)
     notifySubscribers(masterPassword)
   }
   
-  suspend fun notifySubscribers(masterPassword: String, reloadData: Boolean = false) {
+  suspend fun notifySubscribers(masterPassword: Password, reloadData: Boolean = false) {
     val value = cachedPasswordStorage.getEntries(masterPassword, reloadData)
     _entries.emit(value)
   }

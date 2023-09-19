@@ -1,7 +1,7 @@
 package com.arsvechkarev.vault.features.import_passwords.actors
 
 import buisnesslogic.Cryptography
-import buisnesslogic.FileSaver
+import buisnesslogic.DatabaseSaver
 import buisnesslogic.MasterPasswordHolder
 import com.arsvechkarev.vault.core.mvi.tea.Actor
 import com.arsvechkarev.vault.features.common.data.ExternalFileReader
@@ -20,7 +20,7 @@ import timber.log.Timber
 class ImportPasswordsActor(
   private val externalFileReader: ExternalFileReader,
   private val cryptography: Cryptography,
-  private val fileSaver: FileSaver,
+  private val databaseSaver: DatabaseSaver,
   private val storage: ListenableCachedEntriesStorage,
 ) : Actor<ImportPasswordsCommand, ImportPasswordsEvent> {
   
@@ -28,7 +28,7 @@ class ImportPasswordsActor(
   override fun handle(commands: Flow<ImportPasswordsCommand>): Flow<ImportPasswordsEvent> {
     return commands.filterIsInstance<TryImportPasswords>()
         .mapLatest { command ->
-          val currentBytes = fileSaver.readData()
+          val currentBytes = databaseSaver.read(command.password)
           val result = runCatching {
             val bytes = externalFileReader.readFile(command.uri)
             
@@ -38,7 +38,8 @@ class ImportPasswordsActor(
             // Saving new bytes to file saver temporarily, this should be done because
             // storage reads from file saver
             // TODO (27.11.2022): Make storage independent of FileSaver ?
-            fileSaver.saveData(bytes)
+            // TODO (9/19/23): Create importing functionality
+            //            databaseSaver.save(bytes)
             
             // Decryption is successful, trying to parse passwords to
             // make sure format is valid
@@ -48,7 +49,7 @@ class ImportPasswordsActor(
             MasterPasswordHolder.setMasterPassword(command.password)
           }.onFailure {
             Timber.e(it)
-            currentBytes?.let { bytes -> fileSaver.saveData(bytes) }
+            currentBytes?.let { bytes -> databaseSaver.save(bytes) }
           }
           if (result.isSuccess) {
             PasswordsImportSuccess

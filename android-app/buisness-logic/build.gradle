@@ -4,8 +4,8 @@ plugins {
 }
 
 java {
-  sourceCompatibility = JavaVersion.VERSION_1_8
-  targetCompatibility = JavaVersion.VERSION_1_8
+  sourceCompatibility = JavaVersion.VERSION_11
+  targetCompatibility = JavaVersion.VERSION_11
 }
 
 dependencies {
@@ -16,6 +16,8 @@ dependencies {
   implementation appDependencies.coroutinesCore
   implementation appDependencies.gson
   implementation appDependencies.zxcvbn
+  implementation appDependencies.kotpass
+  implementation appDependencies.okio
 
   def testDependencies = rootProject.ext.testDependencies
   testImplementation testDependencies.junit

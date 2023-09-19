@@ -1,20 +1,20 @@
 package busnesslogic
 
-import buisnesslogic.FileSaver
+import buisnesslogic.DatabaseSaver
 
-class TestFileSaver : FileSaver {
+class TestDatabaseSaver : DatabaseSaver {
   
   private var data: ByteArray? = null
   
-  override fun doesFileExist(): Boolean {
+  override fun doesDatabaseExist(): Boolean {
     return data != null
   }
   
-  override suspend fun saveData(data: ByteArray) {
-    this.data = data
+  override suspend fun save(database: ByteArray) {
+    this.data = database
   }
   
-  override suspend fun readData(): ByteArray? {
+  override suspend fun read(): ByteArray? {
     return data
   }
   

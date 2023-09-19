@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName
 
 sealed interface Entry
 
-data class Password(
+data class PasswordEntry(
   @SerializedName("id")
   val id: String,
   @SerializedName("website")
@@ -12,6 +12,7 @@ data class Password(
   @SerializedName("login")
   val login: String,
   @SerializedName("password")
+  // TODO (9/19/23): Change to Password class
   val password: String,
   @SerializedName("notes")
   val notes: String,

@@ -1,17 +1,19 @@
 package com.arsvechkarev.vault.features.change_master_password
 
+import buisnesslogic.Password
+
 sealed interface ChangeMasterPasswordEvent {
   object NewMasterPasswordSaved : ChangeMasterPasswordEvent
   
   sealed interface ValidationResult : ChangeMasterPasswordEvent {
-    class Success(val password: String) : ValidationResult
+    class Success(val password: Password) : ValidationResult
     object MasterPasswordIsSameAsCurrent : ValidationResult
   }
 }
 
 sealed interface ChangeMasterPasswordUiEvent : ChangeMasterPasswordEvent {
-  class OnInitialPasswordChanged(val text: String) : ChangeMasterPasswordUiEvent
-  class OnRepeatedPasswordChanged(val text: String) : ChangeMasterPasswordUiEvent
+  class OnInitialPasswordChanged(val password: Password) : ChangeMasterPasswordUiEvent
+  class OnRepeatedPasswordChanged(val password: Password) : ChangeMasterPasswordUiEvent
   object OnConfirmChangePassword : ChangeMasterPasswordUiEvent
   object OnCancelChangePassword : ChangeMasterPasswordUiEvent
   object OnNotificationOkClicked : ChangeMasterPasswordUiEvent
@@ -20,14 +22,14 @@ sealed interface ChangeMasterPasswordUiEvent : ChangeMasterPasswordEvent {
 }
 
 sealed interface ChangeMasterPasswordCommand {
-  class CheckPassword(val password: String) : ChangeMasterPasswordCommand
-  class ChangeMasterPassword(val password: String) : ChangeMasterPasswordCommand
+  class CheckPassword(val password: Password) : ChangeMasterPasswordCommand
+  class ChangeMasterPassword(val password: Password) : ChangeMasterPasswordCommand
   object GoBack : ChangeMasterPasswordCommand
 }
 
 data class ChangeMasterPasswordState(
-  val initialPassword: String = "",
-  val repeatedPassword: String = "",
+  val initialPassword: Password = Password.empty(),
+  val repeatedPassword: Password = Password.empty(),
   val dialogType: ChangeMasterPasswordDialogType? = null,
   val error: ChangeMasterPasswordError? = null
 )

@@ -12,6 +12,7 @@ import androidx.lifecycle.lifecycleScope
 import buisnesslogic.DEFAULT_PASSWORD_LENGTH
 import buisnesslogic.MAX_PASSWORD_LENGTH
 import buisnesslogic.MIN_PASSWORD_LENGTH
+import buisnesslogic.Password
 import buisnesslogic.PasswordStrength
 import com.arsvechkarev.vault.R
 import com.arsvechkarev.vault.core.mvi.ext.subscribe
@@ -108,7 +109,7 @@ class CreatingPasswordScreen : BaseFragmentScreen() {
           setMaxLength(MAX_PASSWORD_LENGTH)
           isSingleLine = false
           onSubmit { store.tryDispatch(OnSavePasswordClicked) }
-          onTextChanged { store.tryDispatch(OnPasswordChanged(it)) }
+          onTextChanged { store.tryDispatch(OnPasswordChanged(Password.create(it))) }
         }
         child<PasswordStrengthMeterWithText>(MatchParent, WrapContent) {
           classNameTag()
@@ -209,8 +210,8 @@ class CreatingPasswordScreen : BaseFragmentScreen() {
       is ShowGeneratedPassword -> {
         requireContext().hideKeyboard()
         editText(EditTextPassword).clearFocus()
-        editText(EditTextPassword).text(event.password)
-        editText(EditTextPassword).setSelection(event.password.length)
+        editText(EditTextPassword).text(event.password.rawValue)
+        editText(EditTextPassword).setSelection(event.password.rawValue.length)
       }
     }
   }
@@ -229,11 +230,11 @@ class CreatingPasswordScreen : BaseFragmentScreen() {
     store.tryDispatch(SetupCompleted)
   }
   
-  private fun showEditingPasswordMode(password: String) {
+  private fun showEditingPasswordMode(password: Password) {
     textView(Title).text(R.string.text_edit_password)
-    editText(EditTextPassword).text(password)
-    editText(EditTextPassword).setSelection(password.length)
-    viewAs<SeekBar>().progress = password.length - MIN_PASSWORD_LENGTH
+    editText(EditTextPassword).text(password.rawValue)
+    editText(EditTextPassword).setSelection(password.rawValue.length)
+    viewAs<SeekBar>().progress = password.rawValue.length - MIN_PASSWORD_LENGTH
     store.tryDispatch(SetupCompleted)
   }
   

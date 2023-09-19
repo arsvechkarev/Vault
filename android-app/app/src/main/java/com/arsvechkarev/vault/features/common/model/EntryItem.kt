@@ -11,6 +11,7 @@ data class PasswordItem(
   override val id: String,
   val websiteName: String,
   val login: String,
+  // TODO (9/19/23): Change to Password class
   val password: String,
   val notes: String,
 ) : EntryItem

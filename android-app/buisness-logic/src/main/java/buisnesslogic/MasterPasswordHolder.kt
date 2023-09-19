@@ -1,13 +1,12 @@
 package buisnesslogic
 
-// TODO (7/21/2022): Store password as byte array?
 object MasterPasswordHolder {
   
-  private var _masterPassword: String? = null
+  private var _masterPassword: Password? = null
   
-  val masterPassword: String get() = _masterPassword!!
+  val masterPassword: Password get() = _masterPassword!!
   
-  fun setMasterPassword(masterPassword: String) {
+  fun setMasterPassword(masterPassword: Password) {
     _masterPassword = masterPassword
   }
 }

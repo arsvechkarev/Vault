@@ -64,13 +64,14 @@ class CreatingPasswordReducer : DslReducer<CreatingPasswordState, CreatingPasswo
       is Setup -> {
         state {
           val length = if (event.mode is EditPassword) {
-            event.mode.password.length
+            event.mode.password.rawValue.length
           } else {
             DEFAULT_PASSWORD_LENGTH
           }
           copy(mode = event.mode, passwordLength = length)
         }
       }
+      
       SetupCompleted -> {
         state { copy(setupCompleted = true) }
         when (val mode = state.mode) {
@@ -113,7 +114,7 @@ class CreatingPasswordReducer : DslReducer<CreatingPasswordState, CreatingPasswo
       }
       
       OnSavePasswordClicked -> {
-        if (state.password.isNotBlank()) {
+        if (state.password.rawValue.isNotBlank()) {
           state { copy(showConfirmationDialog = true) }
         } else {
           state { copy(showPasswordCantBeEmpty = true) }

@@ -7,6 +7,7 @@ import android.view.Gravity
 import android.view.inputmethod.EditorInfo
 import android.widget.EditText
 import android.widget.FrameLayout
+import buisnesslogic.Password
 import com.arsvechkarev.vault.R
 import com.arsvechkarev.vault.viewbuilding.Dimens.IconSize
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginLarge
@@ -81,17 +82,19 @@ class EditTextPassword(context: Context) : FrameLayout(context) {
   
   fun setHint(hintResId: Int) = editText.setHint(hintResId)
   
-  fun onSubmit(block: (String) -> Unit) = editText.onSubmit(block)
+  fun onSubmit(block: (Password) -> Unit) = editText.onSubmit { it ->
+    block(Password.create(it.toString()))
+  }
   
-  fun onTextChanged(block: (String) -> Unit) = editText.onTextChanged(block)
+  fun onTextChanged(block: (Password) -> Unit) = editText.onTextChanged {
+    block(Password.create(it))
+  }
   
   fun requestEditTextFocus() = editText.requestFocus()
   
-  fun text(text: String) = editText.setText(text)
+  fun setRawText(text: String) = editText.setText(text)
   
-  fun text(textResId: Int) = editText.setText(textResId)
-  
-  fun getText() = editText.text.toString()
+  fun getPassword() = Password.create(editText.text.toString())
   
   fun clearText() {
     editText.clearText()

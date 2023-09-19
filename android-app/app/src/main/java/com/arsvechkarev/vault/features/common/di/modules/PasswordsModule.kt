@@ -48,13 +48,13 @@ class PasswordsModuleImpl(
   override val masterPasswordProvider = MasterPasswordProviderImpl
   
   override val masterPasswordChecker =
-      MasterPasswordCheckerImpl(cryptographyModule.cryptography, ioModule.fileSaver)
+      MasterPasswordCheckerImpl(ioModule.databaseSaver)
   
   override val listenableCachedEntriesStorage = ListenableCachedEntriesStorage(
     CachedEntriesStorage(
       storage = EntriesStorageImpl(
         cryptographyModule.cryptography,
-        ioModule.fileSaver,
+        ioModule.databaseSaver,
         coreModule.gson,
       ),
       idGenerator = IdGeneratorImpl

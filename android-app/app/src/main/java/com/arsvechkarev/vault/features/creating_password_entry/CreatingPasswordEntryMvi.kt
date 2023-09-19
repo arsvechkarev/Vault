@@ -1,5 +1,6 @@
 package com.arsvechkarev.vault.features.creating_password_entry
 
+import buisnesslogic.Password
 import com.arsvechkarev.vault.features.common.model.PasswordItem
 
 sealed interface CreatingPasswordEntryEvent {
@@ -13,7 +14,7 @@ sealed interface CreatingPasswordEntryEvent {
 }
 
 sealed interface CreatingPasswordEntryUiEvent : CreatingPasswordEntryEvent {
-  class PasswordEntered(val password: String) : CreatingPasswordEntryUiEvent
+  class PasswordEntered(val password: Password) : CreatingPasswordEntryUiEvent
   class OnWebsiteNameTextChanged(val text: String) : CreatingPasswordEntryUiEvent
   class OnLoginTextChanged(val text: String) : CreatingPasswordEntryUiEvent
   class OnContinueClicked(val websiteName: String, val login: String) : CreatingPasswordEntryUiEvent
@@ -26,7 +27,7 @@ sealed interface CreatingPasswordEntryCommand {
   class SavePassword(
     val websiteName: String,
     val login: String,
-    val password: String
+    val password: Password
   ) : CreatingPasswordEntryCommand
   
   sealed interface RouterCommand : CreatingPasswordEntryCommand {

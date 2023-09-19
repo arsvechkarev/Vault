@@ -96,7 +96,7 @@ class PasswordInfoScreenReducer :
       }
       
       OnCopyPasswordClicked -> {
-        commands(Copy(R.string.clipboard_label_password, state.password))
+        commands(Copy(R.string.clipboard_label_password, state.password.rawValue))
         news(ShowPasswordCopied)
       }
       
@@ -121,7 +121,7 @@ class PasswordInfoScreenReducer :
       
       is SavePasswordEventReceived -> {
         if (event.password != state.password) {
-          val item = state.passwordItem.copy(password = event.password)
+          val item = state.passwordItem.copy(password = event.password.rawValue)
           commands(UpdatePassword(item))
         } else {
           commands(GoBack)

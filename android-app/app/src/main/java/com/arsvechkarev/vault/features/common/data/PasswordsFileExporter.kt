@@ -2,12 +2,14 @@ package com.arsvechkarev.vault.features.common.data
 
 import android.content.Context
 import android.net.Uri
+import app.keemobile.kotpass.database.KeePassDatabase
+import app.keemobile.kotpass.database.encode
 import com.arsvechkarev.vault.core.DispatchersFacade
 import kotlinx.coroutines.withContext
 
 interface PasswordsFileExporter {
   
-  suspend fun writeData(exportingUri: Uri, data: ByteArray)
+  suspend fun writeData(exportingUri: Uri, database: KeePassDatabase)
 }
 
 class RealPasswordsFileExporter(
@@ -15,10 +17,10 @@ class RealPasswordsFileExporter(
   private val dispatchersFacade: DispatchersFacade
 ) : PasswordsFileExporter {
   
-  override suspend fun writeData(exportingUri: Uri, data: ByteArray) {
+  override suspend fun writeData(exportingUri: Uri, database: KeePassDatabase) {
     withContext(dispatchersFacade.IO) {
       val outputStream = context.contentResolver.openOutputStream(exportingUri, "wr")
-      checkNotNull(outputStream).use { it.write(data) }
+      database.encode(requireNotNull(outputStream))
     }
   }
 }

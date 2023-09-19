@@ -74,7 +74,7 @@ class LoginScreen : BaseFragmentScreen() {
           id(EditTextPassword)
           marginHorizontal(MarginNormal)
           if (BuildConfig.DEBUG) {
-            text(BuildConfig.STUB_PASSWORD)
+            setRawText(BuildConfig.STUB_PASSWORD)
             editText.setSelection(BuildConfig.STUB_PASSWORD.length)
           }
           setHint(R.string.hint_enter_password)
@@ -97,8 +97,8 @@ class LoginScreen : BaseFragmentScreen() {
           bottomToBottomOf(parent)
         }
         onClick {
-          val text = viewAs<EditTextPassword>(EditTextPassword).getText()
-          store.tryDispatch(OnEnteredPassword(text))
+          val password = viewAs<EditTextPassword>(EditTextPassword).getPassword()
+          store.tryDispatch(OnEnteredPassword(password))
         }
       }
       LoadingDialog()

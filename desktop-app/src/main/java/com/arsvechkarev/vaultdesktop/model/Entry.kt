@@ -12,7 +12,7 @@ data class Password(
   @SerializedName("login")
   val login: String,
   @SerializedName("password")
-  val password: String,
+  val password: Password,
   @SerializedName("notes")
   val notes: String,
 ) : Entry

@@ -1,8 +1,9 @@
 package com.arsvechkarev.vault.features.export_passwords.actors
 
-import buisnesslogic.FileSaver
+import buisnesslogic.DatabaseSaver
 import com.arsvechkarev.vault.core.mvi.tea.Actor
 import com.arsvechkarev.vault.features.common.data.PasswordsFileExporter
+import com.arsvechkarev.vault.features.common.domain.MasterPasswordProvider
 import com.arsvechkarev.vault.features.export_passwords.ExportPasswordsCommand
 import com.arsvechkarev.vault.features.export_passwords.ExportPasswordsCommand.ExportPasswords
 import com.arsvechkarev.vault.features.export_passwords.ExportPasswordsEvent
@@ -13,7 +14,8 @@ import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.flow.mapLatest
 
 class ExportPasswordsActor(
-  private val fileSaver: FileSaver,
+  private val masterPasswordProvider: MasterPasswordProvider,
+  private val databaseSaver: DatabaseSaver,
   private val passwordsFileWriter: PasswordsFileExporter,
 ) : Actor<ExportPasswordsCommand, ExportPasswordsEvent> {
   
@@ -21,7 +23,9 @@ class ExportPasswordsActor(
   override fun handle(commands: Flow<ExportPasswordsCommand>): Flow<ExportPasswordsEvent> {
     return commands.filterIsInstance<ExportPasswords>()
         .mapLatest { command ->
-          passwordsFileWriter.writeData(command.uri, checkNotNull(fileSaver.readData()))
+          val masterPassword = masterPasswordProvider.provideMasterPassword()
+          val database = checkNotNull(databaseSaver.read(masterPassword))
+          passwordsFileWriter.writeData(command.uri, database)
           ExportedPasswords
         }
   }

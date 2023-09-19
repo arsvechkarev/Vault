@@ -1,10 +1,10 @@
 package com.arsvechkarev.vault.features.common.model
 
 import buisnesslogic.model.CreditCard
-import buisnesslogic.model.Password
+import buisnesslogic.model.PasswordEntry
 import buisnesslogic.model.PlainText
 
-fun Password.toPasswordItem(): PasswordItem {
+fun PasswordEntry.toPasswordItem(): PasswordItem {
   return PasswordItem(
     id = id,
     websiteName = websiteName,
@@ -34,8 +34,8 @@ fun PlainText.toPlainTextItem(): PlainTextItem {
   )
 }
 
-fun PasswordItem.toPassword(): Password {
-  return Password(
+fun PasswordItem.toPassword(): PasswordEntry {
+  return PasswordEntry(
     id = id,
     websiteName = websiteName,
     login = login,

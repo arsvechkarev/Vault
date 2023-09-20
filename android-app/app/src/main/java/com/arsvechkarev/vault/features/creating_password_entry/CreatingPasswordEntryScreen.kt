@@ -14,8 +14,8 @@ import com.arsvechkarev.vault.features.common.di.CoreComponentHolder.coreCompone
 import com.arsvechkarev.vault.features.creating_password.CreatingPasswordCommunication
 import com.arsvechkarev.vault.features.creating_password_entry.CreatingPasswordEntryUiEvent.OnBackPressed
 import com.arsvechkarev.vault.features.creating_password_entry.CreatingPasswordEntryUiEvent.OnContinueClicked
-import com.arsvechkarev.vault.features.creating_password_entry.CreatingPasswordEntryUiEvent.OnLoginTextChanged
-import com.arsvechkarev.vault.features.creating_password_entry.CreatingPasswordEntryUiEvent.OnWebsiteNameTextChanged
+import com.arsvechkarev.vault.features.creating_password_entry.CreatingPasswordEntryUiEvent.OnTitleTextChanged
+import com.arsvechkarev.vault.features.creating_password_entry.CreatingPasswordEntryUiEvent.OnUsernameTextChanged
 import com.arsvechkarev.vault.features.creating_password_entry.CreatingPasswordEntryUiEvent.PasswordEntered
 import com.arsvechkarev.vault.viewbuilding.Colors
 import com.arsvechkarev.vault.viewbuilding.Dimens.GradientDrawableHeight
@@ -90,7 +90,7 @@ class CreatingPasswordEntryScreen : BaseFragmentScreen() {
           apply(BaseEditText(hint = R.string.hint_website_name))
           id(EditTextWebsiteName)
           margins(start = MarginNormal, end = MarginNormal)
-          onTextChanged { text -> store.tryDispatch(OnWebsiteNameTextChanged(text)) }
+          onTextChanged { text -> store.tryDispatch(OnTitleTextChanged(text)) }
           onSubmit { editText(EditTextLogin).requestFocus() }
         }
         TextView(WrapContent, WrapContent, style = AccentTextView) {
@@ -101,7 +101,7 @@ class CreatingPasswordEntryScreen : BaseFragmentScreen() {
         EditText(MatchParent, WrapContent, style = BaseEditText(hint = R.string.hint_login)) {
           id(EditTextLogin)
           margins(start = MarginNormal, end = MarginNormal)
-          onTextChanged { text -> store.tryDispatch(OnLoginTextChanged(text)) }
+          onTextChanged { text -> store.tryDispatch(OnUsernameTextChanged(text)) }
           onSubmit { continueWithCreating() }
         }
       }
@@ -136,12 +136,12 @@ class CreatingPasswordEntryScreen : BaseFragmentScreen() {
   }
   
   private fun render(state: CreatingPasswordEntryState) {
-    if (state.websiteNameEmpty) {
+    if (state.titleEmpty) {
       showAccentTextViewError(TitleWebsiteName, R.string.text_website_name_cant_be_empty)
     } else {
       showAccentTextViewDefault(TitleWebsiteName, R.string.text_website_name)
     }
-    if (state.loginEmpty) {
+    if (state.usernameEmpty) {
       showAccentTextViewError(TitleLogin, R.string.text_login_cant_be_empty)
     } else {
       showAccentTextViewDefault(TitleLogin, R.string.text_login)

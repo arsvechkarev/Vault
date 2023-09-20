@@ -7,7 +7,7 @@ import com.arsvechkarev.vault.R
 import com.arsvechkarev.vault.features.main_list.MainListScreen
 import com.arsvechkarev.vault.features.main_list.MainListScreen.Companion.ChooseEntryTypeBottomSheet
 import com.arsvechkarev.vault.features.main_list.recycler.MainListAdapter.Companion.ItemPasswordInfoImage
-import com.arsvechkarev.vault.features.main_list.recycler.MainListAdapter.Companion.ItemPasswordInfoTextPasswordName
+import com.arsvechkarev.vault.features.main_list.recycler.MainListAdapter.Companion.ItemPasswordInfoTitle
 import com.arsvechkarev.vault.features.main_list.recycler.MainListAdapter.Companion.ItemPlainTextTitle
 import com.arsvechkarev.vault.test.core.base.BaseScreen
 import com.arsvechkarev.vault.test.core.ext.withClassNameTag
@@ -45,7 +45,7 @@ object KMainListScreen : BaseScreen<KMainListScreen>() {
   
   class PasswordItem(parent: Matcher<View>) : KRecyclerItem<PasswordItem>(parent) {
     val icon = KImageView(parent) { withId(ItemPasswordInfoImage) }
-    val text = KTextView(parent) { withId(ItemPasswordInfoTextPasswordName) }
+    val text = KTextView(parent) { withId(ItemPasswordInfoTitle) }
   }
   
   class PlainTextItem(parent: Matcher<View>) : KRecyclerItem<PlainTextItem>(parent) {

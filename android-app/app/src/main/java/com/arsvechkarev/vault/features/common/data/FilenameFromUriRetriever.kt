@@ -4,8 +4,8 @@ import android.content.Context
 import android.net.Uri
 import android.provider.OpenableColumns
 
-
 interface FilenameFromUriRetriever {
+  
   fun getFilename(uri: Uri, fallback: String): String
 }
 

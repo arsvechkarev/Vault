@@ -5,8 +5,8 @@ import com.arsvechkarev.vault.features.common.data.ExternalFileReader
 import com.arsvechkarev.vault.features.common.data.PasswordsFileExporter
 import com.arsvechkarev.vault.features.common.di.modules.CoreModule
 import com.arsvechkarev.vault.features.common.di.modules.CoreModuleImpl
-import com.arsvechkarev.vault.features.common.di.modules.CryptographyModule
-import com.arsvechkarev.vault.features.common.di.modules.CryptographyModuleImpl
+import com.arsvechkarev.vault.features.common.di.modules.DomainModule
+import com.arsvechkarev.vault.features.common.di.modules.DomainModuleImpl
 import com.arsvechkarev.vault.features.common.di.modules.IoModule
 import com.arsvechkarev.vault.features.common.di.modules.IoModuleImpl
 import com.arsvechkarev.vault.features.common.di.modules.NavigationModule
@@ -17,7 +17,7 @@ import com.arsvechkarev.vault.features.common.navigation.ActivityResultSubstitut
 
 interface CoreComponent :
   CoreModule,
-  CryptographyModule,
+  DomainModule,
   IoModule,
   PasswordsModule,
   NavigationModule {
@@ -31,10 +31,10 @@ interface CoreComponent :
       externalFileReader: ExternalFileReader,
     ): CoreComponent {
       val coreModule = CoreModuleImpl(application)
-      val cryptographyModule = CryptographyModuleImpl()
-      val fileSaverModule = IoModuleImpl(coreModule, externalFileReader, passwordsFileExporter)
-      val passwordsModule = PasswordsModuleImpl(coreModule, cryptographyModule, fileSaverModule)
-      return CoreComponentImpl(coreModule, cryptographyModule, fileSaverModule,
+      val ioModule = IoModuleImpl(coreModule, externalFileReader, passwordsFileExporter)
+      val domainModule = DomainModuleImpl(ioModule)
+      val passwordsModule = PasswordsModuleImpl(ioModule)
+      return CoreComponentImpl(coreModule, domainModule, ioModule,
         passwordsModule, NavigationModuleImpl(activityResultSubstitutor))
     }
   }
@@ -42,13 +42,13 @@ interface CoreComponent :
 
 class CoreComponentImpl(
   private val coreModule: CoreModule,
-  private val cryptographyModule: CryptographyModule,
+  private val domainModule: DomainModule,
   private val ioModule: IoModule,
   private val passwordsModule: PasswordsModule,
   private val navigationModule: NavigationModule,
 ) : CoreComponent,
   CoreModule by coreModule,
-  CryptographyModule by cryptographyModule,
+  DomainModule by domainModule,
   IoModule by ioModule,
   PasswordsModule by passwordsModule,
   NavigationModule by navigationModule

@@ -131,12 +131,11 @@
     the entered password is incorrect
   </string>
   <string name="text_enter_password_to_import">Enter password to decipher the file with</string>
-  <string name="clipboard_label_website">website</string>
-  <string name="clipboard_label_login">login</string>
+  <string name="clipboard_label_title">website</string>
+  <string name="clipboard_label_username">username</string>
   <string name="clipboard_label_password">password</string>
   <string name="clipboard_label_notes">notes</string>
-  <string name="clipboard_title">title</string>
-  <string name="clipboard_text">text</string>
+  <string name="clipboard_label_text">text</string>
   <string name="text_choose_entry_type">Choose entry type</string>
   <string name="text_plain_text">Plain text</string>
   <string name="text_credit_card">Debit or credit card</string>

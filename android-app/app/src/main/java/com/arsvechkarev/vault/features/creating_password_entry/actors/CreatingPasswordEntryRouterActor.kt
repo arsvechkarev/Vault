@@ -23,7 +23,7 @@ fun CreatingEntryRouterActor(router: Router): Actor<CreatingPasswordEntryCommand
       }
       
       is GoToInfoScreen -> {
-        goForwardWithRemovalOf(PasswordInfoScreen(command.passwordItem), 2)
+        goForwardWithRemovalOf(PasswordInfoScreen(command.passwordId), 2)
       }
       
       GoBack -> {

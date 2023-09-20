@@ -24,14 +24,14 @@ class ValidateInputActor(
   override fun handle(commands: Flow<CreatingPasswordEntryCommand>): Flow<CreatingPasswordEntryEvent> {
     return commands.filterIsInstance<ValidateInput>()
         .mapLatest { input ->
-          val websiteName = input.websiteName
-          val login = input.login
-          if (websiteName.isNotBlank() && login.isNotBlank()) {
+          val title = input.title
+          val username = input.username
+          if (title.isNotBlank() && username.isNotBlank()) {
             communicator.input.emit(CreatingPasswordReceiveEvent(NewPassword))
             SendValidationResult(Success)
           } else {
             SendValidationResult(
-              Fail(websiteNameEmpty = websiteName.isBlank(), loginEmpty = login.isBlank())
+              Fail(titleEmpty = title.isBlank(), usernameEmpty = username.isBlank())
             )
           }
         }

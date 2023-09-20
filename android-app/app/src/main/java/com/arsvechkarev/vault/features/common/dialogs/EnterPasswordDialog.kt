@@ -109,7 +109,7 @@ class EnterPasswordDialog(context: Context) : FrameLayout(context) {
             onClick {
               val editTextPassword = parentView.parentView.viewAs<EditTextPassword>()
               val text = editTextPassword.getPassword()
-              if (text.rawValue.isNotBlank()) {
+              if (text.stringData.isNotBlank()) {
                 handleContinueClick(text)
               }
             }

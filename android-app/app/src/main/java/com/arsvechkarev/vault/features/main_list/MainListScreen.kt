@@ -5,15 +5,6 @@ import android.graphics.Color
 import android.view.Gravity.CENTER_HORIZONTAL
 import android.view.View
 import androidx.core.graphics.ColorUtils
-import app.keemobile.kotpass.cryptography.EncryptedValue
-import app.keemobile.kotpass.database.Credentials
-import app.keemobile.kotpass.database.KeePassDatabase
-import app.keemobile.kotpass.database.encode
-import app.keemobile.kotpass.database.modifiers.modifyParentGroup
-import app.keemobile.kotpass.models.Entry
-import app.keemobile.kotpass.models.EntryFields
-import app.keemobile.kotpass.models.EntryValue
-import app.keemobile.kotpass.models.Meta
 import com.arsvechkarev.vault.R
 import com.arsvechkarev.vault.core.mvi.ext.subscribe
 import com.arsvechkarev.vault.core.mvi.ext.viewModelStore
@@ -63,8 +54,6 @@ import viewdsl.setupWith
 import viewdsl.text
 import viewdsl.textSize
 import viewdsl.withViewBuilder
-import java.io.File
-import java.util.UUID
 
 class MainListScreen : BaseFragmentScreen() {
   
@@ -98,36 +87,6 @@ class MainListScreen : BaseFragmentScreen() {
           menuItemModel(R.drawable.ic_new_entry, R.string.text_new_entry, NEW_ENTRY),
         )
         onMenuOpenClick {
-          
-          val file = File(context.filesDir, "test.kdbx")
-          if (!file.exists()) {
-            file.createNewFile()
-          }
-          
-          val database: KeePassDatabase = KeePassDatabase.Ver4x.create(
-            rootName = "vault",
-            meta = Meta(),
-            credentials = Credentials.from(EncryptedValue.fromString("qwetu1233"))
-          )
-          
-          val newDb = database.modifyParentGroup {
-            val entry = Entry(
-              uuid = UUID.randomUUID(),
-              fields = EntryFields.of(
-                "Title" to EntryValue.Plain("Github"),
-                "UserName" to EntryValue.Plain("John"),
-                "Password" to EntryValue.Encrypted(EncryptedValue.fromString("passw0rd")),
-                "URL" to EntryValue.Plain("https://github.com"),
-                "CustomData" to EntryValue.Plain("Umbrella"),
-              )
-            )
-            copy(entries = entries + entry)
-          }
-          
-          println("content = ${newDb.content}")
-          
-          newDb.encode(file.outputStream())
-          
           store.tryDispatch(OnOpenMenuClicked)
         }
         onMenuCloseClick { store.tryDispatch(OnCloseMenuClicked) }

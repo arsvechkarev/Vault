@@ -6,7 +6,7 @@ import app.keemobile.kotpass.database.KeePassDatabase
  * Database saver that performs I/O operations with database. Implementations should be
  * thread-safe
  */
-interface DatabaseSaver {
+interface DatabaseFileSaver {
   
   /**
    * Checks whether the database exists
@@ -24,7 +24,7 @@ interface DatabaseSaver {
   suspend fun read(masterPassword: Password): KeePassDatabase?
   
   /**
-   * Returns uri of the database file. Throws [IllegalStateException] if file does not exist
+   * Returns uri of the database file. Throws [IllegalStateException] if the file does not exist
    */
   suspend fun getFileUri(): String
   

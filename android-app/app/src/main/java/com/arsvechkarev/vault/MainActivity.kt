@@ -44,7 +44,7 @@ class MainActivity : AppCompatActivity() {
       // Activity is recreated, navigator handles this case automatically
       return
     }
-    if (coreComponent.databaseSaver.doesDatabaseExist()) {
+    if (coreComponent.databaseFileSaver.doesDatabaseExist()) {
       coreComponent.router.goForward(Screens.LoginScreen)
     } else {
       coreComponent.router.goForward(Screens.InitialScreen)

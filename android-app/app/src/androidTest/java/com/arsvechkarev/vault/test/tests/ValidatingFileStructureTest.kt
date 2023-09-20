@@ -2,7 +2,7 @@ package com.arsvechkarev.vault.test.tests
 
 import androidx.test.core.app.ApplicationProvider
 import buisnesslogic.AesSivTinkCryptography
-import buisnesslogic.model.Entries
+import buisnesslogic.model.EntriesLists
 import com.arsvechkarev.vault.features.common.di.CoreComponentHolder
 import com.arsvechkarev.vault.test.core.ext.context
 import com.arsvechkarev.vault.test.core.rule.VaultAutotestRule
@@ -124,22 +124,25 @@ class ValidatingFileStructureTest : TestCase() {
     val actualString = AesSivTinkCryptography.decryptData("qwetu1233", actualBytes)
     
     val gson = Gson()
-    val expectedEntries = gson.fromJson(expectedString, Entries::class.java)
-    val actualEntries = gson.fromJson(actualString, Entries::class.java)
+    val expectedEntriesLists = gson.fromJson(expectedString, EntriesLists::class.java)
+    val actualEntriesLists = gson.fromJson(actualString, EntriesLists::class.java)
     
-    assertEquals(expectedEntries.passwords.size, actualEntries.passwords.size)
-    expectedEntries.passwords.forEach { expectedPassword ->
-      checkNotNull(actualEntries.passwords.find { it.websiteName == expectedPassword.websiteName })
+    assertEquals(expectedEntriesLists.passwords.size, actualEntriesLists.passwords.size)
+    expectedEntriesLists.passwords.forEach { expectedPassword ->
+      checkNotNull(
+        actualEntriesLists.passwords.find { it.websiteName == expectedPassword.websiteName })
           .let { actualPasswordInfo ->
             assertEquals(expectedPassword.login, actualPasswordInfo.login)
             assertEquals(expectedPassword.password, actualPasswordInfo.password)
             assertEquals(expectedPassword.notes, actualPasswordInfo.notes)
           }
     }
-    assertEquals(expectedEntries.plainTexts.size, actualEntries.plainTexts.size)
-    expectedEntries.plainTexts.forEach { expectedPlainText ->
+    assertEquals(expectedEntriesLists.plainTextEntries.size,
+      actualEntriesLists.plainTextEntries.size)
+    expectedEntriesLists.plainTextEntries.forEach { expectedPlainText ->
       assertEquals(expectedPlainText.text,
-        checkNotNull(actualEntries.plainTexts.find { it.title == expectedPlainText.title }).text)
+        checkNotNull(
+          actualEntriesLists.plainTextEntries.find { it.title == expectedPlainText.title }).text)
     }
     // TODO (1/10/2023): Add credit cards validation, restructure test
     //  to check one item of each type

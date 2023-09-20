@@ -1,12 +1,12 @@
 package com.arsvechkarev.vault.features.common.extensions
 
+import buisnesslogic.model.BaseEntry
 import com.arsvechkarev.vault.core.mvi.tea.DslReducer
 import com.arsvechkarev.vault.features.common.TextState
-import com.arsvechkarev.vault.features.common.model.EntryItem
 import com.arsvechkarev.vault.features.common.reset
 
 
-fun <Item : EntryItem, State : Any, Command : Any,
+fun <Item : BaseEntry, State : Any, Command : Any,
     News : Any> DslReducer<State, *, Command, News>.handleAction(
   itemProvider: () -> Item,
   textState: TextState,

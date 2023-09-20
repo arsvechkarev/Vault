@@ -7,7 +7,7 @@ import com.arsvechkarev.vault.features.common.Durations
 import com.arsvechkarev.vault.features.creating_password.CreatingPasswordScreen
 import com.arsvechkarev.vault.features.main_list.MainListScreen
 import com.arsvechkarev.vault.features.password_info.PasswordInfoScreen
-import com.arsvechkarev.vault.features.plain_text_entry.PlainTextScreen
+import com.arsvechkarev.vault.features.plain_text_info.PlainTextScreen
 import com.arsvechkarev.vault.test.core.base.VaultTestCase
 import com.arsvechkarev.vault.test.core.ext.currentScreenIs
 import com.arsvechkarev.vault.test.core.ext.hasClipboardText
@@ -25,7 +25,7 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 
-class EditingEntriesTest : VaultTestCase() {
+class EditingEntriesTestLists : VaultTestCase() {
   
   @get:Rule
   val rule = VaultAutotestRule()

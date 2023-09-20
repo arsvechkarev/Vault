@@ -1,4 +1,4 @@
-package com.arsvechkarev.vault.features.plain_text_entry
+package com.arsvechkarev.vault.features.plain_text_info
 
 import android.content.Context
 import android.content.res.ColorStateList
@@ -8,7 +8,7 @@ import android.view.WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE
 import androidx.annotation.StringRes
 import com.arsvechkarev.vault.R
 import com.arsvechkarev.vault.core.extensions.getDeleteMessageText
-import com.arsvechkarev.vault.core.extensions.nullableArg
+import com.arsvechkarev.vault.core.extensions.stringNullableArg
 import com.arsvechkarev.vault.core.mvi.ext.subscribe
 import com.arsvechkarev.vault.core.mvi.ext.viewModelStore
 import com.arsvechkarev.vault.core.views.Snackbar.Companion.Snackbar
@@ -21,24 +21,24 @@ import com.arsvechkarev.vault.features.common.dialogs.InfoDialog.Companion.infoD
 import com.arsvechkarev.vault.features.common.dialogs.LoadingDialog
 import com.arsvechkarev.vault.features.common.dialogs.loadingDialog
 import com.arsvechkarev.vault.features.common.model.PlainTextItem
-import com.arsvechkarev.vault.features.plain_text_entry.PlainTextNews.SetText
-import com.arsvechkarev.vault.features.plain_text_entry.PlainTextNews.SetTitle
-import com.arsvechkarev.vault.features.plain_text_entry.PlainTextNews.ShowEntryCreated
-import com.arsvechkarev.vault.features.plain_text_entry.PlainTextNews.ShowTextCopied
-import com.arsvechkarev.vault.features.plain_text_entry.PlainTextNews.ShowTitleCopied
-import com.arsvechkarev.vault.features.plain_text_entry.PlainTextState.ExistingEntry
-import com.arsvechkarev.vault.features.plain_text_entry.PlainTextState.NewEntry
-import com.arsvechkarev.vault.features.plain_text_entry.PlainTextUiEvent.OnBackPressed
-import com.arsvechkarev.vault.features.plain_text_entry.PlainTextUiEvent.OnConfirmedDeleting
-import com.arsvechkarev.vault.features.plain_text_entry.PlainTextUiEvent.OnConfirmedSaving
-import com.arsvechkarev.vault.features.plain_text_entry.PlainTextUiEvent.OnDeleteClicked
-import com.arsvechkarev.vault.features.plain_text_entry.PlainTextUiEvent.OnDialogHidden
-import com.arsvechkarev.vault.features.plain_text_entry.PlainTextUiEvent.OnInit
-import com.arsvechkarev.vault.features.plain_text_entry.PlainTextUiEvent.OnSaveClicked
-import com.arsvechkarev.vault.features.plain_text_entry.PlainTextUiEvent.OnTextActionClicked
-import com.arsvechkarev.vault.features.plain_text_entry.PlainTextUiEvent.OnTextChanged
-import com.arsvechkarev.vault.features.plain_text_entry.PlainTextUiEvent.OnTitleActionClicked
-import com.arsvechkarev.vault.features.plain_text_entry.PlainTextUiEvent.OnTitleChanged
+import com.arsvechkarev.vault.features.plain_text_info.PlainTextNews.SetText
+import com.arsvechkarev.vault.features.plain_text_info.PlainTextNews.SetTitle
+import com.arsvechkarev.vault.features.plain_text_info.PlainTextNews.ShowEntryCreated
+import com.arsvechkarev.vault.features.plain_text_info.PlainTextNews.ShowTextCopied
+import com.arsvechkarev.vault.features.plain_text_info.PlainTextNews.ShowTitleCopied
+import com.arsvechkarev.vault.features.plain_text_info.PlainTextState.ExistingEntry
+import com.arsvechkarev.vault.features.plain_text_info.PlainTextState.NewEntry
+import com.arsvechkarev.vault.features.plain_text_info.PlainTextUiEvent.OnBackPressed
+import com.arsvechkarev.vault.features.plain_text_info.PlainTextUiEvent.OnConfirmedDeleting
+import com.arsvechkarev.vault.features.plain_text_info.PlainTextUiEvent.OnConfirmedSaving
+import com.arsvechkarev.vault.features.plain_text_info.PlainTextUiEvent.OnDeleteClicked
+import com.arsvechkarev.vault.features.plain_text_info.PlainTextUiEvent.OnDialogHidden
+import com.arsvechkarev.vault.features.plain_text_info.PlainTextUiEvent.OnInit
+import com.arsvechkarev.vault.features.plain_text_info.PlainTextUiEvent.OnSaveClicked
+import com.arsvechkarev.vault.features.plain_text_info.PlainTextUiEvent.OnTextActionClicked
+import com.arsvechkarev.vault.features.plain_text_info.PlainTextUiEvent.OnTextChanged
+import com.arsvechkarev.vault.features.plain_text_info.PlainTextUiEvent.OnTitleActionClicked
+import com.arsvechkarev.vault.features.plain_text_info.PlainTextUiEvent.OnTitleChanged
 import com.arsvechkarev.vault.viewbuilding.Colors
 import com.arsvechkarev.vault.viewbuilding.Dimens
 import com.arsvechkarev.vault.viewbuilding.Dimens.GradientDrawableHeight
@@ -203,7 +203,7 @@ class PlainTextScreen : BaseFragmentScreen() {
   private val textTextWatcher = BaseTextWatcher { store.tryDispatch(OnTextChanged(it)) }
   
   private val store by viewModelStore {
-    PlainTextStore(coreComponent, nullableArg(PlainTextItem::class))
+    PlainTextStore(coreComponent, stringNullableArg(PlainTextItem::class.qualifiedName!!))
   }
   
   override fun onInit() {
@@ -212,7 +212,7 @@ class PlainTextScreen : BaseFragmentScreen() {
   }
   
   override fun onAppearedOnScreen() {
-    if (nullableArg(PlainTextItem::class) == null) {
+    if (stringNullableArg(PlainTextItem::class.qualifiedName!!) == null) {
       requireView().postDelayed({
         editText(EditTextTitle).apply {
           requestFocus()

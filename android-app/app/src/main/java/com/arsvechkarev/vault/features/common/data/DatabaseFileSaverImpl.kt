@@ -5,18 +5,18 @@ import app.keemobile.kotpass.database.Credentials
 import app.keemobile.kotpass.database.KeePassDatabase
 import app.keemobile.kotpass.database.decode
 import app.keemobile.kotpass.database.encode
-import buisnesslogic.DatabaseSaver
+import buisnesslogic.DatabaseFileSaver
 import buisnesslogic.Password
 import buisnesslogic.from
 import com.arsvechkarev.vault.core.DispatchersFacade
 import kotlinx.coroutines.withContext
 import java.io.File
 
-class DatabaseSaverImpl(
+class DatabaseFileSaverImpl(
   private val filename: String,
   private val context: Context,
   private val dispatchersFacade: DispatchersFacade,
-) : DatabaseSaver {
+) : DatabaseFileSaver {
   
   override fun doesDatabaseExist(): Boolean {
     return File(context.filesDir, filename).exists()

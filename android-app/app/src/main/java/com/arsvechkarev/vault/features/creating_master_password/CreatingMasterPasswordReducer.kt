@@ -75,7 +75,7 @@ class CreatingMasterPasswordReducer : DslReducer<CMPState, CMPEvents, CMPCommand
           }
           
           REPEATING -> {
-            if (state.repeatedPassword == state.initialPassword) {
+            if (state.repeatedPassword.stringData == state.initialPassword.stringData) {
               state { copy(showErrorText = false) }
               commands(FinishAuth(state.initialPassword))
               news(FinishingAuthorization)

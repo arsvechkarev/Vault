@@ -6,7 +6,7 @@ import app.keemobile.kotpass.models.Meta
 import java.io.FileNotFoundException
 
 class MasterPasswordCheckerImpl(
-  private val databaseSaver: DatabaseSaver
+  private val databaseFileSaver: DatabaseFileSaver
 ) : MasterPasswordChecker {
   
   override suspend fun initializeEncryptedFile(masterPassword: Password) {
@@ -15,12 +15,12 @@ class MasterPasswordCheckerImpl(
       meta = Meta(),
       credentials = Credentials.from(masterPassword)
     )
-    databaseSaver.save(database)
+    databaseFileSaver.save(database)
   }
   
   override suspend fun isCorrect(masterPassword: Password): Boolean {
     return try {
-      databaseSaver.read(masterPassword) ?: throw FileNotFoundException()
+      databaseFileSaver.read(masterPassword) ?: throw FileNotFoundException()
       // Decryption was successful, returning true
       true
     } catch (e: FileNotFoundException) {

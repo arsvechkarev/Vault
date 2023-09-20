@@ -13,7 +13,7 @@ import com.arsvechkarev.vault.features.initial.InitialScreen
 import com.arsvechkarev.vault.features.login.LoginScreen
 import com.arsvechkarev.vault.features.main_list.MainListScreen
 import com.arsvechkarev.vault.features.password_info.PasswordInfoScreen
-import com.arsvechkarev.vault.features.plain_text_entry.PlainTextScreen
+import com.arsvechkarev.vault.features.plain_text_info.PlainTextScreen
 import com.arsvechkarev.vault.features.settings.SettingsScreen
 import navigation.Screen
 import navigation.ScreenInfo
@@ -30,15 +30,15 @@ object Screens {
   
   val CreatingPasswordEntryScreen = Screen { CreatingPasswordEntryScreen::class }
   
-  fun PasswordInfoScreen(passwordItem: PasswordItem): ScreenInfo {
-    val pair = PasswordItem::class.qualifiedName!! to passwordItem
+  fun PasswordInfoScreen(passwordId: String): ScreenInfo {
+    val pair = PasswordItem::class.qualifiedName!! to passwordId
     return Screen(arguments = bundleOf(pair)) { PasswordInfoScreen::class }
   }
   
   val CreatingPasswordScreen = Screen { CreatingPasswordScreen::class }
   
-  fun PlainTextScreen(plainTextItem: PlainTextItem? = null): ScreenInfo {
-    val pair = PlainTextItem::class.qualifiedName!! to plainTextItem
+  fun PlainTextScreen(plainTextId: String? = null): ScreenInfo {
+    val pair = PlainTextItem::class.qualifiedName!! to plainTextId
     return Screen(arguments = bundleOf(pair)) { PlainTextScreen::class }
   }
   

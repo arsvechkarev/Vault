@@ -86,7 +86,7 @@ class MainListAdapter(
               margins(start = MarginNormal, end = MarginNormal)
             }
             TextView(WrapContent, WrapContent, style = BaseTextView) {
-              id(ItemPasswordInfoTextPasswordName)
+              id(ItemPasswordInfoTitle)
               maxLines = 2
               layoutGravity(CENTER)
             }
@@ -96,8 +96,8 @@ class MainListAdapter(
           itemView.onClick { onItemClick(item) }
         }
         onBind {
-          itemView.viewAs<ImageView>(ItemPasswordInfoImage).setWebsiteIcon(item.websiteName)
-          itemView.viewAs<TextView>(ItemPasswordInfoTextPasswordName).text(item.websiteName)
+          itemView.viewAs<ImageView>(ItemPasswordInfoImage).setWebsiteIcon(item.title)
+          itemView.viewAs<TextView>(ItemPasswordInfoTitle).text(item.title)
         }
       },
       delegate<PlainTextItem> {
@@ -175,7 +175,7 @@ class MainListAdapter(
   companion object {
     
     val ItemPasswordInfoImage = View.generateViewId()
-    val ItemPasswordInfoTextPasswordName = View.generateViewId()
+    val ItemPasswordInfoTitle = View.generateViewId()
     val ItemPlainTextTitle = View.generateViewId()
   }
 }

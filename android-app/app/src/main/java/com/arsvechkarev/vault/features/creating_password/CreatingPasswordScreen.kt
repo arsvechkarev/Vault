@@ -210,8 +210,8 @@ class CreatingPasswordScreen : BaseFragmentScreen() {
       is ShowGeneratedPassword -> {
         requireContext().hideKeyboard()
         editText(EditTextPassword).clearFocus()
-        editText(EditTextPassword).text(event.password.rawValue)
-        editText(EditTextPassword).setSelection(event.password.rawValue.length)
+        editText(EditTextPassword).text(event.password.stringData)
+        editText(EditTextPassword).setSelection(event.password.stringData.length)
       }
     }
   }
@@ -232,9 +232,9 @@ class CreatingPasswordScreen : BaseFragmentScreen() {
   
   private fun showEditingPasswordMode(password: Password) {
     textView(Title).text(R.string.text_edit_password)
-    editText(EditTextPassword).text(password.rawValue)
-    editText(EditTextPassword).setSelection(password.rawValue.length)
-    viewAs<SeekBar>().progress = password.rawValue.length - MIN_PASSWORD_LENGTH
+    editText(EditTextPassword).text(password.stringData)
+    editText(EditTextPassword).setSelection(password.stringData.length)
+    viewAs<SeekBar>().progress = password.stringData.length - MIN_PASSWORD_LENGTH
     store.tryDispatch(SetupCompleted)
   }
   

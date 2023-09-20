@@ -1,15 +1,17 @@
-package com.arsvechkarev.vault.features.plain_text_entry
+package com.arsvechkarev.vault.features.plain_text_info
 
+import buisnesslogic.model.PlainTextEntry
+import buisnesslogic.model.PlainTextEntryData
 import com.arsvechkarev.vault.features.common.TextState
-import com.arsvechkarev.vault.features.common.model.PlainTextItem
 
 sealed interface PlainTextEvent {
-  class NotifyEntryCreated(val plainTextItem: PlainTextItem) : PlainTextEvent
+  class ReceivedPlainTextEntry(val plainTextEntry: PlainTextEntry) : PlainTextEvent
+  class NotifyEntryCreated(val plainTextEntry: PlainTextEntry) : PlainTextEvent
   object NotifyEntryDeleted : PlainTextEvent
   
   sealed interface UpdatedPlainText : PlainTextEvent {
-    class UpdatedTitle(val plainTextItem: PlainTextItem) : UpdatedPlainText
-    class UpdatedText(val plainTextItem: PlainTextItem) : UpdatedPlainText
+    class UpdatedTitle(val plainTextEntry: PlainTextEntry) : UpdatedPlainText
+    class UpdatedText(val plainTextEntry: PlainTextEntry) : UpdatedPlainText
   }
 }
 
@@ -31,16 +33,18 @@ sealed interface PlainTextUiEvent : PlainTextEvent {
 
 sealed interface PlainTextCommand {
   
-  class SavePlainText(val title: String, val text: String) : PlainTextCommand
-  class DeletePlainText(val plainTextItem: PlainTextItem) : PlainTextCommand
+  class FetchPlainTextEntry(val plainTextId: String) : PlainTextCommand
+  
+  class SavePlainText(val data: PlainTextEntryData) : PlainTextCommand
+  class DeletePlainText(val plainTextId: String) : PlainTextCommand
   
   class Copy(val labelRes: Int, val text: String) : PlainTextCommand
   
   object GoBack : PlainTextCommand
   
-  sealed class UpdateItem(val plainTextItem: PlainTextItem) : PlainTextCommand {
-    class UpdateText(item: PlainTextItem) : UpdateItem(item)
-    class UpdateTitle(item: PlainTextItem) : UpdateItem(item)
+  sealed class UpdateItem(val plainTextEntry: PlainTextEntry) : PlainTextCommand {
+    class UpdateText(item: PlainTextEntry) : UpdateItem(item)
+    class UpdateTitle(item: PlainTextEntry) : UpdateItem(item)
   }
 }
 
@@ -62,12 +66,15 @@ sealed interface PlainTextState {
   ) : PlainTextState
   
   data class ExistingEntry(
-    val plainTextItem: PlainTextItem,
-    val titleState: TextState = TextState(plainTextItem.title),
-    val textState: TextState = TextState(plainTextItem.text),
+    val plainTextId: String,
+    val plainTextEntry: PlainTextEntry? = null,
+    val titleState: TextState = TextState.empty(),
+    val textState: TextState = TextState.empty(),
     val showConfirmDeleteDialog: Boolean = false,
     val showLoadingDialog: Boolean = false,
   ) : PlainTextState {
+    
+    val plainTextEntryNonNull: PlainTextEntry get() = requireNotNull(plainTextEntry)
     
     val isEditingSomething get() = titleState.isEditingNow || textState.isEditingNow
   }

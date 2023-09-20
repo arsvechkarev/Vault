@@ -15,8 +15,9 @@ fun CreatingPasswordEntryStore(
     actors = listOf(
       ValidateInputActor(CreatingPasswordCommunication.communicator),
       SavingPasswordEntryActor(
-        coreComponent.listenableCachedEntriesStorage,
-        coreComponent.masterPasswordProvider
+        coreComponent.masterPasswordProvider,
+        coreComponent.observableCachedDatabaseStorage,
+        coreComponent.keePassPasswordModelInteractor,
       ),
       CreatingEntryRouterActor(coreComponent.router)
     ),

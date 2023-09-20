@@ -8,8 +8,8 @@ import android.widget.ImageView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.lifecycle.lifecycleScope
 import com.arsvechkarev.vault.R
-import com.arsvechkarev.vault.core.extensions.arg
 import com.arsvechkarev.vault.core.extensions.getDeleteMessageText
+import com.arsvechkarev.vault.core.extensions.stringArg
 import com.arsvechkarev.vault.core.mvi.ext.subscribe
 import com.arsvechkarev.vault.core.mvi.ext.viewModelStore
 import com.arsvechkarev.vault.core.views.Snackbar
@@ -24,26 +24,26 @@ import com.arsvechkarev.vault.features.common.setWebsiteIcon
 import com.arsvechkarev.vault.features.creating_password.CreatingPasswordCommunication
 import com.arsvechkarev.vault.features.password_info.PasswordInfoScreen.ImageType.COPY
 import com.arsvechkarev.vault.features.password_info.PasswordInfoScreen.ImageType.OPEN_IN_NEW
-import com.arsvechkarev.vault.features.password_info.PasswordInfoScreenNews.SetLogin
 import com.arsvechkarev.vault.features.password_info.PasswordInfoScreenNews.SetNotes
-import com.arsvechkarev.vault.features.password_info.PasswordInfoScreenNews.SetWebsiteName
-import com.arsvechkarev.vault.features.password_info.PasswordInfoScreenNews.ShowLoginCopied
+import com.arsvechkarev.vault.features.password_info.PasswordInfoScreenNews.SetTitle
+import com.arsvechkarev.vault.features.password_info.PasswordInfoScreenNews.SetUsername
 import com.arsvechkarev.vault.features.password_info.PasswordInfoScreenNews.ShowNotesCopied
 import com.arsvechkarev.vault.features.password_info.PasswordInfoScreenNews.ShowPasswordCopied
-import com.arsvechkarev.vault.features.password_info.PasswordInfoScreenNews.ShowWebsiteNameCopied
+import com.arsvechkarev.vault.features.password_info.PasswordInfoScreenNews.ShowTitleCopied
+import com.arsvechkarev.vault.features.password_info.PasswordInfoScreenNews.ShowUsernameCopied
 import com.arsvechkarev.vault.features.password_info.PasswordInfoScreenUiEvent.OnBackPressed
 import com.arsvechkarev.vault.features.password_info.PasswordInfoScreenUiEvent.OnConfirmedDeletion
 import com.arsvechkarev.vault.features.password_info.PasswordInfoScreenUiEvent.OnCopyPasswordClicked
 import com.arsvechkarev.vault.features.password_info.PasswordInfoScreenUiEvent.OnDeleteClicked
 import com.arsvechkarev.vault.features.password_info.PasswordInfoScreenUiEvent.OnDialogHidden
 import com.arsvechkarev.vault.features.password_info.PasswordInfoScreenUiEvent.OnInit
-import com.arsvechkarev.vault.features.password_info.PasswordInfoScreenUiEvent.OnLoginActionClicked
-import com.arsvechkarev.vault.features.password_info.PasswordInfoScreenUiEvent.OnLoginTextChanged
 import com.arsvechkarev.vault.features.password_info.PasswordInfoScreenUiEvent.OnNotesActionClicked
 import com.arsvechkarev.vault.features.password_info.PasswordInfoScreenUiEvent.OnNotesTextChanged
 import com.arsvechkarev.vault.features.password_info.PasswordInfoScreenUiEvent.OnOpenPasswordScreenClicked
-import com.arsvechkarev.vault.features.password_info.PasswordInfoScreenUiEvent.OnWebsiteNameActionClicked
-import com.arsvechkarev.vault.features.password_info.PasswordInfoScreenUiEvent.OnWebsiteNameTextChanged
+import com.arsvechkarev.vault.features.password_info.PasswordInfoScreenUiEvent.OnTitleActionClicked
+import com.arsvechkarev.vault.features.password_info.PasswordInfoScreenUiEvent.OnTitleTextChanged
+import com.arsvechkarev.vault.features.password_info.PasswordInfoScreenUiEvent.OnUsernameActionClicked
+import com.arsvechkarev.vault.features.password_info.PasswordInfoScreenUiEvent.OnUsernameTextChanged
 import com.arsvechkarev.vault.features.password_info.PasswordInfoScreenUiEvent.SavePasswordEventReceived
 import com.arsvechkarev.vault.viewbuilding.Colors
 import com.arsvechkarev.vault.viewbuilding.Dimens
@@ -179,7 +179,7 @@ class PasswordInfoScreen : BaseFragmentScreen() {
             endToStartOf(ImageWebsiteNameAction)
           }
         }
-        Image(COPY, ImageWebsiteNameAction, OnWebsiteNameActionClicked) {
+        Image(COPY, ImageWebsiteNameAction, OnTitleActionClicked) {
           constraints {
             topToTopOf(EditTextWebsiteName)
             bottomToBottomOf(EditTextWebsiteName)
@@ -205,7 +205,7 @@ class PasswordInfoScreen : BaseFragmentScreen() {
             endToStartOf(ImageLoginAction)
           }
         }
-        Image(COPY, ImageLoginAction, OnLoginActionClicked) {
+        Image(COPY, ImageLoginAction, OnUsernameActionClicked) {
           constraints {
             topToTopOf(EditTextLogin)
             bottomToBottomOf(EditTextLogin)
@@ -288,14 +288,14 @@ class PasswordInfoScreen : BaseFragmentScreen() {
   }
   
   private val store by viewModelStore {
-    PasswordInfoScreenStore(coreComponent, arg(PasswordItem::class))
+    PasswordInfoScreenStore(coreComponent, stringArg(PasswordItem::class.qualifiedName!!))
   }
   
   private val websiteNameTextWatcher =
-      BaseTextWatcher { store.tryDispatch(OnWebsiteNameTextChanged(it)) }
+      BaseTextWatcher { store.tryDispatch(OnTitleTextChanged(it)) }
   
   private val loginTextWatcher =
-      BaseTextWatcher { store.tryDispatch(OnLoginTextChanged(it)) }
+      BaseTextWatcher { store.tryDispatch(OnUsernameTextChanged(it)) }
   
   private val notesTextWatcher =
       BaseTextWatcher { store.tryDispatch(OnNotesTextChanged(it)) }
@@ -309,10 +309,10 @@ class PasswordInfoScreen : BaseFragmentScreen() {
   }
   
   private fun render(state: PasswordInfoState) {
-    imageView(ImageWebsite).setWebsiteIcon(state.websiteNameState.editedText)
-    textView(TextWebsiteName).text(state.websiteNameState.editedText)
-    renderTextState(EditTextWebsiteName, state.websiteNameState, ImageWebsiteNameAction)
-    renderTextState(EditTextLogin, state.loginState, ImageLoginAction)
+    imageView(ImageWebsite).setWebsiteIcon(state.titleState.editedText)
+    textView(TextWebsiteName).text(state.titleState.editedText)
+    renderTextState(EditTextWebsiteName, state.titleState, ImageWebsiteNameAction)
+    renderTextState(EditTextLogin, state.usernameState, ImageLoginAction)
     renderTextState(EditTextNotes, state.notesState, ImageNotesAction)
     if (!state.isEditingSomething) {
       requireContext().hideKeyboard()
@@ -341,11 +341,10 @@ class PasswordInfoScreen : BaseFragmentScreen() {
     }
   }
   
-  
   private fun showInfoDialog(state: PasswordInfoState) {
     infoDialog.showWithCancelAndProceedOption(
       titleRes = R.string.text_deleting_entry,
-      messageRes = getDeleteMessageText(state.websiteNameState.initialText),
+      messageRes = getDeleteMessageText(state.titleState.initialText),
       onCancel = { store.tryDispatch(OnDialogHidden) },
       onProceed = { store.tryDispatch(OnConfirmedDeletion) }
     )
@@ -354,15 +353,15 @@ class PasswordInfoScreen : BaseFragmentScreen() {
   private fun handleNews(news: PasswordInfoScreenNews) {
     val snackbar = viewAs<Snackbar>()
     when (news) {
-      is SetWebsiteName -> {
+      is SetTitle -> {
         editText(EditTextWebsiteName)
-            .setTextSilently(news.websiteName, websiteNameTextWatcher)
+            .setTextSilently(news.title, websiteNameTextWatcher)
       }
       
-      is SetLogin -> editText(EditTextLogin).setTextSilently(news.login, loginTextWatcher)
+      is SetUsername -> editText(EditTextLogin).setTextSilently(news.username, loginTextWatcher)
       is SetNotes -> editText(EditTextNotes).setTextSilently(news.notes, notesTextWatcher)
-      ShowWebsiteNameCopied -> snackbar.show(R.string.text_website_name_copied)
-      ShowLoginCopied -> snackbar.show(R.string.text_login_copied)
+      ShowTitleCopied -> snackbar.show(R.string.text_website_name_copied)
+      ShowUsernameCopied -> snackbar.show(R.string.text_login_copied)
       ShowPasswordCopied -> snackbar.show(R.string.text_password_copied)
       ShowNotesCopied -> snackbar.show(R.string.text_notes_copied)
     }

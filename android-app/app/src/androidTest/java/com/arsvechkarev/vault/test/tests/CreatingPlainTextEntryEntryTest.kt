@@ -1,7 +1,7 @@
 package com.arsvechkarev.vault.test.tests
 
 import com.arsvechkarev.vault.features.main_list.MainListScreen
-import com.arsvechkarev.vault.features.plain_text_entry.PlainTextScreen
+import com.arsvechkarev.vault.features.plain_text_info.PlainTextScreen
 import com.arsvechkarev.vault.test.core.base.VaultTestCase
 import com.arsvechkarev.vault.test.core.ext.currentScreenIs
 import com.arsvechkarev.vault.test.core.ext.writeVaultFileFromAssets
@@ -15,7 +15,7 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 
-class CreatingPlainTextEntryTest : VaultTestCase() {
+class CreatingPlainTextEntryEntryTest : VaultTestCase() {
   
   @get:Rule
   val rule = VaultAutotestRule()

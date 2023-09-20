@@ -1,38 +1,41 @@
-package com.arsvechkarev.vault.features.plain_text_entry
+package com.arsvechkarev.vault.features.plain_text_info
 
+import buisnesslogic.model.PlainTextEntryData
 import com.arsvechkarev.vault.R
 import com.arsvechkarev.vault.core.mvi.tea.DslReducer
+import com.arsvechkarev.vault.features.common.TextState
 import com.arsvechkarev.vault.features.common.edit
 import com.arsvechkarev.vault.features.common.extensions.handleAction
 import com.arsvechkarev.vault.features.common.reset
-import com.arsvechkarev.vault.features.plain_text_entry.PlainTextCommand.Copy
-import com.arsvechkarev.vault.features.plain_text_entry.PlainTextCommand.DeletePlainText
-import com.arsvechkarev.vault.features.plain_text_entry.PlainTextCommand.GoBack
-import com.arsvechkarev.vault.features.plain_text_entry.PlainTextCommand.SavePlainText
-import com.arsvechkarev.vault.features.plain_text_entry.PlainTextCommand.UpdateItem.UpdateText
-import com.arsvechkarev.vault.features.plain_text_entry.PlainTextCommand.UpdateItem.UpdateTitle
-import com.arsvechkarev.vault.features.plain_text_entry.PlainTextEvent.NotifyEntryCreated
-import com.arsvechkarev.vault.features.plain_text_entry.PlainTextEvent.NotifyEntryDeleted
-import com.arsvechkarev.vault.features.plain_text_entry.PlainTextEvent.UpdatedPlainText.UpdatedText
-import com.arsvechkarev.vault.features.plain_text_entry.PlainTextEvent.UpdatedPlainText.UpdatedTitle
-import com.arsvechkarev.vault.features.plain_text_entry.PlainTextNews.SetText
-import com.arsvechkarev.vault.features.plain_text_entry.PlainTextNews.SetTitle
-import com.arsvechkarev.vault.features.plain_text_entry.PlainTextNews.ShowEntryCreated
-import com.arsvechkarev.vault.features.plain_text_entry.PlainTextNews.ShowTextCopied
-import com.arsvechkarev.vault.features.plain_text_entry.PlainTextNews.ShowTitleCopied
-import com.arsvechkarev.vault.features.plain_text_entry.PlainTextState.ExistingEntry
-import com.arsvechkarev.vault.features.plain_text_entry.PlainTextState.NewEntry
-import com.arsvechkarev.vault.features.plain_text_entry.PlainTextUiEvent.OnBackPressed
-import com.arsvechkarev.vault.features.plain_text_entry.PlainTextUiEvent.OnConfirmedDeleting
-import com.arsvechkarev.vault.features.plain_text_entry.PlainTextUiEvent.OnConfirmedSaving
-import com.arsvechkarev.vault.features.plain_text_entry.PlainTextUiEvent.OnDeleteClicked
-import com.arsvechkarev.vault.features.plain_text_entry.PlainTextUiEvent.OnDialogHidden
-import com.arsvechkarev.vault.features.plain_text_entry.PlainTextUiEvent.OnInit
-import com.arsvechkarev.vault.features.plain_text_entry.PlainTextUiEvent.OnSaveClicked
-import com.arsvechkarev.vault.features.plain_text_entry.PlainTextUiEvent.OnTextActionClicked
-import com.arsvechkarev.vault.features.plain_text_entry.PlainTextUiEvent.OnTextChanged
-import com.arsvechkarev.vault.features.plain_text_entry.PlainTextUiEvent.OnTitleActionClicked
-import com.arsvechkarev.vault.features.plain_text_entry.PlainTextUiEvent.OnTitleChanged
+import com.arsvechkarev.vault.features.plain_text_info.PlainTextCommand.Copy
+import com.arsvechkarev.vault.features.plain_text_info.PlainTextCommand.DeletePlainText
+import com.arsvechkarev.vault.features.plain_text_info.PlainTextCommand.GoBack
+import com.arsvechkarev.vault.features.plain_text_info.PlainTextCommand.SavePlainText
+import com.arsvechkarev.vault.features.plain_text_info.PlainTextCommand.UpdateItem.UpdateText
+import com.arsvechkarev.vault.features.plain_text_info.PlainTextCommand.UpdateItem.UpdateTitle
+import com.arsvechkarev.vault.features.plain_text_info.PlainTextEvent.NotifyEntryCreated
+import com.arsvechkarev.vault.features.plain_text_info.PlainTextEvent.NotifyEntryDeleted
+import com.arsvechkarev.vault.features.plain_text_info.PlainTextEvent.ReceivedPlainTextEntry
+import com.arsvechkarev.vault.features.plain_text_info.PlainTextEvent.UpdatedPlainText.UpdatedText
+import com.arsvechkarev.vault.features.plain_text_info.PlainTextEvent.UpdatedPlainText.UpdatedTitle
+import com.arsvechkarev.vault.features.plain_text_info.PlainTextNews.SetText
+import com.arsvechkarev.vault.features.plain_text_info.PlainTextNews.SetTitle
+import com.arsvechkarev.vault.features.plain_text_info.PlainTextNews.ShowEntryCreated
+import com.arsvechkarev.vault.features.plain_text_info.PlainTextNews.ShowTextCopied
+import com.arsvechkarev.vault.features.plain_text_info.PlainTextNews.ShowTitleCopied
+import com.arsvechkarev.vault.features.plain_text_info.PlainTextState.ExistingEntry
+import com.arsvechkarev.vault.features.plain_text_info.PlainTextState.NewEntry
+import com.arsvechkarev.vault.features.plain_text_info.PlainTextUiEvent.OnBackPressed
+import com.arsvechkarev.vault.features.plain_text_info.PlainTextUiEvent.OnConfirmedDeleting
+import com.arsvechkarev.vault.features.plain_text_info.PlainTextUiEvent.OnConfirmedSaving
+import com.arsvechkarev.vault.features.plain_text_info.PlainTextUiEvent.OnDeleteClicked
+import com.arsvechkarev.vault.features.plain_text_info.PlainTextUiEvent.OnDialogHidden
+import com.arsvechkarev.vault.features.plain_text_info.PlainTextUiEvent.OnInit
+import com.arsvechkarev.vault.features.plain_text_info.PlainTextUiEvent.OnSaveClicked
+import com.arsvechkarev.vault.features.plain_text_info.PlainTextUiEvent.OnTextActionClicked
+import com.arsvechkarev.vault.features.plain_text_info.PlainTextUiEvent.OnTextChanged
+import com.arsvechkarev.vault.features.plain_text_info.PlainTextUiEvent.OnTitleActionClicked
+import com.arsvechkarev.vault.features.plain_text_info.PlainTextUiEvent.OnTitleChanged
 
 class PlainTextReducer : DslReducer<PlainTextState, PlainTextEvent,
     PlainTextCommand, PlainTextNews>() {
@@ -42,6 +45,17 @@ class PlainTextReducer : DslReducer<PlainTextState, PlainTextEvent,
     when (event) {
       OnInit -> {
         sendSetInitialTextsNews()
+      }
+      
+      is ReceivedPlainTextEntry -> {
+        check(state is ExistingEntry)
+        state {
+          state.copy(
+            plainTextEntry = event.plainTextEntry,
+            titleState = TextState(event.plainTextEntry.title),
+            textState = TextState(event.plainTextEntry.text),
+          )
+        }
       }
       
       is OnTitleChanged -> when (state) {
@@ -75,26 +89,31 @@ class PlainTextReducer : DslReducer<PlainTextState, PlainTextEvent,
       
       OnConfirmedSaving -> {
         check(state is NewEntry)
-        commands(SavePlainText(state.title, state.text))
+        commands(SavePlainText(PlainTextEntryData(state.title, state.text)))
       }
       
       is NotifyEntryCreated -> {
         check(state is NewEntry)
-        state { ExistingEntry(plainTextItem = event.plainTextItem) }
+        state {
+          ExistingEntry(
+            plainTextId = event.plainTextEntry.id,
+            plainTextEntry = event.plainTextEntry
+          )
+        }
         news(ShowEntryCreated)
       }
       
       OnTitleActionClicked -> {
         check(state is ExistingEntry)
         handleAction(
-          itemProvider = state::plainTextItem,
+          itemProvider = state::plainTextEntryNonNull,
           textState = state.titleState,
           stateResetAction = { titleState -> state.copy(titleState = titleState) },
           updateAction = { title -> copy(title = title) },
           updateCommand = ::UpdateTitle,
           allowEmptySave = false,
           copyNews = ShowTitleCopied,
-          copyCommand = { text -> Copy(R.string.clipboard_title, text) },
+          copyCommand = { text -> Copy(R.string.clipboard_label_title, text) },
           setTextNews = ::SetTitle
         )
       }
@@ -102,26 +121,36 @@ class PlainTextReducer : DslReducer<PlainTextState, PlainTextEvent,
       OnTextActionClicked -> {
         check(state is ExistingEntry)
         handleAction(
-          itemProvider = state::plainTextItem,
+          itemProvider = state::plainTextEntryNonNull,
           textState = state.textState,
           stateResetAction = { textState -> state.copy(textState = textState) },
           updateAction = { text -> copy(text = text) },
           updateCommand = ::UpdateText,
           allowEmptySave = true,
           copyNews = ShowTextCopied,
-          copyCommand = { text -> Copy(R.string.clipboard_text, text) },
+          copyCommand = { text -> Copy(R.string.clipboard_label_text, text) },
           setTextNews = ::SetText
         )
       }
       
       is UpdatedTitle -> {
         check(state is ExistingEntry)
-        state { ExistingEntry(plainTextItem = event.plainTextItem) }
+        state {
+          ExistingEntry(
+            plainTextId = event.plainTextEntry.id,
+            plainTextEntry = event.plainTextEntry
+          )
+        }
       }
       
       is UpdatedText -> {
         check(state is ExistingEntry)
-        state { ExistingEntry(plainTextItem = event.plainTextItem) }
+        state {
+          ExistingEntry(
+            plainTextId = event.plainTextEntry.id,
+            plainTextEntry = event.plainTextEntry
+          )
+        }
       }
       
       OnDeleteClicked -> {
@@ -132,7 +161,7 @@ class PlainTextReducer : DslReducer<PlainTextState, PlainTextEvent,
       OnConfirmedDeleting -> {
         check(state is ExistingEntry)
         state { state.copy(showLoadingDialog = true, showConfirmDeleteDialog = false) }
-        commands(DeletePlainText(state.plainTextItem))
+        commands(DeletePlainText(state.plainTextId))
       }
       
       NotifyEntryDeleted -> {

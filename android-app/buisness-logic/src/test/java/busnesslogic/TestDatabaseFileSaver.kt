@@ -1,8 +1,8 @@
 package busnesslogic
 
-import buisnesslogic.DatabaseSaver
+import buisnesslogic.DatabaseFileSaver
 
-class TestDatabaseSaver : DatabaseSaver {
+class TestDatabaseFileSaver : DatabaseFileSaver {
   
   private var data: ByteArray? = null
   

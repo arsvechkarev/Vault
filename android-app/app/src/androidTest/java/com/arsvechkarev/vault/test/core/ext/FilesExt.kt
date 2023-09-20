@@ -1,13 +1,13 @@
 package com.arsvechkarev.vault.test.core.ext
 
-import buisnesslogic.DatabaseSaver
+import buisnesslogic.DatabaseFileSaver
 import com.arsvechkarev.vault.core.DefaultDispatchersFacade
-import com.arsvechkarev.vault.features.common.data.DatabaseSaverImpl
+import com.arsvechkarev.vault.features.common.data.DatabaseFileSaverImpl
 import com.arsvechkarev.vault.features.common.di.modules.IoModuleImpl
 import kotlinx.coroutines.runBlocking
 
-suspend fun writeVaultFileFromAssets(filename: String): DatabaseSaver = runBlocking {
-  val fileSaverImpl = DatabaseSaverImpl(
+suspend fun writeVaultFileFromAssets(filename: String): DatabaseFileSaver = runBlocking {
+  val fileSaverImpl = DatabaseFileSaverImpl(
     IoModuleImpl.FILENAME,
     targetContext,
     DefaultDispatchersFacade

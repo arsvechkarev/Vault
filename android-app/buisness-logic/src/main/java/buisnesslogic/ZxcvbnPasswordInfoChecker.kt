@@ -12,7 +12,7 @@ class ZxcvbnPasswordInfoChecker(
 ) : PasswordInfoChecker {
   
   override fun checkStrength(password: Password): PasswordStrength? {
-    val passwordString = password.rawValue
+    val passwordString = password.stringData
     if (passwordString.isBlank()) return null
     return when (zxcvbn.measure(passwordString).score) {
       2 -> PasswordStrength.MEDIUM
@@ -23,7 +23,7 @@ class ZxcvbnPasswordInfoChecker(
   }
   
   override fun checkForErrors(password: Password): PasswordError? {
-    val passwordString = password.rawValue
+    val passwordString = password.stringData
     if (passwordString.isBlank()) {
       return PasswordError.EMPTY
     }

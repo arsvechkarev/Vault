@@ -6,10 +6,10 @@ import com.arsvechkarev.commoncrypto.AesSivTinkCipher
 object AesSivTinkCryptography : Cryptography {
   
   override fun encryptData(password: Password, plaintext: String): ByteArray {
-    return AesSivTinkCipher.encrypt(password.rawValue, plaintext)
+    return AesSivTinkCipher.encrypt(password.stringData, plaintext)
   }
   
   override fun decryptData(password: Password, ciphertext: ByteArray): String {
-    return AesSivTinkCipher.decrypt(password.rawValue, ciphertext)
+    return AesSivTinkCipher.decrypt(password.stringData, ciphertext)
   }
 }

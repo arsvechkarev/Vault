@@ -1,11 +1,10 @@
 package com.arsvechkarev.vault.features.import_passwords.actors
 
-import buisnesslogic.Cryptography
-import buisnesslogic.DatabaseSaver
+import buisnesslogic.DatabaseFileSaver
 import buisnesslogic.MasterPasswordHolder
 import com.arsvechkarev.vault.core.mvi.tea.Actor
 import com.arsvechkarev.vault.features.common.data.ExternalFileReader
-import com.arsvechkarev.vault.features.common.data.storage.ListenableCachedEntriesStorage
+import com.arsvechkarev.vault.features.common.data.storage.ObservableCachedDatabaseStorage
 import com.arsvechkarev.vault.features.import_passwords.ImportPasswordsCommand
 import com.arsvechkarev.vault.features.import_passwords.ImportPasswordsCommand.TryImportPasswords
 import com.arsvechkarev.vault.features.import_passwords.ImportPasswordsEvent
@@ -19,21 +18,21 @@ import timber.log.Timber
 
 class ImportPasswordsActor(
   private val externalFileReader: ExternalFileReader,
-  private val cryptography: Cryptography,
-  private val databaseSaver: DatabaseSaver,
-  private val storage: ListenableCachedEntriesStorage,
+  //  private val cryptography: Cryptography,
+  private val databaseFileSaver: DatabaseFileSaver,
+  private val storage: ObservableCachedDatabaseStorage,
 ) : Actor<ImportPasswordsCommand, ImportPasswordsEvent> {
   
   @OptIn(ExperimentalCoroutinesApi::class)
   override fun handle(commands: Flow<ImportPasswordsCommand>): Flow<ImportPasswordsEvent> {
     return commands.filterIsInstance<TryImportPasswords>()
         .mapLatest { command ->
-          val currentBytes = databaseSaver.read(command.password)
+          val currentBytes = databaseFileSaver.read(command.password)
           val result = runCatching {
             val bytes = externalFileReader.readFile(command.uri)
             
             // Trying to decrypt data
-            cryptography.decryptData(command.password, bytes)
+            //            cryptography.decryptData(command.password, bytes)
             
             // Saving new bytes to file saver temporarily, this should be done because
             // storage reads from file saver
@@ -43,13 +42,13 @@ class ImportPasswordsActor(
             
             // Decryption is successful, trying to parse passwords to
             // make sure format is valid
-            storage.getEntries(command.password)
+            //            storage.getEntries(command.password)
           }.onSuccess {
-            storage.notifySubscribers(command.password, reloadData = true)
+            //            storage.notifySubscribers(command.password, reloadData = true)
             MasterPasswordHolder.setMasterPassword(command.password)
           }.onFailure {
             Timber.e(it)
-            currentBytes?.let { bytes -> databaseSaver.save(bytes) }
+            currentBytes?.let { bytes -> databaseFileSaver.save(bytes) }
           }
           if (result.isSuccess) {
             PasswordsImportSuccess

@@ -3,11 +3,11 @@ package buisnesslogic
 import java.util.UUID
 
 interface IdGenerator {
-  fun generateRandomId(): String
+  fun generateRandomId(): UUID
 }
 
 object IdGeneratorImpl : IdGenerator {
-  override fun generateRandomId(): String {
-    return UUID.randomUUID().toString()
+  override fun generateRandomId(): UUID {
+    return UUID.randomUUID()
   }
 }

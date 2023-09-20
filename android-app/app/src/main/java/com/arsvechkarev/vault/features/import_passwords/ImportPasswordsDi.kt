@@ -13,9 +13,8 @@ fun ImportPasswordsStore(
     actors = listOf(
       ImportPasswordsActor(
         coreComponent.externalFileReader,
-        coreComponent.cryptography,
-        coreComponent.databaseSaver,
-        coreComponent.listenableCachedEntriesStorage,
+        coreComponent.databaseFileSaver,
+        coreComponent.observableCachedDatabaseStorage,
       ),
       ImportPasswordsRouterActor(coreComponent.router),
     ),

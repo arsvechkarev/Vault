@@ -16,7 +16,7 @@ class PasswordCharacteristicsProviderImpl(
 ) : PasswordCharacteristicsProvider {
   
   override fun getCharacteristics(password: Password): EnumSet<PasswordCharacteristic> {
-    val passwordString = password.rawValue
+    val passwordString = password.stringData
     val set = setOfNotNull(
       UPPERCASE_SYMBOLS.takeIf { uppercaseSymbolsGenerator.isPresentInPassword(passwordString) },
       NUMBERS.takeIf { numbersGenerator.isPresentInPassword(passwordString) },

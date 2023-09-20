@@ -1,11 +1,11 @@
-package com.arsvechkarev.vault.features.plain_text_entry.actors
+package com.arsvechkarev.vault.features.plain_text_info.actors
 
 import com.arsvechkarev.vault.core.extensions.emptyMap
 import com.arsvechkarev.vault.core.mvi.tea.Actor
 import com.arsvechkarev.vault.features.common.domain.Clipboard
-import com.arsvechkarev.vault.features.plain_text_entry.PlainTextCommand
-import com.arsvechkarev.vault.features.plain_text_entry.PlainTextCommand.Copy
-import com.arsvechkarev.vault.features.plain_text_entry.PlainTextEvent
+import com.arsvechkarev.vault.features.plain_text_info.PlainTextCommand
+import com.arsvechkarev.vault.features.plain_text_info.PlainTextCommand.Copy
+import com.arsvechkarev.vault.features.plain_text_info.PlainTextEvent
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.filterIsInstance
 

@@ -9,7 +9,6 @@ import com.arsvechkarev.vault.features.common.Screens.ImportPasswordsScreen
 import com.arsvechkarev.vault.features.common.Screens.PasswordInfoScreen
 import com.arsvechkarev.vault.features.common.Screens.PlainTextScreen
 import com.arsvechkarev.vault.features.common.Screens.SettingsScreen
-import com.arsvechkarev.vault.features.common.model.CreditCardItem
 import com.arsvechkarev.vault.features.common.model.PasswordItem
 import com.arsvechkarev.vault.features.common.model.PlainTextItem
 import com.arsvechkarev.vault.features.common.navigation.RouterActor
@@ -39,9 +38,8 @@ fun MainListRouterActor(router: Router): Actor<MainListCommand, MainListEvent> {
       
       is GoToCorrespondingInfoScreen -> {
         when (command.entryItem) {
-          is PasswordItem -> goForward(PasswordInfoScreen(command.entryItem))
-          is CreditCardItem -> TODO()
-          is PlainTextItem -> goForward(PlainTextScreen(command.entryItem))
+          is PasswordItem -> goForward(PasswordInfoScreen(command.entryItem.id))
+          is PlainTextItem -> goForward(PlainTextScreen(command.entryItem.id))
         }
       }
       

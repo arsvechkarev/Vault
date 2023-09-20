@@ -4,10 +4,10 @@ import app.keemobile.kotpass.cryptography.EncryptedValue
 import app.keemobile.kotpass.database.Credentials
 
 @JvmInline
-value class Password private constructor(internal val passwordData: EncryptedValue) {
+value class Password private constructor(val encryptedValueFiled: EncryptedValue) {
   
-  val encryptedValue: ByteArray get() = passwordData.getBinary()
-  val rawValue: String get() = passwordData.text
+  val encryptedData: ByteArray get() = encryptedValueFiled.getBinary()
+  val stringData: String get() = encryptedValueFiled.text
   
   companion object {
     
@@ -25,5 +25,5 @@ value class Password private constructor(internal val passwordData: EncryptedVal
 
 
 fun Credentials.Companion.from(masterPassword: Password): Credentials {
-  return from(masterPassword.passwordData)
+  return from(masterPassword.encryptedValueFiled)
 }

@@ -1,25 +1,27 @@
 package com.arsvechkarev.vault.features.password_info
 
 import buisnesslogic.Password
+import buisnesslogic.model.PasswordEntry
 import com.arsvechkarev.vault.features.common.TextState
-import com.arsvechkarev.vault.features.common.model.PasswordItem
 
 sealed interface PasswordInfoScreenEvent {
+  
+  class ReceivedPasswordEntry(val passwordEntry: PasswordEntry) : PasswordInfoScreenEvent
   
   object DeletedPasswordInfo : PasswordInfoScreenEvent
   
   sealed interface UpdatedPasswordInfo : PasswordInfoScreenEvent {
-    class UpdatedWebsiteName(val passwordItem: PasswordItem) : UpdatedPasswordInfo
-    class UpdatedLogin(val passwordItem: PasswordItem) : UpdatedPasswordInfo
-    class UpdatedPassword(val passwordItem: PasswordItem) : UpdatedPasswordInfo
-    class UpdatedNotes(val passwordItem: PasswordItem) : UpdatedPasswordInfo
+    class UpdatedTitle(val passwordEntry: PasswordEntry) : UpdatedPasswordInfo
+    class UpdatedUsername(val passwordEntry: PasswordEntry) : UpdatedPasswordInfo
+    class UpdatedPassword(val passwordEntry: PasswordEntry) : UpdatedPasswordInfo
+    class UpdatedNotes(val passwordEntry: PasswordEntry) : UpdatedPasswordInfo
   }
 }
 
 sealed interface PasswordInfoScreenUiEvent : PasswordInfoScreenEvent {
   object OnInit : PasswordInfoScreenUiEvent
-  object OnWebsiteNameActionClicked : PasswordInfoScreenUiEvent
-  object OnLoginActionClicked : PasswordInfoScreenUiEvent
+  object OnTitleActionClicked : PasswordInfoScreenUiEvent
+  object OnUsernameActionClicked : PasswordInfoScreenUiEvent
   object OnNotesActionClicked : PasswordInfoScreenUiEvent
   object OnOpenPasswordScreenClicked : PasswordInfoScreenUiEvent
   object OnCopyPasswordClicked : PasswordInfoScreenUiEvent
@@ -28,13 +30,16 @@ sealed interface PasswordInfoScreenUiEvent : PasswordInfoScreenEvent {
   object OnDialogHidden : PasswordInfoScreenUiEvent
   object OnBackPressed : PasswordInfoScreenUiEvent
   
-  class OnWebsiteNameTextChanged(val text: String) : PasswordInfoScreenUiEvent
-  class OnLoginTextChanged(val text: String) : PasswordInfoScreenUiEvent
+  class OnTitleTextChanged(val text: String) : PasswordInfoScreenUiEvent
+  class OnUsernameTextChanged(val text: String) : PasswordInfoScreenUiEvent
   class OnNotesTextChanged(val text: String) : PasswordInfoScreenUiEvent
   class SavePasswordEventReceived(val password: Password) : PasswordInfoScreenUiEvent
 }
 
 sealed interface PasswordInfoScreenCommand {
+  
+  class FetchPasswordEntry(val passwordId: String) : PasswordInfoScreenCommand
+  
   class Copy(
     val labelRes: Int,
     val text: String
@@ -42,15 +47,14 @@ sealed interface PasswordInfoScreenCommand {
   
   class OpenEditPasswordScreen(val password: Password) : PasswordInfoScreenCommand
   
-  sealed class UpdateItem(val passwordItem: PasswordItem) : PasswordInfoScreenCommand {
-    
-    class UpdateWebsiteName(passwordItem: PasswordItem) : UpdateItem(passwordItem)
-    class UpdateLogin(passwordItem: PasswordItem) : UpdateItem(passwordItem)
-    class UpdatePassword(passwordItem: PasswordItem) : UpdateItem(passwordItem)
-    class UpdateNotes(passwordItem: PasswordItem) : UpdateItem(passwordItem)
+  sealed class UpdateItem(val passwordEntry: PasswordEntry) : PasswordInfoScreenCommand {
+    class UpdateTitle(passwordEntry: PasswordEntry) : UpdateItem(passwordEntry)
+    class UpdateUsername(passwordEntry: PasswordEntry) : UpdateItem(passwordEntry)
+    class UpdatePassword(passwordEntry: PasswordEntry) : UpdateItem(passwordEntry)
+    class UpdateNotes(passwordEntry: PasswordEntry) : UpdateItem(passwordEntry)
   }
   
-  class DeletePasswordItem(val passwordItem: PasswordItem) : PasswordInfoScreenCommand
+  class DeletePasswordEntry(val passwordId: String) : PasswordInfoScreenCommand
   
   sealed interface RouterCommand : PasswordInfoScreenCommand {
     object GoToCreatePasswordScreen : RouterCommand
@@ -59,28 +63,29 @@ sealed interface PasswordInfoScreenCommand {
 }
 
 sealed interface PasswordInfoScreenNews {
-  class SetWebsiteName(val websiteName: String) : PasswordInfoScreenNews
-  class SetLogin(val login: String) : PasswordInfoScreenNews
+  class SetTitle(val title: String) : PasswordInfoScreenNews
+  class SetUsername(val username: String) : PasswordInfoScreenNews
   class SetNotes(val notes: String) : PasswordInfoScreenNews
-  object ShowWebsiteNameCopied : PasswordInfoScreenNews
-  object ShowLoginCopied : PasswordInfoScreenNews
+  object ShowTitleCopied : PasswordInfoScreenNews
+  object ShowUsernameCopied : PasswordInfoScreenNews
   object ShowPasswordCopied : PasswordInfoScreenNews
   object ShowNotesCopied : PasswordInfoScreenNews
 }
 
 data class PasswordInfoState(
-  val passwordItem: PasswordItem,
-  val websiteNameState: TextState = TextState(passwordItem.websiteName),
-  val loginState: TextState = TextState(passwordItem.login),
-  val notesState: TextState = TextState(passwordItem.notes),
+  val passwordId: String,
+  val passwordEntry: PasswordEntry? = null,
+  val titleState: TextState = TextState.empty(),
+  val usernameState: TextState = TextState.empty(),
+  val notesState: TextState = TextState.empty(),
   val showDeletePasswordDialog: Boolean = false,
   val showLoadingDialog: Boolean = false,
 ) {
   
-  val password get() = Password.create(passwordItem.password)
+  val passwordEntryNonNull: PasswordEntry get() = requireNotNull(passwordEntry)
   
   val isEditingSomething
-    get() = websiteNameState.isEditingNow
-        || loginState.isEditingNow
+    get() = titleState.isEditingNow
+        || usernameState.isEditingNow
         || notesState.isEditingNow
 }

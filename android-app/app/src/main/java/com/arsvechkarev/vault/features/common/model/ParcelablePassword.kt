@@ -9,7 +9,7 @@ class ParcelablePassword(val password: Password) : Parcelable {
   constructor(parcel: Parcel) : this(Password.fromRaw(parcel.createByteArray()!!))
   
   override fun writeToParcel(parcel: Parcel, flags: Int) {
-    parcel.writeByteArray(password.encryptedValue)
+    parcel.writeByteArray(password.encryptedData)
   }
   
   override fun describeContents(): Int {

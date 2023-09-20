@@ -1,6 +1,6 @@
 package com.arsvechkarev.vault.features.export_passwords.actors
 
-import buisnesslogic.DatabaseSaver
+import buisnesslogic.DatabaseFileSaver
 import com.arsvechkarev.vault.core.mvi.tea.Actor
 import com.arsvechkarev.vault.features.export_passwords.ExportPasswordsCommand
 import com.arsvechkarev.vault.features.export_passwords.ExportPasswordsCommand.GetPasswordsFileUri
@@ -12,14 +12,14 @@ import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.flow.mapLatest
 
 class GetPasswordsFileUriActor(
-  private val databaseSaver: DatabaseSaver
+  private val databaseFileSaver: DatabaseFileSaver
 ) : Actor<ExportPasswordsCommand, ExportPasswordsEvent> {
   
   @OptIn(ExperimentalCoroutinesApi::class)
   override fun handle(commands: Flow<ExportPasswordsCommand>): Flow<ExportPasswordsEvent> {
     return commands.filterIsInstance<GetPasswordsFileUri>()
         .mapLatest {
-          PasswordsFileUriReceived(databaseSaver.getFileUri())
+          PasswordsFileUriReceived(databaseFileSaver.getFileUri())
         }
   }
 }

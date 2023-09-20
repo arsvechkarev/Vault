@@ -4,7 +4,12 @@ data class TextState(
   val initialText: String,
   val editedText: String = initialText,
   val isEditingNow: Boolean = false
-)
+) {
+  
+  companion object {
+    fun empty() = TextState("")
+  }
+}
 
 fun TextState.reset(): TextState {
   return copy(editedText = initialText, isEditingNow = false)

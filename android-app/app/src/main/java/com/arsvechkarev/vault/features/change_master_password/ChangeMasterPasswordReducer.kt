@@ -32,7 +32,7 @@ class ChangeMasterPasswordReducer : DslReducer<ChangeMasterPasswordState, Change
       }
       
       OnChangeMasterPasswordClicked -> {
-        if (state.initialPassword.rawValue.isBlank() && state.repeatedPassword.rawValue.isBlank()) {
+        if (state.initialPassword.stringData.isBlank() && state.repeatedPassword.stringData.isBlank()) {
           return
         }
         if (state.initialPassword != state.repeatedPassword) {

@@ -15,7 +15,7 @@ fun ChangeMasterPasswordStore(
       ChangeMasterPasswordActor(
         coreComponent.masterPasswordChecker,
         coreComponent.masterPasswordProvider,
-        coreComponent.listenableCachedEntriesStorage,
+        coreComponent.observableCachedDatabaseStorage,
       ),
       ValidatePasswordActor(coreComponent.masterPasswordProvider),
       ChangeMasterPasswordRouterActor(coreComponent.router),

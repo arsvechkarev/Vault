@@ -1,5 +1,6 @@
 package com.arsvechkarev.vault.features.creating_password_entry
 
+import buisnesslogic.model.PasswordEntryData
 import com.arsvechkarev.vault.core.mvi.tea.DslReducer
 import com.arsvechkarev.vault.features.creating_password_entry.CreatingPasswordEntryCommand.RouterCommand.GoBack
 import com.arsvechkarev.vault.features.creating_password_entry.CreatingPasswordEntryCommand.RouterCommand.GoToCreatePasswordScreen
@@ -12,8 +13,8 @@ import com.arsvechkarev.vault.features.creating_password_entry.CreatingPasswordE
 import com.arsvechkarev.vault.features.creating_password_entry.CreatingPasswordEntryEvent.ValidationResult.Success
 import com.arsvechkarev.vault.features.creating_password_entry.CreatingPasswordEntryUiEvent.OnBackPressed
 import com.arsvechkarev.vault.features.creating_password_entry.CreatingPasswordEntryUiEvent.OnContinueClicked
-import com.arsvechkarev.vault.features.creating_password_entry.CreatingPasswordEntryUiEvent.OnLoginTextChanged
-import com.arsvechkarev.vault.features.creating_password_entry.CreatingPasswordEntryUiEvent.OnWebsiteNameTextChanged
+import com.arsvechkarev.vault.features.creating_password_entry.CreatingPasswordEntryUiEvent.OnTitleTextChanged
+import com.arsvechkarev.vault.features.creating_password_entry.CreatingPasswordEntryUiEvent.OnUsernameTextChanged
 import com.arsvechkarev.vault.features.creating_password_entry.CreatingPasswordEntryUiEvent.PasswordEntered
 
 class CreatingPasswordEntryReducer :
@@ -22,16 +23,16 @@ class CreatingPasswordEntryReducer :
   
   override fun dslReduce(event: CreatingPasswordEntryEvent) {
     when (event) {
-      is OnWebsiteNameTextChanged -> {
-        state { copy(websiteName = event.text, websiteNameEmpty = false) }
+      is OnTitleTextChanged -> {
+        state { copy(title = event.text, titleEmpty = false) }
       }
       
-      is OnLoginTextChanged -> {
-        state { copy(login = event.text, loginEmpty = false) }
+      is OnUsernameTextChanged -> {
+        state { copy(username = event.text, usernameEmpty = false) }
       }
       
       is OnContinueClicked -> {
-        commands(ValidateInput(event.websiteName, event.login))
+        commands(ValidateInput(event.title, event.username))
       }
       
       OnBackPressed -> {
@@ -43,8 +44,8 @@ class CreatingPasswordEntryReducer :
           is Fail -> {
             state {
               copy(
-                websiteNameEmpty = result.websiteNameEmpty,
-                loginEmpty = result.loginEmpty
+                titleEmpty = result.titleEmpty,
+                usernameEmpty = result.usernameEmpty
               )
             }
           }
@@ -56,11 +57,18 @@ class CreatingPasswordEntryReducer :
       }
       
       is PasswordEntered -> {
-        commands(SavePassword(state.websiteName, state.login, event.password))
+        val passwordEntryData = PasswordEntryData(
+          title = state.title,
+          username = state.username,
+          password = event.password,
+          url = "",
+          notes = "",
+        )
+        commands(SavePassword(passwordEntryData))
       }
       
       is PasswordEntryCreated -> {
-        commands(GoToInfoScreen(event.passwordItem))
+        commands(GoToInfoScreen(event.passwordId))
       }
     }
   }

@@ -4,13 +4,14 @@ import buisnesslogic.model.BaseEntry
 import com.arsvechkarev.vault.core.mvi.tea.DslReducer
 import com.arsvechkarev.vault.features.common.TextState
 import com.arsvechkarev.vault.features.common.reset
+import com.arsvechkarev.vault.features.common.update
 
 
 fun <Item : BaseEntry, State : Any, Command : Any,
     News : Any> DslReducer<State, *, Command, News>.handleAction(
   itemProvider: () -> Item,
   textState: TextState,
-  stateResetAction: (TextState) -> State,
+  updateTextAction: (TextState) -> State,
   updateAction: Item.(String) -> Item,
   updateCommand: (Item) -> Command,
   allowEmptySave: Boolean = false,
@@ -25,8 +26,9 @@ fun <Item : BaseEntry, State : Any, Command : Any,
       }
       val trimmedText = editedText.trim()
       if (trimmedText == initialText) {
-        state { stateResetAction(textState.reset()) }
+        state { updateTextAction(textState.reset()) }
       } else {
+        state { updateTextAction(textState.update(trimmedText)) }
         commands(updateCommand(updateAction(itemProvider(), trimmedText)))
         news(setTextNews(trimmedText))
       }

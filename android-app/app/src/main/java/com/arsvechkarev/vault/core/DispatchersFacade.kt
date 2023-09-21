@@ -8,6 +8,7 @@ import kotlinx.coroutines.CoroutineDispatcher
 interface DispatchersFacade {
   
   val IO: CoroutineDispatcher
+  val SingleThread: CoroutineDispatcher
   val Default: CoroutineDispatcher
   val Main: CoroutineDispatcher
 }

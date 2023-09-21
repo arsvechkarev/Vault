@@ -2,6 +2,7 @@ package com.arsvechkarev.vault.test.tests
 
 import androidx.test.core.app.ApplicationProvider
 import buisnesslogic.AesSivTinkCryptography
+import buisnesslogic.Password
 import buisnesslogic.model.EntriesLists
 import com.arsvechkarev.vault.features.common.di.CoreComponentHolder
 import com.arsvechkarev.vault.test.core.ext.context
@@ -119,9 +120,10 @@ class ValidatingFileStructureTest : TestCase() {
   
   private fun checkEqualExceptIds() {
     val expectedBytes = context.assets.open("file_two_passwords_and_plain_text").readBytes()
-    val expectedString = AesSivTinkCryptography.decryptData("qwetu1233", expectedBytes)
+    val expectedString = AesSivTinkCryptography.decryptData(Password.create("qwetu1233"),
+      expectedBytes)
     val actualBytes = stubPasswordsFileExporter.exportedData!!
-    val actualString = AesSivTinkCryptography.decryptData("qwetu1233", actualBytes)
+    val actualString = AesSivTinkCryptography.decryptData(Password.create("qwetu1233"), actualBytes)
     
     val gson = Gson()
     val expectedEntriesLists = gson.fromJson(expectedString, EntriesLists::class.java)
@@ -130,9 +132,9 @@ class ValidatingFileStructureTest : TestCase() {
     assertEquals(expectedEntriesLists.passwords.size, actualEntriesLists.passwords.size)
     expectedEntriesLists.passwords.forEach { expectedPassword ->
       checkNotNull(
-        actualEntriesLists.passwords.find { it.websiteName == expectedPassword.websiteName })
+        actualEntriesLists.passwords.find { it.title == expectedPassword.title })
           .let { actualPasswordInfo ->
-            assertEquals(expectedPassword.login, actualPasswordInfo.login)
+            assertEquals(expectedPassword.username, actualPasswordInfo.username)
             assertEquals(expectedPassword.password, actualPasswordInfo.password)
             assertEquals(expectedPassword.notes, actualPasswordInfo.notes)
           }

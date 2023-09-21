@@ -27,9 +27,4 @@ interface DatabaseFileSaver {
    * Returns uri of the database file. Throws [IllegalStateException] if the file does not exist
    */
   suspend fun getFileUri(): String
-  
-  /**
-   * Deletes database. If it is already deleted, does nothing
-   */
-  suspend fun delete()
 }

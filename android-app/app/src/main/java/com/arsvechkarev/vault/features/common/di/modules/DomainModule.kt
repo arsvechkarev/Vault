@@ -1,5 +1,6 @@
 package com.arsvechkarev.vault.features.common.di.modules
 
+import buisnesslogic.DatabaseCache
 import buisnesslogic.IdGeneratorImpl
 import buisnesslogic.UniqueIdProvideImpl
 import buisnesslogic.interactors.KeePassPasswordModelInteractor
@@ -12,11 +13,10 @@ interface DomainModule {
   val keePassPasswordModelInteractor: KeePassPasswordModelInteractor
   val keePassPlainTextModelInteractor: KeePassPlainTextModelInteractor
   val observableCachedDatabaseStorage: ObservableCachedDatabaseStorage
+  val databaseCache: DatabaseCache
 }
 
-class DomainModuleImpl(
-  ioModule: IoModule,
-) : DomainModule {
+class DomainModuleImpl(ioModule: IoModule) : DomainModule {
   
   private val generator = UniqueIdProvideImpl(IdGeneratorImpl)
   
@@ -24,10 +24,12 @@ class DomainModuleImpl(
   
   override val keePassPlainTextModelInteractor = KeePassPlainTextModelInteractor(generator)
   
+  private val cachedDatabaseStorage = CachedDatabaseStorage(
+    BasicDatabaseStorage(ioModule.databaseFileSaver)
+  )
+  
   override val observableCachedDatabaseStorage =
-      ObservableCachedDatabaseStorage(
-        CachedDatabaseStorage(
-          BasicDatabaseStorage(ioModule.databaseFileSaver)
-        )
-      )
+      ObservableCachedDatabaseStorage(cachedDatabaseStorage)
+  
+  override val databaseCache = cachedDatabaseStorage
 }

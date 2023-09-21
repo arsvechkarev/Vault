@@ -33,7 +33,7 @@ interface CoreComponent :
       val coreModule = CoreModuleImpl(application)
       val ioModule = IoModuleImpl(coreModule, externalFileReader, passwordsFileExporter)
       val domainModule = DomainModuleImpl(ioModule)
-      val passwordsModule = PasswordsModuleImpl(ioModule)
+      val passwordsModule = PasswordsModuleImpl(ioModule, domainModule)
       return CoreComponentImpl(coreModule, domainModule, ioModule,
         passwordsModule, NavigationModuleImpl(activityResultSubstitutor))
     }

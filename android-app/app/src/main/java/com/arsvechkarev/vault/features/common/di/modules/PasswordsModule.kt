@@ -26,6 +26,7 @@ interface PasswordsModule {
 
 class PasswordsModuleImpl(
   ioModule: IoModule,
+  domainModule: DomainModule,
 ) : PasswordsModule {
   
   override val passwordInfoChecker = ZxcvbnPasswordInfoChecker(Zxcvbn())
@@ -41,5 +42,5 @@ class PasswordsModuleImpl(
   override val masterPasswordProvider = MasterPasswordProviderImpl
   
   override val masterPasswordChecker =
-      MasterPasswordCheckerImpl(ioModule.databaseFileSaver)
+      MasterPasswordCheckerImpl(ioModule.databaseFileSaver, domainModule.databaseCache)
 }

@@ -18,6 +18,7 @@ import com.arsvechkarev.vault.features.change_master_password.ChangeMasterPasswo
 import com.arsvechkarev.vault.features.change_master_password.ChangeMasterPasswordUiEvent.OnNotificationOkClicked
 import com.arsvechkarev.vault.features.change_master_password.ChangeMasterPasswordUiEvent.OnRepeatedPasswordChanged
 
+// TODO (9/21/23): Optimize for lags and delays
 class ChangeMasterPasswordReducer : DslReducer<ChangeMasterPasswordState, ChangeMasterPasswordEvent,
     ChangeMasterPasswordCommand, Nothing>() {
   
@@ -35,7 +36,7 @@ class ChangeMasterPasswordReducer : DslReducer<ChangeMasterPasswordState, Change
         if (state.initialPassword.stringData.isBlank() && state.repeatedPassword.stringData.isBlank()) {
           return
         }
-        if (state.initialPassword != state.repeatedPassword) {
+        if (state.initialPassword.stringData != state.repeatedPassword.stringData) {
           state { copy(error = ChangeMasterPasswordError.PASSWORDS_DO_NOT_MATCH) }
         } else {
           commands(CheckPassword(state.repeatedPassword))

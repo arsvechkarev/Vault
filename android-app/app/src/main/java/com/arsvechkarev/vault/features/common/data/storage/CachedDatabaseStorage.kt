@@ -1,13 +1,15 @@
 package com.arsvechkarev.vault.features.common.data.storage
 
 import app.keemobile.kotpass.database.KeePassDatabase
+import buisnesslogic.DatabaseCache
 import buisnesslogic.DatabaseStorage
 import buisnesslogic.Password
 
 class CachedDatabaseStorage(
   private val storage: DatabaseStorage
-) : DatabaseStorage {
+) : DatabaseStorage, DatabaseCache {
   
+  @Volatile
   private var database: KeePassDatabase? = null
   
   override suspend fun getDatabase(masterPassword: Password): KeePassDatabase {
@@ -15,6 +17,11 @@ class CachedDatabaseStorage(
   }
   
   override suspend fun saveDatabase(database: KeePassDatabase) {
-    storage.saveDatabase(database).also { this.database = database }
+    this.database = database
+    storage.saveDatabase(database)
+  }
+  
+  override fun save(database: KeePassDatabase) {
+    this.database = database
   }
 }

@@ -1,6 +1,7 @@
 package com.arsvechkarev.vault.features.common.data
 
 import android.content.Context
+import androidx.core.util.AtomicFile
 import app.keemobile.kotpass.database.Credentials
 import app.keemobile.kotpass.database.KeePassDatabase
 import app.keemobile.kotpass.database.decode
@@ -24,9 +25,16 @@ class DatabaseFileSaverImpl(
   
   override suspend fun save(database: KeePassDatabase) {
     withContext(dispatchersFacade.IO) {
-      val file = File(context.filesDir, filename)
-      file.delete()
-      database.encode(file.outputStream())
+      val atomicFile = AtomicFile(File(context.filesDir, filename))
+      // TODO (9/21/23):
+      // Atomic file documentation states that the returned output stream should not be
+      // closed manually, it should be passed as is to [atomicFile.finishWrite]. However,
+      // database's [encode] function does close the stream under the hood. For now it seems
+      // to be working fine, but in case something breaks, kotpass library should probably
+      // be forked and the option to leave stream unhandled should be added.
+      val outputStream = atomicFile.startWrite()
+      database.encode(outputStream)
+      atomicFile.finishWrite(outputStream)
     }
   }
   
@@ -47,9 +55,5 @@ class DatabaseFileSaverImpl(
     val file = File(context.filesDir, filename)
     check(file.exists())
     return file.toURI().toString()
-  }
-  
-  override suspend fun delete(): Unit = withContext(dispatchersFacade.IO) {
-    context.getFileStreamPath(filename).delete()
   }
 }

@@ -13,6 +13,6 @@ suspend fun writeVaultFileFromAssets(filename: String): DatabaseFileSaver = runB
     DefaultDispatchersFacade
   )
   val bytes = context.assets.open(filename).readBytes()
-  fileSaverImpl.save(bytes)
+//  fileSaverImpl.save(bytes)
   return@runBlocking fileSaverImpl
 }

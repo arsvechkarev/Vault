@@ -1,6 +1,8 @@
 package com.arsvechkarev.vault.features.change_master_password.actors
 
-import buisnesslogic.MasterPasswordChecker
+import app.keemobile.kotpass.database.Credentials
+import app.keemobile.kotpass.database.modifiers.modifyCredentials
+import buisnesslogic.MasterPasswordHolder
 import com.arsvechkarev.vault.core.mvi.tea.Actor
 import com.arsvechkarev.vault.features.change_master_password.ChangeMasterPasswordCommand
 import com.arsvechkarev.vault.features.change_master_password.ChangeMasterPasswordCommand.ChangeMasterPassword
@@ -14,7 +16,6 @@ import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.flow.mapLatest
 
 class ChangeMasterPasswordActor(
-  private val masterPasswordChecker: MasterPasswordChecker,
   private val masterPasswordProvider: MasterPasswordProvider,
   private val storage: ObservableCachedDatabaseStorage,
 ) : Actor<ChangeMasterPasswordCommand, ChangeMasterPasswordEvent> {
@@ -23,13 +24,14 @@ class ChangeMasterPasswordActor(
   override fun handle(commands: Flow<ChangeMasterPasswordCommand>): Flow<ChangeMasterPasswordEvent> {
     return commands.filterIsInstance<ChangeMasterPassword>()
         .mapLatest { command ->
-          //          val newMasterPassword = command.password
-          //          val currentMasterPassword = masterPasswordProvider.provideMasterPassword()
-          //          require(currentMasterPassword != newMasterPassword)
-          //          val entries = storage.getEntries(currentMasterPassword)
-          //          masterPasswordChecker.initializeEncryptedFile(newMasterPassword)
-          //          storage.saveEntries(newMasterPassword, entries)
-          //          MasterPasswordHolder.setMasterPassword(newMasterPassword)
+          val newMasterPassword = command.password
+          val currentMasterPassword = masterPasswordProvider.provideMasterPassword()
+          require(currentMasterPassword != newMasterPassword)
+          val currentDatabase = storage.getDatabase(currentMasterPassword)
+          val newDatabase = currentDatabase
+              .modifyCredentials { Credentials.from(newMasterPassword.encryptedValueFiled) }
+          storage.saveDatabase(newDatabase)
+          MasterPasswordHolder.setMasterPassword(newMasterPassword)
           NewMasterPasswordSaved
         }
   }

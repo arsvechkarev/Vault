@@ -18,6 +18,7 @@ class ObservableCachedDatabaseStorage(
   }
   
   override suspend fun saveDatabase(database: KeePassDatabase) {
-    storage.saveDatabase(database).also { this._databaseFlow.emit(database) }
+    _databaseFlow.emit(database)
+    storage.saveDatabase(database)
   }
 }

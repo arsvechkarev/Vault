@@ -32,7 +32,7 @@ class DatabaseStorageImplTest {
   
   @After
   fun tearDown() = runBlocking {
-    testFileSaver.delete()
+//    testFileSaver.delete()
   }
   
   @Test

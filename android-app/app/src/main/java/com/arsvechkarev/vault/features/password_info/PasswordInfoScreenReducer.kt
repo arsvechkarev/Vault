@@ -7,7 +7,6 @@ import com.arsvechkarev.vault.features.common.TextState
 import com.arsvechkarev.vault.features.common.edit
 import com.arsvechkarev.vault.features.common.extensions.handleAction
 import com.arsvechkarev.vault.features.common.reset
-import com.arsvechkarev.vault.features.common.update
 import com.arsvechkarev.vault.features.password_info.PasswordInfoScreenCommand.Copy
 import com.arsvechkarev.vault.features.password_info.PasswordInfoScreenCommand.DeletePasswordEntry
 import com.arsvechkarev.vault.features.password_info.PasswordInfoScreenCommand.FetchPasswordEntry
@@ -72,7 +71,7 @@ class PasswordInfoScreenReducer :
         handleAction(
           itemProvider = state::passwordEntryNonNull,
           textState = state.titleState,
-          stateResetAction = { textState -> state.copy(titleState = textState) },
+          updateTextAction = { textState -> state.copy(titleState = textState) },
           updateAction = { text -> copy(title = text) },
           updateCommand = ::UpdateTitle,
           allowEmptySave = false,
@@ -86,10 +85,10 @@ class PasswordInfoScreenReducer :
         handleAction(
           itemProvider = state::passwordEntryNonNull,
           textState = state.usernameState,
-          stateResetAction = { textState -> state.copy(usernameState = textState) },
+          updateTextAction = { textState -> state.copy(usernameState = textState) },
           updateAction = { text -> copy(username = text) },
           updateCommand = ::UpdateUsername,
-          allowEmptySave = false,
+          allowEmptySave = true,
           copyCommand = { text -> Copy(R.string.clipboard_label_username, text) },
           copyNews = ShowUsernameCopied,
           setTextNews = ::SetUsername
@@ -100,7 +99,7 @@ class PasswordInfoScreenReducer :
         handleAction(
           itemProvider = state::passwordEntryNonNull,
           textState = state.notesState,
-          stateResetAction = { textState -> state.copy(notesState = textState) },
+          updateTextAction = { textState -> state.copy(notesState = textState) },
           updateAction = { text -> copy(notes = text) },
           updateCommand = ::UpdateNotes,
           allowEmptySave = true,
@@ -180,29 +179,9 @@ class PasswordInfoScreenReducer :
         }
       }
       
-      is UpdatedTitle -> {
-        state {
-          update(event.passwordEntry) {
-            copy(titleState = titleState.update(event.passwordEntry.title))
-          }
-        }
-      }
-      
-      is UpdatedUsername -> {
-        state {
-          update(event.passwordEntry) {
-            copy(usernameState = usernameState.update(event.passwordEntry.username))
-          }
-        }
-      }
-      
-      is UpdatedNotes -> {
-        state {
-          update(event.passwordEntry) {
-            copy(notesState = notesState.update(event.passwordEntry.notes))
-          }
-        }
-      }
+      is UpdatedTitle -> state { copy(passwordEntry = passwordEntry) }
+      is UpdatedUsername -> state { copy(passwordEntry = passwordEntry) }
+      is UpdatedNotes -> state { copy(passwordEntry = passwordEntry) }
       
       is UpdatedPassword -> {
         state { copy(passwordEntry = event.passwordEntry) }

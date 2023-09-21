@@ -13,7 +13,6 @@ fun ChangeMasterPasswordStore(
   return TeaStoreImpl(
     actors = listOf(
       ChangeMasterPasswordActor(
-        coreComponent.masterPasswordChecker,
         coreComponent.masterPasswordProvider,
         coreComponent.observableCachedDatabaseStorage,
       ),

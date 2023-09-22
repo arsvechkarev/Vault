@@ -21,7 +21,7 @@ class IoModuleImpl(
 ) : IoModule {
   
   override val databaseFileSaver = DatabaseFileSaverImpl(
-    FILENAME_NEW,
+    FILENAME,
     coreModule.application,
     coreModule.dispatchersFacade
   )
@@ -30,7 +30,6 @@ class IoModuleImpl(
   
   companion object {
     
-    const val FILENAME = "passwords.vault"
-    const val FILENAME_NEW = "passwords.kdbx"
+    const val FILENAME = "passwords.kdbx"
   }
 }

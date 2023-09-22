@@ -1,7 +1,9 @@
 package com.arsvechkarev.vault.features.main_list
 
 import android.content.Context
+import android.content.Intent
 import android.graphics.Color
+import android.net.Uri
 import android.view.Gravity.CENTER_HORIZONTAL
 import android.view.View
 import androidx.core.graphics.ColorUtils
@@ -14,12 +16,19 @@ import com.arsvechkarev.vault.core.views.behaviors.BottomSheetBehavior.Companion
 import com.arsvechkarev.vault.core.views.menu.MenuItemModel
 import com.arsvechkarev.vault.core.views.menu.MenuView
 import com.arsvechkarev.vault.features.common.di.CoreComponentHolder.coreComponent
+import com.arsvechkarev.vault.features.common.dialogs.InfoDialog.Companion.InfoDialog
+import com.arsvechkarev.vault.features.common.dialogs.InfoDialog.Companion.infoDialog
+import com.arsvechkarev.vault.features.common.dialogs.LoadingDialog
+import com.arsvechkarev.vault.features.common.dialogs.loadingDialog
 import com.arsvechkarev.vault.features.common.model.Empty
 import com.arsvechkarev.vault.features.common.model.Loading
+import com.arsvechkarev.vault.features.main_list.MainListNews.LaunchSelectExportFileActivity
 import com.arsvechkarev.vault.features.main_list.MainListUiEvent.OnBackPressed
 import com.arsvechkarev.vault.features.main_list.MainListUiEvent.OnCloseMenuClicked
 import com.arsvechkarev.vault.features.main_list.MainListUiEvent.OnEntryTypeDialogHidden
 import com.arsvechkarev.vault.features.main_list.MainListUiEvent.OnEntryTypeSelected
+import com.arsvechkarev.vault.features.main_list.MainListUiEvent.OnFileForExportSelected
+import com.arsvechkarev.vault.features.main_list.MainListUiEvent.OnHideShareExportedFileDialog
 import com.arsvechkarev.vault.features.main_list.MainListUiEvent.OnInit
 import com.arsvechkarev.vault.features.main_list.MainListUiEvent.OnListItemClicked
 import com.arsvechkarev.vault.features.main_list.MainListUiEvent.OnMenuItemClicked
@@ -114,8 +123,16 @@ class MainListScreen : BaseFragmentScreen() {
         entryItem(EntryType.PASSWORD, R.drawable.ic_lock, R.string.text_password)
         entryItem(EntryType.PLAIN_TEXT, R.drawable.ic_plain_text, R.string.text_plain_text)
       }
+      InfoDialog()
+      LoadingDialog()
     }
   }
+  
+  
+  private val selectFileForResultLauncher = coreComponent.activityResultWrapper
+      .wrapCreateFileLauncher(this, CONTENT_TYPE) { uri ->
+        store.tryDispatch(OnFileForExportSelected(uri))
+      }
   
   private val store by viewModelStore { MainListStore(coreComponent) }
   
@@ -126,8 +143,14 @@ class MainListScreen : BaseFragmentScreen() {
   }
   
   override fun onInit() {
-    store.subscribe(this, ::render)
+    store.subscribe(this, ::render, ::handleNews)
     store.tryDispatch(OnInit)
+  }
+  
+  private fun handleNews(news: MainListNews) {
+    if (news is LaunchSelectExportFileActivity) {
+      selectFileForResultLauncher.launch(DEFAULT_FILENAME)
+    }
   }
   
   private fun render(state: MainListState) {
@@ -141,6 +164,22 @@ class MainListScreen : BaseFragmentScreen() {
     } else {
       view(ChooseEntryTypeBottomSheet).asBottomSheet.hide()
     }
+    if (state.showExportingFileDialog) {
+      loadingDialog.show()
+    } else {
+      loadingDialog.hide()
+    }
+    if (state.showShareExportedFileDialog) {
+      infoDialog.showWithOkOption(
+        titleRes = R.string.text_done,
+        messageRes = R.string.text_export_successful,
+        textPositiveRes = R.string.text_export_share_file,
+        onCancel = { store.tryDispatch(OnHideShareExportedFileDialog) },
+        onOkClicked = { shareExportedFile(state.exportedFileUri) }
+      )
+    } else {
+      infoDialog.hide()
+    }
     adapter.submitList(state.data.getItems(
       successItems = { it },
       loadingItems = { listOf(Loading) },
@@ -153,7 +192,22 @@ class MainListScreen : BaseFragmentScreen() {
     return true
   }
   
+  private fun shareExportedFile(exportedFileUri: Uri?) {
+    if (exportedFileUri == null) {
+      return
+    }
+    val shareIntent = Intent().apply {
+      action = Intent.ACTION_SEND
+      putExtra(Intent.EXTRA_STREAM, exportedFileUri)
+      type = CONTENT_TYPE
+    }
+    startActivity(Intent.createChooser(shareIntent, getString(R.string.text_export_share)))
+  }
+  
   companion object {
+    
+    const val CONTENT_TYPE = "content/unknown"
+    const val DEFAULT_FILENAME = "data.kdbx"
     
     val ChooseEntryTypeBottomSheet = View.generateViewId()
   }

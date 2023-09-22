@@ -4,15 +4,9 @@ import android.net.Uri
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts.CreateDocument
 import androidx.activity.result.contract.ActivityResultContracts.GetContent
-import androidx.activity.result.contract.ActivityResultContracts.OpenDocumentTree
 import androidx.fragment.app.Fragment
 
-interface ActivityResultSubstitutor {
-  
-  fun wrapSelectFolderLauncher(
-    fragment: Fragment,
-    onSuccess: (Uri) -> Unit
-  ): ActivityResultLauncher<Uri?>
+interface ActivityResultWrapper {
   
   fun wrapCreateFileLauncher(
     fragment: Fragment,
@@ -26,14 +20,7 @@ interface ActivityResultSubstitutor {
   ): ActivityResultLauncher<String>
 }
 
-class RealActivityResultSubstitutor : ActivityResultSubstitutor {
-  
-  override fun wrapSelectFolderLauncher(
-    fragment: Fragment,
-    onSuccess: (Uri) -> Unit
-  ): ActivityResultLauncher<Uri?> {
-    return fragment.registerForActivityResult(OpenDocumentTree()) { it?.apply(onSuccess) }
-  }
+class RealActivityResultWrapper : ActivityResultWrapper {
   
   override fun wrapCreateFileLauncher(
     fragment: Fragment,

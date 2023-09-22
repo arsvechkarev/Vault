@@ -110,12 +110,11 @@
   <string name="text_password_examples">Examples of good passwords:</string>
   <string name="text_welcome_description">Simple, secure and fast password manager</string>
   <string name="text_change">Change</string>
-  <string name="text_folder">Folder</string>
-  <string name="text_select_folder">Select folder</string>
+  <string name="text_file_path">Path</string>
+  <string name="text_select_path">Select path</string>
   <string name="text_export_share">Share</string>
   <string name="text_filename">Filename</string>
-  <string name="text_error_filename_is_empty">Filename is empty</string>
-  <string name="text_error_folder_is_not_selected">You have not selected folder</string>
+  <string name="text_error_file_path_is_not_selected">File path is empty</string>
   <string name="text_export_successful">Exported passwords successfully</string>
   <string name="text_export_share_file">SHARE FILE</string>
   <string name="hint_filename">Enter filename…</string>

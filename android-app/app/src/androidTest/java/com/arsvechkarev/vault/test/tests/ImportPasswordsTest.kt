@@ -12,7 +12,7 @@ import com.arsvechkarev.vault.test.core.ext.currentScreenIs
 import com.arsvechkarev.vault.test.core.ext.hasTextColorInt
 import com.arsvechkarev.vault.test.core.ext.writeVaultFileFromAssets
 import com.arsvechkarev.vault.test.core.rule.VaultAutotestRule
-import com.arsvechkarev.vault.test.core.stub.StubActivityResultSubstitutor
+import com.arsvechkarev.vault.test.core.stub.StubActivityResultWrapper
 import com.arsvechkarev.vault.test.core.stub.StubExternalFileReader
 import com.arsvechkarev.vault.test.screens.KImportPasswordsScreen
 import com.arsvechkarev.vault.test.screens.KInitialScreen
@@ -39,7 +39,7 @@ class ImportPasswordsTest : VaultTestCase() {
     runBlocking {
       CoreComponentHolder.initialize(
         application = ApplicationProvider.getApplicationContext(),
-        activityResultSubstitutor = StubActivityResultSubstitutor(
+        activityResultWrapper = StubActivityResultWrapper(
           stubGetFileUri = "content://myfolder/myfile.png"
         ),
         externalFileReader = stubFileReader
@@ -196,7 +196,7 @@ class ImportPasswordsTest : VaultTestCase() {
   fun importingPasswordsFromInitialScreenTest() = init {
     CoreComponentHolder.initialize(
       application = ApplicationProvider.getApplicationContext(),
-      activityResultSubstitutor = StubActivityResultSubstitutor(
+      activityResultWrapper = StubActivityResultWrapper(
         stubGetFileUri = "content://myfolder/myfile.png"
       ),
       externalFileReader = stubFileReader

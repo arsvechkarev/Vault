@@ -43,7 +43,6 @@ import com.arsvechkarev.vault.viewbuilding.Dimens.ImageBackMargin
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginExtraLarge
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginNormal
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginSmall
-import com.arsvechkarev.vault.viewbuilding.Styles
 import com.arsvechkarev.vault.viewbuilding.Styles.BaseEditText
 import com.arsvechkarev.vault.viewbuilding.Styles.BoldTextView
 import com.arsvechkarev.vault.viewbuilding.Styles.Button
@@ -94,14 +93,7 @@ class CreatingPasswordScreen : BaseFragmentScreen() {
             onClick { store.tryDispatch(OnBackClicked) }
           }
         }
-        TextView(WrapContent, WrapContent, style = Styles.BaseTextView) {
-          id(TextError)
-          layoutGravity(CENTER)
-          gravity(CENTER)
-          drawablePadding(MarginNormal)
-          textColor(Colors.Error)
-        }
-        EditText(MatchParent, WrapContent, style = BaseEditText()) {
+        EditText(MatchParent, WrapContent, style = BaseEditText(R.string.hint_creating_password)) {
           id(EditTextPassword)
           gravity(CENTER)
           margin(MarginSmall)
@@ -192,11 +184,6 @@ class CreatingPasswordScreen : BaseFragmentScreen() {
     checkmark(R.string.text_uppercase_symbols).isChecked = state.uppercaseSymbolsEnabled
     checkmark(R.string.text_numbers).isChecked = state.numbersEnabled
     checkmark(R.string.text_special_symbols).isChecked = state.specialSymbolsEnabled
-    if (state.showPasswordCantBeEmpty) {
-      textView(TextError).text(R.string.text_password_cannot_be_empty)
-    } else {
-      textView(TextError).clearText()
-    }
     if (state.showConfirmationDialog) {
       showPasswordAcceptingDialog()
     } else {
@@ -244,12 +231,12 @@ class CreatingPasswordScreen : BaseFragmentScreen() {
   }
   
   private fun showPasswordStrength(strength: PasswordStrength?) {
-    if (strength == null) return
     val textResId = when (strength) {
       PasswordStrength.WEAK -> R.string.text_weak
       PasswordStrength.MEDIUM -> R.string.text_medium
       PasswordStrength.STRONG -> R.string.text_strong
       PasswordStrength.SECURE -> R.string.text_secure
+      null -> R.string.text_empty
     }
     viewAs<PasswordStrengthMeterWithText>().setText(textResId)
     viewAs<PasswordStrengthMeterWithText>().setStrength(strength)

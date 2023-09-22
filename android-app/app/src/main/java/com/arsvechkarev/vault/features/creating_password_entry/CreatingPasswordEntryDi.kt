@@ -3,7 +3,9 @@ package com.arsvechkarev.vault.features.creating_password_entry
 import com.arsvechkarev.vault.core.mvi.tea.TeaStore
 import com.arsvechkarev.vault.core.mvi.tea.TeaStoreImpl
 import com.arsvechkarev.vault.features.common.di.CoreComponent
+import com.arsvechkarev.vault.features.creating_password.CreatingPasswordCommunication
 import com.arsvechkarev.vault.features.creating_password_entry.actors.CreatingEntryRouterActor
+import com.arsvechkarev.vault.features.creating_password_entry.actors.OpenPasswordScreenCommunicatorActor
 import com.arsvechkarev.vault.features.creating_password_entry.actors.SavingPasswordEntryActor
 
 fun CreatingPasswordEntryStore(
@@ -16,6 +18,7 @@ fun CreatingPasswordEntryStore(
         coreComponent.observableCachedDatabaseStorage,
         coreComponent.keePassPasswordModelInteractor,
       ),
+      OpenPasswordScreenCommunicatorActor(CreatingPasswordCommunication.communicator),
       CreatingEntryRouterActor(coreComponent.router)
     ),
     reducer = CreatingPasswordEntryReducer(),

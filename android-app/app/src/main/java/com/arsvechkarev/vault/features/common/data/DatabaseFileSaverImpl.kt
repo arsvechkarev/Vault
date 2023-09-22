@@ -10,8 +10,13 @@ import buisnesslogic.DatabaseFileSaver
 import buisnesslogic.Password
 import buisnesslogic.from
 import com.arsvechkarev.vault.core.DispatchersFacade
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.File
+import java.util.concurrent.locks.ReentrantReadWriteLock
+import kotlin.concurrent.read
+import kotlin.concurrent.write
 
 class DatabaseFileSaverImpl(
   private val filename: String,
@@ -19,12 +24,44 @@ class DatabaseFileSaverImpl(
   private val dispatchersFacade: DispatchersFacade,
 ) : DatabaseFileSaver {
   
+  private val scope = CoroutineScope(dispatchersFacade.IO)
+  private val lock = ReentrantReadWriteLock()
+  
   override fun doesDatabaseExist(): Boolean {
     return File(context.filesDir, filename).exists()
   }
   
-  override suspend fun save(database: KeePassDatabase) {
-    withContext(dispatchersFacade.IO) {
+  override fun save(database: KeePassDatabase) {
+    scope.launch { performDatabaseSave(database) }
+  }
+  
+  override suspend fun saveSynchronously(database: KeePassDatabase) {
+    withContext(dispatchersFacade.IO) { performDatabaseSave(database) }
+  }
+  
+  override suspend fun read(masterPassword: Password): KeePassDatabase? {
+    return withContext(dispatchersFacade.IO) {
+      lock.read {
+        val file = context.getFileStreamPath(filename)
+        if (!file.exists()) {
+          return@withContext null
+        }
+        return@withContext file.inputStream()
+            .use { inputStream ->
+              KeePassDatabase.decode(inputStream, Credentials.from(masterPassword))
+            }
+      }
+    }
+  }
+  
+  override suspend fun getFileUri(): String {
+    val file = File(context.filesDir, filename)
+    check(file.exists())
+    return file.toURI().toString()
+  }
+  
+  private fun performDatabaseSave(database: KeePassDatabase) {
+    lock.write {
       val atomicFile = AtomicFile(File(context.filesDir, filename))
       // TODO (9/21/23):
       // Atomic file documentation states that the returned output stream should not be
@@ -36,24 +73,5 @@ class DatabaseFileSaverImpl(
       database.encode(outputStream)
       atomicFile.finishWrite(outputStream)
     }
-  }
-  
-  override suspend fun read(masterPassword: Password): KeePassDatabase? {
-    return withContext(dispatchersFacade.IO) {
-      val file = context.getFileStreamPath(filename)
-      if (!file.exists()) {
-        return@withContext null
-      }
-      return@withContext file.inputStream()
-          .use { inputStream ->
-            KeePassDatabase.decode(inputStream, Credentials.from(masterPassword))
-          }
-    }
-  }
-  
-  override suspend fun getFileUri(): String {
-    val file = File(context.filesDir, filename)
-    check(file.exists())
-    return file.toURI().toString()
   }
 }

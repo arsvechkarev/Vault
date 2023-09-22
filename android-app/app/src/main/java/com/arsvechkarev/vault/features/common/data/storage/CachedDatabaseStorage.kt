@@ -16,7 +16,12 @@ class CachedDatabaseStorage(
     return database ?: storage.getDatabase(masterPassword).also { database = it }
   }
   
-  override suspend fun saveDatabase(database: KeePassDatabase) {
+  override suspend fun saveDatabaseSynchronously(database: KeePassDatabase) {
+    this.database = database
+    storage.saveDatabaseSynchronously(database)
+  }
+  
+  override fun saveDatabase(database: KeePassDatabase) {
     this.database = database
     storage.saveDatabase(database)
   }

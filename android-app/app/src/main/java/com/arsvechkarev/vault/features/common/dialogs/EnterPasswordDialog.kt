@@ -17,6 +17,7 @@ import buisnesslogic.Password
 import com.arsvechkarev.vault.BuildConfig
 import com.arsvechkarev.vault.R
 import com.arsvechkarev.vault.core.views.EditTextPassword
+import com.arsvechkarev.vault.core.views.FixedSizeTextView
 import com.arsvechkarev.vault.core.views.MaterialProgressBar
 import com.arsvechkarev.vault.core.views.MaterialProgressBar.Thickness
 import com.arsvechkarev.vault.core.views.behaviors.BottomSheetBehavior
@@ -25,6 +26,7 @@ import com.arsvechkarev.vault.features.common.di.CoreComponentHolder.coreCompone
 import com.arsvechkarev.vault.features.common.dialogs.EnterPasswordDialog.Mode.CHECK_MASTER_PASSWORD
 import com.arsvechkarev.vault.features.common.dialogs.EnterPasswordDialog.Mode.IMPORTING_PASSWORDS
 import com.arsvechkarev.vault.viewbuilding.Colors
+import com.arsvechkarev.vault.viewbuilding.Dimens
 import com.arsvechkarev.vault.viewbuilding.Dimens.IconSize
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginExtraLarge
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginNormal
@@ -32,7 +34,7 @@ import com.arsvechkarev.vault.viewbuilding.Dimens.MarginSmall
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginTiny
 import com.arsvechkarev.vault.viewbuilding.Dimens.ProgressBarSizeSmall
 import com.arsvechkarev.vault.viewbuilding.Styles.BoldTextView
-import com.arsvechkarev.vault.viewbuilding.Styles.Button
+import com.arsvechkarev.vault.viewbuilding.Styles.ClickableGradientRoundRect
 import com.arsvechkarev.vault.viewbuilding.Styles.IconCross
 import com.arsvechkarev.vault.viewbuilding.TextSizes
 import kotlinx.coroutines.delay
@@ -45,6 +47,7 @@ import viewdsl.backgroundTopRoundRect
 import viewdsl.behavior
 import viewdsl.classNameTag
 import viewdsl.clearText
+import viewdsl.gravity
 import viewdsl.hideKeyboard
 import viewdsl.id
 import viewdsl.invisible
@@ -59,6 +62,7 @@ import viewdsl.textColor
 import viewdsl.textSize
 import viewdsl.textView
 import viewdsl.viewAs
+import viewdsl.visible
 import viewdsl.withViewBuilder
 
 class EnterPasswordDialog(context: Context) : FrameLayout(context) {
@@ -96,22 +100,32 @@ class EnterPasswordDialog(context: Context) : FrameLayout(context) {
           onTextChanged { parentView.textView(TextError).clearText() }
           onSubmit { password -> handleContinueClick(password) }
         }
-        TextView(MatchParent, WrapContent) {
+        child<FixedSizeTextView>(MatchParent, WrapContent) {
           id(TextError)
+          exampleTextRes = R.string.text_password_is_incorrect
           textColor(Colors.Error)
           margins(start = MarginTiny, top = MarginSmall)
         }
         FrameLayout(MatchParent, WrapContent) {
           margins(top = MarginExtraLarge)
-          TextView(MatchParent, WrapContent, style = Button()) {
+          FrameLayout(MatchParent, WrapContent, style = ClickableGradientRoundRect()) {
             id(ButtonContinue)
-            text(R.string.text_continue)
             onClick {
               val editTextPassword = parentView.parentView.viewAs<EditTextPassword>()
               val text = editTextPassword.getPassword()
               if (text.stringData.isNotBlank()) {
                 handleContinueClick(text)
+              } else {
+                parentView.parentView.textView(TextError)
+                    .text(R.string.text_password_cannot_be_empty)
               }
+            }
+            TextView(MatchParent, WrapContent, style = BoldTextView) {
+              id(TextContinue)
+              padding(Dimens.MarginMedium)
+              textSize(TextSizes.H4)
+              gravity(CENTER)
+              text(R.string.text_continue)
             }
           }
           child<MaterialProgressBar>(ProgressBarSizeSmall, ProgressBarSizeSmall) {
@@ -187,14 +201,14 @@ class EnterPasswordDialog(context: Context) : FrameLayout(context) {
     (context as LifecycleOwner).lifecycleScope.launch {
       val passwordChecker = coreComponent.masterPasswordChecker
       viewAs<MaterialProgressBar>().isVisible = true
-      textView(ButtonContinue).clearText()
+      textView(TextContinue).invisible()
       delay(500)
       if (passwordChecker.isCorrect(password)) {
         onCheckSuccessful()
       } else {
         textView(TextError).text(R.string.text_password_is_incorrect)
       }
-      textView(ButtonContinue).text(R.string.text_continue)
+      textView(TextContinue).visible()
       viewAs<MaterialProgressBar>().isVisible = false
     }
   }
@@ -208,6 +222,7 @@ class EnterPasswordDialog(context: Context) : FrameLayout(context) {
     val Title = View.generateViewId()
     val TextError = View.generateViewId()
     val ButtonContinue = View.generateViewId()
+    val TextContinue = View.generateViewId()
     
     val BaseFragmentScreen.enterPasswordDialog get() = viewAs<EnterPasswordDialog>()
     

@@ -84,11 +84,10 @@ object Styles : DefaultStyles {
     textColor(Colors.Error)
   }
   
-  fun Button(
+  fun ClickableGradientRoundRect(
     colorStart: Int = Colors.Accent,
     colorEnd: Int = Colors.AccentLight,
-  ): TextView.() -> Unit = {
-    apply(BoldTextView)
+  ): View.() -> Unit = {
     val gradientDrawable = GradientDrawable(
       GradientDrawable.Orientation.TL_BR, intArrayOf(colorStart, colorEnd)
     )
@@ -102,6 +101,14 @@ object Styles : DefaultStyles {
     }
     val colorStateList = ColorStateList.valueOf(Colors.Ripple)
     background(RippleDrawable(colorStateList, gradientDrawable, maskRect))
+  }
+  
+  fun Button(
+    colorStart: Int = Colors.Accent,
+    colorEnd: Int = Colors.AccentLight,
+  ): TextView.() -> Unit = {
+    apply(BoldTextView)
+    apply(ClickableGradientRoundRect(colorStart, colorEnd))
     padding(MarginMedium)
     textSize(TextSizes.H4)
     gravity(Gravity.CENTER)

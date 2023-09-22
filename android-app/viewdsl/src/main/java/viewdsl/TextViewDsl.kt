@@ -11,7 +11,7 @@ import android.widget.TextView
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 
-fun TextView.drawables(
+fun TextView.compoundDrawables(
   @DrawableRes start: Int = 0,
   @DrawableRes top: Int = 0,
   @DrawableRes end: Int = 0,
@@ -53,7 +53,7 @@ inline fun TextView.textColor(color: Int) {
   setTextColor(color)
 }
 
-inline fun TextView.drawablePadding(padding: Int) {
+inline fun TextView.compoundDrawablePadding(padding: Int) {
   compoundDrawablePadding = padding
 }
 

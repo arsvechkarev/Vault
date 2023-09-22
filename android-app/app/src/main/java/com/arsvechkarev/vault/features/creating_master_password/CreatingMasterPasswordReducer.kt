@@ -11,12 +11,12 @@ import com.arsvechkarev.vault.features.creating_master_password.CreatingMasterPa
 import com.arsvechkarev.vault.features.creating_master_password.CreatingMasterPasswordEvent.UpdatePasswordError
 import com.arsvechkarev.vault.features.creating_master_password.CreatingMasterPasswordEvent.UpdatePasswordStrength
 import com.arsvechkarev.vault.features.creating_master_password.CreatingMasterPasswordNews.FinishingAuthorization
+import com.arsvechkarev.vault.features.creating_master_password.CreatingMasterPasswordUiEvent.HidePasswordStrengthDialog
 import com.arsvechkarev.vault.features.creating_master_password.CreatingMasterPasswordUiEvent.OnBackPressed
 import com.arsvechkarev.vault.features.creating_master_password.CreatingMasterPasswordUiEvent.OnContinueClicked
 import com.arsvechkarev.vault.features.creating_master_password.CreatingMasterPasswordUiEvent.OnInitialPasswordTyping
 import com.arsvechkarev.vault.features.creating_master_password.CreatingMasterPasswordUiEvent.OnRepeatPasswordTyping
-import com.arsvechkarev.vault.features.creating_master_password.CreatingMasterPasswordUiEvent.RequestHidePasswordStrengthDialog
-import com.arsvechkarev.vault.features.creating_master_password.CreatingMasterPasswordUiEvent.RequestShowPasswordStrengthDialog
+import com.arsvechkarev.vault.features.creating_master_password.CreatingMasterPasswordUiEvent.ShowPasswordStrengthDialog
 import com.arsvechkarev.vault.features.creating_master_password.PasswordEnteringState.INITIAL
 import com.arsvechkarev.vault.features.creating_master_password.PasswordEnteringState.REPEATING
 import com.arsvechkarev.vault.features.creating_master_password.UiPasswordStatus.PASSWORDS_DONT_MATCH
@@ -24,40 +24,6 @@ import com.arsvechkarev.vault.features.creating_master_password.UiPasswordStatus
 class CreatingMasterPasswordReducer : DslReducer<CMPState, CMPEvents, CMPCommands, CMPNews>() {
   
   override fun dslReduce(event: CreatingMasterPasswordEvent) {
-    when (event) {
-      is CMPUiEvent -> {
-        handleUIEvent(event)
-      }
-      
-      is UpdatePasswordError -> {
-        val showErrorText = event.passwordError != null
-        val passwordEnteringState = if (event.passwordError != null) INITIAL else REPEATING
-        val passwordStatus = when (event.passwordError) {
-          PasswordError.EMPTY -> UiPasswordStatus.EMPTY
-          PasswordError.TOO_SHORT -> UiPasswordStatus.TOO_SHORT
-          PasswordError.TOO_WEAK -> UiPasswordStatus.TOO_WEAK
-          null -> UiPasswordStatus.OK
-        }
-        state {
-          copy(
-            passwordStatus = passwordStatus,
-            passwordEnteringState = passwordEnteringState,
-            showErrorText = showErrorText
-          )
-        }
-      }
-      
-      is UpdatePasswordStrength -> {
-        state { copy(passwordStrength = event.passwordStrength) }
-      }
-      
-      FinishedAuth -> {
-        commands(GoToMainListScreen)
-      }
-    }
-  }
-  
-  private fun handleUIEvent(event: CMPUiEvent) {
     when (event) {
       is OnInitialPasswordTyping -> {
         state { copy(initialPassword = event.password, showErrorText = false) }
@@ -102,13 +68,40 @@ class CreatingMasterPasswordReducer : DslReducer<CMPState, CMPEvents, CMPCommand
         }
       }
       
-      RequestShowPasswordStrengthDialog -> {
+      ShowPasswordStrengthDialog -> {
         state { copy(showPasswordStrengthDialog = true) }
       }
       
-      RequestHidePasswordStrengthDialog -> {
+      HidePasswordStrengthDialog -> {
         state { copy(showPasswordStrengthDialog = false) }
+      }
+      
+      is UpdatePasswordError -> {
+        val showErrorText = event.passwordError != null
+        val passwordEnteringState = if (event.passwordError != null) INITIAL else REPEATING
+        val passwordStatus = when (event.passwordError) {
+          PasswordError.EMPTY -> UiPasswordStatus.EMPTY
+          PasswordError.TOO_SHORT -> UiPasswordStatus.TOO_SHORT
+          PasswordError.TOO_WEAK -> UiPasswordStatus.TOO_WEAK
+          null -> UiPasswordStatus.OK
+        }
+        state {
+          copy(
+            passwordStatus = passwordStatus,
+            passwordEnteringState = passwordEnteringState,
+            showErrorText = showErrorText
+          )
+        }
+      }
+      
+      is UpdatePasswordStrength -> {
+        state { copy(passwordStrength = event.passwordStrength) }
+      }
+      
+      FinishedAuth -> {
+        commands(GoToMainListScreen)
       }
     }
   }
+  
 }

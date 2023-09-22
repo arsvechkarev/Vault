@@ -11,13 +11,14 @@ import buisnesslogic.PasswordStrength.MEDIUM
 import buisnesslogic.PasswordStrength.SECURE
 import buisnesslogic.PasswordStrength.STRONG
 import buisnesslogic.PasswordStrength.WEAK
+import com.arsvechkarev.vault.BuildConfig
 import com.arsvechkarev.vault.R
-import com.arsvechkarev.vault.core.extensions.TextPaint
-import com.arsvechkarev.vault.core.extensions.getTextHeight
 import com.arsvechkarev.vault.core.mvi.ext.subscribe
 import com.arsvechkarev.vault.core.mvi.ext.viewModelStore
 import com.arsvechkarev.vault.core.views.EditTextPassword
+import com.arsvechkarev.vault.core.views.FixedSizeTextView
 import com.arsvechkarev.vault.core.views.PasswordStrengthMeter
+import com.arsvechkarev.vault.core.views.TextWithQuestion
 import com.arsvechkarev.vault.features.common.Durations
 import com.arsvechkarev.vault.features.common.di.CoreComponentHolder.coreComponent
 import com.arsvechkarev.vault.features.common.dialogs.LoadingDialog
@@ -25,12 +26,12 @@ import com.arsvechkarev.vault.features.common.dialogs.PasswordStrengthDialog.Com
 import com.arsvechkarev.vault.features.common.dialogs.PasswordStrengthDialog.Companion.passwordStrengthDialog
 import com.arsvechkarev.vault.features.common.dialogs.loadingDialog
 import com.arsvechkarev.vault.features.creating_master_password.CreatingMasterPasswordNews.FinishingAuthorization
+import com.arsvechkarev.vault.features.creating_master_password.CreatingMasterPasswordUiEvent.HidePasswordStrengthDialog
 import com.arsvechkarev.vault.features.creating_master_password.CreatingMasterPasswordUiEvent.OnBackPressed
 import com.arsvechkarev.vault.features.creating_master_password.CreatingMasterPasswordUiEvent.OnContinueClicked
 import com.arsvechkarev.vault.features.creating_master_password.CreatingMasterPasswordUiEvent.OnInitialPasswordTyping
 import com.arsvechkarev.vault.features.creating_master_password.CreatingMasterPasswordUiEvent.OnRepeatPasswordTyping
-import com.arsvechkarev.vault.features.creating_master_password.CreatingMasterPasswordUiEvent.RequestHidePasswordStrengthDialog
-import com.arsvechkarev.vault.features.creating_master_password.CreatingMasterPasswordUiEvent.RequestShowPasswordStrengthDialog
+import com.arsvechkarev.vault.features.creating_master_password.CreatingMasterPasswordUiEvent.ShowPasswordStrengthDialog
 import com.arsvechkarev.vault.features.creating_master_password.PasswordEnteringState.INITIAL
 import com.arsvechkarev.vault.features.creating_master_password.PasswordEnteringState.REPEATING
 import com.arsvechkarev.vault.features.creating_master_password.UiPasswordStatus.EMPTY
@@ -38,14 +39,11 @@ import com.arsvechkarev.vault.features.creating_master_password.UiPasswordStatus
 import com.arsvechkarev.vault.features.creating_master_password.UiPasswordStatus.PASSWORDS_DONT_MATCH
 import com.arsvechkarev.vault.features.creating_master_password.UiPasswordStatus.TOO_SHORT
 import com.arsvechkarev.vault.features.creating_master_password.UiPasswordStatus.TOO_WEAK
-import com.arsvechkarev.vault.viewbuilding.Colors
-import com.arsvechkarev.vault.viewbuilding.Dimens
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginLarge
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginNormal
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginSmall
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginTiny
 import com.arsvechkarev.vault.viewbuilding.Dimens.PasswordStrengthMeterHeight
-import com.arsvechkarev.vault.viewbuilding.Styles.BaseTextView
 import com.arsvechkarev.vault.viewbuilding.Styles.BoldTextView
 import com.arsvechkarev.vault.viewbuilding.Styles.Button
 import com.arsvechkarev.vault.viewbuilding.Styles.IconBack
@@ -57,19 +55,16 @@ import viewdsl.Size.IntSize
 import viewdsl.animateInvisible
 import viewdsl.animateVisible
 import viewdsl.classNameTag
-import viewdsl.clearOnClick
 import viewdsl.clearText
 import viewdsl.gravity
 import viewdsl.hideKeyboard
 import viewdsl.id
-import viewdsl.image
 import viewdsl.invisible
 import viewdsl.layoutGravity
 import viewdsl.marginHorizontal
 import viewdsl.margins
 import viewdsl.onClick
 import viewdsl.text
-import viewdsl.textColor
 import viewdsl.textSize
 import viewdsl.visible
 import viewdsl.withViewBuilder
@@ -102,8 +97,9 @@ class CreatingMasterPasswordScreen : BaseFragmentScreen() {
       }
       VerticalLayout(MatchParent, WrapContent) {
         layoutGravity(CENTER)
-        TextView(WrapContent, WrapContent, style = BaseTextView) {
+        child<FixedSizeTextView>(WrapContent, WrapContent, style = BoldTextView) {
           id(TextPasswordStrength)
+          exampleTextRes = R.string.text_medium
           margins(start = MarginNormal)
         }
         child<PasswordStrengthMeter>(MatchParent, IntSize(PasswordStrengthMeterHeight)) {
@@ -132,25 +128,10 @@ class CreatingMasterPasswordScreen : BaseFragmentScreen() {
             }
           }
         }
-        // Setting fixed height, because text view sometimes can take up two lines, in which
-        // case layout will jump, which is not good UX
-        val textHeight = TextPaint(TextSizes.H5)
-            .getTextHeight(getString(R.string.text_password_is_too_weak))
-        HorizontalLayout(MatchParent, WrapContent) {
-          id(LayoutError)
-          margins(start = MarginNormal)
-          gravity(Gravity.CENTER_VERTICAL)
-          TextView(WrapContent, IntSize((textHeight * 2.5).toInt()), style = BaseTextView) {
-            id(TextError)
-            margins(top = ((Dimens.IconSize - textHeight) / 2).coerceAtLeast(0))
-            textColor(Colors.Error)
-          }
-          ImageView(WrapContent, WrapContent) {
-            id(ImageErrorQuestion)
-            margins(start = MarginSmall)
-            image(R.drawable.ic_question, Colors.Error)
-            invisible()
-          }
+        child<TextWithQuestion>(MatchParent, WrapContent) {
+          classNameTag()
+          margins(start = MarginNormal, end = MarginNormal, top = MarginSmall)
+          onClick { store.tryDispatch(ShowPasswordStrengthDialog) }
         }
       }
       TextView(MatchParent, WrapContent, style = Button()) {
@@ -162,8 +143,8 @@ class CreatingMasterPasswordScreen : BaseFragmentScreen() {
       }
       LoadingDialog()
       PasswordStrengthDialog {
-        onHide = { store.tryDispatch(RequestHidePasswordStrengthDialog) }
-        onGotItClicked { store.tryDispatch(RequestHidePasswordStrengthDialog) }
+        onHide = { store.tryDispatch(HidePasswordStrengthDialog) }
+        onGotItClicked { store.tryDispatch(HidePasswordStrengthDialog) }
       }
     }
   }
@@ -198,8 +179,7 @@ class CreatingMasterPasswordScreen : BaseFragmentScreen() {
     if (state.showErrorText) {
       state.passwordStatus?.let(::showPasswordStatus)
     } else {
-      view(ImageErrorQuestion).invisible()
-      textView(TextError).clearText()
+      viewAs<TextWithQuestion>().clear()
     }
     showPasswordStrength(state)
   }
@@ -223,7 +203,6 @@ class CreatingMasterPasswordScreen : BaseFragmentScreen() {
       TOO_SHORT -> requireContext().getString(R.string.text_password_min_length,
         MIN_PASSWORD_LENGTH
       )
-      
       EMPTY -> requireContext().getString(R.string.text_password_cannot_be_empty)
       PASSWORDS_DONT_MATCH -> {
         if (passwordEnteringState == INITIAL) {
@@ -235,13 +214,11 @@ class CreatingMasterPasswordScreen : BaseFragmentScreen() {
       }
     }
     if (passwordStatus == TOO_WEAK) {
-      view(ImageErrorQuestion).visible()
-      view(LayoutError).onClick { store.tryDispatch(RequestShowPasswordStrengthDialog) }
+      viewAs<TextWithQuestion>().showQuestion()
     } else {
-      view(ImageErrorQuestion).invisible()
-      view(LayoutError).clearOnClick()
+      viewAs<TextWithQuestion>().hideQuestion()
     }
-    textView(TextError).text(text)
+    viewAs<TextWithQuestion>().setText(text)
   }
   
   private fun showPasswordStrength(state: CreatingMasterPasswordState) {
@@ -290,9 +267,6 @@ class CreatingMasterPasswordScreen : BaseFragmentScreen() {
   companion object {
     
     val TextPasswordStrength = View.generateViewId()
-    val LayoutError = View.generateViewId()
-    val TextError = View.generateViewId()
-    val ImageErrorQuestion = View.generateViewId()
     val TextTitle = View.generateViewId()
     val TextContinue = View.generateViewId()
     val RepeatPasswordLayout = View.generateViewId()

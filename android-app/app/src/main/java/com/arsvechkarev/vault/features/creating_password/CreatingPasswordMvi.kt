@@ -50,7 +50,6 @@ data class CreatingPasswordState(
   val mode: PasswordConfigurationMode? = null,
   val setupCompleted: Boolean = false,
   val password: Password = Password.empty(),
-  val showPasswordCantBeEmpty: Boolean = false,
   val uppercaseSymbolsEnabled: Boolean = true,
   val numbersEnabled: Boolean = true,
   val specialSymbolsEnabled: Boolean = true,

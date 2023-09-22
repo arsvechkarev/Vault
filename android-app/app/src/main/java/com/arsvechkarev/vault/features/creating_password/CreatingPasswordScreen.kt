@@ -56,9 +56,8 @@ import navigation.BaseFragmentScreen
 import viewdsl.Size.Companion.MatchParent
 import viewdsl.Size.Companion.WrapContent
 import viewdsl.classNameTag
-import viewdsl.clearText
-import viewdsl.drawablePadding
-import viewdsl.drawables
+import viewdsl.compoundDrawablePadding
+import viewdsl.compoundDrawables
 import viewdsl.gravity
 import viewdsl.hideKeyboard
 import viewdsl.id
@@ -148,8 +147,8 @@ class CreatingPasswordScreen : BaseFragmentScreen() {
           margins(top = MarginNormal)
           layoutGravity(CENTER_HORIZONTAL)
           gravity(CENTER)
-          drawables(start = R.drawable.ic_generate, color = Colors.AccentLight)
-          drawablePadding(MarginSmall)
+          compoundDrawables(start = R.drawable.ic_generate, color = Colors.AccentLight)
+          compoundDrawablePadding(MarginSmall)
           textColor(Colors.AccentLight)
           text(context.getString(R.string.text_generate_password))
           onClick { store.tryDispatch(OnGeneratePasswordClicked) }

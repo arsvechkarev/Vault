@@ -19,8 +19,8 @@ sealed interface CreatingMasterPasswordEvent {
 sealed interface CreatingMasterPasswordUiEvent : CreatingMasterPasswordEvent {
   class OnInitialPasswordTyping(val password: Password) : CMPUiEvent
   class OnRepeatPasswordTyping(val password: Password) : CreatingMasterPasswordUiEvent
-  object RequestShowPasswordStrengthDialog : CreatingMasterPasswordUiEvent
-  object RequestHidePasswordStrengthDialog : CreatingMasterPasswordUiEvent
+  object ShowPasswordStrengthDialog : CreatingMasterPasswordUiEvent
+  object HidePasswordStrengthDialog : CreatingMasterPasswordUiEvent
   object OnContinueClicked : CreatingMasterPasswordUiEvent
   object OnBackPressed : CreatingMasterPasswordUiEvent
 }

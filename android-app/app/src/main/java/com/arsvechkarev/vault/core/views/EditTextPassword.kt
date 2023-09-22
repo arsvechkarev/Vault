@@ -92,6 +92,8 @@ class EditTextPassword(context: Context) : FrameLayout(context) {
   
   fun requestEditTextFocus() = editText.requestFocus()
   
+  fun clearEditTextFocus() = editText.clearFocus()
+  
   fun setRawText(text: String) = editText.setText(text)
   
   fun getPassword() = Password.create(editText.text.toString())

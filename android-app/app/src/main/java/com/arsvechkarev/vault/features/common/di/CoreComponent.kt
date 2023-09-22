@@ -13,7 +13,7 @@ import com.arsvechkarev.vault.features.common.di.modules.NavigationModule
 import com.arsvechkarev.vault.features.common.di.modules.NavigationModuleImpl
 import com.arsvechkarev.vault.features.common.di.modules.PasswordsModule
 import com.arsvechkarev.vault.features.common.di.modules.PasswordsModuleImpl
-import com.arsvechkarev.vault.features.common.navigation.ActivityResultSubstitutor
+import com.arsvechkarev.vault.features.common.navigation.ActivityResultWrapper
 
 interface CoreComponent :
   CoreModule,
@@ -26,7 +26,7 @@ interface CoreComponent :
     
     fun create(
       application: Application,
-      activityResultSubstitutor: ActivityResultSubstitutor,
+      activityResultWrapper: ActivityResultWrapper,
       passwordsFileExporter: PasswordsFileExporter,
       externalFileReader: ExternalFileReader,
     ): CoreComponent {
@@ -35,7 +35,7 @@ interface CoreComponent :
       val domainModule = DomainModuleImpl(ioModule)
       val passwordsModule = PasswordsModuleImpl(ioModule, domainModule)
       return CoreComponentImpl(coreModule, domainModule, ioModule,
-        passwordsModule, NavigationModuleImpl(activityResultSubstitutor))
+        passwordsModule, NavigationModuleImpl(activityResultWrapper))
     }
   }
 }

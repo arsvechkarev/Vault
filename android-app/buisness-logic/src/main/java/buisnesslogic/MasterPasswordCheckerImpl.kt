@@ -31,6 +31,7 @@ class MasterPasswordCheckerImpl(
       throw e
     } catch (e: Throwable) {
       e.printStackTrace()
+      // TODO (9/22/23): Add distinction between incorrect password and other types of errors
       // Error happened during decryption, returning false
       false
     }

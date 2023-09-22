@@ -7,12 +7,11 @@ import buisnesslogic.model.EntriesLists
 import com.arsvechkarev.vault.features.common.di.CoreComponentHolder
 import com.arsvechkarev.vault.test.core.ext.context
 import com.arsvechkarev.vault.test.core.rule.VaultAutotestRule
-import com.arsvechkarev.vault.test.core.stub.StubActivityResultSubstitutor
+import com.arsvechkarev.vault.test.core.stub.StubActivityResultWrapper
 import com.arsvechkarev.vault.test.core.stub.StubPasswordsFileExporter
 import com.arsvechkarev.vault.test.screens.KCreatingMasterPasswordScreen
 import com.arsvechkarev.vault.test.screens.KCreatingPasswordEntryScreen
 import com.arsvechkarev.vault.test.screens.KCreatingPasswordScreen
-import com.arsvechkarev.vault.test.screens.KExportPasswordsScreen
 import com.arsvechkarev.vault.test.screens.KInitialScreen
 import com.arsvechkarev.vault.test.screens.KMainListScreen
 import com.arsvechkarev.vault.test.screens.KPasswordInfoScreen
@@ -35,7 +34,7 @@ class ValidatingFileStructureTest : TestCase() {
   fun setup() {
     CoreComponentHolder.initialize(
       application = ApplicationProvider.getApplicationContext(),
-      activityResultSubstitutor = StubActivityResultSubstitutor(
+      activityResultWrapper = StubActivityResultWrapper(
         stubSelectedFolderUri = "content://myfolder",
         stubCreatedFileUri = "content://myfolder/myfile.png"
       ),
@@ -107,12 +106,12 @@ class ValidatingFileStructureTest : TestCase() {
             open()
             exportPasswordsMenuItem.click()
           }
-          KExportPasswordsScreen {
-            layoutFolder.click()
-            editTextFilename.replaceText("myfile.png")
-            buttonExportPasswords.click()
-            checkEqualExceptIds()
-          }
+          //          KExportPasswordsScreen {
+          //            layoutFolder.click()
+          //            editTextFilename.replaceText("myfile.png")
+          //            buttonExportPasswords.click()
+          //            checkEqualExceptIds()
+          //          }
         }
       }
     }

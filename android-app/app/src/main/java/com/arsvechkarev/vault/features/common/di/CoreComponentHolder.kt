@@ -6,8 +6,8 @@ import com.arsvechkarev.vault.features.common.data.ContextExternalFileReader
 import com.arsvechkarev.vault.features.common.data.ExternalFileReader
 import com.arsvechkarev.vault.features.common.data.PasswordsFileExporter
 import com.arsvechkarev.vault.features.common.data.RealPasswordsFileExporter
-import com.arsvechkarev.vault.features.common.navigation.ActivityResultSubstitutor
-import com.arsvechkarev.vault.features.common.navigation.RealActivityResultSubstitutor
+import com.arsvechkarev.vault.features.common.navigation.ActivityResultWrapper
+import com.arsvechkarev.vault.features.common.navigation.RealActivityResultWrapper
 
 object CoreComponentHolder {
   
@@ -18,14 +18,14 @@ object CoreComponentHolder {
   
   fun initialize(
     application: Application,
-    activityResultSubstitutor: ActivityResultSubstitutor = RealActivityResultSubstitutor(),
+    activityResultWrapper: ActivityResultWrapper = RealActivityResultWrapper(),
     passwordsFileExporter: PasswordsFileExporter =
         RealPasswordsFileExporter(application, DefaultDispatchersFacade),
     externalFileReader: ExternalFileReader = ContextExternalFileReader(application),
   ) {
     _coreComponent = CoreComponent.create(
       application,
-      activityResultSubstitutor,
+      activityResultWrapper,
       passwordsFileExporter,
       externalFileReader
     )

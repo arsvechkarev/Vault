@@ -7,7 +7,6 @@ import com.arsvechkarev.vault.features.common.model.PlainTextItem
 import com.arsvechkarev.vault.features.creating_master_password.CreatingMasterPasswordScreen
 import com.arsvechkarev.vault.features.creating_password.CreatingPasswordScreen
 import com.arsvechkarev.vault.features.creating_password_entry.CreatingPasswordEntryScreen
-import com.arsvechkarev.vault.features.export_passwords.ExportPasswordsScreen
 import com.arsvechkarev.vault.features.import_passwords.ImportPasswordsScreen
 import com.arsvechkarev.vault.features.initial.InitialScreen
 import com.arsvechkarev.vault.features.login.LoginScreen
@@ -45,8 +44,6 @@ object Screens {
   val SettingsScreen = Screen { SettingsScreen::class }
   
   val ChangeMasterPasswordScreen = Screen { ChangeMasterPasswordScreen::class }
-  
-  val ExportPasswordsScreen = Screen { ExportPasswordsScreen::class }
   
   val ImportPasswordsScreen = Screen { ImportPasswordsScreen::class }
 }

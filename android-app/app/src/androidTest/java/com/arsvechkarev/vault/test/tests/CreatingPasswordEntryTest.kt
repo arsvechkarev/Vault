@@ -86,39 +86,26 @@ class CreatingPasswordEntryTest : VaultTestCase() {
       
       KCreatingPasswordEntryScreen {
         title.isDisplayed()
-        textWebsiteName.hasText("Website name")
-        textLogin.hasText("Login")
+        textTitle.hasText("Title")
+        textUsername.hasText("Username")
         buttonContinue.isDisplayed()
         
         closeSoftKeyboard()
         buttonContinue.click()
         
-        textWebsiteName {
+        textTitle {
           hasTextColorInt(Colors.Error)
-          hasText("Website name cannot be empty")
-        }
-        textLogin {
-          hasTextColorInt(Colors.Error)
-          hasText("Login cannot be empty")
+          hasText("Title is empty")
         }
         
-        editTextWebsiteName.typeText("test.com")
+        editTextTitle.typeText("test.com")
         
-        textWebsiteName {
+        textTitle {
           hasTextColorInt(Colors.Accent)
-          hasText("Website name")
-        }
-        textLogin {
-          hasTextColorInt(Colors.Error)
-          hasText("Login cannot be empty")
+          hasText("Title")
         }
         
-        editTextLogin.replaceText("mylogin")
-        
-        textLogin {
-          hasTextColorInt(Colors.Accent)
-          hasText("Login")
-        }
+        editTextUsername.replaceText("myusername")
         
         buttonContinue.click()
         
@@ -250,13 +237,13 @@ class CreatingPasswordEntryTest : VaultTestCase() {
           confirmationDialog.action2.click()
           
           KPasswordInfoScreen {
-            imageWebsite {
+            imageTitle {
               isDisplayed()
               hasDrawable(LetterInCircleDrawable("t"))
             }
-            textWebsiteName.hasText("test.com")
-            editTextWebsiteName.hasText("test.com")
-            editTextLogin.hasText("mylogin")
+            textTitle.hasText("test.com")
+            editTextTitle.hasText("test.com")
+            editTextUsername.hasText("myusername")
             editTextNotes.hasEmptyText()
             
             imageEditPassword.click()

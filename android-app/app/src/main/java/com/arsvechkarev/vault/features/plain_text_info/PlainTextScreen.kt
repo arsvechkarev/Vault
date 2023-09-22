@@ -237,7 +237,7 @@ class PlainTextScreen : BaseFragmentScreen() {
   
   private fun renderNewEntry(state: NewEntry) {
     if (state.showTitleIsEmpty) {
-      showAccentTextViewError(Title, R.string.text_title_cant_be_empty)
+      showAccentTextViewError(Title, R.string.text_title_is_empty)
     } else {
       showAccentTextViewDefault(Title, R.string.text_title)
     }

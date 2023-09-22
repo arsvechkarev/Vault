@@ -4,7 +4,6 @@ import android.content.Context
 import android.view.Gravity.CENTER
 import android.view.Gravity.CENTER_VERTICAL
 import android.view.View
-import androidx.annotation.StringRes
 import androidx.lifecycle.lifecycleScope
 import com.arsvechkarev.vault.R
 import com.arsvechkarev.vault.core.mvi.ext.subscribe
@@ -82,27 +81,27 @@ class CreatingPasswordEntryScreen : BaseFragmentScreen() {
         }
         margins(top = GradientDrawableHeight)
         TextView(WrapContent, WrapContent, style = AccentTextView) {
-          id(TitleWebsiteName)
+          id(TitleTitle)
           margins(start = MarginNormal)
-          text(R.string.text_website_name)
+          text(R.string.text_title)
         }
         EditText(MatchParent, WrapContent) {
-          apply(BaseEditText(hint = R.string.hint_website_name))
-          id(EditTextWebsiteName)
+          apply(BaseEditText(hint = R.string.hint_title))
+          id(EditTextTitle)
           margins(start = MarginNormal, end = MarginNormal)
           onTextChanged { text -> store.tryDispatch(OnTitleTextChanged(text)) }
-          onSubmit { editText(EditTextLogin).requestFocus() }
+          onSubmit { editText(EditTextUsername).requestFocus() }
         }
         TextView(WrapContent, WrapContent, style = AccentTextView) {
-          id(TitleLogin)
-          text(R.string.text_login)
+          id(TitleUsername)
+          text(R.string.text_username)
           margins(start = MarginNormal, top = MarginLarge)
         }
-        EditText(MatchParent, WrapContent, style = BaseEditText(hint = R.string.hint_login)) {
-          id(EditTextLogin)
+        EditText(MatchParent, WrapContent, style = BaseEditText(hint = R.string.hint_username)) {
+          id(EditTextUsername)
           margins(start = MarginNormal, end = MarginNormal)
           onTextChanged { text -> store.tryDispatch(OnUsernameTextChanged(text)) }
-          onSubmit { continueWithCreating() }
+          onSubmit { store.tryDispatch(OnContinueClicked) }
         }
       }
       TextView(MatchParent, WrapContent, style = Button()) {
@@ -112,7 +111,7 @@ class CreatingPasswordEntryScreen : BaseFragmentScreen() {
           bottomToBottomOf(parent)
         }
         text(R.string.text_continue)
-        onClick { continueWithCreating() }
+        onClick { store.tryDispatch(OnContinueClicked) }
       }
     }
   }
@@ -128,7 +127,7 @@ class CreatingPasswordEntryScreen : BaseFragmentScreen() {
   
   override fun onAppearedOnScreen() {
     requireView().postDelayed({
-      editText(EditTextWebsiteName).apply {
+      editText(EditTextTitle).apply {
         requestFocus()
         requireContext().showKeyboard(this)
       }
@@ -136,21 +135,22 @@ class CreatingPasswordEntryScreen : BaseFragmentScreen() {
   }
   
   private fun render(state: CreatingPasswordEntryState) {
-    if (state.titleEmpty) {
-      showAccentTextViewError(TitleWebsiteName, R.string.text_website_name_cant_be_empty)
+    if (state.showTitleEmptyError) {
+      textView(TitleTitle).apply {
+        textColor(Colors.Error)
+        text(R.string.text_title_is_empty)
+      }
     } else {
-      showAccentTextViewDefault(TitleWebsiteName, R.string.text_website_name)
-    }
-    if (state.usernameEmpty) {
-      showAccentTextViewError(TitleLogin, R.string.text_login_cant_be_empty)
-    } else {
-      showAccentTextViewDefault(TitleLogin, R.string.text_login)
+      textView(TitleTitle).apply {
+        apply(AccentTextView)
+        text(R.string.text_title)
+      }
     }
   }
   
   override fun onDisappearedFromScreen() {
-    editText(EditTextWebsiteName).clearFocus()
-    editText(EditTextLogin).clearFocus()
+    editText(EditTextTitle).clearFocus()
+    editText(EditTextUsername).clearFocus()
     requireContext().hideKeyboard()
   }
   
@@ -164,34 +164,14 @@ class CreatingPasswordEntryScreen : BaseFragmentScreen() {
     }
   }
   
-  private fun continueWithCreating() {
-    val websiteName = editText(EditTextWebsiteName).text.toString()
-    val login = editText(EditTextLogin).text.toString()
-    store.tryDispatch(OnContinueClicked(websiteName, login))
-  }
-  
-  private fun showAccentTextViewDefault(textViewId: Int, @StringRes defaultTextRes: Int) {
-    textView(textViewId).apply {
-      apply(AccentTextView)
-      text(defaultTextRes)
-    }
-  }
-  
-  private fun showAccentTextViewError(textViewId: Int, @StringRes errorTextRes: Int) {
-    textView(textViewId).apply {
-      textColor(Colors.Error)
-      text(errorTextRes)
-    }
-  }
-  
   companion object {
     
     val Toolbar = View.generateViewId()
     val EditTextLayouts = View.generateViewId()
-    val TitleWebsiteName = View.generateViewId()
-    val EditTextWebsiteName = View.generateViewId()
-    val TitleLogin = View.generateViewId()
-    val EditTextLogin = View.generateViewId()
+    val TitleTitle = View.generateViewId()
+    val EditTextTitle = View.generateViewId()
+    val TitleUsername = View.generateViewId()
+    val EditTextUsername = View.generateViewId()
     val ButtonContinue = View.generateViewId()
   }
 }

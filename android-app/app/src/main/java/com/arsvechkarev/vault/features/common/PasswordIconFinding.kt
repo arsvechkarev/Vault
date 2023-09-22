@@ -8,7 +8,6 @@ import viewdsl.retrieveDrawable
 
 private const val AMAZON = "amazon"
 private const val GOOGLE = "google"
-private const val FACEBOOK_MESSENGER = "facebook messenger"
 private const val FACEBOOK = "facebook"
 private const val MICROSOFT = "microsoft"
 private const val NETFLIX = "netflix"
@@ -21,30 +20,30 @@ private const val VK = "vk"
 private const val WHATSAPP = "whatsapp"
 private const val GITHUB = "github"
 
-fun ImageView.setWebsiteIcon(websiteName: String) {
-  val text = websiteName.trim()
+fun ImageView.setIconForTitle(title: String) {
+  val text = title.trim()
   if (text.isBlank()) {
     setImageDrawable(null) // Text is blank, showing no icon
     return
   }
-  val existingWebsiteNameIcon = findExistingWebsiteIcon(text)
-  if (existingWebsiteNameIcon != null) {
-    setImageDrawable(existingWebsiteNameIcon)
+  val predefinedIcon = findPredefinedIcon(text)
+  if (predefinedIcon != null) {
+    setImageDrawable(predefinedIcon)
   } else {
-    // No existing website icon found, setting LetterInCircleImage
-    val letter = websiteName[0].toString()
+    // No predefined icon found, setting LetterInCircleImage
+    val letter = title[0].toString()
     (this.drawable as? LetterInCircleDrawable)?.setLetter(letter) ?: run {
       setImageDrawable(LetterInCircleDrawable(letter))
     }
   }
 }
 
-private fun ImageView.findExistingWebsiteIcon(text: String): Drawable? {
+// TODO (9/22/23): Getting icons from network?
+private fun ImageView.findPredefinedIcon(text: String): Drawable? {
   val drawable: (Int) -> Drawable = { context.retrieveDrawable(it) }
   return when {
     text has AMAZON -> drawable(R.drawable.icon_amazon)
     text has GOOGLE -> drawable(R.drawable.icon_google)
-    text has FACEBOOK_MESSENGER -> drawable(R.drawable.icon_facebook_messenger)
     text has FACEBOOK -> drawable(R.drawable.icon_facebook)
     text has MICROSOFT -> drawable(R.drawable.icon_microsoft)
     text has NETFLIX -> drawable(R.drawable.icon_netfilx)

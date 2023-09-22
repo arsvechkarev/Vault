@@ -45,17 +45,17 @@ class EditingEntriesTestLists : VaultTestCase() {
         recycler.emptyChildAt(1) { click() }
         KPasswordInfoScreen {
           iconBack.isDisplayed()
-          imageWebsite {
+          imageTitle {
             isDisplayed()
             hasDrawable(R.drawable.icon_google)
           }
-          textWebsiteName.hasText("google")
-          titleWebsiteName.hasText("Website name")
-          editTextWebsiteName.hasText("google")
-          imageWebsiteNameAction.hasDrawable(R.drawable.ic_copy)
-          titleLogin.hasText("Login")
-          editTextLogin.hasText("me@gmail.com")
-          imageLoginAction.hasDrawable(R.drawable.ic_copy)
+          textTitle.hasText("google")
+          titleTitle.hasText("Title")
+          editTextTitle.hasText("google")
+          imageTitleAction.hasDrawable(R.drawable.ic_copy)
+          titleUsername.hasText("Username")
+          editTextUsername.hasText("me@gmail.com")
+          imageUsernameAction.hasDrawable(R.drawable.ic_copy)
           titlePassword.hasText("Password")
           textHiddenPassword.hasText(R.string.text_password_stub)
           titleNotes.hasText("Notes")
@@ -72,15 +72,15 @@ class EditingEntriesTestLists : VaultTestCase() {
           
           currentScreenIs<PasswordInfoScreen>()
           
-          imageWebsiteNameAction.click()
+          imageTitleAction.click()
           hasClipboardText("google")
-          snackbar.isDisplayedWithText("Website successfully copied!")
+          snackbar.isDisplayedWithText("Title successfully copied!")
           
           waitForSnackbarToHide()
           
-          imageLoginAction.click()
+          imageUsernameAction.click()
           hasClipboardText("me@gmail.com")
-          snackbar.isDisplayedWithText("Login successfully copied!")
+          snackbar.isDisplayedWithText("Username successfully copied!")
           
           waitForSnackbarToHide()
           
@@ -120,30 +120,30 @@ class EditingEntriesTestLists : VaultTestCase() {
           
           waitForSnackbarToHide()
           
-          editTextWebsiteName.typeText("a")
+          editTextTitle.typeText("a")
           
-          imageWebsiteNameAction.hasDrawable(R.drawable.ic_checmark)
-          editTextWebsiteName.hasText("googlea")
-          textWebsiteName.hasText("googlea")
-          imageWebsite.hasDrawable(R.drawable.icon_google)
+          imageTitleAction.hasDrawable(R.drawable.ic_checmark)
+          editTextTitle.hasText("googlea")
+          textTitle.hasText("googlea")
+          imageTitle.hasDrawable(R.drawable.icon_google)
           
           iconBack.click()
           
-          imageWebsiteNameAction.hasDrawable(R.drawable.ic_copy)
-          editTextWebsiteName.hasText("google")
-          textWebsiteName.hasText("google")
+          imageTitleAction.hasDrawable(R.drawable.ic_copy)
+          editTextTitle.hasText("google")
+          textTitle.hasText("google")
           
-          editTextWebsiteName.replaceText("yabcd")
-          imageWebsiteNameAction.click()
+          editTextTitle.replaceText("yabcd")
+          imageTitleAction.click()
           
-          imageWebsite.hasDrawable(LetterInCircleDrawable("y"))
-          textWebsiteName.hasText("yabcd")
-          editTextWebsiteName.hasText("yabcd")
+          imageTitle.hasDrawable(LetterInCircleDrawable("y"))
+          textTitle.hasText("yabcd")
+          editTextTitle.hasText("yabcd")
           
-          imageWebsiteNameAction.click()
+          imageTitleAction.click()
           
           hasClipboardText("yabcd")
-          snackbar.isDisplayedWithText("Website successfully copied!")
+          snackbar.isDisplayedWithText("Title successfully copied!")
           
           iconBack.click()
           
@@ -170,26 +170,26 @@ class EditingEntriesTestLists : VaultTestCase() {
           
           currentScreenIs<PasswordInfoScreen>()
           
-          editTextLogin.replaceText("qwerty")
+          editTextUsername.replaceText("qwerty")
           
-          imageLoginAction.hasDrawable(R.drawable.ic_checmark)
+          imageUsernameAction.hasDrawable(R.drawable.ic_checmark)
           
           pressBack()
           
-          imageLoginAction.hasDrawable(R.drawable.ic_copy)
-          editTextLogin.hasText("me@gmail.com")
+          imageUsernameAction.hasDrawable(R.drawable.ic_copy)
+          editTextUsername.hasText("me@gmail.com")
           
-          editTextLogin.replaceText("kkk")
+          editTextUsername.replaceText("kkk")
           
-          imageLoginAction.click()
+          imageUsernameAction.click()
           
-          imageLoginAction.hasDrawable(R.drawable.ic_copy)
-          editTextLogin.hasText("kkk")
+          imageUsernameAction.hasDrawable(R.drawable.ic_copy)
+          editTextUsername.hasText("kkk")
           
-          imageLoginAction.click()
+          imageUsernameAction.click()
           
           hasClipboardText("kkk")
-          snackbar.isDisplayedWithText("Login successfully copied!")
+          snackbar.isDisplayedWithText("Username successfully copied!")
           
           imageEditPassword.click()
           

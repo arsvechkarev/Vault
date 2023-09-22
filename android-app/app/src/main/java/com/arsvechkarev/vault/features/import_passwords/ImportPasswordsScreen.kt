@@ -126,6 +126,7 @@ class ImportPasswordsScreen : BaseFragmentScreen() {
   
   private fun renderText(state: ImportPasswordsState) {
     val filePath = state.selectedFileUri?.toString()
+    // TODO (9/22/23): Make filepath more human-readable
     val text = filePath?.removePrefix(CONTENT_PREFIX) ?: getString(R.string.text_select_file)
     textView(TextSelectFile).text(text)
   }

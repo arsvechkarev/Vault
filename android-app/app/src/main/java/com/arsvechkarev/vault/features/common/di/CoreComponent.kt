@@ -5,10 +5,10 @@ import com.arsvechkarev.vault.features.common.data.ExternalFileReader
 import com.arsvechkarev.vault.features.common.data.PasswordsFileExporter
 import com.arsvechkarev.vault.features.common.di.modules.CoreModule
 import com.arsvechkarev.vault.features.common.di.modules.CoreModuleImpl
-import com.arsvechkarev.vault.features.common.di.modules.DomainModule
-import com.arsvechkarev.vault.features.common.di.modules.DomainModuleImpl
 import com.arsvechkarev.vault.features.common.di.modules.IoModule
 import com.arsvechkarev.vault.features.common.di.modules.IoModuleImpl
+import com.arsvechkarev.vault.features.common.di.modules.KeePassModule
+import com.arsvechkarev.vault.features.common.di.modules.KeePassModuleImpl
 import com.arsvechkarev.vault.features.common.di.modules.NavigationModule
 import com.arsvechkarev.vault.features.common.di.modules.NavigationModuleImpl
 import com.arsvechkarev.vault.features.common.di.modules.PasswordsModule
@@ -17,7 +17,7 @@ import com.arsvechkarev.vault.features.common.navigation.ActivityResultWrapper
 
 interface CoreComponent :
   CoreModule,
-  DomainModule,
+  KeePassModule,
   IoModule,
   PasswordsModule,
   NavigationModule {
@@ -31,10 +31,10 @@ interface CoreComponent :
       externalFileReader: ExternalFileReader,
     ): CoreComponent {
       val coreModule = CoreModuleImpl(application)
+      val keePassModule = KeePassModuleImpl(coreModule)
       val ioModule = IoModuleImpl(coreModule, externalFileReader, passwordsFileExporter)
-      val domainModule = DomainModuleImpl(ioModule)
-      val passwordsModule = PasswordsModuleImpl(ioModule, domainModule)
-      return CoreComponentImpl(coreModule, domainModule, ioModule,
+      val passwordsModule = PasswordsModuleImpl(keePassModule)
+      return CoreComponentImpl(coreModule, keePassModule, ioModule,
         passwordsModule, NavigationModuleImpl(activityResultWrapper))
     }
   }
@@ -42,13 +42,13 @@ interface CoreComponent :
 
 class CoreComponentImpl(
   private val coreModule: CoreModule,
-  private val domainModule: DomainModule,
+  private val keePassModule: KeePassModule,
   private val ioModule: IoModule,
   private val passwordsModule: PasswordsModule,
   private val navigationModule: NavigationModule,
 ) : CoreComponent,
   CoreModule by coreModule,
-  DomainModule by domainModule,
+  KeePassModule by keePassModule,
   IoModule by ioModule,
   PasswordsModule by passwordsModule,
   NavigationModule by navigationModule

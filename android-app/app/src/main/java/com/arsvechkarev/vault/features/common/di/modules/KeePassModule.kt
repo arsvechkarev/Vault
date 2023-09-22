@@ -1,22 +1,28 @@
 package com.arsvechkarev.vault.features.common.di.modules
 
 import buisnesslogic.DatabaseCache
+import buisnesslogic.DatabaseFileSaver
+import buisnesslogic.DatabaseInitializer
+import buisnesslogic.DefaultDatabaseInitializer
 import buisnesslogic.IdGeneratorImpl
 import buisnesslogic.UniqueIdProvideImpl
 import buisnesslogic.interactors.KeePassPasswordModelInteractor
 import buisnesslogic.interactors.KeePassPlainTextModelInteractor
+import com.arsvechkarev.vault.features.common.data.DatabaseFileSaverImpl
 import com.arsvechkarev.vault.features.common.data.storage.BasicDatabaseStorage
 import com.arsvechkarev.vault.features.common.data.storage.CachedDatabaseStorage
 import com.arsvechkarev.vault.features.common.data.storage.ObservableCachedDatabaseStorage
 
-interface DomainModule {
+interface KeePassModule {
   val keePassPasswordModelInteractor: KeePassPasswordModelInteractor
   val keePassPlainTextModelInteractor: KeePassPlainTextModelInteractor
-  val observableCachedDatabaseStorage: ObservableCachedDatabaseStorage
   val databaseCache: DatabaseCache
+  val databaseFileSaver: DatabaseFileSaver
+  val databaseInitializer: DatabaseInitializer
+  val observableCachedDatabaseStorage: ObservableCachedDatabaseStorage
 }
 
-class DomainModuleImpl(ioModule: IoModule) : DomainModule {
+class KeePassModuleImpl(coreModule: CoreModule) : KeePassModule {
   
   private val generator = UniqueIdProvideImpl(IdGeneratorImpl)
   
@@ -24,12 +30,20 @@ class DomainModuleImpl(ioModule: IoModule) : DomainModule {
   
   override val keePassPlainTextModelInteractor = KeePassPlainTextModelInteractor(generator)
   
-  private val cachedDatabaseStorage = CachedDatabaseStorage(
-    BasicDatabaseStorage(ioModule.databaseFileSaver)
+  override val databaseFileSaver = DatabaseFileSaverImpl(
+    IoModuleImpl.FILENAME,
+    coreModule.application,
+    coreModule.dispatchersFacade
   )
+  
+  private val cachedDatabaseStorage = CachedDatabaseStorage(
+    BasicDatabaseStorage(databaseFileSaver)
+  )
+  
+  override val databaseCache = cachedDatabaseStorage
+  
+  override val databaseInitializer = DefaultDatabaseInitializer(databaseCache, databaseFileSaver)
   
   override val observableCachedDatabaseStorage =
       ObservableCachedDatabaseStorage(cachedDatabaseStorage)
-  
-  override val databaseCache = cachedDatabaseStorage
 }

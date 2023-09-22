@@ -1,7 +1,10 @@
 package com.arsvechkarev.vault.features.import_passwords.actors
 
-import buisnesslogic.DatabaseFileSaver
+import app.keemobile.kotpass.database.Credentials
+import app.keemobile.kotpass.database.KeePassDatabase
+import app.keemobile.kotpass.database.decode
 import buisnesslogic.MasterPasswordHolder
+import buisnesslogic.from
 import com.arsvechkarev.vault.core.mvi.tea.Actor
 import com.arsvechkarev.vault.features.common.data.ExternalFileReader
 import com.arsvechkarev.vault.features.common.data.storage.ObservableCachedDatabaseStorage
@@ -18,8 +21,6 @@ import timber.log.Timber
 
 class ImportPasswordsActor(
   private val externalFileReader: ExternalFileReader,
-  //  private val cryptography: Cryptography,
-  private val databaseFileSaver: DatabaseFileSaver,
   private val storage: ObservableCachedDatabaseStorage,
 ) : Actor<ImportPasswordsCommand, ImportPasswordsEvent> {
   
@@ -27,28 +28,15 @@ class ImportPasswordsActor(
   override fun handle(commands: Flow<ImportPasswordsCommand>): Flow<ImportPasswordsEvent> {
     return commands.filterIsInstance<TryImportPasswords>()
         .mapLatest { command ->
-          val currentBytes = databaseFileSaver.read(command.password)
           val result = runCatching {
-            val bytes = externalFileReader.readFile(command.uri)
-            
-            // Trying to decrypt data
-            //            cryptography.decryptData(command.password, bytes)
-            
-            // Saving new bytes to file saver temporarily, this should be done because
-            // storage reads from file saver
-            // TODO (27.11.2022): Make storage independent of FileSaver ?
-            // TODO (9/19/23): Create importing functionality
-            //            databaseSaver.save(bytes)
-            
-            // Decryption is successful, trying to parse passwords to
-            // make sure format is valid
-            //            storage.getEntries(command.password)
+            val inputStream = externalFileReader.getInputStreamFrom(command.uri)
+            val credentials = Credentials.from(command.password)
+            val newDatabase = KeePassDatabase.decode(inputStream, credentials)
+            storage.saveDatabase(newDatabase)
           }.onSuccess {
-            //            storage.notifySubscribers(command.password, reloadData = true)
             MasterPasswordHolder.setMasterPassword(command.password)
-          }.onFailure {
-            Timber.e(it)
-            currentBytes?.let { bytes -> databaseFileSaver.save(bytes) }
+          }.onFailure { error ->
+            Timber.e(error)
           }
           if (result.isSuccess) {
             PasswordsImportSuccess

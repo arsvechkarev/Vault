@@ -1,6 +1,6 @@
 package com.arsvechkarev.vault.features.creating_master_password.actors
 
-import buisnesslogic.MasterPasswordChecker
+import buisnesslogic.DatabaseInitializer
 import buisnesslogic.MasterPasswordHolder
 import com.arsvechkarev.vault.core.mvi.tea.Actor
 import com.arsvechkarev.vault.features.creating_master_password.CMPCommands
@@ -13,14 +13,14 @@ import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.flow.mapLatest
 
 class FinishAuthActor(
-  private val masterPasswordChecker: MasterPasswordChecker,
+  private val databaseInitializer: DatabaseInitializer
 ) : Actor<CMPCommands, CMPEvents> {
   
   @OptIn(ExperimentalCoroutinesApi::class)
   override fun handle(commands: Flow<CMPCommands>): Flow<CMPEvents> {
     return commands.filterIsInstance<FinishAuth>()
         .mapLatest { command ->
-          masterPasswordChecker.initializeEncryptedFile(command.password)
+          databaseInitializer.initializeDatabase(command.password)
           MasterPasswordHolder.setMasterPassword(command.password)
           return@mapLatest FinishedAuth
         }

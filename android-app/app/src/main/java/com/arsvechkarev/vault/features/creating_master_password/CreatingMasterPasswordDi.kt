@@ -13,7 +13,7 @@ fun CreatingMasterPasswordStore(
   return TeaStoreImpl(
     actors = listOf(
       PasswordCheckingActor(coreComponent.passwordInfoChecker),
-      FinishAuthActor(coreComponent.masterPasswordChecker),
+      FinishAuthActor(coreComponent.databaseInitializer),
       CreatingMasterPasswordRouterActor(coreComponent.router),
     ),
     reducer = CreatingMasterPasswordReducer(),

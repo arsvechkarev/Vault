@@ -2,18 +2,18 @@ package com.arsvechkarev.vault.features.common.data
 
 import android.content.Context
 import android.net.Uri
+import java.io.InputStream
 
 interface ExternalFileReader {
   
-  fun readFile(uri: Uri): ByteArray
+  fun getInputStreamFrom(uri: Uri): InputStream
 }
 
 class ContextExternalFileReader(
   private val context: Context
 ) : ExternalFileReader {
   
-  override fun readFile(uri: Uri): ByteArray {
-    return context.contentResolver?.openInputStream(uri)?.use { it.readBytes() }
-        ?: error("Problem with content resolver")
+  override fun getInputStreamFrom(uri: Uri): InputStream {
+    return checkNotNull(context.contentResolver.openInputStream(uri))
   }
 }

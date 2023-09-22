@@ -28,18 +28,14 @@
   <string name="hint_password">Password</string>
   <string name="hint_enter_password">Enter password</string>
   <string name="hint_repeat_password">Repeat password</string>
-  <string name="text_website_name">Website name</string>
-  <string name="hint_website_name">Enter website name</string>
-  <string name="text_login">Login</string>
-  <string name="hint_login">Enter login</string>
-  <string name="hint_text">Enter text</string>
-  <string name="hint_title">Enter title</string>
   <string name="text_title">Title</string>
+  <string name="hint_title">Enter title</string>
+  <string name="text_username">Username</string>
+  <string name="hint_username">Enter username</string>
+  <string name="hint_text">Enter text</string>
   <string name="text_text">Text</string>
   <string name="text_plain_text_created">Plain text entry created!</string>
-  <string name="text_website_name_cant_be_empty">Website name cannot be empty</string>
-  <string name="text_title_cant_be_empty">Title cannot be empty</string>
-  <string name="text_login_cant_be_empty">Login cannot be empty</string>
+  <string name="text_title_is_empty">Title is empty</string>
   <string name="text_new_entry">New entry</string>
   <string name="text_new_password">New password</string>
   <string name="text_new_plain_text">New plain text</string>
@@ -54,7 +50,7 @@
   <string name="text_hide">Hide</string>
   <string name="text_edit">Edit</string>
   <string name="text_notes">Notes</string>
-  <string name="hint_notes">Add notes…</string>
+  <string name="hint_notes">Add notes</string>
   <string name="text_edit_password">Edit password</string>
   <string name="text_password_length">Length: %1$d</string>
   <string name="text_generate_password">Generate password</string>
@@ -90,8 +86,7 @@
   <string name="text_cancel" tools:ignore="ButtonCase">CANCEL</string>
   <string name="text_delete">DELETE</string>
   <string name="text_got_it">GOT IT</string>
-  <string name="text_website_name_copied">Website successfully copied!</string>
-  <string name="text_login_copied">Login successfully copied!</string>
+  <string name="text_username_copied">Username successfully copied!</string>
   <string name="text_password_copied">Password successfully copied!</string>
   <string name="text_notes_copied">Notes successfully copied!</string>
   <string name="text_title_copied">Title successfully copied!</string>
@@ -117,7 +112,6 @@
   <string name="text_error_file_path_is_not_selected">File path is empty</string>
   <string name="text_export_successful">Exported passwords successfully</string>
   <string name="text_export_share_file">SHARE FILE</string>
-  <string name="hint_filename">Enter filename…</string>
   <string name="text_file">File</string>
   <string name="text_select_file">Select file</string>
   <string name="text_error_file_is_not_selected">You have not selected file</string>
@@ -130,7 +124,7 @@
     the entered password is incorrect
   </string>
   <string name="text_enter_password_to_import">Enter password to decipher the file with</string>
-  <string name="clipboard_label_title">website</string>
+  <string name="clipboard_label_title">title</string>
   <string name="clipboard_label_username">username</string>
   <string name="clipboard_label_password">password</string>
   <string name="clipboard_label_notes">notes</string>

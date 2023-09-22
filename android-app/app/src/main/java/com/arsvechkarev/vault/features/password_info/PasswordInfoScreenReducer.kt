@@ -10,7 +10,6 @@ import com.arsvechkarev.vault.features.common.reset
 import com.arsvechkarev.vault.features.password_info.PasswordInfoScreenCommand.Copy
 import com.arsvechkarev.vault.features.password_info.PasswordInfoScreenCommand.DeletePasswordEntry
 import com.arsvechkarev.vault.features.password_info.PasswordInfoScreenCommand.FetchPasswordEntry
-import com.arsvechkarev.vault.features.password_info.PasswordInfoScreenCommand.OpenEditPasswordScreen
 import com.arsvechkarev.vault.features.password_info.PasswordInfoScreenCommand.RouterCommand.GoBack
 import com.arsvechkarev.vault.features.password_info.PasswordInfoScreenCommand.RouterCommand.GoToCreatePasswordScreen
 import com.arsvechkarev.vault.features.password_info.PasswordInfoScreenCommand.UpdateItem.UpdateNotes
@@ -116,10 +115,7 @@ class PasswordInfoScreenReducer :
       }
       
       OnOpenPasswordScreenClicked -> {
-        commands(
-          OpenEditPasswordScreen(state.passwordEntryNonNull.password),
-          GoToCreatePasswordScreen,
-        )
+        commands(GoToCreatePasswordScreen(state.passwordEntryNonNull.password))
       }
       
       is OnTitleTextChanged -> {

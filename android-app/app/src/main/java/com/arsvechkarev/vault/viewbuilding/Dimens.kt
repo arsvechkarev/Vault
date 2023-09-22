@@ -27,7 +27,7 @@ object Dimens {
   val IconPadding get() = adjust(6.dp)
   val ImageLogoSize get() = adjust(90.dp)
   val ImageNoEntriesSize get() = adjust(100.dp)
-  val ImageWebsiteSize get() = adjust(45.dp)
+  val ImageTitleSize get() = adjust(45.dp)
   val ImageBackMargin get() = adjust(16.dp)
   val CornerRadiusSmall get() = (3.dp)
   val CornerRadiusDefault get() = (6.dp)

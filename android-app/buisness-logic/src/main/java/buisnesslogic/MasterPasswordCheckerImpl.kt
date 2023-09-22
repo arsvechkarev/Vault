@@ -17,7 +17,7 @@ class MasterPasswordCheckerImpl(
       credentials = Credentials.from(masterPassword)
     )
     databaseCache.save(database)
-    databaseFileSaver.save(database)
+    databaseFileSaver.saveSynchronously(database)
   }
   
   override suspend fun isCorrect(masterPassword: Password): Boolean {

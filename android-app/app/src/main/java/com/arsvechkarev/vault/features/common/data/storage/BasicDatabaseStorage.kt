@@ -13,7 +13,11 @@ class BasicDatabaseStorage(
     return checkNotNull(databaseFileSaver.read(masterPassword))
   }
   
-  override suspend fun saveDatabase(database: KeePassDatabase) {
+  override suspend fun saveDatabaseSynchronously(database: KeePassDatabase) {
+    databaseFileSaver.saveSynchronously(database)
+  }
+  
+  override fun saveDatabase(database: KeePassDatabase) {
     databaseFileSaver.save(database)
   }
 }

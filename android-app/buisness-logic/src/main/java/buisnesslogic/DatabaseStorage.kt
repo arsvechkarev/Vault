@@ -6,5 +6,7 @@ interface DatabaseStorage {
   
   suspend fun getDatabase(masterPassword: Password): KeePassDatabase
   
-  suspend fun saveDatabase(database: KeePassDatabase)
+  suspend fun saveDatabaseSynchronously(database: KeePassDatabase)
+  
+  fun saveDatabase(database: KeePassDatabase)
 }

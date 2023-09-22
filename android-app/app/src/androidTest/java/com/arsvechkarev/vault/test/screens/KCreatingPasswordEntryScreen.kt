@@ -3,10 +3,10 @@ package com.arsvechkarev.vault.test.screens
 import com.arsvechkarev.vault.R
 import com.arsvechkarev.vault.features.creating_password_entry.CreatingPasswordEntryScreen
 import com.arsvechkarev.vault.features.creating_password_entry.CreatingPasswordEntryScreen.Companion.ButtonContinue
-import com.arsvechkarev.vault.features.creating_password_entry.CreatingPasswordEntryScreen.Companion.EditTextLogin
-import com.arsvechkarev.vault.features.creating_password_entry.CreatingPasswordEntryScreen.Companion.EditTextWebsiteName
-import com.arsvechkarev.vault.features.creating_password_entry.CreatingPasswordEntryScreen.Companion.TitleLogin
-import com.arsvechkarev.vault.features.creating_password_entry.CreatingPasswordEntryScreen.Companion.TitleWebsiteName
+import com.arsvechkarev.vault.features.creating_password_entry.CreatingPasswordEntryScreen.Companion.EditTextTitle
+import com.arsvechkarev.vault.features.creating_password_entry.CreatingPasswordEntryScreen.Companion.EditTextUsername
+import com.arsvechkarev.vault.features.creating_password_entry.CreatingPasswordEntryScreen.Companion.TitleTitle
+import com.arsvechkarev.vault.features.creating_password_entry.CreatingPasswordEntryScreen.Companion.TitleUsername
 import com.arsvechkarev.vault.features.creating_password_entry.CreatingPasswordEntryScreen.Companion.Toolbar
 import com.arsvechkarev.vault.test.core.base.BaseScreen
 import io.github.kakaocup.kakao.edit.KEditText
@@ -22,9 +22,9 @@ object KCreatingPasswordEntryScreen : BaseScreen<KCreatingPasswordEntryScreen>()
     withParent { withId(Toolbar) }
     withText("New password")
   }
-  val textWebsiteName = KTextView { withId(TitleWebsiteName) }
-  val editTextWebsiteName = KEditText { withId(EditTextWebsiteName) }
-  val textLogin = KTextView { withId(TitleLogin) }
-  val editTextLogin = KEditText { withId(EditTextLogin) }
+  val textTitle = KTextView { withId(TitleTitle) }
+  val editTextTitle = KEditText { withId(EditTextTitle) }
+  val textUsername = KTextView { withId(TitleUsername) }
+  val editTextUsername = KEditText { withId(EditTextUsername) }
   val buttonContinue = KTextView { withId(ButtonContinue) }
 }

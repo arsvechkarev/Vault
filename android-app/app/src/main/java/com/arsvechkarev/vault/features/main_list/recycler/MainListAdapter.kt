@@ -15,7 +15,7 @@ import com.arsvechkarev.vault.features.common.model.Loading
 import com.arsvechkarev.vault.features.common.model.PasswordItem
 import com.arsvechkarev.vault.features.common.model.PlainTextItem
 import com.arsvechkarev.vault.features.common.model.Title
-import com.arsvechkarev.vault.features.common.setWebsiteIcon
+import com.arsvechkarev.vault.features.common.setIconForTitle
 import com.arsvechkarev.vault.recycler.BaseListAdapter
 import com.arsvechkarev.vault.recycler.delegate
 import com.arsvechkarev.vault.viewbuilding.Colors
@@ -96,7 +96,7 @@ class MainListAdapter(
           itemView.onClick { onItemClick(item) }
         }
         onBind {
-          itemView.viewAs<ImageView>(ItemPasswordInfoImage).setWebsiteIcon(item.title)
+          itemView.viewAs<ImageView>(ItemPasswordInfoImage).setIconForTitle(item.title)
           itemView.viewAs<TextView>(ItemPasswordInfoTitle).text(item.title)
         }
       },

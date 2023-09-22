@@ -7,7 +7,7 @@ import com.arsvechkarev.vault.features.creating_password.CreatingPasswordCommuni
 import com.arsvechkarev.vault.features.password_info.actors.CopyPasswordInfoActor
 import com.arsvechkarev.vault.features.password_info.actors.DeletePasswordInfoActor
 import com.arsvechkarev.vault.features.password_info.actors.FetchPasswordEntryActor
-import com.arsvechkarev.vault.features.password_info.actors.OpenEditPasswordScreenActor
+import com.arsvechkarev.vault.features.password_info.actors.OpenEditPasswordScreenCommunicatorActor
 import com.arsvechkarev.vault.features.password_info.actors.PasswordInfoRouterActor
 import com.arsvechkarev.vault.features.password_info.actors.UpdatePasswordInfoActor
 
@@ -31,7 +31,7 @@ fun PasswordInfoScreenStore(
         coreComponent.masterPasswordProvider,
         coreComponent.observableCachedDatabaseStorage,
       ),
-      OpenEditPasswordScreenActor(CreatingPasswordCommunication.communicator),
+      OpenEditPasswordScreenCommunicatorActor(CreatingPasswordCommunication.communicator),
       CopyPasswordInfoActor(coreComponent.clipboard),
       PasswordInfoRouterActor(coreComponent.router),
     ),

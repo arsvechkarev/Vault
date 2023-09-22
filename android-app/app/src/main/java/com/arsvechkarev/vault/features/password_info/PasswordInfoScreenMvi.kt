@@ -45,7 +45,6 @@ sealed interface PasswordInfoScreenCommand {
     val text: String
   ) : PasswordInfoScreenCommand
   
-  class OpenEditPasswordScreen(val password: Password) : PasswordInfoScreenCommand
   
   sealed class UpdateItem(val passwordEntry: PasswordEntry) : PasswordInfoScreenCommand {
     class UpdateTitle(passwordEntry: PasswordEntry) : UpdateItem(passwordEntry)
@@ -57,7 +56,7 @@ sealed interface PasswordInfoScreenCommand {
   class DeletePasswordEntry(val passwordId: String) : PasswordInfoScreenCommand
   
   sealed interface RouterCommand : PasswordInfoScreenCommand {
-    object GoToCreatePasswordScreen : RouterCommand
+    class GoToCreatePasswordScreen(val password: Password) : RouterCommand
     object GoBack : RouterCommand
   }
 }

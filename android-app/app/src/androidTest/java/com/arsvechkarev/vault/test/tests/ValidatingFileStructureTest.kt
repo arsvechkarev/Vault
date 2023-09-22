@@ -60,8 +60,8 @@ class ValidatingFileStructureTest : TestCase() {
           }
           entryTypeDialog.passwordEntry.click()
           KCreatingPasswordEntryScreen {
-            editTextWebsiteName.replaceText("google")
-            editTextLogin.replaceText("me@gmail.com")
+            editTextTitle.replaceText("google")
+            editTextUsername.replaceText("me@gmail.com")
             buttonContinue.click()
             KCreatingPasswordScreen {
               editTextPassword.replaceText("F/<1#E(J=\\51=k")
@@ -78,8 +78,8 @@ class ValidatingFileStructureTest : TestCase() {
           }
           entryTypeDialog.passwordEntry.click()
           KCreatingPasswordEntryScreen {
-            editTextWebsiteName.replaceText("test.com")
-            editTextLogin.replaceText("abcd")
+            editTextTitle.replaceText("test.com")
+            editTextUsername.replaceText("abcd")
             buttonContinue.click()
             KCreatingPasswordScreen {
               editTextPassword.replaceText("q3z;ob15/*8GK>Ed")

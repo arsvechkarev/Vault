@@ -2,6 +2,7 @@ package busnesslogic
 
 import buisnesslogic.AesSivTinkCryptography
 import buisnesslogic.KeePassStorageImpl
+import buisnesslogic.Password
 import buisnesslogic.model.CreditCardEntry
 import buisnesslogic.model.PasswordEntry
 import buisnesslogic.model.PlainTextEntry
@@ -47,9 +48,10 @@ class DatabaseStorageImplTest {
   fun `Saving entries`() = runBlocking {
     val passwordEntry = PasswordEntry(
       id = ",cml29",
-      websiteName = "google",
-      login = "pro",
-      password = "po39,x//2",
+      title = "google",
+      username = "pro",
+      password = Password.create("po39,x//2"),
+      url = "",
       notes = ""
     )
     val creditCardEntry = CreditCardEntry(
@@ -85,16 +87,18 @@ class DatabaseStorageImplTest {
     )
     val passwordEntry = PasswordEntry(
       id = "sdofgi",
-      websiteName = "netflix",
-      login = "lol",
-      password = "wasp",
+      title = "netflix",
+      username = "lol",
+      password = Password.create("wasp"),
+      url = "",
       notes = ""
     )
     val passwordEntryUpdated = PasswordEntry(
       id = "sdofgi",
-      websiteName = "netflix",
-      login = "newUser",
-      password = "wasp",
+      title = "netflix",
+      username = "newUser",
+      password = Password.create("wasp"),
+      url = "",
       notes = ""
     )
     
@@ -114,16 +118,18 @@ class DatabaseStorageImplTest {
   fun `Deleting services`() = runBlocking {
     val firstPasswordEntry = PasswordEntry(
       id = "23490uwriojefk",
-      websiteName = "google",
-      login = "pro",
-      password = "po39,x//2",
-      notes = ""
+      title = "google",
+      username = "pro",
+      password = Password.create("po39,x//2"),
+      url = "",
+      notes = "",
     )
     val secondPasswordEntry = PasswordEntry(
       id = ",;pl9oki87ju6hy5gt",
-      websiteName = "netflix",
-      login = "lol",
-      password = "wasp",
+      title = "netflix",
+      username = "lol",
+      password = Password.create("wasp"),
+      url = "",
       notes = ""
     )
     

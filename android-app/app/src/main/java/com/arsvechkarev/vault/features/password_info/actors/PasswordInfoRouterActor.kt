@@ -14,7 +14,7 @@ fun PasswordInfoRouterActor(router: Router): Actor<PasswordInfoScreenCommand, Pa
   return RouterActor<PasswordInfoScreenCommand, RouterCommand, PasswordInfoScreenEvent>(
     router) { command ->
     when (command) {
-      GoToCreatePasswordScreen -> {
+      is GoToCreatePasswordScreen -> {
         goForward(CreatingPasswordScreen)
       }
       

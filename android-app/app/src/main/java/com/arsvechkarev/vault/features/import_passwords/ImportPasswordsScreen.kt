@@ -153,6 +153,7 @@ class ImportPasswordsScreen : BaseFragmentScreen() {
       enterPasswordDialog.hide()
     }
     when (state.infoDialog) {
+      // TODO (9/22/23): Not show this dialog if on start "Import passwords from vault was selected"
       ImportPasswordsInfoDialog.CONFIRMATION -> {
         infoDialog.showWithCancelAndProceedOption(
           titleRes = R.string.text_confirmation,

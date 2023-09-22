@@ -159,7 +159,12 @@ class CreatingMasterPasswordScreen : BaseFragmentScreen() {
   
   override fun onAppearedOnScreen() {
     requireView().postDelayed({
-      viewAs<EditTextPassword>(EditTextEnterPassword).showKeyboard()
+      viewAs<EditTextPassword>(EditTextEnterPassword).apply {
+        showKeyboard()
+        if (BuildConfig.DEBUG) {
+          setRawText(BuildConfig.STUB_PASSWORD)
+        }
+      }
     }, Durations.DelayOpenKeyboard)
   }
   
@@ -251,8 +256,13 @@ class CreatingMasterPasswordScreen : BaseFragmentScreen() {
   }
   
   private fun switchToRepeatPasswordState() {
-    viewAs<EditTextPassword>(EditTextRepeatPassword).clearText()
-    textView(TextError).clearText()
+    viewAs<EditTextPassword>(EditTextRepeatPassword).apply {
+      clearText()
+      if (BuildConfig.DEBUG) {
+        setRawText(BuildConfig.STUB_PASSWORD)
+      }
+    }
+    viewAs<TextWithQuestion>().clear()
     textView(TextPasswordStrength).animateInvisible()
     view(TextTitle).animateInvisible()
     view(RepeatPasswordLayout).animateVisible()

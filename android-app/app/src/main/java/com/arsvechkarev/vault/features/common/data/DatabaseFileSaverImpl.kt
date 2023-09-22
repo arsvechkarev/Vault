@@ -54,12 +54,6 @@ class DatabaseFileSaverImpl(
     }
   }
   
-  override suspend fun getFileUri(): String {
-    val file = File(context.filesDir, filename)
-    check(file.exists())
-    return file.toURI().toString()
-  }
-  
   private fun performDatabaseSave(database: KeePassDatabase) {
     lock.write {
       val atomicFile = AtomicFile(File(context.filesDir, filename))

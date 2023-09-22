@@ -27,9 +27,4 @@ interface DatabaseFileSaver {
    * Returns database from the file system. If the file doesn't exist, returns null
    */
   suspend fun read(masterPassword: Password): KeePassDatabase?
-  
-  /**
-   * Returns uri of the database file. Throws [IllegalStateException] if the file does not exist
-   */
-  suspend fun getFileUri(): String
 }

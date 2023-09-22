@@ -1,17 +1,17 @@
 package com.arsvechkarev.vault.features.common.di.modules
 
 import com.arsvechkarev.vault.features.common.Router
-import com.arsvechkarev.vault.features.common.navigation.ActivityResultSubstitutor
+import com.arsvechkarev.vault.features.common.navigation.ActivityResultWrapper
 import navigation.NavigationController
 
 interface NavigationModule {
   val router: Router
   val navigationController: NavigationController
-  val activityResultSubstitutor: ActivityResultSubstitutor
+  val activityResultWrapper: ActivityResultWrapper
 }
 
 class NavigationModuleImpl(
-  override val activityResultSubstitutor: ActivityResultSubstitutor
+  override val activityResultWrapper: ActivityResultWrapper
 ) : NavigationModule {
   
   override val router = Router()

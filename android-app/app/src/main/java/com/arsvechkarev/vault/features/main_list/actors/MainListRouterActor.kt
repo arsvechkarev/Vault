@@ -4,7 +4,6 @@ import com.arsvechkarev.vault.core.mvi.tea.Actor
 import com.arsvechkarev.vault.features.common.Durations
 import com.arsvechkarev.vault.features.common.Router
 import com.arsvechkarev.vault.features.common.Screens.CreatingPasswordEntryScreen
-import com.arsvechkarev.vault.features.common.Screens.ExportPasswordsScreen
 import com.arsvechkarev.vault.features.common.Screens.ImportPasswordsScreen
 import com.arsvechkarev.vault.features.common.Screens.PasswordInfoScreen
 import com.arsvechkarev.vault.features.common.Screens.PlainTextScreen
@@ -27,11 +26,9 @@ fun MainListRouterActor(router: Router): Actor<MainListCommand, MainListEvent> {
       is OpenScreen -> {
         delay(Durations.MenuOpening)
         when (command.type) {
-          ScreenType.EXPORT_PASSWORDS -> goForward(ExportPasswordsScreen)
           ScreenType.IMPORT_PASSWORDS -> goForward(ImportPasswordsScreen)
           ScreenType.SETTINGS -> goForward(SettingsScreen)
           ScreenType.NEW_PASSWORD -> goForward(CreatingPasswordEntryScreen)
-          ScreenType.NEW_CREDIT_CARD -> TODO()
           ScreenType.NEW_PLAIN_TEXT -> goForward(PlainTextScreen())
         }
       }

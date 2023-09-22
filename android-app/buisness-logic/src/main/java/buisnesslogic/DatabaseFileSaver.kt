@@ -14,9 +14,14 @@ interface DatabaseFileSaver {
   fun doesDatabaseExist(): Boolean
   
   /**
-   * Saves [database] to the file system
+   * Saves [database] to the file system **asynchronously**
    */
-  suspend fun save(database: KeePassDatabase)
+  fun save(database: KeePassDatabase)
+  
+  /**
+   * Saves [database] to the file system synchronously
+   */
+  suspend fun saveSynchronously(database: KeePassDatabase)
   
   /**
    * Returns database from the file system. If the file doesn't exist, returns null

@@ -9,6 +9,7 @@ import com.arsvechkarev.vault.features.common.extensions.handleAction
 import com.arsvechkarev.vault.features.common.reset
 import com.arsvechkarev.vault.features.plain_text_info.PlainTextCommand.Copy
 import com.arsvechkarev.vault.features.plain_text_info.PlainTextCommand.DeletePlainText
+import com.arsvechkarev.vault.features.plain_text_info.PlainTextCommand.FetchPlainTextEntry
 import com.arsvechkarev.vault.features.plain_text_info.PlainTextCommand.GoBack
 import com.arsvechkarev.vault.features.plain_text_info.PlainTextCommand.SavePlainText
 import com.arsvechkarev.vault.features.plain_text_info.PlainTextCommand.UpdateItem.UpdateText
@@ -44,7 +45,9 @@ class PlainTextReducer : DslReducer<PlainTextState, PlainTextEvent,
     val state = state
     when (event) {
       OnInit -> {
-        sendSetInitialTextsNews()
+        if (state is ExistingEntry) {
+          commands(FetchPlainTextEntry(state.plainTextId))
+        }
       }
       
       is ReceivedPlainTextEntry -> {
@@ -56,6 +59,10 @@ class PlainTextReducer : DslReducer<PlainTextState, PlainTextEvent,
             textState = TextState(event.plainTextEntry.text),
           )
         }
+        news(
+          SetTitle(event.plainTextEntry.title),
+          SetText(event.plainTextEntry.text)
+        )
       }
       
       is OnTitleChanged -> when (state) {
@@ -97,7 +104,9 @@ class PlainTextReducer : DslReducer<PlainTextState, PlainTextEvent,
         state {
           ExistingEntry(
             plainTextId = event.plainTextEntry.id,
-            plainTextEntry = event.plainTextEntry
+            plainTextEntry = event.plainTextEntry,
+            titleState = TextState(event.plainTextEntry.title),
+            textState = TextState(event.plainTextEntry.text),
           )
         }
         news(ShowEntryCreated)
@@ -199,7 +208,10 @@ class PlainTextReducer : DslReducer<PlainTextState, PlainTextEvent,
                     textState = state.textState.reset(),
                   )
                 }
-                sendSetInitialTextsNews()
+                news(
+                  SetTitle(state.titleState.initialText),
+                  SetText(state.textState.initialText)
+                )
               }
               
               else -> {
@@ -208,18 +220,6 @@ class PlainTextReducer : DslReducer<PlainTextState, PlainTextEvent,
             }
           }
         }
-      }
-    }
-  }
-  
-  private fun sendSetInitialTextsNews() {
-    when (val state = state) {
-      is NewEntry -> {
-        news(SetTitle(state.title), SetText(state.text))
-      }
-      
-      is ExistingEntry -> {
-        news(SetTitle(state.titleState.initialText), SetText(state.textState.initialText))
       }
     }
   }

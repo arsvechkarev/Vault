@@ -7,6 +7,7 @@ import com.arsvechkarev.vault.features.plain_text_info.PlainTextState.ExistingEn
 import com.arsvechkarev.vault.features.plain_text_info.PlainTextState.NewEntry
 import com.arsvechkarev.vault.features.plain_text_info.actors.CopyPlainTextActor
 import com.arsvechkarev.vault.features.plain_text_info.actors.DeletePlainTextActor
+import com.arsvechkarev.vault.features.plain_text_info.actors.FetchPlainTextEntryActor
 import com.arsvechkarev.vault.features.plain_text_info.actors.PlainTextRouterActor
 import com.arsvechkarev.vault.features.plain_text_info.actors.SavePlainTextActor
 import com.arsvechkarev.vault.features.plain_text_info.actors.UpdatePlainTextActor
@@ -17,6 +18,11 @@ fun PlainTextStore(
 ): TeaStore<PlainTextState, PlainTextUiEvent, PlainTextNews> {
   return TeaStoreImpl(
     actors = listOf(
+      FetchPlainTextEntryActor(
+        coreComponent.masterPasswordProvider,
+        coreComponent.observableCachedDatabaseStorage,
+        coreComponent.keePassPlainTextModelInteractor
+      ),
       SavePlainTextActor(
         coreComponent.masterPasswordProvider,
         coreComponent.observableCachedDatabaseStorage,

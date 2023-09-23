@@ -1,28 +1,31 @@
-package com.arsvechkarev.vault.features.change_master_password.actors
+package com.arsvechkarev.vault.features.master_password.actors
 
 import app.keemobile.kotpass.database.Credentials
 import app.keemobile.kotpass.database.modifiers.modifyCredentials
 import buisnesslogic.MasterPasswordHolder
 import com.arsvechkarev.vault.core.mvi.tea.Actor
-import com.arsvechkarev.vault.features.change_master_password.ChangeMasterPasswordCommand
-import com.arsvechkarev.vault.features.change_master_password.ChangeMasterPasswordCommand.ChangeMasterPassword
-import com.arsvechkarev.vault.features.change_master_password.ChangeMasterPasswordEvent
-import com.arsvechkarev.vault.features.change_master_password.ChangeMasterPasswordEvent.NewMasterPasswordSaved
+import com.arsvechkarev.vault.features.common.Durations
 import com.arsvechkarev.vault.features.common.data.storage.ObservableCachedDatabaseStorage
+import com.arsvechkarev.vault.features.common.domain.GlobalChangeMasterPasswordPublisher
 import com.arsvechkarev.vault.features.common.domain.MasterPasswordProvider
+import com.arsvechkarev.vault.features.master_password.MasterPasswordCommand
+import com.arsvechkarev.vault.features.master_password.MasterPasswordCommand.ChangeExistingMasterPassword
+import com.arsvechkarev.vault.features.master_password.MasterPasswordEvent
+import com.arsvechkarev.vault.features.master_password.MasterPasswordEvent.FinishedMasterPasswordSaving
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.flow.mapLatest
 
-class ChangeMasterPasswordActor(
+class ChangeExistingMasterPasswordActor(
   private val masterPasswordProvider: MasterPasswordProvider,
   private val storage: ObservableCachedDatabaseStorage,
-) : Actor<ChangeMasterPasswordCommand, ChangeMasterPasswordEvent> {
-  
+  private val globalChangeMasterPasswordPublisher: GlobalChangeMasterPasswordPublisher,
+) : Actor<MasterPasswordCommand, MasterPasswordEvent> {
   @OptIn(ExperimentalCoroutinesApi::class)
-  override fun handle(commands: Flow<ChangeMasterPasswordCommand>): Flow<ChangeMasterPasswordEvent> {
-    return commands.filterIsInstance<ChangeMasterPassword>()
+  override fun handle(commands: Flow<MasterPasswordCommand>): Flow<MasterPasswordEvent> {
+    return commands.filterIsInstance<ChangeExistingMasterPassword>()
         .mapLatest { command ->
           val newMasterPassword = command.password
           val currentMasterPassword = masterPasswordProvider.provideMasterPassword()
@@ -32,7 +35,9 @@ class ChangeMasterPasswordActor(
               .modifyCredentials { Credentials.from(newMasterPassword.encryptedValueFiled) }
           storage.saveDatabase(newDatabase)
           MasterPasswordHolder.setMasterPassword(newMasterPassword)
-          NewMasterPasswordSaved
+          delay(Durations.StubDelay)
+          globalChangeMasterPasswordPublisher.publishMasterPasswordChanged()
+          FinishedMasterPasswordSaving
         }
   }
 }

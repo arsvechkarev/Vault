@@ -5,12 +5,13 @@ import buisnesslogic.Password
 
 interface MasterPasswordProvider {
   
-  fun provideMasterPassword(): Password
+  fun provideMasterPassword(): Password = requireNotNull(provideMasterPasswordIfSet())
+  
+  fun provideMasterPasswordIfSet(): Password?
 }
 
 object MasterPasswordProviderImpl : MasterPasswordProvider {
-  
-  override fun provideMasterPassword(): Password {
+  override fun provideMasterPasswordIfSet(): Password? {
     return MasterPasswordHolder.masterPassword
   }
 }

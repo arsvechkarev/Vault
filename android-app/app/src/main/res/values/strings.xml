@@ -1,128 +1,129 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
+
+  <!-- Common -->
   <string name="app_name">Vault</string>
   <string name="text_empty"/>
   <string name="text_password">Password</string>
-  <string name="text_passwords">Passwords</string>
-  <string name="text_plain_texts">Plain texts</string>
-  <string name="text_settings">Settings</string>
-  <string name="text_import_passwords">Import passwords</string>
-  <string name="text_export_passwords">Export passwords</string>
-  <string name="text_export">Export</string>
-  <string name="text_create_master_password">Create master password</string>
-  <string name="text_create_new_encrypted_vault">Create new encrypted vault</string>
-  <string name="text_import_existing_vault">Import existing vault</string>
-  <string name="text_weak">Weak</string>
-  <string name="text_medium">Medium</string>
-  <string name="text_strong">Strong</string>
-  <string name="text_secure">Secure</string>
   <string name="text_continue">Continue</string>
-  <string name="text_next">Next</string>
-  <string name="text_error">Error</string>
-  <string name="text_password_cannot_be_empty">Password cannot be empty</string>
+  <string name="text_password_is_empty">Password is empty</string>
+  <string name="text_enter_password">Enter password</string>
+  <string name="text_title">Title</string>
+  <string name="text_enter_title">Enter title</string>
+  <string name="text_title_is_empty">Title is empty</string>
+  <string name="text_save">Save</string>
+  <string name="text_yes">YES</string>
+  <string name="text_change_master_password">Change master password</string>
+  <string name="text_confirmation">Confirmation</string>
+  <string name="text_continue_caps">CONTINUE</string>
+  <string name="text_confirm">CONFIRM</string>
+  <string name="text_deleting_password_question">Do you want to delete %s?</string>
+  <string name="text_deleting_password_question_prefix">Do you want to delete</string>
+  <string name="text_cancel" tools:ignore="ButtonCase">CANCEL</string>
+  <string name="text_delete">DELETE</string>
+  <string name="text_clipboard_label_title">title</string>
+  <string name="text_clipboard_label_username">username</string>
+  <string name="text_clipboard_label_password">password</string>
+  <string name="text_clipboard_label_notes">notes</string>
+  <string name="text_clipboard_label_text">text</string>
+
+  <!-- Initial -->
+  <string name="text_welcome_description">Simple, secure and fast password manager</string>
+  <string name="text_create_new_encrypted_vault">Create new database</string>
+  <string name="text_import_existing_vault">Import existing database</string>
+
+  <!-- Master password -->
+  <string name="text_create_master_password">Create master password</string>
   <string name="text_password_is_incorrect">Password is incorrect</string>
   <string name="text_password_is_too_weak">Password is too weak</string>
   <string name="text_passwords_dont_match">Passwords don\'t match</string>
   <string name="text_password_is_the_same_as_current">Password is the same as current one</string>
   <string name="text_repeat_password">Repeat password</string>
-  <string name="hint_password">Password</string>
-  <string name="hint_enter_password">Enter password</string>
-  <string name="hint_creating_password">Generate or type password here</string>
-  <string name="hint_repeat_password">Repeat password</string>
-  <string name="text_title">Title</string>
-  <string name="hint_title">Enter title</string>
-  <string name="text_username">Username</string>
-  <string name="hint_username">Enter username</string>
-  <string name="hint_text">Enter text</string>
-  <string name="text_text">Text</string>
-  <string name="text_plain_text_created">Plain text entry created!</string>
-  <string name="text_title_is_empty">Title is empty</string>
-  <string name="text_new_entry">New entry</string>
-  <string name="text_new_password">New password</string>
-  <string name="text_new_plain_text">New plain text</string>
-  <string name="text_enter_master_password_to_proceed">Enter master password to proceed</string>
-  <string name="text_no_username">No username</string>
-  <string name="text_no_email">No email</string>
-  <string name="text_no_entries">Nothing yet</string>
-  <string name="text_email">Email</string>
-  <string name="text_password_stub">•••••••••••••••••••</string>
-  <string name="text_copy">Copy</string>
-  <string name="text_show">Show</string>
-  <string name="text_hide">Hide</string>
-  <string name="text_edit">Edit</string>
-  <string name="text_notes">Notes</string>
-  <string name="hint_notes">Add notes</string>
-  <string name="text_edit_password">Edit password</string>
-  <string name="text_password_length">Length: %1$d</string>
-  <string name="text_generate_password">Generate password</string>
-  <string name="text_save">Save</string>
-  <string name="text_uppercase_symbols">Uppercase symbols</string>
-  <string name="text_numbers">Numbers</string>
-  <string name="text_special_symbols">Special symbols</string>
-  <string name="text_ok">OK</string>
-  <string name="text_yes">YES</string>
-  <string name="text_oops">Oops</string>
-  <string name="text_saving_password">Saving password</string>
-  <string name="text_change_master_password">Change master password</string>
-  <string name="text_change_master_password_description">Change master password you use to open the app</string>
-  <string name="text_confirmation">Confirmation</string>
-  <string name="text_continue_caps">CONTINUE</string>
-  <string name="text_confirm">CONFIRM</string>
   <string name="text_confirmation_message">Are you sure you want to change master password? This action cannot
-    be undone and old password will not work anymore.
+    be undone and the old password will not work anymore.
   </string>
-  <string name="text_done">Done!</string>
-  <string name="text_success">Success!</string>
-  <string name="text_master_password_changed">Master password successfully changed!</string>
-  <string name="text_exit">Exit</string>
-  <string name="text_do_you_want_to_leave">Do you want to leave without saving anything?</string>
-  <string name="text_do_you_want_to_save_password">Do you want to accept the password?</string>
-  <string name="text_do_you_want_to_save_data">Do you want to save the data?</string>
-  <string name="text_deleting_entry">Deleting entry</string>
-  <string name="text_deleting_password_question">Do you want to delete %s?</string>
-  <string name="text_deleting_password_question_prefix">Do you want to delete</string>
-  <string name="text_click_plus">Click on the + button below to create new entry</string>
-  <string name="text_cancel" tools:ignore="ButtonCase">CANCEL</string>
-  <string name="text_delete">DELETE</string>
-  <string name="text_got_it">GOT IT</string>
-  <string name="text_username_copied">Username successfully copied!</string>
-  <string name="text_password_copied">Password successfully copied!</string>
-  <string name="text_notes_copied">Notes successfully copied!</string>
-  <string name="text_title_copied">Title successfully copied!</string>
-  <string name="text_text_copied">Text successfully copied!</string>
   <string name="text_change_password">CHANGE PASSWORD</string>
   <string name="text_proceed_with_weak_password">PROCEED WITH WEAK PASSWORD</string>
   <string name="text_password_should_be_strong">
     Your password is too easy to guess, it is dangerous to use. Try adding more numbers, letters and other symbols to make password more secure.
   </string>
-  <string name="text_password_strength">Password strength</string>
-  <string name="text_password_examples">Examples of good passwords:</string>
-  <string name="text_welcome_description">Simple, secure and fast password manager</string>
-  <string name="text_change">Change</string>
-  <string name="text_file_path">Path</string>
-  <string name="text_select_path">Select path</string>
+
+  <!-- Creating password -->
+  <string name="text_edit_password">Edit password</string>
+  <string name="text_generate_or_type_password">Generate or type password here</string>
+  <string name="text_uppercase_symbols">Uppercase symbols</string>
+  <string name="text_numbers">Numbers</string>
+  <string name="text_special_symbols">Special symbols</string>
+  <string name="text_password_length">Length: %1$d</string>
+  <string name="text_generate_password">Generate password</string>
+  <string name="text_saving_password">Saving password</string>
+  <string name="text_weak">Weak</string>
+  <string name="text_medium">Medium</string>
+  <string name="text_strong">Strong</string>
+  <string name="text_secure">Secure</string>
+  <string name="text_do_you_want_to_save_password">Do you want to accept the password?</string>
+  <string name="text_username_copied">Username successfully copied</string>
+  <string name="text_password_copied">Password successfully copied</string>
+  <string name="text_notes_copied">Notes successfully copied</string>
+
+  <!-- Main list -->
+  <string name="text_passwords">Passwords</string>
+  <string name="text_plain_texts">Plain texts</string>
+  <string name="text_new_entry">New entry</string>
+  <string name="text_new_password">New password</string>
+  <string name="text_new_plain_text">New plain text</string>
+  <string name="text_no_entries">Nothing yet</string>
+  <string name="text_click_plus">Click on the + button below to create new entry</string>
+  <string name="text_done">Done</string>
+  <string name="text_export_successful">Exported passwords successfully!</string>
   <string name="text_export_share">Share</string>
-  <string name="text_filename">Filename</string>
-  <string name="text_error_file_path_is_not_selected">File path is empty</string>
-  <string name="text_export_successful">Exported passwords successfully</string>
   <string name="text_export_share_file">SHARE FILE</string>
+  <string name="text_choose_entry_type">Choose entry type</string>
+
+  <!-- Password info -->
+  <string name="text_username">Username</string>
+  <string name="text_enter_username">Enter username</string>
+  <string name="text_email">Email</string>
+  <string name="text_password_stub">•••••••••••••••••••</string>
+  <string name="text_notes">Notes</string>
+  <string name="text_add_notes">Add notes</string>
+  <string name="text_delete_password">Delete password</string>
+
+  <!-- Plain text -->
+  <string name="text_plain_text">Plain text</string>
+  <string name="hint_text">Enter text</string>
+  <string name="text_text">Text</string>
+  <string name="text_plain_text_created">Plain text entry created</string>
+  <string name="text_delete_plain_text">Delete plain text</string>
+  <string name="text_title_copied">Title successfully copied</string>
+  <string name="text_text_copied">Text successfully copied</string>
+
+  <!-- Importing -->
+  <string name="text_import_passwords">Import passwords</string>
   <string name="text_file">File</string>
   <string name="text_select_file">Select file</string>
-  <string name="text_error_file_is_not_selected">You have not selected file</string>
-  <string name="text_import_successful">Imported passwords successfully</string>
+  <string name="text_error_file_is_not_selected">File is not selected</string>
+  <string name="text_success">Success</string>
+  <string name="text_import_successful">Imported passwords successfully!</string>
+  <string name="text_ok">OK</string>
   <string name="text_confirm_import_passwords_message">Importing passwords will cause all your current content
     to be replaced by contents of the file you will choose. If you want to preserve your current passwords,
     you should export them before you import new ones. Are you sure you want to proceed?
   </string>
+  <string name="text_error">Error</string>
   <string name="text_error_import_message">Import is unsuccessful. Either you selected the wrong file or
-    the entered password is incorrect
+    the entered password is incorrect.
   </string>
-  <string name="text_enter_password_to_import">Enter password to decipher the file with</string>
-  <string name="clipboard_label_title">title</string>
-  <string name="clipboard_label_username">username</string>
-  <string name="clipboard_label_password">password</string>
-  <string name="clipboard_label_notes">notes</string>
-  <string name="clipboard_label_text">text</string>
-  <string name="text_choose_entry_type">Choose entry type</string>
-  <string name="text_plain_text">Plain text</string>
-  <string name="text_credit_card">Debit or credit card</string>
+
+  <!-- Exporting -->
+  <string name="text_export_passwords">Export passwords</string>
+  <string name="text_export">Export</string>
+
+  <!-- Enter master password dialog -->
+  <string name="text_enter_master_password_to_proceed">Enter master password to proceed</string>
+  <string name="text_enter_password_to_import">Enter master password</string>
+
+  <!-- Settings -->
+  <string name="text_settings">Settings</string>
+  <string name="text_change_master_password_description">Change master password you use to open the app</string>
+  <string name="text_master_password_changed">Master password successfully changed</string>
 </resources>

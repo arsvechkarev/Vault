@@ -93,7 +93,8 @@ class CreatingPasswordScreen : BaseFragmentScreen() {
             onClick { store.tryDispatch(OnBackClicked) }
           }
         }
-        EditText(MatchParent, WrapContent, style = BaseEditText(R.string.hint_creating_password)) {
+        EditText(MatchParent, WrapContent,
+          style = BaseEditText(R.string.text_generate_or_type_password)) {
           id(EditTextPassword)
           gravity(CENTER)
           margin(MarginSmall)

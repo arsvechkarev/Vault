@@ -78,7 +78,7 @@ class LoginScreen : BaseFragmentScreen() {
             setRawText(BuildConfig.STUB_PASSWORD)
             editText.setSelection(BuildConfig.STUB_PASSWORD.length)
           }
-          setHint(R.string.hint_enter_password)
+          setHint(R.string.text_enter_password)
           onTextChanged { store.tryDispatch(OnTypingText) }
           onSubmit { text -> store.tryDispatch(OnEnteredPassword(text)) }
         }

@@ -86,7 +86,7 @@ class CreatingPasswordEntryScreen : BaseFragmentScreen() {
           text(R.string.text_title)
         }
         EditText(MatchParent, WrapContent) {
-          apply(BaseEditText(hint = R.string.hint_title))
+          apply(BaseEditText(hint = R.string.text_enter_title))
           id(EditTextTitle)
           margins(start = MarginNormal, end = MarginNormal)
           onTextChanged { text -> store.tryDispatch(OnTitleTextChanged(text)) }
@@ -97,7 +97,8 @@ class CreatingPasswordEntryScreen : BaseFragmentScreen() {
           text(R.string.text_username)
           margins(start = MarginNormal, top = MarginLarge)
         }
-        EditText(MatchParent, WrapContent, style = BaseEditText(hint = R.string.hint_username)) {
+        EditText(MatchParent, WrapContent,
+          style = BaseEditText(hint = R.string.text_enter_username)) {
           id(EditTextUsername)
           margins(start = MarginNormal, end = MarginNormal)
           onTextChanged { text -> store.tryDispatch(OnUsernameTextChanged(text)) }

@@ -3,6 +3,6 @@
     <item name="colorPrimary">@color/color_background</item>
     <item name="android:statusBarColor">@android:color/transparent</item>
     <item name="android:windowBackground">@color/color_background</item>
-    <item name="android:navigationBarColor">@color/color_background</item>
+    <item name="android:navigationBarColor">@android:color/black</item>
   </style>
 </resources>

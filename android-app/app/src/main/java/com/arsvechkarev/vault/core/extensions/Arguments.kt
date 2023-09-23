@@ -13,6 +13,10 @@ fun Fragment.stringArg(key: String): String {
   return requireNotNull(arguments?.getString(key))
 }
 
+fun Fragment.booleanArg(key: String = Boolean::class.java.name): Boolean {
+  return requireNotNull(arguments?.getBoolean(key))
+}
+
 fun Fragment.stringNullableArg(key: String): String? {
   return arguments?.getString(key)
 }

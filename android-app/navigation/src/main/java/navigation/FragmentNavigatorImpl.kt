@@ -129,7 +129,7 @@ class FragmentNavigatorImpl(
   private fun FragmentManager.removeTopFragmentWithAnimation(
     fragment: Fragment = fragments.last()
   ) {
-    fragment.requireView().animateSlideToRight(200) {
+    fragment.requireView().animateSlideToRight(animationDuration.toLong()) {
       fragmentManager.transaction { remove(fragment) }
     }
   }

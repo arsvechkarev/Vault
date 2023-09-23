@@ -1,5 +1,6 @@
 package com.arsvechkarev.vault.features.import_passwords
 
+import android.net.Uri
 import com.arsvechkarev.vault.core.mvi.tea.TeaStore
 import com.arsvechkarev.vault.core.mvi.tea.TeaStoreImpl
 import com.arsvechkarev.vault.features.common.di.CoreComponent
@@ -7,7 +8,9 @@ import com.arsvechkarev.vault.features.import_passwords.actors.ImportPasswordsAc
 import com.arsvechkarev.vault.features.import_passwords.actors.ImportPasswordsRouterActor
 
 fun ImportPasswordsStore(
-  coreComponent: CoreComponent
+  coreComponent: CoreComponent,
+  selectedFileUri: Uri?,
+  askForConfirmation: Boolean,
 ): TeaStore<ImportPasswordsState, ImportPasswordsUiEvent, Nothing> {
   return TeaStoreImpl(
     actors = listOf(
@@ -18,7 +21,7 @@ fun ImportPasswordsStore(
       ImportPasswordsRouterActor(coreComponent.router),
     ),
     reducer = ImportPasswordsReducer(),
-    initialState = ImportPasswordsState()
+    initialState = ImportPasswordsState(selectedFileUri, askForConfirmation)
   )
 }
 

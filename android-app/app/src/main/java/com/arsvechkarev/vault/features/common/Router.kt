@@ -9,8 +9,8 @@ import navigation.SwitchToNewRoot
 
 class Router : BaseRouter() {
   
-  fun goForward(screenInfo: ScreenInfo) {
-    executeCommands(Forward(screenInfo))
+  fun goForward(screenInfo: ScreenInfo, animate: Boolean = true) {
+    executeCommands(Forward(screenInfo, animate))
   }
   
   fun goForwardWithRemovalOf(screenInfo: ScreenInfo, screensCount: Int) {

@@ -1,5 +1,6 @@
 package com.arsvechkarev.vault.features.common
 
+import android.net.Uri
 import com.arsvechkarev.vault.core.extensions.bundleOf
 import com.arsvechkarev.vault.features.change_master_password.ChangeMasterPasswordScreen
 import com.arsvechkarev.vault.features.common.model.PasswordItem
@@ -8,6 +9,7 @@ import com.arsvechkarev.vault.features.creating_master_password.CreatingMasterPa
 import com.arsvechkarev.vault.features.creating_password.CreatingPasswordScreen
 import com.arsvechkarev.vault.features.creating_password_entry.CreatingPasswordEntryScreen
 import com.arsvechkarev.vault.features.import_passwords.ImportPasswordsScreen
+import com.arsvechkarev.vault.features.import_passwords.ImportPasswordsScreen.Companion.ASK_FOR_CONFIRMATION
 import com.arsvechkarev.vault.features.initial.InitialScreen
 import com.arsvechkarev.vault.features.login.LoginScreen
 import com.arsvechkarev.vault.features.main_list.MainListScreen
@@ -30,14 +32,14 @@ object Screens {
   val CreatingPasswordEntryScreen = Screen { CreatingPasswordEntryScreen::class }
   
   fun PasswordInfoScreen(passwordId: String): ScreenInfo {
-    val pair = PasswordItem::class.qualifiedName!! to passwordId
+    val pair = PasswordItem::class.java.name to passwordId
     return Screen(arguments = bundleOf(pair)) { PasswordInfoScreen::class }
   }
   
   val CreatingPasswordScreen = Screen { CreatingPasswordScreen::class }
   
   fun PlainTextScreen(plainTextId: String? = null): ScreenInfo {
-    val pair = PlainTextItem::class.qualifiedName!! to plainTextId
+    val pair = PlainTextItem::class.java.name to plainTextId
     return Screen(arguments = bundleOf(pair)) { PlainTextScreen::class }
   }
   
@@ -45,5 +47,12 @@ object Screens {
   
   val ChangeMasterPasswordScreen = Screen { ChangeMasterPasswordScreen::class }
   
-  val ImportPasswordsScreen = Screen { ImportPasswordsScreen::class }
+  fun ImportPasswordsScreen(
+    selectedFileUri: Uri? = null,
+    askForConfirmation: Boolean = true
+  ): ScreenInfo {
+    val uri = Uri::class.java.name to selectedFileUri
+    val confirmationFlag = ASK_FOR_CONFIRMATION to askForConfirmation
+    return Screen(arguments = bundleOf(uri, confirmationFlag)) { ImportPasswordsScreen::class }
+  }
 }

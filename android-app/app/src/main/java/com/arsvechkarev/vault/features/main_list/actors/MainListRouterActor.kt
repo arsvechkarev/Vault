@@ -8,35 +8,33 @@ import com.arsvechkarev.vault.features.common.Screens.ImportPasswordsScreen
 import com.arsvechkarev.vault.features.common.Screens.PasswordInfoScreen
 import com.arsvechkarev.vault.features.common.Screens.PlainTextScreen
 import com.arsvechkarev.vault.features.common.Screens.SettingsScreen
-import com.arsvechkarev.vault.features.common.model.PasswordItem
-import com.arsvechkarev.vault.features.common.model.PlainTextItem
 import com.arsvechkarev.vault.features.common.navigation.RouterActor
 import com.arsvechkarev.vault.features.main_list.MainListCommand
 import com.arsvechkarev.vault.features.main_list.MainListCommand.RouterCommand
 import com.arsvechkarev.vault.features.main_list.MainListCommand.RouterCommand.GoBack
-import com.arsvechkarev.vault.features.main_list.MainListCommand.RouterCommand.GoToCorrespondingInfoScreen
 import com.arsvechkarev.vault.features.main_list.MainListCommand.RouterCommand.OpenScreen
 import com.arsvechkarev.vault.features.main_list.MainListEvent
-import com.arsvechkarev.vault.features.main_list.ScreenType
+import com.arsvechkarev.vault.features.main_list.ScreenInfo.ImportPasswords
+import com.arsvechkarev.vault.features.main_list.ScreenInfo.NewPassword
+import com.arsvechkarev.vault.features.main_list.ScreenInfo.NewPlainText
+import com.arsvechkarev.vault.features.main_list.ScreenInfo.Password
+import com.arsvechkarev.vault.features.main_list.ScreenInfo.PlainText
+import com.arsvechkarev.vault.features.main_list.ScreenInfo.Settings
 import kotlinx.coroutines.delay
+import navigation.ScreenInfo
 
 fun MainListRouterActor(router: Router): Actor<MainListCommand, MainListEvent> {
   return RouterActor<MainListCommand, RouterCommand, MainListEvent>(router) { command ->
     when (command) {
       is OpenScreen -> {
-        delay(Durations.MenuOpening)
-        when (command.type) {
-          ScreenType.IMPORT_PASSWORDS -> goForward(ImportPasswordsScreen)
-          ScreenType.SETTINGS -> goForward(SettingsScreen)
-          ScreenType.NEW_PASSWORD -> goForward(CreatingPasswordEntryScreen)
-          ScreenType.NEW_PLAIN_TEXT -> goForward(PlainTextScreen())
-        }
-      }
-      
-      is GoToCorrespondingInfoScreen -> {
-        when (command.entryItem) {
-          is PasswordItem -> goForward(PasswordInfoScreen(command.entryItem.id))
-          is PlainTextItem -> goForward(PlainTextScreen(command.entryItem.id))
+        when (val info = command.info) {
+          is Password -> goForward(PasswordInfoScreen(info.passwordEntry.id))
+          is PlainText -> goForward(PlainTextScreen(info.plainTextEntry.id))
+          is ImportPasswords -> goForward(ImportPasswordsScreen(info.selectedFileUri),
+            animate = false)
+          NewPassword -> goForwardWithDelay(CreatingPasswordEntryScreen)
+          NewPlainText -> goForwardWithDelay(PlainTextScreen())
+          Settings -> goForwardWithDelay(SettingsScreen)
         }
       }
       
@@ -45,4 +43,9 @@ fun MainListRouterActor(router: Router): Actor<MainListCommand, MainListEvent> {
       }
     }
   }
+}
+
+private suspend fun Router.goForwardWithDelay(screenInfo: ScreenInfo) {
+  delay(Durations.MenuOpening)
+  goForward(screenInfo)
 }

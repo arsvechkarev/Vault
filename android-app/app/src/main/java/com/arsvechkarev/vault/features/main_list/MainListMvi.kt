@@ -19,7 +19,8 @@ sealed interface MainListUiEvent : MainListEvent {
   class OnListItemClicked(val item: EntryItem) : MainListUiEvent
   class OnMenuItemClicked(val itemType: MenuItemType) : MainListUiEvent
   class OnEntryTypeSelected(val type: EntryType) : MainListUiEvent
-  class OnFileForExportSelected(val fileUriForExporting: Uri) : MainListUiEvent
+  class OnImportFileSelected(val fileUri: Uri) : MainListUiEvent
+  class OnExportFileSelected(val fileUri: Uri) : MainListUiEvent
   object OnHideShareExportedFileDialog : MainListUiEvent
 }
 
@@ -30,14 +31,14 @@ sealed interface MainListCommand {
   class ExportPasswordsFile(val fileUriForExporting: Uri) : MainListCommand
   
   sealed interface RouterCommand : MainListCommand {
-    class OpenScreen(val type: ScreenType) : RouterCommand
-    class GoToCorrespondingInfoScreen(val entryItem: EntryItem) : RouterCommand
+    class OpenScreen(val info: ScreenInfo) : RouterCommand
     object GoBack : RouterCommand
   }
 }
 
 sealed interface MainListNews {
   object LaunchSelectExportFileActivity : MainListNews
+  object LaunchSelectImportFileActivity : MainListNews
 }
 
 data class MainListState(
@@ -56,11 +57,13 @@ enum class MenuItemType {
   NEW_ENTRY,
 }
 
-enum class ScreenType {
-  IMPORT_PASSWORDS,
-  SETTINGS,
-  NEW_PASSWORD,
-  NEW_PLAIN_TEXT,
+sealed interface ScreenInfo {
+  class ImportPasswords(val selectedFileUri: Uri) : ScreenInfo
+  class Password(val passwordEntry: EntryItem) : ScreenInfo
+  class PlainText(val plainTextEntry: EntryItem) : ScreenInfo
+  object Settings : ScreenInfo
+  object NewPassword : ScreenInfo
+  object NewPlainText : ScreenInfo
 }
 
 enum class EntryType {

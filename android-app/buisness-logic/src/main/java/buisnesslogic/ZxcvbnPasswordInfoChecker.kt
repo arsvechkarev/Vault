@@ -22,17 +22,14 @@ class ZxcvbnPasswordInfoChecker(
     }
   }
   
-  override fun checkForErrors(password: Password): PasswordError? {
+  override fun checkStatus(password: Password): PasswordStatus {
     val passwordString = password.stringData
     if (passwordString.isBlank()) {
-      return PasswordError.EMPTY
-    }
-    if (passwordString.length < MIN_PASSWORD_LENGTH) {
-      return PasswordError.TOO_SHORT
+      return PasswordStatus.EMPTY
     }
     if (checkStrength(password) == PasswordStrength.WEAK) {
-      return PasswordError.TOO_WEAK
+      return PasswordStatus.TOO_WEAK
     }
-    return null
+    return PasswordStatus.OK
   }
 }

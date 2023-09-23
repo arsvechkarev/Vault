@@ -44,7 +44,7 @@ class EditTextPassword(context: Context) : FrameLayout(context) {
       EditText(MatchParent, MatchParent) {
         paddings(top = MarginSmall, bottom = MarginSmall, end = imageSize + iconMarginStart)
         font(Fonts.SegoeUi)
-        textSize(TextSizes.H3)
+        textSize(TextSizes.H4)
         setSingleLine()
         inputType = InputType.TYPE_TEXT_VARIATION_PASSWORD
         imeOptions = EditorInfo.IME_ACTION_DONE
@@ -82,7 +82,7 @@ class EditTextPassword(context: Context) : FrameLayout(context) {
   
   fun setHint(hintResId: Int) = editText.setHint(hintResId)
   
-  fun onSubmit(block: (Password) -> Unit) = editText.onSubmit { it ->
+  fun onSubmit(block: (Password) -> Unit) = editText.onSubmit {
     block(Password.create(it.toString()))
   }
   

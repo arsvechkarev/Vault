@@ -22,7 +22,7 @@
   <string name="text_password_is_incorrect">Password is incorrect</string>
   <string name="text_password_is_too_weak">Password is too weak</string>
   <string name="text_passwords_dont_match">Passwords don\'t match</string>
-  <string name="text_password_is_the_same_as_current">Entered password is the same as current</string>
+  <string name="text_password_is_the_same_as_current">Password is the same as current one</string>
   <string name="text_repeat_password">Repeat password</string>
   <string name="hint_password">Password</string>
   <string name="hint_enter_password">Enter password</string>
@@ -63,18 +63,16 @@
   <string name="text_oops">Oops</string>
   <string name="text_saving_password">Saving password</string>
   <string name="text_change_master_password">Change master password</string>
-  <string name="text_change_master_password_description">
-    Change the master password you use to open the app
-  </string>
+  <string name="text_change_master_password_description">Change master password you use to open the app</string>
   <string name="text_confirmation">Confirmation</string>
-  <string name="text_proceed">PROCEED</string>
+  <string name="text_continue_caps">CONTINUE</string>
   <string name="text_confirm">CONFIRM</string>
   <string name="text_confirmation_message">Are you sure you want to change master password? This action cannot
-    be undone and old password will not work anymore
+    be undone and old password will not work anymore.
   </string>
   <string name="text_done">Done!</string>
   <string name="text_success">Success!</string>
-  <string name="text_master_password_changed">Master password successfully changed</string>
+  <string name="text_master_password_changed">Master password successfully changed!</string>
   <string name="text_exit">Exit</string>
   <string name="text_do_you_want_to_leave">Do you want to leave without saving anything?</string>
   <string name="text_do_you_want_to_save_password">Do you want to accept the password?</string>

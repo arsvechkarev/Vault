@@ -4,12 +4,16 @@ import android.content.Context
 import android.view.Gravity
 import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.lifecycle.lifecycleScope
 import com.arsvechkarev.vault.R
-import com.arsvechkarev.vault.features.common.Screens.ChangeMasterPasswordScreen
+import com.arsvechkarev.vault.core.views.Snackbar
+import com.arsvechkarev.vault.features.common.Durations
+import com.arsvechkarev.vault.features.common.Screens.MasterPasswordScreen
 import com.arsvechkarev.vault.features.common.di.CoreComponentHolder.coreComponent
 import com.arsvechkarev.vault.features.common.dialogs.EnterPasswordDialog.Companion.EnterPasswordDialog
 import com.arsvechkarev.vault.features.common.dialogs.EnterPasswordDialog.Companion.enterPasswordDialog
 import com.arsvechkarev.vault.features.common.dialogs.EnterPasswordDialog.Mode.CHECK_MASTER_PASSWORD
+import com.arsvechkarev.vault.features.master_password.MasterPasswordScreenMode.CHANGE_EXISTING
 import com.arsvechkarev.vault.viewbuilding.Colors
 import com.arsvechkarev.vault.viewbuilding.Dimens.DividerHeight
 import com.arsvechkarev.vault.viewbuilding.Dimens.GradientDrawableHeight
@@ -20,11 +24,15 @@ import com.arsvechkarev.vault.viewbuilding.Styles.BoldTextView
 import com.arsvechkarev.vault.viewbuilding.Styles.IconBack
 import com.arsvechkarev.vault.viewbuilding.Styles.SecondaryTextView
 import com.arsvechkarev.vault.viewbuilding.TextSizes
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import navigation.BaseFragmentScreen
 import viewdsl.Size.Companion.MatchParent
 import viewdsl.Size.Companion.WrapContent
 import viewdsl.Size.IntSize
 import viewdsl.backgroundColor
+import viewdsl.classNameTag
 import viewdsl.constraints
 import viewdsl.gravity
 import viewdsl.id
@@ -93,15 +101,29 @@ class SettingsScreen : BaseFragmentScreen() {
           }
         }
       }
+      child<Snackbar>(MatchParent, WrapContent) {
+        classNameTag()
+        layoutGravity(Gravity.BOTTOM)
+        margin(MarginNormal)
+      }
       EnterPasswordDialog(
         mode = CHECK_MASTER_PASSWORD,
         hideKeyboardOnClose = false,
         onCheckSuccessful = {
-          coreComponent.router.goForward(ChangeMasterPasswordScreen)
+          coreComponent.router.goForward(MasterPasswordScreen(CHANGE_EXISTING))
           enterPasswordDialog.hide()
         },
       )
     }
+  }
+  
+  override fun onInit() {
+    coreComponent.globalChangeMasterPasswordSubscriber.masterPasswordChanges
+        .onEach {
+          delay(Durations.Default)
+          viewAs<Snackbar>().show(R.string.text_master_password_changed)
+        }
+        .launchIn(lifecycleScope)
   }
   
   override fun handleBackPress(): Boolean {

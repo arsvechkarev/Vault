@@ -6,9 +6,10 @@ import android.view.Gravity.CENTER
 import android.view.View
 import buisnesslogic.IMPORT_CONTENT_TYPE
 import com.arsvechkarev.vault.R
-import com.arsvechkarev.vault.features.common.Screens
 import com.arsvechkarev.vault.features.common.Screens.ImportPasswordsScreen
+import com.arsvechkarev.vault.features.common.Screens.MasterPasswordScreen
 import com.arsvechkarev.vault.features.common.di.CoreComponentHolder.coreComponent
+import com.arsvechkarev.vault.features.master_password.MasterPasswordScreenMode.CREATING_NEW
 import com.arsvechkarev.vault.viewbuilding.Dimens.ImageLogoSize
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginExtraLarge
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginNormal
@@ -63,7 +64,7 @@ class InitialScreen : BaseFragmentScreen() {
           text(R.string.text_create_new_encrypted_vault)
           margins(bottom = MarginNormal)
           onClick {
-            coreComponent.router.goForward(Screens.CreatingMasterPasswordScreen)
+            coreComponent.router.goForward(MasterPasswordScreen(CREATING_NEW))
           }
         }
         TextView(MatchParent, WrapContent, style = Button()) {

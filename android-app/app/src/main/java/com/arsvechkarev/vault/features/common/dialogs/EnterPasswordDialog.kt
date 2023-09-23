@@ -97,7 +97,7 @@ class EnterPasswordDialog(context: Context) : FrameLayout(context) {
         child<EditTextPassword>(MatchParent, WrapContent) {
           margins(top = MarginExtraLarge + MarginNormal)
           classNameTag()
-          setHint(R.string.hint_enter_password)
+          setHint(R.string.text_enter_password)
           onTextChanged { parentView.textView(TextError).clearText() }
           onSubmit { password -> handleContinueClick(password) }
         }
@@ -117,7 +117,7 @@ class EnterPasswordDialog(context: Context) : FrameLayout(context) {
                 handleContinueClick(text)
               } else {
                 parentView.parentView.textView(TextError)
-                    .text(R.string.text_password_cannot_be_empty)
+                    .text(R.string.text_password_is_empty)
               }
             }
             TextView(MatchParent, WrapContent, style = BoldTextView) {

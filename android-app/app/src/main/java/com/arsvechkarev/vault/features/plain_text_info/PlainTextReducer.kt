@@ -49,7 +49,6 @@ class PlainTextReducer : DslReducer<PlainTextState, PlainTextEvent,
           commands(FetchPlainTextEntry(state.plainTextId))
         }
       }
-      
       is ReceivedPlainTextEntry -> {
         check(state is ExistingEntry)
         state {
@@ -64,7 +63,6 @@ class PlainTextReducer : DslReducer<PlainTextState, PlainTextEvent,
           SetText(event.plainTextEntry.text)
         )
       }
-      
       is OnTitleChanged -> when (state) {
         is NewEntry -> {
           state { state.copy(showTitleIsEmpty = false, title = event.title) }
@@ -74,7 +72,6 @@ class PlainTextReducer : DslReducer<PlainTextState, PlainTextEvent,
           state { state.copy(titleState = state.titleState.edit(event.title)) }
         }
       }
-      
       is OnTextChanged -> when (state) {
         is NewEntry -> {
           state { state.copy(text = event.text) }
@@ -84,21 +81,17 @@ class PlainTextReducer : DslReducer<PlainTextState, PlainTextEvent,
           state { state.copy(textState = state.textState.edit(event.text)) }
         }
       }
-      
       OnSaveClicked -> {
         check(state is NewEntry)
         if (state.title.isBlank()) {
           state { state.copy(showTitleIsEmpty = true) }
         } else {
-          state { state.copy(showConfirmSaveDialog = true) }
+          commands(SavePlainText(PlainTextEntryData(state.title, state.text)))
         }
       }
-      
       OnConfirmedSaving -> {
         check(state is NewEntry)
-        commands(SavePlainText(PlainTextEntryData(state.title, state.text)))
       }
-      
       is NotifyEntryCreated -> {
         check(state is NewEntry)
         state {
@@ -111,7 +104,6 @@ class PlainTextReducer : DslReducer<PlainTextState, PlainTextEvent,
         }
         news(ShowEntryCreated)
       }
-      
       OnTitleActionClicked -> {
         check(state is ExistingEntry)
         handleAction(
@@ -122,11 +114,10 @@ class PlainTextReducer : DslReducer<PlainTextState, PlainTextEvent,
           updateCommand = ::UpdateTitle,
           allowEmptySave = false,
           copyNews = ShowTitleCopied,
-          copyCommand = { text -> Copy(R.string.clipboard_label_title, text) },
+          copyCommand = { text -> Copy(R.string.text_clipboard_label_title, text) },
           setTextNews = ::SetTitle
         )
       }
-      
       OnTextActionClicked -> {
         check(state is ExistingEntry)
         handleAction(
@@ -137,11 +128,10 @@ class PlainTextReducer : DslReducer<PlainTextState, PlainTextEvent,
           updateCommand = ::UpdateText,
           allowEmptySave = true,
           copyNews = ShowTextCopied,
-          copyCommand = { text -> Copy(R.string.clipboard_label_text, text) },
+          copyCommand = { text -> Copy(R.string.text_clipboard_label_text, text) },
           setTextNews = ::SetText
         )
       }
-      
       is UpdatedTitle -> {
         check(state is ExistingEntry)
         state {
@@ -151,7 +141,6 @@ class PlainTextReducer : DslReducer<PlainTextState, PlainTextEvent,
           )
         }
       }
-      
       is UpdatedText -> {
         check(state is ExistingEntry)
         state {
@@ -161,46 +150,35 @@ class PlainTextReducer : DslReducer<PlainTextState, PlainTextEvent,
           )
         }
       }
-      
       OnDeleteClicked -> {
         check(state is ExistingEntry)
         state { state.copy(showConfirmDeleteDialog = true) }
       }
-      
       OnConfirmedDeleting -> {
         check(state is ExistingEntry)
         state { state.copy(showLoadingDialog = true, showConfirmDeleteDialog = false) }
         commands(DeletePlainText(state.plainTextId))
       }
-      
       NotifyEntryDeleted -> {
         check(state is ExistingEntry)
         state { state.copy(showLoadingDialog = false) }
         commands(GoBack)
       }
-      
       OnDialogHidden -> {
-        when (state) {
-          is NewEntry -> state { state.copy(showConfirmSaveDialog = false) }
-          is ExistingEntry -> state { state.copy(showConfirmDeleteDialog = false) }
+        if (state is ExistingEntry) {
+          state { state.copy(showConfirmDeleteDialog = false) }
         }
       }
-      
       OnBackPressed -> {
         when (state) {
           is NewEntry -> {
-            when {
-              state.showConfirmSaveDialog -> state { state.copy(showConfirmSaveDialog = false) }
-              else -> commands(GoBack)
-            }
+            commands(GoBack)
           }
-          
           is ExistingEntry -> {
             when {
               state.showConfirmDeleteDialog -> {
                 state { state.copy(showConfirmDeleteDialog = false) }
               }
-              
               state.isEditingSomething -> {
                 state {
                   state.copy(
@@ -213,7 +191,6 @@ class PlainTextReducer : DslReducer<PlainTextState, PlainTextEvent,
                   SetText(state.textState.initialText)
                 )
               }
-              
               else -> {
                 commands(GoBack)
               }

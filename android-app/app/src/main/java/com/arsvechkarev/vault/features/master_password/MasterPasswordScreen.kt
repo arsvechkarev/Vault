@@ -118,7 +118,7 @@ class MasterPasswordScreen : BaseFragmentScreen() {
           child<EditTextPassword>(MatchParent, WrapContent) {
             id(EditTextEnterPassword)
             marginHorizontal(MarginNormal - MarginTiny)
-            setHint(R.string.hint_enter_password)
+            setHint(R.string.text_enter_password)
             onTextChanged { text ->
               store.tryDispatch(OnInitialPasswordTyping(text))
             }
@@ -126,7 +126,7 @@ class MasterPasswordScreen : BaseFragmentScreen() {
           child<EditTextPassword>(MatchParent, WrapContent) {
             id(EditTextRepeatPassword)
             marginHorizontal(MarginNormal - MarginTiny)
-            setHint(R.string.hint_repeat_password)
+            setHint(R.string.text_repeat_password)
             onTextChanged { text ->
               store.tryDispatch(OnRepeatPasswordTyping(text))
             }
@@ -218,7 +218,7 @@ class MasterPasswordScreen : BaseFragmentScreen() {
   private fun showPasswordStatus(passwordStatus: UiPasswordStatus) {
     val text = when (passwordStatus) {
       OK -> R.string.text_empty
-      EMPTY -> R.string.text_password_cannot_be_empty
+      EMPTY -> R.string.text_password_is_empty
       TOO_WEAK -> R.string.text_password_is_too_weak
       PASSWORDS_DONT_MATCH -> R.string.text_passwords_dont_match
       PASSWORD_SAME_AS_CURRENT -> R.string.text_password_is_the_same_as_current

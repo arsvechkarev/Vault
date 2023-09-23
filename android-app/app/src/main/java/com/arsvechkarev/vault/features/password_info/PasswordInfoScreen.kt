@@ -169,7 +169,7 @@ class PasswordInfoScreen : BaseFragmentScreen() {
             endToEndOf(parent)
           }
         }
-        EditText(ZERO, WrapContent, BaseEditText(hint = R.string.hint_title)) {
+        EditText(ZERO, WrapContent, BaseEditText(hint = R.string.text_enter_title)) {
           id(EditTextTitle)
           margins(end = MarginNormal)
           addTextChangedListener(titleTextWatcher)
@@ -195,7 +195,7 @@ class PasswordInfoScreen : BaseFragmentScreen() {
             startToStartOf(parent)
           }
         }
-        EditText(ZERO, WrapContent, style = BaseEditText(hint = R.string.hint_username)) {
+        EditText(ZERO, WrapContent, style = BaseEditText(hint = R.string.text_enter_username)) {
           id(EditTextUsername)
           margins(end = MarginNormal)
           addTextChangedListener(usernameTextWatcher)
@@ -255,7 +255,7 @@ class PasswordInfoScreen : BaseFragmentScreen() {
             startToStartOf(parent)
           }
         }
-        EditText(ZERO, WrapContent, BaseEditText(hint = R.string.hint_notes)) {
+        EditText(ZERO, WrapContent, BaseEditText(hint = R.string.text_add_notes)) {
           id(EditTextNotes)
           font(Fonts.SegoeUi)
           textSize(TextSizes.H4)
@@ -343,7 +343,7 @@ class PasswordInfoScreen : BaseFragmentScreen() {
   
   private fun showInfoDialog(state: PasswordInfoState) {
     infoDialog.showWithCancelAndProceedOption(
-      titleRes = R.string.text_deleting_entry,
+      titleRes = R.string.text_delete_password,
       messageRes = getDeleteMessageText(state.titleState.initialText),
       onCancel = { store.tryDispatch(OnDialogHidden) },
       onProceed = { store.tryDispatch(OnConfirmedDeletion) }

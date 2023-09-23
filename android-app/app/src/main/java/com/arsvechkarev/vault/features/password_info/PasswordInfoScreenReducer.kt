@@ -74,7 +74,7 @@ class PasswordInfoScreenReducer :
           updateAction = { text -> copy(title = text) },
           updateCommand = ::UpdateTitle,
           allowEmptySave = false,
-          copyCommand = { text -> Copy(R.string.clipboard_label_title, text) },
+          copyCommand = { text -> Copy(R.string.text_clipboard_label_title, text) },
           copyNews = ShowTitleCopied,
           setTextNews = ::SetTitle
         )
@@ -88,7 +88,7 @@ class PasswordInfoScreenReducer :
           updateAction = { text -> copy(username = text) },
           updateCommand = ::UpdateUsername,
           allowEmptySave = true,
-          copyCommand = { text -> Copy(R.string.clipboard_label_username, text) },
+          copyCommand = { text -> Copy(R.string.text_clipboard_label_username, text) },
           copyNews = ShowUsernameCopied,
           setTextNews = ::SetUsername
         )
@@ -102,7 +102,7 @@ class PasswordInfoScreenReducer :
           updateAction = { text -> copy(notes = text) },
           updateCommand = ::UpdateNotes,
           allowEmptySave = true,
-          copyCommand = { text -> Copy(R.string.clipboard_label_notes, text) },
+          copyCommand = { text -> Copy(R.string.text_clipboard_label_notes, text) },
           copyNews = ShowNotesCopied,
           setTextNews = ::SetNotes
         )
@@ -110,7 +110,7 @@ class PasswordInfoScreenReducer :
       
       OnCopyPasswordClicked -> {
         val rawPassword = state.passwordEntryNonNull.password.stringData
-        commands(Copy(R.string.clipboard_label_password, rawPassword))
+        commands(Copy(R.string.text_clipboard_label_password, rawPassword))
         news(ShowPasswordCopied)
       }
       

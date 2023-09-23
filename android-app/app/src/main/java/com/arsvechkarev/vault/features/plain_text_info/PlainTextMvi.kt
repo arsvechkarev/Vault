@@ -61,8 +61,7 @@ sealed interface PlainTextState {
   data class NewEntry(
     val title: String = "",
     val text: String = "",
-    val showTitleIsEmpty: Boolean = false,
-    val showConfirmSaveDialog: Boolean = false,
+    val showTitleIsEmpty: Boolean = false
   ) : PlainTextState
   
   data class ExistingEntry(

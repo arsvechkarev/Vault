@@ -30,7 +30,6 @@ import com.arsvechkarev.vault.features.plain_text_info.PlainTextState.ExistingEn
 import com.arsvechkarev.vault.features.plain_text_info.PlainTextState.NewEntry
 import com.arsvechkarev.vault.features.plain_text_info.PlainTextUiEvent.OnBackPressed
 import com.arsvechkarev.vault.features.plain_text_info.PlainTextUiEvent.OnConfirmedDeleting
-import com.arsvechkarev.vault.features.plain_text_info.PlainTextUiEvent.OnConfirmedSaving
 import com.arsvechkarev.vault.features.plain_text_info.PlainTextUiEvent.OnDeleteClicked
 import com.arsvechkarev.vault.features.plain_text_info.PlainTextUiEvent.OnDialogHidden
 import com.arsvechkarev.vault.features.plain_text_info.PlainTextUiEvent.OnInit
@@ -125,7 +124,7 @@ class PlainTextScreen : BaseFragmentScreen() {
             startToStartOf(parent)
           }
         }
-        EditText(ZERO, WrapContent, style = BaseEditText(hint = R.string.hint_title)) {
+        EditText(ZERO, WrapContent, style = BaseEditText(hint = R.string.text_enter_title)) {
           id(EditTextTitle)
           margins(start = MarginNormal, end = MarginNormal)
           onSubmit { editText(EditTextText).requestFocus() }
@@ -241,17 +240,6 @@ class PlainTextScreen : BaseFragmentScreen() {
     } else {
       showAccentTextViewDefault(Title, R.string.text_title)
     }
-    if (state.showConfirmSaveDialog) {
-      infoDialog.showWithOkOption(
-        R.string.text_confirmation,
-        R.string.text_do_you_want_to_save_data,
-        R.string.text_yes,
-        onCancel = { store.tryDispatch(OnDialogHidden) },
-        onOkClicked = { store.tryDispatch(OnConfirmedSaving) }
-      )
-    } else {
-      infoDialog.hide()
-    }
   }
   
   private fun renderExistingEntry(state: ExistingEntry) {
@@ -262,7 +250,7 @@ class PlainTextScreen : BaseFragmentScreen() {
     }
     if (state.showConfirmDeleteDialog) {
       infoDialog.showWithCancelAndProceedOption(
-        titleRes = R.string.text_deleting_entry,
+        titleRes = R.string.text_delete_plain_text,
         messageRes = getDeleteMessageText(state.titleState.initialText),
         onCancel = { store.tryDispatch(OnDialogHidden) },
         onProceed = { store.tryDispatch(OnConfirmedDeleting) }

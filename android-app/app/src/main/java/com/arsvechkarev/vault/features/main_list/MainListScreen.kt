@@ -7,6 +7,7 @@ import android.net.Uri
 import android.view.Gravity.CENTER_HORIZONTAL
 import android.view.View
 import androidx.core.graphics.ColorUtils
+import buisnesslogic.IMPORT_CONTENT_TYPE
 import com.arsvechkarev.vault.R
 import com.arsvechkarev.vault.core.mvi.ext.subscribe
 import com.arsvechkarev.vault.core.mvi.ext.viewModelStore
@@ -23,12 +24,14 @@ import com.arsvechkarev.vault.features.common.dialogs.loadingDialog
 import com.arsvechkarev.vault.features.common.model.Empty
 import com.arsvechkarev.vault.features.common.model.Loading
 import com.arsvechkarev.vault.features.main_list.MainListNews.LaunchSelectExportFileActivity
+import com.arsvechkarev.vault.features.main_list.MainListNews.LaunchSelectImportFileActivity
 import com.arsvechkarev.vault.features.main_list.MainListUiEvent.OnBackPressed
 import com.arsvechkarev.vault.features.main_list.MainListUiEvent.OnCloseMenuClicked
 import com.arsvechkarev.vault.features.main_list.MainListUiEvent.OnEntryTypeDialogHidden
 import com.arsvechkarev.vault.features.main_list.MainListUiEvent.OnEntryTypeSelected
-import com.arsvechkarev.vault.features.main_list.MainListUiEvent.OnFileForExportSelected
+import com.arsvechkarev.vault.features.main_list.MainListUiEvent.OnExportFileSelected
 import com.arsvechkarev.vault.features.main_list.MainListUiEvent.OnHideShareExportedFileDialog
+import com.arsvechkarev.vault.features.main_list.MainListUiEvent.OnImportFileSelected
 import com.arsvechkarev.vault.features.main_list.MainListUiEvent.OnInit
 import com.arsvechkarev.vault.features.main_list.MainListUiEvent.OnListItemClicked
 import com.arsvechkarev.vault.features.main_list.MainListUiEvent.OnMenuItemClicked
@@ -128,10 +131,14 @@ class MainListScreen : BaseFragmentScreen() {
     }
   }
   
+  private val selectExportFileLauncher = coreComponent.activityResultWrapper
+      .wrapCreateFileLauncher(this, EXPORT_CONTENT_TYPE) { uri ->
+        store.tryDispatch(OnExportFileSelected(uri))
+      }
   
-  private val selectFileForResultLauncher = coreComponent.activityResultWrapper
-      .wrapCreateFileLauncher(this, CONTENT_TYPE) { uri ->
-        store.tryDispatch(OnFileForExportSelected(uri))
+  private val selectImportFileLauncher = coreComponent.activityResultWrapper
+      .wrapGetFileLauncher(this@MainListScreen) { uri ->
+        store.tryDispatch(OnImportFileSelected(uri))
       }
   
   private val store by viewModelStore { MainListStore(coreComponent) }
@@ -148,8 +155,13 @@ class MainListScreen : BaseFragmentScreen() {
   }
   
   private fun handleNews(news: MainListNews) {
-    if (news is LaunchSelectExportFileActivity) {
-      selectFileForResultLauncher.launch(DEFAULT_FILENAME)
+    when (news) {
+      is LaunchSelectExportFileActivity -> {
+        selectExportFileLauncher.launch(DEFAULT_FILENAME)
+      }
+      LaunchSelectImportFileActivity -> {
+        selectImportFileLauncher.launch(IMPORT_CONTENT_TYPE)
+      }
     }
   }
   
@@ -199,14 +211,14 @@ class MainListScreen : BaseFragmentScreen() {
     val shareIntent = Intent().apply {
       action = Intent.ACTION_SEND
       putExtra(Intent.EXTRA_STREAM, exportedFileUri)
-      type = CONTENT_TYPE
+      type = EXPORT_CONTENT_TYPE
     }
     startActivity(Intent.createChooser(shareIntent, getString(R.string.text_export_share)))
   }
   
   companion object {
     
-    const val CONTENT_TYPE = "content/unknown"
+    const val EXPORT_CONTENT_TYPE = "content/unknown"
     const val DEFAULT_FILENAME = "data.kdbx"
     
     val ChooseEntryTypeBottomSheet = View.generateViewId()

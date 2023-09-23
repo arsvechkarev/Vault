@@ -4,8 +4,10 @@ import android.content.Context
 import android.view.Gravity.BOTTOM
 import android.view.Gravity.CENTER
 import android.view.View
+import buisnesslogic.IMPORT_CONTENT_TYPE
 import com.arsvechkarev.vault.R
 import com.arsvechkarev.vault.features.common.Screens
+import com.arsvechkarev.vault.features.common.Screens.ImportPasswordsScreen
 import com.arsvechkarev.vault.features.common.di.CoreComponentHolder.coreComponent
 import com.arsvechkarev.vault.viewbuilding.Dimens.ImageLogoSize
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginExtraLarge
@@ -67,13 +69,19 @@ class InitialScreen : BaseFragmentScreen() {
         TextView(MatchParent, WrapContent, style = Button()) {
           id(ButtonImportPasswords)
           text(R.string.text_import_existing_vault)
-          onClick {
-            coreComponent.router.goForward(Screens.ImportPasswordsScreen)
-          }
+          onClick { importFileLauncher.launch(IMPORT_CONTENT_TYPE) }
         }
       }
     }
   }
+  
+  private val importFileLauncher = coreComponent.activityResultWrapper
+      .wrapGetFileLauncher(this@InitialScreen) { uri ->
+        coreComponent.router.goForward(
+          screenInfo = ImportPasswordsScreen(uri, askForConfirmation = false),
+          animate = false
+        )
+      }
   
   companion object {
     

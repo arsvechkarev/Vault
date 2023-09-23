@@ -1,10 +1,15 @@
 package com.arsvechkarev.vault.features.import_passwords
 
 import android.content.Context
+import android.net.Uri
+import android.os.Environment
 import android.view.Gravity
 import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
+import buisnesslogic.IMPORT_CONTENT_TYPE
 import com.arsvechkarev.vault.R
+import com.arsvechkarev.vault.core.extensions.booleanArg
+import com.arsvechkarev.vault.core.extensions.nullableArg
 import com.arsvechkarev.vault.core.mvi.ext.subscribe
 import com.arsvechkarev.vault.core.mvi.ext.viewModelStore
 import com.arsvechkarev.vault.features.common.di.CoreComponentHolder.coreComponent
@@ -47,6 +52,8 @@ import viewdsl.text
 import viewdsl.textColor
 import viewdsl.textSize
 import viewdsl.withViewBuilder
+import java.io.File
+import java.net.URLDecoder
 
 class ImportPasswordsScreen : BaseFragmentScreen() {
   
@@ -74,7 +81,7 @@ class ImportPasswordsScreen : BaseFragmentScreen() {
         VerticalLayout(MatchParent, WrapContent) {
           id(LayoutSelectFile)
           margins(start = MarginNormal, top = GradientDrawableHeight)
-          onClick { selectFileResultLauncher.launch(CONTENT_TYPE) }
+          onClick { selectFileResultLauncher.launch(IMPORT_CONTENT_TYPE) }
           constraints {
             topToTopOf(parent)
           }
@@ -112,7 +119,9 @@ class ImportPasswordsScreen : BaseFragmentScreen() {
   private val selectFileResultLauncher = coreComponent.activityResultWrapper
       .wrapGetFileLauncher(this) { uri -> store.tryDispatch(OnSelectedFile(uri)) }
   
-  private val store by viewModelStore { ImportPasswordsStore(coreComponent) }
+  private val store by viewModelStore {
+    ImportPasswordsStore(coreComponent, nullableArg(Uri::class), booleanArg(ASK_FOR_CONFIRMATION))
+  }
   
   override fun onInit() {
     store.subscribe(this, ::render)
@@ -125,10 +134,11 @@ class ImportPasswordsScreen : BaseFragmentScreen() {
   }
   
   private fun renderText(state: ImportPasswordsState) {
-    val filePath = state.selectedFileUri?.toString()
-    // TODO (9/22/23): Make filepath more human-readable
-    val text = filePath?.removePrefix(CONTENT_PREFIX) ?: getString(R.string.text_select_file)
-    textView(TextSelectFile).text(text)
+    if (state.selectedFileUri == null) {
+      textView(TextSelectFile).text(R.string.text_select_file)
+    } else {
+      textView(TextSelectFile).text(getReadablePath(state.selectedFileUri))
+    }
   }
   
   private fun renderError(state: ImportPasswordsState) {
@@ -193,10 +203,20 @@ class ImportPasswordsScreen : BaseFragmentScreen() {
     return true
   }
   
+  private fun getReadablePath(uri: Uri): String {
+    val uriString = uri.toString()
+    val internalStorageBasePath = if (File("/storage/emulated/0").exists()) {
+      "/storage/emulated/0"
+    } else {
+      Environment.getExternalStorageDirectory().absolutePath.trimEnd('/')
+    }
+    val filePath = uriString.substring(uriString.lastIndexOf("/") + 1)
+    return internalStorageBasePath + "/" + URLDecoder.decode(filePath, "UTF-8")
+  }
+  
   companion object {
     
-    const val CONTENT_PREFIX = "content://"
-    const val CONTENT_TYPE = "*/*"
+    const val ASK_FOR_CONFIRMATION = "ASK_FOR_CONFIRMATION"
     
     val ImportPasswordsScreenRoot = View.generateViewId()
     val Toolbar = View.generateViewId()

@@ -16,7 +16,8 @@ class FragmentNavigatorImpl(
   override fun applyCommands(commands: Array<out Command>) {
     commands.forEach { command ->
       when (command) {
-        is Forward -> performForward(command.screenInfo.screenKey, command.screenInfo.arguments)
+        is Forward -> performForward(command.screenInfo.screenKey, command.screenInfo.arguments,
+          command.animate)
         is Back -> performBack()
         is BackTo -> performBackTo(command.screenInfo.screenKey)
         is ForwardWithRemovalOf -> {
@@ -36,10 +37,11 @@ class FragmentNavigatorImpl(
   
   private fun performForward(
     screenKey: ScreenKey,
-    arguments: Bundle
+    arguments: Bundle,
+    animate: Boolean
   ) {
     fragmentManager.transaction {
-      addNewFragment(screenKey, arguments)
+      addNewFragment(screenKey, arguments, animate)
     }
   }
   
@@ -109,12 +111,18 @@ class FragmentNavigatorImpl(
     return hasScreensYet
   }
   
-  private fun FragmentTransaction.addNewFragment(screenKey: ScreenKey, arguments: Bundle) {
+  private fun FragmentTransaction.addNewFragment(
+    screenKey: ScreenKey,
+    arguments: Bundle,
+    animate: Boolean = true
+  ) {
     val name = screenKey.screenClassName
     val newFragment = Class.forName(name).newInstance() as BaseFragmentScreen
     newFragment.screenKey = screenKey
     newFragment.arguments = arguments
-    setCustomAnimations(R.anim.slide_in, R.anim.fade_out)
+    if (animate) {
+      setCustomAnimations(R.anim.slide_in, R.anim.fade_out)
+    }
     add(containerViewId, newFragment, screenKey.toString())
   }
   

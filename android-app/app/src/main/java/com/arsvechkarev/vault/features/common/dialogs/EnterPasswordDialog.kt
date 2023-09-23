@@ -17,7 +17,7 @@ import buisnesslogic.Password
 import com.arsvechkarev.vault.BuildConfig
 import com.arsvechkarev.vault.R
 import com.arsvechkarev.vault.core.views.EditTextPassword
-import com.arsvechkarev.vault.core.views.FixedSizeTextView
+import com.arsvechkarev.vault.core.views.FixedHeightTextView
 import com.arsvechkarev.vault.core.views.MaterialProgressBar
 import com.arsvechkarev.vault.core.views.MaterialProgressBar.Thickness
 import com.arsvechkarev.vault.core.views.behaviors.BottomSheetBehavior
@@ -33,6 +33,7 @@ import com.arsvechkarev.vault.viewbuilding.Dimens.MarginNormal
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginSmall
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginTiny
 import com.arsvechkarev.vault.viewbuilding.Dimens.ProgressBarSizeSmall
+import com.arsvechkarev.vault.viewbuilding.Styles.BaseTextView
 import com.arsvechkarev.vault.viewbuilding.Styles.BoldTextView
 import com.arsvechkarev.vault.viewbuilding.Styles.ClickableGradientRoundRect
 import com.arsvechkarev.vault.viewbuilding.Styles.IconCross
@@ -100,9 +101,8 @@ class EnterPasswordDialog(context: Context) : FrameLayout(context) {
           onTextChanged { parentView.textView(TextError).clearText() }
           onSubmit { password -> handleContinueClick(password) }
         }
-        child<FixedSizeTextView>(MatchParent, WrapContent) {
+        child<FixedHeightTextView>(MatchParent, WrapContent, style = BaseTextView) {
           id(TextError)
-          exampleTextRes = R.string.text_password_is_incorrect
           textColor(Colors.Error)
           margins(start = MarginTiny, top = MarginSmall)
         }

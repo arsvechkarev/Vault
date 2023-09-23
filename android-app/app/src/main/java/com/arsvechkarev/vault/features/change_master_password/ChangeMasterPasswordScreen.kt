@@ -29,6 +29,7 @@ import com.arsvechkarev.vault.viewbuilding.Dimens.DividerHeight
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginNormal
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginSmall
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginTiny
+import com.arsvechkarev.vault.viewbuilding.Styles.BaseTextView
 import com.arsvechkarev.vault.viewbuilding.Styles.BoldTextView
 import com.arsvechkarev.vault.viewbuilding.Styles.Button
 import com.arsvechkarev.vault.viewbuilding.Styles.IconBack
@@ -103,7 +104,7 @@ class ChangeMasterPasswordScreen : BaseFragmentScreen() {
           topToBottomOf(Guideline)
         }
       }
-      TextView(MatchParent, WrapContent) {
+      TextView(MatchParent, WrapContent, style = BaseTextView) {
         id(TextError)
         textColor(Colors.Error)
         margins(start = MarginTiny + MarginNormal, top = MarginSmall)

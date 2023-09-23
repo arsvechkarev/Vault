@@ -1,10 +1,10 @@
 package com.arsvechkarev.vault.features.common.dialogs
 
 import android.content.Context
-import android.view.Gravity
 import android.view.Gravity.CENTER
+import android.view.Gravity.END
+import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import com.arsvechkarev.vault.R
 import com.arsvechkarev.vault.core.views.SimpleDialog
 import com.arsvechkarev.vault.viewbuilding.Colors
@@ -22,13 +22,15 @@ import viewdsl.Size.Companion.MatchParent
 import viewdsl.Size.Companion.WrapContent
 import viewdsl.backgroundRoundRect
 import viewdsl.classNameTag
+import viewdsl.id
 import viewdsl.layoutGravity
 import viewdsl.marginHorizontal
 import viewdsl.margins
 import viewdsl.onClick
 import viewdsl.text
+import viewdsl.textColor
 import viewdsl.textSize
-import viewdsl.viewAs
+import viewdsl.textView
 import viewdsl.withViewBuilder
 
 class PasswordStrengthDialog(context: Context) : SimpleDialog(context) {
@@ -41,7 +43,7 @@ class PasswordStrengthDialog(context: Context) : SimpleDialog(context) {
         backgroundRoundRect(CornerRadiusDefault, Colors.Dialog)
         TextView(WrapContent, WrapContent, style = BoldTextView) {
           margins(top = MarginNormal, start = MarginNormal)
-          text(R.string.text_password_strength)
+          text(R.string.text_password_is_too_weak)
           textSize(TextSizes.H3)
         }
         TextView(WrapContent, WrapContent, style = BaseTextView) {
@@ -50,22 +52,34 @@ class PasswordStrengthDialog(context: Context) : SimpleDialog(context) {
           text(R.string.text_password_should_be_strong)
         }
         TextView(WrapContent, WrapContent, style = ClickableTextView()) {
-          classNameTag()
-          layoutGravity(Gravity.END)
-          margins(top = MarginLarge, bottom = MarginNormal,
-            start = MarginSmall, end = MarginSmall
-          )
-          text(R.string.text_got_it)
+          id(TextChangePassword)
+          layoutGravity(END)
+          margins(top = MarginLarge, start = MarginSmall, end = MarginSmall)
+          text(R.string.text_change_password)
+        }
+        TextView(WrapContent, WrapContent, style = ClickableTextView(Colors.ErrorRipple)) {
+          id(TextProceedWithWeakPassword)
+          layoutGravity(END)
+          textColor(Colors.Error)
+          margins(top = MarginSmall, bottom = MarginNormal, start = MarginSmall, end = MarginSmall)
+          text(R.string.text_proceed_with_weak_password)
         }
       }
     }
   }
   
-  fun onGotItClicked(block: () -> Unit) {
-    viewAs<TextView>().onClick(block)
+  fun onChangePasswordClicked(block: () -> Unit) {
+    textView(TextChangePassword).onClick(block)
+  }
+  
+  fun onProceedClicked(block: () -> Unit) {
+    textView(TextProceedWithWeakPassword).onClick(block)
   }
   
   companion object {
+    
+    private val TextChangePassword = View.generateViewId()
+    private val TextProceedWithWeakPassword = View.generateViewId()
     
     val BaseFragmentScreen.passwordStrengthDialog get() = viewAs<PasswordStrengthDialog>()
     

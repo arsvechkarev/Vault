@@ -8,6 +8,7 @@ import com.arsvechkarev.vault.R
 import com.arsvechkarev.vault.core.mvi.ext.subscribe
 import com.arsvechkarev.vault.core.mvi.ext.viewModelStore
 import com.arsvechkarev.vault.core.views.EditTextPassword
+import com.arsvechkarev.vault.core.views.FixedHeightTextView
 import com.arsvechkarev.vault.features.common.Durations
 import com.arsvechkarev.vault.features.common.di.CoreComponentHolder.coreComponent
 import com.arsvechkarev.vault.features.common.dialogs.LoadingDialog
@@ -81,7 +82,7 @@ class LoginScreen : BaseFragmentScreen() {
           onTextChanged { store.tryDispatch(OnTypingText) }
           onSubmit { text -> store.tryDispatch(OnEnteredPassword(text)) }
         }
-        TextView(MatchParent, WrapContent, style = BaseTextView) {
+        child<FixedHeightTextView>(MatchParent, WrapContent, style = BaseTextView) {
           id(TextError)
           margins(start = MarginNormal + MarginTiny, top = MarginSmall)
           textColor(Colors.Error)

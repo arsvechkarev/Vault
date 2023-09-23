@@ -1,7 +1,7 @@
 package com.arsvechkarev.vault.features.creating_master_password
 
 import buisnesslogic.Password
-import buisnesslogic.PasswordError
+import buisnesslogic.PasswordStatus
 import buisnesslogic.PasswordStrength
 
 typealias CMPState = CreatingMasterPasswordState
@@ -11,16 +11,17 @@ typealias CMPCommands = CreatingMasterPasswordCommand
 typealias CMPNews = CreatingMasterPasswordNews
 
 sealed interface CreatingMasterPasswordEvent {
-  class UpdatePasswordError(val passwordError: PasswordError?) : CMPEvents
-  class UpdatePasswordStrength(val passwordStrength: PasswordStrength?) : CMPEvents
+  class UpdatedPasswordStatus(val passwordStatus: PasswordStatus) : CMPEvents
+  class UpdatedPasswordStrength(val passwordStrength: PasswordStrength?) : CMPEvents
   object FinishedAuth : CMPEvents
 }
 
 sealed interface CreatingMasterPasswordUiEvent : CreatingMasterPasswordEvent {
   class OnInitialPasswordTyping(val password: Password) : CMPUiEvent
   class OnRepeatPasswordTyping(val password: Password) : CreatingMasterPasswordUiEvent
-  object ShowPasswordStrengthDialog : CreatingMasterPasswordUiEvent
-  object HidePasswordStrengthDialog : CreatingMasterPasswordUiEvent
+  object OnShowPasswordStrengthDialog : CreatingMasterPasswordUiEvent
+  object OnHidePasswordStrengthDialog : CreatingMasterPasswordUiEvent
+  object OnProceedWithWeakPassword : CreatingMasterPasswordUiEvent
   object OnContinueClicked : CreatingMasterPasswordUiEvent
   object OnBackPressed : CreatingMasterPasswordUiEvent
 }
@@ -33,7 +34,7 @@ sealed interface CreatingMasterPasswordCommand {
   
   sealed interface PasswordCommand : CreatingMasterPasswordCommand {
     class CheckPasswordStrength(val password: Password) : PasswordCommand
-    class CheckPasswordForErrors(val password: Password) : PasswordCommand
+    class CheckPasswordStatus(val password: Password) : PasswordCommand
   }
   
   class FinishAuth(val password: Password) : CreatingMasterPasswordCommand
@@ -46,16 +47,15 @@ sealed interface CreatingMasterPasswordCommand {
 
 data class CreatingMasterPasswordState(
   val passwordEnteringState: PasswordEnteringState = PasswordEnteringState.INITIAL,
-  val passwordStatus: UiPasswordStatus? = null,
+  val passwordStatus: UiPasswordStatus = UiPasswordStatus.OK,
   val passwordStrength: PasswordStrength? = null,
-  val showPasswordStrengthDialog: Boolean = false,
+  val showPasswordTooWeakDialog: Boolean = false,
   val initialPassword: Password = Password.empty(),
   val repeatedPassword: Password = Password.empty(),
-  val showErrorText: Boolean = false,
 )
 
 enum class UiPasswordStatus {
-  OK, TOO_WEAK, TOO_SHORT, EMPTY, PASSWORDS_DONT_MATCH
+  OK, EMPTY, TOO_WEAK, PASSWORDS_DONT_MATCH
 }
 
 enum class PasswordEnteringState { INITIAL, REPEATING }

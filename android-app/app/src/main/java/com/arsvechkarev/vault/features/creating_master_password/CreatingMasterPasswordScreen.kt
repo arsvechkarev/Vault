@@ -6,17 +6,15 @@ import android.view.Gravity.CENTER
 import android.view.View
 import android.view.animation.AnimationUtils
 import android.widget.ViewSwitcher
-import buisnesslogic.MIN_PASSWORD_LENGTH
 import buisnesslogic.PasswordStrength.MEDIUM
 import buisnesslogic.PasswordStrength.SECURE
 import buisnesslogic.PasswordStrength.STRONG
 import buisnesslogic.PasswordStrength.WEAK
-import com.arsvechkarev.vault.BuildConfig
 import com.arsvechkarev.vault.R
 import com.arsvechkarev.vault.core.mvi.ext.subscribe
 import com.arsvechkarev.vault.core.mvi.ext.viewModelStore
 import com.arsvechkarev.vault.core.views.EditTextPassword
-import com.arsvechkarev.vault.core.views.FixedSizeTextView
+import com.arsvechkarev.vault.core.views.FixedHeightTextView
 import com.arsvechkarev.vault.core.views.PasswordStrengthMeter
 import com.arsvechkarev.vault.core.views.TextWithQuestion
 import com.arsvechkarev.vault.features.common.Durations
@@ -26,18 +24,18 @@ import com.arsvechkarev.vault.features.common.dialogs.PasswordStrengthDialog.Com
 import com.arsvechkarev.vault.features.common.dialogs.PasswordStrengthDialog.Companion.passwordStrengthDialog
 import com.arsvechkarev.vault.features.common.dialogs.loadingDialog
 import com.arsvechkarev.vault.features.creating_master_password.CreatingMasterPasswordNews.FinishingAuthorization
-import com.arsvechkarev.vault.features.creating_master_password.CreatingMasterPasswordUiEvent.HidePasswordStrengthDialog
 import com.arsvechkarev.vault.features.creating_master_password.CreatingMasterPasswordUiEvent.OnBackPressed
 import com.arsvechkarev.vault.features.creating_master_password.CreatingMasterPasswordUiEvent.OnContinueClicked
+import com.arsvechkarev.vault.features.creating_master_password.CreatingMasterPasswordUiEvent.OnHidePasswordStrengthDialog
 import com.arsvechkarev.vault.features.creating_master_password.CreatingMasterPasswordUiEvent.OnInitialPasswordTyping
+import com.arsvechkarev.vault.features.creating_master_password.CreatingMasterPasswordUiEvent.OnProceedWithWeakPassword
 import com.arsvechkarev.vault.features.creating_master_password.CreatingMasterPasswordUiEvent.OnRepeatPasswordTyping
-import com.arsvechkarev.vault.features.creating_master_password.CreatingMasterPasswordUiEvent.ShowPasswordStrengthDialog
+import com.arsvechkarev.vault.features.creating_master_password.CreatingMasterPasswordUiEvent.OnShowPasswordStrengthDialog
 import com.arsvechkarev.vault.features.creating_master_password.PasswordEnteringState.INITIAL
 import com.arsvechkarev.vault.features.creating_master_password.PasswordEnteringState.REPEATING
 import com.arsvechkarev.vault.features.creating_master_password.UiPasswordStatus.EMPTY
 import com.arsvechkarev.vault.features.creating_master_password.UiPasswordStatus.OK
 import com.arsvechkarev.vault.features.creating_master_password.UiPasswordStatus.PASSWORDS_DONT_MATCH
-import com.arsvechkarev.vault.features.creating_master_password.UiPasswordStatus.TOO_SHORT
 import com.arsvechkarev.vault.features.creating_master_password.UiPasswordStatus.TOO_WEAK
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginLarge
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginNormal
@@ -97,9 +95,8 @@ class CreatingMasterPasswordScreen : BaseFragmentScreen() {
       }
       VerticalLayout(MatchParent, WrapContent) {
         layoutGravity(CENTER)
-        child<FixedSizeTextView>(WrapContent, WrapContent, style = BoldTextView) {
+        child<FixedHeightTextView>(WrapContent, WrapContent, style = BoldTextView) {
           id(TextPasswordStrength)
-          exampleTextRes = R.string.text_medium
           margins(start = MarginNormal)
         }
         child<PasswordStrengthMeter>(MatchParent, IntSize(PasswordStrengthMeterHeight)) {
@@ -131,7 +128,7 @@ class CreatingMasterPasswordScreen : BaseFragmentScreen() {
         child<TextWithQuestion>(MatchParent, WrapContent) {
           classNameTag()
           margins(start = MarginNormal, end = MarginNormal, top = MarginSmall)
-          onClick { store.tryDispatch(ShowPasswordStrengthDialog) }
+          onClick { store.tryDispatch(OnShowPasswordStrengthDialog) }
         }
       }
       TextView(MatchParent, WrapContent, style = Button()) {
@@ -143,8 +140,9 @@ class CreatingMasterPasswordScreen : BaseFragmentScreen() {
       }
       LoadingDialog()
       PasswordStrengthDialog {
-        onHide = { store.tryDispatch(HidePasswordStrengthDialog) }
-        onGotItClicked { store.tryDispatch(HidePasswordStrengthDialog) }
+        onHide = { store.tryDispatch(OnHidePasswordStrengthDialog) }
+        onChangePasswordClicked { store.tryDispatch(OnHidePasswordStrengthDialog) }
+        onProceedClicked { store.tryDispatch(OnProceedWithWeakPassword) }
       }
     }
   }
@@ -159,12 +157,7 @@ class CreatingMasterPasswordScreen : BaseFragmentScreen() {
   
   override fun onAppearedOnScreen() {
     requireView().postDelayed({
-      viewAs<EditTextPassword>(EditTextEnterPassword).apply {
-        showKeyboard()
-        if (BuildConfig.DEBUG) {
-          setRawText(BuildConfig.STUB_PASSWORD)
-        }
-      }
+      viewAs<EditTextPassword>(EditTextEnterPassword).showKeyboard()
     }, Durations.DelayOpenKeyboard)
   }
   
@@ -176,16 +169,12 @@ class CreatingMasterPasswordScreen : BaseFragmentScreen() {
         REPEATING -> switchToRepeatPasswordState()
       }
     }
-    if (state.showPasswordStrengthDialog) {
+    if (state.showPasswordTooWeakDialog) {
       passwordStrengthDialog.show()
     } else {
       passwordStrengthDialog.hide()
     }
-    if (state.showErrorText) {
-      state.passwordStatus?.let(::showPasswordStatus)
-    } else {
-      viewAs<TextWithQuestion>().clear()
-    }
+    showPasswordStatus(state.passwordStatus)
     showPasswordStrength(state)
   }
   
@@ -203,18 +192,15 @@ class CreatingMasterPasswordScreen : BaseFragmentScreen() {
   
   private fun showPasswordStatus(passwordStatus: UiPasswordStatus) {
     val text = when (passwordStatus) {
-      OK -> requireContext().getString(R.string.text_empty)
-      TOO_WEAK -> requireContext().getString(R.string.text_password_is_too_weak)
-      TOO_SHORT -> requireContext().getString(R.string.text_password_min_length,
-        MIN_PASSWORD_LENGTH
-      )
-      EMPTY -> requireContext().getString(R.string.text_password_cannot_be_empty)
+      OK -> R.string.text_empty
+      EMPTY -> R.string.text_password_cannot_be_empty
+      TOO_WEAK -> R.string.text_password_is_too_weak
       PASSWORDS_DONT_MATCH -> {
         if (passwordEnteringState == INITIAL) {
           // Don't show "Passwords don't match" error when we are in initial password entering state
-          requireContext().getString(R.string.text_empty)
+          R.string.text_empty
         } else {
-          requireContext().getString(R.string.text_passwords_dont_match)
+          R.string.text_passwords_dont_match
         }
       }
     }
@@ -256,13 +242,7 @@ class CreatingMasterPasswordScreen : BaseFragmentScreen() {
   }
   
   private fun switchToRepeatPasswordState() {
-    viewAs<EditTextPassword>(EditTextRepeatPassword).apply {
-      clearText()
-      if (BuildConfig.DEBUG) {
-        setRawText(BuildConfig.STUB_PASSWORD)
-      }
-    }
-    viewAs<TextWithQuestion>().clear()
+    viewAs<EditTextPassword>(EditTextRepeatPassword).clearText()
     textView(TextPasswordStrength).animateInvisible()
     view(TextTitle).animateInvisible()
     view(RepeatPasswordLayout).animateVisible()

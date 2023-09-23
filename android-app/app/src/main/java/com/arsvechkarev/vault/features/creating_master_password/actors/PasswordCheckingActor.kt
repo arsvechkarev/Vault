@@ -5,10 +5,10 @@ import com.arsvechkarev.vault.core.mvi.tea.Actor
 import com.arsvechkarev.vault.features.creating_master_password.CMPCommands
 import com.arsvechkarev.vault.features.creating_master_password.CMPEvents
 import com.arsvechkarev.vault.features.creating_master_password.CreatingMasterPasswordCommand.PasswordCommand
-import com.arsvechkarev.vault.features.creating_master_password.CreatingMasterPasswordCommand.PasswordCommand.CheckPasswordForErrors
+import com.arsvechkarev.vault.features.creating_master_password.CreatingMasterPasswordCommand.PasswordCommand.CheckPasswordStatus
 import com.arsvechkarev.vault.features.creating_master_password.CreatingMasterPasswordCommand.PasswordCommand.CheckPasswordStrength
-import com.arsvechkarev.vault.features.creating_master_password.CreatingMasterPasswordEvent.UpdatePasswordError
-import com.arsvechkarev.vault.features.creating_master_password.CreatingMasterPasswordEvent.UpdatePasswordStrength
+import com.arsvechkarev.vault.features.creating_master_password.CreatingMasterPasswordEvent.UpdatedPasswordStatus
+import com.arsvechkarev.vault.features.creating_master_password.CreatingMasterPasswordEvent.UpdatedPasswordStrength
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.filterIsInstance
@@ -24,11 +24,11 @@ class PasswordCheckingActor(
         .mapLatest { command ->
           when (command) {
             is CheckPasswordStrength -> {
-              UpdatePasswordStrength(passwordInfoChecker.checkStrength(command.password))
+              UpdatedPasswordStrength(passwordInfoChecker.checkStrength(command.password))
             }
             
-            is CheckPasswordForErrors -> {
-              UpdatePasswordError(passwordInfoChecker.checkForErrors(command.password))
+            is CheckPasswordStatus -> {
+              UpdatedPasswordStatus(passwordInfoChecker.checkStatus(command.password))
             }
           }
         }

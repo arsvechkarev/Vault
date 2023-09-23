@@ -30,8 +30,7 @@ class PasswordStrengthMeterWithText(context: Context) : FrameLayout(context) {
   
   init {
     withViewBuilder {
-      child<FixedSizeTextView>(WrapContent, WrapContent, style = BoldTextView) {
-        exampleTextRes = R.string.text_medium
+      child<FixedHeightTextView>(WrapContent, WrapContent, style = BoldTextView) {
         margins(start = MarginNormal, top = MarginLarge)
         textSize(TextSizes.H3)
       }

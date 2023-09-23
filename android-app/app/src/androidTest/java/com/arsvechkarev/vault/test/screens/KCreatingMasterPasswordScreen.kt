@@ -1,15 +1,15 @@
 package com.arsvechkarev.vault.test.screens
 
 import com.arsvechkarev.vault.R
-import com.arsvechkarev.vault.features.creating_master_password.CreatingMasterPasswordScreen
-import com.arsvechkarev.vault.features.creating_master_password.CreatingMasterPasswordScreen.Companion.EditTextEnterPassword
-import com.arsvechkarev.vault.features.creating_master_password.CreatingMasterPasswordScreen.Companion.EditTextRepeatPassword
-import com.arsvechkarev.vault.features.creating_master_password.CreatingMasterPasswordScreen.Companion.ImageErrorQuestion
-import com.arsvechkarev.vault.features.creating_master_password.CreatingMasterPasswordScreen.Companion.RepeatPasswordLayout
-import com.arsvechkarev.vault.features.creating_master_password.CreatingMasterPasswordScreen.Companion.TextContinue
-import com.arsvechkarev.vault.features.creating_master_password.CreatingMasterPasswordScreen.Companion.TextError
-import com.arsvechkarev.vault.features.creating_master_password.CreatingMasterPasswordScreen.Companion.TextPasswordStrength
-import com.arsvechkarev.vault.features.creating_master_password.CreatingMasterPasswordScreen.Companion.TextTitle
+import com.arsvechkarev.vault.features.master_password.MasterPasswordScreen
+import com.arsvechkarev.vault.features.master_password.MasterPasswordScreen.Companion.EditTextEnterPassword
+import com.arsvechkarev.vault.features.master_password.MasterPasswordScreen.Companion.EditTextRepeatPassword
+import com.arsvechkarev.vault.features.master_password.MasterPasswordScreen.Companion.ImageErrorQuestion
+import com.arsvechkarev.vault.features.master_password.MasterPasswordScreen.Companion.RepeatPasswordLayout
+import com.arsvechkarev.vault.features.master_password.MasterPasswordScreen.Companion.TextContinue
+import com.arsvechkarev.vault.features.master_password.MasterPasswordScreen.Companion.TextError
+import com.arsvechkarev.vault.features.master_password.MasterPasswordScreen.Companion.TextPasswordStrength
+import com.arsvechkarev.vault.features.master_password.MasterPasswordScreen.Companion.TextTitle
 import com.arsvechkarev.vault.test.core.base.BaseScreen
 import com.arsvechkarev.vault.test.core.views.dialog.KPasswordStrengthDialog
 import com.arsvechkarev.vault.test.core.views.edit_text_password.KEditTextPassword
@@ -20,7 +20,7 @@ import io.github.kakaocup.kakao.text.KTextView
 
 object KCreatingMasterPasswordScreen : BaseScreen<KCreatingMasterPasswordScreen>() {
   
-  override val viewClass = CreatingMasterPasswordScreen::class.java
+  override val viewClass = MasterPasswordScreen::class.java
   
   val title = KTextView { withId(TextTitle) }
   val iconBack = KImageView { withDrawable(R.drawable.ic_back) }

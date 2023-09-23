@@ -106,7 +106,7 @@ class ChangingMasterPasswordTest : VaultTestCase() {
             
             buttonChange.click()
             
-            textError.hasText("Entered password is the same as current")
+            textError.hasText("Password is the same as current one")
             
             editTextEnterNewPassword.replaceText("kjc93pq")
             editTextRepeatPassword.replaceText("kjc93pq")

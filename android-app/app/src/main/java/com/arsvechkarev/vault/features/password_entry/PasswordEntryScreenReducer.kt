@@ -11,7 +11,7 @@ import com.arsvechkarev.vault.features.password_entry.PasswordEntryCommand.Copy
 import com.arsvechkarev.vault.features.password_entry.PasswordEntryCommand.DeletePasswordEntry
 import com.arsvechkarev.vault.features.password_entry.PasswordEntryCommand.FetchPasswordEntry
 import com.arsvechkarev.vault.features.password_entry.PasswordEntryCommand.RouterCommand.GoBack
-import com.arsvechkarev.vault.features.password_entry.PasswordEntryCommand.RouterCommand.GoToCreatePasswordScreen
+import com.arsvechkarev.vault.features.password_entry.PasswordEntryCommand.RouterCommand.GoToCreatingPasswordScreen
 import com.arsvechkarev.vault.features.password_entry.PasswordEntryCommand.UpdatePasswordEntry.UpdateNotes
 import com.arsvechkarev.vault.features.password_entry.PasswordEntryCommand.UpdatePasswordEntry.UpdatePassword
 import com.arsvechkarev.vault.features.password_entry.PasswordEntryCommand.UpdatePasswordEntry.UpdateTitle
@@ -110,7 +110,7 @@ class PasswordEntryScreenReducer :
         news(ShowPasswordCopied)
       }
       OnOpenPasswordScreenClicked -> {
-        commands(GoToCreatePasswordScreen(state.passwordEntryNonNull.password))
+        commands(GoToCreatingPasswordScreen(state.passwordEntryNonNull.password))
       }
       is OnTitleTextChanged -> {
         state {

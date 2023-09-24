@@ -7,20 +7,14 @@ import com.arsvechkarev.vault.features.common.navigation.RouterActor
 import com.arsvechkarev.vault.features.password_entry.PasswordEntryCommand
 import com.arsvechkarev.vault.features.password_entry.PasswordEntryCommand.RouterCommand
 import com.arsvechkarev.vault.features.password_entry.PasswordEntryCommand.RouterCommand.GoBack
-import com.arsvechkarev.vault.features.password_entry.PasswordEntryCommand.RouterCommand.GoToCreatePasswordScreen
+import com.arsvechkarev.vault.features.password_entry.PasswordEntryCommand.RouterCommand.GoToCreatingPasswordScreen
 import com.arsvechkarev.vault.features.password_entry.PasswordEntryEvent
 
 fun PasswordEntryRouterActor(router: Router): Actor<PasswordEntryCommand, PasswordEntryEvent> {
-  return RouterActor<PasswordEntryCommand, RouterCommand, PasswordEntryEvent>(
-    router) { command ->
+  return RouterActor<PasswordEntryCommand, RouterCommand, PasswordEntryEvent>(router) { command ->
     when (command) {
-      is GoToCreatePasswordScreen -> {
-        goForward(CreatingPasswordScreen)
-      }
-      
-      GoBack -> {
-        goBack()
-      }
+      is GoToCreatingPasswordScreen -> goForward(CreatingPasswordScreen)
+      GoBack -> goBack()
     }
   }
 }

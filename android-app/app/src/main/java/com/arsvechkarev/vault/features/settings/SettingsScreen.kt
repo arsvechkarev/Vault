@@ -12,7 +12,7 @@ import com.arsvechkarev.vault.features.common.Screens.MasterPasswordScreen
 import com.arsvechkarev.vault.features.common.di.CoreComponentHolder.coreComponent
 import com.arsvechkarev.vault.features.common.dialogs.EnterPasswordDialog.Companion.EnterPasswordDialog
 import com.arsvechkarev.vault.features.common.dialogs.EnterPasswordDialog.Companion.enterPasswordDialog
-import com.arsvechkarev.vault.features.common.dialogs.EnterPasswordDialog.Mode.CHECK_MASTER_PASSWORD
+import com.arsvechkarev.vault.features.common.dialogs.EnterPasswordDialog.Mode.CheckingMasterPassword
 import com.arsvechkarev.vault.features.master_password.MasterPasswordScreenMode.CHANGE_EXISTING
 import com.arsvechkarev.vault.viewbuilding.Colors
 import com.arsvechkarev.vault.viewbuilding.Dimens.DividerHeight
@@ -21,7 +21,7 @@ import com.arsvechkarev.vault.viewbuilding.Dimens.MarginNormal
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginSmall
 import com.arsvechkarev.vault.viewbuilding.Styles.AccentTextView
 import com.arsvechkarev.vault.viewbuilding.Styles.BoldTextView
-import com.arsvechkarev.vault.viewbuilding.Styles.IconBack
+import com.arsvechkarev.vault.viewbuilding.Styles.ImageBack
 import com.arsvechkarev.vault.viewbuilding.Styles.SecondaryTextView
 import com.arsvechkarev.vault.viewbuilding.TextSizes
 import kotlinx.coroutines.delay
@@ -57,7 +57,7 @@ class SettingsScreen : BaseFragmentScreen() {
           constraints {
             topToTopOf(parent)
           }
-          ImageView(WrapContent, WrapContent, style = IconBack) {
+          ImageView(WrapContent, WrapContent, style = ImageBack) {
             margin(MarginNormal)
             gravity(Gravity.CENTER_VERTICAL)
             onClick { handleBackPress() }
@@ -107,7 +107,7 @@ class SettingsScreen : BaseFragmentScreen() {
         margin(MarginNormal)
       }
       EnterPasswordDialog(
-        mode = CHECK_MASTER_PASSWORD,
+        mode = CheckingMasterPassword,
         hideKeyboardOnClose = false,
         onCheckSuccessful = {
           coreComponent.router.goForward(MasterPasswordScreen(CHANGE_EXISTING))

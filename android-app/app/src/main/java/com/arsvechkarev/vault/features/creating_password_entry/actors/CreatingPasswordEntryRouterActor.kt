@@ -5,7 +5,7 @@ package com.arsvechkarev.vault.features.creating_password_entry.actors
 import com.arsvechkarev.vault.core.mvi.tea.Actor
 import com.arsvechkarev.vault.features.common.Router
 import com.arsvechkarev.vault.features.common.Screens.CreatingPasswordScreen
-import com.arsvechkarev.vault.features.common.Screens.PasswordInfoScreen
+import com.arsvechkarev.vault.features.common.Screens.PasswordEntryScreen
 import com.arsvechkarev.vault.features.common.navigation.RouterActor
 import com.arsvechkarev.vault.features.creating_password_entry.CreatingPasswordEntryCommand
 import com.arsvechkarev.vault.features.creating_password_entry.CreatingPasswordEntryCommand.RouterCommand
@@ -23,7 +23,7 @@ fun CreatingEntryRouterActor(router: Router): Actor<CreatingPasswordEntryCommand
       }
       
       is GoToInfoScreen -> {
-        goForwardWithRemovalOf(PasswordInfoScreen(command.passwordId), 2)
+        goForwardWithRemovalOf(PasswordEntryScreen(command.passwordId), 2)
       }
       
       GoBack -> {

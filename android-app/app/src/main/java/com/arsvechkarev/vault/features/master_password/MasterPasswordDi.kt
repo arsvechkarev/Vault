@@ -17,9 +17,9 @@ fun MasterPasswordStore(
     actors = listOf(
       CheckPasswordStatusActor(
         coreComponent.masterPasswordProvider,
-        coreComponent.passwordInfoChecker
+        coreComponent.passwordChecker
       ),
-      CheckPasswordStrengthActor(coreComponent.passwordInfoChecker),
+      CheckPasswordStrengthActor(coreComponent.passwordChecker),
       ChangeExistingMasterPasswordActor(
         coreComponent.masterPasswordProvider,
         coreComponent.observableCachedDatabaseStorage,

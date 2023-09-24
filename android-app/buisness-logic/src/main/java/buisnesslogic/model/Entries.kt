@@ -13,16 +13,6 @@ data class PasswordEntry(
   val notes: String,
 ) : BaseEntry
 
-data class CreditCardEntry(
-  val id: String,
-  val cardNumber: String,
-  val expirationDate: String,
-  val cardholderName: String,
-  val cvcCode: String,
-  val pinCode: String,
-  val notes: String
-) : BaseEntry
-
 data class PlainTextEntry(
   val id: String,
   val title: String,

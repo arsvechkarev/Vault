@@ -7,7 +7,6 @@ import com.arsvechkarev.vault.core.views.PasswordStrengthMeterWithText
 import com.arsvechkarev.vault.features.creating_password.CreatingPasswordScreen
 import com.arsvechkarev.vault.features.creating_password.CreatingPasswordScreen.Companion.CreatingPasswordScreenRoot
 import com.arsvechkarev.vault.features.creating_password.CreatingPasswordScreen.Companion.EditTextPassword
-import com.arsvechkarev.vault.features.creating_password.CreatingPasswordScreen.Companion.TextError
 import com.arsvechkarev.vault.features.creating_password.CreatingPasswordScreen.Companion.TextPasswordLength
 import com.arsvechkarev.vault.features.creating_password.CreatingPasswordScreen.Companion.Title
 import com.arsvechkarev.vault.test.core.base.BaseScreen
@@ -30,7 +29,6 @@ object KCreatingPasswordScreen : BaseScreen<KCreatingPasswordScreen>() {
   }
   val title = KTextView { withId(Title) }
   val editTextPassword = KEditText { withId(EditTextPassword) }
-  val textError = KTextView { withId(TextError) }
   val textPasswordStrength = KTextView {
     withParent { isInstanceOf(PasswordStrengthMeterWithText::class.java) }
     isInstanceOf(TextView::class.java)
@@ -43,5 +41,5 @@ object KCreatingPasswordScreen : BaseScreen<KCreatingPasswordScreen>() {
   val buttonGeneratePassword = KTextView { withText("Generate password") }
   val buttonSavePassword = KTextView { withText("Save") }
   val checkmarkSpecialSymbols = KCheckmarkAndTextView { withId(R.string.text_special_symbols) }
-  val confirmationDialog = KInfoDialog(parentId = CreatingPasswordScreenRoot)
+  val confirmationDialog = KInfoDialog(CreatingPasswordScreenRoot)
 }

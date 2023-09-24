@@ -4,7 +4,6 @@ import android.view.View
 
 class BottomSheetOffsetHelper(
   private val bottomSheet: View,
-  private val onTopChanged: (Int) -> Unit = {}
 ) {
   
   private var parentHeight = 0
@@ -18,11 +17,11 @@ class BottomSheetOffsetHelper(
   fun updateDyOffset(offset: Int): Int {
     val newTop = bottomSheet.top + offset
     val oldTop = bottomSheet.top
-    bottomSheet.top = newTop.coerceIn(layoutTop, parentHeight).also(onTopChanged)
+    bottomSheet.top = newTop.coerceIn(layoutTop, parentHeight)
     return bottomSheet.top - oldTop
   }
   
   fun updateTop(value: Int) {
-    bottomSheet.top = value.coerceIn(layoutTop, parentHeight).also(onTopChanged)
+    bottomSheet.top = value.coerceIn(layoutTop, parentHeight)
   }
 }

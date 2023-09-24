@@ -9,7 +9,7 @@ import com.arsvechkarev.vault.features.import_passwords.actors.ImportPasswordsRo
 
 fun ImportPasswordsStore(
   coreComponent: CoreComponent,
-  selectedFileUri: Uri?,
+  selectedFileUri: Uri,
   askForConfirmation: Boolean,
 ): TeaStore<ImportPasswordsState, ImportPasswordsUiEvent, Nothing> {
   return TeaStoreImpl(

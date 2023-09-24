@@ -52,7 +52,7 @@ import com.arsvechkarev.vault.viewbuilding.Dimens.MarginTiny
 import com.arsvechkarev.vault.viewbuilding.Dimens.PasswordStrengthMeterHeight
 import com.arsvechkarev.vault.viewbuilding.Styles.BoldTextView
 import com.arsvechkarev.vault.viewbuilding.Styles.Button
-import com.arsvechkarev.vault.viewbuilding.Styles.IconBack
+import com.arsvechkarev.vault.viewbuilding.Styles.ImageBack
 import com.arsvechkarev.vault.viewbuilding.TextSizes
 import navigation.BaseFragmentScreen
 import viewdsl.Size.Companion.MatchParent
@@ -79,11 +79,12 @@ class MasterPasswordScreen : BaseFragmentScreen() {
   
   override fun buildLayout(context: Context) = context.withViewBuilder {
     RootFrameLayout(MatchParent, MatchParent) {
+      id(MasterPasswordScreenRoot)
       HorizontalLayout(MatchParent, WrapContent) {
         id(RepeatPasswordLayout)
         invisible()
         margins(top = MarginNormal + StatusBarHeight, start = MarginNormal, end = MarginNormal)
-        ImageView(WrapContent, WrapContent, style = IconBack) {
+        ImageView(WrapContent, WrapContent, style = ImageBack) {
           onClick { store.tryDispatch(OnBackPressed) }
         }
         TextView(WrapContent, WrapContent, style = BoldTextView) {
@@ -275,6 +276,7 @@ class MasterPasswordScreen : BaseFragmentScreen() {
   
   companion object {
     
+    val MasterPasswordScreenRoot = View.generateViewId()
     val TextPasswordStrength = View.generateViewId()
     val TextTitle = View.generateViewId()
     val TextContinue = View.generateViewId()

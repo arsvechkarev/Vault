@@ -18,7 +18,7 @@ fun CreatingPasswordStore(
   return TeaStoreImpl(
     actors = listOf(
       GeneratePasswordActor(coreComponent.passwordGenerator),
-      CheckPasswordStrengthActor(coreComponent.passwordInfoChecker),
+      CheckPasswordStrengthActor(coreComponent.passwordChecker),
       SendingOutputCreatingPasswordActor(communicator),
       ComputePasswordCharacteristicsActor(coreComponent.passwordCharacteristicsProvider),
       CreatingPasswordRouterActor(coreComponent.router)

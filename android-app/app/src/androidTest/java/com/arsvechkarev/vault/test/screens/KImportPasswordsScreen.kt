@@ -18,7 +18,7 @@ object KImportPasswordsScreen : BaseScreen<KImportPasswordsScreen>() {
   
   override val viewClass = ImportPasswordsScreen::class.java
   
-  val iconBack = KImageView { withDrawable(R.drawable.ic_back) }
+  val imageBack = KImageView { withDrawable(R.drawable.ic_back) }
   val layoutSelectFile = KView { withId(LayoutSelectFile) }
   val titleSelectFile = KTextView { withId(TitleSelectFile) }
   val textSelectFile = KTextView { withId(TextSelectFile) }

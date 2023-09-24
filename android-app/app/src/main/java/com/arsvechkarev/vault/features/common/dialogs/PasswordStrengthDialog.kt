@@ -62,7 +62,7 @@ class PasswordStrengthDialog(context: Context) : SimpleDialog(context) {
           layoutGravity(END)
           textColor(Colors.Error)
           margins(top = MarginSmall, bottom = MarginNormal, start = MarginSmall, end = MarginSmall)
-          text(R.string.text_proceed_with_weak_password)
+          text(R.string.text_continue_with_weak_password)
         }
       }
     }

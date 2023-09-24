@@ -7,6 +7,8 @@ import android.net.Uri
 import android.view.Gravity.CENTER_HORIZONTAL
 import android.view.View
 import androidx.core.graphics.ColorUtils
+import buisnesslogic.DEFAULT_EXPORT_FILENAME
+import buisnesslogic.EXPORT_CONTENT_TYPE
 import buisnesslogic.IMPORT_CONTENT_TYPE
 import com.arsvechkarev.vault.R
 import com.arsvechkarev.vault.core.mvi.ext.subscribe
@@ -71,6 +73,7 @@ class MainListScreen : BaseFragmentScreen() {
   
   override fun buildLayout(context: Context) = context.withViewBuilder {
     RootCoordinatorLayout {
+      id(MainListScreenRoot)
       backgroundColor(Colors.Background)
       RecyclerView(MatchParent, MatchParent) {
         classNameTag()
@@ -109,7 +112,7 @@ class MainListScreen : BaseFragmentScreen() {
         backgroundTopRoundRect(MarginNormal, Colors.Dialog)
         behavior(BottomSheetBehavior().apply {
           onHide = { store.tryDispatch(OnEntryTypeDialogHidden) }
-          onSlidePercentageChanged = { fraction ->
+          onSlideFractionChanged = { fraction ->
             val color = ColorUtils.blendARGB(Color.TRANSPARENT, Colors.Shadow, fraction)
             shadowLayout.setBackgroundColor(color)
           }
@@ -157,7 +160,7 @@ class MainListScreen : BaseFragmentScreen() {
   private fun handleNews(news: MainListNews) {
     when (news) {
       is LaunchSelectExportFileActivity -> {
-        selectExportFileLauncher.launch(DEFAULT_FILENAME)
+        selectExportFileLauncher.launch(DEFAULT_EXPORT_FILENAME)
       }
       LaunchSelectImportFileActivity -> {
         selectImportFileLauncher.launch(IMPORT_CONTENT_TYPE)
@@ -218,9 +221,7 @@ class MainListScreen : BaseFragmentScreen() {
   
   companion object {
     
-    const val EXPORT_CONTENT_TYPE = "content/unknown"
-    const val DEFAULT_FILENAME = "data.kdbx"
-    
+    val MainListScreenRoot = View.generateViewId()
     val ChooseEntryTypeBottomSheet = View.generateViewId()
   }
 }

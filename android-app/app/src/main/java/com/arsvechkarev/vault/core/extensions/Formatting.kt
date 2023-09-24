@@ -8,10 +8,10 @@ import navigation.BaseFragmentScreen
 
 fun BaseFragmentScreen.getDeleteMessageText(name: String): CharSequence {
   val questionPrefixLength = requireContext().getString(
-    R.string.text_deleting_password_question_prefix
+    R.string.text_delete_password_question_prefix
   ).length
   val questionString =
-      requireContext().getString(R.string.text_deleting_password_question, name)
+      requireContext().getString(R.string.text_delete_password_question, name)
   val spannableString = SpannableString(questionString)
   spannableString.setSpan(
     TypefaceSpan(Fonts.SegoeUiBold), questionPrefixLength + 1,

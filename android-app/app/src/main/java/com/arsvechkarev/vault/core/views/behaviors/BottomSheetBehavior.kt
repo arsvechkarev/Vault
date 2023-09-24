@@ -15,7 +15,8 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.customview.widget.ViewDragHelper.INVALID_POINTER
 import com.arsvechkarev.vault.core.views.behaviors.BottomSheetBehavior.State.HIDDEN
 import com.arsvechkarev.vault.core.views.behaviors.BottomSheetBehavior.State.SHOWN
-import com.arsvechkarev.vault.core.views.behaviors.BottomSheetBehavior.State.SLIDING
+import com.arsvechkarev.vault.core.views.behaviors.BottomSheetBehavior.State.SLIDING_DOWN
+import com.arsvechkarev.vault.core.views.behaviors.BottomSheetBehavior.State.SLIDING_UP
 import viewdsl.ViewDslConfiguration.applicationContext
 import viewdsl.cancelIfRunning
 import viewdsl.doOnEnd
@@ -42,6 +43,13 @@ class BottomSheetBehavior : CoordinatorLayout.Behavior<View>() {
   private val slideAnimator = ValueAnimator().apply {
     addUpdateListener {
       val value = it.animatedValue as Int
+      val slideFraction = when (state) {
+        SHOWN -> 1f
+        SLIDING_UP -> it.animatedFraction
+        SLIDING_DOWN -> 1f - it.animatedFraction
+        HIDDEN -> 0f
+      }
+      onSlideFractionChanged(slideFraction)
       bottomSheetOffsetHelper!!.updateTop(value)
     }
   }
@@ -51,12 +59,12 @@ class BottomSheetBehavior : CoordinatorLayout.Behavior<View>() {
   
   var onHide: () -> Unit = {}
   var onShow: () -> Unit = {}
-  var onSlidePercentageChanged: (Float) -> Unit = {}
+  var onSlideFractionChanged: (Float) -> Unit = {}
   
   fun show() {
     bottomSheet?.post {
       if (currentState == SHOWN) return@post
-      currentState = SLIDING
+      currentState = SLIDING_UP
       slideAnimator.cancelIfRunning()
       slideAnimator.duration = DURATION_SLIDE
       slideAnimator.setIntValues(bottomSheet!!.top, parentHeight - slideRange)
@@ -69,7 +77,7 @@ class BottomSheetBehavior : CoordinatorLayout.Behavior<View>() {
   fun hide() {
     bottomSheet?.post {
       if (currentState == HIDDEN) return@post
-      currentState = SLIDING
+      currentState = SLIDING_DOWN
       slideAnimator.cancelIfRunning()
       slideAnimator.duration = DURATION_SLIDE
       slideAnimator.setIntValues(bottomSheet!!.top, parentHeight)
@@ -89,11 +97,7 @@ class BottomSheetBehavior : CoordinatorLayout.Behavior<View>() {
     slideRange = child.height
     parentHeight = parent.height
     if (bottomSheetOffsetHelper == null) {
-      bottomSheetOffsetHelper = BottomSheetOffsetHelper(
-        child,
-        onTopChanged = { top ->
-          onSlidePercentageChanged((parentHeight - top.toFloat()) / slideRange.toFloat())
-        })
+      bottomSheetOffsetHelper = BottomSheetOffsetHelper(child)
     }
     bottomSheetOffsetHelper!!.onViewLayout(parentHeight)
     if (currentState != SHOWN) {
@@ -229,11 +233,12 @@ class BottomSheetBehavior : CoordinatorLayout.Behavior<View>() {
     velocityTracker?.computeCurrentVelocity(1000)
     val yVelocity = velocityTracker?.getYVelocity(activePointerId) ?: 0f
     if (yVelocity / maxFlingVelocity > FLING_VELOCITY_THRESHOLD) {
-      currentState = HIDDEN
+      currentState = SLIDING_DOWN
       val timeInSeconds = abs((parentHeight - bottomSheet!!.top) / yVelocity)
       slideAnimator.duration = (timeInSeconds * 1000).toLong()
       slideAnimator.setIntValues(bottomSheet!!.top, parentHeight)
       slideAnimator.doOnEnd(onHide)
+      slideAnimator.doOnEnd { currentState = HIDDEN }
       slideAnimator.start()
     } else if (isBeingDragged) {
       val middlePoint = parentHeight - slideRange * 0.65
@@ -242,8 +247,9 @@ class BottomSheetBehavior : CoordinatorLayout.Behavior<View>() {
         slideAnimator.doOnEnd(onShow)
         parentHeight - slideRange
       } else {
-        currentState = HIDDEN
+        currentState = SLIDING_DOWN
         slideAnimator.doOnEnd(onHide)
+        slideAnimator.doOnEnd { currentState = HIDDEN }
         parentHeight
       }
       slideAnimator.setIntValues(bottomSheet!!.top, endY)
@@ -289,7 +295,7 @@ class BottomSheetBehavior : CoordinatorLayout.Behavior<View>() {
   }
   
   enum class State {
-    SHOWN, SLIDING, HIDDEN
+    SHOWN, SLIDING_UP, SLIDING_DOWN, HIDDEN
   }
   
   companion object {

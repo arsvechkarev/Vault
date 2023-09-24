@@ -122,14 +122,14 @@ object Styles : DefaultStyles {
     textSize(TextSizes.H5)
   }
   
-  val IconBack: ImageView.() -> Unit = {
+  val ImageBack: ImageView.() -> Unit = {
     image(R.drawable.ic_back)
     padding(Dimens.IconPadding)
     circleRippleBackground(rippleColor = Colors.Ripple)
   }
   
-  val IconCross: ImageView.() -> Unit = {
-    apply(IconBack)
+  val ImageCross: ImageView.() -> Unit = {
+    apply(ImageBack)
     image(R.drawable.ic_cross)
   }
   

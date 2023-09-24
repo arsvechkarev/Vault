@@ -9,12 +9,12 @@ import com.arsvechkarev.vault.test.core.ext.context
 import com.arsvechkarev.vault.test.core.rule.VaultAutotestRule
 import com.arsvechkarev.vault.test.core.stub.StubActivityResultWrapper
 import com.arsvechkarev.vault.test.core.stub.StubPasswordsFileExporter
-import com.arsvechkarev.vault.test.screens.KCreatingMasterPasswordScreen
 import com.arsvechkarev.vault.test.screens.KCreatingPasswordEntryScreen
 import com.arsvechkarev.vault.test.screens.KCreatingPasswordScreen
 import com.arsvechkarev.vault.test.screens.KInitialScreen
 import com.arsvechkarev.vault.test.screens.KMainListScreen
-import com.arsvechkarev.vault.test.screens.KPasswordInfoScreen
+import com.arsvechkarev.vault.test.screens.KMasterPasswordScreen
+import com.arsvechkarev.vault.test.screens.KPasswordEntryScreen
 import com.arsvechkarev.vault.test.screens.KPlainTextEntryScreen
 import com.google.gson.Gson
 import com.kaspersky.kaspresso.testcases.api.testcase.TestCase
@@ -36,7 +36,7 @@ class ValidatingFileStructureTest : TestCase() {
       application = ApplicationProvider.getApplicationContext(),
       activityResultWrapper = StubActivityResultWrapper(
         stubSelectedFolderUri = "content://myfolder",
-        stubCreatedFileUri = "content://myfolder/myfile.png"
+        stubCreatedFileUri = "content://myfolder/passwords.kdbx"
       ),
       passwordsFileExporter = stubPasswordsFileExporter
     )
@@ -48,7 +48,7 @@ class ValidatingFileStructureTest : TestCase() {
   fun testValidatingFileStructure() = run {
     KInitialScreen {
       buttonCreateMasterPassword.click()
-      KCreatingMasterPasswordScreen {
+      KMasterPasswordScreen {
         editTextEnterPassword.replaceText("qwetu1233")
         buttonContinue.click()
         editTextRepeatPassword.replaceText("qwetu1233")
@@ -64,11 +64,11 @@ class ValidatingFileStructureTest : TestCase() {
             editTextUsername.replaceText("me@gmail.com")
             buttonContinue.click()
             KCreatingPasswordScreen {
-              editTextPassword.replaceText("F/<1#E(J=\\51=k")
+              editTextPassword.replaceText("F/<1#E(J=\\51=k;")
               buttonSavePassword.click()
               confirmationDialog.action2.click()
-              KPasswordInfoScreen {
-                iconBack.click()
+              KPasswordEntryScreen {
+                imageBack.click()
               }
             }
           }
@@ -85,8 +85,8 @@ class ValidatingFileStructureTest : TestCase() {
               editTextPassword.replaceText("q3z;ob15/*8GK>Ed")
               buttonSavePassword.click()
               confirmationDialog.action2.click()
-              KPasswordInfoScreen {
-                iconBack.click()
+              KPasswordEntryScreen {
+                imageBack.click()
               }
             }
           }
@@ -100,7 +100,7 @@ class ValidatingFileStructureTest : TestCase() {
             editTextText.replaceText("super secret content")
             buttonSave.click()
             confirmationDialog.action2.click()
-            iconBack.click()
+            imageBack.click()
           }
           menu {
             open()
@@ -108,7 +108,7 @@ class ValidatingFileStructureTest : TestCase() {
           }
           //          KExportPasswordsScreen {
           //            layoutFolder.click()
-          //            editTextFilename.replaceText("myfile.png")
+          //            editTextFilename.replaceText("passwords.kdbx")
           //            buttonExportPasswords.click()
           //            checkEqualExceptIds()
           //          }
@@ -132,10 +132,10 @@ class ValidatingFileStructureTest : TestCase() {
     expectedEntriesLists.passwords.forEach { expectedPassword ->
       checkNotNull(
         actualEntriesLists.passwords.find { it.title == expectedPassword.title })
-          .let { actualPasswordInfo ->
-            assertEquals(expectedPassword.username, actualPasswordInfo.username)
-            assertEquals(expectedPassword.password, actualPasswordInfo.password)
-            assertEquals(expectedPassword.notes, actualPasswordInfo.notes)
+          .let { actualPasswordEntry ->
+            assertEquals(expectedPassword.username, actualPasswordEntry.username)
+            assertEquals(expectedPassword.password, actualPasswordEntry.password)
+            assertEquals(expectedPassword.notes, actualPasswordEntry.notes)
           }
     }
     assertEquals(expectedEntriesLists.plainTextEntries.size,

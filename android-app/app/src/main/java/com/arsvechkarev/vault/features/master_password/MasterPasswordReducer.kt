@@ -34,11 +34,15 @@ class MasterPasswordReducer :
   override fun dslReduce(event: MasterPasswordEvent) {
     when (event) {
       is OnInitialPasswordTyping -> {
-        state { copy(initialPassword = event.password, passwordStatus = UiPasswordStatus.OK) }
-        commands(CheckPasswordStrength(event.password))
+        if (event.password != state.initialPassword) {
+          state { copy(initialPassword = event.password, passwordStatus = UiPasswordStatus.OK) }
+          commands(CheckPasswordStrength(event.password))
+        }
       }
       is OnRepeatPasswordTyping -> {
-        state { copy(repeatedPassword = event.password, passwordStatus = UiPasswordStatus.OK) }
+        if (event.password != state.repeatedPassword) {
+          state { copy(repeatedPassword = event.password, passwordStatus = UiPasswordStatus.OK) }
+        }
       }
       OnContinueClicked -> {
         when (state.passwordEnteringState) {
@@ -46,7 +50,7 @@ class MasterPasswordReducer :
             commands(CheckPasswordStatus(state.initialPassword))
           }
           REPEATING -> {
-            if (state.repeatedPassword.stringData == state.initialPassword.stringData) {
+            if (state.repeatedPassword == state.initialPassword) {
               state { copy(passwordStatus = UiPasswordStatus.OK) }
               when (state.mode) {
                 CREATING_NEW -> {
@@ -62,12 +66,18 @@ class MasterPasswordReducer :
         }
       }
       OnBackPressed -> {
-        if (state.showPasswordTooWeakDialog) {
-          state { copy(showPasswordTooWeakDialog = false) }
-        } else {
-          when (state.passwordEnteringState) {
-            INITIAL -> commands(GoBack)
-            REPEATING -> state { copy(passwordEnteringState = INITIAL) }
+        when {
+          state.showPasswordChangeConfirmationDialog -> {
+            state { copy(showPasswordChangeConfirmationDialog = false) }
+          }
+          state.showPasswordTooWeakDialog -> {
+            state { copy(showPasswordTooWeakDialog = false) }
+          }
+          else -> {
+            when (state.passwordEnteringState) {
+              INITIAL -> commands(GoBack)
+              REPEATING -> state { copy(passwordEnteringState = INITIAL) }
+            }
           }
         }
       }

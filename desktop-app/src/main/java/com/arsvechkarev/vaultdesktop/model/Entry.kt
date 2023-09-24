@@ -17,23 +17,6 @@ data class Password(
   val notes: String,
 ) : Entry
 
-data class CreditCard(
-  @SerializedName("id")
-  val id: String,
-  @SerializedName("cardNumber")
-  val cardNumber: String,
-  @SerializedName("expirationDate")
-  val expirationDate: String,
-  @SerializedName("cardholderName")
-  val cardholderName: String,
-  @SerializedName("cvcCode")
-  val cvcCode: String,
-  @SerializedName("pinCode")
-  val pinCode: String,
-  @SerializedName("notes")
-  val notes: String
-) : Entry
-
 data class PlainText(
   @SerializedName("id")
   val id: String,

@@ -23,8 +23,8 @@ import com.arsvechkarev.vault.core.views.MaterialProgressBar.Thickness
 import com.arsvechkarev.vault.core.views.behaviors.BottomSheetBehavior
 import com.arsvechkarev.vault.core.views.behaviors.BottomSheetBehavior.Companion.asBottomSheet
 import com.arsvechkarev.vault.features.common.di.CoreComponentHolder.coreComponent
-import com.arsvechkarev.vault.features.common.dialogs.EnterPasswordDialog.Mode.CHECK_MASTER_PASSWORD
-import com.arsvechkarev.vault.features.common.dialogs.EnterPasswordDialog.Mode.IMPORTING_PASSWORDS
+import com.arsvechkarev.vault.features.common.dialogs.EnterPasswordDialog.Mode.CheckingMasterPassword
+import com.arsvechkarev.vault.features.common.dialogs.EnterPasswordDialog.Mode.ImportingPasswords
 import com.arsvechkarev.vault.viewbuilding.Colors
 import com.arsvechkarev.vault.viewbuilding.Dimens
 import com.arsvechkarev.vault.viewbuilding.Dimens.IconSize
@@ -36,7 +36,7 @@ import com.arsvechkarev.vault.viewbuilding.Dimens.ProgressBarSizeSmall
 import com.arsvechkarev.vault.viewbuilding.Styles.BaseTextView
 import com.arsvechkarev.vault.viewbuilding.Styles.BoldTextView
 import com.arsvechkarev.vault.viewbuilding.Styles.ClickableGradientRoundRect
-import com.arsvechkarev.vault.viewbuilding.Styles.IconCross
+import com.arsvechkarev.vault.viewbuilding.Styles.ImageCross
 import com.arsvechkarev.vault.viewbuilding.TextSizes
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -89,7 +89,7 @@ class EnterPasswordDialog(context: Context) : FrameLayout(context) {
             margins(end = IconSize * 2)
             layoutGravity(CENTER_VERTICAL)
           }
-          ImageView(WrapContent, WrapContent, style = IconCross) {
+          ImageView(WrapContent, WrapContent, style = ImageCross) {
             layoutGravity(CENTER_VERTICAL or END)
             onClick { hide() }
           }
@@ -112,9 +112,9 @@ class EnterPasswordDialog(context: Context) : FrameLayout(context) {
             id(ButtonContinue)
             onClick {
               val editTextPassword = parentView.parentView.viewAs<EditTextPassword>()
-              val text = editTextPassword.getPassword()
-              if (text.stringData.isNotBlank()) {
-                handleContinueClick(text)
+              val password = editTextPassword.getPassword()
+              if (password.stringData.isNotBlank()) {
+                handleContinueClick(password)
               } else {
                 parentView.parentView.textView(TextError)
                     .text(R.string.text_password_is_empty)
@@ -162,7 +162,7 @@ class EnterPasswordDialog(context: Context) : FrameLayout(context) {
         }
         onDialogClosed()
       }
-      onSlidePercentageChanged = { fraction ->
+      onSlideFractionChanged = { fraction ->
         val color = ColorUtils.blendARGB(Color.TRANSPARENT, Colors.Shadow, fraction)
         shadowLayout.setBackgroundColor(color)
       }
@@ -180,20 +180,22 @@ class EnterPasswordDialog(context: Context) : FrameLayout(context) {
     this.onPasswordEntered = onPasswordEntered
     this.hideKeyboardOnClose = hideKeyboardOnClose
     when (mode) {
-      IMPORTING_PASSWORDS -> {
-        textView(Title).text(R.string.text_enter_password_to_import)
+      is ImportingPasswords -> {
+        if (mode.fromInitialScreen) {
+          textView(Title).text(R.string.text_enter_password_import_from_initial)
+        } else {
+          textView(Title).text(R.string.text_enter_password_import_from_main_list)
+        }
       }
-      
-      CHECK_MASTER_PASSWORD -> {
-        textView(Title).text(R.string.text_enter_master_password_to_proceed)
-      }
+      CheckingMasterPassword -> textView(Title).text(
+        R.string.text_enter_master_password_to_continue)
     }
   }
   
   private fun ViewBuilder.handleContinueClick(text: Password) {
     when (checkNotNull(mode)) {
-      IMPORTING_PASSWORDS -> onPasswordEntered(text)
-      CHECK_MASTER_PASSWORD -> checkMasterPassword(text)
+      is ImportingPasswords -> onPasswordEntered(text)
+      CheckingMasterPassword -> checkMasterPassword(text)
     }
   }
   
@@ -213,8 +215,9 @@ class EnterPasswordDialog(context: Context) : FrameLayout(context) {
     }
   }
   
-  enum class Mode {
-    IMPORTING_PASSWORDS, CHECK_MASTER_PASSWORD
+  sealed interface Mode {
+    class ImportingPasswords(val fromInitialScreen: Boolean) : Mode
+    object CheckingMasterPassword : Mode
   }
   
   companion object {

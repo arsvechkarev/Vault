@@ -19,9 +19,4 @@ class IoModuleImpl(
   
   
   override val filenameFromUriRetriever = FilenameFromUriRetrieverImpl(coreModule.application)
-  
-  companion object {
-    
-    const val FILENAME = "passwords.kdbx"
-  }
 }

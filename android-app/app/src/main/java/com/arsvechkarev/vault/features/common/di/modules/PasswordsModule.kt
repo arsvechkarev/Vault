@@ -4,8 +4,8 @@ import buisnesslogic.MasterPasswordChecker
 import buisnesslogic.MasterPasswordCheckerImpl
 import buisnesslogic.PasswordCharacteristicsProvider
 import buisnesslogic.PasswordCharacteristicsProviderImpl
-import buisnesslogic.PasswordInfoChecker
-import buisnesslogic.ZxcvbnPasswordInfoChecker
+import buisnesslogic.PasswordChecker
+import buisnesslogic.ZxcvbnPasswordChecker
 import buisnesslogic.generator.NumbersGenerator
 import buisnesslogic.generator.PasswordGenerator
 import buisnesslogic.generator.PasswordGeneratorImpl
@@ -17,7 +17,7 @@ import com.arsvechkarev.vault.features.common.domain.MasterPasswordProviderImpl
 import com.nulabinc.zxcvbn.Zxcvbn
 
 interface PasswordsModule {
-  val passwordInfoChecker: PasswordInfoChecker
+  val passwordChecker: PasswordChecker
   val passwordGenerator: PasswordGenerator
   val passwordCharacteristicsProvider: PasswordCharacteristicsProvider
   val masterPasswordChecker: MasterPasswordChecker
@@ -28,7 +28,7 @@ class PasswordsModuleImpl(
   keePassModule: KeePassModule,
 ) : PasswordsModule {
   
-  override val passwordInfoChecker = ZxcvbnPasswordInfoChecker(Zxcvbn())
+  override val passwordChecker = ZxcvbnPasswordChecker(Zxcvbn())
   
   override val passwordGenerator = PasswordGeneratorImpl(SecureRandomGenerator)
   

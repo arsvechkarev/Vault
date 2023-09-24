@@ -47,7 +47,7 @@ import com.arsvechkarev.vault.viewbuilding.Styles.BaseEditText
 import com.arsvechkarev.vault.viewbuilding.Styles.BoldTextView
 import com.arsvechkarev.vault.viewbuilding.Styles.Button
 import com.arsvechkarev.vault.viewbuilding.Styles.ClickableTextView
-import com.arsvechkarev.vault.viewbuilding.Styles.IconCross
+import com.arsvechkarev.vault.viewbuilding.Styles.ImageCross
 import com.arsvechkarev.vault.viewbuilding.TextSizes
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -87,7 +87,7 @@ class CreatingPasswordScreen : BaseFragmentScreen() {
             textSize(TextSizes.H1)
             layoutGravity(CENTER)
           }
-          ImageView(WrapContent, WrapContent, style = IconCross) {
+          ImageView(WrapContent, WrapContent, style = ImageCross) {
             margins(end = ImageBackMargin, top = MarginSmall, bottom = MarginSmall)
             layoutGravity(CENTER or END)
             onClick { store.tryDispatch(OnBackClicked) }
@@ -269,7 +269,6 @@ class CreatingPasswordScreen : BaseFragmentScreen() {
     val CreatingPasswordScreenRoot = View.generateViewId()
     val Title = View.generateViewId()
     val TextPasswordLength = View.generateViewId()
-    val TextError = View.generateViewId()
     val EditTextPassword = View.generateViewId()
   }
 }

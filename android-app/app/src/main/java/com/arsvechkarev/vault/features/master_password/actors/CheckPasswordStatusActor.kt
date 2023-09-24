@@ -1,6 +1,6 @@
 package com.arsvechkarev.vault.features.master_password.actors
 
-import buisnesslogic.PasswordInfoChecker
+import buisnesslogic.PasswordChecker
 import com.arsvechkarev.vault.core.mvi.tea.Actor
 import com.arsvechkarev.vault.features.common.domain.MasterPasswordProvider
 import com.arsvechkarev.vault.features.master_password.MasterPasswordCommand
@@ -15,18 +15,17 @@ import kotlinx.coroutines.flow.mapLatest
 
 class CheckPasswordStatusActor(
   private val masterPasswordProvider: MasterPasswordProvider,
-  private val passwordInfoChecker: PasswordInfoChecker,
+  private val passwordChecker: PasswordChecker,
 ) : Actor<MasterPasswordCommand, MasterPasswordEvent> {
   
   @OptIn(ExperimentalCoroutinesApi::class)
   override fun handle(commands: Flow<MasterPasswordCommand>): Flow<MasterPasswordEvent> {
     return commands.filterIsInstance<CheckPasswordStatus>()
         .mapLatest { command ->
-          if (command.password.stringData ==
-              masterPasswordProvider.provideMasterPasswordIfSet()?.stringData) {
+          if (command.password == masterPasswordProvider.provideMasterPasswordIfSet()) {
             PasswordIsTheSameAsCurrent
           } else {
-            val passwordStatus = passwordInfoChecker.checkStatus(command.password)
+            val passwordStatus = passwordChecker.checkStatus(command.password)
             UpdatedPasswordStatus(passwordStatus)
           }
         }

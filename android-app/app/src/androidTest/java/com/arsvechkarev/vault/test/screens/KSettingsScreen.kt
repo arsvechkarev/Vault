@@ -13,7 +13,7 @@ object KSettingsScreen : BaseScreen<KSettingsScreen>() {
   
   override val viewClass = SettingsScreen::class.java
   
-  val iconBack = KImageView { withId(R.drawable.ic_back) }
+  val imageBack = KImageView { withDrawable(R.drawable.ic_back) }
   val itemChangePassword = KView { withId(ItemChangePassword) }
   val enterPasswordDialog = KEnterPasswordDialog()
   val snackbar = KSnackbar()

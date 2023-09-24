@@ -63,7 +63,7 @@ class BottomSheetBehavior : CoordinatorLayout.Behavior<View>() {
   
   fun show() {
     bottomSheet?.post {
-      if (currentState == SHOWN) return@post
+      if (currentState == SHOWN || currentState == SLIDING_UP) return@post
       currentState = SLIDING_UP
       slideAnimator.cancelIfRunning()
       slideAnimator.duration = DURATION_SLIDE
@@ -76,7 +76,7 @@ class BottomSheetBehavior : CoordinatorLayout.Behavior<View>() {
   
   fun hide(hideKeyboard: Boolean = true) {
     bottomSheet?.post {
-      if (currentState == HIDDEN) return@post
+      if (currentState == HIDDEN || currentState == SLIDING_DOWN) return@post
       currentState = SLIDING_DOWN
       slideAnimator.cancelIfRunning()
       slideAnimator.duration = DURATION_SLIDE

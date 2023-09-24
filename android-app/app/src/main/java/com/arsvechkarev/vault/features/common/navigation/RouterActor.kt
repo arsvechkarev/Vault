@@ -5,6 +5,7 @@ import com.arsvechkarev.vault.core.DispatchersFacade
 import com.arsvechkarev.vault.core.extensions.emptyMap
 import com.arsvechkarev.vault.core.mvi.tea.Actor
 import com.arsvechkarev.vault.features.common.Router
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.withContext
@@ -26,6 +27,7 @@ class RouterActorImpl<Command : Any, RouterCommand : Command, Event : Any>(
   private val action: suspend Router.(RouterCommand) -> Unit,
 ) : Actor<Command, Event> {
   
+  @OptIn(ExperimentalCoroutinesApi::class)
   override fun handle(commands: Flow<Command>): Flow<Event> {
     return commands.filter(commandToFilterClass::isInstance)
         .emptyMap {

@@ -70,7 +70,6 @@ class EnterPasswordDialog(context: Context) : FrameLayout(context) {
   
   private var mode: Mode? = null
   
-  private var hideKeyboardOnClose = true
   private var onCheckSuccessful: () -> Unit = {}
   private var onPasswordEntered: (Password) -> Unit = {}
   
@@ -143,8 +142,8 @@ class EnterPasswordDialog(context: Context) : FrameLayout(context) {
     asBottomSheet.show()
   }
   
-  fun hide() {
-    asBottomSheet.hide()
+  fun hide(hideKeyboard: Boolean = true) {
+    asBottomSheet.hide(hideKeyboard)
   }
   
   private fun ViewBuilder.setupBehavior(shadowLayout: FrameLayout, onDialogClosed: () -> Unit = {}) {
@@ -155,9 +154,9 @@ class EnterPasswordDialog(context: Context) : FrameLayout(context) {
           viewAs<EditTextPassword>().setRawText(BuildConfig.STUB_PASSWORD)
         }
       }
-      onHide = {
+      onHide = { hideKeyboard ->
         viewAs<EditTextPassword>().clearTextAndFocus()
-        if (hideKeyboardOnClose) {
+        if (hideKeyboard) {
           context.hideKeyboard()
         }
         onDialogClosed()
@@ -171,14 +170,12 @@ class EnterPasswordDialog(context: Context) : FrameLayout(context) {
   
   private fun setupMode(
     mode: Mode,
-    hideKeyboardOnClose: Boolean,
     onCheckSuccessful: () -> Unit,
     onPasswordEntered: (Password) -> Unit
   ) {
     this.mode = mode
     this.onCheckSuccessful = onCheckSuccessful
     this.onPasswordEntered = onPasswordEntered
-    this.hideKeyboardOnClose = hideKeyboardOnClose
     when (mode) {
       is ImportingPasswords -> {
         if (mode.fromInitialScreen) {
@@ -231,7 +228,6 @@ class EnterPasswordDialog(context: Context) : FrameLayout(context) {
     
     fun CoordinatorLayout.EnterPasswordDialog(
       mode: Mode,
-      hideKeyboardOnClose: Boolean = true,
       onCheckSuccessful: () -> Unit = {},
       onPasswordEntered: (Password) -> Unit = {},
       onDialogClosed: () -> Unit = {},
@@ -241,7 +237,7 @@ class EnterPasswordDialog(context: Context) : FrameLayout(context) {
       child<EnterPasswordDialog, ViewGroup.LayoutParams>(MatchParent, WrapContent, block) {
         classNameTag()
         setupBehavior(shadowLayout, onDialogClosed)
-        setupMode(mode, hideKeyboardOnClose, onCheckSuccessful, onPasswordEntered)
+        setupMode(mode, onCheckSuccessful, onPasswordEntered)
       }
     }
   }

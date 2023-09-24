@@ -6,14 +6,22 @@ import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.lifecycle.lifecycleScope
 import com.arsvechkarev.vault.R
+import com.arsvechkarev.vault.core.mvi.ext.subscribe
+import com.arsvechkarev.vault.core.mvi.ext.viewModelStore
 import com.arsvechkarev.vault.core.views.Snackbar
 import com.arsvechkarev.vault.features.common.Durations
-import com.arsvechkarev.vault.features.common.Screens.MasterPasswordScreen
 import com.arsvechkarev.vault.features.common.di.CoreComponentHolder.coreComponent
 import com.arsvechkarev.vault.features.common.dialogs.EnterPasswordDialog.Companion.EnterPasswordDialog
 import com.arsvechkarev.vault.features.common.dialogs.EnterPasswordDialog.Companion.enterPasswordDialog
 import com.arsvechkarev.vault.features.common.dialogs.EnterPasswordDialog.Mode.CheckingMasterPassword
-import com.arsvechkarev.vault.features.master_password.MasterPasswordScreenMode.CHANGE_EXISTING
+import com.arsvechkarev.vault.features.settings.EnterPasswordDialogState.HIDDEN
+import com.arsvechkarev.vault.features.settings.EnterPasswordDialogState.HIDDEN_KEEPING_KEYBOARD
+import com.arsvechkarev.vault.features.settings.EnterPasswordDialogState.SHOWN
+import com.arsvechkarev.vault.features.settings.SettingsNews.ShowMasterPasswordChanged
+import com.arsvechkarev.vault.features.settings.SettingsUiEvent.OnBackPressed
+import com.arsvechkarev.vault.features.settings.SettingsUiEvent.OnChangeMasterPasswordClicked
+import com.arsvechkarev.vault.features.settings.SettingsUiEvent.OnEnteredPasswordToChangeMasterPassword
+import com.arsvechkarev.vault.features.settings.SettingsUiEvent.OnHideEnterPasswordDialog
 import com.arsvechkarev.vault.viewbuilding.Colors
 import com.arsvechkarev.vault.viewbuilding.Dimens.DividerHeight
 import com.arsvechkarev.vault.viewbuilding.Dimens.GradientDrawableHeight
@@ -25,8 +33,7 @@ import com.arsvechkarev.vault.viewbuilding.Styles.ImageBack
 import com.arsvechkarev.vault.viewbuilding.Styles.SecondaryTextView
 import com.arsvechkarev.vault.viewbuilding.TextSizes
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 import navigation.BaseFragmentScreen
 import viewdsl.Size.Companion.MatchParent
 import viewdsl.Size.Companion.WrapContent
@@ -60,7 +67,7 @@ class SettingsScreen : BaseFragmentScreen() {
           ImageView(WrapContent, WrapContent, style = ImageBack) {
             margin(MarginNormal)
             gravity(Gravity.CENTER_VERTICAL)
-            onClick { handleBackPress() }
+            onClick { store.tryDispatch(OnBackPressed) }
           }
           TextView(WrapContent, WrapContent, style = BoldTextView) {
             layoutGravity(Gravity.CENTER)
@@ -80,7 +87,7 @@ class SettingsScreen : BaseFragmentScreen() {
           id(ItemChangePassword)
           padding(MarginNormal)
           rippleBackground(Colors.Ripple)
-          onClick { enterPasswordDialog.show() }
+          onClick { store.tryDispatch(OnChangeMasterPasswordClicked) }
           constraints {
             topToBottomOf(FirstDivider)
           }
@@ -108,30 +115,39 @@ class SettingsScreen : BaseFragmentScreen() {
       }
       EnterPasswordDialog(
         mode = CheckingMasterPassword,
-        hideKeyboardOnClose = false,
-        onCheckSuccessful = {
-          coreComponent.router.goForward(MasterPasswordScreen(CHANGE_EXISTING))
-          enterPasswordDialog.hide()
-        },
+        onDialogClosed = { store.tryDispatch(OnHideEnterPasswordDialog) },
+        onCheckSuccessful = { store.tryDispatch(OnEnteredPasswordToChangeMasterPassword) },
       )
     }
   }
   
+  private val store by viewModelStore { SettingsStore(coreComponent) }
+  
   override fun onInit() {
-    coreComponent.globalChangeMasterPasswordSubscriber.masterPasswordChanges
-        .onEach {
+    store.subscribe(this, ::render, ::handleNews)
+  }
+  
+  private fun render(state: SettingsState) {
+    when (state.enterPasswordDialogState) {
+      SHOWN -> enterPasswordDialog.show()
+      HIDDEN -> enterPasswordDialog.hide()
+      HIDDEN_KEEPING_KEYBOARD -> enterPasswordDialog.hide(hideKeyboard = false)
+    }
+  }
+  
+  private fun handleNews(news: SettingsNews) {
+    when (news) {
+      ShowMasterPasswordChanged -> {
+        lifecycleScope.launch {
           delay(Durations.Default)
           viewAs<Snackbar>().show(R.string.text_master_password_changed)
         }
-        .launchIn(lifecycleScope)
+      }
+    }
   }
   
   override fun handleBackPress(): Boolean {
-    if (enterPasswordDialog.isDialogShown) {
-      enterPasswordDialog.hide()
-    } else {
-      coreComponent.router.goBack()
-    }
+    store.tryDispatch(OnBackPressed)
     return true
   }
   

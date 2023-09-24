@@ -57,7 +57,7 @@ class BottomSheetBehavior : CoordinatorLayout.Behavior<View>() {
   val state get() = currentState
   val isShown get() = state == SHOWN
   
-  var onHide: () -> Unit = {}
+  var onHide: (hideKeyboard: Boolean) -> Unit = {}
   var onShow: () -> Unit = {}
   var onSlideFractionChanged: (Float) -> Unit = {}
   
@@ -74,14 +74,14 @@ class BottomSheetBehavior : CoordinatorLayout.Behavior<View>() {
     }
   }
   
-  fun hide() {
+  fun hide(hideKeyboard: Boolean = true) {
     bottomSheet?.post {
       if (currentState == HIDDEN) return@post
       currentState = SLIDING_DOWN
       slideAnimator.cancelIfRunning()
       slideAnimator.duration = DURATION_SLIDE
       slideAnimator.setIntValues(bottomSheet!!.top, parentHeight)
-      slideAnimator.doOnEnd(onHide)
+      slideAnimator.doOnEnd { onHide(hideKeyboard) }
       slideAnimator.doOnEnd { currentState = HIDDEN }
       slideAnimator.start()
     }
@@ -237,7 +237,7 @@ class BottomSheetBehavior : CoordinatorLayout.Behavior<View>() {
       val timeInSeconds = abs((parentHeight - bottomSheet!!.top) / yVelocity)
       slideAnimator.duration = (timeInSeconds * 1000).toLong()
       slideAnimator.setIntValues(bottomSheet!!.top, parentHeight)
-      slideAnimator.doOnEnd(onHide)
+      slideAnimator.doOnEnd { onHide(true) }
       slideAnimator.doOnEnd { currentState = HIDDEN }
       slideAnimator.start()
     } else if (isBeingDragged) {
@@ -248,7 +248,7 @@ class BottomSheetBehavior : CoordinatorLayout.Behavior<View>() {
         parentHeight - slideRange
       } else {
         currentState = SLIDING_DOWN
-        slideAnimator.doOnEnd(onHide)
+        slideAnimator.doOnEnd { onHide(true) }
         slideAnimator.doOnEnd { currentState = HIDDEN }
         parentHeight
       }

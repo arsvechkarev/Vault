@@ -176,19 +176,6 @@ class MasterPasswordTest : TestCase() {
         }
         KSettingsScreen {
           itemChangePassword.click()
-          closeSoftKeyboard()
-          pressBack()
-          pressBack()
-        }
-        
-        currentScreenIs<MainListScreen>()
-        
-        menu {
-          open()
-          settingsMenuItem.click()
-        }
-        KSettingsScreen {
-          itemChangePassword.click()
           
           enterPasswordDialog {
             isDisplayed()

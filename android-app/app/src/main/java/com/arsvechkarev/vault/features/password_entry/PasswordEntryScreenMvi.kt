@@ -56,7 +56,7 @@ sealed interface PasswordEntryCommand {
   class DeletePasswordEntry(val passwordId: String) : PasswordEntryCommand
   
   sealed interface RouterCommand : PasswordEntryCommand {
-    class GoToCreatePasswordScreen(val password: Password) : RouterCommand
+    class GoToCreatingPasswordScreen(val password: Password) : RouterCommand
     object GoBack : RouterCommand
   }
 }

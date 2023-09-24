@@ -7,7 +7,7 @@ import com.arsvechkarev.vault.features.creating_password.CreatingPasswordReceive
 import com.arsvechkarev.vault.features.creating_password.CreatingPasswordReceiveEvent.PasswordConfigurationMode.EditPassword
 import com.arsvechkarev.vault.features.creating_password.CreatingPasswordSendEvent
 import com.arsvechkarev.vault.features.password_entry.PasswordEntryCommand
-import com.arsvechkarev.vault.features.password_entry.PasswordEntryCommand.RouterCommand.GoToCreatePasswordScreen
+import com.arsvechkarev.vault.features.password_entry.PasswordEntryCommand.RouterCommand.GoToCreatingPasswordScreen
 import com.arsvechkarev.vault.features.password_entry.PasswordEntryEvent
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
@@ -19,7 +19,7 @@ class OpenEditPasswordScreenCommunicatorActor(
   
   @OptIn(ExperimentalCoroutinesApi::class)
   override fun handle(commands: Flow<PasswordEntryCommand>): Flow<PasswordEntryEvent> {
-    return commands.filterIsInstance<GoToCreatePasswordScreen>()
+    return commands.filterIsInstance<GoToCreatingPasswordScreen>()
         .emptyMap {
           communicator.input.emit(CreatingPasswordReceiveEvent(EditPassword(it.password)))
         }

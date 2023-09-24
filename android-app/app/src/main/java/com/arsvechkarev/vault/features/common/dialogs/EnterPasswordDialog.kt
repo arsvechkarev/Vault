@@ -73,8 +73,6 @@ class EnterPasswordDialog(context: Context) : FrameLayout(context) {
   private var onCheckSuccessful: () -> Unit = {}
   private var onPasswordEntered: (Password) -> Unit = {}
   
-  val isDialogShown get() = asBottomSheet.isShown
-  
   init {
     withViewBuilder {
       backgroundTopRoundRect(MarginNormal, Colors.Dialog)
@@ -155,6 +153,7 @@ class EnterPasswordDialog(context: Context) : FrameLayout(context) {
         }
       }
       onHide = { hideKeyboard ->
+        println("qqq: onHide")
         viewAs<EditTextPassword>().clearTextAndFocus()
         if (hideKeyboard) {
           context.hideKeyboard()

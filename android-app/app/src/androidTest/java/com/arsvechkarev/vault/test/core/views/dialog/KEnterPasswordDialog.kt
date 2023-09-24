@@ -16,7 +16,7 @@ class KEnterPasswordDialog :
   KBaseView<KEnterPasswordDialog>({ withClassNameTag<EnterPasswordDialog>() }) {
   
   val title = KTextView { withId(Title) }
-  val iconCross = KImageView { withDrawable(R.drawable.ic_cross) }
+  val imageCross = KImageView { withDrawable(R.drawable.ic_cross) }
   val editText = KEditTextPassword {
     isDescendantOfA { withClassNameTag<EnterPasswordDialog>() }
     isInstanceOf(EditTextPassword::class.java)

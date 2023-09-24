@@ -4,7 +4,6 @@ import android.net.Uri
 import buisnesslogic.Password
 
 sealed interface ImportPasswordsEvent {
-  class PasswordUriReceived(val uri: Uri?) : ImportPasswordsEvent
   object PasswordsImportSuccess : ImportPasswordsEvent
   object PasswordsImportFailure : ImportPasswordsEvent
 }
@@ -16,7 +15,6 @@ sealed interface ImportPasswordsUiEvent : ImportPasswordsEvent {
   class OnPasswordEntered(val password: Password) : ImportPasswordsUiEvent
   object OnHideErrorDialog : ImportPasswordsUiEvent
   object OnHideInfoDialog : ImportPasswordsUiEvent
-  object OnHideSuccessDialog : ImportPasswordsUiEvent
   object OnHidePasswordEnteringDialog : ImportPasswordsUiEvent
   object OnBackPressed : ImportPasswordsUiEvent
 }
@@ -31,15 +29,14 @@ sealed interface ImportPasswordsCommand {
 }
 
 data class ImportPasswordsState(
-  val selectedFileUri: Uri? = null,
+  val selectedFileUri: Uri,
   val askForConfirmation: Boolean = true,
   val enteredPassword: Password = Password.empty(),
   val showLoading: Boolean = false,
-  val showEnteringPassword: Boolean = false,
-  val infoDialog: ImportPasswordsInfoDialog? = null,
-  val showSelectFileError: Boolean = false,
+  val showEnterPasswordDialog: Boolean = false,
+  val infoDialog: ImportPasswordsInfoDialog? = null
 )
 
 enum class ImportPasswordsInfoDialog {
-  CONFIRMATION, SUCCESS, FAILURE
+  CONFIRMATION, FAILURE
 }

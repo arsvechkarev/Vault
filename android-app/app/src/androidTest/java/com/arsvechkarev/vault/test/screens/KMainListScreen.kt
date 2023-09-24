@@ -6,12 +6,14 @@ import androidx.recyclerview.widget.RecyclerView
 import com.arsvechkarev.vault.R
 import com.arsvechkarev.vault.features.main_list.MainListScreen
 import com.arsvechkarev.vault.features.main_list.MainListScreen.Companion.ChooseEntryTypeBottomSheet
-import com.arsvechkarev.vault.features.main_list.recycler.MainListAdapter.Companion.ItemPasswordInfoImage
-import com.arsvechkarev.vault.features.main_list.recycler.MainListAdapter.Companion.ItemPasswordInfoTitle
+import com.arsvechkarev.vault.features.main_list.MainListScreen.Companion.MainListScreenRoot
+import com.arsvechkarev.vault.features.main_list.recycler.MainListAdapter.Companion.ItemPasswordEntryImage
+import com.arsvechkarev.vault.features.main_list.recycler.MainListAdapter.Companion.ItemPasswordEntryTitle
 import com.arsvechkarev.vault.features.main_list.recycler.MainListAdapter.Companion.ItemPlainTextTitle
 import com.arsvechkarev.vault.test.core.base.BaseScreen
 import com.arsvechkarev.vault.test.core.ext.withClassNameTag
 import com.arsvechkarev.vault.test.core.views.dialog.KEntryTypeDialog
+import com.arsvechkarev.vault.test.core.views.dialog.KInfoDialog
 import com.arsvechkarev.vault.test.core.views.menu.KMenuView
 import io.github.kakaocup.kakao.image.KImageView
 import io.github.kakaocup.kakao.recycler.KRecyclerItem
@@ -24,8 +26,8 @@ object KMainListScreen : BaseScreen<KMainListScreen>() {
   override val viewClass = MainListScreen::class.java
   
   val menu = KMenuView()
-  
   val entryTypeDialog = KEntryTypeDialog(ChooseEntryTypeBottomSheet)
+  val infoDialog = KInfoDialog(MainListScreenRoot)
   
   val recycler = KRecyclerView(
     builder = { withClassNameTag<RecyclerView>() },
@@ -44,8 +46,8 @@ object KMainListScreen : BaseScreen<KMainListScreen>() {
   }
   
   class PasswordItem(parent: Matcher<View>) : KRecyclerItem<PasswordItem>(parent) {
-    val icon = KImageView(parent) { withId(ItemPasswordInfoImage) }
-    val text = KTextView(parent) { withId(ItemPasswordInfoTitle) }
+    val image = KImageView(parent) { withId(ItemPasswordEntryImage) }
+    val text = KTextView(parent) { withId(ItemPasswordEntryTitle) }
   }
   
   class PlainTextItem(parent: Matcher<View>) : KRecyclerItem<PlainTextItem>(parent) {

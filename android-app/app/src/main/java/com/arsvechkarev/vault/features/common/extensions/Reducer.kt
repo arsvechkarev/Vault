@@ -15,6 +15,7 @@ fun <Item : BaseEntry, State : Any, Command : Any,
   updateAction: Item.(String) -> Item,
   updateCommand: (Item) -> Command,
   allowEmptySave: Boolean = false,
+  showErrorIsEmptyAction: (State.() -> State)? = null,
   copyCommand: (text: String) -> Command,
   copyNews: News,
   setTextNews: (String) -> News,
@@ -22,6 +23,7 @@ fun <Item : BaseEntry, State : Any, Command : Any,
   with(textState) {
     if (isEditingNow) {
       if (!allowEmptySave && editedText.isBlank()) {
+        showErrorIsEmptyAction?.invoke(state)?.let { newState -> state { newState } }
         return
       }
       val trimmedText = editedText.trim()

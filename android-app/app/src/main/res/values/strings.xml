@@ -11,14 +11,14 @@
   <string name="text_enter_title">Enter title</string>
   <string name="text_title_is_empty">Title is empty</string>
   <string name="text_save">Save</string>
-  <string name="text_yes">YES</string>
   <string name="text_change_master_password">Change master password</string>
   <string name="text_confirmation">Confirmation</string>
+  <string name="text_yes">YES</string>
   <string name="text_continue_caps">CONTINUE</string>
   <string name="text_confirm">CONFIRM</string>
-  <string name="text_deleting_password_question">Do you want to delete %s?</string>
-  <string name="text_deleting_password_question_prefix">Do you want to delete</string>
   <string name="text_cancel" tools:ignore="ButtonCase">CANCEL</string>
+  <string name="text_delete_password_question">Do you want to delete %s?</string>
+  <string name="text_delete_password_question_prefix">Do you want to delete</string>
   <string name="text_delete">DELETE</string>
   <string name="text_clipboard_label_title">title</string>
   <string name="text_clipboard_label_username">username</string>
@@ -42,7 +42,7 @@
     be undone and the old password will not work anymore.
   </string>
   <string name="text_change_password">CHANGE PASSWORD</string>
-  <string name="text_proceed_with_weak_password">PROCEED WITH WEAK PASSWORD</string>
+  <string name="text_continue_with_weak_password">CONTINUE WITH WEAK PASSWORD</string>
   <string name="text_password_should_be_strong">
     Your password is too easy to guess, it is dangerous to use. Try adding more numbers, letters and other symbols to make password more secure.
   </string>
@@ -100,27 +100,24 @@
   <!-- Importing -->
   <string name="text_import_passwords">Import passwords</string>
   <string name="text_file">File</string>
-  <string name="text_select_file">Select file</string>
-  <string name="text_error_file_is_not_selected">File is not selected</string>
-  <string name="text_success">Success</string>
-  <string name="text_import_successful">Imported passwords successfully!</string>
-  <string name="text_ok">OK</string>
   <string name="text_confirm_import_passwords_message">Importing passwords will cause all your current content
     to be replaced by contents of the file you will choose. If you want to preserve your current passwords,
-    you should export them before you import new ones. Are you sure you want to proceed?
+    you should export them before you import new ones. Are you sure you want to continue?
   </string>
   <string name="text_error">Error</string>
   <string name="text_error_import_message">Import is unsuccessful. Either you selected the wrong file or
     the entered password is incorrect.
   </string>
+  <string name="text_ok">OK</string>
 
   <!-- Exporting -->
   <string name="text_export_passwords">Export passwords</string>
   <string name="text_export">Export</string>
 
   <!-- Enter master password dialog -->
-  <string name="text_enter_master_password_to_proceed">Enter master password to proceed</string>
-  <string name="text_enter_password_to_import">Enter master password</string>
+  <string name="text_enter_master_password_to_continue">Enter master password to continue</string>
+  <string name="text_enter_password_import_from_initial">Enter password</string>
+  <string name="text_enter_password_import_from_main_list">Enter password for decryption</string>
 
   <!-- Settings -->
   <string name="text_settings">Settings</string>

@@ -9,8 +9,7 @@ import com.arsvechkarev.vault.features.main_list.MainListScreen
 import com.arsvechkarev.vault.test.core.base.VaultTestCase
 import com.arsvechkarev.vault.test.core.ext.context
 import com.arsvechkarev.vault.test.core.ext.currentScreenIs
-import com.arsvechkarev.vault.test.core.ext.hasTextColorInt
-import com.arsvechkarev.vault.test.core.ext.writeVaultFileFromAssets
+import com.arsvechkarev.vault.test.core.ext.launchActivityWithDatabase
 import com.arsvechkarev.vault.test.core.rule.VaultAutotestRule
 import com.arsvechkarev.vault.test.core.stub.StubActivityResultWrapper
 import com.arsvechkarev.vault.test.core.stub.StubExternalFileReader
@@ -19,7 +18,6 @@ import com.arsvechkarev.vault.test.screens.KInitialScreen
 import com.arsvechkarev.vault.test.screens.KLoginScreen
 import com.arsvechkarev.vault.test.screens.KMainListScreen
 import com.arsvechkarev.vault.test.screens.KMainListScreen.PasswordItem
-import com.arsvechkarev.vault.viewbuilding.Colors
 import kotlinx.coroutines.runBlocking
 import org.junit.Rule
 import org.junit.Test
@@ -30,9 +28,48 @@ class ImportPasswordsTest : VaultTestCase() {
   val rule = VaultAutotestRule()
   
   private val stubFileReader = StubExternalFileReader(
-    uriToMatch = "content://myfolder/myfile.png",
-    bytesToRead = { context.assets.open("file_two_passwords").readBytes() }
+    uriToMatch = "content://myfolder/passwords.kdbx",
+    bytesToRead = { context.assets.open("database_two_passwords").readBytes() }
   )
+  
+  @Test
+  fun testImportingPasswordsFromInitialScreen() = init {
+    CoreComponentHolder.initialize(
+      application = ApplicationProvider.getApplicationContext(),
+      activityResultWrapper = StubActivityResultWrapper(
+        stubGetFileUri = "content://myfolder/passwords.kdbx"
+      ),
+      externalFileReader = stubFileReader
+    )
+    rule.launchActivity()
+  }.run {
+    KInitialScreen {
+      buttonImportPasswords.click()
+      KImportPasswordsScreen {
+        currentScreenIs<ImportPasswordsScreen>()
+        layoutSelectFile.click()
+        buttonImportPasswords.click()
+        enterPasswordDialog {
+          editText.replaceText("qwetu1233")
+          buttonContinue.click()
+        }
+        KMainListScreen {
+          currentScreenIs<MainListScreen>()
+          recycler {
+            hasSize(3)
+            childAt<PasswordItem>(1) {
+              text.hasText("google")
+              image.hasDrawable(R.drawable.icon_google)
+            }
+            childAt<PasswordItem>(2) {
+              text.hasText("test.com")
+              image.hasDrawable(LetterInCircleDrawable("t"))
+            }
+          }
+        }
+      }
+    }
+  }
   
   @Test
   fun importingPasswordsFromMainMenuTest() = init {
@@ -40,12 +77,11 @@ class ImportPasswordsTest : VaultTestCase() {
       CoreComponentHolder.initialize(
         application = ApplicationProvider.getApplicationContext(),
         activityResultWrapper = StubActivityResultWrapper(
-          stubGetFileUri = "content://myfolder/myfile.png"
+          stubGetFileUri = "content://myfolder/passwords.kdbx"
         ),
         externalFileReader = stubFileReader
       )
-      writeVaultFileFromAssets("file_one_password")
-      rule.launchActivity()
+      rule.launchActivityWithDatabase("database_one_password")
     }
   }.run {
     KLoginScreen {
@@ -56,7 +92,7 @@ class ImportPasswordsTest : VaultTestCase() {
         recycler {
           hasSize(2)
           childAt<PasswordItem>(1) {
-            text.hasText("aaa")
+            text.hasText("abc")
           }
         }
         
@@ -67,7 +103,7 @@ class ImportPasswordsTest : VaultTestCase() {
         
         KImportPasswordsScreen {
           currentScreenIs<ImportPasswordsScreen>()
-          iconBack.click()
+          imageBack.click()
         }
         
         currentScreenIs<MainListScreen>()
@@ -78,26 +114,14 @@ class ImportPasswordsTest : VaultTestCase() {
         }
         
         KImportPasswordsScreen {
-          titleSelectFile {
-            hasText("File")
-            hasTextColorInt(Colors.Accent)
-          }
-          textSelectFile.hasText("Select file")
+          titleSelectFile.hasText("File")
+          textSelectFile.hasText("/storage/emulated/0/passwords.kdbx")
           
           buttonImportPasswords.click()
           
-          titleSelectFile {
-            hasText("You have not selected file")
-            hasTextColorInt(Colors.Error)
-          }
-          
           layoutSelectFile.click()
           
-          textSelectFile.hasText("myfolder/myfile.png")
-          titleSelectFile {
-            hasText("File")
-            hasTextColorInt(Colors.Accent)
-          }
+          textSelectFile.hasText("/storage/emulated/0/passwords.kdbx")
           
           buttonImportPasswords.click()
           
@@ -112,12 +136,12 @@ class ImportPasswordsTest : VaultTestCase() {
           infoDialog.action1.click()
           
           infoDialog.isNotDisplayed()
-          currentScreenIs<ImportPasswordsScreen>()
           
           buttonImportPasswords.click()
           
           infoDialog.isDisplayed()
           
+          closeSoftKeyboard()
           pressBack()
           
           infoDialog.isNotDisplayed()
@@ -125,13 +149,9 @@ class ImportPasswordsTest : VaultTestCase() {
           buttonImportPasswords.click()
           infoDialog.action2.click()
           
-          enterPasswordDialog {
-            isDisplayed()
-            title.hasText("Enter password to decipher the file with")
-            textError.hasEmptyText()
-          }
+          enterPasswordDialog.isDisplayed()
           
-          enterPasswordDialog.iconCross.click()
+          enterPasswordDialog.imageCross.click()
           
           enterPasswordDialog.isNotDisplayed()
           
@@ -139,6 +159,9 @@ class ImportPasswordsTest : VaultTestCase() {
           infoDialog.action2.click()
           
           enterPasswordDialog {
+            title.hasText("Enter password for decryption")
+            textError.hasEmptyText()
+            
             editText.replaceText("abc")
             buttonContinue.click()
           }
@@ -161,18 +184,6 @@ class ImportPasswordsTest : VaultTestCase() {
             editText.replaceText("qwetu1233")
             buttonContinue.click()
           }
-          
-          enterPasswordDialog.isNotDisplayed()
-          
-          infoDialog {
-            isDisplayed()
-            title.hasText("Success!")
-            message.hasText("Imported passwords successfully")
-            action1.isNotDisplayed()
-            action2.hasText("OK")
-          }
-          
-          infoDialog.action2.click()
         }
         
         currentScreenIs<MainListScreen>()
@@ -181,52 +192,11 @@ class ImportPasswordsTest : VaultTestCase() {
           hasSize(3)
           childAt<PasswordItem>(1) {
             text.hasText("google")
-            icon.hasDrawable(R.drawable.icon_google)
+            image.hasDrawable(R.drawable.icon_google)
           }
           childAt<PasswordItem>(2) {
             text.hasText("test.com")
-            icon.hasDrawable(LetterInCircleDrawable("t"))
-          }
-        }
-      }
-    }
-  }
-  
-  @Test
-  fun importingPasswordsFromInitialScreenTest() = init {
-    CoreComponentHolder.initialize(
-      application = ApplicationProvider.getApplicationContext(),
-      activityResultWrapper = StubActivityResultWrapper(
-        stubGetFileUri = "content://myfolder/myfile.png"
-      ),
-      externalFileReader = stubFileReader
-    )
-    rule.launchActivity()
-  }.run {
-    KInitialScreen {
-      buttonImportPasswords.click()
-      KImportPasswordsScreen {
-        currentScreenIs<ImportPasswordsScreen>()
-        layoutSelectFile.click()
-        buttonImportPasswords.click()
-        infoDialog.action2.click()
-        enterPasswordDialog {
-          editText.replaceText("qwetu1233")
-          buttonContinue.click()
-        }
-        infoDialog.action2.click()
-        KMainListScreen {
-          currentScreenIs<MainListScreen>()
-          recycler {
-            hasSize(3)
-            childAt<PasswordItem>(1) {
-              text.hasText("google")
-              icon.hasDrawable(R.drawable.icon_google)
-            }
-            childAt<PasswordItem>(2) {
-              text.hasText("test.com")
-              icon.hasDrawable(LetterInCircleDrawable("t"))
-            }
+            image.hasDrawable(LetterInCircleDrawable("t"))
           }
         }
       }

@@ -9,17 +9,16 @@ class KEntryTypeDialog(
 ) : KBaseView<KEntryTypeDialog>({ withId(id) }) {
   
   val passwordEntry = KEntryTypeItemView(id, R.drawable.ic_lock, "Password")
-  val creditCardEntry = KEntryTypeItemView(id, R.drawable.ic_credit_card, "Debit or credit card")
   val plainTextEntry = KEntryTypeItemView(id, R.drawable.ic_plain_text, "Plain text")
   
   class KEntryTypeItemView(
     private val bottomSheetId: Int,
-    private val iconRes: Int,
+    private val imageRes: Int,
     private val text: String,
   ) : KBaseView<KEntryTypeItemView>({
     isInstanceOf(LinearLayout::class.java)
     isDescendantOfA { withId(bottomSheetId) }
-    withDescendant { withDrawable(iconRes) }
+    withDescendant { withDrawable(imageRes) }
     withDescendant { withText(text) }
   })
 }

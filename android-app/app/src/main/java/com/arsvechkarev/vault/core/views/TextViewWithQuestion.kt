@@ -1,6 +1,7 @@
 package com.arsvechkarev.vault.core.views
 
 import android.content.Context
+import android.view.View
 import android.widget.ImageView
 import android.widget.LinearLayout
 import androidx.annotation.StringRes
@@ -9,6 +10,7 @@ import com.arsvechkarev.vault.viewbuilding.Colors
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginSmall
 import com.arsvechkarev.vault.viewbuilding.Styles.BaseTextView
 import viewdsl.Size.Companion.WrapContent
+import viewdsl.id
 import viewdsl.image
 import viewdsl.invisible
 import viewdsl.margins
@@ -28,9 +30,11 @@ class TextWithQuestion(context: Context) : LinearLayout(context) {
     orientation(HORIZONTAL)
     withViewBuilder {
       child<FixedHeightTextView>(WrapContent, WrapContent, style = BaseTextView) {
+        id(Text)
         textColor(Colors.Error)
       }
       ImageView(WrapContent, WrapContent) {
+        id(Image)
         image(R.drawable.ic_question, Colors.Error)
         margins(start = MarginSmall)
         invisible()
@@ -59,5 +63,11 @@ class TextWithQuestion(context: Context) : LinearLayout(context) {
   fun hideQuestion() {
     imageView.invisible()
     setOnClickListener(null)
+  }
+  
+  companion object {
+    
+    val Text = View.generateViewId()
+    val Image = View.generateViewId()
   }
 }

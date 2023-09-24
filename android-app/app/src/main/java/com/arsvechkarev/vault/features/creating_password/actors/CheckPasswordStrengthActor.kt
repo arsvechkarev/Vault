@@ -1,6 +1,6 @@
 package com.arsvechkarev.vault.features.creating_password.actors
 
-import buisnesslogic.PasswordInfoChecker
+import buisnesslogic.PasswordChecker
 import com.arsvechkarev.vault.core.mvi.tea.Actor
 import com.arsvechkarev.vault.features.creating_password.CreatingPasswordCommand
 import com.arsvechkarev.vault.features.creating_password.CreatingPasswordCommand.CheckPasswordStrength
@@ -12,14 +12,14 @@ import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.flow.mapLatest
 
 class CheckPasswordStrengthActor(
-  private val passwordInfoChecker: PasswordInfoChecker
+  private val passwordChecker: PasswordChecker
 ) : Actor<CreatingPasswordCommand, CreatingPasswordEvent> {
   
   @OptIn(ExperimentalCoroutinesApi::class)
   override fun handle(commands: Flow<CreatingPasswordCommand>): Flow<CreatingPasswordEvent> {
     return commands.filterIsInstance<CheckPasswordStrength>()
         .mapLatest {
-          PasswordStrengthChanged(passwordInfoChecker.checkStrength(it.password))
+          PasswordStrengthChanged(passwordChecker.checkStrength(it.password))
         }
   }
 }

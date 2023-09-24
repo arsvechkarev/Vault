@@ -3,11 +3,19 @@ package buisnesslogic
 import app.keemobile.kotpass.cryptography.EncryptedValue
 import app.keemobile.kotpass.database.Credentials
 
-@JvmInline
-value class Password private constructor(val encryptedValueFiled: EncryptedValue) {
+class Password(val encryptedValueFiled: EncryptedValue) {
   
-  val encryptedData: ByteArray get() = encryptedValueFiled.getBinary()
   val stringData: String get() = encryptedValueFiled.text
+  
+  override fun equals(other: Any?): Boolean {
+    if (this === other) return true
+    if (javaClass != other?.javaClass) return false
+    return stringData == (other as Password).stringData
+  }
+  
+  override fun hashCode(): Int {
+    return stringData.hashCode()
+  }
   
   companion object {
     

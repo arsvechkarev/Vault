@@ -1,5 +1,6 @@
 package com.arsvechkarev.vault.features.common.di.modules
 
+import buisnesslogic.DEFAULT_INTERNAL_FILENAME
 import buisnesslogic.DatabaseCache
 import buisnesslogic.DatabaseFileSaver
 import buisnesslogic.DatabaseInitializer
@@ -31,7 +32,7 @@ class KeePassModuleImpl(coreModule: CoreModule) : KeePassModule {
   override val keePassPlainTextModelInteractor = KeePassPlainTextModelInteractor(generator)
   
   override val databaseFileSaver = DatabaseFileSaverImpl(
-    IoModuleImpl.FILENAME,
+    DEFAULT_INTERNAL_FILENAME,
     coreModule.application,
     coreModule.dispatchersFacade
   )

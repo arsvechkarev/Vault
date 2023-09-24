@@ -24,7 +24,7 @@ import com.arsvechkarev.vault.viewbuilding.Styles.AccentTextView
 import com.arsvechkarev.vault.viewbuilding.Styles.BaseEditText
 import com.arsvechkarev.vault.viewbuilding.Styles.BoldTextView
 import com.arsvechkarev.vault.viewbuilding.Styles.Button
-import com.arsvechkarev.vault.viewbuilding.Styles.IconBack
+import com.arsvechkarev.vault.viewbuilding.Styles.ImageBack
 import com.arsvechkarev.vault.viewbuilding.TextSizes
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -63,7 +63,7 @@ class CreatingPasswordEntryScreen : BaseFragmentScreen() {
         constraints {
           topToTopOf(parent)
         }
-        ImageView(WrapContent, WrapContent, style = IconBack) {
+        ImageView(WrapContent, WrapContent, style = ImageBack) {
           margin(MarginNormal)
           gravity(CENTER_VERTICAL)
           onClick { store.tryDispatch(OnBackPressed) }

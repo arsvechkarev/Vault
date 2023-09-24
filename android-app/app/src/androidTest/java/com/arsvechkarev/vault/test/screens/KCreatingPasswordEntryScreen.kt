@@ -17,7 +17,7 @@ object KCreatingPasswordEntryScreen : BaseScreen<KCreatingPasswordEntryScreen>()
   
   override val viewClass = CreatingPasswordEntryScreen::class.java
   
-  val iconBack = KImageView { withDrawable(R.drawable.ic_back) }
+  val imageBack = KImageView { withDrawable(R.drawable.ic_back) }
   val title = KTextView {
     withParent { withId(Toolbar) }
     withText("New password")

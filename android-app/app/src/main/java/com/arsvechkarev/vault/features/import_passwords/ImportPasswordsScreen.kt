@@ -8,14 +8,14 @@ import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
 import buisnesslogic.IMPORT_CONTENT_TYPE
 import com.arsvechkarev.vault.R
+import com.arsvechkarev.vault.core.extensions.arg
 import com.arsvechkarev.vault.core.extensions.booleanArg
-import com.arsvechkarev.vault.core.extensions.nullableArg
 import com.arsvechkarev.vault.core.mvi.ext.subscribe
 import com.arsvechkarev.vault.core.mvi.ext.viewModelStore
 import com.arsvechkarev.vault.features.common.di.CoreComponentHolder.coreComponent
 import com.arsvechkarev.vault.features.common.dialogs.EnterPasswordDialog.Companion.EnterPasswordDialog
 import com.arsvechkarev.vault.features.common.dialogs.EnterPasswordDialog.Companion.enterPasswordDialog
-import com.arsvechkarev.vault.features.common.dialogs.EnterPasswordDialog.Mode.IMPORTING_PASSWORDS
+import com.arsvechkarev.vault.features.common.dialogs.EnterPasswordDialog.Mode.ImportingPasswords
 import com.arsvechkarev.vault.features.common.dialogs.InfoDialog.Companion.InfoDialog
 import com.arsvechkarev.vault.features.common.dialogs.InfoDialog.Companion.infoDialog
 import com.arsvechkarev.vault.features.common.dialogs.LoadingDialog
@@ -25,18 +25,16 @@ import com.arsvechkarev.vault.features.import_passwords.ImportPasswordsUiEvent.O
 import com.arsvechkarev.vault.features.import_passwords.ImportPasswordsUiEvent.OnHideErrorDialog
 import com.arsvechkarev.vault.features.import_passwords.ImportPasswordsUiEvent.OnHideInfoDialog
 import com.arsvechkarev.vault.features.import_passwords.ImportPasswordsUiEvent.OnHidePasswordEnteringDialog
-import com.arsvechkarev.vault.features.import_passwords.ImportPasswordsUiEvent.OnHideSuccessDialog
 import com.arsvechkarev.vault.features.import_passwords.ImportPasswordsUiEvent.OnImportPasswordsClicked
 import com.arsvechkarev.vault.features.import_passwords.ImportPasswordsUiEvent.OnPasswordEntered
 import com.arsvechkarev.vault.features.import_passwords.ImportPasswordsUiEvent.OnSelectedFile
-import com.arsvechkarev.vault.viewbuilding.Colors
 import com.arsvechkarev.vault.viewbuilding.Dimens.GradientDrawableHeight
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginNormal
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginSmall
 import com.arsvechkarev.vault.viewbuilding.Styles.AccentTextView
 import com.arsvechkarev.vault.viewbuilding.Styles.BoldTextView
 import com.arsvechkarev.vault.viewbuilding.Styles.Button
-import com.arsvechkarev.vault.viewbuilding.Styles.IconBack
+import com.arsvechkarev.vault.viewbuilding.Styles.ImageBack
 import com.arsvechkarev.vault.viewbuilding.Styles.SecondaryTextView
 import com.arsvechkarev.vault.viewbuilding.TextSizes
 import navigation.BaseFragmentScreen
@@ -49,7 +47,6 @@ import viewdsl.layoutGravity
 import viewdsl.margins
 import viewdsl.onClick
 import viewdsl.text
-import viewdsl.textColor
 import viewdsl.textSize
 import viewdsl.withViewBuilder
 import java.io.File
@@ -67,7 +64,7 @@ class ImportPasswordsScreen : BaseFragmentScreen() {
           constraints {
             topToTopOf(parent)
           }
-          ImageView(WrapContent, WrapContent, style = IconBack) {
+          ImageView(WrapContent, WrapContent, style = ImageBack) {
             margins(start = MarginNormal, end = MarginNormal)
             gravity(Gravity.CENTER_VERTICAL)
             onClick { store.tryDispatch(OnBackPressed) }
@@ -92,7 +89,6 @@ class ImportPasswordsScreen : BaseFragmentScreen() {
           TextView(MatchParent, WrapContent, style = SecondaryTextView) {
             id(TextSelectFile)
             textSize(TextSizes.H4)
-            text(R.string.text_select_file)
             margins(top = MarginSmall, end = MarginNormal)
           }
         }
@@ -107,7 +103,7 @@ class ImportPasswordsScreen : BaseFragmentScreen() {
         }
       }
       EnterPasswordDialog(
-        mode = IMPORTING_PASSWORDS,
+        mode = ImportingPasswords(fromInitialScreen = !booleanArg(ASK_FOR_CONFIRMATION)),
         onDialogClosed = { store.tryDispatch(OnHidePasswordEnteringDialog) },
         onPasswordEntered = { store.tryDispatch(OnPasswordEntered(it)) }
       )
@@ -120,7 +116,7 @@ class ImportPasswordsScreen : BaseFragmentScreen() {
       .wrapGetFileLauncher(this) { uri -> store.tryDispatch(OnSelectedFile(uri)) }
   
   private val store by viewModelStore {
-    ImportPasswordsStore(coreComponent, nullableArg(Uri::class), booleanArg(ASK_FOR_CONFIRMATION))
+    ImportPasswordsStore(coreComponent, arg(Uri::class), booleanArg(ASK_FOR_CONFIRMATION))
   }
   
   override fun onInit() {
@@ -128,42 +124,18 @@ class ImportPasswordsScreen : BaseFragmentScreen() {
   }
   
   private fun render(state: ImportPasswordsState) {
-    renderText(state)
-    renderError(state)
-    renderDialogs(state)
-  }
-  
-  private fun renderText(state: ImportPasswordsState) {
-    if (state.selectedFileUri == null) {
-      textView(TextSelectFile).text(R.string.text_select_file)
-    } else {
-      textView(TextSelectFile).text(getReadablePath(state.selectedFileUri))
-    }
-  }
-  
-  private fun renderError(state: ImportPasswordsState) {
-    if (state.showSelectFileError) {
-      textView(TitleSelectFile).textColor(Colors.Error)
-      textView(TitleSelectFile).text(R.string.text_error_file_is_not_selected)
-    } else {
-      textView(TitleSelectFile).textColor(Colors.Accent)
-      textView(TitleSelectFile).text(R.string.text_file)
-    }
-  }
-  
-  private fun renderDialogs(state: ImportPasswordsState) {
+    textView(TextSelectFile).text(getReadablePath(state.selectedFileUri))
     if (state.showLoading) {
       loadingDialog.show()
     } else {
       loadingDialog.hide()
     }
-    if (state.showEnteringPassword) {
+    if (state.showEnterPasswordDialog) {
       enterPasswordDialog.show()
     } else {
       enterPasswordDialog.hide()
     }
     when (state.infoDialog) {
-      // TODO (9/22/23): Not show this dialog if on start "Import passwords from vault was selected"
       ImportPasswordsInfoDialog.CONFIRMATION -> {
         infoDialog.showWithCancelAndProceedOption(
           titleRes = R.string.text_confirmation,
@@ -173,14 +145,38 @@ class ImportPasswordsScreen : BaseFragmentScreen() {
           onProceed = { store.tryDispatch(OnConfirmedImportClicked) }
         )
       }
-      
-      ImportPasswordsInfoDialog.SUCCESS -> {
+      ImportPasswordsInfoDialog.FAILURE -> {
         infoDialog.showWithOkOption(
-          titleRes = R.string.text_success,
-          messageRes = R.string.text_import_successful,
+          titleRes = R.string.text_error,
+          messageRes = R.string.text_error_import_message,
           textPositiveRes = R.string.text_ok,
-          onCancel = { store.tryDispatch(OnHideSuccessDialog) },
-          onOkClicked = { store.tryDispatch(OnHideSuccessDialog) }
+          onCancel = { store.tryDispatch(OnHideErrorDialog) },
+          onOkClicked = { store.tryDispatch(OnHideErrorDialog) }
+        )
+      }
+      null -> infoDialog.hide()
+    }
+  }
+  
+  private fun renderDialogs(state: ImportPasswordsState) {
+    if (state.showLoading) {
+      loadingDialog.show()
+    } else {
+      loadingDialog.hide()
+    }
+    if (state.showEnterPasswordDialog) {
+      enterPasswordDialog.show()
+    } else {
+      enterPasswordDialog.hide()
+    }
+    when (state.infoDialog) {
+      ImportPasswordsInfoDialog.CONFIRMATION -> {
+        infoDialog.showWithCancelAndProceedOption(
+          titleRes = R.string.text_confirmation,
+          messageRes = getString(R.string.text_confirm_import_passwords_message),
+          proceedTextRes = R.string.text_confirm,
+          onCancel = { store.tryDispatch(OnHideInfoDialog) },
+          onProceed = { store.tryDispatch(OnConfirmedImportClicked) }
         )
       }
       
@@ -193,7 +189,6 @@ class ImportPasswordsScreen : BaseFragmentScreen() {
           onOkClicked = { store.tryDispatch(OnHideErrorDialog) }
         )
       }
-      
       null -> infoDialog.hide()
     }
   }
@@ -203,6 +198,7 @@ class ImportPasswordsScreen : BaseFragmentScreen() {
     return true
   }
   
+  // Pretty much copied from https://github.com/SimpleMobileTools/Simple-File-Manager
   private fun getReadablePath(uri: Uri): String {
     val uriString = uri.toString()
     val internalStorageBasePath = if (File("/storage/emulated/0").exists()) {

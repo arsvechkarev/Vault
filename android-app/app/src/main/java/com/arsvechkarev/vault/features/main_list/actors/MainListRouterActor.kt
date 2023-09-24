@@ -5,7 +5,7 @@ import com.arsvechkarev.vault.features.common.Durations
 import com.arsvechkarev.vault.features.common.Router
 import com.arsvechkarev.vault.features.common.Screens.CreatingPasswordEntryScreen
 import com.arsvechkarev.vault.features.common.Screens.ImportPasswordsScreen
-import com.arsvechkarev.vault.features.common.Screens.PasswordInfoScreen
+import com.arsvechkarev.vault.features.common.Screens.PasswordEntryScreen
 import com.arsvechkarev.vault.features.common.Screens.PlainTextScreen
 import com.arsvechkarev.vault.features.common.Screens.SettingsScreen
 import com.arsvechkarev.vault.features.common.navigation.RouterActor
@@ -28,7 +28,7 @@ fun MainListRouterActor(router: Router): Actor<MainListCommand, MainListEvent> {
     when (command) {
       is OpenScreen -> {
         when (val info = command.info) {
-          is Password -> goForward(PasswordInfoScreen(info.passwordEntry.id))
+          is Password -> goForward(PasswordEntryScreen(info.passwordEntry.id))
           is PlainText -> goForward(PlainTextScreen(info.plainTextEntry.id))
           is ImportPasswords -> goForward(ImportPasswordsScreen(info.selectedFileUri),
             animate = false)

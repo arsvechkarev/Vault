@@ -7,10 +7,10 @@ import com.arsvechkarev.vault.features.common.data.PasswordsFileExporter
 class StubPasswordsFileExporter : PasswordsFileExporter {
   
   var exportingUri: Uri? = null
-  var exportedData: ByteArray? = null
+  var exportedDatabase: KeePassDatabase? = null
   
   override suspend fun writeData(exportingUri: Uri, database: KeePassDatabase) {
     this.exportingUri = exportingUri
-    //    exportedData = data
+    this.exportedDatabase = database
   }
 }

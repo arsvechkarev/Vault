@@ -2,7 +2,6 @@ package com.arsvechkarev.vault.features.common
 
 import android.graphics.drawable.Drawable
 import android.widget.ImageView
-import com.arsvechkarev.vault.R
 import com.arsvechkarev.vault.core.views.drawables.LetterInCircleDrawable
 import viewdsl.retrieveDrawable
 
@@ -41,22 +40,7 @@ fun ImageView.setIconForTitle(title: String) {
 // TODO (9/22/23): Getting icons from network?
 private fun ImageView.findPredefinedIcon(text: String): Drawable? {
   val drawable: (Int) -> Drawable = { context.retrieveDrawable(it) }
-  return when {
-    text has AMAZON -> drawable(R.drawable.icon_amazon)
-    text has GOOGLE -> drawable(R.drawable.icon_google)
-    text has FACEBOOK -> drawable(R.drawable.icon_facebook)
-    text has MICROSOFT -> drawable(R.drawable.icon_microsoft)
-    text has NETFLIX -> drawable(R.drawable.icon_netfilx)
-    text has INSTAGRAM -> drawable(R.drawable.icon_instagram)
-    text has SNAPCHAT -> drawable(R.drawable.icon_snapchat)
-    text has TELEGRAM -> drawable(R.drawable.icon_telegram)
-    text has TWITTER -> drawable(R.drawable.icon_twitter)
-    text has SPOTIFY -> drawable(R.drawable.icon_spotify)
-    text has VK -> drawable(R.drawable.icon_vk)
-    text has WHATSAPP -> drawable(R.drawable.icon_whatsapp)
-    text has GITHUB -> drawable(R.drawable.icon_github)
-    else -> null
-  }
+  return null
 }
 
 private infix fun String.has(text: String): Boolean {

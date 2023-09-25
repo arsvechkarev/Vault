@@ -9,8 +9,6 @@ java {
 }
 
 dependencies {
-  implementation project(':common-crypto')
-
   def appDependencies = rootProject.ext.applicationDependencies
   implementation appDependencies.kotlin
   implementation appDependencies.coroutinesCore

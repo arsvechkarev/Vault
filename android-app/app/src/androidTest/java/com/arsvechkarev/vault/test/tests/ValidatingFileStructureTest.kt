@@ -1,9 +1,14 @@
 package com.arsvechkarev.vault.test.tests
 
 import androidx.test.core.app.ApplicationProvider
-import buisnesslogic.AesSivTinkCryptography
-import buisnesslogic.Password
-import buisnesslogic.model.EntriesLists
+import app.keemobile.kotpass.cryptography.EncryptedValue
+import app.keemobile.kotpass.database.Credentials
+import app.keemobile.kotpass.database.KeePassDatabase
+import app.keemobile.kotpass.database.decode
+import app.keemobile.kotpass.database.findEntries
+import buisnesslogic.CUSTOM_DATA_PASSWORD
+import buisnesslogic.CUSTOM_DATA_PLAIN_TEXT
+import buisnesslogic.CUSTOM_DATA_TYPE_KEY
 import com.arsvechkarev.vault.features.common.di.CoreComponentHolder
 import com.arsvechkarev.vault.test.core.ext.context
 import com.arsvechkarev.vault.test.core.rule.VaultAutotestRule
@@ -16,12 +21,12 @@ import com.arsvechkarev.vault.test.screens.KMainListScreen
 import com.arsvechkarev.vault.test.screens.KMasterPasswordScreen
 import com.arsvechkarev.vault.test.screens.KPasswordEntryScreen
 import com.arsvechkarev.vault.test.screens.KPlainTextEntryScreen
-import com.google.gson.Gson
 import com.kaspersky.kaspresso.testcases.api.testcase.TestCase
 import junit.framework.Assert.assertEquals
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import java.io.ByteArrayInputStream
 
 class ValidatingFileStructureTest : TestCase() {
   
@@ -99,53 +104,48 @@ class ValidatingFileStructureTest : TestCase() {
             editTextTitle.replaceText("my title")
             editTextText.replaceText("super secret content")
             buttonSave.click()
-            confirmationDialog.action2.click()
             imageBack.click()
           }
           menu {
             open()
             exportPasswordsMenuItem.click()
           }
-          //          KExportPasswordsScreen {
-          //            layoutFolder.click()
-          //            editTextFilename.replaceText("passwords.kdbx")
-          //            buttonExportPasswords.click()
-          //            checkEqualExceptIds()
-          //          }
+          checkEqualExceptIds()
         }
       }
     }
   }
   
   private fun checkEqualExceptIds() {
-    val expectedBytes = context.assets.open("file_two_passwords_and_plain_text").readBytes()
-    val expectedString = AesSivTinkCryptography.decryptData(Password.create("qwetu1233"),
-      expectedBytes)
-    val actualBytes = stubPasswordsFileExporter.exportedData!!
-    val actualString = AesSivTinkCryptography.decryptData(Password.create("qwetu1233"), actualBytes)
+    val expectedBytes = context.assets.open("database_two_passwords_and_plain_text").readBytes()
+    val expectedDatabase = KeePassDatabase.decode(ByteArrayInputStream(expectedBytes),
+      Credentials.from(EncryptedValue.fromString("qwetu1233")))
+    val actualDatabase = checkNotNull(stubPasswordsFileExporter.exportedDatabase)
     
-    val gson = Gson()
-    val expectedEntriesLists = gson.fromJson(expectedString, EntriesLists::class.java)
-    val actualEntriesLists = gson.fromJson(actualString, EntriesLists::class.java)
-    
-    assertEquals(expectedEntriesLists.passwords.size, actualEntriesLists.passwords.size)
-    expectedEntriesLists.passwords.forEach { expectedPassword ->
-      checkNotNull(
-        actualEntriesLists.passwords.find { it.title == expectedPassword.title })
-          .let { actualPasswordEntry ->
-            assertEquals(expectedPassword.username, actualPasswordEntry.username)
-            assertEquals(expectedPassword.password, actualPasswordEntry.password)
-            assertEquals(expectedPassword.notes, actualPasswordEntry.notes)
+    val expectedEntriesList = expectedDatabase.findEntries { true }.flatMap { it.second }
+    val actualEntriesList = actualDatabase.findEntries { true }.flatMap { it.second }
+    assertEquals(expectedEntriesList.size, actualEntriesList.size)
+    expectedEntriesList.forEach { expectedEntry ->
+      checkNotNull(actualEntriesList.find { it.fields.title == expectedEntry.fields.title })
+          .let { actualEntry ->
+            assertEquals(expectedEntry.fields.userName?.content,
+              actualEntry.fields.userName?.content)
+            assertEquals(expectedEntry.fields.password?.content,
+              actualEntry.fields.password?.content)
+            assertEquals(expectedEntry.fields.notes?.content, actualEntry.fields.notes?.content)
+            
+            val expectedEntryType = expectedEntry.customData.getValue(CUSTOM_DATA_TYPE_KEY).value
+            val actualEntryType = actualEntry.customData.getValue(CUSTOM_DATA_TYPE_KEY).value
+            
+            if (expectedEntryType != CUSTOM_DATA_PASSWORD
+                && expectedEntryType != CUSTOM_DATA_PLAIN_TEXT) {
+              throw AssertionError(
+                "Custom data type of entry $expectedEntry is [$expectedEntryType]"
+              )
+            }
+            
+            assertEquals(expectedEntryType, actualEntryType)
           }
     }
-    assertEquals(expectedEntriesLists.plainTextEntries.size,
-      actualEntriesLists.plainTextEntries.size)
-    expectedEntriesLists.plainTextEntries.forEach { expectedPlainText ->
-      assertEquals(expectedPlainText.text,
-        checkNotNull(
-          actualEntriesLists.plainTextEntries.find { it.title == expectedPlainText.title }).text)
-    }
-    // TODO (1/10/2023): Add credit cards validation, restructure test
-    //  to check one item of each type
   }
 }

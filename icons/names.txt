@@ -1,0 +1,12 @@
+amazon
+facebook
+github
+google
+instagram
+microsoft
+netflix
+snapchat
+spotify
+telegram
+twitter
+whatsapp

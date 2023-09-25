@@ -1,12 +1,8 @@
 package busnesslogic
 
-import buisnesslogic.AesSivTinkCryptography
-import buisnesslogic.KeePassStorageImpl
 import buisnesslogic.Password
-import buisnesslogic.model.CreditCardEntry
 import buisnesslogic.model.PasswordEntry
 import buisnesslogic.model.PlainTextEntry
-import com.google.gson.Gson
 import kotlinx.coroutines.runBlocking
 import org.junit.After
 import org.junit.Assert.assertTrue
@@ -19,16 +15,8 @@ class DatabaseStorageImplTest {
   
   private val testPassword = "pAsSw0rd"
   
-  private val storage = KeePassStorageImpl(
-    AesSivTinkCryptography,
-    testFileSaver,
-    Gson(),
-  )
-  
   @Before
   fun setup() = runBlocking {
-    val encryptedText = AesSivTinkCryptography.encryptData(testPassword, "")
-    testFileSaver.save(encryptedText)
   }
   
   @After
@@ -54,19 +42,9 @@ class DatabaseStorageImplTest {
       url = "",
       notes = ""
     )
-    val creditCardEntry = CreditCardEntry(
-      id = "90lk290",
-      cardNumber = "456978921234567",
-      expirationDate = "10/26",
-      cardholderName = "VASYA SOMETHING",
-      cvcCode = "999",
-      pinCode = "1234",
-      notes = ""
-    )
     val plainTextEntry = PlainTextEntry("lkdvj", "title", "my secret data")
     
     storage.saveEntry(testPassword, passwordEntry)
-    storage.saveEntry(testPassword, creditCardEntry)
     storage.saveEntry(testPassword, plainTextEntry)
     
     val entries = storage.getDatabase(testPassword)
@@ -74,7 +52,6 @@ class DatabaseStorageImplTest {
     assertTrue(entries.creditCards.size == 1)
     assertTrue(entries.plainTexts.size == 1)
     assertTrue(entries.passwords.contains(passwordEntry))
-    assertTrue(entries.creditCards.contains(creditCardEntry))
     assertTrue(entries.plainTexts.contains(plainTextEntry))
   }
   

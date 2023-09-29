@@ -130,15 +130,6 @@ class SettingsScreen : BaseFragmentScreen() {
             topToBottomOf(TextChangeMasterPassword)
           }
         }
-        View(MatchParent, ZERO) {
-          id(ItemShowUsernames)
-          rippleBackground(Colors.Ripple)
-          onClick { store.tryDispatch(OnChangeMasterPasswordClicked) }
-          constraints {
-            topToBottomOf(SecondDivider)
-            bottomToTopOf(ThirdDivider)
-          }
-        }
         TextView(WrapContent, WrapContent, style = AccentTextView) {
           id(TitleShowUsernames)
           text(R.string.text_passwords_usernames)
@@ -238,7 +229,6 @@ class SettingsScreen : BaseFragmentScreen() {
     val TitleChangeMasterPassword = View.generateViewId()
     val TextChangeMasterPassword = View.generateViewId()
     val SecondDivider = View.generateViewId()
-    val ItemShowUsernames = View.generateViewId()
     val TitleShowUsernames = View.generateViewId()
     val TextShowUsernames = View.generateViewId()
     val SwitchShowUsernames = View.generateViewId()

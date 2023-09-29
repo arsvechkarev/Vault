@@ -4,6 +4,7 @@ import com.arsvechkarev.vault.core.ScreenState
 import com.arsvechkarev.vault.core.mvi.tea.Actor
 import com.arsvechkarev.vault.features.common.data.storage.ObservableCachedDatabaseStorage
 import com.arsvechkarev.vault.features.common.domain.MasterPasswordProvider
+import com.arsvechkarev.vault.features.common.domain.ShowUsernamesInteractor
 import com.arsvechkarev.vault.features.main_list.MainListCommand
 import com.arsvechkarev.vault.features.main_list.MainListCommand.LoadData
 import com.arsvechkarev.vault.features.main_list.MainListEvent
@@ -18,16 +19,17 @@ class LoadMainDataActor(
   private val entriesStorage: ObservableCachedDatabaseStorage,
   private val masterPasswordProvider: MasterPasswordProvider,
   private val entriesListUiMapper: EntriesListUiMapper,
+  private val showUsernamesInteractor: ShowUsernamesInteractor,
 ) : Actor<MainListCommand, MainListEvent> {
   
   @OptIn(ExperimentalCoroutinesApi::class)
   override fun handle(commands: Flow<MainListCommand>): Flow<MainListEvent> {
-    return commands
-        .filterIsInstance<LoadData>()
+    return commands.filterIsInstance<LoadData>()
         .mapLatest {
           val masterPassword = masterPasswordProvider.provideMasterPassword()
-          val entries = entriesStorage.getDatabase(masterPassword)
-          val entriesItems = entriesListUiMapper.mapEntries(entries)
+          val showUsernames = showUsernamesInteractor.getShowUsernames()
+          val database = entriesStorage.getDatabase(masterPassword)
+          val entriesItems = entriesListUiMapper.mapItems(database, showUsernames)
           val state = if (entriesItems.isNotEmpty()) {
             ScreenState.success(entriesItems)
           } else {

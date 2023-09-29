@@ -8,6 +8,7 @@ import com.arsvechkarev.vault.recycler.DifferentiableItem
 sealed interface MainListEvent {
   class UpdateData(val data: ScreenState<List<DifferentiableItem>>) : MainListEvent
   class ExportedPasswords(val uri: Uri) : MainListEvent
+  object ShowUsernamesChanged : MainListEvent
 }
 
 sealed interface MainListUiEvent : MainListEvent {
@@ -27,7 +28,6 @@ sealed interface MainListUiEvent : MainListEvent {
 sealed interface MainListCommand {
   
   object LoadData : MainListCommand
-  
   class ExportPasswordsFile(val fileUriForExporting: Uri) : MainListCommand
   
   sealed interface RouterCommand : MainListCommand {

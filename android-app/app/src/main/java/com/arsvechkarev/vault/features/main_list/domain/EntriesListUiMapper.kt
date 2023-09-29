@@ -13,7 +13,7 @@ import com.arsvechkarev.vault.recycler.DifferentiableItem
 
 class EntriesListUiMapper {
   
-  fun mapEntries(database: KeePassDatabase): List<DifferentiableItem> {
+  fun mapItems(database: KeePassDatabase, addUsernames: Boolean): List<DifferentiableItem> {
     val allEntries = database.getEntries { true }.flatMap { pair -> pair.second }
     val plainTexts = allEntries.filter { it.isDefinitePlainText || it.isProbablePlainText }
     val passwords = allEntries - plainTexts.toSet()
@@ -21,7 +21,7 @@ class EntriesListUiMapper {
       if (passwords.isNotEmpty()) {
         add(Title(R.string.text_passwords))
       }
-      addAll(passwords.toPasswordItems().sortedBy { it.title.lowercase() })
+      addAll(passwords.toPasswordItems(addUsernames).sortedBy { it.title.lowercase() })
       if (plainTexts.isNotEmpty()) {
         add(Title(R.string.text_plain_texts))
       }
@@ -46,7 +46,7 @@ class EntriesListUiMapper {
     }
   }
   
-  private fun List<Entry>.toPasswordItems(): List<PasswordItem> {
+  private fun List<Entry>.toPasswordItems(addUsernames: Boolean): List<PasswordItem> {
     var counter = 0
     return map {
       val title = it.fields.title?.content
@@ -63,7 +63,7 @@ class EntriesListUiMapper {
       PasswordItem(
         id = it.uuid.toString(),
         title = resultTitle,
-        username = username,
+        username = if (addUsernames) username else "",
         hasActualTitle = hasActualTitle
       )
     }

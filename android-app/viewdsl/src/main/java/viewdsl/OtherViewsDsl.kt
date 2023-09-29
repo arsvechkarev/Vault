@@ -64,3 +64,18 @@ fun SwitchCompat.setColors(
       colorTrackDisabled,
     ))
 }
+
+fun SwitchCompat.onCheckedChanged(block: ((Boolean) -> Unit)?) {
+  if (block == null) {
+    setOnCheckedChangeListener(null)
+  } else {
+    setOnCheckedChangeListener { _, isChecked -> block(isChecked) }
+  }
+}
+
+fun SwitchCompat.setCheckedSilently(checked: Boolean, onChecked: (Boolean) -> Unit) {
+  onCheckedChanged(null)
+  isChecked = checked
+  jumpDrawablesToCurrentState()
+  onCheckedChanged(onChecked)
+}

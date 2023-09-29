@@ -43,7 +43,7 @@ class Snackbar(context: Context) : ViewGroup(context) {
     backgroundRoundRect(Dimens.CornerRadiusDefault, Colors.Snackbar)
     paddings(start = MarginNormal, end = MarginNormal, top = MarginSmall, bottom = MarginSmall)
     addView(TextView(context).apply(BaseTextView).apply {
-      textSize(TextSizes.H5)
+      textSize(TextSizes.H6)
     })
     addView(AnimatableCheckmark(context).apply {
       val padding = MarginSmall

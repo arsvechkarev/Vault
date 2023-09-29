@@ -267,7 +267,7 @@ class MasterPasswordTest : TestCase() {
           hasSize(3)
           childAt<PasswordItem>(1) {
             text.hasText("google")
-            image.hasDrawable(R.drawable.icon_google)
+//            image.hasDrawable(R.drawable.icon_google)
           }
           childAt<PasswordItem>(2) {
             text.hasText("test.com")

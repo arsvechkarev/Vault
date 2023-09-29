@@ -48,7 +48,7 @@ class PasswordStrengthDialog(context: Context) : SimpleDialog(context) {
         }
         TextView(WrapContent, WrapContent, style = BaseTextView) {
           margins(top = MarginLarge, start = MarginNormal, end = MarginNormal)
-          textSize(TextSizes.H5)
+          textSize(TextSizes.H6)
           text(R.string.text_password_should_be_strong)
         }
         TextView(WrapContent, WrapContent, style = ClickableTextView()) {

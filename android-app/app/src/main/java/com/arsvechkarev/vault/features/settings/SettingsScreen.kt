@@ -3,6 +3,7 @@ package com.arsvechkarev.vault.features.settings
 import android.content.Context
 import android.view.Gravity
 import android.view.View
+import androidx.appcompat.widget.SwitchCompat
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.lifecycle.lifecycleScope
 import com.arsvechkarev.vault.R
@@ -17,38 +18,43 @@ import com.arsvechkarev.vault.features.common.dialogs.EnterPasswordDialog.Mode.C
 import com.arsvechkarev.vault.features.settings.EnterPasswordDialogState.HIDDEN
 import com.arsvechkarev.vault.features.settings.EnterPasswordDialogState.HIDDEN_KEEPING_KEYBOARD
 import com.arsvechkarev.vault.features.settings.EnterPasswordDialogState.SHOWN
+import com.arsvechkarev.vault.features.settings.SettingsNews.SetShowUsernames
 import com.arsvechkarev.vault.features.settings.SettingsNews.ShowMasterPasswordChanged
+import com.arsvechkarev.vault.features.settings.SettingsUiEvent.FetchShowUsernamesChecked
 import com.arsvechkarev.vault.features.settings.SettingsUiEvent.OnBackPressed
 import com.arsvechkarev.vault.features.settings.SettingsUiEvent.OnChangeMasterPasswordClicked
 import com.arsvechkarev.vault.features.settings.SettingsUiEvent.OnEnteredPasswordToChangeMasterPassword
 import com.arsvechkarev.vault.features.settings.SettingsUiEvent.OnHideEnterPasswordDialog
+import com.arsvechkarev.vault.features.settings.SettingsUiEvent.OnShowUsernamesChanged
 import com.arsvechkarev.vault.viewbuilding.Colors
 import com.arsvechkarev.vault.viewbuilding.Dimens.DividerHeight
 import com.arsvechkarev.vault.viewbuilding.Dimens.GradientDrawableHeight
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginNormal
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginSmall
+import com.arsvechkarev.vault.viewbuilding.Styles
 import com.arsvechkarev.vault.viewbuilding.Styles.AccentTextView
 import com.arsvechkarev.vault.viewbuilding.Styles.BoldTextView
-import com.arsvechkarev.vault.viewbuilding.Styles.ImageBack
 import com.arsvechkarev.vault.viewbuilding.Styles.SecondaryTextView
+import com.arsvechkarev.vault.viewbuilding.Styles.Switch
 import com.arsvechkarev.vault.viewbuilding.TextSizes
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import navigation.BaseFragmentScreen
 import viewdsl.Size.Companion.MatchParent
 import viewdsl.Size.Companion.WrapContent
+import viewdsl.Size.Companion.ZERO
 import viewdsl.Size.IntSize
 import viewdsl.backgroundColor
 import viewdsl.classNameTag
 import viewdsl.constraints
-import viewdsl.gravity
 import viewdsl.id
 import viewdsl.layoutGravity
 import viewdsl.margin
 import viewdsl.margins
 import viewdsl.onClick
-import viewdsl.padding
+import viewdsl.paddings
 import viewdsl.rippleBackground
+import viewdsl.setCheckedSilently
 import viewdsl.text
 import viewdsl.textSize
 import viewdsl.withViewBuilder
@@ -58,53 +64,116 @@ class SettingsScreen : BaseFragmentScreen() {
   override fun buildLayout(context: Context) = context.withViewBuilder {
     RootCoordinatorLayout {
       child<ConstraintLayout>(MatchParent, WrapContent) {
-        HorizontalLayout(MatchParent, WrapContent) {
-          id(Toolbar)
-          margins(top = StatusBarHeight)
+        paddings(top = StatusBarHeight + MarginSmall)
+        ImageView(WrapContent, WrapContent, style = Styles.ImageBack) {
+          id(ImageBack)
+          margins(start = MarginSmall)
+          onClick { store.tryDispatch(OnBackPressed) }
           constraints {
             topToTopOf(parent)
+            startToStartOf(parent)
           }
-          ImageView(WrapContent, WrapContent, style = ImageBack) {
-            margin(MarginNormal)
-            gravity(Gravity.CENTER_VERTICAL)
-            onClick { store.tryDispatch(OnBackPressed) }
-          }
-          TextView(WrapContent, WrapContent, style = BoldTextView) {
-            layoutGravity(Gravity.CENTER)
-            text(R.string.text_settings)
-            textSize(TextSizes.H1)
+        }
+        TextView(WrapContent, WrapContent, style = BoldTextView) {
+          id(Title)
+          text(R.string.text_settings)
+          margins(start = MarginNormal)
+          textSize(TextSizes.H1)
+          constraints {
+            startToEndOf(ImageBack)
+            topToTopOf(ImageBack)
+            bottomToBottomOf(ImageBack)
           }
         }
         View(MatchParent, IntSize(DividerHeight)) {
           id(FirstDivider)
-          margins(top = GradientDrawableHeight)
+          margins(top = GradientDrawableHeight / 3 - MarginNormal)
           backgroundColor(Colors.Divider)
           constraints {
-            topToTopOf(Toolbar)
+            topToBottomOf(Title)
           }
         }
-        VerticalLayout(MatchParent, WrapContent) {
+        View(MatchParent, ZERO) {
           id(ItemChangePassword)
-          padding(MarginNormal)
           rippleBackground(Colors.Ripple)
           onClick { store.tryDispatch(OnChangeMasterPasswordClicked) }
           constraints {
             topToBottomOf(FirstDivider)
+            bottomToTopOf(SecondDivider)
           }
-          TextView(WrapContent, WrapContent, style = AccentTextView) {
-            text(R.string.text_change_master_password)
+        }
+        TextView(WrapContent, WrapContent, style = AccentTextView) {
+          id(TitleChangeMasterPassword)
+          text(R.string.text_change_master_password)
+          textSize(TextSizes.H5)
+          margins(start = MarginNormal, top = MarginNormal)
+          constraints {
+            startToStartOf(parent)
+            topToBottomOf(FirstDivider)
           }
-          TextView(WrapContent, WrapContent, style = SecondaryTextView) {
-            text(R.string.text_change_master_password_description)
-            textSize(TextSizes.H4)
-            margins(top = MarginSmall)
+        }
+        TextView(ZERO, WrapContent, style = SecondaryTextView) {
+          id(TextChangeMasterPassword)
+          text(R.string.text_change_master_password_description)
+          margins(start = MarginNormal, top = MarginSmall, end = MarginNormal)
+          constraints {
+            startToStartOf(parent)
+            endToEndOf(parent)
+            topToBottomOf(TitleChangeMasterPassword)
           }
         }
         View(MatchParent, IntSize(DividerHeight)) {
           id(SecondDivider)
           backgroundColor(Colors.Divider)
+          margins(top = MarginNormal)
           constraints {
-            topToBottomOf(ItemChangePassword)
+            topToBottomOf(TextChangeMasterPassword)
+          }
+        }
+        View(MatchParent, ZERO) {
+          id(ItemShowUsernames)
+          rippleBackground(Colors.Ripple)
+          onClick { store.tryDispatch(OnChangeMasterPasswordClicked) }
+          constraints {
+            topToBottomOf(SecondDivider)
+            bottomToTopOf(ThirdDivider)
+          }
+        }
+        TextView(WrapContent, WrapContent, style = AccentTextView) {
+          id(TitleShowUsernames)
+          text(R.string.text_passwords_usernames)
+          textSize(TextSizes.H5)
+          margins(start = MarginNormal, top = MarginNormal)
+          constraints {
+            startToStartOf(parent)
+            topToBottomOf(SecondDivider)
+          }
+        }
+        TextView(ZERO, WrapContent, style = SecondaryTextView) {
+          id(TextShowUsernames)
+          text(R.string.text_show_usernames_in_password_entries)
+          margins(start = MarginNormal, top = MarginSmall)
+          constraints {
+            startToStartOf(parent)
+            endToStartOf(SwitchShowUsernames)
+            topToBottomOf(TitleShowUsernames)
+          }
+        }
+        child<SwitchCompat>(WrapContent, WrapContent, style = Switch) {
+          id(SwitchShowUsernames)
+          margin(MarginSmall)
+          constraints {
+            endToEndOf(parent)
+            topToBottomOf(SecondDivider)
+            bottomToTopOf(ThirdDivider)
+          }
+        }
+        View(MatchParent, IntSize(DividerHeight)) {
+          id(ThirdDivider)
+          backgroundColor(Colors.Divider)
+          margins(top = MarginNormal)
+          constraints {
+            topToBottomOf(TextShowUsernames)
           }
         }
       }
@@ -121,10 +190,15 @@ class SettingsScreen : BaseFragmentScreen() {
     }
   }
   
+  private val onShowUsernamesChanged: (Boolean) -> Unit = {
+    store.tryDispatch(OnShowUsernamesChanged(it))
+  }
+  
   private val store by viewModelStore { SettingsStore(coreComponent) }
   
   override fun onInit() {
     store.subscribe(this, ::render, ::handleNews)
+    store.tryDispatch(FetchShowUsernamesChecked)
   }
   
   private fun render(state: SettingsState) {
@@ -137,6 +211,10 @@ class SettingsScreen : BaseFragmentScreen() {
   
   private fun handleNews(news: SettingsNews) {
     when (news) {
+      is SetShowUsernames -> {
+        viewAs<SwitchCompat>(SwitchShowUsernames).setCheckedSilently(news.showUsernames,
+          onChecked = onShowUsernamesChanged)
+      }
       ShowMasterPasswordChanged -> {
         lifecycleScope.launch {
           delay(Durations.Default)
@@ -153,9 +231,17 @@ class SettingsScreen : BaseFragmentScreen() {
   
   companion object {
     
-    val Toolbar = View.generateViewId()
+    val ImageBack = View.generateViewId()
+    val Title = View.generateViewId()
     val FirstDivider = View.generateViewId()
     val ItemChangePassword = View.generateViewId()
+    val TitleChangeMasterPassword = View.generateViewId()
+    val TextChangeMasterPassword = View.generateViewId()
     val SecondDivider = View.generateViewId()
+    val ItemShowUsernames = View.generateViewId()
+    val TitleShowUsernames = View.generateViewId()
+    val TextShowUsernames = View.generateViewId()
+    val SwitchShowUsernames = View.generateViewId()
+    val ThirdDivider = View.generateViewId()
   }
 }

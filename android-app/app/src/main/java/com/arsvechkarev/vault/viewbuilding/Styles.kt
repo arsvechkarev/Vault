@@ -16,6 +16,7 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.StringRes
+import androidx.appcompat.widget.SwitchCompat
 import com.arsvechkarev.vault.R
 import com.arsvechkarev.vault.core.views.drawables.GradientBackgroundDrawable
 import com.arsvechkarev.vault.viewbuilding.Dimens.CornerRadiusSmall
@@ -33,6 +34,7 @@ import viewdsl.padding
 import viewdsl.paddingHorizontal
 import viewdsl.paddingVertical
 import viewdsl.rippleBackground
+import viewdsl.setColors
 import viewdsl.textColor
 import viewdsl.textSize
 
@@ -46,7 +48,7 @@ object Styles : DefaultStyles {
   }
   
   val BaseTextView: TextView.() -> Unit = {
-    textSize(TextSizes.H5)
+    textSize(TextSizes.H6)
     font(Fonts.SegoeUi)
     textColor(Colors.TextPrimary)
     ellipsize = TextUtils.TruncateAt.END
@@ -71,7 +73,7 @@ object Styles : DefaultStyles {
   fun ClickableTextView(
     rippleColor: Int = Colors.AccentRipple,
   ): TextView.() -> Unit = {
-    textSize(TextSizes.H5)
+    textSize(TextSizes.H6)
     font(Typeface.DEFAULT_BOLD)
     paddingVertical(MarginSmall)
     textColor(Colors.AccentLight)
@@ -119,7 +121,7 @@ object Styles : DefaultStyles {
   val AccentTextView: TextView.() -> Unit = {
     apply(BaseTextView)
     textColor(Colors.Accent)
-    textSize(TextSizes.H5)
+    textSize(TextSizes.H6)
   }
   
   val ImageBack: ImageView.() -> Unit = {
@@ -149,5 +151,14 @@ object Styles : DefaultStyles {
       )
       setHint(spannableString)
     }
+  }
+  
+  val Switch: SwitchCompat.() -> Unit = {
+    setColors(
+      colorThumbEnabled = Colors.Accent,
+      colorThumbDisabled = Colors.SwitchThumbDisabled,
+      colorTrackEnabled = Colors.AccentHeavy,
+      colorTrackDisabled = Colors.SwitchTrackDisabled,
+    )
   }
 }

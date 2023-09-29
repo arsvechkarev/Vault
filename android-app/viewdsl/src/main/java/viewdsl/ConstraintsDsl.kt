@@ -19,7 +19,7 @@ class ConstraintsDsl(
   private val constraintLayout: ConstraintLayout
 ) {
   
-  private val constraintSet = ConstraintSet().apply { clone(constraintLayout) }
+  val constraintSet = ConstraintSet().apply { clone(constraintLayout) }
   
   val parent get() = ConstraintSet.PARENT_ID
   

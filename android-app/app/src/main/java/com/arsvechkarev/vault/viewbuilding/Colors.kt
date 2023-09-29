@@ -27,6 +27,8 @@ object Colors {
   val PasswordVeryStrong = "069A15".color
   val Divider = "2B4453".color
   val Shadow = "BB000000".color
+  val SwitchThumbDisabled = "B9B9B9".color
+  val SwitchTrackDisabled = "5D646B".color
   
   private inline val String.color: Int
     get() = Color.parseColor("#$this")

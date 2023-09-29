@@ -11,7 +11,8 @@ object TextSizes {
   val H2: Float get() = 22.sp
   val H3: Float get() = 20.sp
   val H4: Float get() = 18.sp
-  val H5: Float get() = adjustTextToDpi(16.sp)
+  val H5: Float get() = 17.sp
+  val H6: Float get() = adjustTextToDpi(16.sp)
   
   private fun adjustTextToDpi(textSize: Float): Float {
     return when {

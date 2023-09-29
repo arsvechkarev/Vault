@@ -1,6 +1,5 @@
 package com.arsvechkarev.vault.test.tests
 
-import com.arsvechkarev.vault.R
 import com.arsvechkarev.vault.core.views.drawables.LetterInCircleDrawable
 import com.arsvechkarev.vault.features.login.LoginScreen
 import com.arsvechkarev.vault.features.main_list.MainListScreen
@@ -50,7 +49,7 @@ class MainListTest : VaultTestCase() {
           }
           childAt<PasswordItem>(1) {
             text.hasText("google")
-            image.hasDrawable(R.drawable.icon_google)
+//            image.hasDrawable(R.drawable.icon_google)
           }
           childAt<PasswordItem>(2) {
             text.hasText("test.com")

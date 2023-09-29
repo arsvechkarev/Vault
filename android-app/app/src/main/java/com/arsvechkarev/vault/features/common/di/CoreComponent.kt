@@ -15,6 +15,8 @@ import com.arsvechkarev.vault.features.common.di.modules.NotificationsModule
 import com.arsvechkarev.vault.features.common.di.modules.NotificationsModuleImpl
 import com.arsvechkarev.vault.features.common.di.modules.PasswordsModule
 import com.arsvechkarev.vault.features.common.di.modules.PasswordsModuleImpl
+import com.arsvechkarev.vault.features.common.di.modules.SettingsModule
+import com.arsvechkarev.vault.features.common.di.modules.SettingsModuleImpl
 import com.arsvechkarev.vault.features.common.navigation.ActivityResultWrapper
 
 interface CoreComponent :
@@ -23,7 +25,8 @@ interface CoreComponent :
   IoModule,
   PasswordsModule,
   NavigationModule,
-  NotificationsModule {
+  NotificationsModule,
+  SettingsModule {
   
   companion object {
     
@@ -37,8 +40,16 @@ interface CoreComponent :
       val keePassModule = KeePassModuleImpl(coreModule)
       val ioModule = IoModuleImpl(coreModule, externalFileReader, passwordsFileExporter)
       val passwordsModule = PasswordsModuleImpl(keePassModule)
-      return CoreComponentImpl(coreModule, keePassModule, ioModule,
-        passwordsModule, NavigationModuleImpl(activityResultWrapper), NotificationsModuleImpl())
+      val settingsModule = SettingsModuleImpl(coreModule)
+      return CoreComponentImpl(
+        coreModule = coreModule,
+        keePassModule = keePassModule,
+        ioModule = ioModule,
+        passwordsModule = passwordsModule,
+        navigationModule = NavigationModuleImpl(activityResultWrapper),
+        notificationsModule = NotificationsModuleImpl(),
+        settingsModule = settingsModule
+      )
     }
   }
 }
@@ -50,10 +61,12 @@ class CoreComponentImpl(
   private val passwordsModule: PasswordsModule,
   private val navigationModule: NavigationModule,
   private val notificationsModule: NotificationsModule,
+  private val settingsModule: SettingsModule,
 ) : CoreComponent,
   CoreModule by coreModule,
   KeePassModule by keePassModule,
   IoModule by ioModule,
   PasswordsModule by passwordsModule,
   NavigationModule by navigationModule,
-  NotificationsModule by notificationsModule
+  NotificationsModule by notificationsModule,
+  SettingsModule by settingsModule

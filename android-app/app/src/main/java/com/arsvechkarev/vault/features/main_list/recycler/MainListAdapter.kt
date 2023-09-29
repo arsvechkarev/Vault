@@ -27,16 +27,21 @@ import com.arsvechkarev.vault.viewbuilding.Dimens.ImageNoEntriesSize
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginLarge
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginNormal
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginSmall
+import com.arsvechkarev.vault.viewbuilding.Dimens.MarginTiny
 import com.arsvechkarev.vault.viewbuilding.Dimens.ProgressBarSizeBig
 import com.arsvechkarev.vault.viewbuilding.Fonts
 import com.arsvechkarev.vault.viewbuilding.Styles.BaseTextView
 import com.arsvechkarev.vault.viewbuilding.Styles.BoldTextView
+import com.arsvechkarev.vault.viewbuilding.Styles.SecondaryTextView
 import com.arsvechkarev.vault.viewbuilding.TextSizes
 import com.arsvechkarev.vault.viewbuilding.TypefaceSpan
 import viewdsl.Size.Companion.MatchParent
 import viewdsl.Size.Companion.WrapContent
+import viewdsl.Size.Companion.ZERO
 import viewdsl.Size.IntSize
 import viewdsl.backgroundCircle
+import viewdsl.constraints
+import viewdsl.gone
 import viewdsl.gravity
 import viewdsl.id
 import viewdsl.image
@@ -76,19 +81,36 @@ class MainListAdapter(
       },
       delegate<PasswordItem> {
         buildView {
-          RootHorizontalLayout(MatchParent, WrapContent) {
+          RootConstraintLayout(MatchParent, WrapContent) {
             rippleBackground(Colors.Ripple)
             paddingHorizontal(HorizontalMarginSmall)
             paddingVertical(MarginSmall)
             ImageView(IconSizeBig, IconSizeBig) {
               id(ItemPasswordEntryImage)
-              layoutGravity(CENTER)
-              margins(start = MarginNormal, end = MarginNormal)
+              margins(start = MarginNormal)
+              constraints {
+                topToTopOf(parent)
+                startToStartOf(parent)
+                bottomToBottomOf(parent)
+              }
             }
-            TextView(WrapContent, WrapContent, style = BaseTextView) {
+            TextView(ZERO, WrapContent, style = BaseTextView) {
               id(ItemPasswordEntryTitle)
-              maxLines = 2
-              layoutGravity(CENTER)
+              setSingleLine()
+              margins(start = MarginNormal, end = MarginNormal, bottom = MarginTiny / 2)
+            }
+            View(MatchParent, IntSize(1)) {
+              id(ItemPasswordEntryVerticalGuideline)
+            }
+            TextView(ZERO, WrapContent, style = SecondaryTextView) {
+              id(ItemPasswordEntryUsername)
+              setSingleLine()
+              margins(start = MarginNormal, end = MarginNormal, top = MarginTiny / 2)
+              constraints {
+                startToEndOf(ItemPasswordEntryImage)
+                endToEndOf(parent)
+                topToBottomOf(ItemPasswordEntryVerticalGuideline)
+              }
             }
           }
         }
@@ -98,6 +120,29 @@ class MainListAdapter(
         onBind {
           itemView.viewAs<ImageView>(ItemPasswordEntryImage).setIconForTitle(item.title)
           itemView.viewAs<TextView>(ItemPasswordEntryTitle).text(item.title)
+          if (item.username.isNotEmpty()) {
+            itemView.viewAs<TextView>(ItemPasswordEntryUsername).text(item.username)
+            itemView.viewAs<TextView>(ItemPasswordEntryTitle).constraints {
+              startToEndOf(ItemPasswordEntryImage)
+              endToEndOf(parent)
+              bottomToTopOf(ItemPasswordEntryVerticalGuideline)
+            }
+            itemView.viewAs<View>(ItemPasswordEntryVerticalGuideline).constraints {
+              topToTopOf(parent)
+              bottomToBottomOf(parent)
+            }
+          } else {
+            itemView.viewAs<TextView>(ItemPasswordEntryUsername).gone()
+            itemView.viewAs<TextView>(ItemPasswordEntryTitle).constraints {
+              startToEndOf(ItemPasswordEntryImage)
+              topToTopOf(parent)
+              bottomToBottomOf(parent)
+              endToEndOf(parent)
+            }
+            itemView.viewAs<View>(ItemPasswordEntryVerticalGuideline).constraints {
+              bottomToBottomOf(parent)
+            }
+          }
         }
       },
       delegate<PlainTextItem> {
@@ -176,6 +221,8 @@ class MainListAdapter(
     
     val ItemPasswordEntryImage = View.generateViewId()
     val ItemPasswordEntryTitle = View.generateViewId()
+    val ItemPasswordEntryVerticalGuideline = View.generateViewId()
+    val ItemPasswordEntryUsername = View.generateViewId()
     val ItemPlainTextTitle = View.generateViewId()
   }
 }

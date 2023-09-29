@@ -13,6 +13,7 @@ import com.arsvechkarev.vault.features.common.data.DatabaseFileSaverImpl
 import com.arsvechkarev.vault.features.common.data.storage.BasicDatabaseStorage
 import com.arsvechkarev.vault.features.common.data.storage.CachedDatabaseStorage
 import com.arsvechkarev.vault.features.common.data.storage.ObservableCachedDatabaseStorage
+import com.arsvechkarev.vault.features.main_list.domain.EntriesListUiMapper
 
 interface KeePassModule {
   val keePassPasswordModelInteractor: KeePassPasswordModelInteractor
@@ -21,6 +22,7 @@ interface KeePassModule {
   val databaseFileSaver: DatabaseFileSaver
   val databaseInitializer: DatabaseInitializer
   val observableCachedDatabaseStorage: ObservableCachedDatabaseStorage
+  val entriesListUiMapper: EntriesListUiMapper
 }
 
 class KeePassModuleImpl(coreModule: CoreModule) : KeePassModule {
@@ -47,4 +49,6 @@ class KeePassModuleImpl(coreModule: CoreModule) : KeePassModule {
   
   override val observableCachedDatabaseStorage =
       ObservableCachedDatabaseStorage(cachedDatabaseStorage)
+  
+  override val entriesListUiMapper = EntriesListUiMapper()
 }

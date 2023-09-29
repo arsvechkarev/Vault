@@ -19,7 +19,7 @@ class GetShowUsernamesActor(
   override fun handle(commands: Flow<SettingsCommand>): Flow<SettingsEvent> {
     return commands.filterIsInstance<GetShowUsernames>()
         .mapLatest {
-          ShowUsernamesReceived(interactor.showUsernames())
+          ShowUsernamesReceived(interactor.getShowUsernames())
         }
   }
 }

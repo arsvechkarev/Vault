@@ -8,6 +8,7 @@ import com.arsvechkarev.vault.features.main_list.MainListCommand.LoadData
 import com.arsvechkarev.vault.features.main_list.MainListCommand.RouterCommand.GoBack
 import com.arsvechkarev.vault.features.main_list.MainListCommand.RouterCommand.OpenScreen
 import com.arsvechkarev.vault.features.main_list.MainListEvent.ExportedPasswords
+import com.arsvechkarev.vault.features.main_list.MainListEvent.ShowUsernamesChanged
 import com.arsvechkarev.vault.features.main_list.MainListEvent.UpdateData
 import com.arsvechkarev.vault.features.main_list.MainListNews.LaunchSelectExportFileActivity
 import com.arsvechkarev.vault.features.main_list.MainListNews.LaunchSelectImportFileActivity
@@ -80,6 +81,9 @@ class MainListReducer : DslReducer<MainListState, MainListEvent, MainListCommand
       }
       is UpdateData -> {
         state { copy(data = event.data) }
+      }
+      is ShowUsernamesChanged -> {
+        commands(LoadData)
       }
       is OnImportFileSelected -> {
         commands(OpenScreen(ImportPasswords(event.fileUri)))

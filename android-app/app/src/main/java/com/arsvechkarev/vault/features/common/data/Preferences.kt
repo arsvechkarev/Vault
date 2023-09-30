@@ -24,6 +24,8 @@ interface Preferences {
   suspend fun getStringSet(key: String): Set<String>?
   
   suspend fun setStringSet(key: String, value: Set<String>)
+  
+  suspend fun clear()
 }
 
 class AndroidSharedPreferences(
@@ -80,5 +82,9 @@ class AndroidSharedPreferences(
   
   override suspend fun setStringSet(key: String, value: Set<String>) {
     sharedPreferences.edit(commit = true) { putStringSet(key, value) }
+  }
+  
+  override suspend fun clear() {
+    sharedPreferences.edit(commit = true) { clear() }
   }
 }

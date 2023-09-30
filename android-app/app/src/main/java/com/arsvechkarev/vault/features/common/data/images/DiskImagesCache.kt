@@ -4,6 +4,7 @@ import android.app.Application
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.drawable.Drawable
+import android.os.Build
 import androidx.core.graphics.drawable.toBitmap
 import androidx.core.graphics.drawable.toDrawable
 import com.arsvechkarev.vault.core.DispatchersFacade
@@ -43,7 +44,26 @@ class DiskImagesCache(
         imagesDir.mkdirs()
         val file = File(imagesDir, key)
         Files.newOutputStream(file.toPath()).use { outputStream ->
-          drawable.toBitmap().compress(Bitmap.CompressFormat.JPEG, 100, outputStream)
+          if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            drawable.toBitmap().compress(Bitmap.CompressFormat.WEBP_LOSSY, 100, outputStream)
+          } else {
+            @Suppress("DEPRECATION")
+            drawable.toBitmap().compress(Bitmap.CompressFormat.WEBP, 100, outputStream)
+          }
+        }
+      }
+    }
+  }
+  
+  override suspend fun clearAll() {
+    withContext(dispatchers.IO) {
+      locks.entries.forEach { (key, value) ->
+        value.write {
+          val imagesDir = File(context.cacheDir, imagesDirectory)
+          if (!imagesDir.exists()) {
+            return@withContext
+          }
+          File(imagesDir, key).delete()
         }
       }
     }

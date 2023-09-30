@@ -16,4 +16,9 @@ class MemoryImagesCache(
     cache[key] = drawable
     diskImagesCache.saveImage(key, drawable)
   }
+  
+  override suspend fun clearAll() {
+    cache.clear()
+    diskImagesCache.clearAll()
+  }
 }

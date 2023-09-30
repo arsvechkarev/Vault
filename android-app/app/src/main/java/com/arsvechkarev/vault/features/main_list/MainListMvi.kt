@@ -10,6 +10,7 @@ sealed interface MainListEvent {
   class ExportedPasswords(val uri: Uri) : MainListEvent
   object ShowUsernamesChanged : MainListEvent
   object RequestReloadImages : MainListEvent
+  object NetworkAvailable : MainListEvent
 }
 
 sealed interface MainListUiEvent : MainListEvent {
@@ -17,12 +18,13 @@ sealed interface MainListUiEvent : MainListEvent {
   object OnOpenMenuClicked : MainListUiEvent
   object OnCloseMenuClicked : MainListUiEvent
   object OnEntryTypeDialogHidden : MainListUiEvent
-  object OnBackPressed : MainListUiEvent
+  object OnImagesLoadingFailed : MainListUiEvent
   class OnListItemClicked(val item: EntryItem) : MainListUiEvent
   class OnMenuItemClicked(val itemType: MenuItemType) : MainListUiEvent
   class OnEntryTypeSelected(val type: EntryType) : MainListUiEvent
   class OnImportFileSelected(val fileUri: Uri) : MainListUiEvent
   class OnExportFileSelected(val fileUri: Uri) : MainListUiEvent
+  object OnBackPressed : MainListUiEvent
   object OnHideShareExportedFileDialog : MainListUiEvent
 }
 
@@ -45,6 +47,7 @@ sealed interface MainListNews {
 
 data class MainListState(
   val data: ScreenState<List<DifferentiableItem>> = ScreenState.loading(),
+  val errorLoadingImagesHappened: Boolean = false,
   val menuOpened: Boolean = false,
   val exportedFileUri: Uri? = null,
   val showEntryTypeDialog: Boolean = false,

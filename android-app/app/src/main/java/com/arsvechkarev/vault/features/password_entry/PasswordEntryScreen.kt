@@ -22,6 +22,7 @@ import com.arsvechkarev.vault.features.common.dialogs.loadingDialog
 import com.arsvechkarev.vault.features.common.domain.setIconForTitle
 import com.arsvechkarev.vault.features.common.model.PasswordItem
 import com.arsvechkarev.vault.features.creating_password.CreatingPasswordCommunication
+import com.arsvechkarev.vault.features.password_entry.PasswordEntryNews.ReloadTitleIcon
 import com.arsvechkarev.vault.features.password_entry.PasswordEntryNews.SetNotes
 import com.arsvechkarev.vault.features.password_entry.PasswordEntryNews.SetTitle
 import com.arsvechkarev.vault.features.password_entry.PasswordEntryNews.SetUsername
@@ -36,6 +37,7 @@ import com.arsvechkarev.vault.features.password_entry.PasswordEntryUiEvent.OnCon
 import com.arsvechkarev.vault.features.password_entry.PasswordEntryUiEvent.OnCopyPasswordClicked
 import com.arsvechkarev.vault.features.password_entry.PasswordEntryUiEvent.OnDeleteClicked
 import com.arsvechkarev.vault.features.password_entry.PasswordEntryUiEvent.OnDialogHidden
+import com.arsvechkarev.vault.features.password_entry.PasswordEntryUiEvent.OnImagesLoadingFailed
 import com.arsvechkarev.vault.features.password_entry.PasswordEntryUiEvent.OnInit
 import com.arsvechkarev.vault.features.password_entry.PasswordEntryUiEvent.OnNotesActionClicked
 import com.arsvechkarev.vault.features.password_entry.PasswordEntryUiEvent.OnNotesTextChanged
@@ -309,7 +311,9 @@ class PasswordEntryScreen : BaseFragmentScreen() {
   }
   
   private fun render(state: PasswordEntryState) {
-    imageView(ImageTitle).setIconForTitle(state.titleState.editedText)
+    imageView(ImageTitle).setIconForTitle(state.titleState.editedText, onImageLoadingFailed = {
+      store.tryDispatch(OnImagesLoadingFailed)
+    })
     textView(TextTitle).text(state.titleState.editedText)
     renderTextState(EditTextTitle, state.titleState, ImageTitleAction)
     renderTextState(EditTextUsername, state.usernameState, ImageUsernameAction)
@@ -370,6 +374,11 @@ class PasswordEntryScreen : BaseFragmentScreen() {
       ShowUsernameCopied -> snackbar.show(R.string.text_username_copied)
       ShowPasswordCopied -> snackbar.show(R.string.text_password_copied)
       ShowNotesCopied -> snackbar.show(R.string.text_notes_copied)
+      is ReloadTitleIcon -> {
+        imageView(ImageTitle).setIconForTitle(news.title, onImageLoadingFailed = {
+          store.tryDispatch(OnImagesLoadingFailed)
+        })
+      }
     }
   }
   

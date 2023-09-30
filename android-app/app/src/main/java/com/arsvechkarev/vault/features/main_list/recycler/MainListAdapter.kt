@@ -60,6 +60,7 @@ import viewdsl.viewAs
 
 class MainListAdapter(
   private val onItemClick: (EntryItem) -> Unit,
+  private val onImageLoadingFailed: () -> Unit
 ) : BaseListAdapter() {
   
   init {
@@ -119,7 +120,8 @@ class MainListAdapter(
           itemView.onClick { onItemClick(item) }
         }
         onBind {
-          itemView.viewAs<ImageView>(ItemPasswordEntryImage).setIconForTitle(item.title)
+          itemView.viewAs<ImageView>(ItemPasswordEntryImage).setIconForTitle(item.title,
+            onImageLoadingFailed)
           itemView.viewAs<TextView>(ItemPasswordEntryTitle).text(item.title)
           if (item.username.isNotEmpty()) {
             itemView.viewAs<TextView>(ItemPasswordEntryUsername).text(item.username)

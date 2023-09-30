@@ -7,6 +7,7 @@ import com.arsvechkarev.vault.features.creating_password.CreatingPasswordCommuni
 import com.arsvechkarev.vault.features.password_entry.actors.CopyPasswordEntryActor
 import com.arsvechkarev.vault.features.password_entry.actors.DeletePasswordEntryActor
 import com.arsvechkarev.vault.features.password_entry.actors.FetchPasswordEntryActor
+import com.arsvechkarev.vault.features.password_entry.actors.ListenNetworkAvailabilityActor
 import com.arsvechkarev.vault.features.password_entry.actors.OpenEditPasswordScreenCommunicatorActor
 import com.arsvechkarev.vault.features.password_entry.actors.PasswordEntryRouterActor
 import com.arsvechkarev.vault.features.password_entry.actors.UpdatePasswordEntryActor
@@ -31,6 +32,7 @@ fun PasswordEntryStore(
         coreComponent.masterPasswordProvider,
         coreComponent.observableCachedDatabaseStorage,
       ),
+      ListenNetworkAvailabilityActor(coreComponent.networkAvailabilityProvider),
       OpenEditPasswordScreenCommunicatorActor(CreatingPasswordCommunication.communicator),
       CopyPasswordEntryActor(coreComponent.clipboard),
       PasswordEntryRouterActor(coreComponent.router),

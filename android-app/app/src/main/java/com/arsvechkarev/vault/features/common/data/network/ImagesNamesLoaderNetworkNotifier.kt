@@ -7,11 +7,11 @@ import kotlinx.coroutines.flow.onEach
 
 class ImagesNamesLoaderNetworkNotifier(
   private val imagesNamesLoader: ImagesNamesLoader,
-  private val networkConnectivityProvider: NetworkConnectivityProvider,
+  private val networkAvailabilityProvider: NetworkAvailabilityProvider,
 ) {
   
   fun notifyAboutNetworkAvailability(scope: CoroutineScope) {
-    networkConnectivityProvider.networkConnectivityFlow()
+    networkAvailabilityProvider.availabilityFlow
         .onEach { isAvailable -> if (isAvailable) imagesNamesLoader.loadFromNetwork() }
         .launchIn(scope)
   }

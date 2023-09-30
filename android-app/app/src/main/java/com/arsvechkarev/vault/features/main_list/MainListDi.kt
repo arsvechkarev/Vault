@@ -5,6 +5,7 @@ import com.arsvechkarev.vault.core.mvi.tea.TeaStoreImpl
 import com.arsvechkarev.vault.features.common.di.CoreComponent
 import com.arsvechkarev.vault.features.main_list.actors.ExportPasswordsActor
 import com.arsvechkarev.vault.features.main_list.actors.ListenEntriesChangesActor
+import com.arsvechkarev.vault.features.main_list.actors.ListenNetworkAvailabilityActor
 import com.arsvechkarev.vault.features.main_list.actors.ListenReloadPasswordImagesActor
 import com.arsvechkarev.vault.features.main_list.actors.ListenShowUsernamesActor
 import com.arsvechkarev.vault.features.main_list.actors.LoadMainDataActor
@@ -33,6 +34,7 @@ fun MainListStore(
       ),
       ListenShowUsernamesActor(coreComponent.showUsernamesInteractor),
       ListenReloadPasswordImagesActor(coreComponent.reloadImagesObserver),
+      ListenNetworkAvailabilityActor(coreComponent.networkAvailabilityProvider),
       MainListRouterActor(coreComponent.router),
     ),
     reducer = MainListReducer(),

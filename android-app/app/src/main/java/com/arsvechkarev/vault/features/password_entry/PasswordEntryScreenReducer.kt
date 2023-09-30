@@ -17,11 +17,13 @@ import com.arsvechkarev.vault.features.password_entry.PasswordEntryCommand.Updat
 import com.arsvechkarev.vault.features.password_entry.PasswordEntryCommand.UpdatePasswordEntry.UpdateTitle
 import com.arsvechkarev.vault.features.password_entry.PasswordEntryCommand.UpdatePasswordEntry.UpdateUsername
 import com.arsvechkarev.vault.features.password_entry.PasswordEntryEvent.DeletedPasswordEntry
+import com.arsvechkarev.vault.features.password_entry.PasswordEntryEvent.NetworkAvailable
 import com.arsvechkarev.vault.features.password_entry.PasswordEntryEvent.ReceivedPasswordEntry
 import com.arsvechkarev.vault.features.password_entry.PasswordEntryEvent.UpdatedPasswordEntry.UpdatedNotes
 import com.arsvechkarev.vault.features.password_entry.PasswordEntryEvent.UpdatedPasswordEntry.UpdatedPassword
 import com.arsvechkarev.vault.features.password_entry.PasswordEntryEvent.UpdatedPasswordEntry.UpdatedTitle
 import com.arsvechkarev.vault.features.password_entry.PasswordEntryEvent.UpdatedPasswordEntry.UpdatedUsername
+import com.arsvechkarev.vault.features.password_entry.PasswordEntryNews.ReloadTitleIcon
 import com.arsvechkarev.vault.features.password_entry.PasswordEntryNews.SetNotes
 import com.arsvechkarev.vault.features.password_entry.PasswordEntryNews.SetTitle
 import com.arsvechkarev.vault.features.password_entry.PasswordEntryNews.SetUsername
@@ -34,6 +36,7 @@ import com.arsvechkarev.vault.features.password_entry.PasswordEntryUiEvent.OnCon
 import com.arsvechkarev.vault.features.password_entry.PasswordEntryUiEvent.OnCopyPasswordClicked
 import com.arsvechkarev.vault.features.password_entry.PasswordEntryUiEvent.OnDeleteClicked
 import com.arsvechkarev.vault.features.password_entry.PasswordEntryUiEvent.OnDialogHidden
+import com.arsvechkarev.vault.features.password_entry.PasswordEntryUiEvent.OnImagesLoadingFailed
 import com.arsvechkarev.vault.features.password_entry.PasswordEntryUiEvent.OnInit
 import com.arsvechkarev.vault.features.password_entry.PasswordEntryUiEvent.OnNotesActionClicked
 import com.arsvechkarev.vault.features.password_entry.PasswordEntryUiEvent.OnNotesTextChanged
@@ -144,6 +147,9 @@ class PasswordEntryScreenReducer :
         state { copy(showLoadingDialog = true, showDeletePasswordDialog = false) }
         commands(DeletePasswordEntry(state.passwordId))
       }
+      OnImagesLoadingFailed -> {
+        state { copy(errorLoadingImagesHappened = true) }
+      }
       OnBackPressed -> {
         when {
           state.showDeletePasswordDialog -> {
@@ -172,6 +178,12 @@ class PasswordEntryScreenReducer :
       }
       DeletedPasswordEntry -> {
         commands(GoBack)
+      }
+      NetworkAvailable -> {
+        if (state.errorLoadingImagesHappened) {
+          state { copy(errorLoadingImagesHappened = false) }
+          news(ReloadTitleIcon(state.titleState.editedText))
+        }
       }
     }
   }

@@ -7,8 +7,8 @@ import com.arsvechkarev.vault.features.common.TextState
 sealed interface PasswordEntryEvent {
   
   class ReceivedPasswordEntry(val passwordEntry: PasswordEntry) : PasswordEntryEvent
-  
   object DeletedPasswordEntry : PasswordEntryEvent
+  object NetworkAvailable : PasswordEntryEvent
   
   sealed interface UpdatedPasswordEntry : PasswordEntryEvent {
     class UpdatedTitle(val passwordEntry: PasswordEntry) : UpdatedPasswordEntry
@@ -28,6 +28,7 @@ sealed interface PasswordEntryUiEvent : PasswordEntryEvent {
   object OnDeleteClicked : PasswordEntryUiEvent
   object OnConfirmedDeletion : PasswordEntryUiEvent
   object OnDialogHidden : PasswordEntryUiEvent
+  object OnImagesLoadingFailed : PasswordEntryUiEvent
   object OnBackPressed : PasswordEntryUiEvent
   
   class OnTitleTextChanged(val text: String) : PasswordEntryUiEvent
@@ -69,11 +70,13 @@ sealed interface PasswordEntryNews {
   object ShowUsernameCopied : PasswordEntryNews
   object ShowPasswordCopied : PasswordEntryNews
   object ShowNotesCopied : PasswordEntryNews
+  class ReloadTitleIcon(val title: String) : PasswordEntryNews
 }
 
 data class PasswordEntryState(
   val passwordId: String,
   val passwordEntry: PasswordEntry? = null,
+  val errorLoadingImagesHappened: Boolean = false,
   val titleState: TextState = TextState.empty(),
   val usernameState: TextState = TextState.empty(),
   val notesState: TextState = TextState.empty(),

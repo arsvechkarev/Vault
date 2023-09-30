@@ -7,11 +7,12 @@ import android.net.NetworkRequest
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 
-interface NetworkConnectivityProvider {
-  fun networkConnectivityFlow(): Flow<Boolean>
+interface NetworkAvailabilityProvider {
+  
+  val availabilityFlow: Flow<Boolean>
 }
 
-class AndroidNetworkConnectivityProvider(context: Context) : NetworkConnectivityProvider {
+class AndroidNetworkAvailabilityProvider(context: Context) : NetworkAvailabilityProvider {
   
   private val connectivityManager =
       context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
@@ -33,7 +34,8 @@ class AndroidNetworkConnectivityProvider(context: Context) : NetworkConnectivity
     connectivityManager.registerNetworkCallback(NetworkRequest.Builder().build(), callback)
   }
   
-  override fun networkConnectivityFlow(): Flow<Boolean> {
-    return _flow
-  }
+  override val availabilityFlow: Flow<Boolean>
+    get() {
+      return _flow
+    }
 }

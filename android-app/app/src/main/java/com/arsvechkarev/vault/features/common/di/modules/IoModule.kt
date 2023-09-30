@@ -4,8 +4,8 @@ import com.arsvechkarev.vault.features.common.data.files.ExternalFileReader
 import com.arsvechkarev.vault.features.common.data.files.FilenameFromUriRetriever
 import com.arsvechkarev.vault.features.common.data.files.FilenameFromUriRetrieverImpl
 import com.arsvechkarev.vault.features.common.data.files.PasswordsFileExporter
-import com.arsvechkarev.vault.features.common.data.network.AndroidNetworkConnectivityProvider
-import com.arsvechkarev.vault.features.common.data.network.NetworkConnectivityProvider
+import com.arsvechkarev.vault.features.common.data.network.AndroidNetworkAvailabilityProvider
+import com.arsvechkarev.vault.features.common.data.network.NetworkAvailabilityProvider
 import com.arsvechkarev.vault.features.common.data.network.NetworkUrlLoader
 
 interface IoModule {
@@ -13,7 +13,7 @@ interface IoModule {
   val externalFileReader: ExternalFileReader
   val passwordsFileExporter: PasswordsFileExporter
   val networkUrlLoader: NetworkUrlLoader
-  val networkConnectivityProvider: NetworkConnectivityProvider
+  val networkAvailabilityProvider: NetworkAvailabilityProvider
 }
 
 class IoModuleImpl(
@@ -26,6 +26,6 @@ class IoModuleImpl(
   
   override val networkUrlLoader = NetworkUrlLoader(coreModule.okHttpClient, coreModule.dispatchers)
   
-  override val networkConnectivityProvider =
-      AndroidNetworkConnectivityProvider(coreModule.application)
+  override val networkAvailabilityProvider =
+      AndroidNetworkAvailabilityProvider(coreModule.application)
 }

@@ -35,6 +35,7 @@ import com.arsvechkarev.vault.features.main_list.MainListUiEvent.OnEntryTypeDial
 import com.arsvechkarev.vault.features.main_list.MainListUiEvent.OnEntryTypeSelected
 import com.arsvechkarev.vault.features.main_list.MainListUiEvent.OnExportFileSelected
 import com.arsvechkarev.vault.features.main_list.MainListUiEvent.OnHideShareExportedFileDialog
+import com.arsvechkarev.vault.features.main_list.MainListUiEvent.OnImagesLoadingFailed
 import com.arsvechkarev.vault.features.main_list.MainListUiEvent.OnImportFileSelected
 import com.arsvechkarev.vault.features.main_list.MainListUiEvent.OnInit
 import com.arsvechkarev.vault.features.main_list.MainListUiEvent.OnListItemClicked
@@ -153,6 +154,7 @@ class MainListScreen : BaseFragmentScreen() {
   private val adapter by lazy {
     MainListAdapter(
       onItemClick = { item -> store.tryDispatch(OnListItemClicked(item)) },
+      onImageLoadingFailed = { store.tryDispatch(OnImagesLoadingFailed) }
     )
   }
   

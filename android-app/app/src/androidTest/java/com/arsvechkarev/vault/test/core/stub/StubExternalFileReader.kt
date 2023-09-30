@@ -1,7 +1,7 @@
 package com.arsvechkarev.vault.test.core.stub
 
 import android.net.Uri
-import com.arsvechkarev.vault.features.common.data.ExternalFileReader
+import com.arsvechkarev.vault.features.common.data.files.ExternalFileReader
 import java.io.ByteArrayInputStream
 import java.io.InputStream
 

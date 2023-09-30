@@ -15,9 +15,9 @@ ext {
       timber           : "com.jakewharton.timber:timber:4.7.1",
       leakCanary       : "com.squareup.leakcanary:leakcanary-android:2.7",
       lifecycleRuntime : "androidx.lifecycle:lifecycle-runtime-ktx:2.5.1",
-      gson             : "com.google.code.gson:gson:2.8.9",
       kotpass          : "com.github.keemobile:kotpass:0.6.1",
       okio             : "com.squareup.okio:okio:3.2.0",
+      coil             : "io.coil-kt:coil:2.4.0",
   ]
 
   espresso_version = '3.4.0'
@@ -25,7 +25,6 @@ ext {
 
   testDependencies = [
       junit             : "junit:junit:4.13.1",
-      gson              : "com.google.code.gson:gson:2.8.6",
       kaspresso         : "com.kaspersky.android-components:kaspresso:1.4.3",
       espressoIntents   : "androidx.test.espresso:espresso-intents:$espresso_version",
       androidTestRunner : "androidx.test:runner:$androidTest_version",

@@ -2,7 +2,7 @@ package com.arsvechkarev.vault.features.main_list.actors
 
 import buisnesslogic.DatabaseStorage
 import com.arsvechkarev.vault.core.mvi.tea.Actor
-import com.arsvechkarev.vault.features.common.data.PasswordsFileExporter
+import com.arsvechkarev.vault.features.common.data.files.PasswordsFileExporter
 import com.arsvechkarev.vault.features.common.domain.MasterPasswordProvider
 import com.arsvechkarev.vault.features.main_list.MainListCommand
 import com.arsvechkarev.vault.features.main_list.MainListCommand.ExportPasswordsFile

@@ -14,6 +14,7 @@ object Durations {
   const val Checkmark = 1300L
   const val Snackbar = 1000L
   const val MenuOpening = 300L
+  const val Shimmer = 1100L
   
   val DelayOpenKeyboard
     get() = CoreComponentHolder.coreComponent.application.resources

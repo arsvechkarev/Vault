@@ -2,7 +2,7 @@ package com.arsvechkarev.vault.test.core.stub
 
 import android.net.Uri
 import app.keemobile.kotpass.database.KeePassDatabase
-import com.arsvechkarev.vault.features.common.data.PasswordsFileExporter
+import com.arsvechkarev.vault.features.common.data.files.PasswordsFileExporter
 
 class StubPasswordsFileExporter : PasswordsFileExporter {
   

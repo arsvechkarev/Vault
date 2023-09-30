@@ -39,6 +39,11 @@ class ImagesNamesLoader(
         }
   }
   
+  suspend fun clear() {
+    cachedNames = null
+    preferences.clear()
+  }
+  
   companion object {
     
     const val KEY_IMAGES_NAMES = "images_names"

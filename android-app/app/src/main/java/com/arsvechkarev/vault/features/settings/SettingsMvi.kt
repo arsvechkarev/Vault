@@ -5,6 +5,7 @@ import com.arsvechkarev.vault.features.settings.EnterPasswordDialogState.HIDDEN
 sealed interface SettingsEvent {
   class ShowUsernamesReceived(val showUsernames: Boolean) : SettingsEvent
   object MasterPasswordChanged : SettingsEvent
+  object ImagesCacheCleared : SettingsEvent
 }
 
 sealed interface SettingsUiEvent : SettingsEvent {
@@ -13,6 +14,7 @@ sealed interface SettingsUiEvent : SettingsEvent {
   object OnChangeMasterPasswordClicked : SettingsUiEvent
   object OnEnteredPasswordToChangeMasterPassword : SettingsUiEvent
   class OnShowUsernamesChanged(val showUsernames: Boolean) : SettingsUiEvent
+  object OnClearImagesCacheClicked : SettingsUiEvent
   object OnBackPressed : SettingsUiEvent
 }
 
@@ -20,6 +22,7 @@ sealed interface SettingsCommand {
   
   object GetShowUsernames : SettingsCommand
   class ChangeShowUsernames(val show: Boolean) : SettingsCommand
+  object ClearImagesCache : SettingsCommand
   
   sealed interface RouterCommand : SettingsCommand {
     object GoBack : RouterCommand
@@ -29,6 +32,7 @@ sealed interface SettingsCommand {
 
 sealed interface SettingsNews {
   class SetShowUsernames(val showUsernames: Boolean) : SettingsNews
+  object ShowImagesCacheCleared : SettingsNews
   object ShowMasterPasswordChanged : SettingsNews
 }
 

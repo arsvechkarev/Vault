@@ -19,10 +19,12 @@ import com.arsvechkarev.vault.features.settings.EnterPasswordDialogState.HIDDEN
 import com.arsvechkarev.vault.features.settings.EnterPasswordDialogState.HIDDEN_KEEPING_KEYBOARD
 import com.arsvechkarev.vault.features.settings.EnterPasswordDialogState.SHOWN
 import com.arsvechkarev.vault.features.settings.SettingsNews.SetShowUsernames
+import com.arsvechkarev.vault.features.settings.SettingsNews.ShowImagesCacheCleared
 import com.arsvechkarev.vault.features.settings.SettingsNews.ShowMasterPasswordChanged
 import com.arsvechkarev.vault.features.settings.SettingsUiEvent.FetchShowUsernamesChecked
 import com.arsvechkarev.vault.features.settings.SettingsUiEvent.OnBackPressed
 import com.arsvechkarev.vault.features.settings.SettingsUiEvent.OnChangeMasterPasswordClicked
+import com.arsvechkarev.vault.features.settings.SettingsUiEvent.OnClearImagesCacheClicked
 import com.arsvechkarev.vault.features.settings.SettingsUiEvent.OnEnteredPasswordToChangeMasterPassword
 import com.arsvechkarev.vault.features.settings.SettingsUiEvent.OnHideEnterPasswordDialog
 import com.arsvechkarev.vault.features.settings.SettingsUiEvent.OnShowUsernamesChanged
@@ -132,7 +134,7 @@ class SettingsScreen : BaseFragmentScreen() {
         }
         TextView(WrapContent, WrapContent, style = AccentTextView) {
           id(TitleShowUsernames)
-          text(R.string.text_passwords_usernames)
+          text(R.string.text_show_passwords_usernames)
           textSize(TextSizes.H5)
           margins(start = MarginNormal, top = MarginNormal)
           constraints {
@@ -142,7 +144,7 @@ class SettingsScreen : BaseFragmentScreen() {
         }
         TextView(ZERO, WrapContent, style = SecondaryTextView) {
           id(TextShowUsernames)
-          text(R.string.text_show_usernames_in_password_entries)
+          text(R.string.text_show_password_usernames_description)
           margins(start = MarginNormal, top = MarginSmall)
           constraints {
             startToStartOf(parent)
@@ -165,6 +167,43 @@ class SettingsScreen : BaseFragmentScreen() {
           margins(top = MarginNormal)
           constraints {
             topToBottomOf(TextShowUsernames)
+          }
+        }
+        View(MatchParent, ZERO) {
+          id(ItemClearImagesCache)
+          rippleBackground(Colors.Ripple)
+          onClick { store.tryDispatch(OnClearImagesCacheClicked) }
+          constraints {
+            topToBottomOf(ThirdDivider)
+            bottomToTopOf(FourthDivider)
+          }
+        }
+        TextView(WrapContent, WrapContent, style = AccentTextView) {
+          id(TitleClearImagesCache)
+          text(R.string.text_clear_images_cache)
+          textSize(TextSizes.H5)
+          margins(start = MarginNormal, top = MarginNormal)
+          constraints {
+            startToStartOf(parent)
+            topToBottomOf(ThirdDivider)
+          }
+        }
+        TextView(ZERO, WrapContent, style = SecondaryTextView) {
+          id(TextClearImagesCache)
+          text(R.string.text_clear_images_cache_description)
+          margins(start = MarginNormal, top = MarginSmall, end = MarginNormal)
+          constraints {
+            startToStartOf(parent)
+            endToEndOf(parent)
+            topToBottomOf(TitleClearImagesCache)
+          }
+        }
+        View(MatchParent, IntSize(DividerHeight)) {
+          id(FourthDivider)
+          backgroundColor(Colors.Divider)
+          margins(top = MarginNormal)
+          constraints {
+            topToBottomOf(TextClearImagesCache)
           }
         }
       }
@@ -206,6 +245,9 @@ class SettingsScreen : BaseFragmentScreen() {
         viewAs<SwitchCompat>(SwitchShowUsernames).setCheckedSilently(news.showUsernames,
           onChecked = onShowUsernamesChanged)
       }
+      ShowImagesCacheCleared -> {
+        viewAs<Snackbar>().show(R.string.text_clear_images_cache_cleared)
+      }
       ShowMasterPasswordChanged -> {
         lifecycleScope.launch {
           delay(Durations.Default)
@@ -233,5 +275,9 @@ class SettingsScreen : BaseFragmentScreen() {
     val TextShowUsernames = View.generateViewId()
     val SwitchShowUsernames = View.generateViewId()
     val ThirdDivider = View.generateViewId()
+    val ItemClearImagesCache = View.generateViewId()
+    val TitleClearImagesCache = View.generateViewId()
+    val TextClearImagesCache = View.generateViewId()
+    val FourthDivider = View.generateViewId()
   }
 }

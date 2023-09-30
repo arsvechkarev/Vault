@@ -17,7 +17,11 @@ fun SettingsStore(
       GetShowUsernamesActor(coreComponent.showUsernamesInteractor),
       ChangeShowUsernamesActor(coreComponent.showUsernamesInteractor),
       ObserveMasterPasswordChangesActor(coreComponent.globalChangeMasterPasswordSubscriber),
-      ClearImagesCacheActor(coreComponent.imagesCache, coreComponent.imagesNamesLoader),
+      ClearImagesCacheActor(
+        coreComponent.imagesCache,
+        coreComponent.imagesNamesLoader,
+        coreComponent.reloadImagesObserver
+      ),
       SettingsRouterActor(coreComponent.router),
     ),
     reducer = SettingsReducer(),

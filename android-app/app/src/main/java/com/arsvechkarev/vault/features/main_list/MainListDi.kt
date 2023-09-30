@@ -4,8 +4,9 @@ import com.arsvechkarev.vault.core.mvi.tea.TeaStore
 import com.arsvechkarev.vault.core.mvi.tea.TeaStoreImpl
 import com.arsvechkarev.vault.features.common.di.CoreComponent
 import com.arsvechkarev.vault.features.main_list.actors.ExportPasswordsActor
+import com.arsvechkarev.vault.features.main_list.actors.ListenEntriesChangesActor
+import com.arsvechkarev.vault.features.main_list.actors.ListenReloadPasswordImagesActor
 import com.arsvechkarev.vault.features.main_list.actors.ListenShowUsernamesActor
-import com.arsvechkarev.vault.features.main_list.actors.ListeningEntriesChangesActor
 import com.arsvechkarev.vault.features.main_list.actors.LoadMainDataActor
 import com.arsvechkarev.vault.features.main_list.actors.MainListRouterActor
 
@@ -20,7 +21,7 @@ fun MainListStore(
         coreComponent.entriesListUiMapper,
         coreComponent.showUsernamesInteractor
       ),
-      ListeningEntriesChangesActor(
+      ListenEntriesChangesActor(
         coreComponent.observableCachedDatabaseStorage,
         coreComponent.entriesListUiMapper,
         coreComponent.showUsernamesInteractor
@@ -31,6 +32,7 @@ fun MainListStore(
         coreComponent.passwordsFileExporter
       ),
       ListenShowUsernamesActor(coreComponent.showUsernamesInteractor),
+      ListenReloadPasswordImagesActor(coreComponent.reloadImagesObserver),
       MainListRouterActor(coreComponent.router),
     ),
     reducer = MainListReducer(),

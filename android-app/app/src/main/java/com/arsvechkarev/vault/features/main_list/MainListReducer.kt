@@ -8,10 +8,12 @@ import com.arsvechkarev.vault.features.main_list.MainListCommand.LoadData
 import com.arsvechkarev.vault.features.main_list.MainListCommand.RouterCommand.GoBack
 import com.arsvechkarev.vault.features.main_list.MainListCommand.RouterCommand.OpenScreen
 import com.arsvechkarev.vault.features.main_list.MainListEvent.ExportedPasswords
+import com.arsvechkarev.vault.features.main_list.MainListEvent.RequestReloadImages
 import com.arsvechkarev.vault.features.main_list.MainListEvent.ShowUsernamesChanged
 import com.arsvechkarev.vault.features.main_list.MainListEvent.UpdateData
 import com.arsvechkarev.vault.features.main_list.MainListNews.LaunchSelectExportFileActivity
 import com.arsvechkarev.vault.features.main_list.MainListNews.LaunchSelectImportFileActivity
+import com.arsvechkarev.vault.features.main_list.MainListNews.NotifyDatasetChanged
 import com.arsvechkarev.vault.features.main_list.MainListUiEvent.OnBackPressed
 import com.arsvechkarev.vault.features.main_list.MainListUiEvent.OnCloseMenuClicked
 import com.arsvechkarev.vault.features.main_list.MainListUiEvent.OnEntryTypeDialogHidden
@@ -84,6 +86,9 @@ class MainListReducer : DslReducer<MainListState, MainListEvent, MainListCommand
       }
       is ShowUsernamesChanged -> {
         commands(LoadData)
+      }
+      RequestReloadImages -> {
+        news(NotifyDatasetChanged)
       }
       is OnImportFileSelected -> {
         commands(OpenScreen(ImportPasswords(event.fileUri)))

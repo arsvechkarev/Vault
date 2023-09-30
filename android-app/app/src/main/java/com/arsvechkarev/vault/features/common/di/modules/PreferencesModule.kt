@@ -1,24 +1,24 @@
 package com.arsvechkarev.vault.features.common.di.modules
 
 import android.content.Context
-import com.arsvechkarev.vault.features.common.data.Settings
-import com.arsvechkarev.vault.features.common.data.SharedPreferencesSettings
+import com.arsvechkarev.vault.features.common.data.AndroidSharedPreferences
+import com.arsvechkarev.vault.features.common.data.Preferences
 import com.arsvechkarev.vault.features.common.domain.ShowUsernamesInteractor
 
-interface SettingsModule {
-  val settings: Settings
+interface PreferencesModule {
+  val preferences: Preferences
   val showUsernamesInteractor: ShowUsernamesInteractor
 }
 
-class SettingsModuleImpl(
+class PreferencesModuleImpl(
   coreModule: CoreModule
-) : SettingsModule {
+) : PreferencesModule {
   
-  override val settings = SharedPreferencesSettings(
+  override val preferences = AndroidSharedPreferences(
     coreModule.application.getSharedPreferences(SETTINGS_FILENAME, Context.MODE_PRIVATE)
   )
   
-  override val showUsernamesInteractor = ShowUsernamesInteractor(settings)
+  override val showUsernamesInteractor = ShowUsernamesInteractor(preferences)
   
   companion object {
     

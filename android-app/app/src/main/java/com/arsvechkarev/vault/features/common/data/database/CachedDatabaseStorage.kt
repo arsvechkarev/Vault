@@ -1,4 +1,4 @@
-package com.arsvechkarev.vault.features.common.data.storage
+package com.arsvechkarev.vault.features.common.data.database
 
 import app.keemobile.kotpass.database.KeePassDatabase
 import buisnesslogic.DatabaseCache

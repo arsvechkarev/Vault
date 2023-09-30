@@ -1,20 +1,20 @@
 package com.arsvechkarev.vault.features.common.domain
 
-import com.arsvechkarev.vault.features.common.data.Settings
+import com.arsvechkarev.vault.features.common.data.Preferences
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 
-class ShowUsernamesInteractor(private val settings: Settings) {
+class ShowUsernamesInteractor(private val preferences: Preferences) {
   
   private val _showUsernamesFlow = MutableSharedFlow<Boolean>()
   val showUsernamesFlow: SharedFlow<Boolean> get() = _showUsernamesFlow
   
   suspend fun getShowUsernames(): Boolean {
-    return settings.getBoolean(KEY)
+    return preferences.getBoolean(KEY)
   }
   
   suspend fun setShowUsernames(value: Boolean) {
-    settings.setBoolean(KEY, value)
+    preferences.setBoolean(KEY, value)
     _showUsernamesFlow.emit(value)
   }
   

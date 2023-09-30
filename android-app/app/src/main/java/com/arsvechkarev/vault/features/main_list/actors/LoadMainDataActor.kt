@@ -2,7 +2,7 @@ package com.arsvechkarev.vault.features.main_list.actors
 
 import com.arsvechkarev.vault.core.ScreenState
 import com.arsvechkarev.vault.core.mvi.tea.Actor
-import com.arsvechkarev.vault.features.common.data.storage.ObservableCachedDatabaseStorage
+import com.arsvechkarev.vault.features.common.data.database.ObservableCachedDatabaseStorage
 import com.arsvechkarev.vault.features.common.domain.MasterPasswordProvider
 import com.arsvechkarev.vault.features.common.domain.ShowUsernamesInteractor
 import com.arsvechkarev.vault.features.main_list.MainListCommand

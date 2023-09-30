@@ -81,12 +81,11 @@ dependencies {
   implementation appDependencies.zxcvbn
   implementation appDependencies.timber
   implementation appDependencies.lifecycleRuntime
-  implementation appDependencies.gson
+  implementation appDependencies.coil
 
   def testDependencies = rootProject.ext.testDependencies
 
   testImplementation testDependencies.junit
-  testImplementation testDependencies.gson
 
   androidTestImplementation testDependencies.kaspresso
   androidTestImplementation testDependencies.espressoIntents

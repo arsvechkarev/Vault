@@ -75,7 +75,9 @@ class MainListScreen : BaseFragmentScreen() {
     RootCoordinatorLayout {
       id(MainListScreenRoot)
       backgroundColor(Colors.Background)
+      clipChildren = false
       RecyclerView(MatchParent, MatchParent) {
+        clipChildren = false
         classNameTag()
         paddings(top = GradientDrawableHeight - MarginSmall, bottom = 80.dp)
         clipToPadding = false

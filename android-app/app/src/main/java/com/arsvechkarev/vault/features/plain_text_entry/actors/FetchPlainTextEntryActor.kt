@@ -2,7 +2,7 @@ package com.arsvechkarev.vault.features.plain_text_entry.actors
 
 import buisnesslogic.interactors.KeePassPlainTextModelInteractor
 import com.arsvechkarev.vault.core.mvi.tea.Actor
-import com.arsvechkarev.vault.features.common.data.storage.ObservableCachedDatabaseStorage
+import com.arsvechkarev.vault.features.common.data.database.ObservableCachedDatabaseStorage
 import com.arsvechkarev.vault.features.common.domain.MasterPasswordProvider
 import com.arsvechkarev.vault.features.plain_text_entry.PlainTextEntryCommand
 import com.arsvechkarev.vault.features.plain_text_entry.PlainTextEntryCommand.FetchPlainTextEntry

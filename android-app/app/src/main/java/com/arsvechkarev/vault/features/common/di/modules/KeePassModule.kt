@@ -9,10 +9,10 @@ import buisnesslogic.IdGeneratorImpl
 import buisnesslogic.UniqueIdProvideImpl
 import buisnesslogic.interactors.KeePassPasswordModelInteractor
 import buisnesslogic.interactors.KeePassPlainTextModelInteractor
-import com.arsvechkarev.vault.features.common.data.DatabaseFileSaverImpl
-import com.arsvechkarev.vault.features.common.data.storage.BasicDatabaseStorage
-import com.arsvechkarev.vault.features.common.data.storage.CachedDatabaseStorage
-import com.arsvechkarev.vault.features.common.data.storage.ObservableCachedDatabaseStorage
+import com.arsvechkarev.vault.features.common.data.database.BasicDatabaseStorage
+import com.arsvechkarev.vault.features.common.data.database.CachedDatabaseStorage
+import com.arsvechkarev.vault.features.common.data.database.ObservableCachedDatabaseStorage
+import com.arsvechkarev.vault.features.common.data.files.DatabaseFileSaverImpl
 import com.arsvechkarev.vault.features.main_list.domain.EntriesListUiMapper
 
 interface KeePassModule {
@@ -36,7 +36,7 @@ class KeePassModuleImpl(coreModule: CoreModule) : KeePassModule {
   override val databaseFileSaver = DatabaseFileSaverImpl(
     DEFAULT_INTERNAL_FILENAME,
     coreModule.application,
-    coreModule.dispatchersFacade
+    coreModule.dispatchers
   )
   
   private val cachedDatabaseStorage = CachedDatabaseStorage(

@@ -12,7 +12,6 @@ dependencies {
   def appDependencies = rootProject.ext.applicationDependencies
   implementation appDependencies.kotlin
   implementation appDependencies.coroutinesCore
-  implementation appDependencies.gson
   implementation appDependencies.zxcvbn
   implementation appDependencies.kotpass
   implementation appDependencies.okio

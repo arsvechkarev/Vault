@@ -34,7 +34,7 @@ class ImagesLoadingModuleImpl(
   )
   
   override val imagesNamesLoaderNetworkNotifier =
-      ImagesNamesLoaderNetworkNotifier(imagesNamesLoader, ioModule.networkConnectivityProvider)
+      ImagesNamesLoaderNetworkNotifier(imagesNamesLoader, ioModule.networkAvailabilityProvider)
   
   override val reloadImagesObserver = ReloadImagesObserverImpl()
 }

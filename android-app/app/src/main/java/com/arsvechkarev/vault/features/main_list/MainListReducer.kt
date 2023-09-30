@@ -8,6 +8,7 @@ import com.arsvechkarev.vault.features.main_list.MainListCommand.LoadData
 import com.arsvechkarev.vault.features.main_list.MainListCommand.RouterCommand.GoBack
 import com.arsvechkarev.vault.features.main_list.MainListCommand.RouterCommand.OpenScreen
 import com.arsvechkarev.vault.features.main_list.MainListEvent.ExportedPasswords
+import com.arsvechkarev.vault.features.main_list.MainListEvent.NetworkAvailable
 import com.arsvechkarev.vault.features.main_list.MainListEvent.RequestReloadImages
 import com.arsvechkarev.vault.features.main_list.MainListEvent.ShowUsernamesChanged
 import com.arsvechkarev.vault.features.main_list.MainListEvent.UpdateData
@@ -20,6 +21,7 @@ import com.arsvechkarev.vault.features.main_list.MainListUiEvent.OnEntryTypeDial
 import com.arsvechkarev.vault.features.main_list.MainListUiEvent.OnEntryTypeSelected
 import com.arsvechkarev.vault.features.main_list.MainListUiEvent.OnExportFileSelected
 import com.arsvechkarev.vault.features.main_list.MainListUiEvent.OnHideShareExportedFileDialog
+import com.arsvechkarev.vault.features.main_list.MainListUiEvent.OnImagesLoadingFailed
 import com.arsvechkarev.vault.features.main_list.MainListUiEvent.OnImportFileSelected
 import com.arsvechkarev.vault.features.main_list.MainListUiEvent.OnInit
 import com.arsvechkarev.vault.features.main_list.MainListUiEvent.OnListItemClicked
@@ -72,6 +74,9 @@ class MainListReducer : DslReducer<MainListState, MainListEvent, MainListCommand
       OnEntryTypeDialogHidden -> {
         state { copy(showEntryTypeDialog = false) }
       }
+      OnImagesLoadingFailed -> {
+        state { copy(errorLoadingImagesHappened = true) }
+      }
       OnBackPressed -> {
         when {
           state.showExportingFileDialog -> Unit // Exporting file in progress, do nothing
@@ -106,7 +111,15 @@ class MainListReducer : DslReducer<MainListState, MainListEvent, MainListCommand
           )
         }
       }
-      OnHideShareExportedFileDialog -> state { copy(showShareExportedFileDialog = false) }
+      OnHideShareExportedFileDialog -> {
+        state { copy(showShareExportedFileDialog = false) }
+      }
+      NetworkAvailable -> {
+        if (state.errorLoadingImagesHappened) {
+          state { copy(errorLoadingImagesHappened = false) }
+          news(NotifyDatasetChanged)
+        }
+      }
     }
   }
 }

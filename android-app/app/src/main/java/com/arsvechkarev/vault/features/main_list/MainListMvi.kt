@@ -9,6 +9,7 @@ sealed interface MainListEvent {
   class UpdateData(val data: ScreenState<List<DifferentiableItem>>) : MainListEvent
   class ExportedPasswords(val uri: Uri) : MainListEvent
   object ShowUsernamesChanged : MainListEvent
+  object RequestReloadImages : MainListEvent
 }
 
 sealed interface MainListUiEvent : MainListEvent {
@@ -37,6 +38,7 @@ sealed interface MainListCommand {
 }
 
 sealed interface MainListNews {
+  object NotifyDatasetChanged : MainListNews
   object LaunchSelectExportFileActivity : MainListNews
   object LaunchSelectImportFileActivity : MainListNews
 }

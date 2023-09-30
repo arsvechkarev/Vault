@@ -3,6 +3,7 @@ package com.arsvechkarev.vault.features.settings.actors
 import com.arsvechkarev.vault.core.mvi.tea.Actor
 import com.arsvechkarev.vault.features.common.data.images.ImagesCache
 import com.arsvechkarev.vault.features.common.domain.ImagesNamesLoader
+import com.arsvechkarev.vault.features.common.domain.ReloadImagesObserver
 import com.arsvechkarev.vault.features.settings.SettingsCommand
 import com.arsvechkarev.vault.features.settings.SettingsCommand.ClearImagesCache
 import com.arsvechkarev.vault.features.settings.SettingsEvent
@@ -15,6 +16,7 @@ import kotlinx.coroutines.flow.mapLatest
 class ClearImagesCacheActor(
   private val imagesCache: ImagesCache,
   private val imagesNamesLoader: ImagesNamesLoader,
+  private val reloadImagesObserver: ReloadImagesObserver
 ) : Actor<SettingsCommand, SettingsEvent> {
   
   @OptIn(ExperimentalCoroutinesApi::class)
@@ -23,6 +25,7 @@ class ClearImagesCacheActor(
         .mapLatest {
           imagesCache.clearAll()
           imagesNamesLoader.clear()
+          reloadImagesObserver.requestReload()
           ImagesCacheCleared
         }
   }

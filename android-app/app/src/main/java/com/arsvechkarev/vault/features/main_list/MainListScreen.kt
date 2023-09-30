@@ -1,5 +1,6 @@
 package com.arsvechkarev.vault.features.main_list
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
@@ -27,6 +28,7 @@ import com.arsvechkarev.vault.features.common.model.Empty
 import com.arsvechkarev.vault.features.common.model.Loading
 import com.arsvechkarev.vault.features.main_list.MainListNews.LaunchSelectExportFileActivity
 import com.arsvechkarev.vault.features.main_list.MainListNews.LaunchSelectImportFileActivity
+import com.arsvechkarev.vault.features.main_list.MainListNews.NotifyDatasetChanged
 import com.arsvechkarev.vault.features.main_list.MainListUiEvent.OnBackPressed
 import com.arsvechkarev.vault.features.main_list.MainListUiEvent.OnCloseMenuClicked
 import com.arsvechkarev.vault.features.main_list.MainListUiEvent.OnEntryTypeDialogHidden
@@ -159,8 +161,12 @@ class MainListScreen : BaseFragmentScreen() {
     store.tryDispatch(OnInit)
   }
   
+  @SuppressLint("NotifyDataSetChanged")
   private fun handleNews(news: MainListNews) {
     when (news) {
+      NotifyDatasetChanged -> {
+        adapter.notifyDataSetChanged()
+      }
       is LaunchSelectExportFileActivity -> {
         selectExportFileLauncher.launch(DEFAULT_EXPORT_FILENAME)
       }

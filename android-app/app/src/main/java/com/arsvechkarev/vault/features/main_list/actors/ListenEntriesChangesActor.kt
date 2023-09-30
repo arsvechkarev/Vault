@@ -12,7 +12,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.mapLatest
 
-class ListeningEntriesChangesActor(
+class ListenEntriesChangesActor(
   private val passwordStorage: ObservableCachedDatabaseStorage,
   private val entriesListUiMapper: EntriesListUiMapper,
   private val showUsernamesInteractor: ShowUsernamesInteractor,

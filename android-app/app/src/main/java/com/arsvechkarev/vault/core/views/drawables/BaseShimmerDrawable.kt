@@ -9,7 +9,7 @@ import android.graphics.RectF
 import android.graphics.Shader
 import android.graphics.drawable.Animatable
 import android.os.SystemClock
-import android.view.View
+import android.widget.ImageView
 import com.arsvechkarev.vault.features.common.Durations
 import com.arsvechkarev.vault.viewbuilding.Colors
 
@@ -99,12 +99,12 @@ abstract class BaseShimmerDrawable(
   
   companion object {
     
-    fun View.stopShimmerDrawable() {
-      (background as? BaseShimmerDrawable)?.apply { stop() }
+    fun ImageView.stopShimmerDrawable() {
+      (drawable as? BaseShimmerDrawable)?.apply { stop() }
     }
     
-    fun View.setShimmerDrawable(drawable: BaseShimmerDrawable) {
-      background = drawable.apply { post { start() } }
+    fun ImageView.setShimmerDrawable(drawable: BaseShimmerDrawable) {
+      setImageDrawable(drawable.apply { post { start() } })
     }
   }
 }

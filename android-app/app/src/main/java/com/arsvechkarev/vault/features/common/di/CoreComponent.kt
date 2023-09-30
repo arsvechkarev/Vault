@@ -1,10 +1,12 @@
 package com.arsvechkarev.vault.features.common.di
 
 import android.app.Application
-import com.arsvechkarev.vault.features.common.data.ExternalFileReader
-import com.arsvechkarev.vault.features.common.data.PasswordsFileExporter
+import com.arsvechkarev.vault.features.common.data.files.ExternalFileReader
+import com.arsvechkarev.vault.features.common.data.files.PasswordsFileExporter
 import com.arsvechkarev.vault.features.common.di.modules.CoreModule
 import com.arsvechkarev.vault.features.common.di.modules.CoreModuleImpl
+import com.arsvechkarev.vault.features.common.di.modules.ImagesLoadingModule
+import com.arsvechkarev.vault.features.common.di.modules.ImagesLoadingModuleImpl
 import com.arsvechkarev.vault.features.common.di.modules.IoModule
 import com.arsvechkarev.vault.features.common.di.modules.IoModuleImpl
 import com.arsvechkarev.vault.features.common.di.modules.KeePassModule
@@ -15,8 +17,8 @@ import com.arsvechkarev.vault.features.common.di.modules.NotificationsModule
 import com.arsvechkarev.vault.features.common.di.modules.NotificationsModuleImpl
 import com.arsvechkarev.vault.features.common.di.modules.PasswordsModule
 import com.arsvechkarev.vault.features.common.di.modules.PasswordsModuleImpl
-import com.arsvechkarev.vault.features.common.di.modules.SettingsModule
-import com.arsvechkarev.vault.features.common.di.modules.SettingsModuleImpl
+import com.arsvechkarev.vault.features.common.di.modules.PreferencesModule
+import com.arsvechkarev.vault.features.common.di.modules.PreferencesModuleImpl
 import com.arsvechkarev.vault.features.common.navigation.ActivityResultWrapper
 
 interface CoreComponent :
@@ -26,7 +28,8 @@ interface CoreComponent :
   PasswordsModule,
   NavigationModule,
   NotificationsModule,
-  SettingsModule {
+  PreferencesModule,
+  ImagesLoadingModule {
   
   companion object {
     
@@ -39,16 +42,16 @@ interface CoreComponent :
       val coreModule = CoreModuleImpl(application)
       val keePassModule = KeePassModuleImpl(coreModule)
       val ioModule = IoModuleImpl(coreModule, externalFileReader, passwordsFileExporter)
-      val passwordsModule = PasswordsModuleImpl(keePassModule)
-      val settingsModule = SettingsModuleImpl(coreModule)
+      val preferencesModule = PreferencesModuleImpl(coreModule)
       return CoreComponentImpl(
         coreModule = coreModule,
         keePassModule = keePassModule,
         ioModule = ioModule,
-        passwordsModule = passwordsModule,
+        passwordsModule = PasswordsModuleImpl(keePassModule),
         navigationModule = NavigationModuleImpl(activityResultWrapper),
         notificationsModule = NotificationsModuleImpl(),
-        settingsModule = settingsModule
+        preferencesModule = preferencesModule,
+        imagesLoadingModule = ImagesLoadingModuleImpl(coreModule, ioModule, preferencesModule),
       )
     }
   }
@@ -61,7 +64,8 @@ class CoreComponentImpl(
   private val passwordsModule: PasswordsModule,
   private val navigationModule: NavigationModule,
   private val notificationsModule: NotificationsModule,
-  private val settingsModule: SettingsModule,
+  private val imagesLoadingModule: ImagesLoadingModule,
+  private val preferencesModule: PreferencesModule,
 ) : CoreComponent,
   CoreModule by coreModule,
   KeePassModule by keePassModule,
@@ -69,4 +73,5 @@ class CoreComponentImpl(
   PasswordsModule by passwordsModule,
   NavigationModule by navigationModule,
   NotificationsModule by notificationsModule,
-  SettingsModule by settingsModule
+  PreferencesModule by preferencesModule,
+  ImagesLoadingModule by imagesLoadingModule

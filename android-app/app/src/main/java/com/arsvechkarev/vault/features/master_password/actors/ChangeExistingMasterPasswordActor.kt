@@ -5,7 +5,7 @@ import app.keemobile.kotpass.database.modifiers.modifyCredentials
 import buisnesslogic.MasterPasswordHolder
 import com.arsvechkarev.vault.core.mvi.tea.Actor
 import com.arsvechkarev.vault.features.common.Durations
-import com.arsvechkarev.vault.features.common.data.storage.ObservableCachedDatabaseStorage
+import com.arsvechkarev.vault.features.common.data.database.ObservableCachedDatabaseStorage
 import com.arsvechkarev.vault.features.common.domain.GlobalChangeMasterPasswordPublisher
 import com.arsvechkarev.vault.features.common.domain.MasterPasswordProvider
 import com.arsvechkarev.vault.features.master_password.MasterPasswordCommand

@@ -5,6 +5,7 @@ import android.view.View
 import android.view.View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
 import android.view.View.SYSTEM_UI_FLAG_LAYOUT_STABLE
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import com.arsvechkarev.vault.core.views.RootView
 import com.arsvechkarev.vault.features.common.Screens
 import com.arsvechkarev.vault.features.common.di.ActivityComponent
@@ -31,11 +32,13 @@ class MainActivity : AppCompatActivity() {
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     ViewDslConfiguration.initializeResources(resources)
+    @Suppress("DEPRECATION")
     window.decorView.systemUiVisibility = (SYSTEM_UI_FLAG_LAYOUT_STABLE
         or SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN)
     setContentView(mainActivityLayout)
     _activityComponent =
         ActivityComponent.create(coreComponent, rootViewId, this)
+    coreComponent.imagesNamesLoaderNetworkNotifier.notifyAboutNetworkAvailability(lifecycleScope)
     figureOutScreenToGo(savedInstanceState)
   }
   
@@ -62,8 +65,10 @@ class MainActivity : AppCompatActivity() {
     coreComponent.navigationController.getNavigatorHolder().removeNavigator()
   }
   
+  @Deprecated("Deprecated in Java")
   override fun onBackPressed() {
     if (!checkNotNull(_activityComponent).navigator.handleGoBack()) {
+      @Suppress("DEPRECATION")
       super.onBackPressed()
     }
   }

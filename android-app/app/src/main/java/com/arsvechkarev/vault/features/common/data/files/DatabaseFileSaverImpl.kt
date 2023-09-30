@@ -1,4 +1,4 @@
-package com.arsvechkarev.vault.features.common.data
+package com.arsvechkarev.vault.features.common.data.files
 
 import android.content.Context
 import androidx.core.util.AtomicFile

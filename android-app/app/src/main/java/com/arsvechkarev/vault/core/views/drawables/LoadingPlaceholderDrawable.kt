@@ -1,24 +1,25 @@
 package com.arsvechkarev.vault.core.views.drawables
 
 import android.graphics.Canvas
-import android.graphics.Paint
+import android.graphics.Path
 import android.graphics.Rect
 import com.arsvechkarev.vault.core.extensions.Paint
 import com.arsvechkarev.vault.core.extensions.TextPaint
 import com.arsvechkarev.vault.viewbuilding.Colors
 import com.arsvechkarev.vault.viewbuilding.Fonts
 
-class LetterInCircleDrawable(
-  private var letter: String,
+class LoadingPlaceholderDrawable(
+  private val letter: String,
   textColor: Int = Colors.AccentHeavy,
   backgroundColor: Int = Colors.WhiteCircle
-) : BaseDrawable() {
+) : BaseShimmerDrawable(backgroundColor) {
+  
   
   private val circlePaint = Paint(color = backgroundColor)
   private val textPaint = TextPaint(
     color = textColor,
     font = Fonts.SegoeUiBold,
-    textAlign = Paint.Align.LEFT
+    textAlign = android.graphics.Paint.Align.LEFT
   )
   private var textRect = Rect()
   
@@ -26,13 +27,13 @@ class LetterInCircleDrawable(
     require(letter.length == 1)
   }
   
-  fun setLetter(letter: String) {
-    require(letter.length == 1)
-    this.letter = letter
-    invalidateSelf()
+  override fun initBackgroundPath(path: Path, width: Float, height: Float) {
+    val hw = width / 2f
+    val hh = height / 2f
+    path.addCircle(hw, hh, minOf(hw, hh), Path.Direction.CW)
   }
   
-  override fun draw(canvas: Canvas) {
+  override fun onDrawBackground(canvas: Canvas) {
     val hw = bounds.width() / 2f
     val hh = bounds.height() / 2f
     textPaint.textSize = minOf(hw, hh)

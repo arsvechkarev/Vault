@@ -9,13 +9,13 @@ import android.widget.ImageView
 import android.widget.TextView
 import com.arsvechkarev.vault.R
 import com.arsvechkarev.vault.core.views.MaterialProgressBar
+import com.arsvechkarev.vault.features.common.domain.setIconForTitle
 import com.arsvechkarev.vault.features.common.model.Empty
 import com.arsvechkarev.vault.features.common.model.EntryItem
 import com.arsvechkarev.vault.features.common.model.Loading
 import com.arsvechkarev.vault.features.common.model.PasswordItem
 import com.arsvechkarev.vault.features.common.model.PlainTextItem
 import com.arsvechkarev.vault.features.common.model.Title
-import com.arsvechkarev.vault.features.common.setIconForTitle
 import com.arsvechkarev.vault.recycler.BaseListAdapter
 import com.arsvechkarev.vault.recycler.delegate
 import com.arsvechkarev.vault.viewbuilding.Colors
@@ -83,6 +83,7 @@ class MainListAdapter(
         buildView {
           RootConstraintLayout(MatchParent, WrapContent) {
             rippleBackground(Colors.Ripple)
+            clipChildren = false
             paddingHorizontal(HorizontalMarginSmall)
             paddingVertical(MarginSmall)
             ImageView(IconSizeBig, IconSizeBig) {

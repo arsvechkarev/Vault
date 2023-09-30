@@ -19,8 +19,8 @@ import com.arsvechkarev.vault.features.common.dialogs.InfoDialog.Companion.InfoD
 import com.arsvechkarev.vault.features.common.dialogs.InfoDialog.Companion.infoDialog
 import com.arsvechkarev.vault.features.common.dialogs.LoadingDialog
 import com.arsvechkarev.vault.features.common.dialogs.loadingDialog
+import com.arsvechkarev.vault.features.common.domain.setIconForTitle
 import com.arsvechkarev.vault.features.common.model.PasswordItem
-import com.arsvechkarev.vault.features.common.setIconForTitle
 import com.arsvechkarev.vault.features.creating_password.CreatingPasswordCommunication
 import com.arsvechkarev.vault.features.password_entry.PasswordEntryNews.SetNotes
 import com.arsvechkarev.vault.features.password_entry.PasswordEntryNews.SetTitle

@@ -123,6 +123,9 @@
   <string name="text_settings">Settings</string>
   <string name="text_change_master_password_description">Change the password you use to enter the app</string>
   <string name="text_master_password_changed">Master password successfully changed</string>
-  <string name="text_passwords_usernames">Show usernames</string>
-  <string name="text_show_usernames_in_password_entries">Show usernames in password entries</string>
+  <string name="text_show_passwords_usernames">Show usernames</string>
+  <string name="text_show_password_usernames_description">Show usernames in password entries</string>
+  <string name="text_clear_images_cache">Clear images cache</string>
+  <string name="text_clear_images_cache_description">Clear all cached images of password entries</string>
+  <string name="text_clear_images_cache_cleared">Images cache successfully cleared</string>
 </resources>

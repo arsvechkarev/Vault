@@ -4,6 +4,7 @@ import com.arsvechkarev.vault.core.mvi.tea.TeaStore
 import com.arsvechkarev.vault.core.mvi.tea.TeaStoreImpl
 import com.arsvechkarev.vault.features.common.di.CoreComponent
 import com.arsvechkarev.vault.features.settings.actors.ChangeShowUsernamesActor
+import com.arsvechkarev.vault.features.settings.actors.ClearImagesCacheActor
 import com.arsvechkarev.vault.features.settings.actors.GetShowUsernamesActor
 import com.arsvechkarev.vault.features.settings.actors.ObserveMasterPasswordChangesActor
 import com.arsvechkarev.vault.features.settings.actors.SettingsRouterActor
@@ -16,6 +17,7 @@ fun SettingsStore(
       GetShowUsernamesActor(coreComponent.showUsernamesInteractor),
       ChangeShowUsernamesActor(coreComponent.showUsernamesInteractor),
       ObserveMasterPasswordChangesActor(coreComponent.globalChangeMasterPasswordSubscriber),
+      ClearImagesCacheActor(coreComponent.imagesCache, coreComponent.imagesNamesLoader),
       SettingsRouterActor(coreComponent.router),
     ),
     reducer = SettingsReducer(),

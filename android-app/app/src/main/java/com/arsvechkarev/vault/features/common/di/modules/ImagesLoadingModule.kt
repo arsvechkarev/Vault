@@ -21,7 +21,7 @@ class ImagesLoadingModuleImpl(
   
   override val imagesNamesLoader = ImagesNamesLoader(
     ioModule.networkUrlLoader,
-    preferencesModule.preferences,
+    preferencesModule.imagesNamesPreferences,
     coreModule.timestampProvider
   )
   

@@ -7,4 +7,6 @@ interface ImagesCache {
   suspend fun getImage(key: String): Drawable?
   
   suspend fun saveImage(key: String, drawable: Drawable)
+  
+  suspend fun clearAll()
 }

@@ -4,11 +4,14 @@ import android.widget.ImageView
 import androidx.lifecycle.lifecycleScope
 import coil.load
 import coil.request.CachePolicy
+import com.arsvechkarev.vault.BuildConfig
 import com.arsvechkarev.vault.MainActivity
+import com.arsvechkarev.vault.core.views.drawables.BaseShimmerDrawable.Companion.setShimmerDrawable
 import com.arsvechkarev.vault.core.views.drawables.BaseShimmerDrawable.Companion.stopShimmerDrawable
 import com.arsvechkarev.vault.core.views.drawables.LetterInCircleDrawable
 import com.arsvechkarev.vault.core.views.drawables.LoadingPlaceholderDrawable
 import com.arsvechkarev.vault.features.common.di.CoreComponentHolder
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 private const val BASE_URL_ICON_FILES = "https://raw.githubusercontent.com/arsvechkarev/Vault/master/icons/files/"
@@ -26,7 +29,10 @@ fun ImageView.setIconForTitle(text: String) {
     if (imagesNames != null) {
       trySetImageFromMatchingNames(trimmedText, imagesNames)
     } else {
-      setImageDrawable(LoadingPlaceholderDrawable(text.first().toString()))
+      setShimmerDrawable(LoadingPlaceholderDrawable(text.first().toString()))
+      if (BuildConfig.DEBUG) {
+        delay(3000)
+      }
       imagesNamesLoader.loadFromNetwork()
           .onSuccess { loadedImagesNames ->
             trySetImageFromMatchingNames(trimmedText, loadedImagesNames)
@@ -52,7 +58,7 @@ suspend fun ImageView.trySetImageFromMatchingNames(text: String, imagesNames: Se
       crossfade(true)
       memoryCachePolicy(CachePolicy.DISABLED)
       diskCachePolicy(CachePolicy.DISABLED)
-      placeholder(LoadingPlaceholderDrawable(text.first().toString()))
+      placeholder(LoadingPlaceholderDrawable(text.first().toString()).apply { start() })
       error(LetterInCircleDrawable(text.first().toString()))
       listener(
         onSuccess = { _, result ->

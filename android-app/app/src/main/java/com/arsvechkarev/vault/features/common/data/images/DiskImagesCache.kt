@@ -30,10 +30,7 @@ class DiskImagesCache(
       if (!file.exists()) {
         return@withContext null
       }
-      val options = BitmapFactory.Options().apply {
-        inMutable = false
-      }
-      return@withContext BitmapFactory.decodeFile(file.path, options).toDrawable(context.resources)
+      return@withContext BitmapFactory.decodeFile(file.path).toDrawable(context.resources)
     }
   }
   

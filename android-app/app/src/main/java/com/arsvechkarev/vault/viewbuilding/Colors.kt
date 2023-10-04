@@ -30,6 +30,8 @@ object Colors {
   val SwitchThumbDisabled = "B9B9B9".color
   val SwitchTrackDisabled = "5D646B".color
   val Shine = "BBD1D1D1".color
+  val Favorite = "F4E216".color
+  val FavoriteRipple = "C6F4E216".color
   
   private inline val String.color: Int
     get() = Color.parseColor("#$this")

@@ -31,7 +31,8 @@ class SavePlainTextEntryActor(
           val createdEntry = PlainTextEntry(
             id = databaseUUIDPair.second,
             title = command.data.title,
-            text = command.data.text
+            text = command.data.text,
+            isFavorite = command.data.isFavorite
           )
           NotifyEntryCreated(createdEntry)
         }

@@ -11,10 +11,12 @@ data class PasswordEntry(
   val password: Password,
   val url: String,
   val notes: String,
+  val isFavorite: Boolean,
 ) : BaseEntry
 
 data class PlainTextEntry(
   val id: String,
   val title: String,
-  val text: String
+  val text: String,
+  val isFavorite: Boolean
 ) : BaseEntry

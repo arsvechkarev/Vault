@@ -6,7 +6,11 @@ import com.arsvechkarev.vault.features.common.data.database.ObservableCachedData
 import com.arsvechkarev.vault.features.common.domain.MasterPasswordProvider
 import com.arsvechkarev.vault.features.plain_text_entry.PlainTextEntryCommand
 import com.arsvechkarev.vault.features.plain_text_entry.PlainTextEntryCommand.UpdatePlainTextEntry
+import com.arsvechkarev.vault.features.plain_text_entry.PlainTextEntryCommand.UpdatePlainTextEntry.UpdateIsFavorite
+import com.arsvechkarev.vault.features.plain_text_entry.PlainTextEntryCommand.UpdatePlainTextEntry.UpdateText
+import com.arsvechkarev.vault.features.plain_text_entry.PlainTextEntryCommand.UpdatePlainTextEntry.UpdateTitle
 import com.arsvechkarev.vault.features.plain_text_entry.PlainTextEntryEvent
+import com.arsvechkarev.vault.features.plain_text_entry.PlainTextEntryEvent.UpdatedPlainTextEntry.UpdatedIsFavorite
 import com.arsvechkarev.vault.features.plain_text_entry.PlainTextEntryEvent.UpdatedPlainTextEntry.UpdatedText
 import com.arsvechkarev.vault.features.plain_text_entry.PlainTextEntryEvent.UpdatedPlainTextEntry.UpdatedTitle
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -29,8 +33,9 @@ class UpdatePlainTextEntryActor(
           val newDatabase = plainTextModelInteractor.editPlainText(database, command.plainTextEntry)
           storage.saveDatabase(newDatabase)
           when (command) {
-            is UpdatePlainTextEntry.UpdateTitle -> UpdatedTitle(command.plainTextEntry)
-            is UpdatePlainTextEntry.UpdateText -> UpdatedText(command.plainTextEntry)
+            is UpdateTitle -> UpdatedTitle(command.plainTextEntry)
+            is UpdateText -> UpdatedText(command.plainTextEntry)
+            is UpdateIsFavorite -> UpdatedIsFavorite(command.plainTextEntry)
           }
         }
   }

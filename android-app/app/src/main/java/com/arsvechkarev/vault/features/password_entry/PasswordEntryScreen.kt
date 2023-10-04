@@ -1,7 +1,6 @@
 package com.arsvechkarev.vault.features.password_entry
 
 import android.content.Context
-import android.content.res.ColorStateList
 import android.view.Gravity
 import android.view.View
 import android.widget.ImageView
@@ -37,6 +36,7 @@ import com.arsvechkarev.vault.features.password_entry.PasswordEntryUiEvent.OnCon
 import com.arsvechkarev.vault.features.password_entry.PasswordEntryUiEvent.OnCopyPasswordClicked
 import com.arsvechkarev.vault.features.password_entry.PasswordEntryUiEvent.OnDeleteClicked
 import com.arsvechkarev.vault.features.password_entry.PasswordEntryUiEvent.OnDialogHidden
+import com.arsvechkarev.vault.features.password_entry.PasswordEntryUiEvent.OnFavoriteClicked
 import com.arsvechkarev.vault.features.password_entry.PasswordEntryUiEvent.OnImagesLoadingFailed
 import com.arsvechkarev.vault.features.password_entry.PasswordEntryUiEvent.OnInit
 import com.arsvechkarev.vault.features.password_entry.PasswordEntryUiEvent.OnNotesActionClicked
@@ -76,6 +76,7 @@ import viewdsl.getDrawableHeight
 import viewdsl.hideKeyboard
 import viewdsl.id
 import viewdsl.image
+import viewdsl.imageTint
 import viewdsl.layoutGravity
 import viewdsl.margin
 import viewdsl.margins
@@ -131,13 +132,26 @@ class PasswordEntryScreen : BaseFragmentScreen() {
         ImageView(WrapContent, WrapContent) {
           id(ImageDelete)
           image(R.drawable.ic_delete)
-          imageTintList = ColorStateList.valueOf(Colors.Error)
+          imageTint(Colors.Error)
           padding(Dimens.IconPadding)
           circleRippleBackground(Colors.ErrorRipple)
           onClick { store.tryDispatch(OnDeleteClicked) }
           constraints {
             topToTopOf(parent)
             endToEndOf(parent)
+          }
+        }
+        ImageView(WrapContent, WrapContent) {
+          id(ImageFavorite)
+          image(R.drawable.ic_star_outline)
+          imageTint(Colors.Favorite)
+          padding(Dimens.IconPadding)
+          margins(end = MarginSmall)
+          circleRippleBackground(Colors.FavoriteRipple)
+          onClick { store.tryDispatch(OnFavoriteClicked) }
+          constraints {
+            topToTopOf(parent)
+            endToStartOf(ImageDelete)
           }
         }
         ImageView(ImageTitleSize, ImageTitleSize) {
@@ -293,14 +307,11 @@ class PasswordEntryScreen : BaseFragmentScreen() {
     PasswordEntryStore(coreComponent, stringArg(PasswordItem::class.qualifiedName!!))
   }
   
-  private val titleTextWatcher =
-      BaseTextWatcher { store.tryDispatch(OnTitleTextChanged(it)) }
+  private val titleTextWatcher = BaseTextWatcher { store.tryDispatch(OnTitleTextChanged(it)) }
   
-  private val usernameTextWatcher =
-      BaseTextWatcher { store.tryDispatch(OnUsernameTextChanged(it)) }
+  private val usernameTextWatcher = BaseTextWatcher { store.tryDispatch(OnUsernameTextChanged(it)) }
   
-  private val notesTextWatcher =
-      BaseTextWatcher { store.tryDispatch(OnNotesTextChanged(it)) }
+  private val notesTextWatcher = BaseTextWatcher { store.tryDispatch(OnNotesTextChanged(it)) }
   
   override fun onInit() {
     CreatingPasswordCommunication.communicator.output
@@ -311,6 +322,11 @@ class PasswordEntryScreen : BaseFragmentScreen() {
   }
   
   private fun render(state: PasswordEntryState) {
+    when (state.passwordEntry?.isFavorite) {
+      true -> imageView(ImageFavorite).image(R.drawable.ic_star_filled)
+      false -> imageView(ImageFavorite).image(R.drawable.ic_star_outline)
+      else -> Unit
+    }
     imageView(ImageTitle).setIconForTitle(state.titleState.editedText, onImageLoadingFailed = {
       store.tryDispatch(OnImagesLoadingFailed)
     })
@@ -396,6 +412,7 @@ class PasswordEntryScreen : BaseFragmentScreen() {
     val PasswordEntryScreenRoot = View.generateViewId()
     val ImageBack = View.generateViewId()
     val ImageDelete = View.generateViewId()
+    val ImageFavorite = View.generateViewId()
     val ImageTitle = View.generateViewId()
     val TextTitle = View.generateViewId()
     val Title = View.generateViewId()

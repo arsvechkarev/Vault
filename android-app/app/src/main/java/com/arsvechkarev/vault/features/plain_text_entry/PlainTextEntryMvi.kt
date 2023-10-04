@@ -12,6 +12,7 @@ sealed interface PlainTextEntryEvent {
   sealed interface UpdatedPlainTextEntry : PlainTextEntryEvent {
     class UpdatedTitle(val plainTextEntry: PlainTextEntry) : UpdatedPlainTextEntry
     class UpdatedText(val plainTextEntry: PlainTextEntry) : UpdatedPlainTextEntry
+    class UpdatedIsFavorite(val plainTextEntry: PlainTextEntry) : UpdatedPlainTextEntry
   }
 }
 
@@ -22,6 +23,7 @@ sealed interface PlainTextEntryUiEvent : PlainTextEntryEvent {
   object OnBackPressed : PlainTextEntryUiEvent
   
   object OnSaveClicked : PlainTextEntryUiEvent
+  object OnFavoriteClicked : PlainTextEntryUiEvent
   object OnDeleteClicked : PlainTextEntryUiEvent
   object OnConfirmedSaving : PlainTextEntryUiEvent
   object OnConfirmedDeleting : PlainTextEntryUiEvent
@@ -45,6 +47,7 @@ sealed interface PlainTextEntryCommand {
   sealed class UpdatePlainTextEntry(val plainTextEntry: PlainTextEntry) : PlainTextEntryCommand {
     class UpdateText(item: PlainTextEntry) : UpdatePlainTextEntry(item)
     class UpdateTitle(item: PlainTextEntry) : UpdatePlainTextEntry(item)
+    class UpdateIsFavorite(item: PlainTextEntry) : UpdatePlainTextEntry(item)
   }
 }
 

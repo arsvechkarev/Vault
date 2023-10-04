@@ -57,6 +57,20 @@ fun View.animateInvisible(
       .start()
 }
 
+fun View.animateGone(
+  andThen: () -> Unit = {},
+  duration: Long = AnimationDurations.VisibilityChange
+) {
+  if (visibility == View.GONE) return
+  animate().alpha(0f).setDuration(duration)
+      .setInterpolator(AccelerateDecelerateInterpolator)
+      .withEndAction {
+        gone()
+        andThen()
+      }
+      .start()
+}
+
 fun View.rotate() {
   if (tag == "isRotating") {
     return

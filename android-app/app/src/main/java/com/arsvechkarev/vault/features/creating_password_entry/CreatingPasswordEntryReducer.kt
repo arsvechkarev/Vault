@@ -46,6 +46,7 @@ class CreatingPasswordEntryReducer :
           password = event.password,
           url = "",
           notes = "",
+          isFavorite = false
         )
         commands(SavePassword(passwordEntryData))
       }

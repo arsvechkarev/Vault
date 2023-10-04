@@ -9,14 +9,19 @@ import app.keemobile.kotpass.models.CustomDataValue
 import app.keemobile.kotpass.models.Entry
 import app.keemobile.kotpass.models.EntryFields
 import app.keemobile.kotpass.models.EntryValue
+import buisnesslogic.CUSTOM_DATA_FAVORITE_KEY
 import buisnesslogic.CUSTOM_DATA_PLAIN_TEXT
 import buisnesslogic.CUSTOM_DATA_TYPE_KEY
+import buisnesslogic.InstantProvider
 import buisnesslogic.UniqueIdProvider
 import buisnesslogic.model.PlainTextEntry
 import buisnesslogic.model.PlainTextEntryData
 import java.util.UUID
 
-class KeePassPlainTextModelInteractor(private val idProvider: UniqueIdProvider) {
+class KeePassPlainTextModelInteractor(
+  private val idProvider: UniqueIdProvider,
+  private val instantProvider: InstantProvider
+) {
   
   fun getPlainTextEntry(database: KeePassDatabase, uuid: String): PlainTextEntry {
     return checkNotNull(database.findEntryBy { this.uuid.toString() == uuid })
@@ -24,7 +29,8 @@ class KeePassPlainTextModelInteractor(private val idProvider: UniqueIdProvider) 
           PlainTextEntry(
             id = uuid,
             title = fields.title?.content.orEmpty(),
-            text = fields.notes?.content.orEmpty()
+            text = fields.notes?.content.orEmpty(),
+            isFavorite = customData[CUSTOM_DATA_FAVORITE_KEY]?.asBoolean() ?: false
           )
         }
   }
@@ -41,7 +47,10 @@ class KeePassPlainTextModelInteractor(private val idProvider: UniqueIdProvider) 
           BasicField.Title.key to EntryValue.Plain(plainTextEntryData.title),
           BasicField.Notes.key to EntryValue.Plain(plainTextEntryData.text)
         ),
-        customData = mapOf(CUSTOM_DATA_TYPE_KEY to CustomDataValue(CUSTOM_DATA_PLAIN_TEXT))
+        customData = mapOf(
+          CUSTOM_DATA_TYPE_KEY to CustomDataValue(CUSTOM_DATA_PLAIN_TEXT),
+          CUSTOM_DATA_FAVORITE_KEY to plainTextEntryData.isFavorite.toValue(instantProvider.now()),
+        )
       )
       copy(entries = entries + entry)
     }
@@ -57,7 +66,10 @@ class KeePassPlainTextModelInteractor(private val idProvider: UniqueIdProvider) 
         fields = EntryFields.of(
           BasicField.Title.key to EntryValue.Plain(plainTextEntry.title),
           BasicField.Notes.key to EntryValue.Plain(plainTextEntry.text)
-        )
+        ),
+        customData = HashMap(customData).apply {
+          put(CUSTOM_DATA_FAVORITE_KEY, plainTextEntry.isFavorite.toValue(instantProvider.now()))
+        }
       )
     }
   }

@@ -15,6 +15,7 @@ sealed interface PasswordEntryEvent {
     class UpdatedUsername(val passwordEntry: PasswordEntry) : UpdatedPasswordEntry
     class UpdatedPassword(val passwordEntry: PasswordEntry) : UpdatedPasswordEntry
     class UpdatedNotes(val passwordEntry: PasswordEntry) : UpdatedPasswordEntry
+    class UpdatedIsFavorite(val passwordEntry: PasswordEntry) : UpdatedPasswordEntry
   }
 }
 
@@ -26,6 +27,7 @@ sealed interface PasswordEntryUiEvent : PasswordEntryEvent {
   object OnOpenPasswordScreenClicked : PasswordEntryUiEvent
   object OnCopyPasswordClicked : PasswordEntryUiEvent
   object OnDeleteClicked : PasswordEntryUiEvent
+  object OnFavoriteClicked : PasswordEntryUiEvent
   object OnConfirmedDeletion : PasswordEntryUiEvent
   object OnDialogHidden : PasswordEntryUiEvent
   object OnImagesLoadingFailed : PasswordEntryUiEvent
@@ -52,6 +54,7 @@ sealed interface PasswordEntryCommand {
     class UpdateUsername(passwordEntry: PasswordEntry) : UpdatePasswordEntry(passwordEntry)
     class UpdatePassword(passwordEntry: PasswordEntry) : UpdatePasswordEntry(passwordEntry)
     class UpdateNotes(passwordEntry: PasswordEntry) : UpdatePasswordEntry(passwordEntry)
+    class UpdateIsFavorite(passwordEntry: PasswordEntry) : UpdatePasswordEntry(passwordEntry)
   }
   
   class DeletePasswordEntry(val passwordId: String) : PasswordEntryCommand

@@ -12,6 +12,7 @@ import com.arsvechkarev.vault.features.password_entry.PasswordEntryCommand.Delet
 import com.arsvechkarev.vault.features.password_entry.PasswordEntryCommand.FetchPasswordEntry
 import com.arsvechkarev.vault.features.password_entry.PasswordEntryCommand.RouterCommand.GoBack
 import com.arsvechkarev.vault.features.password_entry.PasswordEntryCommand.RouterCommand.GoToCreatingPasswordScreen
+import com.arsvechkarev.vault.features.password_entry.PasswordEntryCommand.UpdatePasswordEntry.UpdateIsFavorite
 import com.arsvechkarev.vault.features.password_entry.PasswordEntryCommand.UpdatePasswordEntry.UpdateNotes
 import com.arsvechkarev.vault.features.password_entry.PasswordEntryCommand.UpdatePasswordEntry.UpdatePassword
 import com.arsvechkarev.vault.features.password_entry.PasswordEntryCommand.UpdatePasswordEntry.UpdateTitle
@@ -19,6 +20,7 @@ import com.arsvechkarev.vault.features.password_entry.PasswordEntryCommand.Updat
 import com.arsvechkarev.vault.features.password_entry.PasswordEntryEvent.DeletedPasswordEntry
 import com.arsvechkarev.vault.features.password_entry.PasswordEntryEvent.NetworkAvailable
 import com.arsvechkarev.vault.features.password_entry.PasswordEntryEvent.ReceivedPasswordEntry
+import com.arsvechkarev.vault.features.password_entry.PasswordEntryEvent.UpdatedPasswordEntry.UpdatedIsFavorite
 import com.arsvechkarev.vault.features.password_entry.PasswordEntryEvent.UpdatedPasswordEntry.UpdatedNotes
 import com.arsvechkarev.vault.features.password_entry.PasswordEntryEvent.UpdatedPasswordEntry.UpdatedPassword
 import com.arsvechkarev.vault.features.password_entry.PasswordEntryEvent.UpdatedPasswordEntry.UpdatedTitle
@@ -36,6 +38,7 @@ import com.arsvechkarev.vault.features.password_entry.PasswordEntryUiEvent.OnCon
 import com.arsvechkarev.vault.features.password_entry.PasswordEntryUiEvent.OnCopyPasswordClicked
 import com.arsvechkarev.vault.features.password_entry.PasswordEntryUiEvent.OnDeleteClicked
 import com.arsvechkarev.vault.features.password_entry.PasswordEntryUiEvent.OnDialogHidden
+import com.arsvechkarev.vault.features.password_entry.PasswordEntryUiEvent.OnFavoriteClicked
 import com.arsvechkarev.vault.features.password_entry.PasswordEntryUiEvent.OnImagesLoadingFailed
 import com.arsvechkarev.vault.features.password_entry.PasswordEntryUiEvent.OnInit
 import com.arsvechkarev.vault.features.password_entry.PasswordEntryUiEvent.OnNotesActionClicked
@@ -137,6 +140,11 @@ class PasswordEntryScreenReducer :
           commands(GoBack)
         }
       }
+      OnFavoriteClicked -> {
+        val passwordEntry = state.passwordEntry ?: return
+        val newPasswordEntry = passwordEntry.copy(isFavorite = !passwordEntry.isFavorite)
+        commands(UpdateIsFavorite(newPasswordEntry))
+      }
       OnDeleteClicked -> {
         state { copy(showDeletePasswordDialog = true) }
       }
@@ -172,6 +180,7 @@ class PasswordEntryScreenReducer :
       is UpdatedTitle -> state { copy(passwordEntry = event.passwordEntry) }
       is UpdatedUsername -> state { copy(passwordEntry = event.passwordEntry) }
       is UpdatedNotes -> state { copy(passwordEntry = event.passwordEntry) }
+      is UpdatedIsFavorite -> state { copy(passwordEntry = event.passwordEntry) }
       is UpdatedPassword -> {
         state { copy(passwordEntry = event.passwordEntry) }
         commands(GoBack)

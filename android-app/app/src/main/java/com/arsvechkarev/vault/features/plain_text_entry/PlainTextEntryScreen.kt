@@ -5,7 +5,6 @@ import android.content.res.ColorStateList
 import android.view.Gravity
 import android.view.View
 import android.view.WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE
-import androidx.annotation.StringRes
 import com.arsvechkarev.vault.R
 import com.arsvechkarev.vault.core.extensions.getDeleteMessageText
 import com.arsvechkarev.vault.core.extensions.stringNullableArg
@@ -32,6 +31,7 @@ import com.arsvechkarev.vault.features.plain_text_entry.PlainTextEntryUiEvent.On
 import com.arsvechkarev.vault.features.plain_text_entry.PlainTextEntryUiEvent.OnConfirmedDeleting
 import com.arsvechkarev.vault.features.plain_text_entry.PlainTextEntryUiEvent.OnDeleteClicked
 import com.arsvechkarev.vault.features.plain_text_entry.PlainTextEntryUiEvent.OnDialogHidden
+import com.arsvechkarev.vault.features.plain_text_entry.PlainTextEntryUiEvent.OnFavoriteClicked
 import com.arsvechkarev.vault.features.plain_text_entry.PlainTextEntryUiEvent.OnInit
 import com.arsvechkarev.vault.features.plain_text_entry.PlainTextEntryUiEvent.OnSaveClicked
 import com.arsvechkarev.vault.features.plain_text_entry.PlainTextEntryUiEvent.OnTextActionClicked
@@ -39,10 +39,11 @@ import com.arsvechkarev.vault.features.plain_text_entry.PlainTextEntryUiEvent.On
 import com.arsvechkarev.vault.features.plain_text_entry.PlainTextEntryUiEvent.OnTitleActionClicked
 import com.arsvechkarev.vault.features.plain_text_entry.PlainTextEntryUiEvent.OnTitleChanged
 import com.arsvechkarev.vault.viewbuilding.Colors
-import com.arsvechkarev.vault.viewbuilding.Dimens
 import com.arsvechkarev.vault.viewbuilding.Dimens.GradientDrawableHeight
+import com.arsvechkarev.vault.viewbuilding.Dimens.IconPadding
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginLarge
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginNormal
+import com.arsvechkarev.vault.viewbuilding.Dimens.MarginSmall
 import com.arsvechkarev.vault.viewbuilding.Styles
 import com.arsvechkarev.vault.viewbuilding.Styles.AccentTextView
 import com.arsvechkarev.vault.viewbuilding.Styles.BaseEditText
@@ -56,9 +57,11 @@ import viewdsl.Size.Companion.WrapContent
 import viewdsl.Size.Companion.ZERO
 import viewdsl.circleRippleBackground
 import viewdsl.constraints
+import viewdsl.gone
 import viewdsl.hideKeyboard
 import viewdsl.id
 import viewdsl.image
+import viewdsl.imageTint
 import viewdsl.isVisible
 import viewdsl.layoutGravity
 import viewdsl.margin
@@ -103,7 +106,7 @@ class PlainTextEntryScreen : BaseFragmentScreen() {
         }
         ImageView(WrapContent, WrapContent) {
           id(ImageDelete)
-          padding(Dimens.IconPadding)
+          padding(IconPadding)
           margins(start = MarginNormal, end = MarginNormal)
           image(R.drawable.ic_delete)
           imageTintList = ColorStateList.valueOf(Colors.Error)
@@ -113,6 +116,19 @@ class PlainTextEntryScreen : BaseFragmentScreen() {
             topToTopOf(MainTitle)
             endToEndOf(parent)
             bottomToBottomOf(MainTitle)
+          }
+        }
+        ImageView(WrapContent, WrapContent) {
+          id(ImageFavorite)
+          image(R.drawable.ic_star_outline)
+          imageTint(Colors.Favorite)
+          padding(IconPadding)
+          margins(end = MarginSmall)
+          circleRippleBackground(Colors.FavoriteRipple)
+          onClick { store.tryDispatch(OnFavoriteClicked) }
+          constraints {
+            topToTopOf(ImageDelete)
+            endToStartOf(ImageDelete)
           }
         }
         TextView(WrapContent, WrapContent, style = AccentTextView) {
@@ -138,7 +154,7 @@ class PlainTextEntryScreen : BaseFragmentScreen() {
         ImageView(WrapContent, WrapContent) {
           id(ImageTitleAction)
           image(R.drawable.ic_copy)
-          padding(Dimens.IconPadding)
+          padding(IconPadding)
           margins(end = MarginNormal)
           circleRippleBackground(rippleColor = Colors.Ripple)
           onClick { store.tryDispatch(OnTitleActionClicked) }
@@ -172,7 +188,7 @@ class PlainTextEntryScreen : BaseFragmentScreen() {
         ImageView(WrapContent, WrapContent) {
           id(ImageTextAction)
           image(R.drawable.ic_copy)
-          padding(Dimens.IconPadding)
+          padding(IconPadding)
           margins(end = MarginNormal)
           circleRippleBackground(rippleColor = Colors.Ripple)
           onClick { store.tryDispatch(OnTextActionClicked) }
@@ -225,6 +241,7 @@ class PlainTextEntryScreen : BaseFragmentScreen() {
     view(ButtonSave).isVisible = state is NewEntry
     view(ImageTitleAction).isVisible = state is ExistingEntry
     view(ImageTextAction).isVisible = state is ExistingEntry
+    view(ImageFavorite).isVisible = state is ExistingEntry
     view(ImageDelete).isVisible = state is ExistingEntry
     val resId = if (state is NewEntry) R.string.text_new_plain_text else R.string.text_plain_text
     textView(MainTitle).text(resId)
@@ -235,23 +252,29 @@ class PlainTextEntryScreen : BaseFragmentScreen() {
   }
   
   private fun renderNewEntry(state: NewEntry) {
+    imageView(ImageFavorite).gone()
     if (state.showTitleIsEmptyError) {
-      showAccentTextViewError(Title, R.string.text_title_is_empty)
+      showTitleViewError()
     } else {
-      showAccentTextViewDefault(Title, R.string.text_title)
+      showTitleViewDefault()
     }
   }
   
   private fun renderExistingEntry(state: ExistingEntry) {
+    if (state.plainTextEntry?.isFavorite == true) {
+      imageView(ImageFavorite).image(R.drawable.ic_star_filled)
+    } else {
+      imageView(ImageFavorite).image(R.drawable.ic_star_outline)
+    }
     renderTextState(EditTextTitle, state.titleState, ImageTitleAction)
     renderTextState(EditTextText, state.textState, ImageTextAction)
     if (!state.isEditingSomething) {
       requireContext().hideKeyboard()
     }
     if (state.showTitleIsEmptyError) {
-      showAccentTextViewError(Title, R.string.text_title_is_empty)
+      showTitleViewError()
     } else {
-      showAccentTextViewDefault(Title, R.string.text_title)
+      showTitleViewDefault()
     }
     if (state.showConfirmDeleteDialog) {
       infoDialog.showWithCancelAndProceedOption(
@@ -309,17 +332,17 @@ class PlainTextEntryScreen : BaseFragmentScreen() {
     return true
   }
   
-  private fun showAccentTextViewDefault(textViewId: Int, @StringRes defaultTextRes: Int) {
-    textView(textViewId).apply {
-      apply(AccentTextView)
-      text(defaultTextRes)
+  private fun showTitleViewDefault() {
+    textView(Title).apply {
+      textColor(Colors.Accent)
+      text(R.string.text_title)
     }
   }
   
-  private fun showAccentTextViewError(textViewId: Int, @StringRes errorTextRes: Int) {
-    textView(textViewId).apply {
+  private fun showTitleViewError() {
+    textView(Title).apply {
       textColor(Colors.Error)
-      text(errorTextRes)
+      text(R.string.text_title_is_empty)
     }
   }
   
@@ -329,6 +352,7 @@ class PlainTextEntryScreen : BaseFragmentScreen() {
     val ImageBack = View.generateViewId()
     val MainTitle = View.generateViewId()
     val ImageDelete = View.generateViewId()
+    val ImageFavorite = View.generateViewId()
     val Title = View.generateViewId()
     val EditTextTitle = View.generateViewId()
     val ImageTitleAction = View.generateViewId()

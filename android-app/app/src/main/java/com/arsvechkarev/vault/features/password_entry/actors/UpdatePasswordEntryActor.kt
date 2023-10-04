@@ -6,11 +6,13 @@ import com.arsvechkarev.vault.features.common.data.database.ObservableCachedData
 import com.arsvechkarev.vault.features.common.domain.MasterPasswordProvider
 import com.arsvechkarev.vault.features.password_entry.PasswordEntryCommand
 import com.arsvechkarev.vault.features.password_entry.PasswordEntryCommand.UpdatePasswordEntry
+import com.arsvechkarev.vault.features.password_entry.PasswordEntryCommand.UpdatePasswordEntry.UpdateIsFavorite
 import com.arsvechkarev.vault.features.password_entry.PasswordEntryCommand.UpdatePasswordEntry.UpdateNotes
 import com.arsvechkarev.vault.features.password_entry.PasswordEntryCommand.UpdatePasswordEntry.UpdatePassword
 import com.arsvechkarev.vault.features.password_entry.PasswordEntryCommand.UpdatePasswordEntry.UpdateTitle
 import com.arsvechkarev.vault.features.password_entry.PasswordEntryCommand.UpdatePasswordEntry.UpdateUsername
 import com.arsvechkarev.vault.features.password_entry.PasswordEntryEvent
+import com.arsvechkarev.vault.features.password_entry.PasswordEntryEvent.UpdatedPasswordEntry.UpdatedIsFavorite
 import com.arsvechkarev.vault.features.password_entry.PasswordEntryEvent.UpdatedPasswordEntry.UpdatedNotes
 import com.arsvechkarev.vault.features.password_entry.PasswordEntryEvent.UpdatedPasswordEntry.UpdatedPassword
 import com.arsvechkarev.vault.features.password_entry.PasswordEntryEvent.UpdatedPasswordEntry.UpdatedTitle
@@ -39,6 +41,7 @@ class UpdatePasswordEntryActor(
             is UpdateUsername -> UpdatedUsername(command.passwordEntry)
             is UpdatePassword -> UpdatedPassword(command.passwordEntry)
             is UpdateNotes -> UpdatedNotes(command.passwordEntry)
+            is UpdateIsFavorite -> UpdatedIsFavorite(command.passwordEntry)
           }
         }
   }

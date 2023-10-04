@@ -66,6 +66,7 @@
   <string name="text_notes_copied">Notes successfully copied</string>
 
   <!-- Main list -->
+  <string name="text_favorites">Favorites</string>
   <string name="text_passwords">Passwords</string>
   <string name="text_plain_texts">Plain texts</string>
   <string name="text_new_entry">New entry</string>

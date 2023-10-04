@@ -32,6 +32,10 @@ fun ImageView.image(drawable: Drawable) {
   setImageDrawable(drawable)
 }
 
+fun ImageView.imageTint(color: Int) {
+  imageTintList = ColorStateList.valueOf(color)
+}
+
 inline fun SeekBar.onProgressChanged(crossinline block: (progress: Int) -> Unit) {
   setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
     override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {

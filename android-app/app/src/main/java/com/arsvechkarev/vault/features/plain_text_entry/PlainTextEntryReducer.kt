@@ -12,11 +12,13 @@ import com.arsvechkarev.vault.features.plain_text_entry.PlainTextEntryCommand.De
 import com.arsvechkarev.vault.features.plain_text_entry.PlainTextEntryCommand.FetchPlainTextEntry
 import com.arsvechkarev.vault.features.plain_text_entry.PlainTextEntryCommand.GoBack
 import com.arsvechkarev.vault.features.plain_text_entry.PlainTextEntryCommand.SavePlainTextEntry
+import com.arsvechkarev.vault.features.plain_text_entry.PlainTextEntryCommand.UpdatePlainTextEntry.UpdateIsFavorite
 import com.arsvechkarev.vault.features.plain_text_entry.PlainTextEntryCommand.UpdatePlainTextEntry.UpdateText
 import com.arsvechkarev.vault.features.plain_text_entry.PlainTextEntryCommand.UpdatePlainTextEntry.UpdateTitle
 import com.arsvechkarev.vault.features.plain_text_entry.PlainTextEntryEvent.NotifyEntryCreated
 import com.arsvechkarev.vault.features.plain_text_entry.PlainTextEntryEvent.NotifyEntryDeleted
 import com.arsvechkarev.vault.features.plain_text_entry.PlainTextEntryEvent.ReceivedPlainTextEntry
+import com.arsvechkarev.vault.features.plain_text_entry.PlainTextEntryEvent.UpdatedPlainTextEntry.UpdatedIsFavorite
 import com.arsvechkarev.vault.features.plain_text_entry.PlainTextEntryEvent.UpdatedPlainTextEntry.UpdatedText
 import com.arsvechkarev.vault.features.plain_text_entry.PlainTextEntryEvent.UpdatedPlainTextEntry.UpdatedTitle
 import com.arsvechkarev.vault.features.plain_text_entry.PlainTextEntryNews.SetText
@@ -31,6 +33,7 @@ import com.arsvechkarev.vault.features.plain_text_entry.PlainTextEntryUiEvent.On
 import com.arsvechkarev.vault.features.plain_text_entry.PlainTextEntryUiEvent.OnConfirmedSaving
 import com.arsvechkarev.vault.features.plain_text_entry.PlainTextEntryUiEvent.OnDeleteClicked
 import com.arsvechkarev.vault.features.plain_text_entry.PlainTextEntryUiEvent.OnDialogHidden
+import com.arsvechkarev.vault.features.plain_text_entry.PlainTextEntryUiEvent.OnFavoriteClicked
 import com.arsvechkarev.vault.features.plain_text_entry.PlainTextEntryUiEvent.OnInit
 import com.arsvechkarev.vault.features.plain_text_entry.PlainTextEntryUiEvent.OnSaveClicked
 import com.arsvechkarev.vault.features.plain_text_entry.PlainTextEntryUiEvent.OnTextActionClicked
@@ -90,23 +93,12 @@ class PlainTextEntryReducer : DslReducer<PlainTextEntryState, PlainTextEntryEven
         if (state.title.isBlank()) {
           state { state.copy(showTitleIsEmptyError = true) }
         } else {
-          commands(SavePlainTextEntry(PlainTextEntryData(state.title, state.text)))
+          val data = PlainTextEntryData(state.title, state.text, isFavorite = false)
+          commands(SavePlainTextEntry(data))
         }
       }
       OnConfirmedSaving -> {
         check(state is NewEntry)
-      }
-      is NotifyEntryCreated -> {
-        check(state is NewEntry)
-        state {
-          ExistingEntry(
-            plainTextId = event.plainTextEntry.id,
-            plainTextEntry = event.plainTextEntry,
-            titleState = TextState(event.plainTextEntry.title),
-            textState = TextState(event.plainTextEntry.text),
-          )
-        }
-        news(ShowPlainTextEntryCreated)
       }
       OnTitleActionClicked -> {
         check(state is ExistingEntry)
@@ -137,25 +129,11 @@ class PlainTextEntryReducer : DslReducer<PlainTextEntryState, PlainTextEntryEven
           setTextNews = ::SetText
         )
       }
-      is UpdatedTitle -> {
+      OnFavoriteClicked -> {
         check(state is ExistingEntry)
-        state {
-          state.copy(
-            plainTextId = event.plainTextEntry.id,
-            plainTextEntry = event.plainTextEntry,
-            titleState = TextState(event.plainTextEntry.title)
-          )
-        }
-      }
-      is UpdatedText -> {
-        check(state is ExistingEntry)
-        state {
-          state.copy(
-            plainTextId = event.plainTextEntry.id,
-            plainTextEntry = event.plainTextEntry,
-            textState = TextState(event.plainTextEntry.text)
-          )
-        }
+        val plainTextEntry = state.plainTextEntry ?: return
+        val newPlainTextEntry = plainTextEntry.copy(isFavorite = !state.plainTextEntry.isFavorite)
+        commands(UpdateIsFavorite(newPlainTextEntry))
       }
       OnDeleteClicked -> {
         check(state is ExistingEntry)
@@ -165,11 +143,6 @@ class PlainTextEntryReducer : DslReducer<PlainTextEntryState, PlainTextEntryEven
         check(state is ExistingEntry)
         state { state.copy(showLoadingDialog = true, showConfirmDeleteDialog = false) }
         commands(DeletePlainTextEntry(state.plainTextId))
-      }
-      NotifyEntryDeleted -> {
-        check(state is ExistingEntry)
-        state { state.copy(showLoadingDialog = false) }
-        commands(GoBack)
       }
       OnDialogHidden -> {
         if (state is ExistingEntry) {
@@ -205,6 +178,50 @@ class PlainTextEntryReducer : DslReducer<PlainTextEntryState, PlainTextEntryEven
             }
           }
         }
+      }
+      is NotifyEntryCreated -> {
+        check(state is NewEntry)
+        state {
+          ExistingEntry(
+            plainTextId = event.plainTextEntry.id,
+            plainTextEntry = event.plainTextEntry,
+            titleState = TextState(event.plainTextEntry.title),
+            textState = TextState(event.plainTextEntry.text),
+          )
+        }
+        news(ShowPlainTextEntryCreated)
+      }
+      is UpdatedTitle -> {
+        check(state is ExistingEntry)
+        state {
+          state.copy(
+            plainTextEntry = event.plainTextEntry,
+            titleState = TextState(event.plainTextEntry.title)
+          )
+        }
+      }
+      is UpdatedText -> {
+        check(state is ExistingEntry)
+        state {
+          state.copy(
+            plainTextEntry = event.plainTextEntry,
+            textState = TextState(event.plainTextEntry.text)
+          )
+        }
+      }
+      is UpdatedIsFavorite -> {
+        check(state is ExistingEntry)
+        state {
+          state.copy(
+            plainTextId = event.plainTextEntry.id,
+            plainTextEntry = event.plainTextEntry,
+          )
+        }
+      }
+      NotifyEntryDeleted -> {
+        check(state is ExistingEntry)
+        state { state.copy(showLoadingDialog = false) }
+        commands(GoBack)
       }
     }
   }

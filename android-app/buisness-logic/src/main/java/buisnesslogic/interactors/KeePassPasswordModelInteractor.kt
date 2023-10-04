@@ -9,15 +9,20 @@ import app.keemobile.kotpass.models.CustomDataValue
 import app.keemobile.kotpass.models.Entry
 import app.keemobile.kotpass.models.EntryFields
 import app.keemobile.kotpass.models.EntryValue
+import buisnesslogic.CUSTOM_DATA_FAVORITE_KEY
 import buisnesslogic.CUSTOM_DATA_PASSWORD
 import buisnesslogic.CUSTOM_DATA_TYPE_KEY
+import buisnesslogic.InstantProvider
 import buisnesslogic.Password
 import buisnesslogic.UniqueIdProvider
 import buisnesslogic.model.PasswordEntry
 import buisnesslogic.model.PasswordEntryData
 import java.util.UUID
 
-class KeePassPasswordModelInteractor(private val idProvider: UniqueIdProvider) {
+class KeePassPasswordModelInteractor(
+  private val idProvider: UniqueIdProvider,
+  private val instantProvider: InstantProvider
+) {
   
   fun getPasswordEntry(database: KeePassDatabase, uuid: String): PasswordEntry {
     return checkNotNull(database.findEntryBy { this.uuid.toString() == uuid })
@@ -29,6 +34,7 @@ class KeePassPasswordModelInteractor(private val idProvider: UniqueIdProvider) {
             password = Password.create(fields.password?.content.orEmpty()),
             url = fields.url?.content.orEmpty(),
             notes = fields.notes?.content.orEmpty(),
+            isFavorite = customData[CUSTOM_DATA_FAVORITE_KEY]?.asBoolean() ?: false
           )
         }
   }
@@ -49,7 +55,10 @@ class KeePassPasswordModelInteractor(private val idProvider: UniqueIdProvider) {
           BasicField.Url.key to EntryValue.Plain(passwordEntryData.url),
           BasicField.Notes.key to EntryValue.Plain(passwordEntryData.notes)
         ),
-        customData = mapOf(CUSTOM_DATA_TYPE_KEY to CustomDataValue(CUSTOM_DATA_PASSWORD))
+        customData = mapOf(
+          CUSTOM_DATA_TYPE_KEY to CustomDataValue(CUSTOM_DATA_PASSWORD),
+          CUSTOM_DATA_FAVORITE_KEY to passwordEntryData.isFavorite.toValue(instantProvider.now()),
+        )
       )
       copy(entries = entries + entry)
     }
@@ -69,7 +78,10 @@ class KeePassPasswordModelInteractor(private val idProvider: UniqueIdProvider) {
             passwordEntry.password.encryptedValueFiled),
           BasicField.Url.key to EntryValue.Plain(passwordEntry.url),
           BasicField.Notes.key to EntryValue.Plain(passwordEntry.notes)
-        )
+        ),
+        customData = HashMap(customData).apply {
+          put(CUSTOM_DATA_FAVORITE_KEY, passwordEntry.isFavorite.toValue(instantProvider.now()))
+        }
       )
     }
   }

@@ -6,6 +6,7 @@ import buisnesslogic.DatabaseFileSaver
 import buisnesslogic.DatabaseInitializer
 import buisnesslogic.DefaultDatabaseInitializer
 import buisnesslogic.IdGeneratorImpl
+import buisnesslogic.RealInstantProvider
 import buisnesslogic.UniqueIdProvideImpl
 import buisnesslogic.interactors.KeePassPasswordModelInteractor
 import buisnesslogic.interactors.KeePassPlainTextModelInteractor
@@ -29,9 +30,15 @@ class KeePassModuleImpl(coreModule: CoreModule) : KeePassModule {
   
   private val generator = UniqueIdProvideImpl(IdGeneratorImpl)
   
-  override val keePassPasswordModelInteractor = KeePassPasswordModelInteractor(generator)
+  override val keePassPasswordModelInteractor = KeePassPasswordModelInteractor(
+    generator,
+    RealInstantProvider
+  )
   
-  override val keePassPlainTextModelInteractor = KeePassPlainTextModelInteractor(generator)
+  override val keePassPlainTextModelInteractor = KeePassPlainTextModelInteractor(
+    generator,
+    RealInstantProvider
+  )
   
   override val databaseFileSaver = DatabaseFileSaverImpl(
     DEFAULT_INTERNAL_FILENAME,

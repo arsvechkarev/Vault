@@ -1,6 +1,7 @@
 package buisnesslogic
 
 import app.keemobile.kotpass.models.Entry
+import buisnesslogic.interactors.asBoolean
 
 val Entry.isDefinitePassword
   get() = customData[CUSTOM_DATA_TYPE_KEY]?.value == CUSTOM_DATA_PASSWORD
@@ -13,3 +14,6 @@ val Entry.isProbablePlainText
       && fields.userName?.content?.isEmpty() == true
       && fields.password?.content?.isEmpty() == true
       && fields.url?.content?.isEmpty() == true
+
+val Entry.isFavorite
+  get() = customData[CUSTOM_DATA_FAVORITE_KEY]?.asBoolean() == true

@@ -4,6 +4,7 @@ import app.keemobile.kotpass.database.KeePassDatabase
 import app.keemobile.kotpass.database.getEntries
 import app.keemobile.kotpass.models.Entry
 import buisnesslogic.isDefinitePlainText
+import buisnesslogic.isFavorite
 import buisnesslogic.isProbablePlainText
 import com.arsvechkarev.vault.R
 import com.arsvechkarev.vault.features.common.model.PasswordItem
@@ -16,16 +17,26 @@ class EntriesListUiMapper {
   fun mapItems(database: KeePassDatabase, addUsernames: Boolean): List<DifferentiableItem> {
     val allEntries = database.getEntries { true }.flatMap { pair -> pair.second }
     val plainTexts = allEntries.filter { it.isDefinitePlainText || it.isProbablePlainText }
-    val passwords = allEntries - plainTexts.toSet()
+    val groupedPasswords = (allEntries - plainTexts.toSet()).groupBy { it.isFavorite }
+    val favoritePasswords = groupedPasswords[true].orEmpty()
+    val nonFavoritePasswords = groupedPasswords[false].orEmpty()
+    val groupedPlainTexts = plainTexts.groupBy { it.isFavorite }
+    val favoritePlainTexts = groupedPlainTexts[true].orEmpty()
+    val nonFavoritePlainTexts = groupedPlainTexts[false].orEmpty()
     return buildList {
-      if (passwords.isNotEmpty()) {
+      if (favoritePasswords.isNotEmpty() || favoritePlainTexts.isNotEmpty()) {
+        add(Title(R.string.text_favorites))
+        addAll(favoritePasswords.toPasswordItems(addUsernames).sortedBy { it.title.lowercase() })
+        addAll(favoritePlainTexts.toPlainTextItems().sortedBy { it.title.lowercase() })
+      }
+      if (nonFavoritePasswords.isNotEmpty()) {
         add(Title(R.string.text_passwords))
+        addAll(nonFavoritePasswords.toPasswordItems(addUsernames).sortedBy { it.title.lowercase() })
       }
-      addAll(passwords.toPasswordItems(addUsernames).sortedBy { it.title.lowercase() })
-      if (plainTexts.isNotEmpty()) {
+      if (nonFavoritePlainTexts.isNotEmpty()) {
         add(Title(R.string.text_plain_texts))
+        addAll(nonFavoritePlainTexts.toPlainTextItems().sortedBy { it.title.lowercase() })
       }
-      addAll(plainTexts.toPlainTextItems().sortedBy { it.title.lowercase() })
     }
   }
   

@@ -68,7 +68,7 @@ class MainListAdapter(
       delegate<Title> {
         buildView {
           RootTextView(WrapContent, WrapContent, style = BoldTextView) {
-            textSize(TextSizes.H3)
+            textSize(TextSizes.H4)
             margins(
               top = MarginLarge,
               bottom = MarginNormal,

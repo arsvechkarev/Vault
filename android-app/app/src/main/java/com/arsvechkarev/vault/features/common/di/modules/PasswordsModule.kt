@@ -1,20 +1,20 @@
 package com.arsvechkarev.vault.features.common.di.modules
 
-import buisnesslogic.MasterPasswordChecker
-import buisnesslogic.MasterPasswordCheckerImpl
-import buisnesslogic.PasswordCharacteristicsProvider
-import buisnesslogic.PasswordCharacteristicsProviderImpl
-import buisnesslogic.PasswordChecker
-import buisnesslogic.ZxcvbnPasswordChecker
-import buisnesslogic.generator.NumbersGenerator
-import buisnesslogic.generator.PasswordGenerator
-import buisnesslogic.generator.PasswordGeneratorImpl
-import buisnesslogic.generator.SecureRandomGenerator
-import buisnesslogic.generator.SpecialSymbolsGenerator
-import buisnesslogic.generator.UppercaseSymbolsGenerator
 import com.arsvechkarev.vault.features.common.domain.MasterPasswordProvider
 import com.arsvechkarev.vault.features.common.domain.MasterPasswordProviderImpl
 import com.nulabinc.zxcvbn.Zxcvbn
+import domain.MasterPasswordChecker
+import domain.MasterPasswordCheckerImpl
+import domain.PasswordCharacteristicsProvider
+import domain.PasswordCharacteristicsProviderImpl
+import domain.PasswordChecker
+import domain.ZxcvbnPasswordChecker
+import domain.generator.NumbersGenerator
+import domain.generator.PasswordGenerator
+import domain.generator.PasswordGeneratorImpl
+import domain.generator.SecureRandomGenerator
+import domain.generator.SpecialSymbolsGenerator
+import domain.generator.UppercaseSymbolsGenerator
 
 interface PasswordsModule {
   val passwordChecker: PasswordChecker

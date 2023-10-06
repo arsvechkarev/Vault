@@ -64,7 +64,7 @@ android {
 
 dependencies {
 
-  implementation project(':android-app:buisness-logic')
+  implementation project(':android-app:domain')
   implementation project(':android-app:navigation')
   implementation project(':android-app:viewdsl')
 

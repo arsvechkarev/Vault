@@ -1,7 +1,5 @@
 package com.arsvechkarev.vault.test.tests
 
-import buisnesslogic.PasswordStrength
-import buisnesslogic.model.PasswordCharacteristic
 import com.arsvechkarev.vault.R
 import com.arsvechkarev.vault.core.views.drawables.LetterInCircleDrawable
 import com.arsvechkarev.vault.features.creating_password.CreatingPasswordScreen
@@ -28,6 +26,8 @@ import com.arsvechkarev.vault.test.screens.KMainListScreen.PasswordItem
 import com.arsvechkarev.vault.test.screens.KMainListScreen.PlainTextItem
 import com.arsvechkarev.vault.test.screens.KPasswordEntryScreen
 import com.arsvechkarev.vault.viewbuilding.Colors
+import domain.PasswordStrength
+import domain.model.PasswordCharacteristic
 import org.junit.Rule
 import org.junit.Test
 

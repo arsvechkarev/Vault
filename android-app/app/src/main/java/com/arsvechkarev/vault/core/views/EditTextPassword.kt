@@ -7,13 +7,13 @@ import android.view.Gravity
 import android.view.inputmethod.EditorInfo
 import android.widget.EditText
 import android.widget.FrameLayout
-import buisnesslogic.Password
 import com.arsvechkarev.vault.R
 import com.arsvechkarev.vault.viewbuilding.Dimens.IconSize
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginLarge
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginSmall
 import com.arsvechkarev.vault.viewbuilding.Fonts
 import com.arsvechkarev.vault.viewbuilding.TextSizes
+import domain.Password
 import viewdsl.Size.Companion.MatchParent
 import viewdsl.Size.Companion.WrapContent
 import viewdsl.classNameTag

@@ -1,8 +1,8 @@
 package com.arsvechkarev.vault.features.plain_text_entry
 
-import buisnesslogic.model.PlainTextEntry
-import buisnesslogic.model.PlainTextEntryData
 import com.arsvechkarev.vault.features.common.TextState
+import domain.model.PlainTextEntry
+import domain.model.PlainTextEntryData
 
 sealed interface PlainTextEntryEvent {
   class ReceivedPlainTextEntry(val plainTextEntry: PlainTextEntry) : PlainTextEntryEvent

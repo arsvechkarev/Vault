@@ -9,11 +9,6 @@ import android.view.View
 import android.view.WindowManager
 import android.widget.SeekBar
 import androidx.lifecycle.lifecycleScope
-import buisnesslogic.DEFAULT_PASSWORD_LENGTH
-import buisnesslogic.MAX_PASSWORD_LENGTH
-import buisnesslogic.MIN_PASSWORD_LENGTH
-import buisnesslogic.Password
-import buisnesslogic.PasswordStrength
 import com.arsvechkarev.vault.R
 import com.arsvechkarev.vault.core.mvi.ext.subscribe
 import com.arsvechkarev.vault.core.mvi.ext.viewModelStore
@@ -49,6 +44,11 @@ import com.arsvechkarev.vault.viewbuilding.Styles.Button
 import com.arsvechkarev.vault.viewbuilding.Styles.ClickableTextView
 import com.arsvechkarev.vault.viewbuilding.Styles.ImageCross
 import com.arsvechkarev.vault.viewbuilding.TextSizes
+import domain.DEFAULT_PASSWORD_LENGTH
+import domain.MAX_PASSWORD_LENGTH
+import domain.MIN_PASSWORD_LENGTH
+import domain.Password
+import domain.PasswordStrength
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import navigation.BaseFragmentScreen

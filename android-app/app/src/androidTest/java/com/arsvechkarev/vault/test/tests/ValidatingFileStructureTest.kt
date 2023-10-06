@@ -6,9 +6,6 @@ import app.keemobile.kotpass.database.Credentials
 import app.keemobile.kotpass.database.KeePassDatabase
 import app.keemobile.kotpass.database.decode
 import app.keemobile.kotpass.database.findEntries
-import buisnesslogic.CUSTOM_DATA_PASSWORD
-import buisnesslogic.CUSTOM_DATA_PLAIN_TEXT
-import buisnesslogic.CUSTOM_DATA_TYPE_KEY
 import com.arsvechkarev.vault.features.common.di.CoreComponentHolder
 import com.arsvechkarev.vault.test.core.ext.context
 import com.arsvechkarev.vault.test.core.rule.VaultAutotestRule
@@ -22,6 +19,9 @@ import com.arsvechkarev.vault.test.screens.KMasterPasswordScreen
 import com.arsvechkarev.vault.test.screens.KPasswordEntryScreen
 import com.arsvechkarev.vault.test.screens.KPlainTextEntryScreen
 import com.kaspersky.kaspresso.testcases.api.testcase.TestCase
+import domain.CUSTOM_DATA_PASSWORD
+import domain.CUSTOM_DATA_PLAIN_TEXT
+import domain.CUSTOM_DATA_TYPE_KEY
 import junit.framework.Assert.assertEquals
 import org.junit.Before
 import org.junit.Rule

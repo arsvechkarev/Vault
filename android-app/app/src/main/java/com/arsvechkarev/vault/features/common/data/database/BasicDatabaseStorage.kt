@@ -1,9 +1,9 @@
 package com.arsvechkarev.vault.features.common.data.database
 
 import app.keemobile.kotpass.database.KeePassDatabase
-import buisnesslogic.DatabaseFileSaver
-import buisnesslogic.DatabaseStorage
-import buisnesslogic.Password
+import domain.DatabaseFileSaver
+import domain.DatabaseStorage
+import domain.Password
 
 class BasicDatabaseStorage(
   private val databaseFileSaver: DatabaseFileSaver,

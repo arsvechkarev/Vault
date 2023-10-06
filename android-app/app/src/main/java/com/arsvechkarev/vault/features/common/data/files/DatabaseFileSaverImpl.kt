@@ -6,10 +6,10 @@ import app.keemobile.kotpass.database.Credentials
 import app.keemobile.kotpass.database.KeePassDatabase
 import app.keemobile.kotpass.database.decode
 import app.keemobile.kotpass.database.encode
-import buisnesslogic.DatabaseFileSaver
-import buisnesslogic.Password
-import buisnesslogic.from
 import com.arsvechkarev.vault.core.DispatchersFacade
+import domain.DatabaseFileSaver
+import domain.Password
+import domain.from
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext

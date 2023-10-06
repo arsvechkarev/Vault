@@ -1,6 +1,5 @@
 package com.arsvechkarev.vault.features.main_list.actors
 
-import buisnesslogic.DatabaseStorage
 import com.arsvechkarev.vault.core.mvi.tea.Actor
 import com.arsvechkarev.vault.features.common.data.files.PasswordsFileExporter
 import com.arsvechkarev.vault.features.common.domain.MasterPasswordProvider
@@ -8,6 +7,7 @@ import com.arsvechkarev.vault.features.main_list.MainListCommand
 import com.arsvechkarev.vault.features.main_list.MainListCommand.ExportPasswordsFile
 import com.arsvechkarev.vault.features.main_list.MainListEvent
 import com.arsvechkarev.vault.features.main_list.MainListEvent.ExportedPasswords
+import domain.DatabaseStorage
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.filterIsInstance

@@ -1,9 +1,9 @@
 package com.arsvechkarev.vault.features.master_password
 
 import android.os.Parcelable
-import buisnesslogic.Password
-import buisnesslogic.PasswordStatus
-import buisnesslogic.PasswordStrength
+import domain.Password
+import domain.PasswordStatus
+import domain.PasswordStrength
 import kotlinx.parcelize.Parcelize
 
 sealed interface MasterPasswordEvent {

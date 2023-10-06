@@ -1,13 +1,13 @@
 package com.arsvechkarev.vault.features.login.actors
 
-import buisnesslogic.MasterPasswordChecker
-import buisnesslogic.MasterPasswordHolder
 import com.arsvechkarev.vault.core.mvi.tea.Actor
 import com.arsvechkarev.vault.features.login.LoginCommand
 import com.arsvechkarev.vault.features.login.LoginCommand.EnterWithMasterPassword
 import com.arsvechkarev.vault.features.login.LoginEvent
 import com.arsvechkarev.vault.features.login.LoginEvent.ShowFailureCheckingPassword
 import com.arsvechkarev.vault.features.login.LoginEvent.ShowSuccessCheckingPassword
+import domain.MasterPasswordChecker
+import domain.MasterPasswordHolder
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.filterIsInstance

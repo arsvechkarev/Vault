@@ -6,7 +6,6 @@ import androidx.test.espresso.intent.Intents.intended
 import androidx.test.espresso.intent.matcher.IntentMatchers.hasAction
 import androidx.test.espresso.intent.matcher.IntentMatchers.hasExtra
 import androidx.test.espresso.intent.matcher.IntentMatchers.hasType
-import buisnesslogic.EXPORT_CONTENT_TYPE
 import com.arsvechkarev.vault.features.common.di.CoreComponentHolder
 import com.arsvechkarev.vault.test.core.base.VaultTestCase
 import com.arsvechkarev.vault.test.core.ext.launchActivityWithDatabase
@@ -15,6 +14,7 @@ import com.arsvechkarev.vault.test.core.stub.StubActivityResultWrapper
 import com.arsvechkarev.vault.test.core.stub.StubPasswordsFileExporter
 import com.arsvechkarev.vault.test.screens.KLoginScreen
 import com.arsvechkarev.vault.test.screens.KMainListScreen
+import domain.EXPORT_CONTENT_TYPE
 import org.hamcrest.Matchers.allOf
 import org.hamcrest.Matchers.`is`
 import org.junit.Rule

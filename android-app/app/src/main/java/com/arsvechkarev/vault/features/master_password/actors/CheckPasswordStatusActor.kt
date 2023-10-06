@@ -1,6 +1,5 @@
 package com.arsvechkarev.vault.features.master_password.actors
 
-import buisnesslogic.PasswordChecker
 import com.arsvechkarev.vault.core.mvi.tea.Actor
 import com.arsvechkarev.vault.features.common.domain.MasterPasswordProvider
 import com.arsvechkarev.vault.features.master_password.MasterPasswordCommand
@@ -8,6 +7,7 @@ import com.arsvechkarev.vault.features.master_password.MasterPasswordCommand.Pas
 import com.arsvechkarev.vault.features.master_password.MasterPasswordEvent
 import com.arsvechkarev.vault.features.master_password.MasterPasswordEvent.PasswordIsTheSameAsCurrent
 import com.arsvechkarev.vault.features.master_password.MasterPasswordEvent.UpdatedPasswordStatus
+import domain.PasswordChecker
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.filterIsInstance

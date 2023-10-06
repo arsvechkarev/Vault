@@ -4,7 +4,6 @@ import android.content.Context
 import android.view.Gravity.BOTTOM
 import android.view.Gravity.CENTER
 import android.view.View
-import buisnesslogic.IMPORT_CONTENT_TYPE
 import com.arsvechkarev.vault.R
 import com.arsvechkarev.vault.features.common.Screens.ImportPasswordsScreen
 import com.arsvechkarev.vault.features.common.Screens.MasterPasswordScreen
@@ -17,6 +16,7 @@ import com.arsvechkarev.vault.viewbuilding.Styles.BaseTextView
 import com.arsvechkarev.vault.viewbuilding.Styles.BoldTextView
 import com.arsvechkarev.vault.viewbuilding.Styles.Button
 import com.arsvechkarev.vault.viewbuilding.TextSizes
+import domain.IMPORT_CONTENT_TYPE
 import navigation.BaseFragmentScreen
 import viewdsl.Size.Companion.MatchParent
 import viewdsl.Size.Companion.WrapContent

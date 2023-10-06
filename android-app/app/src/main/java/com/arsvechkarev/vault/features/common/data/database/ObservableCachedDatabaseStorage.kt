@@ -1,8 +1,8 @@
 package com.arsvechkarev.vault.features.common.data.database
 
 import app.keemobile.kotpass.database.KeePassDatabase
-import buisnesslogic.DatabaseStorage
-import buisnesslogic.Password
+import domain.DatabaseStorage
+import domain.Password
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 

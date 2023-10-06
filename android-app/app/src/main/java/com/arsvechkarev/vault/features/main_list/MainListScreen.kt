@@ -8,9 +8,6 @@ import android.net.Uri
 import android.view.Gravity.CENTER_HORIZONTAL
 import android.view.View
 import androidx.core.graphics.ColorUtils
-import buisnesslogic.DEFAULT_EXPORT_FILENAME
-import buisnesslogic.EXPORT_CONTENT_TYPE
-import buisnesslogic.IMPORT_CONTENT_TYPE
 import com.arsvechkarev.vault.R
 import com.arsvechkarev.vault.core.mvi.ext.subscribe
 import com.arsvechkarev.vault.core.mvi.ext.viewModelStore
@@ -54,6 +51,9 @@ import com.arsvechkarev.vault.viewbuilding.Dimens.MarginSmall
 import com.arsvechkarev.vault.viewbuilding.Styles.BoldTextView
 import com.arsvechkarev.vault.viewbuilding.Styles.TitleTextView
 import com.arsvechkarev.vault.viewbuilding.TextSizes
+import domain.DEFAULT_EXPORT_FILENAME
+import domain.EXPORT_CONTENT_TYPE
+import domain.IMPORT_CONTENT_TYPE
 import navigation.BaseFragmentScreen
 import viewdsl.Size.Companion.MatchParent
 import viewdsl.Size.Companion.WrapContent

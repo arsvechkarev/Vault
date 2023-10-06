@@ -1,7 +1,7 @@
 package com.arsvechkarev.vault.features.creating_password_entry
 
-import buisnesslogic.Password
-import buisnesslogic.model.PasswordEntryData
+import domain.Password
+import domain.model.PasswordEntryData
 
 sealed interface CreatingPasswordEntryEvent {
   class PasswordEntryCreated(val passwordId: String) : CreatingPasswordEntryEvent

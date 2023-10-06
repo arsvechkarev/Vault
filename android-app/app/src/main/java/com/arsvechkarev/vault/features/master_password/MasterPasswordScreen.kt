@@ -6,10 +6,6 @@ import android.view.Gravity.CENTER
 import android.view.View
 import android.view.animation.AnimationUtils
 import android.widget.ViewSwitcher
-import buisnesslogic.PasswordStrength.MEDIUM
-import buisnesslogic.PasswordStrength.SECURE
-import buisnesslogic.PasswordStrength.STRONG
-import buisnesslogic.PasswordStrength.WEAK
 import com.arsvechkarev.vault.R
 import com.arsvechkarev.vault.core.extensions.arg
 import com.arsvechkarev.vault.core.mvi.ext.subscribe
@@ -54,6 +50,10 @@ import com.arsvechkarev.vault.viewbuilding.Styles.BoldTextView
 import com.arsvechkarev.vault.viewbuilding.Styles.Button
 import com.arsvechkarev.vault.viewbuilding.Styles.ImageBack
 import com.arsvechkarev.vault.viewbuilding.TextSizes
+import domain.PasswordStrength.MEDIUM
+import domain.PasswordStrength.SECURE
+import domain.PasswordStrength.STRONG
+import domain.PasswordStrength.WEAK
 import navigation.BaseFragmentScreen
 import viewdsl.Size.Companion.MatchParent
 import viewdsl.Size.Companion.WrapContent

@@ -1,6 +1,5 @@
 package com.arsvechkarev.vault.features.creating_password_entry.actors
 
-import buisnesslogic.interactors.KeePassPasswordModelInteractor
 import com.arsvechkarev.vault.core.mvi.tea.Actor
 import com.arsvechkarev.vault.features.common.data.database.ObservableCachedDatabaseStorage
 import com.arsvechkarev.vault.features.common.domain.MasterPasswordProvider
@@ -8,6 +7,7 @@ import com.arsvechkarev.vault.features.creating_password_entry.CreatingPasswordE
 import com.arsvechkarev.vault.features.creating_password_entry.CreatingPasswordEntryCommand.SavePassword
 import com.arsvechkarev.vault.features.creating_password_entry.CreatingPasswordEntryEvent
 import com.arsvechkarev.vault.features.creating_password_entry.CreatingPasswordEntryEvent.PasswordEntryCreated
+import domain.interactors.KeePassPasswordModelInteractor
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.filterIsInstance

@@ -1,6 +1,5 @@
 package com.arsvechkarev.vault.features.plain_text_entry.actors
 
-import buisnesslogic.interactors.KeePassPlainTextModelInteractor
 import com.arsvechkarev.vault.core.mvi.tea.Actor
 import com.arsvechkarev.vault.features.common.data.database.ObservableCachedDatabaseStorage
 import com.arsvechkarev.vault.features.common.domain.MasterPasswordProvider
@@ -8,6 +7,7 @@ import com.arsvechkarev.vault.features.plain_text_entry.PlainTextEntryCommand
 import com.arsvechkarev.vault.features.plain_text_entry.PlainTextEntryCommand.FetchPlainTextEntry
 import com.arsvechkarev.vault.features.plain_text_entry.PlainTextEntryEvent
 import com.arsvechkarev.vault.features.plain_text_entry.PlainTextEntryEvent.ReceivedPlainTextEntry
+import domain.interactors.KeePassPlainTextModelInteractor
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.filterIsInstance

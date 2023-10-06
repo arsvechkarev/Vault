@@ -13,7 +13,6 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.graphics.ColorUtils
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
-import buisnesslogic.Password
 import com.arsvechkarev.vault.BuildConfig
 import com.arsvechkarev.vault.R
 import com.arsvechkarev.vault.core.views.EditTextPassword
@@ -38,6 +37,7 @@ import com.arsvechkarev.vault.viewbuilding.Styles.BoldTextView
 import com.arsvechkarev.vault.viewbuilding.Styles.ClickableGradientRoundRect
 import com.arsvechkarev.vault.viewbuilding.Styles.ImageCross
 import com.arsvechkarev.vault.viewbuilding.TextSizes
+import domain.Password
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import navigation.BaseFragmentScreen

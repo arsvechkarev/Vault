@@ -1,6 +1,5 @@
 package com.arsvechkarev.vault.features.master_password
 
-import buisnesslogic.PasswordStatus
 import com.arsvechkarev.vault.core.mvi.tea.DslReducer
 import com.arsvechkarev.vault.features.master_password.MasterPasswordCommand.ChangeExistingMasterPassword
 import com.arsvechkarev.vault.features.master_password.MasterPasswordCommand.CreateNewMasterPassword
@@ -27,6 +26,7 @@ import com.arsvechkarev.vault.features.master_password.MasterPasswordUiEvent.OnS
 import com.arsvechkarev.vault.features.master_password.PasswordEnteringState.INITIAL
 import com.arsvechkarev.vault.features.master_password.PasswordEnteringState.REPEATING
 import com.arsvechkarev.vault.features.master_password.UiPasswordStatus.PASSWORD_SAME_AS_CURRENT
+import domain.PasswordStatus
 
 class MasterPasswordReducer :
   DslReducer<MasterPasswordState, MasterPasswordEvent, MasterPasswordCommand, MasterPasswordNews>() {

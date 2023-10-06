@@ -1,11 +1,11 @@
 package com.arsvechkarev.vault.features.creating_password.actors
 
-import buisnesslogic.generator.PasswordGenerator
 import com.arsvechkarev.vault.core.mvi.tea.Actor
 import com.arsvechkarev.vault.features.creating_password.CreatingPasswordCommand
 import com.arsvechkarev.vault.features.creating_password.CreatingPasswordCommand.GeneratePassword
 import com.arsvechkarev.vault.features.creating_password.CreatingPasswordEvent
 import com.arsvechkarev.vault.features.creating_password.CreatingPasswordEvent.GeneratedPassword
+import domain.generator.PasswordGenerator
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.filterIsInstance

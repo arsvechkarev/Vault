@@ -1,6 +1,5 @@
 package com.arsvechkarev.vault.features.plain_text_entry
 
-import buisnesslogic.model.PlainTextEntryData
 import com.arsvechkarev.vault.R
 import com.arsvechkarev.vault.core.mvi.tea.DslReducer
 import com.arsvechkarev.vault.features.common.TextState
@@ -40,6 +39,7 @@ import com.arsvechkarev.vault.features.plain_text_entry.PlainTextEntryUiEvent.On
 import com.arsvechkarev.vault.features.plain_text_entry.PlainTextEntryUiEvent.OnTextChanged
 import com.arsvechkarev.vault.features.plain_text_entry.PlainTextEntryUiEvent.OnTitleActionClicked
 import com.arsvechkarev.vault.features.plain_text_entry.PlainTextEntryUiEvent.OnTitleChanged
+import domain.model.PlainTextEntryData
 
 class PlainTextEntryReducer : DslReducer<PlainTextEntryState, PlainTextEntryEvent,
     PlainTextEntryCommand, PlainTextEntryNews>() {

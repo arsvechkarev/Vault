@@ -1,6 +1,6 @@
 package com.arsvechkarev.vault.features.login
 
-import buisnesslogic.Password
+import domain.Password
 
 sealed interface LoginEvent {
   object ShowSuccessCheckingPassword : LoginEvent

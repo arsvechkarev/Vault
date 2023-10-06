@@ -1,7 +1,7 @@
 package com.arsvechkarev.vault.features.common.domain
 
-import buisnesslogic.MasterPasswordHolder
-import buisnesslogic.Password
+import domain.MasterPasswordHolder
+import domain.Password
 
 interface MasterPasswordProvider {
   

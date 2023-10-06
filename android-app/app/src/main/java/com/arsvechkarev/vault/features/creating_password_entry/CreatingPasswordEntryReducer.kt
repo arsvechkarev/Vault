@@ -1,6 +1,5 @@
 package com.arsvechkarev.vault.features.creating_password_entry
 
-import buisnesslogic.model.PasswordEntryData
 import com.arsvechkarev.vault.core.mvi.tea.DslReducer
 import com.arsvechkarev.vault.features.creating_password_entry.CreatingPasswordEntryCommand.RouterCommand.GoBack
 import com.arsvechkarev.vault.features.creating_password_entry.CreatingPasswordEntryCommand.RouterCommand.GoToCreatePasswordScreen
@@ -12,6 +11,7 @@ import com.arsvechkarev.vault.features.creating_password_entry.CreatingPasswordE
 import com.arsvechkarev.vault.features.creating_password_entry.CreatingPasswordEntryUiEvent.OnTitleTextChanged
 import com.arsvechkarev.vault.features.creating_password_entry.CreatingPasswordEntryUiEvent.OnUsernameTextChanged
 import com.arsvechkarev.vault.features.creating_password_entry.CreatingPasswordEntryUiEvent.PasswordEntered
+import domain.model.PasswordEntryData
 
 class CreatingPasswordEntryReducer :
   DslReducer<CreatingPasswordEntryState, CreatingPasswordEntryEvent,

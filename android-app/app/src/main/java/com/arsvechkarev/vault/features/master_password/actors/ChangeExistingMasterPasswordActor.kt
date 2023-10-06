@@ -2,7 +2,6 @@ package com.arsvechkarev.vault.features.master_password.actors
 
 import app.keemobile.kotpass.database.Credentials
 import app.keemobile.kotpass.database.modifiers.modifyCredentials
-import buisnesslogic.MasterPasswordHolder
 import com.arsvechkarev.vault.core.mvi.tea.Actor
 import com.arsvechkarev.vault.features.common.Durations
 import com.arsvechkarev.vault.features.common.data.database.ObservableCachedDatabaseStorage
@@ -12,6 +11,7 @@ import com.arsvechkarev.vault.features.master_password.MasterPasswordCommand
 import com.arsvechkarev.vault.features.master_password.MasterPasswordCommand.ChangeExistingMasterPassword
 import com.arsvechkarev.vault.features.master_password.MasterPasswordEvent
 import com.arsvechkarev.vault.features.master_password.MasterPasswordEvent.FinishedMasterPasswordSaving
+import domain.MasterPasswordHolder
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow

@@ -1,6 +1,5 @@
 package com.arsvechkarev.vault.test.tests
 
-import buisnesslogic.PasswordStrength
 import com.arsvechkarev.vault.R
 import com.arsvechkarev.vault.core.views.drawables.LetterInCircleDrawable
 import com.arsvechkarev.vault.features.initial.InitialScreen
@@ -16,6 +15,7 @@ import com.arsvechkarev.vault.test.screens.KMainListScreen.PasswordItem
 import com.arsvechkarev.vault.test.screens.KMasterPasswordScreen
 import com.arsvechkarev.vault.test.screens.KSettingsScreen
 import com.kaspersky.kaspresso.testcases.api.testcase.TestCase
+import domain.PasswordStrength
 import org.junit.Rule
 import org.junit.Test
 

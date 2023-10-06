@@ -8,6 +8,7 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import com.arsvechkarev.vault.R
+import com.arsvechkarev.vault.core.TypefaceSpan
 import com.arsvechkarev.vault.core.views.MaterialProgressBar
 import com.arsvechkarev.vault.features.common.domain.setIconForTitle
 import com.arsvechkarev.vault.features.common.model.Empty
@@ -34,7 +35,6 @@ import com.arsvechkarev.vault.viewbuilding.Styles.BaseTextView
 import com.arsvechkarev.vault.viewbuilding.Styles.BoldTextView
 import com.arsvechkarev.vault.viewbuilding.Styles.SecondaryTextView
 import com.arsvechkarev.vault.viewbuilding.TextSizes
-import com.arsvechkarev.vault.viewbuilding.TypefaceSpan
 import viewdsl.Size.Companion.MatchParent
 import viewdsl.Size.Companion.WrapContent
 import viewdsl.Size.Companion.ZERO

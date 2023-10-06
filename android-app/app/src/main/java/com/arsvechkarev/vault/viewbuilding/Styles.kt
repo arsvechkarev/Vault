@@ -18,6 +18,7 @@ import android.widget.TextView
 import androidx.annotation.StringRes
 import androidx.appcompat.widget.SwitchCompat
 import com.arsvechkarev.vault.R
+import com.arsvechkarev.vault.core.TypefaceSpan
 import com.arsvechkarev.vault.core.views.drawables.GradientBackgroundDrawable
 import com.arsvechkarev.vault.viewbuilding.Dimens.CornerRadiusSmall
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginMedium

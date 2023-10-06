@@ -1,8 +1,6 @@
 package com.arsvechkarev.vault.features.creating_password_entry
 
 import android.content.Context
-import android.view.Gravity.CENTER
-import android.view.Gravity.CENTER_VERTICAL
 import android.view.View
 import androidx.lifecycle.lifecycleScope
 import com.arsvechkarev.vault.R
@@ -19,12 +17,14 @@ import com.arsvechkarev.vault.features.creating_password_entry.CreatingPasswordE
 import com.arsvechkarev.vault.viewbuilding.Colors
 import com.arsvechkarev.vault.viewbuilding.Dimens.GradientDrawableHeight
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginLarge
+import com.arsvechkarev.vault.viewbuilding.Dimens.MarginMedium
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginNormal
+import com.arsvechkarev.vault.viewbuilding.Dimens.MarginSmall
+import com.arsvechkarev.vault.viewbuilding.Styles
 import com.arsvechkarev.vault.viewbuilding.Styles.AccentTextView
 import com.arsvechkarev.vault.viewbuilding.Styles.BaseEditText
 import com.arsvechkarev.vault.viewbuilding.Styles.BoldTextView
 import com.arsvechkarev.vault.viewbuilding.Styles.Button
-import com.arsvechkarev.vault.viewbuilding.Styles.ImageBack
 import com.arsvechkarev.vault.viewbuilding.TextSizes
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -32,12 +32,9 @@ import navigation.BaseFragmentScreen
 import viewdsl.Size.Companion.MatchParent
 import viewdsl.Size.Companion.WrapContent
 import viewdsl.constraints
-import viewdsl.gravity
 import viewdsl.hideKeyboard
 import viewdsl.id
 import viewdsl.invisible
-import viewdsl.layoutGravity
-import viewdsl.margin
 import viewdsl.margins
 import viewdsl.onClick
 import viewdsl.onLayoutChanged
@@ -57,52 +54,63 @@ class CreatingPasswordEntryScreen : BaseFragmentScreen() {
       onLayoutChanged {
         showOrHideViewsBasedOnLayout()
       }
-      HorizontalLayout(MatchParent, WrapContent) {
-        id(Toolbar)
-        margins(top = StatusBarHeight)
+      ImageView(WrapContent, WrapContent, style = Styles.ImageBack) {
+        id(ImageBack)
+        margins(start = MarginSmall, top = StatusBarHeight + MarginMedium)
+        onClick { store.tryDispatch(OnBackPressed) }
         constraints {
           topToTopOf(parent)
-        }
-        ImageView(WrapContent, WrapContent, style = ImageBack) {
-          margin(MarginNormal)
-          gravity(CENTER_VERTICAL)
-          onClick { store.tryDispatch(OnBackPressed) }
-        }
-        TextView(WrapContent, WrapContent, style = BoldTextView) {
-          layoutGravity(CENTER)
-          text(R.string.text_new_password)
-          textSize(TextSizes.H1)
+          startToStartOf(parent)
         }
       }
-      VerticalLayout(MatchParent, WrapContent) {
-        id(EditTextLayouts)
+      TextView(WrapContent, WrapContent, style = BoldTextView) {
+        id(TitleNewPassword)
+        text(R.string.text_new_password)
+        margins(start = MarginNormal)
+        textSize(TextSizes.H1)
         constraints {
+          startToEndOf(ImageBack)
+          topToTopOf(ImageBack)
+        }
+      }
+      TextView(WrapContent, WrapContent, style = AccentTextView) {
+        id(TitleTitle)
+        margins(start = MarginNormal, top = GradientDrawableHeight)
+        text(R.string.text_title)
+        constraints {
+          startToStartOf(parent)
           topToTopOf(parent)
         }
-        margins(top = GradientDrawableHeight)
-        TextView(WrapContent, WrapContent, style = AccentTextView) {
-          id(TitleTitle)
-          margins(start = MarginNormal)
-          text(R.string.text_title)
+      }
+      EditText(MatchParent, WrapContent) {
+        apply(BaseEditText(hint = R.string.text_enter_title))
+        id(EditTextTitle)
+        margins(start = MarginNormal, end = MarginNormal)
+        onTextChanged { text -> store.tryDispatch(OnTitleTextChanged(text)) }
+        onSubmit { editText(EditTextUsername).requestFocus() }
+        constraints {
+          startToStartOf(parent)
+          topToBottomOf(TitleTitle)
         }
-        EditText(MatchParent, WrapContent) {
-          apply(BaseEditText(hint = R.string.text_enter_title))
-          id(EditTextTitle)
-          margins(start = MarginNormal, end = MarginNormal)
-          onTextChanged { text -> store.tryDispatch(OnTitleTextChanged(text)) }
-          onSubmit { editText(EditTextUsername).requestFocus() }
+      }
+      TextView(WrapContent, WrapContent, style = AccentTextView) {
+        id(TitleUsername)
+        text(R.string.text_username)
+        margins(start = MarginNormal, top = MarginLarge)
+        constraints {
+          startToStartOf(parent)
+          topToBottomOf(EditTextTitle)
         }
-        TextView(WrapContent, WrapContent, style = AccentTextView) {
-          id(TitleUsername)
-          text(R.string.text_username)
-          margins(start = MarginNormal, top = MarginLarge)
-        }
-        EditText(MatchParent, WrapContent,
-          style = BaseEditText(hint = R.string.text_enter_username)) {
-          id(EditTextUsername)
-          margins(start = MarginNormal, end = MarginNormal)
-          onTextChanged { text -> store.tryDispatch(OnUsernameTextChanged(text)) }
-          onSubmit { store.tryDispatch(OnContinueClicked) }
+      }
+      EditText(MatchParent, WrapContent,
+        style = BaseEditText(hint = R.string.text_enter_username)) {
+        id(EditTextUsername)
+        margins(start = MarginNormal, end = MarginNormal)
+        onTextChanged { text -> store.tryDispatch(OnUsernameTextChanged(text)) }
+        onSubmit { store.tryDispatch(OnContinueClicked) }
+        constraints {
+          startToStartOf(parent)
+          topToBottomOf(TitleUsername)
         }
       }
       TextView(MatchParent, WrapContent, style = Button()) {
@@ -157,7 +165,7 @@ class CreatingPasswordEntryScreen : BaseFragmentScreen() {
   
   private fun showOrHideViewsBasedOnLayout() {
     val continueButton = view(ButtonContinue)
-    val marginBetweenButtonAndText = continueButton.top - view(EditTextLayouts).bottom
+    val marginBetweenButtonAndText = continueButton.top - view(EditTextUsername).bottom
     if (marginBetweenButtonAndText < continueButton.height) {
       continueButton.invisible()
     } else {
@@ -167,8 +175,8 @@ class CreatingPasswordEntryScreen : BaseFragmentScreen() {
   
   companion object {
     
-    val Toolbar = View.generateViewId()
-    val EditTextLayouts = View.generateViewId()
+    val ImageBack = View.generateViewId()
+    val TitleNewPassword = View.generateViewId()
     val TitleTitle = View.generateViewId()
     val EditTextTitle = View.generateViewId()
     val TitleUsername = View.generateViewId()

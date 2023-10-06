@@ -1,7 +1,6 @@
 package com.arsvechkarev.vault.features.plain_text_entry
 
 import android.content.Context
-import android.content.res.ColorStateList
 import android.view.Gravity
 import android.view.View
 import android.view.WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE
@@ -42,6 +41,7 @@ import com.arsvechkarev.vault.viewbuilding.Colors
 import com.arsvechkarev.vault.viewbuilding.Dimens.GradientDrawableHeight
 import com.arsvechkarev.vault.viewbuilding.Dimens.IconPadding
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginLarge
+import com.arsvechkarev.vault.viewbuilding.Dimens.MarginMedium
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginNormal
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginSmall
 import com.arsvechkarev.vault.viewbuilding.Styles
@@ -85,23 +85,21 @@ class PlainTextEntryScreen : BaseFragmentScreen() {
       ScrollableConstraintLayout {
         ImageView(WrapContent, WrapContent, style = Styles.ImageBack) {
           id(ImageBack)
-          margins(start = MarginNormal, end = MarginNormal)
+          margins(start = MarginSmall, top = StatusBarHeight + MarginMedium)
           onClick { store.tryDispatch(OnBackPressed) }
           constraints {
-            topToTopOf(MainTitle)
+            topToTopOf(parent)
             startToStartOf(parent)
-            bottomToBottomOf(MainTitle)
           }
         }
         TextView(WrapContent, WrapContent, style = BoldTextView) {
           id(MainTitle)
           text(R.string.text_new_plain_text)
           textSize(TextSizes.H1)
-          margins(top = StatusBarHeight + MarginNormal)
+          margins(start = MarginNormal)
           constraints {
-            topToTopOf(parent)
             startToEndOf(ImageBack)
-            endToStartOf(ImageDelete)
+            topToTopOf(ImageBack)
           }
         }
         ImageView(WrapContent, WrapContent) {
@@ -109,7 +107,7 @@ class PlainTextEntryScreen : BaseFragmentScreen() {
           padding(IconPadding)
           margins(start = MarginNormal, end = MarginNormal)
           image(R.drawable.ic_delete)
-          imageTintList = ColorStateList.valueOf(Colors.Error)
+          imageTint(Colors.Error)
           circleRippleBackground(Colors.ErrorRipple)
           onClick { store.tryDispatch(OnDeleteClicked) }
           constraints {

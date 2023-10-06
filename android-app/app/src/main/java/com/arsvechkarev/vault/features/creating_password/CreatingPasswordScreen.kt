@@ -36,6 +36,7 @@ import com.arsvechkarev.vault.features.creating_password.CreatingPasswordUiEvent
 import com.arsvechkarev.vault.viewbuilding.Colors
 import com.arsvechkarev.vault.viewbuilding.Dimens.ImageBackMargin
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginExtraLarge
+import com.arsvechkarev.vault.viewbuilding.Dimens.MarginMedium
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginNormal
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginSmall
 import com.arsvechkarev.vault.viewbuilding.Styles.BaseEditText
@@ -81,7 +82,7 @@ class CreatingPasswordScreen : BaseFragmentScreen() {
       id(CreatingPasswordScreenRoot)
       VerticalLayout(MatchParent, MatchParent) {
         FrameLayout(MatchParent, WrapContent) {
-          margins(top = MarginSmall + StatusBarHeight)
+          margins(top = StatusBarHeight + MarginMedium)
           TextView(WrapContent, WrapContent, style = BoldTextView) {
             id(Title)
             textSize(TextSizes.H1)

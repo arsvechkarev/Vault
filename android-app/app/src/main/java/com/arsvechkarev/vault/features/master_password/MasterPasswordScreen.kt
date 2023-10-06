@@ -42,6 +42,7 @@ import com.arsvechkarev.vault.features.master_password.UiPasswordStatus.PASSWORD
 import com.arsvechkarev.vault.features.master_password.UiPasswordStatus.PASSWORD_SAME_AS_CURRENT
 import com.arsvechkarev.vault.features.master_password.UiPasswordStatus.TOO_WEAK
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginLarge
+import com.arsvechkarev.vault.viewbuilding.Dimens.MarginMedium
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginNormal
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginSmall
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginTiny
@@ -97,7 +98,7 @@ class MasterPasswordScreen : BaseFragmentScreen() {
       }
       TextView(MatchParent, WrapContent, style = BoldTextView) {
         id(TextTitle)
-        margins(top = MarginNormal + StatusBarHeight, start = MarginNormal, end = MarginNormal)
+        margins(top = MarginMedium + StatusBarHeight, start = MarginNormal, end = MarginNormal)
         gravity(CENTER)
         textSize(TextSizes.H1)
       }

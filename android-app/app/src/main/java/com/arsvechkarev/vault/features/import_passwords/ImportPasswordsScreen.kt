@@ -3,7 +3,6 @@ package com.arsvechkarev.vault.features.import_passwords
 import android.content.Context
 import android.net.Uri
 import android.os.Environment
-import android.view.Gravity
 import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.arsvechkarev.vault.R
@@ -28,12 +27,13 @@ import com.arsvechkarev.vault.features.import_passwords.ImportPasswordsUiEvent.O
 import com.arsvechkarev.vault.features.import_passwords.ImportPasswordsUiEvent.OnPasswordEntered
 import com.arsvechkarev.vault.features.import_passwords.ImportPasswordsUiEvent.OnSelectedFile
 import com.arsvechkarev.vault.viewbuilding.Dimens.GradientDrawableHeight
+import com.arsvechkarev.vault.viewbuilding.Dimens.MarginMedium
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginNormal
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginSmall
+import com.arsvechkarev.vault.viewbuilding.Styles
 import com.arsvechkarev.vault.viewbuilding.Styles.AccentTextView
 import com.arsvechkarev.vault.viewbuilding.Styles.BoldTextView
 import com.arsvechkarev.vault.viewbuilding.Styles.Button
-import com.arsvechkarev.vault.viewbuilding.Styles.ImageBack
 import com.arsvechkarev.vault.viewbuilding.Styles.SecondaryTextView
 import com.arsvechkarev.vault.viewbuilding.TextSizes
 import domain.IMPORT_CONTENT_TYPE
@@ -41,9 +41,7 @@ import navigation.BaseFragmentScreen
 import viewdsl.Size.Companion.MatchParent
 import viewdsl.Size.Companion.WrapContent
 import viewdsl.constraints
-import viewdsl.gravity
 import viewdsl.id
-import viewdsl.layoutGravity
 import viewdsl.margins
 import viewdsl.onClick
 import viewdsl.text
@@ -58,21 +56,23 @@ class ImportPasswordsScreen : BaseFragmentScreen() {
     RootCoordinatorLayout {
       id(ImportPasswordsScreenRoot)
       child<ConstraintLayout>(MatchParent, MatchParent) {
-        HorizontalLayout(MatchParent, WrapContent) {
-          id(Toolbar)
-          margins(top = StatusBarHeight + MarginNormal)
+        ImageView(WrapContent, WrapContent, style = Styles.ImageBack) {
+          id(ImageBack)
+          margins(start = MarginSmall, top = StatusBarHeight + MarginMedium)
+          onClick { store.tryDispatch(OnBackPressed) }
           constraints {
+            startToStartOf(parent)
             topToTopOf(parent)
           }
-          ImageView(WrapContent, WrapContent, style = ImageBack) {
-            margins(start = MarginNormal, end = MarginNormal)
-            gravity(Gravity.CENTER_VERTICAL)
-            onClick { store.tryDispatch(OnBackPressed) }
-          }
-          TextView(WrapContent, WrapContent, style = BoldTextView) {
-            layoutGravity(Gravity.CENTER)
-            text(R.string.text_import_passwords)
-            textSize(TextSizes.H1)
+        }
+        TextView(WrapContent, WrapContent, style = BoldTextView) {
+          id(Title)
+          text(R.string.text_import_passwords)
+          textSize(TextSizes.H1)
+          margins(start = MarginNormal)
+          constraints {
+            startToEndOf(ImageBack)
+            topToTopOf(ImageBack)
           }
         }
         VerticalLayout(MatchParent, WrapContent) {
@@ -215,7 +215,8 @@ class ImportPasswordsScreen : BaseFragmentScreen() {
     const val ASK_FOR_CONFIRMATION = "ASK_FOR_CONFIRMATION"
     
     val ImportPasswordsScreenRoot = View.generateViewId()
-    val Toolbar = View.generateViewId()
+    val ImageBack = View.generateViewId()
+    val Title = View.generateViewId()
     val LayoutSelectFile = View.generateViewId()
     val TitleSelectFile = View.generateViewId()
     val TextSelectFile = View.generateViewId()

@@ -49,6 +49,7 @@ import com.arsvechkarev.vault.features.password_entry.PasswordEntryUiEvent.OnUse
 import com.arsvechkarev.vault.features.password_entry.PasswordEntryUiEvent.SavePasswordEntryEventReceived
 import com.arsvechkarev.vault.viewbuilding.Colors
 import com.arsvechkarev.vault.viewbuilding.Dimens
+import com.arsvechkarev.vault.viewbuilding.Dimens.GradientDrawableHeight
 import com.arsvechkarev.vault.viewbuilding.Dimens.ImageTitleSize
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginExtraLarge
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginLarge
@@ -72,7 +73,6 @@ import viewdsl.circleRippleBackground
 import viewdsl.classNameTag
 import viewdsl.constraints
 import viewdsl.font
-import viewdsl.getDrawableHeight
 import viewdsl.hideKeyboard
 import viewdsl.id
 import viewdsl.image
@@ -166,23 +166,11 @@ class PasswordEntryScreen : BaseFragmentScreen() {
         }
         TextView(WrapContent, WrapContent, style = AccentTextView) {
           id(Title)
-          val gradientHeight = context.getDrawableHeight(R.drawable.bg_gradient) * 0.8
-          margins(top = gradientHeight.toInt())
+          margins(top = (GradientDrawableHeight * 0.85).toInt())
           text(R.string.text_title)
           constraints {
             topToTopOf(parent)
             startToStartOf(parent)
-          }
-        }
-        TextView(WrapContent, WrapContent, style = BoldTextView) {
-          id(TextTitle)
-          setSingleLine()
-          textSize(TextSizes.H1)
-          margins(top = MarginNormal)
-          constraints {
-            topToBottomOf(ImageTitle)
-            startToStartOf(parent)
-            endToEndOf(parent)
           }
         }
         EditText(ZERO, WrapContent, BaseEditText(hint = R.string.text_enter_title)) {
@@ -330,7 +318,6 @@ class PasswordEntryScreen : BaseFragmentScreen() {
     imageView(ImageTitle).setIconForTitle(state.titleState.editedText, onImageLoadingFailed = {
       store.tryDispatch(OnImagesLoadingFailed)
     })
-    textView(TextTitle).text(state.titleState.editedText)
     renderTextState(EditTextTitle, state.titleState, ImageTitleAction)
     renderTextState(EditTextUsername, state.usernameState, ImageUsernameAction)
     renderTextState(EditTextNotes, state.notesState, ImageNotesAction)
@@ -414,7 +401,6 @@ class PasswordEntryScreen : BaseFragmentScreen() {
     val ImageDelete = View.generateViewId()
     val ImageFavorite = View.generateViewId()
     val ImageTitle = View.generateViewId()
-    val TextTitle = View.generateViewId()
     val Title = View.generateViewId()
     val EditTextTitle = View.generateViewId()
     val ImageTitleAction = View.generateViewId()

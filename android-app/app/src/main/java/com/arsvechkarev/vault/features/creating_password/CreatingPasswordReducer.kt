@@ -1,10 +1,5 @@
 package com.arsvechkarev.vault.features.creating_password
 
-import buisnesslogic.DEFAULT_PASSWORD_LENGTH
-import buisnesslogic.model.PasswordCharacteristic
-import buisnesslogic.model.PasswordCharacteristic.NUMBERS
-import buisnesslogic.model.PasswordCharacteristic.SPECIAL_SYMBOLS
-import buisnesslogic.model.PasswordCharacteristic.UPPERCASE_SYMBOLS
 import com.arsvechkarev.vault.core.mvi.tea.DslReducer
 import com.arsvechkarev.vault.features.creating_password.CreatingPasswordCommand.CheckPasswordStrength
 import com.arsvechkarev.vault.features.creating_password.CreatingPasswordCommand.ComputePasswordCharacteristics
@@ -29,6 +24,11 @@ import com.arsvechkarev.vault.features.creating_password.CreatingPasswordUiEvent
 import com.arsvechkarev.vault.features.creating_password.CreatingPasswordUiEvent.OnToggledUppercaseSymbols
 import com.arsvechkarev.vault.features.creating_password.CreatingPasswordUiEvent.Setup
 import com.arsvechkarev.vault.features.creating_password.CreatingPasswordUiEvent.SetupCompleted
+import domain.DEFAULT_PASSWORD_LENGTH
+import domain.model.PasswordCharacteristic
+import domain.model.PasswordCharacteristic.NUMBERS
+import domain.model.PasswordCharacteristic.SPECIAL_SYMBOLS
+import domain.model.PasswordCharacteristic.UPPERCASE_SYMBOLS
 import java.util.EnumSet
 
 class CreatingPasswordReducer : DslReducer<CreatingPasswordState, CreatingPasswordEvent,

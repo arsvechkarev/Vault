@@ -2,13 +2,13 @@ package com.arsvechkarev.vault.test.core.ext
 
 import android.widget.TextView
 import androidx.test.espresso.assertion.ViewAssertions
-import buisnesslogic.generator.PasswordGeneratorImpl.Companion.createSymbolsGeneratorsList
-import buisnesslogic.generator.SecureRandomGenerator
-import buisnesslogic.model.PasswordCharacteristic
-import buisnesslogic.model.PasswordCharacteristic.NUMBERS
-import buisnesslogic.model.PasswordCharacteristic.SPECIAL_SYMBOLS
-import buisnesslogic.model.PasswordCharacteristic.UPPERCASE_SYMBOLS
 import com.arsvechkarev.vault.test.core.base.baseMatcher
+import domain.generator.PasswordGeneratorImpl.Companion.createSymbolsGeneratorsList
+import domain.generator.SecureRandomGenerator
+import domain.model.PasswordCharacteristic
+import domain.model.PasswordCharacteristic.NUMBERS
+import domain.model.PasswordCharacteristic.SPECIAL_SYMBOLS
+import domain.model.PasswordCharacteristic.UPPERCASE_SYMBOLS
 import io.github.kakaocup.kakao.text.TextViewAssertions
 import java.util.EnumSet
 

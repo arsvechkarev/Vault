@@ -3,8 +3,6 @@ package com.arsvechkarev.vault.features.import_passwords.actors
 import app.keemobile.kotpass.database.Credentials
 import app.keemobile.kotpass.database.KeePassDatabase
 import app.keemobile.kotpass.database.decode
-import buisnesslogic.MasterPasswordHolder
-import buisnesslogic.from
 import com.arsvechkarev.vault.core.mvi.tea.Actor
 import com.arsvechkarev.vault.features.common.data.database.ObservableCachedDatabaseStorage
 import com.arsvechkarev.vault.features.common.data.files.ExternalFileReader
@@ -13,6 +11,8 @@ import com.arsvechkarev.vault.features.import_passwords.ImportPasswordsCommand.T
 import com.arsvechkarev.vault.features.import_passwords.ImportPasswordsEvent
 import com.arsvechkarev.vault.features.import_passwords.ImportPasswordsEvent.PasswordsImportFailure
 import com.arsvechkarev.vault.features.import_passwords.ImportPasswordsEvent.PasswordsImportSuccess
+import domain.MasterPasswordHolder
+import domain.from
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.filterIsInstance

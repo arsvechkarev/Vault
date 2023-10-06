@@ -1,6 +1,5 @@
 package com.arsvechkarev.vault.features.password_entry
 
-import buisnesslogic.model.PasswordEntry
 import com.arsvechkarev.vault.R
 import com.arsvechkarev.vault.core.mvi.tea.DslReducer
 import com.arsvechkarev.vault.features.common.TextState
@@ -49,6 +48,7 @@ import com.arsvechkarev.vault.features.password_entry.PasswordEntryUiEvent.OnTit
 import com.arsvechkarev.vault.features.password_entry.PasswordEntryUiEvent.OnUsernameActionClicked
 import com.arsvechkarev.vault.features.password_entry.PasswordEntryUiEvent.OnUsernameTextChanged
 import com.arsvechkarev.vault.features.password_entry.PasswordEntryUiEvent.SavePasswordEntryEventReceived
+import domain.model.PasswordEntry
 
 class PasswordEntryScreenReducer :
   DslReducer<PasswordEntryState, PasswordEntryEvent, PasswordEntryCommand,

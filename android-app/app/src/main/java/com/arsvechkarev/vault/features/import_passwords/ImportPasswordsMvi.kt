@@ -1,7 +1,7 @@
 package com.arsvechkarev.vault.features.import_passwords
 
 import android.net.Uri
-import buisnesslogic.Password
+import domain.Password
 
 sealed interface ImportPasswordsEvent {
   object PasswordsImportSuccess : ImportPasswordsEvent

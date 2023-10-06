@@ -1,10 +1,10 @@
 package com.arsvechkarev.vault.features.creating_password
 
-import buisnesslogic.DEFAULT_PASSWORD_LENGTH
-import buisnesslogic.Password
-import buisnesslogic.PasswordStrength
-import buisnesslogic.model.PasswordCharacteristic
 import com.arsvechkarev.vault.features.creating_password.CreatingPasswordReceiveEvent.PasswordConfigurationMode
+import domain.DEFAULT_PASSWORD_LENGTH
+import domain.Password
+import domain.PasswordStrength
+import domain.model.PasswordCharacteristic
 import java.util.EnumSet
 
 sealed interface CreatingPasswordEvent {

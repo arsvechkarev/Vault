@@ -3,13 +3,13 @@ package com.arsvechkarev.vault.core.views
 import android.content.Context
 import android.widget.FrameLayout
 import android.widget.TextView
-import buisnesslogic.PasswordStrength
 import com.arsvechkarev.vault.R
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginLarge
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginNormal
 import com.arsvechkarev.vault.viewbuilding.Dimens.PasswordStrengthMeterHeight
 import com.arsvechkarev.vault.viewbuilding.Styles.BoldTextView
 import com.arsvechkarev.vault.viewbuilding.TextSizes
+import domain.PasswordStrength
 import viewdsl.Size.Companion.MatchParent
 import viewdsl.Size.Companion.WrapContent
 import viewdsl.Size.IntSize

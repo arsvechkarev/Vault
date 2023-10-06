@@ -3,14 +3,14 @@ package com.arsvechkarev.vault.features.main_list.domain
 import app.keemobile.kotpass.database.KeePassDatabase
 import app.keemobile.kotpass.database.getEntries
 import app.keemobile.kotpass.models.Entry
-import buisnesslogic.isDefinitePlainText
-import buisnesslogic.isFavorite
-import buisnesslogic.isProbablePlainText
 import com.arsvechkarev.vault.R
 import com.arsvechkarev.vault.features.common.model.PasswordItem
 import com.arsvechkarev.vault.features.common.model.PlainTextItem
 import com.arsvechkarev.vault.features.common.model.Title
 import com.arsvechkarev.vault.recycler.DifferentiableItem
+import domain.isDefinitePlainText
+import domain.isFavorite
+import domain.isProbablePlainText
 
 class EntriesListUiMapper {
   

@@ -1,8 +1,8 @@
 package com.arsvechkarev.vault.features.password_entry
 
-import buisnesslogic.Password
-import buisnesslogic.model.PasswordEntry
 import com.arsvechkarev.vault.features.common.TextState
+import domain.Password
+import domain.model.PasswordEntry
 
 sealed interface PasswordEntryEvent {
   

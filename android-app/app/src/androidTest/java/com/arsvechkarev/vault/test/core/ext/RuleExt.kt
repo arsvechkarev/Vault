@@ -1,7 +1,7 @@
 package com.arsvechkarev.vault.test.core.ext
 
-import buisnesslogic.DEFAULT_INTERNAL_FILENAME
 import com.arsvechkarev.vault.test.core.rule.VaultAutotestRule
+import domain.DEFAULT_INTERNAL_FILENAME
 import java.io.File
 
 fun VaultAutotestRule.launchActivityWithDatabase(filename: String) {

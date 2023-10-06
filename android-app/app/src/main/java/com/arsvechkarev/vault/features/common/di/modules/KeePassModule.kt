@@ -1,20 +1,20 @@
 package com.arsvechkarev.vault.features.common.di.modules
 
-import buisnesslogic.DEFAULT_INTERNAL_FILENAME
-import buisnesslogic.DatabaseCache
-import buisnesslogic.DatabaseFileSaver
-import buisnesslogic.DatabaseInitializer
-import buisnesslogic.DefaultDatabaseInitializer
-import buisnesslogic.IdGeneratorImpl
-import buisnesslogic.RealInstantProvider
-import buisnesslogic.UniqueIdProvideImpl
-import buisnesslogic.interactors.KeePassPasswordModelInteractor
-import buisnesslogic.interactors.KeePassPlainTextModelInteractor
 import com.arsvechkarev.vault.features.common.data.database.BasicDatabaseStorage
 import com.arsvechkarev.vault.features.common.data.database.CachedDatabaseStorage
 import com.arsvechkarev.vault.features.common.data.database.ObservableCachedDatabaseStorage
 import com.arsvechkarev.vault.features.common.data.files.DatabaseFileSaverImpl
 import com.arsvechkarev.vault.features.main_list.domain.EntriesListUiMapper
+import domain.DEFAULT_INTERNAL_FILENAME
+import domain.DatabaseCache
+import domain.DatabaseFileSaver
+import domain.DatabaseInitializer
+import domain.DefaultDatabaseInitializer
+import domain.IdGeneratorImpl
+import domain.RealInstantProvider
+import domain.UniqueIdProvideImpl
+import domain.interactors.KeePassPasswordModelInteractor
+import domain.interactors.KeePassPlainTextModelInteractor
 
 interface KeePassModule {
   val keePassPasswordModelInteractor: KeePassPasswordModelInteractor

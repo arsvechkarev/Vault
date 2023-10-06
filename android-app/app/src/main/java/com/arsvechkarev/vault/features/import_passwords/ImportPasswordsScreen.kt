@@ -6,7 +6,6 @@ import android.os.Environment
 import android.view.Gravity
 import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
-import buisnesslogic.IMPORT_CONTENT_TYPE
 import com.arsvechkarev.vault.R
 import com.arsvechkarev.vault.core.extensions.arg
 import com.arsvechkarev.vault.core.extensions.booleanArg
@@ -37,6 +36,7 @@ import com.arsvechkarev.vault.viewbuilding.Styles.Button
 import com.arsvechkarev.vault.viewbuilding.Styles.ImageBack
 import com.arsvechkarev.vault.viewbuilding.Styles.SecondaryTextView
 import com.arsvechkarev.vault.viewbuilding.TextSizes
+import domain.IMPORT_CONTENT_TYPE
 import navigation.BaseFragmentScreen
 import viewdsl.Size.Companion.MatchParent
 import viewdsl.Size.Companion.WrapContent

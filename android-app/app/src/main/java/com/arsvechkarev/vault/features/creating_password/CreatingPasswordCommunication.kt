@@ -1,6 +1,6 @@
 package com.arsvechkarev.vault.features.creating_password
 
-import buisnesslogic.Password
+import domain.Password
 
 class CreatingPasswordReceiveEvent(val mode: PasswordConfigurationMode) {
   

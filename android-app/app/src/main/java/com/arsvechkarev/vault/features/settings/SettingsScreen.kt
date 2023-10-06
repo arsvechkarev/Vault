@@ -31,6 +31,7 @@ import com.arsvechkarev.vault.features.settings.SettingsUiEvent.OnShowUsernamesC
 import com.arsvechkarev.vault.viewbuilding.Colors
 import com.arsvechkarev.vault.viewbuilding.Dimens.DividerHeight
 import com.arsvechkarev.vault.viewbuilding.Dimens.GradientDrawableHeight
+import com.arsvechkarev.vault.viewbuilding.Dimens.MarginMedium
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginNormal
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginSmall
 import com.arsvechkarev.vault.viewbuilding.Styles
@@ -66,7 +67,7 @@ class SettingsScreen : BaseFragmentScreen() {
   override fun buildLayout(context: Context) = context.withViewBuilder {
     RootCoordinatorLayout {
       child<ConstraintLayout>(MatchParent, WrapContent) {
-        paddings(top = StatusBarHeight + MarginSmall)
+        paddings(top = StatusBarHeight + MarginMedium)
         ImageView(WrapContent, WrapContent, style = Styles.ImageBack) {
           id(ImageBack)
           margins(start = MarginSmall)

@@ -2,6 +2,7 @@ package com.arsvechkarev.vault.features.common.domain
 
 import android.widget.ImageView
 import androidx.lifecycle.lifecycleScope
+import coil.dispose
 import coil.load
 import coil.request.CachePolicy
 import com.arsvechkarev.vault.BuildConfig
@@ -50,7 +51,8 @@ suspend fun ImageView.trySetImageFromMatchingNames(
   imagesNames: Set<String>,
   onImageLoadingFailed: () -> Unit
 ) {
-  val matchingName = imagesNames.find { name -> text.contains(name) }
+  dispose()
+  val matchingName = imagesNames.find { name -> text.contains(name, ignoreCase = true) }
   if (matchingName == null) {
     setLetterInCircleDrawable(text.first().toString())
     return

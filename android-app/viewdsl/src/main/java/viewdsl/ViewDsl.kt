@@ -214,17 +214,17 @@ inline fun View.onLayoutChanged(crossinline block: () -> Unit) {
   addOnLayoutChangeListener { _, _, _, _, _, _, _, _, _ -> block() }
 }
 
-inline fun <reified T : View> View.viewAs(tag: Any = T::class.java.name): T {
-  if (tag is Int) {
-    return findViewById(tag)
+inline fun <reified T : View> View.viewAs(tagOrId: Any = T::class.java.name): T {
+  if (tagOrId is Int) {
+    return findViewById(tagOrId)
   }
-  return findViewWithTag(tag)
+  return findViewWithTag(tagOrId)
 }
 
-fun View.view(tag: Any): View = viewAs(tag)
+fun View.view(tagOrId: Any): View = viewAs(tagOrId)
 
-fun View.textView(tag: Any): TextView = viewAs(tag)
+fun View.textView(tagOrId: Any): TextView = viewAs(tagOrId)
 
-fun View.editText(tag: Any): EditText = viewAs(tag)
+fun View.editText(tagOrId: Any): EditText = viewAs(tagOrId)
 
 fun View.imageView(tag: Any): ImageView = viewAs(tag)

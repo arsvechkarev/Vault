@@ -3,7 +3,6 @@ package com.arsvechkarev.vault.features.plain_text_entry
 import android.content.Context
 import android.view.Gravity
 import android.view.View
-import android.view.WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE
 import com.arsvechkarev.vault.R
 import com.arsvechkarev.vault.core.extensions.getDeleteMessageText
 import com.arsvechkarev.vault.core.extensions.stringNullableArg
@@ -38,6 +37,7 @@ import com.arsvechkarev.vault.features.plain_text_entry.PlainTextEntryUiEvent.On
 import com.arsvechkarev.vault.features.plain_text_entry.PlainTextEntryUiEvent.OnTitleActionClicked
 import com.arsvechkarev.vault.features.plain_text_entry.PlainTextEntryUiEvent.OnTitleChanged
 import com.arsvechkarev.vault.viewbuilding.Colors
+import com.arsvechkarev.vault.viewbuilding.Dimens.CircleButtonSize
 import com.arsvechkarev.vault.viewbuilding.Dimens.GradientDrawableHeight
 import com.arsvechkarev.vault.viewbuilding.Dimens.IconPadding
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginLarge
@@ -48,13 +48,12 @@ import com.arsvechkarev.vault.viewbuilding.Styles
 import com.arsvechkarev.vault.viewbuilding.Styles.AccentTextView
 import com.arsvechkarev.vault.viewbuilding.Styles.BaseEditText
 import com.arsvechkarev.vault.viewbuilding.Styles.BoldTextView
-import com.arsvechkarev.vault.viewbuilding.Styles.Button
 import com.arsvechkarev.vault.viewbuilding.TextSizes
 import navigation.BaseFragmentScreen
 import viewdsl.BaseTextWatcher
-import viewdsl.Size.Companion.MatchParent
 import viewdsl.Size.Companion.WrapContent
 import viewdsl.Size.Companion.ZERO
+import viewdsl.Size.IntSize
 import viewdsl.circleRippleBackground
 import viewdsl.constraints
 import viewdsl.gone
@@ -69,7 +68,7 @@ import viewdsl.margins
 import viewdsl.onClick
 import viewdsl.onSubmit
 import viewdsl.padding
-import viewdsl.setSoftInputMode
+import viewdsl.paddings
 import viewdsl.setTextSilently
 import viewdsl.showKeyboard
 import viewdsl.text
@@ -83,6 +82,7 @@ class PlainTextEntryScreen : BaseFragmentScreen() {
     RootFrameLayout {
       id(PlainTextScreenRoot)
       ScrollableConstraintLayout {
+        paddings(bottom = MarginNormal + CircleButtonSize)
         ImageView(WrapContent, WrapContent, style = Styles.ImageBack) {
           id(ImageBack)
           margins(start = MarginSmall, top = StatusBarHeight + MarginMedium)
@@ -196,12 +196,16 @@ class PlainTextEntryScreen : BaseFragmentScreen() {
           }
         }
       }
-      TextView(MatchParent, WrapContent, style = Button()) {
+      ImageView(
+        width = IntSize(CircleButtonSize),
+        height = IntSize(CircleButtonSize),
+        style = Styles.CircleCheckmarkButton
+      ) {
         id(ButtonSave)
-        margins(start = MarginNormal, end = MarginNormal, bottom = MarginNormal)
-        layoutGravity(Gravity.BOTTOM)
-        text(R.string.text_save)
+        gone()
+        margin(MarginNormal)
         onClick { store.tryDispatch(OnSaveClicked) }
+        layoutGravity(Gravity.BOTTOM or Gravity.END)
       }
       InfoDialog()
       LoadingDialog()
@@ -322,7 +326,6 @@ class PlainTextEntryScreen : BaseFragmentScreen() {
     editText(EditTextTitle).clearFocus()
     editText(EditTextText).clearFocus()
     requireContext().hideKeyboard()
-    requireContext().setSoftInputMode(SOFT_INPUT_ADJUST_RESIZE)
   }
   
   override fun handleBackPress(): Boolean {

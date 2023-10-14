@@ -3,7 +3,6 @@ package com.arsvechkarev.vault.features.main_list.actors
 import com.arsvechkarev.vault.core.mvi.tea.Actor
 import com.arsvechkarev.vault.features.common.Durations
 import com.arsvechkarev.vault.features.common.Router
-import com.arsvechkarev.vault.features.common.Screens.CreatingPasswordEntryScreen
 import com.arsvechkarev.vault.features.common.Screens.ImportPasswordsScreen
 import com.arsvechkarev.vault.features.common.Screens.PasswordEntryScreen
 import com.arsvechkarev.vault.features.common.Screens.PlainTextScreen
@@ -32,12 +31,11 @@ fun MainListRouterActor(router: Router): Actor<MainListCommand, MainListEvent> {
           is PlainText -> goForward(PlainTextScreen(info.plainTextEntry.id))
           is ImportPasswords -> goForward(ImportPasswordsScreen(info.selectedFileUri),
             animate = false)
-          NewPassword -> goForwardWithDelay(CreatingPasswordEntryScreen)
+          NewPassword -> goForwardWithDelay(PasswordEntryScreen())
           NewPlainText -> goForwardWithDelay(PlainTextScreen())
           Settings -> goForwardWithDelay(SettingsScreen)
         }
       }
-      
       GoBack -> {
         goBack()
       }

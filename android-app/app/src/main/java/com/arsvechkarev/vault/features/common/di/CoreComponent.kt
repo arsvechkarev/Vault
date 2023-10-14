@@ -13,8 +13,8 @@ import com.arsvechkarev.vault.features.common.di.modules.KeePassModule
 import com.arsvechkarev.vault.features.common.di.modules.KeePassModuleImpl
 import com.arsvechkarev.vault.features.common.di.modules.NavigationModule
 import com.arsvechkarev.vault.features.common.di.modules.NavigationModuleImpl
-import com.arsvechkarev.vault.features.common.di.modules.NotificationsModule
-import com.arsvechkarev.vault.features.common.di.modules.NotificationsModuleImpl
+import com.arsvechkarev.vault.features.common.di.modules.ObserversModule
+import com.arsvechkarev.vault.features.common.di.modules.ObserversModuleImpl
 import com.arsvechkarev.vault.features.common.di.modules.PasswordsModule
 import com.arsvechkarev.vault.features.common.di.modules.PasswordsModuleImpl
 import com.arsvechkarev.vault.features.common.di.modules.PreferencesModule
@@ -27,7 +27,7 @@ interface CoreComponent :
   IoModule,
   PasswordsModule,
   NavigationModule,
-  NotificationsModule,
+  ObserversModule,
   PreferencesModule,
   ImagesLoadingModule {
   
@@ -49,7 +49,7 @@ interface CoreComponent :
         ioModule = ioModule,
         passwordsModule = PasswordsModuleImpl(keePassModule),
         navigationModule = NavigationModuleImpl(activityResultWrapper),
-        notificationsModule = NotificationsModuleImpl(),
+        observersModule = ObserversModuleImpl(),
         preferencesModule = preferencesModule,
         imagesLoadingModule = ImagesLoadingModuleImpl(coreModule, ioModule, preferencesModule),
       )
@@ -63,7 +63,7 @@ class CoreComponentImpl(
   private val ioModule: IoModule,
   private val passwordsModule: PasswordsModule,
   private val navigationModule: NavigationModule,
-  private val notificationsModule: NotificationsModule,
+  private val observersModule: ObserversModule,
   private val imagesLoadingModule: ImagesLoadingModule,
   private val preferencesModule: PreferencesModule,
 ) : CoreComponent,
@@ -72,6 +72,6 @@ class CoreComponentImpl(
   IoModule by ioModule,
   PasswordsModule by passwordsModule,
   NavigationModule by navigationModule,
-  NotificationsModule by notificationsModule,
+  ObserversModule by observersModule,
   PreferencesModule by preferencesModule,
   ImagesLoadingModule by imagesLoadingModule

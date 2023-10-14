@@ -16,7 +16,7 @@ fun SettingsStore(
     actors = listOf(
       GetShowUsernamesActor(coreComponent.showUsernamesInteractor),
       ChangeShowUsernamesActor(coreComponent.showUsernamesInteractor),
-      ObserveMasterPasswordChangesActor(coreComponent.globalChangeMasterPasswordSubscriber),
+      ObserveMasterPasswordChangesActor(coreComponent.changeMasterPasswordObserver),
       ClearImagesCacheActor(
         coreComponent.imagesCache,
         coreComponent.imagesNamesLoader,

@@ -22,6 +22,7 @@
   <string name="text_delete">DELETE</string>
   <string name="text_clipboard_label_title">title</string>
   <string name="text_clipboard_label_username">username</string>
+  <string name="text_clipboard_label_url">url</string>
   <string name="text_clipboard_label_password">password</string>
   <string name="text_clipboard_label_notes">notes</string>
   <string name="text_clipboard_label_text">text</string>
@@ -60,10 +61,6 @@
   <string name="text_medium">Medium</string>
   <string name="text_strong">Strong</string>
   <string name="text_secure">Secure</string>
-  <string name="text_do_you_want_to_save_password">Do you want to accept the password?</string>
-  <string name="text_username_copied">Username successfully copied</string>
-  <string name="text_password_copied">Password successfully copied</string>
-  <string name="text_notes_copied">Notes successfully copied</string>
 
   <!-- Main list -->
   <string name="text_favorites">Favorites</string>
@@ -82,12 +79,19 @@
 
   <!-- Password info -->
   <string name="text_username">Username</string>
+  <string name="text_url">Url</string>
+  <string name="text_enter_url">Enter url</string>
   <string name="text_enter_username">Enter username</string>
   <string name="text_email">Email</string>
   <string name="text_password_stub">•••••••••••••••••••</string>
   <string name="text_notes">Notes</string>
   <string name="text_add_notes">Add notes</string>
   <string name="text_delete_password">Delete password</string>
+  <string name="text_username_copied">Username successfully copied</string>
+  <string name="text_password_copied">Password successfully copied</string>
+  <string name="text_url_copied">Url successfully copied</string>
+  <string name="text_notes_copied">Notes successfully copied</string>
+  <string name="text_browser_not_found">No browser found on the device</string>
 
   <!-- Plain text -->
   <string name="text_plain_text">Plain text</string>

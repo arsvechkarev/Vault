@@ -21,6 +21,7 @@ private const val EXTENSION_PNG = ".png"
 fun ImageView.setIconForTitle(text: String, onImageLoadingFailed: () -> Unit) {
   val trimmedText = text.trim()
   if (trimmedText.isEmpty()) {
+    setImageDrawable(null)
     return
   }
   val imagesNamesLoader = CoreComponentHolder.coreComponent.imagesNamesLoader

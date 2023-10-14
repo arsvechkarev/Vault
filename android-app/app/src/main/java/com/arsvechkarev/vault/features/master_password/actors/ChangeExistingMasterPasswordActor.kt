@@ -5,7 +5,7 @@ import app.keemobile.kotpass.database.modifiers.modifyCredentials
 import com.arsvechkarev.vault.core.mvi.tea.Actor
 import com.arsvechkarev.vault.features.common.Durations
 import com.arsvechkarev.vault.features.common.data.database.ObservableCachedDatabaseStorage
-import com.arsvechkarev.vault.features.common.domain.GlobalChangeMasterPasswordPublisher
+import com.arsvechkarev.vault.features.common.domain.ChangeMasterPasswordObserver
 import com.arsvechkarev.vault.features.common.domain.MasterPasswordProvider
 import com.arsvechkarev.vault.features.master_password.MasterPasswordCommand
 import com.arsvechkarev.vault.features.master_password.MasterPasswordCommand.ChangeExistingMasterPassword
@@ -21,7 +21,7 @@ import kotlinx.coroutines.flow.mapLatest
 class ChangeExistingMasterPasswordActor(
   private val masterPasswordProvider: MasterPasswordProvider,
   private val storage: ObservableCachedDatabaseStorage,
-  private val globalChangeMasterPasswordPublisher: GlobalChangeMasterPasswordPublisher,
+  private val changeMasterPasswordObserver: ChangeMasterPasswordObserver,
 ) : Actor<MasterPasswordCommand, MasterPasswordEvent> {
   @OptIn(ExperimentalCoroutinesApi::class)
   override fun handle(commands: Flow<MasterPasswordCommand>): Flow<MasterPasswordEvent> {
@@ -36,7 +36,7 @@ class ChangeExistingMasterPasswordActor(
           storage.saveDatabase(newDatabase)
           MasterPasswordHolder.setMasterPassword(newMasterPassword)
           delay(Durations.StubDelay)
-          globalChangeMasterPasswordPublisher.publishMasterPasswordChanged()
+          changeMasterPasswordObserver.sendMasterPasswordChangedEvent()
           FinishedMasterPasswordSaving
         }
   }

@@ -33,34 +33,34 @@ fun TextView.compoundDrawables(
   }
 }
 
-inline fun TextView.textSize(size: Float) {
+fun TextView.textSize(size: Float) {
   setTextSize(TypedValue.COMPLEX_UNIT_PX, size)
 }
 
-inline fun TextView.text(@StringRes resId: Int) {
+fun TextView.text(@StringRes resId: Int) {
   setText(resId)
 }
 
-inline fun TextView.text(text: CharSequence) {
+fun TextView.text(text: CharSequence) {
   setText(text)
 }
 
-inline fun TextView.clearText() {
+fun TextView.clearText() {
   text = null
 }
 
-inline fun TextView.textColor(color: Int) {
+fun TextView.textColor(color: Int) {
   setTextColor(color)
 }
 
-inline fun TextView.compoundDrawablePadding(padding: Int) {
+fun TextView.compoundDrawablePadding(padding: Int) {
   compoundDrawablePadding = padding
 }
 
-inline fun TextView.font(font: Typeface) {
+fun TextView.font(font: Typeface) {
   typeface = font
 }
 
-inline fun TextView.gravity(gravity: Int) {
+fun TextView.gravity(gravity: Int) {
   this.gravity = gravity
 }

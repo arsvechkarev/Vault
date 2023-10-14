@@ -9,12 +9,14 @@ import com.arsvechkarev.vault.features.password_entry.PasswordEntryCommand.Updat
 import com.arsvechkarev.vault.features.password_entry.PasswordEntryCommand.UpdatePasswordEntry.UpdateNotes
 import com.arsvechkarev.vault.features.password_entry.PasswordEntryCommand.UpdatePasswordEntry.UpdatePassword
 import com.arsvechkarev.vault.features.password_entry.PasswordEntryCommand.UpdatePasswordEntry.UpdateTitle
+import com.arsvechkarev.vault.features.password_entry.PasswordEntryCommand.UpdatePasswordEntry.UpdateUrl
 import com.arsvechkarev.vault.features.password_entry.PasswordEntryCommand.UpdatePasswordEntry.UpdateUsername
 import com.arsvechkarev.vault.features.password_entry.PasswordEntryEvent
 import com.arsvechkarev.vault.features.password_entry.PasswordEntryEvent.UpdatedPasswordEntry.UpdatedIsFavorite
 import com.arsvechkarev.vault.features.password_entry.PasswordEntryEvent.UpdatedPasswordEntry.UpdatedNotes
 import com.arsvechkarev.vault.features.password_entry.PasswordEntryEvent.UpdatedPasswordEntry.UpdatedPassword
 import com.arsvechkarev.vault.features.password_entry.PasswordEntryEvent.UpdatedPasswordEntry.UpdatedTitle
+import com.arsvechkarev.vault.features.password_entry.PasswordEntryEvent.UpdatedPasswordEntry.UpdatedUrl
 import com.arsvechkarev.vault.features.password_entry.PasswordEntryEvent.UpdatedPasswordEntry.UpdatedUsername
 import domain.interactors.KeePassPasswordModelInteractor
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -40,6 +42,7 @@ class UpdatePasswordEntryActor(
             is UpdateTitle -> UpdatedTitle(command.passwordEntry)
             is UpdateUsername -> UpdatedUsername(command.passwordEntry)
             is UpdatePassword -> UpdatedPassword(command.passwordEntry)
+            is UpdateUrl -> UpdatedUrl(command.passwordEntry)
             is UpdateNotes -> UpdatedNotes(command.passwordEntry)
             is UpdateIsFavorite -> UpdatedIsFavorite(command.passwordEntry)
           }

@@ -13,8 +13,7 @@ import com.arsvechkarev.vault.features.password_entry.PasswordEntryScreen.Compan
 import com.arsvechkarev.vault.features.password_entry.PasswordEntryScreen.Companion.ImageTitleAction
 import com.arsvechkarev.vault.features.password_entry.PasswordEntryScreen.Companion.ImageUsernameAction
 import com.arsvechkarev.vault.features.password_entry.PasswordEntryScreen.Companion.PasswordEntryScreenRoot
-import com.arsvechkarev.vault.features.password_entry.PasswordEntryScreen.Companion.TextHiddenPassword
-import com.arsvechkarev.vault.features.password_entry.PasswordEntryScreen.Companion.TextTitle
+import com.arsvechkarev.vault.features.password_entry.PasswordEntryScreen.Companion.TextPassword
 import com.arsvechkarev.vault.features.password_entry.PasswordEntryScreen.Companion.Title
 import com.arsvechkarev.vault.features.password_entry.PasswordEntryScreen.Companion.TitleNotes
 import com.arsvechkarev.vault.features.password_entry.PasswordEntryScreen.Companion.TitlePassword
@@ -34,14 +33,14 @@ object KPasswordEntryScreen : BaseScreen<KPasswordEntryScreen>() {
   val imageDelete = KImageView { withId(ImageDelete) }
   val imageTitle = KImageView { withId(ImageTitle) }
   val title = KTextView { withId(Title) }
-  val textTitle = KTextView { withId(TextTitle) }
+  val textTitle = KTextView { withId(EditTextTitle) }
   val editTextTitle = KEditText { withId(EditTextTitle) }
   val imageTitleAction = KImageView { withId(ImageTitleAction) }
   val titleUsername = KTextView { withId(TitleUsername) }
   val editTextUsername = KEditText { withId(EditTextUsername) }
   val imageUsernameAction = KImageView { withId(ImageUsernameAction) }
   val titlePassword = KTextView { withId(TitlePassword) }
-  val textHiddenPassword = KTextView { withId(TextHiddenPassword) }
+  val textHiddenPassword = KTextView { withId(TextPassword) }
   val imageEditPassword = KImageView { withId(ImageEditPassword) }
   val imageCopyPassword = KImageView { withId(ImageCopyPassword) }
   val titleNotes = KTextView { withId(TitleNotes) }

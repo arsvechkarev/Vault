@@ -112,7 +112,6 @@ class PlainTextEntryReducer : DslReducer<PlainTextEntryState, PlainTextEntryEven
           showErrorIsEmptyAction = { state.copy(showTitleIsEmptyError = true) },
           copyNews = ShowTitleCopied,
           copyCommand = { text -> Copy(R.string.text_clipboard_label_title, text) },
-          setTextNews = ::SetTitle
         )
       }
       OnTextActionClicked -> {
@@ -126,7 +125,6 @@ class PlainTextEntryReducer : DslReducer<PlainTextEntryState, PlainTextEntryEven
           allowEmptySave = true,
           copyNews = ShowTextCopied,
           copyCommand = { text -> Copy(R.string.text_clipboard_label_text, text) },
-          setTextNews = ::SetText
         )
       }
       OnFavoriteClicked -> {

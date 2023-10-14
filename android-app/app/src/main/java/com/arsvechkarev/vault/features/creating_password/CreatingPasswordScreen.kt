@@ -16,14 +16,10 @@ import com.arsvechkarev.vault.core.views.CheckmarkAndTextViewGroup
 import com.arsvechkarev.vault.core.views.CheckmarkAndTextViewGroup.Companion.CheckmarkAndTextViewGroup
 import com.arsvechkarev.vault.core.views.PasswordStrengthMeterWithText
 import com.arsvechkarev.vault.features.common.di.CoreComponentHolder.coreComponent
-import com.arsvechkarev.vault.features.common.dialogs.InfoDialog.Companion.InfoDialog
-import com.arsvechkarev.vault.features.common.dialogs.InfoDialog.Companion.infoDialog
+import com.arsvechkarev.vault.features.creating_password.CreatingPasswordNews.SetupExistingPassword
+import com.arsvechkarev.vault.features.creating_password.CreatingPasswordNews.SetupNewPassword
 import com.arsvechkarev.vault.features.creating_password.CreatingPasswordNews.ShowGeneratedPassword
-import com.arsvechkarev.vault.features.creating_password.CreatingPasswordReceiveEvent.PasswordConfigurationMode.EditPassword
-import com.arsvechkarev.vault.features.creating_password.CreatingPasswordReceiveEvent.PasswordConfigurationMode.NewPassword
-import com.arsvechkarev.vault.features.creating_password.CreatingPasswordUiEvent.OnBackClicked
-import com.arsvechkarev.vault.features.creating_password.CreatingPasswordUiEvent.OnConfirmPasswordSavingClicked
-import com.arsvechkarev.vault.features.creating_password.CreatingPasswordUiEvent.OnDeclinePasswordSavingClicked
+import com.arsvechkarev.vault.features.creating_password.CreatingPasswordUiEvent.OnBackPressed
 import com.arsvechkarev.vault.features.creating_password.CreatingPasswordUiEvent.OnGeneratePasswordClicked
 import com.arsvechkarev.vault.features.creating_password.CreatingPasswordUiEvent.OnPasswordChanged
 import com.arsvechkarev.vault.features.creating_password.CreatingPasswordUiEvent.OnPasswordLengthChanged
@@ -91,7 +87,7 @@ class CreatingPasswordScreen : BaseFragmentScreen() {
           ImageView(WrapContent, WrapContent, style = ImageCross) {
             margins(end = ImageBackMargin, top = MarginSmall, bottom = MarginSmall)
             layoutGravity(CENTER or END)
-            onClick { store.tryDispatch(OnBackClicked) }
+            onClick { store.tryDispatch(OnBackPressed) }
           }
         }
         EditText(MatchParent, WrapContent,
@@ -154,15 +150,14 @@ class CreatingPasswordScreen : BaseFragmentScreen() {
         text(R.string.text_save)
         onClick { store.tryDispatch(OnSavePasswordClicked) }
       }
-      InfoDialog()
     }
   }
   
   private val store by viewModelStore { CreatingPasswordStore(coreComponent) }
   
   override fun onInit() {
-    CreatingPasswordCommunication.communicator.input
-        .onEach { event -> store.tryDispatch(Setup(event.mode)) }
+    coreComponent.creatingPasswordSetupObserver.passwordModeFlow
+        .onEach { configuration -> store.tryDispatch(Setup(configuration)) }
         .launchIn(lifecycleScope)
     store.subscribe(this, ::render, ::handleNews)
   }
@@ -173,28 +168,28 @@ class CreatingPasswordScreen : BaseFragmentScreen() {
   }
   
   private fun render(state: CreatingPasswordState) {
-    if (!state.setupCompleted) {
-      when (state.mode) {
-        is EditPassword -> showEditingPasswordMode(state.mode.password)
-        NewPassword -> showCreatingPasswordMode()
-        null -> Unit // Do nothing
-      }
-    }
     showPasswordLength(state.passwordLength)
     showPasswordStrength(state.passwordStrength)
     val checkmark: (Int) -> CheckmarkAndTextViewGroup = { textResId -> viewAs(textResId) }
     checkmark(R.string.text_uppercase_symbols).isChecked = state.uppercaseSymbolsEnabled
     checkmark(R.string.text_numbers).isChecked = state.numbersEnabled
     checkmark(R.string.text_special_symbols).isChecked = state.specialSymbolsEnabled
-    if (state.showConfirmationDialog) {
-      showPasswordAcceptingDialog()
-    } else {
-      hidePasswordAcceptingDialog()
-    }
   }
   
   private fun handleNews(event: CreatingPasswordNews) {
     when (event) {
+      SetupNewPassword -> {
+        textView(Title).text(R.string.text_password)
+        viewAs<SeekBar>().progress = DEFAULT_PASSWORD_LENGTH - MIN_PASSWORD_LENGTH
+        store.tryDispatch(SetupCompleted)
+      }
+      is SetupExistingPassword -> {
+        textView(Title).text(R.string.text_edit_password)
+        editText(EditTextPassword).text(event.password.stringData)
+        editText(EditTextPassword).setSelection(event.password.stringData.length)
+        viewAs<SeekBar>().progress = event.password.stringData.length - MIN_PASSWORD_LENGTH
+        store.tryDispatch(SetupCompleted)
+      }
       is ShowGeneratedPassword -> {
         requireContext().hideKeyboard()
         editText(EditTextPassword).clearFocus()
@@ -208,22 +203,9 @@ class CreatingPasswordScreen : BaseFragmentScreen() {
     requireContext().hideKeyboard()
   }
   
+  @Suppress("DEPRECATION")
   override fun onRelease() {
     requireContext().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
-  }
-  
-  private fun showCreatingPasswordMode() {
-    textView(Title).text(R.string.text_password)
-    viewAs<SeekBar>().progress = DEFAULT_PASSWORD_LENGTH - MIN_PASSWORD_LENGTH
-    store.tryDispatch(SetupCompleted)
-  }
-  
-  private fun showEditingPasswordMode(password: Password) {
-    textView(Title).text(R.string.text_edit_password)
-    editText(EditTextPassword).text(password.stringData)
-    editText(EditTextPassword).setSelection(password.stringData.length)
-    viewAs<SeekBar>().progress = password.stringData.length - MIN_PASSWORD_LENGTH
-    store.tryDispatch(SetupCompleted)
   }
   
   private fun showPasswordLength(length: Int) {
@@ -244,24 +226,8 @@ class CreatingPasswordScreen : BaseFragmentScreen() {
     viewAs<PasswordStrengthMeterWithText>().setStrength(strength)
   }
   
-  private fun showPasswordAcceptingDialog() {
-    requireContext().hideKeyboard()
-    infoDialog.showWithOkOption(
-      R.string.text_saving_password,
-      R.string.text_do_you_want_to_save_password,
-      R.string.text_yes,
-      onCancel = { store.tryDispatch(OnDeclinePasswordSavingClicked) },
-      onOkClicked = { store.tryDispatch(OnConfirmPasswordSavingClicked) }
-    )
-  }
-  
-  private fun hidePasswordAcceptingDialog() {
-    infoDialog.onHide = {}
-    infoDialog.hide()
-  }
-  
   override fun handleBackPress(): Boolean {
-    store.tryDispatch(OnBackClicked)
+    store.tryDispatch(OnBackPressed)
     return true
   }
   

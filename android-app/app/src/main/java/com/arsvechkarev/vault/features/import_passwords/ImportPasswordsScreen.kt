@@ -158,41 +158,6 @@ class ImportPasswordsScreen : BaseFragmentScreen() {
     }
   }
   
-  private fun renderDialogs(state: ImportPasswordsState) {
-    if (state.showLoading) {
-      loadingDialog.show()
-    } else {
-      loadingDialog.hide()
-    }
-    if (state.showEnterPasswordDialog) {
-      enterPasswordDialog.show()
-    } else {
-      enterPasswordDialog.hide()
-    }
-    when (state.infoDialog) {
-      ImportPasswordsInfoDialog.CONFIRMATION -> {
-        infoDialog.showWithCancelAndProceedOption(
-          titleRes = R.string.text_confirmation,
-          messageRes = getString(R.string.text_confirm_import_passwords_message),
-          proceedTextRes = R.string.text_confirm,
-          onCancel = { store.tryDispatch(OnHideInfoDialog) },
-          onProceed = { store.tryDispatch(OnConfirmedImportClicked) }
-        )
-      }
-      
-      ImportPasswordsInfoDialog.FAILURE -> {
-        infoDialog.showWithOkOption(
-          titleRes = R.string.text_error,
-          messageRes = R.string.text_error_import_message,
-          textPositiveRes = R.string.text_ok,
-          onCancel = { store.tryDispatch(OnHideErrorDialog) },
-          onOkClicked = { store.tryDispatch(OnHideErrorDialog) }
-        )
-      }
-      null -> infoDialog.hide()
-    }
-  }
-  
   override fun handleBackPress(): Boolean {
     store.tryDispatch(OnBackPressed)
     return true

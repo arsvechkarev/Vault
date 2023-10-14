@@ -7,6 +7,8 @@ class Password(val encryptedValueFiled: EncryptedValue) {
   
   val stringData: String get() = encryptedValueFiled.text
   
+  val isNotEmpty get() = encryptedValueFiled.byteLength != 0
+  
   override fun equals(other: Any?): Boolean {
     if (this === other) return true
     if (javaClass != other?.javaClass) return false

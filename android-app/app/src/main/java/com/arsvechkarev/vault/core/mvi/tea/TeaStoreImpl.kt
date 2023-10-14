@@ -3,7 +3,6 @@ package com.arsvechkarev.vault.core.mvi.tea
 import com.arsvechkarev.vault.core.DispatchersFacade
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
@@ -16,13 +15,9 @@ class TeaStoreImpl<State : Any, Event : Any, UiEvent : Event, Command : Any, New
   initialState: State,
 ) : TeaStore<State, UiEvent, News> {
   
-  private val commandsFlow = MutableSharedFlow<Command>(replay = 1)
+  private val commandsFlow = MutableSharedFlow<Command>(replay = Int.MAX_VALUE)
   
-  private val eventsFlow = MutableSharedFlow<Event>(
-    replay = 1,
-    extraBufferCapacity = 1,
-    onBufferOverflow = BufferOverflow.DROP_OLDEST,
-  )
+  private val eventsFlow = MutableSharedFlow<Event>(replay = Int.MAX_VALUE)
   
   override val state = MutableStateFlow(initialState)
   override val news = MutableSharedFlow<News>()

@@ -47,7 +47,7 @@ fun View.animateInvisible(
   andThen: () -> Unit = {},
   duration: Long = AnimationDurations.VisibilityChange
 ) {
-  if (visibility != View.VISIBLE) return
+  if (visibility == View.INVISIBLE) return
   animate().alpha(0f).setDuration(duration)
       .setInterpolator(AccelerateDecelerateInterpolator)
       .withEndAction {

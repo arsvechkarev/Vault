@@ -26,6 +26,7 @@ import com.arsvechkarev.vault.viewbuilding.Dimens.MarginSmall
 import viewdsl.DefaultStyles
 import viewdsl.Style
 import viewdsl.background
+import viewdsl.backgroundCircle
 import viewdsl.circleRippleBackground
 import viewdsl.dp
 import viewdsl.font
@@ -161,5 +162,11 @@ object Styles : DefaultStyles {
       colorTrackEnabled = Colors.AccentHeavy,
       colorTrackDisabled = Colors.SwitchTrackDisabled,
     )
+  }
+  
+  val CircleCheckmarkButton: ImageView.() -> Unit = {
+    padding(MarginMedium)
+    backgroundCircle(Colors.Accent)
+    image(R.drawable.ic_checmark)
   }
 }

@@ -25,44 +25,34 @@ class KeePassPasswordModelInteractor(
 ) {
   
   fun getPasswordEntry(database: KeePassDatabase, uuid: String): PasswordEntry {
-    return checkNotNull(database.findEntryBy { this.uuid.toString() == uuid })
-        .run {
-          PasswordEntry(
-            id = uuid,
-            title = fields.title?.content.orEmpty(),
-            username = fields.userName?.content.orEmpty(),
-            password = Password.create(fields.password?.content.orEmpty()),
-            url = fields.url?.content.orEmpty(),
-            notes = fields.notes?.content.orEmpty(),
-            isFavorite = customData[CUSTOM_DATA_FAVORITE_KEY]?.asBoolean() ?: false
-          )
-        }
+    val entry = database.findEntryBy { this.uuid.toString() == uuid }
+    return checkNotNull(entry).asPasswordEntry(uuid)
   }
   
   fun addPassword(
     database: KeePassDatabase,
     passwordEntryData: PasswordEntryData
-  ): Pair<KeePassDatabase, String> {
+  ): Pair<KeePassDatabase, PasswordEntry> {
     val uuid = idProvider.generateUniqueId(database)
-    val newDatabase = database.modifyParentGroup {
-      val entry = Entry(
-        uuid = uuid,
-        fields = EntryFields.of(
-          BasicField.Title.key to EntryValue.Plain(passwordEntryData.title),
-          BasicField.UserName.key to EntryValue.Plain(passwordEntryData.username),
-          BasicField.Password.key to EntryValue.Encrypted(
-            passwordEntryData.password.encryptedValueFiled),
-          BasicField.Url.key to EntryValue.Plain(passwordEntryData.url),
-          BasicField.Notes.key to EntryValue.Plain(passwordEntryData.notes)
-        ),
-        customData = mapOf(
-          CUSTOM_DATA_TYPE_KEY to CustomDataValue(CUSTOM_DATA_PASSWORD),
-          CUSTOM_DATA_FAVORITE_KEY to passwordEntryData.isFavorite.toValue(instantProvider.now()),
-        )
+    val entry = Entry(
+      uuid = uuid,
+      fields = EntryFields.of(
+        BasicField.Title.key to EntryValue.Plain(passwordEntryData.title),
+        BasicField.UserName.key to EntryValue.Plain(passwordEntryData.username),
+        BasicField.Password.key to EntryValue.Encrypted(
+          passwordEntryData.password.encryptedValueFiled),
+        BasicField.Url.key to EntryValue.Plain(passwordEntryData.url),
+        BasicField.Notes.key to EntryValue.Plain(passwordEntryData.notes)
+      ),
+      customData = mapOf(
+        CUSTOM_DATA_TYPE_KEY to CustomDataValue(CUSTOM_DATA_PASSWORD),
+        CUSTOM_DATA_FAVORITE_KEY to passwordEntryData.isFavorite.toValue(instantProvider.now()),
       )
+    )
+    val newDatabase = database.modifyParentGroup {
       copy(entries = entries + entry)
     }
-    return newDatabase to uuid.toString()
+    return newDatabase to entry.asPasswordEntry(uuid.toString())
   }
   
   fun editPassword(
@@ -84,5 +74,17 @@ class KeePassPasswordModelInteractor(
         }
       )
     }
+  }
+  
+  private fun Entry.asPasswordEntry(uuid: String): PasswordEntry {
+    return PasswordEntry(
+      id = uuid,
+      title = fields.title?.content.orEmpty(),
+      username = fields.userName?.content.orEmpty(),
+      password = Password.create(fields.password?.content.orEmpty()),
+      url = fields.url?.content.orEmpty(),
+      notes = fields.notes?.content.orEmpty(),
+      isFavorite = customData[CUSTOM_DATA_FAVORITE_KEY]?.asBoolean() ?: false
+    )
   }
 }

@@ -1,6 +1,7 @@
 package com.arsvechkarev.vault.core.mvi.ext
 
 import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.Lifecycle.State.RESUMED
 import androidx.lifecycle.Lifecycle.State.STARTED
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.flowWithLifecycle
@@ -22,7 +23,9 @@ fun <State : Any, News : Any> TeaStore<State, *, News>.subscribe(
       }
     }
     if (newsCollector != null) {
-      launchWhenResumed { news.collect(newsCollector::invoke) }
+      launch {
+        news.flowWithLifecycle(lifecycle, RESUMED).collect(newsCollector::invoke)
+      }
     }
   }
 }

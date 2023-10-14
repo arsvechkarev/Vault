@@ -6,21 +6,23 @@ import com.arsvechkarev.vault.features.settings.EnterPasswordDialogState.HIDDEN_
 import com.arsvechkarev.vault.features.settings.EnterPasswordDialogState.SHOWN
 import com.arsvechkarev.vault.features.settings.SettingsCommand.ChangeShowUsernames
 import com.arsvechkarev.vault.features.settings.SettingsCommand.ClearImagesCache
-import com.arsvechkarev.vault.features.settings.SettingsCommand.GetShowUsernames
+import com.arsvechkarev.vault.features.settings.SettingsCommand.FetchData
 import com.arsvechkarev.vault.features.settings.SettingsCommand.RouterCommand.GoBack
 import com.arsvechkarev.vault.features.settings.SettingsCommand.RouterCommand.GoToMasterPasswordScreen
 import com.arsvechkarev.vault.features.settings.SettingsEvent.ImagesCacheCleared
 import com.arsvechkarev.vault.features.settings.SettingsEvent.MasterPasswordChanged
+import com.arsvechkarev.vault.features.settings.SettingsEvent.ShowBiometricsAvailable
 import com.arsvechkarev.vault.features.settings.SettingsEvent.ShowUsernamesReceived
 import com.arsvechkarev.vault.features.settings.SettingsNews.SetShowUsernames
 import com.arsvechkarev.vault.features.settings.SettingsNews.ShowImagesCacheCleared
 import com.arsvechkarev.vault.features.settings.SettingsNews.ShowMasterPasswordChanged
-import com.arsvechkarev.vault.features.settings.SettingsUiEvent.FetchShowUsernamesChecked
 import com.arsvechkarev.vault.features.settings.SettingsUiEvent.OnBackPressed
 import com.arsvechkarev.vault.features.settings.SettingsUiEvent.OnChangeMasterPasswordClicked
 import com.arsvechkarev.vault.features.settings.SettingsUiEvent.OnClearImagesCacheClicked
+import com.arsvechkarev.vault.features.settings.SettingsUiEvent.OnEnableBiometricsChanged
 import com.arsvechkarev.vault.features.settings.SettingsUiEvent.OnEnteredPasswordToChangeMasterPassword
 import com.arsvechkarev.vault.features.settings.SettingsUiEvent.OnHideEnterPasswordDialog
+import com.arsvechkarev.vault.features.settings.SettingsUiEvent.OnInit
 import com.arsvechkarev.vault.features.settings.SettingsUiEvent.OnShowUsernamesChanged
 
 class SettingsReducer : DslReducer<SettingsState, SettingsEvent,
@@ -28,11 +30,14 @@ class SettingsReducer : DslReducer<SettingsState, SettingsEvent,
   
   override fun dslReduce(event: SettingsEvent) {
     when (event) {
-      FetchShowUsernamesChecked -> {
-        commands(GetShowUsernames)
+      OnInit -> {
+        commands(FetchData)
       }
       is ShowUsernamesReceived -> {
         news(SetShowUsernames(event.showUsernames))
+      }
+      is ShowBiometricsAvailable -> {
+        state { copy(biometricsAvailable = event.available) }
       }
       OnChangeMasterPasswordClicked -> {
         state { copy(enterPasswordDialogState = SHOWN) }
@@ -45,8 +50,10 @@ class SettingsReducer : DslReducer<SettingsState, SettingsEvent,
         state { copy(enterPasswordDialogState = HIDDEN) }
       }
       is OnShowUsernamesChanged -> {
-        state { copy(showUsernames = event.showUsernames) }
         commands(ChangeShowUsernames(event.showUsernames))
+      }
+      is OnEnableBiometricsChanged -> {
+      
       }
       OnClearImagesCacheClicked -> {
         commands(ClearImagesCache)

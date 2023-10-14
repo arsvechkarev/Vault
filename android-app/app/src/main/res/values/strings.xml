@@ -130,6 +130,8 @@
   <string name="text_master_password_changed">Master password successfully changed</string>
   <string name="text_show_passwords_usernames">Show usernames</string>
   <string name="text_show_password_usernames_description">Show usernames in password entries</string>
+  <string name="text_biometrics_title">Biometrics</string>
+  <string name="text_biometrics_description">Enter the app with fingerprint or other biometric data</string>
   <string name="text_clear_images_cache">Clear images cache</string>
   <string name="text_clear_images_cache_description">Clear all cached images of password entries</string>
   <string name="text_clear_images_cache_cleared">Images cache successfully cleared</string>

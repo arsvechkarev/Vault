@@ -5,7 +5,6 @@ import com.arsvechkarev.vault.core.extensions.bundleOf
 import com.arsvechkarev.vault.features.common.model.PasswordItem
 import com.arsvechkarev.vault.features.common.model.PlainTextItem
 import com.arsvechkarev.vault.features.creating_password.CreatingPasswordScreen
-import com.arsvechkarev.vault.features.creating_password_entry.CreatingPasswordEntryScreen
 import com.arsvechkarev.vault.features.import_passwords.ImportPasswordsScreen
 import com.arsvechkarev.vault.features.import_passwords.ImportPasswordsScreen.Companion.ASK_FOR_CONFIRMATION
 import com.arsvechkarev.vault.features.initial.InitialScreen
@@ -32,9 +31,7 @@ object Screens {
   
   val MainListScreen = Screen { MainListScreen::class }
   
-  val CreatingPasswordEntryScreen = Screen { CreatingPasswordEntryScreen::class }
-  
-  fun PasswordEntryScreen(passwordId: String): ScreenInfo {
+  fun PasswordEntryScreen(passwordId: String? = null): ScreenInfo {
     val pair = PasswordItem::class.java.name to passwordId
     return Screen(arguments = bundleOf(pair)) { PasswordEntryScreen::class }
   }

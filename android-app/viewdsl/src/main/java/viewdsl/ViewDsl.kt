@@ -51,7 +51,7 @@ fun View.gone() {
 var View.isVisible
   get() = visibility == View.VISIBLE
   set(value) {
-    visibility = if (value) View.VISIBLE else View.INVISIBLE
+    visibility = if (value) View.VISIBLE else View.GONE
   }
 
 fun <T : View> T.size(
@@ -122,6 +122,7 @@ fun View.margins(
     } else {
       params.setMargins(end, top, start, bottom)
     }
+    layoutParams = params
   } else {
     val params = MarginLayoutParams(layoutParams)
     if (isLayoutLeftToRight) {

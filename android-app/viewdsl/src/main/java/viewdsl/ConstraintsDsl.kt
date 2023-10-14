@@ -62,6 +62,10 @@ class ConstraintsDsl(
     bottomToBottomOf(id)
   }
   
+  fun setVerticalBias(bias: Float) {
+    constraintSet.setVerticalBias(viewId, bias)
+  }
+  
   fun applyToLayout() {
     constraintSet.applyTo(constraintLayout)
   }

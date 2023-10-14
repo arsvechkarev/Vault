@@ -3,7 +3,6 @@ package com.arsvechkarev.vault.test.tests
 import com.arsvechkarev.vault.R
 import com.arsvechkarev.vault.core.views.drawables.LetterInCircleDrawable
 import com.arsvechkarev.vault.features.creating_password.CreatingPasswordScreen
-import com.arsvechkarev.vault.features.creating_password_entry.CreatingPasswordEntryScreen
 import com.arsvechkarev.vault.features.main_list.MainListScreen
 import com.arsvechkarev.vault.features.password_entry.PasswordEntryScreen
 import com.arsvechkarev.vault.test.core.base.VaultTestCase
@@ -108,8 +107,6 @@ class PasswordEntryTest : VaultTestCase() {
         KCreatingPasswordScreen {
           iconCross.click()
         }
-        
-        currentScreenIs<CreatingPasswordEntryScreen>()
         
         buttonContinue.click()
         

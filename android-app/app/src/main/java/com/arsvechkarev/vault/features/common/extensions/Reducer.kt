@@ -17,8 +17,7 @@ fun <Item : BaseEntry, State : Any, Command : Any,
   allowEmptySave: Boolean = false,
   showErrorIsEmptyAction: (State.() -> State)? = null,
   copyCommand: (text: String) -> Command,
-  copyNews: News,
-  setTextNews: (String) -> News,
+  copyNews: News
 ) {
   with(textState) {
     if (isEditingNow) {
@@ -32,7 +31,6 @@ fun <Item : BaseEntry, State : Any, Command : Any,
       } else {
         state { updateTextAction(textState.update(trimmedText)) }
         commands(updateCommand(updateAction(itemProvider(), trimmedText)))
-        news(setTextNews(trimmedText))
       }
     } else {
       commands(copyCommand(editedText))

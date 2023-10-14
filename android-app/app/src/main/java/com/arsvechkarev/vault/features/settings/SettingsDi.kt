@@ -5,6 +5,7 @@ import com.arsvechkarev.vault.core.mvi.tea.TeaStoreImpl
 import com.arsvechkarev.vault.features.common.di.CoreComponent
 import com.arsvechkarev.vault.features.settings.actors.ChangeShowUsernamesActor
 import com.arsvechkarev.vault.features.settings.actors.ClearImagesCacheActor
+import com.arsvechkarev.vault.features.settings.actors.GetBiometricsAvailableActor
 import com.arsvechkarev.vault.features.settings.actors.GetShowUsernamesActor
 import com.arsvechkarev.vault.features.settings.actors.ObserveMasterPasswordChangesActor
 import com.arsvechkarev.vault.features.settings.actors.SettingsRouterActor
@@ -15,6 +16,7 @@ fun SettingsStore(
   return TeaStoreImpl(
     actors = listOf(
       GetShowUsernamesActor(coreComponent.showUsernamesInteractor),
+      GetBiometricsAvailableActor(coreComponent.biometricsAvailabilityChecker),
       ChangeShowUsernamesActor(coreComponent.showUsernamesInteractor),
       ObserveMasterPasswordChangesActor(coreComponent.changeMasterPasswordObserver),
       ClearImagesCacheActor(

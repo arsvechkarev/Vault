@@ -18,6 +18,7 @@ ext {
       kotpass          : "com.github.keemobile:kotpass:0.6.1",
       okio             : "com.squareup.okio:okio:3.2.0",
       coil             : "io.coil-kt:coil:2.4.0",
+      biometrics       : "androidx.biometric:biometric:1.0.1",
   ]
 
   espresso_version = '3.4.0'

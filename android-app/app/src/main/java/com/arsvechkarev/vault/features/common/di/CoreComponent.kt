@@ -3,6 +3,8 @@ package com.arsvechkarev.vault.features.common.di
 import android.app.Application
 import com.arsvechkarev.vault.features.common.data.files.ExternalFileReader
 import com.arsvechkarev.vault.features.common.data.files.PasswordsFileExporter
+import com.arsvechkarev.vault.features.common.di.modules.BiometricsModule
+import com.arsvechkarev.vault.features.common.di.modules.BiometricsModuleImpl
 import com.arsvechkarev.vault.features.common.di.modules.CoreModule
 import com.arsvechkarev.vault.features.common.di.modules.CoreModuleImpl
 import com.arsvechkarev.vault.features.common.di.modules.ImagesLoadingModule
@@ -29,7 +31,8 @@ interface CoreComponent :
   NavigationModule,
   ObserversModule,
   PreferencesModule,
-  ImagesLoadingModule {
+  ImagesLoadingModule,
+  BiometricsModule {
   
   companion object {
     
@@ -52,6 +55,7 @@ interface CoreComponent :
         observersModule = ObserversModuleImpl(),
         preferencesModule = preferencesModule,
         imagesLoadingModule = ImagesLoadingModuleImpl(coreModule, ioModule, preferencesModule),
+        biometricsModule = BiometricsModuleImpl(coreModule)
       )
     }
   }
@@ -64,8 +68,9 @@ class CoreComponentImpl(
   private val passwordsModule: PasswordsModule,
   private val navigationModule: NavigationModule,
   private val observersModule: ObserversModule,
-  private val imagesLoadingModule: ImagesLoadingModule,
   private val preferencesModule: PreferencesModule,
+  private val imagesLoadingModule: ImagesLoadingModule,
+  private val biometricsModule: BiometricsModule,
 ) : CoreComponent,
   CoreModule by coreModule,
   KeePassModule by keePassModule,
@@ -74,4 +79,5 @@ class CoreComponentImpl(
   NavigationModule by navigationModule,
   ObserversModule by observersModule,
   PreferencesModule by preferencesModule,
-  ImagesLoadingModule by imagesLoadingModule
+  ImagesLoadingModule by imagesLoadingModule,
+  BiometricsModule by biometricsModule

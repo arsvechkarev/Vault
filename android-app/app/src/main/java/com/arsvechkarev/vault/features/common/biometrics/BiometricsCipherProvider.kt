@@ -10,21 +10,21 @@ import javax.crypto.spec.GCMParameterSpec
 
 interface BiometricsCipherProvider {
   
-  fun getInitializedCipherForEncryption(): Cipher
+  fun getCipherForEncryption(): Cipher
   
-  fun getInitializedCipherForDecryption(initializationVector: ByteArray): Cipher
+  fun getCipherForDecryption(initializationVector: ByteArray): Cipher
 }
 
 class BiometricsCipherProviderImpl : BiometricsCipherProvider {
   
-  override fun getInitializedCipherForEncryption(): Cipher {
+  override fun getCipherForEncryption(): Cipher {
     val cipher = getCipher()
     val secretKey = getOrCreateSecretKey()
     cipher.init(Cipher.ENCRYPT_MODE, secretKey)
     return cipher
   }
   
-  override fun getInitializedCipherForDecryption(
+  override fun getCipherForDecryption(
     initializationVector: ByteArray
   ): Cipher {
     val cipher = getCipher()

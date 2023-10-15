@@ -3,6 +3,7 @@ package com.arsvechkarev.vault.features.login
 import android.content.Context
 import android.view.Gravity.CENTER
 import android.view.View
+import androidx.biometric.BiometricPrompt
 import com.arsvechkarev.vault.BuildConfig
 import com.arsvechkarev.vault.R
 import com.arsvechkarev.vault.core.mvi.ext.subscribe
@@ -10,10 +11,15 @@ import com.arsvechkarev.vault.core.mvi.ext.viewModelStore
 import com.arsvechkarev.vault.core.views.EditTextPassword
 import com.arsvechkarev.vault.core.views.FixedHeightTextView
 import com.arsvechkarev.vault.features.common.Durations
+import com.arsvechkarev.vault.features.common.biometrics.BiometricsCryptography
+import com.arsvechkarev.vault.features.common.biometrics.BiometricsPromptUtils
 import com.arsvechkarev.vault.features.common.di.CoreComponentHolder.coreComponent
 import com.arsvechkarev.vault.features.common.dialogs.LoadingDialog
 import com.arsvechkarev.vault.features.common.dialogs.loadingDialog
-import com.arsvechkarev.vault.features.login.LoginUiEvent.OnEnteredPassword
+import com.arsvechkarev.vault.features.login.LoginNews.ShowBiometricsPrompt
+import com.arsvechkarev.vault.features.login.LoginUiEvent.OnEnterWithBiometrics
+import com.arsvechkarev.vault.features.login.LoginUiEvent.OnEnterWithPassword
+import com.arsvechkarev.vault.features.login.LoginUiEvent.OnInit
 import com.arsvechkarev.vault.features.login.LoginUiEvent.OnTypingText
 import com.arsvechkarev.vault.viewbuilding.Colors
 import com.arsvechkarev.vault.viewbuilding.Dimens.ImageLogoSize
@@ -42,6 +48,7 @@ import viewdsl.text
 import viewdsl.textColor
 import viewdsl.textSize
 import viewdsl.withViewBuilder
+import javax.crypto.Cipher
 
 class LoginScreen : BaseFragmentScreen() {
   
@@ -80,7 +87,7 @@ class LoginScreen : BaseFragmentScreen() {
           }
           setHint(R.string.text_enter_password)
           onTextChanged { store.tryDispatch(OnTypingText) }
-          onSubmit { text -> store.tryDispatch(OnEnteredPassword(text)) }
+          onSubmit { text -> store.tryDispatch(OnEnterWithPassword(text)) }
         }
         child<FixedHeightTextView>(MatchParent, WrapContent, style = BaseTextView) {
           id(TextError)
@@ -99,7 +106,7 @@ class LoginScreen : BaseFragmentScreen() {
         }
         onClick {
           val password = viewAs<EditTextPassword>(EditTextPassword).getPassword()
-          store.tryDispatch(OnEnteredPassword(password))
+          store.tryDispatch(OnEnterWithPassword(password))
         }
       }
       LoadingDialog()
@@ -109,7 +116,8 @@ class LoginScreen : BaseFragmentScreen() {
   private val store by viewModelStore { LoginStore(coreComponent) }
   
   override fun onInit() {
-    store.subscribe(this, ::render)
+    store.subscribe(this, ::render, ::handleNews)
+    store.tryDispatch(OnInit)
   }
   
   override fun onAppearedOnScreen() {
@@ -119,7 +127,7 @@ class LoginScreen : BaseFragmentScreen() {
   }
   
   private fun render(state: LoginState) {
-    if (state.isLoading) {
+    if (state.showLoading) {
       loadingDialog.show()
     } else {
       loadingDialog.hide()
@@ -129,6 +137,36 @@ class LoginScreen : BaseFragmentScreen() {
     } else {
       textView(TextError).clearText()
     }
+  }
+  
+  private fun handleNews(news: LoginNews) {
+    if (news is ShowBiometricsPrompt) {
+      showBiometricPrompt(news)
+    }
+  }
+  
+  private fun showBiometricPrompt(news: ShowBiometricsPrompt) {
+    val cipher = coreComponent.biometricsCipherProvider
+        .getCipherForDecryption(news.iv)
+    val biometricsPrompt = BiometricsPromptUtils.createBiometricPrompt(
+      this,
+      ::handleBiometricsSuccess,
+      ::handleBiometricsFailure
+    )
+    val promptInfo = BiometricsPromptUtils.createPromptInfo(
+      getText(R.string.text_enter_with_fingerprint),
+      getText(R.string.text_biometrics_cancel),
+    )
+    biometricsPrompt.authenticate(promptInfo, BiometricPrompt.CryptoObject(cipher))
+  }
+  
+  private fun handleBiometricsSuccess(cipher: Cipher) {
+    val cryptography = BiometricsCryptography.create(cipher)
+    store.tryDispatch(OnEnterWithBiometrics(cryptography))
+  }
+  
+  private fun handleBiometricsFailure() {
+    
   }
   
   override fun onDestroyView() {

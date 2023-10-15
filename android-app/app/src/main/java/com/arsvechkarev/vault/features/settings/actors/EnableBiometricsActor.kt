@@ -23,7 +23,7 @@ class EnableBiometricsActor(
         .mapLatest { command ->
           val masterPassword = masterPasswordProvider.provideMasterPassword()
           val passwordBytes = masterPassword.encryptedValueField.getBinary()
-          val encryptedBytes = command.cipher.perform(passwordBytes)
+          val encryptedBytes = command.cryptography.perform(passwordBytes)
           biometricsStorage.saveBiometricsData(encryptedBytes, command.iv)
           BiometricsAdded
         }

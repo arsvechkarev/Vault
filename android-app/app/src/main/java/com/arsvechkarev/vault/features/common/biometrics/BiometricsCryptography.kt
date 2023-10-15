@@ -5,6 +5,13 @@ import javax.crypto.Cipher
 interface BiometricsCryptography {
   
   suspend fun perform(data: ByteArray): ByteArray
+  
+  companion object {
+    
+    fun create(cipher: Cipher): BiometricsCryptography {
+      return BiometricsCryptographyImpl(cipher)
+    }
+  }
 }
 
 class BiometricsCryptographyImpl(

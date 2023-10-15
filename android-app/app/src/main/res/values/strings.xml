@@ -32,6 +32,9 @@
   <string name="text_create_new_encrypted_vault">Create new database</string>
   <string name="text_import_existing_vault">Import existing database</string>
 
+  <!-- Login -->
+  <string name="text_enter_with_fingerprint">Enter with fingerprint</string>
+
   <!-- Master password -->
   <string name="text_create_master_password">Create master password</string>
   <string name="text_password_is_incorrect">Password is incorrect</string>

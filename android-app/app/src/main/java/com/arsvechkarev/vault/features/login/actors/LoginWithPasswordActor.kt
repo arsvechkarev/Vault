@@ -5,7 +5,7 @@ import com.arsvechkarev.vault.features.login.LoginCommand
 import com.arsvechkarev.vault.features.login.LoginCommand.EnterWithMasterPassword
 import com.arsvechkarev.vault.features.login.LoginEvent
 import com.arsvechkarev.vault.features.login.LoginEvent.ShowFailureCheckingPassword
-import com.arsvechkarev.vault.features.login.LoginEvent.ShowSuccessCheckingPassword
+import com.arsvechkarev.vault.features.login.LoginEvent.ShowLoginSuccess
 import domain.MasterPasswordChecker
 import domain.MasterPasswordHolder
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -13,7 +13,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.flow.mapLatest
 
-class LoginActor(
+class LoginWithPasswordActor(
   private val masterPasswordChecker: MasterPasswordChecker
 ) : Actor<LoginCommand, LoginEvent> {
   
@@ -23,7 +23,7 @@ class LoginActor(
         .mapLatest { command ->
           if (masterPasswordChecker.isCorrect(command.password)) {
             MasterPasswordHolder.setMasterPassword(command.password)
-            ShowSuccessCheckingPassword
+            ShowLoginSuccess
           } else {
             ShowFailureCheckingPassword
           }

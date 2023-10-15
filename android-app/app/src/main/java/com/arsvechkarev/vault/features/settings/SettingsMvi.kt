@@ -19,7 +19,7 @@ sealed interface SettingsUiEvent : SettingsEvent {
   object OnHideEnterPasswordDialog : SettingsUiEvent
   class OnShowUsernamesChanged(val showUsernames: Boolean) : SettingsUiEvent
   class OnEnableBiometricsChanged(val enabled: Boolean) : SettingsUiEvent
-  class OnConfirmedBiometrics(val cipher: BiometricsCryptography, val iv: ByteArray) :
+  class OnConfirmedBiometrics(val cryptography: BiometricsCryptography, val iv: ByteArray) :
     SettingsUiEvent
   
   object OnCancelBiometrics : SettingsUiEvent
@@ -31,7 +31,11 @@ sealed interface SettingsCommand {
   
   object FetchData : SettingsCommand
   class ChangeShowUsernames(val show: Boolean) : SettingsCommand
-  class EnableBiometrics(val cipher: BiometricsCryptography, val iv: ByteArray) : SettingsCommand
+  
+  class EnableBiometrics(
+    val cryptography: BiometricsCryptography, val iv: ByteArray
+  ) : SettingsCommand
+  
   object DisableBiometrics : SettingsCommand
   object ClearImagesCache : SettingsCommand
   

@@ -73,7 +73,7 @@ class SettingsReducer : DslReducer<SettingsState, SettingsEvent,
         }
       }
       is OnConfirmedBiometrics -> {
-        commands(EnableBiometrics(event.cipher, event.iv))
+        commands(EnableBiometrics(event.cryptography, event.iv))
       }
       OnCancelBiometrics -> {
         state { copy(biometricsEnabled = false) }

@@ -3,7 +3,7 @@ package com.arsvechkarev.vault.features.settings
 import android.content.Context
 import android.view.Gravity
 import android.view.View
-import androidx.biometric.BiometricPrompt
+import androidx.biometric.BiometricPrompt.CryptoObject
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.lifecycle.lifecycleScope
 import com.arsvechkarev.vault.R
@@ -14,8 +14,8 @@ import com.arsvechkarev.vault.core.views.SettingsItem.Companion.SettingsItem
 import com.arsvechkarev.vault.core.views.Snackbar
 import com.arsvechkarev.vault.core.views.Snackbar.Companion.snackbar
 import com.arsvechkarev.vault.features.common.Durations
-import com.arsvechkarev.vault.features.common.biometrics.BiometricPromptUtils
-import com.arsvechkarev.vault.features.common.biometrics.BiometricsCryptographyImpl
+import com.arsvechkarev.vault.features.common.biometrics.BiometricsCryptography
+import com.arsvechkarev.vault.features.common.biometrics.BiometricsPromptUtils
 import com.arsvechkarev.vault.features.common.di.CoreComponentHolder.coreComponent
 import com.arsvechkarev.vault.features.common.dialogs.EnterPasswordDialog.Companion.EnterPasswordDialog
 import com.arsvechkarev.vault.features.common.dialogs.EnterPasswordDialog.Companion.enterPasswordDialog
@@ -221,21 +221,27 @@ class SettingsScreen : BaseFragmentScreen() {
   
   private fun showBiometricPrompt() {
     val cipherProvider = coreComponent.biometricsCipherProvider
-    val cipher = cipherProvider.getInitializedCipherForEncryption()
-    val biometricPrompt =
-        BiometricPromptUtils.createBiometricPrompt(this, ::handleSuccess, ::handleFailure)
-    val promptInfo = BiometricPromptUtils.createPromptInfo(requireContext())
-    biometricPrompt.authenticate(promptInfo, BiometricPrompt.CryptoObject(cipher))
+    val cipher = cipherProvider.getCipherForEncryption()
+    val biometricsPrompt = BiometricsPromptUtils.createBiometricPrompt(
+      this,
+      ::handleBiometricSuccess,
+      ::handleBiometricFailure
+    )
+    val promptInfo = BiometricsPromptUtils.createPromptInfo(
+      getText(R.string.text_biometrics_add_fingerprint),
+      getText(R.string.text_biometrics_cancel),
+    )
+    biometricsPrompt.authenticate(promptInfo, CryptoObject(cipher))
   }
   
-  private fun handleSuccess(cipher: Cipher) {
+  private fun handleBiometricSuccess(cipher: Cipher) {
     lifecycleScope.launch {
-      val biometricsCipher = BiometricsCryptographyImpl(cipher)
+      val biometricsCipher = BiometricsCryptography.create(cipher)
       store.tryDispatch(OnConfirmedBiometrics(biometricsCipher, cipher.iv))
     }
   }
   
-  private fun handleFailure() {
+  private fun handleBiometricFailure() {
     store.tryDispatch(OnCancelBiometrics)
   }
   

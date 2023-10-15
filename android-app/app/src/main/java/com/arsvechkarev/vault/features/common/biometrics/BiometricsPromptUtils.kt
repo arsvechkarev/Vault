@@ -16,15 +16,13 @@
 
 package com.arsvechkarev.vault.features.common.biometrics
 
-import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import androidx.biometric.BiometricPrompt
 import androidx.core.content.ContextCompat
-import com.arsvechkarev.vault.R
 import navigation.BaseFragmentScreen
 import javax.crypto.Cipher
 
-object BiometricPromptUtils {
+object BiometricsPromptUtils {
   
   fun createBiometricPrompt(
     screen: BaseFragmentScreen,
@@ -55,10 +53,13 @@ object BiometricPromptUtils {
     return BiometricPrompt(activity, executor, callback)
   }
   
-  fun createPromptInfo(context: Context): BiometricPrompt.PromptInfo {
+  fun createPromptInfo(
+    title: CharSequence,
+    negativeText: CharSequence,
+  ): BiometricPrompt.PromptInfo {
     return BiometricPrompt.PromptInfo.Builder().apply {
-      setTitle(context.getText(R.string.text_biometrics_add_fingerprint))
-      setNegativeButtonText(context.getText(R.string.text_biometrics_cancel))
+      setTitle(title)
+      setNegativeButtonText(negativeText)
       setConfirmationRequired(false)
     }.build()
   }

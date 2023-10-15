@@ -3,14 +3,14 @@ package com.arsvechkarev.vault.features.common.biometrics
 import android.content.Context
 import androidx.biometric.BiometricManager
 
-interface BiometricsAvailabilityChecker {
+interface BiometricsAvailabilityProvider {
   
   fun isAvailable(): Boolean
 }
 
-class BiometricsAvailabilityCheckerImpl(
+class BiometricsAvailabilityProviderImpl(
   private val context: Context
-) : BiometricsAvailabilityChecker {
+) : BiometricsAvailabilityProvider {
   
   override fun isAvailable(): Boolean {
     return BiometricManager.from(context).canAuthenticate() == BiometricManager.BIOMETRIC_SUCCESS

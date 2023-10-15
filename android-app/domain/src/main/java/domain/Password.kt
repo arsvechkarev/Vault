@@ -3,11 +3,11 @@ package domain
 import app.keemobile.kotpass.cryptography.EncryptedValue
 import app.keemobile.kotpass.database.Credentials
 
-class Password(val encryptedValueFiled: EncryptedValue) {
+class Password(val encryptedValueField: EncryptedValue) {
   
-  val stringData: String get() = encryptedValueFiled.text
+  val stringData: String get() = encryptedValueField.text
   
-  val isNotEmpty get() = encryptedValueFiled.byteLength != 0
+  val isNotEmpty get() = encryptedValueField.byteLength != 0
   
   override fun equals(other: Any?): Boolean {
     if (this === other) return true
@@ -35,5 +35,5 @@ class Password(val encryptedValueFiled: EncryptedValue) {
 
 
 fun Credentials.Companion.from(masterPassword: Password): Credentials {
-  return from(masterPassword.encryptedValueFiled)
+  return from(masterPassword.encryptedValueField)
 }

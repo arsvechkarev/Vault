@@ -40,7 +40,7 @@ class KeePassPasswordModelInteractor(
         BasicField.Title.key to EntryValue.Plain(passwordEntryData.title),
         BasicField.UserName.key to EntryValue.Plain(passwordEntryData.username),
         BasicField.Password.key to EntryValue.Encrypted(
-          passwordEntryData.password.encryptedValueFiled),
+          passwordEntryData.password.encryptedValueField),
         BasicField.Url.key to EntryValue.Plain(passwordEntryData.url),
         BasicField.Notes.key to EntryValue.Plain(passwordEntryData.notes)
       ),
@@ -65,7 +65,7 @@ class KeePassPasswordModelInteractor(
           BasicField.Title.key to EntryValue.Plain(passwordEntry.title),
           BasicField.UserName.key to EntryValue.Plain(passwordEntry.username),
           BasicField.Password.key to EntryValue.Encrypted(
-            passwordEntry.password.encryptedValueFiled),
+            passwordEntry.password.encryptedValueField),
           BasicField.Url.key to EntryValue.Plain(passwordEntry.url),
           BasicField.Notes.key to EntryValue.Plain(passwordEntry.notes)
         ),

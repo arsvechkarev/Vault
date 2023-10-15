@@ -107,8 +107,8 @@ class SettingsItem(context: Context) : ConstraintLayout(context) {
     }
   }
   
-  fun setCheckedSilently(checked: Boolean, onChecked: (Boolean) -> Unit) {
-    viewAs<SwitchCompat>(Switch).setCheckedSilently(checked, onChecked)
+  fun setCheckedSilently(checked: Boolean, animate: Boolean, onChecked: (Boolean) -> Unit) {
+    viewAs<SwitchCompat>(Switch).setCheckedSilently(checked, animate, onChecked)
   }
   
   companion object {

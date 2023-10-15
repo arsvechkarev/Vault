@@ -32,7 +32,7 @@ class ChangeExistingMasterPasswordActor(
           require(currentMasterPassword != newMasterPassword)
           val currentDatabase = storage.getDatabase(currentMasterPassword)
           val newDatabase = currentDatabase
-              .modifyCredentials { Credentials.from(newMasterPassword.encryptedValueFiled) }
+              .modifyCredentials { Credentials.from(newMasterPassword.encryptedValueField) }
           storage.saveDatabase(newDatabase)
           MasterPasswordHolder.setMasterPassword(newMasterPassword)
           delay(Durations.StubDelay)

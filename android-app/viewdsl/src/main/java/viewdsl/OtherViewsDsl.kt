@@ -77,9 +77,15 @@ fun SwitchCompat.onCheckedChanged(block: ((Boolean) -> Unit)?) {
   }
 }
 
-fun SwitchCompat.setCheckedSilently(checked: Boolean, onChecked: (Boolean) -> Unit) {
+fun SwitchCompat.setCheckedSilently(
+  checked: Boolean,
+  animate: Boolean,
+  onChecked: (Boolean) -> Unit
+) {
   onCheckedChanged(null)
   isChecked = checked
-  jumpDrawablesToCurrentState()
+  if (!animate) {
+    jumpDrawablesToCurrentState()
+  }
   onCheckedChanged(onChecked)
 }

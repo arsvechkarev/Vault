@@ -3,7 +3,6 @@ package com.arsvechkarev.vault.features.settings
 import android.content.Context
 import android.view.Gravity
 import android.view.View
-import androidx.biometric.BiometricPrompt.CryptoObject
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.lifecycle.lifecycleScope
 import com.arsvechkarev.vault.R
@@ -11,11 +10,12 @@ import com.arsvechkarev.vault.core.mvi.ext.subscribe
 import com.arsvechkarev.vault.core.mvi.ext.viewModelStore
 import com.arsvechkarev.vault.core.views.SettingsItem
 import com.arsvechkarev.vault.core.views.SettingsItem.Companion.SettingsItem
-import com.arsvechkarev.vault.core.views.Snackbar
+import com.arsvechkarev.vault.core.views.Snackbar.Companion.Snackbar
 import com.arsvechkarev.vault.core.views.Snackbar.Companion.snackbar
+import com.arsvechkarev.vault.core.views.Snackbar.Type.CHECKMARK
+import com.arsvechkarev.vault.core.views.Snackbar.Type.ERROR
 import com.arsvechkarev.vault.features.common.Durations
-import com.arsvechkarev.vault.features.common.biometrics.BiometricsCryptography
-import com.arsvechkarev.vault.features.common.biometrics.BiometricsPromptUtils
+import com.arsvechkarev.vault.features.common.biometrics.BiometricsDialog
 import com.arsvechkarev.vault.features.common.di.CoreComponentHolder.coreComponent
 import com.arsvechkarev.vault.features.common.dialogs.EnterPasswordDialog.Companion.EnterPasswordDialog
 import com.arsvechkarev.vault.features.common.dialogs.EnterPasswordDialog.Companion.enterPasswordDialog
@@ -23,17 +23,20 @@ import com.arsvechkarev.vault.features.common.dialogs.EnterPasswordDialog.Mode.C
 import com.arsvechkarev.vault.features.settings.EnterPasswordDialogState.HIDDEN
 import com.arsvechkarev.vault.features.settings.EnterPasswordDialogState.HIDDEN_KEEPING_KEYBOARD
 import com.arsvechkarev.vault.features.settings.EnterPasswordDialogState.SHOWN
+import com.arsvechkarev.vault.features.settings.SettingsBiometricsError.LOCKOUT
+import com.arsvechkarev.vault.features.settings.SettingsBiometricsError.LOCKOUT_PERMANENT
+import com.arsvechkarev.vault.features.settings.SettingsBiometricsError.OTHER
 import com.arsvechkarev.vault.features.settings.SettingsNews.SetBiometricsEnabled
 import com.arsvechkarev.vault.features.settings.SettingsNews.SetShowUsernames
 import com.arsvechkarev.vault.features.settings.SettingsNews.ShowBiometricsAdded
+import com.arsvechkarev.vault.features.settings.SettingsNews.ShowBiometricsError
 import com.arsvechkarev.vault.features.settings.SettingsNews.ShowBiometricsPrompt
 import com.arsvechkarev.vault.features.settings.SettingsNews.ShowImagesCacheCleared
 import com.arsvechkarev.vault.features.settings.SettingsNews.ShowMasterPasswordChanged
 import com.arsvechkarev.vault.features.settings.SettingsUiEvent.OnBackPressed
-import com.arsvechkarev.vault.features.settings.SettingsUiEvent.OnCancelBiometrics
+import com.arsvechkarev.vault.features.settings.SettingsUiEvent.OnBiometricsEvent
 import com.arsvechkarev.vault.features.settings.SettingsUiEvent.OnChangeMasterPasswordClicked
 import com.arsvechkarev.vault.features.settings.SettingsUiEvent.OnClearImagesCacheClicked
-import com.arsvechkarev.vault.features.settings.SettingsUiEvent.OnConfirmedBiometrics
 import com.arsvechkarev.vault.features.settings.SettingsUiEvent.OnEnableBiometricsChanged
 import com.arsvechkarev.vault.features.settings.SettingsUiEvent.OnEnteredPasswordToChangeMasterPassword
 import com.arsvechkarev.vault.features.settings.SettingsUiEvent.OnHideEnterPasswordDialog
@@ -49,13 +52,14 @@ import com.arsvechkarev.vault.viewbuilding.Styles
 import com.arsvechkarev.vault.viewbuilding.Styles.BoldTextView
 import com.arsvechkarev.vault.viewbuilding.TextSizes
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import navigation.BaseFragmentScreen
 import viewdsl.Size.Companion.MatchParent
 import viewdsl.Size.Companion.WrapContent
 import viewdsl.Size.IntSize
 import viewdsl.backgroundColor
-import viewdsl.classNameTag
 import viewdsl.constraints
 import viewdsl.id
 import viewdsl.isVisible
@@ -67,7 +71,6 @@ import viewdsl.paddings
 import viewdsl.text
 import viewdsl.textSize
 import viewdsl.withViewBuilder
-import javax.crypto.Cipher
 
 class SettingsScreen : BaseFragmentScreen() {
   
@@ -147,9 +150,8 @@ class SettingsScreen : BaseFragmentScreen() {
           }
         }
       }
-      child<Snackbar>(MatchParent, WrapContent) {
-        classNameTag()
-        layoutGravity(Gravity.BOTTOM)
+      Snackbar {
+        layoutGravity(Gravity.BOTTOM or Gravity.CENTER_HORIZONTAL)
         margin(MarginNormal)
       }
       EnterPasswordDialog(
@@ -168,11 +170,18 @@ class SettingsScreen : BaseFragmentScreen() {
     store.tryDispatch(OnEnableBiometricsChanged(it))
   }
   
+  private val biometricsDialog by lazy {
+    BiometricsDialog.create(this, R.string.text_biometrics_add_fingerprint)
+  }
+  
   private val store by viewModelStore { SettingsStore(coreComponent) }
   
   override fun onInit() {
     store.subscribe(this, ::render, ::handleNews)
     store.tryDispatch(OnInit)
+    biometricsDialog.events
+        .onEach { event -> store.tryDispatch(OnBiometricsEvent(event)) }
+        .launchIn(lifecycleScope)
   }
   
   private fun render(state: SettingsState) {
@@ -204,45 +213,28 @@ class SettingsScreen : BaseFragmentScreen() {
       ShowMasterPasswordChanged -> {
         lifecycleScope.launch {
           delay(Durations.Default)
-          snackbar.show(R.string.text_master_password_changed)
+          snackbar.show(CHECKMARK, R.string.text_master_password_changed)
         }
       }
       ShowBiometricsPrompt -> {
-        showBiometricPrompt()
+        val cipherProvider = coreComponent.biometricsCipherProvider
+        biometricsDialog.launch(cipherProvider.getCipherForEncryption())
       }
       ShowBiometricsAdded -> {
-        snackbar.show(R.string.text_biometrics_added)
+        snackbar.show(CHECKMARK, R.string.text_biometrics_added)
+      }
+      is ShowBiometricsError -> {
+        val textRes = when (news.error) {
+          LOCKOUT -> R.string.text_biometrics_snackbar_error_lockout
+          LOCKOUT_PERMANENT -> R.string.text_biometrics_snackbar_error_lockout_permanent
+          OTHER -> R.string.text_biometrics_snackbar_error
+        }
+        snackbar.show(ERROR, textRes)
       }
       ShowImagesCacheCleared -> {
-        snackbar.show(R.string.text_clear_images_cache_cleared)
+        snackbar.show(CHECKMARK, R.string.text_clear_images_cache_cleared)
       }
     }
-  }
-  
-  private fun showBiometricPrompt() {
-    val cipherProvider = coreComponent.biometricsCipherProvider
-    val cipher = cipherProvider.getCipherForEncryption()
-    val biometricsPrompt = BiometricsPromptUtils.createBiometricPrompt(
-      this,
-      ::handleBiometricSuccess,
-      ::handleBiometricFailure
-    )
-    val promptInfo = BiometricsPromptUtils.createPromptInfo(
-      getText(R.string.text_biometrics_add_fingerprint),
-      getText(R.string.text_biometrics_cancel),
-    )
-    biometricsPrompt.authenticate(promptInfo, CryptoObject(cipher))
-  }
-  
-  private fun handleBiometricSuccess(cipher: Cipher) {
-    lifecycleScope.launch {
-      val biometricsCipher = BiometricsCryptography.create(cipher)
-      store.tryDispatch(OnConfirmedBiometrics(biometricsCipher, cipher.iv))
-    }
-  }
-  
-  private fun handleBiometricFailure() {
-    store.tryDispatch(OnCancelBiometrics)
   }
   
   override fun handleBackPress(): Boolean {

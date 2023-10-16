@@ -25,7 +25,6 @@ class GetBiometricsEnterPossibleActor(
           val enabled = biometricsEnabledProvider.isBiometricsEnabled()
           // TODO (10/15/23): Make biometric enter not possible if user hasn't entered
           //  password for a while
-          println("qqq: enabled biometrics = $enabled")
           return@mapLatest if (enabled) {
             val data = biometricsStorage.getBiometricsData()
             BiometricsEnterPossible(data.second)

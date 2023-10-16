@@ -3,7 +3,7 @@ package com.arsvechkarev.vault.features.login
 import android.content.Context
 import android.view.Gravity.CENTER
 import android.view.View
-import androidx.biometric.BiometricPrompt
+import androidx.lifecycle.lifecycleScope
 import com.arsvechkarev.vault.BuildConfig
 import com.arsvechkarev.vault.R
 import com.arsvechkarev.vault.core.mvi.ext.subscribe
@@ -11,35 +11,48 @@ import com.arsvechkarev.vault.core.mvi.ext.viewModelStore
 import com.arsvechkarev.vault.core.views.EditTextPassword
 import com.arsvechkarev.vault.core.views.FixedHeightTextView
 import com.arsvechkarev.vault.features.common.Durations
-import com.arsvechkarev.vault.features.common.biometrics.BiometricsCryptography
-import com.arsvechkarev.vault.features.common.biometrics.BiometricsPromptUtils
+import com.arsvechkarev.vault.features.common.biometrics.BiometricsDialog
 import com.arsvechkarev.vault.features.common.di.CoreComponentHolder.coreComponent
 import com.arsvechkarev.vault.features.common.dialogs.LoadingDialog
 import com.arsvechkarev.vault.features.common.dialogs.loadingDialog
+import com.arsvechkarev.vault.features.login.LoginBiometricsState.LOCKOUT
+import com.arsvechkarev.vault.features.login.LoginBiometricsState.LOCKOUT_PERMANENT
+import com.arsvechkarev.vault.features.login.LoginBiometricsState.OK
+import com.arsvechkarev.vault.features.login.LoginBiometricsState.OTHER_ERROR
 import com.arsvechkarev.vault.features.login.LoginNews.ShowBiometricsPrompt
-import com.arsvechkarev.vault.features.login.LoginUiEvent.OnEnterWithBiometrics
+import com.arsvechkarev.vault.features.login.LoginNews.ShowKeyboard
+import com.arsvechkarev.vault.features.login.LoginUiEvent.OnBiometricsEvent
+import com.arsvechkarev.vault.features.login.LoginUiEvent.OnBiometricsIconClicked
 import com.arsvechkarev.vault.features.login.LoginUiEvent.OnEnterWithPassword
 import com.arsvechkarev.vault.features.login.LoginUiEvent.OnInit
 import com.arsvechkarev.vault.features.login.LoginUiEvent.OnTypingText
 import com.arsvechkarev.vault.viewbuilding.Colors
+import com.arsvechkarev.vault.viewbuilding.Dimens.CircleButtonSize
 import com.arsvechkarev.vault.viewbuilding.Dimens.ImageLogoSize
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginExtraLarge
+import com.arsvechkarev.vault.viewbuilding.Dimens.MarginLarge
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginNormal
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginSmall
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginTiny
 import com.arsvechkarev.vault.viewbuilding.Styles.BaseTextView
 import com.arsvechkarev.vault.viewbuilding.Styles.BoldTextView
 import com.arsvechkarev.vault.viewbuilding.Styles.Button
+import com.arsvechkarev.vault.viewbuilding.Styles.SecondaryTextView
 import com.arsvechkarev.vault.viewbuilding.TextSizes
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import navigation.BaseFragmentScreen
 import viewdsl.Size.Companion.MatchParent
 import viewdsl.Size.Companion.WrapContent
+import viewdsl.Size.IntSize
 import viewdsl.clearText
 import viewdsl.constraints
 import viewdsl.gravity
 import viewdsl.hideKeyboard
 import viewdsl.id
 import viewdsl.image
+import viewdsl.imageTint
+import viewdsl.isVisible
 import viewdsl.margin
 import viewdsl.marginHorizontal
 import viewdsl.margins
@@ -48,7 +61,6 @@ import viewdsl.text
 import viewdsl.textColor
 import viewdsl.textSize
 import viewdsl.withViewBuilder
-import javax.crypto.Cipher
 
 class LoginScreen : BaseFragmentScreen() {
   
@@ -60,7 +72,7 @@ class LoginScreen : BaseFragmentScreen() {
           topToTopOf(parent)
           startToStartOf(parent)
           endToEndOf(parent)
-          bottomToTopOf(ContentLayout)
+          bottomToTopOf(LayoutContent)
         }
         gravity(CENTER)
         ImageView(ImageLogoSize, ImageLogoSize) {
@@ -73,7 +85,7 @@ class LoginScreen : BaseFragmentScreen() {
         }
       }
       VerticalLayout(MatchParent, WrapContent) {
-        id(ContentLayout)
+        id(LayoutContent)
         margins(top = MarginExtraLarge * 2)
         constraints {
           centeredWithin(parent)
@@ -93,6 +105,28 @@ class LoginScreen : BaseFragmentScreen() {
           id(TextError)
           margins(start = MarginNormal + MarginTiny, top = MarginSmall)
           textColor(Colors.Error)
+        }
+      }
+      VerticalLayout(WrapContent, WrapContent) {
+        id(LayoutBiometrics)
+        gravity(CENTER)
+        margins(start = MarginLarge, end = MarginLarge, bottom = MarginLarge)
+        onClick { store.tryDispatch(OnBiometricsIconClicked) }
+        constraints {
+          setVerticalBias(0.8f)
+          startToStartOf(parent)
+          topToBottomOf(LayoutContent)
+          endToEndOf(parent)
+          bottomToTopOf(ButtonContinue)
+        }
+        ImageView(IntSize(CircleButtonSize), IntSize(CircleButtonSize)) {
+          id(ImageBiometrics)
+          image(R.drawable.ic_fingerprint)
+          margins(bottom = MarginSmall)
+        }
+        child<FixedHeightTextView>(WrapContent, WrapContent, style = SecondaryTextView) {
+          id(TextBiometrics)
+          exampleText = context.getString(R.string.text_biometrics_error_lockout_permanent)
         }
       }
       TextView(MatchParent, WrapContent, style = Button()) {
@@ -115,58 +149,55 @@ class LoginScreen : BaseFragmentScreen() {
   
   private val store by viewModelStore { LoginStore(coreComponent) }
   
+  private val biometricsDialog by lazy {
+    BiometricsDialog.create(this, R.string.text_enter_with_fingerprint)
+  }
+  
   override fun onInit() {
     store.subscribe(this, ::render, ::handleNews)
     store.tryDispatch(OnInit)
-  }
-  
-  override fun onAppearedOnScreen() {
-    requireView().postDelayed({
-      viewAs<EditTextPassword>(EditTextPassword).showKeyboard()
-    }, Durations.DelayOpenKeyboard)
+    biometricsDialog.events
+        .onEach { event -> store.tryDispatch(OnBiometricsEvent(event)) }
+        .launchIn(lifecycleScope)
   }
   
   private fun render(state: LoginState) {
-    if (state.showLoading) {
-      loadingDialog.show()
-    } else {
-      loadingDialog.hide()
-    }
+    view(LayoutBiometrics).isVisible = state.biometricsEnabled
     if (state.showPasswordIsIncorrect) {
       textView(TextError).text(R.string.text_password_is_incorrect)
     } else {
       textView(TextError).clearText()
     }
-  }
-  
-  private fun handleNews(news: LoginNews) {
-    if (news is ShowBiometricsPrompt) {
-      showBiometricPrompt(news)
+    
+    val color = if (state.biometricsState == OK) Colors.TextSecondary else Colors.Error
+    textView(TextBiometrics).textColor(color)
+    imageView(ImageBiometrics).imageTint(color)
+    val textRes = when (state.biometricsState) {
+      OK -> R.string.text_biometrics_tap_here
+      LOCKOUT -> R.string.text_biometrics_error_lockout
+      LOCKOUT_PERMANENT -> R.string.text_biometrics_error_lockout_permanent
+      OTHER_ERROR -> R.string.text_biometrics_error_other
+    }
+    textView(TextBiometrics).text(textRes)
+    if (state.showLoading) {
+      loadingDialog.show()
+    } else {
+      loadingDialog.hide()
     }
   }
   
-  private fun showBiometricPrompt(news: ShowBiometricsPrompt) {
-    val cipher = coreComponent.biometricsCipherProvider
-        .getCipherForDecryption(news.iv)
-    val biometricsPrompt = BiometricsPromptUtils.createBiometricPrompt(
-      this,
-      ::handleBiometricsSuccess,
-      ::handleBiometricsFailure
-    )
-    val promptInfo = BiometricsPromptUtils.createPromptInfo(
-      getText(R.string.text_enter_with_fingerprint),
-      getText(R.string.text_biometrics_cancel),
-    )
-    biometricsPrompt.authenticate(promptInfo, BiometricPrompt.CryptoObject(cipher))
-  }
-  
-  private fun handleBiometricsSuccess(cipher: Cipher) {
-    val cryptography = BiometricsCryptography.create(cipher)
-    store.tryDispatch(OnEnterWithBiometrics(cryptography))
-  }
-  
-  private fun handleBiometricsFailure() {
-    
+  private fun handleNews(news: LoginNews) {
+    when (news) {
+      ShowKeyboard -> {
+        requireView().postDelayed({
+          viewAs<EditTextPassword>(EditTextPassword).showKeyboard()
+        }, Durations.DelayOpenKeyboard)
+      }
+      is ShowBiometricsPrompt -> {
+        val cipher = coreComponent.biometricsCipherProvider.getCipherForDecryption(news.iv)
+        biometricsDialog.launch(cipher)
+      }
+    }
   }
   
   override fun onDestroyView() {
@@ -177,9 +208,12 @@ class LoginScreen : BaseFragmentScreen() {
   companion object {
     
     val LogoLayout = View.generateViewId()
-    val ContentLayout = View.generateViewId()
+    val LayoutContent = View.generateViewId()
     val TextError = View.generateViewId()
     val EditTextPassword = View.generateViewId()
+    val LayoutBiometrics = View.generateViewId()
+    val ImageBiometrics = View.generateViewId()
+    val TextBiometrics = View.generateViewId()
     val ButtonContinue = View.generateViewId()
   }
 }

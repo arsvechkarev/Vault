@@ -1,6 +1,7 @@
 package com.arsvechkarev.vault.features.settings
 
 import com.arsvechkarev.vault.features.common.biometrics.BiometricsCryptography
+import com.arsvechkarev.vault.features.common.biometrics.BiometricsEvent
 import com.arsvechkarev.vault.features.settings.EnterPasswordDialogState.HIDDEN
 
 sealed interface SettingsEvent {
@@ -19,10 +20,7 @@ sealed interface SettingsUiEvent : SettingsEvent {
   object OnHideEnterPasswordDialog : SettingsUiEvent
   class OnShowUsernamesChanged(val showUsernames: Boolean) : SettingsUiEvent
   class OnEnableBiometricsChanged(val enabled: Boolean) : SettingsUiEvent
-  class OnConfirmedBiometrics(val cryptography: BiometricsCryptography, val iv: ByteArray) :
-    SettingsUiEvent
-  
-  object OnCancelBiometrics : SettingsUiEvent
+  class OnBiometricsEvent(val event: BiometricsEvent) : SettingsUiEvent
   object OnClearImagesCacheClicked : SettingsUiEvent
   object OnBackPressed : SettingsUiEvent
 }
@@ -31,11 +29,7 @@ sealed interface SettingsCommand {
   
   object FetchData : SettingsCommand
   class ChangeShowUsernames(val show: Boolean) : SettingsCommand
-  
-  class EnableBiometrics(
-    val cryptography: BiometricsCryptography, val iv: ByteArray
-  ) : SettingsCommand
-  
+  class EnableBiometrics(val cryptography: BiometricsCryptography) : SettingsCommand
   object DisableBiometrics : SettingsCommand
   object ClearImagesCache : SettingsCommand
   
@@ -51,6 +45,7 @@ sealed interface SettingsNews {
   object ShowMasterPasswordChanged : SettingsNews
   object ShowBiometricsPrompt : SettingsNews
   object ShowBiometricsAdded : SettingsNews
+  class ShowBiometricsError(val error: SettingsBiometricsError) : SettingsNews
   object ShowImagesCacheCleared : SettingsNews
 }
 
@@ -63,4 +58,8 @@ data class SettingsState(
 
 enum class EnterPasswordDialogState {
   SHOWN, HIDDEN, HIDDEN_KEEPING_KEYBOARD
+}
+
+enum class SettingsBiometricsError {
+  LOCKOUT, LOCKOUT_PERMANENT, OTHER
 }

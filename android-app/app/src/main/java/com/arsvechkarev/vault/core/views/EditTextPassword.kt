@@ -8,7 +8,7 @@ import android.view.inputmethod.EditorInfo
 import android.widget.EditText
 import android.widget.FrameLayout
 import com.arsvechkarev.vault.R
-import com.arsvechkarev.vault.viewbuilding.Dimens.IconSize
+import com.arsvechkarev.vault.viewbuilding.Dimens.ImageSize
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginLarge
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginSmall
 import com.arsvechkarev.vault.viewbuilding.Fonts
@@ -39,7 +39,7 @@ class EditTextPassword(context: Context) : FrameLayout(context) {
   
   init {
     withViewBuilder {
-      val imageSize = IconSize
+      val imageSize = ImageSize
       val iconMarginStart = MarginLarge
       EditText(MatchParent, MatchParent) {
         paddings(top = MarginSmall, bottom = MarginSmall, end = imageSize + iconMarginStart)

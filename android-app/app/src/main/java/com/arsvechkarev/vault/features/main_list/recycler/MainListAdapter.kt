@@ -22,9 +22,9 @@ import com.arsvechkarev.vault.recycler.delegate
 import com.arsvechkarev.vault.viewbuilding.Colors
 import com.arsvechkarev.vault.viewbuilding.Dimens.GradientDrawableHeight
 import com.arsvechkarev.vault.viewbuilding.Dimens.HorizontalMarginSmall
-import com.arsvechkarev.vault.viewbuilding.Dimens.IconSize
-import com.arsvechkarev.vault.viewbuilding.Dimens.IconSizeBig
 import com.arsvechkarev.vault.viewbuilding.Dimens.ImageNoEntriesSize
+import com.arsvechkarev.vault.viewbuilding.Dimens.ImageSize
+import com.arsvechkarev.vault.viewbuilding.Dimens.ImageSizeBig
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginLarge
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginNormal
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginSmall
@@ -87,7 +87,7 @@ class MainListAdapter(
             clipChildren = false
             paddingHorizontal(HorizontalMarginSmall)
             paddingVertical(MarginSmall)
-            ImageView(IconSizeBig, IconSizeBig) {
+            ImageView(ImageSizeBig, ImageSizeBig) {
               id(ItemPasswordEntryImage)
               margins(start = MarginNormal)
               constraints {
@@ -154,14 +154,14 @@ class MainListAdapter(
             rippleBackground(Colors.Ripple)
             paddingHorizontal(HorizontalMarginSmall)
             paddingVertical(MarginSmall)
-            FrameLayout(IntSize(IconSizeBig), IntSize(IconSizeBig)) {
+            FrameLayout(IntSize(ImageSizeBig), IntSize(ImageSizeBig)) {
               layoutGravity(CENTER_VERTICAL)
               margins(start = MarginNormal, end = MarginNormal)
               View(MatchParent, MatchParent) {
                 layoutGravity(CENTER)
                 backgroundCircle(Colors.Accent)
               }
-              ImageView(IconSize, IconSize) {
+              ImageView(ImageSize, ImageSize) {
                 layoutGravity(CENTER)
                 image(R.drawable.ic_plain_text)
               }

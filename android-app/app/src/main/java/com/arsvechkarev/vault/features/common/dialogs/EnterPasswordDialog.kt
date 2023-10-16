@@ -26,7 +26,7 @@ import com.arsvechkarev.vault.features.common.dialogs.EnterPasswordDialog.Mode.C
 import com.arsvechkarev.vault.features.common.dialogs.EnterPasswordDialog.Mode.ImportingPasswords
 import com.arsvechkarev.vault.viewbuilding.Colors
 import com.arsvechkarev.vault.viewbuilding.Dimens
-import com.arsvechkarev.vault.viewbuilding.Dimens.IconSize
+import com.arsvechkarev.vault.viewbuilding.Dimens.ImageSize
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginExtraLarge
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginNormal
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginSmall
@@ -83,7 +83,7 @@ class EnterPasswordDialog(context: Context) : FrameLayout(context) {
           TextView(WrapContent, WrapContent, style = BoldTextView) {
             id(Title)
             textSize(TextSizes.H2)
-            margins(end = IconSize * 2)
+            margins(end = ImageSize * 2)
             layoutGravity(CENTER_VERTICAL)
           }
           ImageView(WrapContent, WrapContent, style = ImageCross) {

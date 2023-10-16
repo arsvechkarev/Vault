@@ -40,8 +40,6 @@ import viewdsl.setColors
 import viewdsl.textColor
 import viewdsl.textSize
 
-
-@Suppress("FunctionName")
 object Styles : DefaultStyles {
   
   override val BaseRootBackground: Style<View> = {
@@ -158,9 +156,9 @@ object Styles : DefaultStyles {
   val Switch: SwitchCompat.() -> Unit = {
     setColors(
       colorThumbEnabled = Colors.Accent,
-      colorThumbDisabled = Colors.SwitchThumbDisabled,
+      colorThumbDisabled = Colors.SwitchThumbUnchecked,
       colorTrackEnabled = Colors.AccentHeavy,
-      colorTrackDisabled = Colors.SwitchTrackDisabled,
+      colorTrackDisabled = Colors.SwitchTrackUnchecked,
     )
   }
   

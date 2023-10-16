@@ -13,7 +13,9 @@ import com.arsvechkarev.vault.core.extensions.stringNullableArg
 import com.arsvechkarev.vault.core.mvi.ext.subscribe
 import com.arsvechkarev.vault.core.mvi.ext.viewModelStore
 import com.arsvechkarev.vault.core.views.Snackbar
+import com.arsvechkarev.vault.core.views.Snackbar.Companion.Snackbar
 import com.arsvechkarev.vault.core.views.Snackbar.Companion.snackbar
+import com.arsvechkarev.vault.core.views.Snackbar.Type.CHECKMARK
 import com.arsvechkarev.vault.features.common.Durations
 import com.arsvechkarev.vault.features.common.TextState
 import com.arsvechkarev.vault.features.common.di.CoreComponentHolder.coreComponent
@@ -87,7 +89,6 @@ import viewdsl.Size.Companion.WrapContent
 import viewdsl.Size.Companion.ZERO
 import viewdsl.Size.IntSize
 import viewdsl.circleRippleBackground
-import viewdsl.classNameTag
 import viewdsl.constraints
 import viewdsl.font
 import viewdsl.gone
@@ -364,9 +365,8 @@ class PasswordEntryScreen : BaseFragmentScreen() {
       }
       LoadingDialog()
       InfoDialog()
-      child<Snackbar>(MatchParent, WrapContent) {
-        classNameTag()
-        layoutGravity(Gravity.BOTTOM)
+      Snackbar {
+        layoutGravity(Gravity.BOTTOM or Gravity.CENTER_HORIZONTAL)
         margin(MarginNormal)
       }
     }
@@ -560,11 +560,11 @@ class PasswordEntryScreen : BaseFragmentScreen() {
   private fun handleNews(news: PasswordEntryNews) {
     val snackbar = viewAs<Snackbar>()
     when (news) {
-      ShowTitleCopied -> snackbar.show(R.string.text_title_copied)
-      ShowUsernameCopied -> snackbar.show(R.string.text_username_copied)
-      ShowPasswordCopied -> snackbar.show(R.string.text_password_copied)
-      ShowUrlCopied -> snackbar.show(R.string.text_url_copied)
-      ShowNotesCopied -> snackbar.show(R.string.text_notes_copied)
+      ShowTitleCopied -> snackbar.show(CHECKMARK, R.string.text_title_copied)
+      ShowUsernameCopied -> snackbar.show(CHECKMARK, R.string.text_username_copied)
+      ShowPasswordCopied -> snackbar.show(CHECKMARK, R.string.text_password_copied)
+      ShowUrlCopied -> snackbar.show(CHECKMARK, R.string.text_url_copied)
+      ShowNotesCopied -> snackbar.show(CHECKMARK, R.string.text_notes_copied)
       is ReloadTitleIcon -> {
         imageView(ImageTitle).setIconForTitle(news.title, onImageLoadingFailed = {
           store.tryDispatch(OnImagesLoadingFailed)
@@ -598,7 +598,7 @@ class PasswordEntryScreen : BaseFragmentScreen() {
     if (browserIntent.resolveActivity(requireContext().packageManager) != null) {
       startActivity(browserIntent)
     } else {
-      snackbar.show(R.string.text_browser_not_found)
+      snackbar.show(CHECKMARK, R.string.text_browser_not_found)
     }
   }
   

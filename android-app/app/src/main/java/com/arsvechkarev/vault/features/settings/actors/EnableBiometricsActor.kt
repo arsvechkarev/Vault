@@ -24,7 +24,7 @@ class EnableBiometricsActor(
           val masterPassword = masterPasswordProvider.provideMasterPassword()
           val passwordBytes = masterPassword.encryptedValueField.getBinary()
           val encryptedBytes = command.cryptography.perform(passwordBytes)
-          biometricsStorage.saveBiometricsData(encryptedBytes, command.iv)
+          biometricsStorage.saveBiometricsData(encryptedBytes, command.cryptography.iv)
           BiometricsAdded
         }
   }

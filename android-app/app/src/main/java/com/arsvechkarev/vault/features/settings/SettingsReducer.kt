@@ -1,9 +1,14 @@
 package com.arsvechkarev.vault.features.settings
 
 import com.arsvechkarev.vault.core.mvi.tea.DslReducer
+import com.arsvechkarev.vault.features.common.biometrics.BiometricsEvent
+import com.arsvechkarev.vault.features.common.biometrics.BiometricsEvent.ErrorType
 import com.arsvechkarev.vault.features.settings.EnterPasswordDialogState.HIDDEN
 import com.arsvechkarev.vault.features.settings.EnterPasswordDialogState.HIDDEN_KEEPING_KEYBOARD
 import com.arsvechkarev.vault.features.settings.EnterPasswordDialogState.SHOWN
+import com.arsvechkarev.vault.features.settings.SettingsBiometricsError.LOCKOUT
+import com.arsvechkarev.vault.features.settings.SettingsBiometricsError.LOCKOUT_PERMANENT
+import com.arsvechkarev.vault.features.settings.SettingsBiometricsError.OTHER
 import com.arsvechkarev.vault.features.settings.SettingsCommand.ChangeShowUsernames
 import com.arsvechkarev.vault.features.settings.SettingsCommand.ClearImagesCache
 import com.arsvechkarev.vault.features.settings.SettingsCommand.DisableBiometrics
@@ -20,14 +25,14 @@ import com.arsvechkarev.vault.features.settings.SettingsEvent.ShowUsernamesRecei
 import com.arsvechkarev.vault.features.settings.SettingsNews.SetBiometricsEnabled
 import com.arsvechkarev.vault.features.settings.SettingsNews.SetShowUsernames
 import com.arsvechkarev.vault.features.settings.SettingsNews.ShowBiometricsAdded
+import com.arsvechkarev.vault.features.settings.SettingsNews.ShowBiometricsError
 import com.arsvechkarev.vault.features.settings.SettingsNews.ShowBiometricsPrompt
 import com.arsvechkarev.vault.features.settings.SettingsNews.ShowImagesCacheCleared
 import com.arsvechkarev.vault.features.settings.SettingsNews.ShowMasterPasswordChanged
 import com.arsvechkarev.vault.features.settings.SettingsUiEvent.OnBackPressed
-import com.arsvechkarev.vault.features.settings.SettingsUiEvent.OnCancelBiometrics
+import com.arsvechkarev.vault.features.settings.SettingsUiEvent.OnBiometricsEvent
 import com.arsvechkarev.vault.features.settings.SettingsUiEvent.OnChangeMasterPasswordClicked
 import com.arsvechkarev.vault.features.settings.SettingsUiEvent.OnClearImagesCacheClicked
-import com.arsvechkarev.vault.features.settings.SettingsUiEvent.OnConfirmedBiometrics
 import com.arsvechkarev.vault.features.settings.SettingsUiEvent.OnEnableBiometricsChanged
 import com.arsvechkarev.vault.features.settings.SettingsUiEvent.OnEnteredPasswordToChangeMasterPassword
 import com.arsvechkarev.vault.features.settings.SettingsUiEvent.OnHideEnterPasswordDialog
@@ -72,12 +77,25 @@ class SettingsReducer : DslReducer<SettingsState, SettingsEvent,
           commands(DisableBiometrics)
         }
       }
-      is OnConfirmedBiometrics -> {
-        commands(EnableBiometrics(event.cryptography, event.iv))
-      }
-      OnCancelBiometrics -> {
-        state { copy(biometricsEnabled = false) }
-        news(SetBiometricsEnabled(enabled = false, animate = true))
+      is OnBiometricsEvent -> {
+        when (event.event) {
+          is BiometricsEvent.Success -> {
+            commands(EnableBiometrics(event.event.cryptography))
+          }
+          is BiometricsEvent.Error -> {
+            state { copy(biometricsEnabled = false) }
+            val news = buildList {
+              when (event.event.error) {
+                ErrorType.LOCKOUT -> add(ShowBiometricsError(LOCKOUT))
+                ErrorType.LOCKOUT_PERMANENT -> add(ShowBiometricsError(LOCKOUT_PERMANENT))
+                ErrorType.OTHER -> add(ShowBiometricsError(OTHER))
+                else -> Unit
+              }
+              add(SetBiometricsEnabled(enabled = false, animate = true))
+            }
+            news(*news.toTypedArray())
+          }
+        }
       }
       OnClearImagesCacheClicked -> {
         commands(ClearImagesCache)

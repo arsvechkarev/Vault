@@ -10,6 +10,7 @@ import com.arsvechkarev.vault.core.mvi.ext.subscribe
 import com.arsvechkarev.vault.core.mvi.ext.viewModelStore
 import com.arsvechkarev.vault.core.views.Snackbar.Companion.Snackbar
 import com.arsvechkarev.vault.core.views.Snackbar.Companion.snackbar
+import com.arsvechkarev.vault.core.views.Snackbar.Type.CHECKMARK
 import com.arsvechkarev.vault.features.common.Durations
 import com.arsvechkarev.vault.features.common.TextState
 import com.arsvechkarev.vault.features.common.di.CoreComponentHolder.coreComponent
@@ -210,7 +211,7 @@ class PlainTextEntryScreen : BaseFragmentScreen() {
       InfoDialog()
       LoadingDialog()
       Snackbar {
-        layoutGravity(Gravity.BOTTOM)
+        layoutGravity(Gravity.BOTTOM or Gravity.CENTER_HORIZONTAL)
         margin(MarginNormal)
       }
     }
@@ -311,10 +312,10 @@ class PlainTextEntryScreen : BaseFragmentScreen() {
     when (news) {
       is SetTitle -> editText(EditTextTitle).setTextSilently(news.title, titleTextWatcher)
       is SetText -> editText(EditTextText).setTextSilently(news.text, textTextWatcher)
-      ShowTitleCopied -> snackbar.show(R.string.text_title_copied)
-      ShowTextCopied -> snackbar.show(R.string.text_text_copied)
+      ShowTitleCopied -> snackbar.show(CHECKMARK, R.string.text_title_copied)
+      ShowTextCopied -> snackbar.show(CHECKMARK, R.string.text_text_copied)
       ShowPlainTextEntryCreated -> {
-        snackbar.show(R.string.text_plain_text_created)
+        snackbar.show(CHECKMARK, R.string.text_plain_text_created)
         requireContext().hideKeyboard()
         editText(EditTextTitle).clearFocus()
         editText(EditTextText).clearFocus()

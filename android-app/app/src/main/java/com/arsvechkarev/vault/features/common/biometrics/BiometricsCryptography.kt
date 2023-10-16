@@ -6,6 +6,8 @@ interface BiometricsCryptography {
   
   suspend fun perform(data: ByteArray): ByteArray
   
+  val iv: ByteArray
+  
   companion object {
     
     fun create(cipher: Cipher): BiometricsCryptography {
@@ -21,4 +23,6 @@ class BiometricsCryptographyImpl(
   override suspend fun perform(data: ByteArray): ByteArray {
     return cipher.doFinal(data)
   }
+  
+  override val iv: ByteArray get() = cipher.iv
 }

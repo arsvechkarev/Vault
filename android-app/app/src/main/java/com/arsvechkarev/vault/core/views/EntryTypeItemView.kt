@@ -4,8 +4,8 @@ import android.view.Gravity.CENTER
 import android.view.Gravity.CENTER_VERTICAL
 import android.view.ViewGroup
 import com.arsvechkarev.vault.viewbuilding.Colors
-import com.arsvechkarev.vault.viewbuilding.Dimens.IconSize
-import com.arsvechkarev.vault.viewbuilding.Dimens.IconSizeBig
+import com.arsvechkarev.vault.viewbuilding.Dimens.ImageSize
+import com.arsvechkarev.vault.viewbuilding.Dimens.ImageSizeBig
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginNormal
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginSmall
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginTiny
@@ -31,13 +31,13 @@ fun ViewGroup.EntryTypeItemView(iconRes: Int, textRes: Int, onClick: () -> Unit)
       paddings(start = MarginNormal + MarginTiny, top = MarginSmall, bottom = MarginSmall)
       rippleBackground(Colors.Ripple)
       onClick(onClick)
-      FrameLayout(IntSize(IconSizeBig), IntSize(IconSizeBig)) {
+      FrameLayout(IntSize(ImageSizeBig), IntSize(ImageSizeBig)) {
         layoutGravity(CENTER_VERTICAL)
         View(MatchParent, MatchParent) {
           layoutGravity(CENTER)
           backgroundCircle(Colors.Accent)
         }
-        ImageView(IconSize, IconSize) {
+        ImageView(ImageSize, ImageSize) {
           layoutGravity(CENTER)
           image(iconRes)
         }

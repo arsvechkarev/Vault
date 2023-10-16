@@ -1,7 +1,7 @@
 package com.arsvechkarev.vault.features.common.domain
 
-import com.arsvechkarev.vault.features.common.data.Preferences
 import com.arsvechkarev.vault.features.common.data.network.NetworkUrlLoader
+import com.arsvechkarev.vault.features.common.data.preferences.Preferences
 import java.util.concurrent.TimeUnit
 
 private const val BASE_URL_ICON_NAMES = "https://raw.githubusercontent.com/arsvechkarev/Vault/master/icons/names.txt"

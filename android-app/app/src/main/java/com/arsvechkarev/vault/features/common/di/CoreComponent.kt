@@ -55,7 +55,7 @@ interface CoreComponent :
         observersModule = ObserversModuleImpl(),
         preferencesModule = preferencesModule,
         imagesLoadingModule = ImagesLoadingModuleImpl(coreModule, ioModule, preferencesModule),
-        biometricsModule = BiometricsModuleImpl(coreModule)
+        biometricsModule = BiometricsModuleImpl(coreModule, preferencesModule)
       )
     }
   }

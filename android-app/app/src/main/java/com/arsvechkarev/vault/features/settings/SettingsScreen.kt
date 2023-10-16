@@ -171,7 +171,7 @@ class SettingsScreen : BaseFragmentScreen() {
   }
   
   private val biometricsDialog by lazy {
-    BiometricsDialog.create(this, R.string.text_biometrics_add_fingerprint)
+    BiometricsDialog.create(this, R.string.text_biometrics_add)
   }
   
   private val store by viewModelStore { SettingsStore(coreComponent) }

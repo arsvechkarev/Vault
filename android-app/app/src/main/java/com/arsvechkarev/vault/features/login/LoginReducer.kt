@@ -7,11 +7,13 @@ import com.arsvechkarev.vault.features.common.biometrics.BiometricsEvent.ErrorTy
 import com.arsvechkarev.vault.features.common.biometrics.BiometricsEvent.ErrorType.LOCKOUT_PERMANENT
 import com.arsvechkarev.vault.features.common.biometrics.BiometricsEvent.ErrorType.OTHER
 import com.arsvechkarev.vault.features.common.biometrics.BiometricsEvent.Success
+import com.arsvechkarev.vault.features.login.LoginBiometricsState.NOT_ALLOWED
 import com.arsvechkarev.vault.features.login.LoginCommand.EnterWithBiometrics
 import com.arsvechkarev.vault.features.login.LoginCommand.EnterWithMasterPassword
 import com.arsvechkarev.vault.features.login.LoginCommand.GetBiometricsEnterPossible
 import com.arsvechkarev.vault.features.login.LoginCommand.GoToMainListScreen
-import com.arsvechkarev.vault.features.login.LoginEvent.BiometricsEnterNotPossible
+import com.arsvechkarev.vault.features.login.LoginEvent.BiometricsEnterNotAllowed
+import com.arsvechkarev.vault.features.login.LoginEvent.BiometricsEnterNotEnabled
 import com.arsvechkarev.vault.features.login.LoginEvent.BiometricsEnterPossible
 import com.arsvechkarev.vault.features.login.LoginEvent.ShowFailureCheckingBiometrics
 import com.arsvechkarev.vault.features.login.LoginEvent.ShowFailureCheckingPassword
@@ -35,8 +37,12 @@ class LoginReducer : DslReducer<LoginState, LoginEvent, LoginCommand, LoginNews>
         state { copy(biometricsEnabled = true, biometricsIv = event.iv) }
         news(ShowBiometricsPrompt(event.iv))
       }
-      BiometricsEnterNotPossible -> {
+      BiometricsEnterNotEnabled -> {
         state { copy(biometricsEnabled = false) }
+        news(ShowKeyboard)
+      }
+      BiometricsEnterNotAllowed -> {
+        state { copy(biometricsEnabled = true, biometricsState = NOT_ALLOWED) }
         news(ShowKeyboard)
       }
       OnBiometricsIconClicked -> {
@@ -62,7 +68,9 @@ class LoginReducer : DslReducer<LoginState, LoginEvent, LoginCommand, LoginNews>
               OTHER -> {
                 state { copy(biometricsState = LoginBiometricsState.OTHER_ERROR) }
               }
-              CANCELLED -> Unit
+              CANCELLED -> {
+                news(ShowKeyboard)
+              }
             }
           }
         }

@@ -9,7 +9,8 @@ sealed interface LoginEvent {
   object ShowFailureCheckingPassword : LoginEvent
   object ShowFailureCheckingBiometrics : LoginEvent
   class BiometricsEnterPossible(val iv: ByteArray) : LoginEvent
-  object BiometricsEnterNotPossible : LoginEvent
+  object BiometricsEnterNotEnabled : LoginEvent
+  object BiometricsEnterNotAllowed : LoginEvent
 }
 
 sealed interface LoginUiEvent : LoginEvent {
@@ -67,5 +68,5 @@ data class LoginState(
 }
 
 enum class LoginBiometricsState {
-  OK, LOCKOUT, LOCKOUT_PERMANENT, OTHER_ERROR
+  OK, NOT_ALLOWED, LOCKOUT, LOCKOUT_PERMANENT, OTHER_ERROR
 }

@@ -1,7 +1,6 @@
 package com.arsvechkarev.vault.features.common.biometrics
 
-import android.content.Context
-import com.arsvechkarev.vault.features.common.data.AndroidSharedPreferences
+import com.arsvechkarev.vault.features.common.data.preferences.Preferences
 import java.util.Base64
 
 interface BiometricsEnabledProvider {
@@ -18,11 +17,9 @@ interface BiometricsStorage {
   suspend fun clear()
 }
 
-class BiometricsStorageImpl(context: Context) : BiometricsEnabledProvider, BiometricsStorage {
-  
-  private val prefs = AndroidSharedPreferences(
-    context.getSharedPreferences(PREFERENCES_FILENAME, Context.MODE_PRIVATE)
-  )
+class BiometricsStorageImpl(
+  private val prefs: Preferences
+) : BiometricsEnabledProvider, BiometricsStorage {
   
   override suspend fun isBiometricsEnabled(): Boolean {
     return prefs.getString(KEY_PASSWORD) != null
@@ -53,7 +50,6 @@ class BiometricsStorageImpl(context: Context) : BiometricsEnabledProvider, Biome
   
   private companion object {
     
-    const val PREFERENCES_FILENAME = "biometrics_data"
     const val KEY_PASSWORD = "password"
     const val KEY_IV = "iv"
   }

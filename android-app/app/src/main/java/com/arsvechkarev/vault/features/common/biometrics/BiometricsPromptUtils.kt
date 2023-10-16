@@ -27,7 +27,7 @@ object BiometricsPromptUtils {
   fun createBiometricPrompt(
     screen: BaseFragmentScreen,
     onSuccess: (Cipher) -> Unit,
-    onFailed: () -> Unit
+    onCancelled: () -> Unit
   ): BiometricPrompt {
     val activity = screen.requireActivity() as AppCompatActivity
     
@@ -37,12 +37,12 @@ object BiometricsPromptUtils {
       
       override fun onAuthenticationError(errCode: Int, errString: CharSequence) {
         super.onAuthenticationError(errCode, errString)
-        onFailed()
+        onCancelled()
       }
       
       override fun onAuthenticationFailed() {
         super.onAuthenticationFailed()
-        onFailed()
+        onCancelled()
       }
       
       override fun onAuthenticationSucceeded(result: BiometricPrompt.AuthenticationResult) {

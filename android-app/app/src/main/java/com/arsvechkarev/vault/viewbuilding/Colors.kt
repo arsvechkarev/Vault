@@ -7,7 +7,6 @@ object Colors {
   
   val Transparent = Color.TRANSPARENT
   val Background = "17212B".color
-  val Snackbar = "20475E".color
   val Dialog = "17212B".color
   val Icon = "FFFFFF".color
   val Ripple = "C6FFFFFF".color
@@ -27,9 +26,11 @@ object Colors {
   val PasswordVeryStrong = "069A15".color
   val Divider = "2B4453".color
   val Shadow = "BB000000".color
-  val SwitchThumbDisabled = "B9B9B9".color
-  val SwitchTrackDisabled = "5D646B".color
+  val SwitchThumbUnchecked = "B9B9B9".color
+  val SwitchTrackUnchecked = "5D646B".color
   val Shine = "BBD1D1D1".color
+  val SnackbarDefault = "20475E".color
+  val SnackbarError = Error
   val Favorite = "F4E216".color
   val FavoriteRipple = "C6F4E216".color
   

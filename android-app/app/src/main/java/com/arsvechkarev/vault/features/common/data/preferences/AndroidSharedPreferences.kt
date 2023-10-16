@@ -1,32 +1,7 @@
-package com.arsvechkarev.vault.features.common.data
+package com.arsvechkarev.vault.features.common.data.preferences
 
 import android.content.SharedPreferences
 import androidx.core.content.edit
-
-interface Preferences {
-  
-  suspend fun getAll(): Map<String, Any?>
-  
-  suspend fun saveAll(map: Map<String, Any?>)
-  
-  suspend fun setBoolean(key: String, value: Boolean)
-  
-  suspend fun getBoolean(key: String): Boolean
-  
-  suspend fun getString(key: String): String?
-  
-  suspend fun saveString(key: String, value: String)
-  
-  suspend fun getLong(key: String): Long
-  
-  suspend fun setLong(key: String, value: Long)
-  
-  suspend fun getStringSet(key: String): Set<String>?
-  
-  suspend fun setStringSet(key: String, value: Set<String>)
-  
-  suspend fun clear()
-}
 
 class AndroidSharedPreferences(
   private val sharedPreferences: SharedPreferences
@@ -52,7 +27,7 @@ class AndroidSharedPreferences(
     }
   }
   
-  override suspend fun setBoolean(key: String, value: Boolean) {
+  override suspend fun saveBoolean(key: String, value: Boolean) {
     sharedPreferences.edit(commit = true) { putBoolean(key, value) }
   }
   
@@ -72,7 +47,7 @@ class AndroidSharedPreferences(
     return sharedPreferences.getLong(key, -1)
   }
   
-  override suspend fun setLong(key: String, value: Long) {
+  override suspend fun saveLong(key: String, value: Long) {
     sharedPreferences.edit(commit = true) { putLong(key, value) }
   }
   
@@ -80,7 +55,7 @@ class AndroidSharedPreferences(
     return sharedPreferences.getStringSet(key, null)
   }
   
-  override suspend fun setStringSet(key: String, value: Set<String>) {
+  override suspend fun saveStringSet(key: String, value: Set<String>) {
     sharedPreferences.edit(commit = true) { putStringSet(key, value) }
   }
   

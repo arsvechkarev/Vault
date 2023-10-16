@@ -57,10 +57,6 @@ class BiometricsDialog private constructor(
         }
       }
       
-      override fun onAuthenticationFailed() {
-      
-      }
-      
       override fun onAuthenticationSucceeded(result: BiometricPrompt.AuthenticationResult) {
         super.onAuthenticationSucceeded(result)
         result.cryptoObject?.cipher?.let {

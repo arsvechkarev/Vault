@@ -17,6 +17,7 @@ import com.arsvechkarev.vault.features.common.dialogs.LoadingDialog
 import com.arsvechkarev.vault.features.common.dialogs.loadingDialog
 import com.arsvechkarev.vault.features.login.LoginBiometricsState.LOCKOUT
 import com.arsvechkarev.vault.features.login.LoginBiometricsState.LOCKOUT_PERMANENT
+import com.arsvechkarev.vault.features.login.LoginBiometricsState.NOT_ALLOWED
 import com.arsvechkarev.vault.features.login.LoginBiometricsState.OK
 import com.arsvechkarev.vault.features.login.LoginBiometricsState.OTHER_ERROR
 import com.arsvechkarev.vault.features.login.LoginNews.ShowBiometricsPrompt
@@ -51,7 +52,6 @@ import viewdsl.gravity
 import viewdsl.hideKeyboard
 import viewdsl.id
 import viewdsl.image
-import viewdsl.imageTint
 import viewdsl.isVisible
 import viewdsl.margin
 import viewdsl.marginHorizontal
@@ -124,9 +124,9 @@ class LoginScreen : BaseFragmentScreen() {
           image(R.drawable.ic_fingerprint)
           margins(bottom = MarginSmall)
         }
-        child<FixedHeightTextView>(WrapContent, WrapContent, style = SecondaryTextView) {
+        TextView(WrapContent, WrapContent, style = SecondaryTextView) {
           id(TextBiometrics)
-          exampleText = context.getString(R.string.text_biometrics_error_lockout_permanent)
+          gravity(CENTER)
         }
       }
       TextView(MatchParent, WrapContent, style = Button()) {
@@ -150,7 +150,7 @@ class LoginScreen : BaseFragmentScreen() {
   private val store by viewModelStore { LoginStore(coreComponent) }
   
   private val biometricsDialog by lazy {
-    BiometricsDialog.create(this, R.string.text_enter_with_fingerprint)
+    BiometricsDialog.create(this, R.string.text_enter_with_biometrics)
   }
   
   override fun onInit() {
@@ -168,12 +168,9 @@ class LoginScreen : BaseFragmentScreen() {
     } else {
       textView(TextError).clearText()
     }
-    
-    val color = if (state.biometricsState == OK) Colors.TextSecondary else Colors.Error
-    textView(TextBiometrics).textColor(color)
-    imageView(ImageBiometrics).imageTint(color)
     val textRes = when (state.biometricsState) {
       OK -> R.string.text_biometrics_tap_here
+      NOT_ALLOWED -> R.string.text_biometrics_error_not_allowed
       LOCKOUT -> R.string.text_biometrics_error_lockout
       LOCKOUT_PERMANENT -> R.string.text_biometrics_error_lockout_permanent
       OTHER_ERROR -> R.string.text_biometrics_error_other

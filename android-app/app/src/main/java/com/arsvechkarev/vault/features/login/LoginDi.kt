@@ -15,13 +15,18 @@ fun LoginStore(
     actors = listOf(
       GetBiometricsEnterPossibleActor(
         coreComponent.biometricsEnabledProvider,
-        coreComponent.biometricsStorage
+        coreComponent.biometricsAllowedManager,
+        coreComponent.biometricsStorage,
       ),
       LoginWithBiometricsActor(
         coreComponent.biometricsStorage,
+        coreComponent.biometricsAllowedManager,
         coreComponent.masterPasswordChecker
       ),
-      LoginWithPasswordActor(coreComponent.masterPasswordChecker),
+      LoginWithPasswordActor(
+        coreComponent.masterPasswordChecker,
+        coreComponent.biometricsAllowedManager
+      ),
       LoginRouterActor(coreComponent.router)
     ),
     reducer = LoginReducer(),

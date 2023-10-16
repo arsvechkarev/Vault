@@ -1,6 +1,7 @@
 package com.arsvechkarev.vault.features.login.actors
 
 import com.arsvechkarev.vault.core.mvi.tea.Actor
+import com.arsvechkarev.vault.features.common.biometrics.BiometricsAllowedManager
 import com.arsvechkarev.vault.features.common.biometrics.BiometricsStorage
 import com.arsvechkarev.vault.features.login.LoginCommand
 import com.arsvechkarev.vault.features.login.LoginCommand.EnterWithBiometrics
@@ -17,6 +18,7 @@ import kotlinx.coroutines.flow.mapLatest
 
 class LoginWithBiometricsActor(
   private val biometricsStorage: BiometricsStorage,
+  private val biometricsAllowedManager: BiometricsAllowedManager,
   private val masterPasswordChecker: MasterPasswordChecker,
 ) : Actor<LoginCommand, LoginEvent> {
   
@@ -29,6 +31,7 @@ class LoginWithBiometricsActor(
           val password = Password.fromRaw(bytes)
           if (masterPasswordChecker.isCorrect(password)) {
             MasterPasswordHolder.setMasterPassword(password)
+            biometricsAllowedManager.markBiometricsEnter()
             ShowLoginSuccess
           } else {
             ShowFailureCheckingBiometrics

@@ -1,6 +1,6 @@
 package com.arsvechkarev.vault.features.common.domain
 
-import com.arsvechkarev.vault.features.common.data.Preferences
+import com.arsvechkarev.vault.features.common.data.preferences.Preferences
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 
@@ -14,7 +14,7 @@ class ShowUsernamesInteractor(private val preferences: Preferences) {
   }
   
   suspend fun setShowUsernames(value: Boolean) {
-    preferences.setBoolean(KEY, value)
+    preferences.saveBoolean(KEY, value)
     _showUsernamesFlow.emit(value)
   }
   

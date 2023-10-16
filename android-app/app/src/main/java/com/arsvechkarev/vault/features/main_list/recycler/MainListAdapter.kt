@@ -57,6 +57,7 @@ import viewdsl.rippleBackground
 import viewdsl.text
 import viewdsl.textSize
 import viewdsl.viewAs
+import viewdsl.visible
 
 class MainListAdapter(
   private val onItemClick: (EntryItem) -> Unit,
@@ -124,6 +125,7 @@ class MainListAdapter(
             onImageLoadingFailed)
           itemView.viewAs<TextView>(ItemPasswordEntryTitle).text(item.title)
           if (item.username.isNotEmpty()) {
+            itemView.viewAs<TextView>(ItemPasswordEntryUsername).visible()
             itemView.viewAs<TextView>(ItemPasswordEntryUsername).text(item.username)
             itemView.viewAs<TextView>(ItemPasswordEntryTitle).constraints {
               startToEndOf(ItemPasswordEntryImage)

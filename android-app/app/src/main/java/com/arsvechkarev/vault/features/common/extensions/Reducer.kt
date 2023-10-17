@@ -6,7 +6,6 @@ import com.arsvechkarev.vault.features.common.reset
 import com.arsvechkarev.vault.features.common.update
 import domain.model.BaseEntry
 
-
 fun <Item : BaseEntry, State : Any, Command : Any,
     News : Any> DslReducer<State, *, Command, News>.handleAction(
   itemProvider: () -> Item,

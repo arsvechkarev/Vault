@@ -182,7 +182,7 @@ class PlainTextEntryScreen : BaseFragmentScreen() {
           constraints {
             topToBottomOf(TitleText)
             startToStartOf(parent)
-            endToEndOf(ImageTextAction)
+            endToStartOf(ImageTextAction)
           }
         }
         ImageView(WrapContent, WrapContent) {

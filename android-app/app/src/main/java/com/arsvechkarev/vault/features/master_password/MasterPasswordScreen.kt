@@ -3,8 +3,10 @@ package com.arsvechkarev.vault.features.master_password
 import android.content.Context
 import android.view.Gravity
 import android.view.Gravity.CENTER
+import android.view.Gravity.CENTER_VERTICAL
 import android.view.View
 import android.view.animation.AnimationUtils
+import android.widget.TextSwitcher
 import android.widget.ViewSwitcher
 import com.arsvechkarev.vault.R
 import com.arsvechkarev.vault.core.extensions.arg
@@ -63,7 +65,6 @@ import viewdsl.animateInvisible
 import viewdsl.animateVisible
 import viewdsl.classNameTag
 import viewdsl.clearText
-import viewdsl.gravity
 import viewdsl.hideKeyboard
 import viewdsl.id
 import viewdsl.invisible
@@ -82,25 +83,24 @@ class MasterPasswordScreen : BaseFragmentScreen() {
     RootFrameLayout(MatchParent, MatchParent) {
       id(MasterPasswordScreenRoot)
       HorizontalLayout(MatchParent, WrapContent) {
-        id(RepeatPasswordLayout)
-        invisible()
-        margins(top = MarginNormal + StatusBarHeight, start = MarginNormal, end = MarginNormal)
+        margins(top = MarginMedium + StatusBarHeight, start = MarginSmall)
         ImageView(WrapContent, WrapContent, style = ImageBack) {
           onClick { store.tryDispatch(OnBackPressed) }
         }
-        TextView(WrapContent, WrapContent, style = BoldTextView) {
-          layoutGravity(CENTER)
-          text(R.string.text_repeat_password)
-          margins(start = MarginLarge, end = MarginLarge)
-          gravity(CENTER)
-          textSize(TextSizes.H1)
+        child<TextSwitcher>(WrapContent, WrapContent) {
+          id(TitleSwitcher)
+          layoutGravity(CENTER_VERTICAL)
+          TextView(WrapContent, WrapContent, style = BoldTextView) {
+            id(TitleFirst)
+            margins(start = MarginNormal)
+            textSize(TextSizes.H1)
+          }
+          TextView(WrapContent, WrapContent, style = BoldTextView) {
+            id(TitleSecond)
+            margins(start = MarginNormal)
+            textSize(TextSizes.H1)
+          }
         }
-      }
-      TextView(MatchParent, WrapContent, style = BoldTextView) {
-        id(TextTitle)
-        margins(top = MarginMedium + StatusBarHeight, start = MarginNormal, end = MarginNormal)
-        gravity(CENTER)
-        textSize(TextSizes.H1)
       }
       VerticalLayout(MatchParent, WrapContent) {
         layoutGravity(CENTER)
@@ -175,13 +175,13 @@ class MasterPasswordScreen : BaseFragmentScreen() {
   
   private fun render(state: MasterPasswordState) {
     when (state.mode) {
-      CREATING_NEW -> textView(TextTitle).text(R.string.text_create_master_password)
-      CHANGE_EXISTING -> textView(TextTitle).text(R.string.text_change_master_password)
+      CREATING_NEW -> textView(TitleFirst).text(R.string.text_create_master_password)
+      CHANGE_EXISTING -> textView(TitleFirst).text(R.string.text_change_master_password)
     }
     if (passwordEnteringState != state.passwordEnteringState) {
       passwordEnteringState = state.passwordEnteringState
       when (passwordEnteringState) {
-        INITIAL -> switchToEnterPasswordState()
+        INITIAL -> switchToEnterPasswordState(state.mode)
         REPEATING -> switchToRepeatPasswordState()
       }
     }
@@ -249,11 +249,12 @@ class MasterPasswordScreen : BaseFragmentScreen() {
     textView(TextPasswordStrength).text(textResId)
   }
   
-  private fun switchToEnterPasswordState() {
+  private fun switchToEnterPasswordState(mode: MasterPasswordScreenMode) {
     viewAs<PasswordStrengthMeter>().setStrength(null, animate = false)
     viewAs<PasswordStrengthMeter>().visible()
-    view(TextTitle).animateVisible()
-    view(RepeatPasswordLayout).animateInvisible()
+    val textRes = if (mode == CREATING_NEW)
+      R.string.text_create_master_password else R.string.text_change_master_password
+    viewAs<TextSwitcher>(TitleSwitcher).setText(getText(textRes))
     textView(TextPasswordStrength).animateVisible()
     viewAs<ViewSwitcher>().apply {
       inAnimation = AnimationUtils.loadAnimation(requireContext(), android.R.anim.slide_in_left)
@@ -263,10 +264,9 @@ class MasterPasswordScreen : BaseFragmentScreen() {
   }
   
   private fun switchToRepeatPasswordState() {
+    viewAs<TextSwitcher>(TitleSwitcher).setText(getText(R.string.text_repeat_password))
     viewAs<EditTextPassword>(EditTextRepeatPassword).clearText()
     textView(TextPasswordStrength).animateInvisible()
-    view(TextTitle).animateInvisible()
-    view(RepeatPasswordLayout).animateVisible()
     viewAs<PasswordStrengthMeter>().invisible()
     viewAs<ViewSwitcher>().apply {
       inAnimation = AnimationUtils.loadAnimation(requireContext(), R.anim.slide_out_left)
@@ -279,9 +279,10 @@ class MasterPasswordScreen : BaseFragmentScreen() {
     
     val MasterPasswordScreenRoot = View.generateViewId()
     val TextPasswordStrength = View.generateViewId()
-    val TextTitle = View.generateViewId()
+    val TitleSwitcher = View.generateViewId()
+    val TitleFirst = View.generateViewId()
+    val TitleSecond = View.generateViewId()
     val TextContinue = View.generateViewId()
-    val RepeatPasswordLayout = View.generateViewId()
     val EditTextEnterPassword = View.generateViewId()
     val EditTextRepeatPassword = View.generateViewId()
   }

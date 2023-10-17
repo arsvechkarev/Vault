@@ -88,7 +88,7 @@ class MenuItemView(
   
   private fun getTextPadding(): Int {
     if (firstWord != null && secondWord != null) {
-      return (textPaint.getTextHeight() * 0.8f).toInt()
+      return (textPaint.getTextHeight() * 0.6f).toInt()
     }
     return (textPaint.getTextHeight())
   }

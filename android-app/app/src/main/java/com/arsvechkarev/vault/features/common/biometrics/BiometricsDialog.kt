@@ -27,11 +27,11 @@ class BiometricsDialog private constructor(
   @StringRes titleRes: Int,
 ) {
   
-  private val _events = MutableSharedFlow<BiometricsEvent>(
-    extraBufferCapacity = Int.MAX_VALUE,
-  )
+  private val _events = MutableSharedFlow<BiometricsEvent>(extraBufferCapacity = Int.MAX_VALUE)
+  private val _openedStatus = MutableSharedFlow<Boolean>(replay = 1)
   
   val events: SharedFlow<BiometricsEvent> get() = _events
+  val openedStatus: SharedFlow<Boolean> get() = _openedStatus
   
   private val prompt: BiometricPrompt
   private val promptInfo: BiometricPrompt.PromptInfo
@@ -43,6 +43,7 @@ class BiometricsDialog private constructor(
       
       @SuppressLint("RestrictedApi")
       override fun onAuthenticationError(errCode: Int, errString: CharSequence) {
+        _openedStatus.tryEmit(false)
         when (errCode) {
           ERROR_CANCELED, ERROR_USER_CANCELED, ERROR_NEGATIVE_BUTTON -> {
             _events.tryEmit(Error(CANCELLED))
@@ -58,12 +59,13 @@ class BiometricsDialog private constructor(
       }
       
       override fun onAuthenticationSucceeded(result: BiometricPrompt.AuthenticationResult) {
-        super.onAuthenticationSucceeded(result)
+        _openedStatus.tryEmit(false)
         result.cryptoObject?.cipher?.let {
           _events.tryEmit(Success(BiometricsCryptography.create(it)))
         }
       }
     }
+    
     prompt = BiometricPrompt(activity, executor, callback)
     promptInfo = BiometricPrompt.PromptInfo.Builder().apply {
       setTitle(activity.getText(titleRes))
@@ -73,6 +75,7 @@ class BiometricsDialog private constructor(
   }
   
   fun launch(cipher: Cipher) {
+    _openedStatus.tryEmit(true)
     prompt.authenticate(promptInfo, BiometricPrompt.CryptoObject(cipher))
   }
   

@@ -20,6 +20,7 @@ import com.arsvechkarev.vault.features.common.di.CoreComponentHolder.coreCompone
 import com.arsvechkarev.vault.features.common.dialogs.EnterPasswordDialog.Companion.EnterPasswordDialog
 import com.arsvechkarev.vault.features.common.dialogs.EnterPasswordDialog.Companion.enterPasswordDialog
 import com.arsvechkarev.vault.features.common.dialogs.EnterPasswordDialog.Mode.CheckingMasterPassword
+import com.arsvechkarev.vault.features.common.extensions.setStatusBarColor
 import com.arsvechkarev.vault.features.settings.EnterPasswordDialogState.HIDDEN
 import com.arsvechkarev.vault.features.settings.EnterPasswordDialogState.HIDDEN_KEEPING_KEYBOARD
 import com.arsvechkarev.vault.features.settings.EnterPasswordDialogState.SHOWN
@@ -100,7 +101,7 @@ class SettingsScreen : BaseFragmentScreen() {
         }
         VerticalLayout(MatchParent, WrapContent) {
           id(LayoutSettingsItems)
-          margins(top = GradientDrawableHeight / 3)
+          margins(top = (GradientDrawableHeight / 3.5).toInt())
           constraints {
             topToBottomOf(Title)
           }
@@ -181,6 +182,9 @@ class SettingsScreen : BaseFragmentScreen() {
     store.tryDispatch(OnInit)
     biometricsDialog.events
         .onEach { event -> store.tryDispatch(OnBiometricsEvent(event)) }
+        .launchIn(lifecycleScope)
+    biometricsDialog.openedStatus
+        .onEach { opened -> setStatusBarColor(if (opened) Colors.Black else Colors.Transparent) }
         .launchIn(lifecycleScope)
   }
   

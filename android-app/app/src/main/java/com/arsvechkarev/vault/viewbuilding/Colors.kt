@@ -6,6 +6,7 @@ import android.graphics.Color
 object Colors {
   
   val Transparent = Color.TRANSPARENT
+  val Black = "000000".color
   val Background = "17212B".color
   val Dialog = "17212B".color
   val Icon = "FFFFFF".color

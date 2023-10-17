@@ -4,6 +4,7 @@ import com.arsvechkarev.vault.core.mvi.tea.Actor
 import com.arsvechkarev.vault.features.common.Durations
 import com.arsvechkarev.vault.features.common.Router
 import com.arsvechkarev.vault.features.common.Screens.ImportPasswordsScreen
+import com.arsvechkarev.vault.features.common.Screens.LoginScreen
 import com.arsvechkarev.vault.features.common.Screens.PasswordEntryScreen
 import com.arsvechkarev.vault.features.common.Screens.PlainTextScreen
 import com.arsvechkarev.vault.features.common.Screens.SettingsScreen
@@ -12,6 +13,7 @@ import com.arsvechkarev.vault.features.main_list.MainListCommand
 import com.arsvechkarev.vault.features.main_list.MainListCommand.RouterCommand
 import com.arsvechkarev.vault.features.main_list.MainListCommand.RouterCommand.GoBack
 import com.arsvechkarev.vault.features.main_list.MainListCommand.RouterCommand.OpenScreen
+import com.arsvechkarev.vault.features.main_list.MainListCommand.RouterCommand.SwitchBackToLogin
 import com.arsvechkarev.vault.features.main_list.MainListEvent
 import com.arsvechkarev.vault.features.main_list.ScreenInfo.ImportPasswords
 import com.arsvechkarev.vault.features.main_list.ScreenInfo.NewPassword
@@ -38,6 +40,9 @@ fun MainListRouterActor(router: Router): Actor<MainListCommand, MainListEvent> {
       }
       GoBack -> {
         goBack()
+      }
+      SwitchBackToLogin -> {
+        switchToNewRoot(LoginScreen)
       }
     }
   }

@@ -5,6 +5,7 @@ import android.content.Intent
 import android.net.Uri
 import android.view.Gravity
 import android.view.View
+import android.widget.EditText
 import android.widget.ImageView
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.arsvechkarev.vault.R
@@ -421,7 +422,7 @@ class PasswordEntryScreen : BaseFragmentScreen() {
       bottomToBottomOf(TextPassword)
     }
     requireView().postDelayed({
-      editText(EditTextTitle).apply {
+      viewAsNullable<EditText>(EditTextTitle)?.apply {
         requestFocus()
         requireContext().showKeyboard(this)
       }

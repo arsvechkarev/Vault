@@ -4,5 +4,5 @@ import android.view.View
 
 interface DefaultStyles {
   
-  val BaseRootBackground: Style<View> get() = {}
+  val BaseRootBackground: Style<View>
 }

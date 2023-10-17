@@ -8,6 +8,7 @@ import com.arsvechkarev.vault.features.common.domain.ShowUsernamesInteractor
 import com.arsvechkarev.vault.features.main_list.MainListCommand
 import com.arsvechkarev.vault.features.main_list.MainListCommand.LoadData
 import com.arsvechkarev.vault.features.main_list.MainListEvent
+import com.arsvechkarev.vault.features.main_list.MainListEvent.MasterPasswordNull
 import com.arsvechkarev.vault.features.main_list.MainListEvent.UpdateData
 import com.arsvechkarev.vault.features.main_list.domain.EntriesListUiMapper
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -26,7 +27,8 @@ class LoadMainDataActor(
   override fun handle(commands: Flow<MainListCommand>): Flow<MainListEvent> {
     return commands.filterIsInstance<LoadData>()
         .mapLatest {
-          val masterPassword = masterPasswordProvider.provideMasterPassword()
+          val masterPassword = masterPasswordProvider.provideMasterPasswordIfSet()
+              ?: return@mapLatest MasterPasswordNull
           val showUsernames = showUsernamesInteractor.getShowUsernames()
           val database = entriesStorage.getDatabase(masterPassword)
           val entriesItems = entriesListUiMapper.mapItems(database, showUsernames)

@@ -3,6 +3,7 @@ package com.arsvechkarev.vault.features.plain_text_entry
 import android.content.Context
 import android.view.Gravity
 import android.view.View
+import android.widget.EditText
 import com.arsvechkarev.vault.R
 import com.arsvechkarev.vault.core.extensions.getDeleteMessageText
 import com.arsvechkarev.vault.core.extensions.stringNullableArg
@@ -232,7 +233,7 @@ class PlainTextEntryScreen : BaseFragmentScreen() {
   override fun onAppearedOnScreen() {
     if (stringNullableArg(PlainTextItem::class.qualifiedName!!) == null) {
       requireView().postDelayed({
-        editText(EditTextTitle).apply {
+        viewAsNullable<EditText>(EditTextTitle)?.apply {
           requestFocus()
           requireContext().showKeyboard(this)
         }

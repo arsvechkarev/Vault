@@ -6,6 +6,7 @@ import com.arsvechkarev.vault.features.common.domain.MasterPasswordProvider
 import com.arsvechkarev.vault.features.plain_text_entry.PlainTextEntryCommand
 import com.arsvechkarev.vault.features.plain_text_entry.PlainTextEntryCommand.FetchPlainTextEntry
 import com.arsvechkarev.vault.features.plain_text_entry.PlainTextEntryEvent
+import com.arsvechkarev.vault.features.plain_text_entry.PlainTextEntryEvent.MasterPasswordNull
 import com.arsvechkarev.vault.features.plain_text_entry.PlainTextEntryEvent.ReceivedPlainTextEntry
 import domain.interactors.KeePassPlainTextModelInteractor
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -23,7 +24,8 @@ class FetchPlainTextEntryActor(
   override fun handle(commands: Flow<PlainTextEntryCommand>): Flow<PlainTextEntryEvent> {
     return commands.filterIsInstance<FetchPlainTextEntry>()
         .mapLatest { command ->
-          val masterPassword = masterPasswordProvider.provideMasterPassword()
+          val masterPassword = masterPasswordProvider.provideMasterPasswordIfSet()
+              ?: return@mapLatest MasterPasswordNull
           val database = storage.getDatabase(masterPassword)
           val plainTextEntry = plainTextModelInteractor.getPlainTextEntry(database,
             command.plainTextId)

@@ -187,7 +187,7 @@ class LoginScreen : BaseFragmentScreen() {
     when (news) {
       ShowKeyboard -> {
         requireView().postDelayed({
-          viewAs<EditTextPassword>(EditTextPassword).showKeyboard()
+          viewAsNullable<EditTextPassword>(EditTextPassword)?.showKeyboard()
         }, Durations.DelayOpenKeyboard)
       }
       is ShowBiometricsPrompt -> {

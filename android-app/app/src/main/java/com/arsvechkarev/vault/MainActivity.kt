@@ -39,18 +39,14 @@ class MainActivity : AppCompatActivity() {
     _activityComponent =
         ActivityComponent.create(coreComponent, rootViewId, this)
     coreComponent.imagesNamesLoaderNetworkNotifier.notifyAboutNetworkAvailability(lifecycleScope)
-    figureOutScreenToGo(savedInstanceState)
+    figureOutScreenToGo()
   }
   
-  private fun figureOutScreenToGo(savedInstanceState: Bundle?) {
-    if (savedInstanceState != null) {
-      // Activity is recreated, navigator handles this case automatically
-      return
-    }
+  private fun figureOutScreenToGo() {
     if (coreComponent.databaseFileSaver.doesDatabaseExist()) {
-      coreComponent.router.goForward(Screens.LoginScreen)
+      coreComponent.router.switchToNewRoot(Screens.LoginScreen)
     } else {
-      coreComponent.router.goForward(Screens.InitialScreen)
+      coreComponent.router.switchToNewRoot(Screens.InitialScreen)
     }
   }
   

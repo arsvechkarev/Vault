@@ -63,6 +63,10 @@ abstract class BaseFragmentScreen : Fragment() {
   }
   
   fun view(tagOrId: Any): View {
+    return checkNotNull(viewNullable(tagOrId))
+  }
+  
+  fun viewNullable(tagOrId: Any): View? {
     if (viewsCache[tagOrId] == null) {
       if (tagOrId is Int) {
         viewsCache[tagOrId] = requireView().findViewById(tagOrId)
@@ -70,11 +74,15 @@ abstract class BaseFragmentScreen : Fragment() {
         viewsCache[tagOrId] = requireView().findViewWithTag(tagOrId)
       }
     }
-    return viewsCache.getValue(tagOrId)
+    return viewsCache[tagOrId]
   }
   
   inline fun <reified T : View> viewAs(tagOrId: Any = T::class.java.name): T {
     return view(tagOrId) as T
+  }
+  
+  inline fun <reified T : View> viewAsNullable(tagOrId: Any = T::class.java.name): T? {
+    return viewNullable(tagOrId) as? T?
   }
   
   fun imageView(tagOrId: Any) = viewAs<ImageView>(tagOrId)

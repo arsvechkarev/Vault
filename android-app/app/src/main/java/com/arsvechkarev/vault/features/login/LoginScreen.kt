@@ -32,6 +32,7 @@ import com.arsvechkarev.vault.viewbuilding.Dimens.CircleButtonSize
 import com.arsvechkarev.vault.viewbuilding.Dimens.ImageLogoSize
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginExtraLarge
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginLarge
+import com.arsvechkarev.vault.viewbuilding.Dimens.MarginMedium
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginNormal
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginSmall
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginTiny
@@ -110,7 +111,7 @@ class LoginScreen : BaseFragmentScreen() {
       VerticalLayout(WrapContent, WrapContent) {
         id(LayoutBiometrics)
         gravity(CENTER)
-        margins(start = MarginLarge, end = MarginLarge, bottom = MarginLarge)
+        margins(bottom = MarginLarge)
         onClick { store.tryDispatch(OnBiometricsIconClicked) }
         constraints {
           setVerticalBias(0.8f)
@@ -122,11 +123,12 @@ class LoginScreen : BaseFragmentScreen() {
         ImageView(IntSize(CircleButtonSize), IntSize(CircleButtonSize)) {
           id(ImageBiometrics)
           image(R.drawable.ic_fingerprint)
-          margins(bottom = MarginSmall)
+          margins(bottom = MarginMedium)
         }
         TextView(WrapContent, WrapContent, style = SecondaryTextView) {
           id(TextBiometrics)
           gravity(CENTER)
+          marginHorizontal(MarginNormal)
         }
       }
       TextView(MatchParent, WrapContent, style = Button()) {

@@ -33,13 +33,14 @@ class MenuContentView(context: Context) : ViewGroup(context) {
   private val crossOpenedSize = 48.dp
   private val crossBasePadding = 16.dp
   private val crossOpenedPadding = 12.dp
-  private val itemSize = 70.dp
+  private val itemSize = 60.dp
   private val itemsHorizontalPadding = 12.dp
-  private val pTop = 25.dp
-  private val pStart = 25.dp
+  private val itemsVerticalPadding = 8.dp
+  private val pTop = 20.dp
+  private val pStart = 20.dp
   private val pEnd = 12.dp
   private val pBottom = 12.dp
-  private val textSize = TextSizes.H4
+  private val textSize = TextSizes.H5
   private val backgroundPaint = Paint(Colors.Dialog)
   private var latestY = 0f
   private var latestX = 0f
@@ -240,7 +241,7 @@ class MenuContentView(context: Context) : ViewGroup(context) {
     val width = pStart + pEnd +
         maxItemWidth * 2 + itemsHorizontalPadding
     val height = pTop + pBottom +
-        crossOpenedSize + crossOpenedPadding + maxItemHeight * 2
+        crossOpenedSize + crossOpenedPadding + maxItemHeight * 2 + itemsVerticalPadding
     setMeasuredDimension(
       resolveSize(width, widthMeasureSpec),
       resolveSize(height, heightMeasureSpec),

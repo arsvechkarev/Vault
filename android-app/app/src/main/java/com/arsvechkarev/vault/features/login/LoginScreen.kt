@@ -15,6 +15,7 @@ import com.arsvechkarev.vault.features.common.biometrics.BiometricsDialog
 import com.arsvechkarev.vault.features.common.di.CoreComponentHolder.coreComponent
 import com.arsvechkarev.vault.features.common.dialogs.LoadingDialog
 import com.arsvechkarev.vault.features.common.dialogs.loadingDialog
+import com.arsvechkarev.vault.features.common.extensions.setStatusBarColor
 import com.arsvechkarev.vault.features.login.LoginBiometricsState.LOCKOUT
 import com.arsvechkarev.vault.features.login.LoginBiometricsState.LOCKOUT_PERMANENT
 import com.arsvechkarev.vault.features.login.LoginBiometricsState.NOT_ALLOWED
@@ -160,6 +161,9 @@ class LoginScreen : BaseFragmentScreen() {
     store.tryDispatch(OnInit)
     biometricsDialog.events
         .onEach { event -> store.tryDispatch(OnBiometricsEvent(event)) }
+        .launchIn(lifecycleScope)
+    biometricsDialog.openedStatus
+        .onEach { opened -> setStatusBarColor(if (opened) Colors.Black else Colors.Transparent) }
         .launchIn(lifecycleScope)
   }
   

@@ -9,11 +9,13 @@ import com.arsvechkarev.vault.features.common.reset
 import com.arsvechkarev.vault.features.plain_text_entry.PlainTextEntryCommand.Copy
 import com.arsvechkarev.vault.features.plain_text_entry.PlainTextEntryCommand.DeletePlainTextEntry
 import com.arsvechkarev.vault.features.plain_text_entry.PlainTextEntryCommand.FetchPlainTextEntry
-import com.arsvechkarev.vault.features.plain_text_entry.PlainTextEntryCommand.GoBack
+import com.arsvechkarev.vault.features.plain_text_entry.PlainTextEntryCommand.RouterCommand.GoBack
+import com.arsvechkarev.vault.features.plain_text_entry.PlainTextEntryCommand.RouterCommand.SwitchBackToLogin
 import com.arsvechkarev.vault.features.plain_text_entry.PlainTextEntryCommand.SavePlainTextEntry
 import com.arsvechkarev.vault.features.plain_text_entry.PlainTextEntryCommand.UpdatePlainTextEntry.UpdateIsFavorite
 import com.arsvechkarev.vault.features.plain_text_entry.PlainTextEntryCommand.UpdatePlainTextEntry.UpdateText
 import com.arsvechkarev.vault.features.plain_text_entry.PlainTextEntryCommand.UpdatePlainTextEntry.UpdateTitle
+import com.arsvechkarev.vault.features.plain_text_entry.PlainTextEntryEvent.MasterPasswordNull
 import com.arsvechkarev.vault.features.plain_text_entry.PlainTextEntryEvent.NotifyEntryCreated
 import com.arsvechkarev.vault.features.plain_text_entry.PlainTextEntryEvent.NotifyEntryDeleted
 import com.arsvechkarev.vault.features.plain_text_entry.PlainTextEntryEvent.ReceivedPlainTextEntry
@@ -220,6 +222,9 @@ class PlainTextEntryReducer : DslReducer<PlainTextEntryState, PlainTextEntryEven
         check(state is ExistingEntry)
         state { state.copy(showLoadingDialog = false) }
         commands(GoBack)
+      }
+      MasterPasswordNull -> {
+        commands(SwitchBackToLogin)
       }
     }
   }

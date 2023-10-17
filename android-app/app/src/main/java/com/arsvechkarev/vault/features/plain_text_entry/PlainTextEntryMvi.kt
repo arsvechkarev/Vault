@@ -8,6 +8,7 @@ sealed interface PlainTextEntryEvent {
   class ReceivedPlainTextEntry(val plainTextEntry: PlainTextEntry) : PlainTextEntryEvent
   class NotifyEntryCreated(val plainTextEntry: PlainTextEntry) : PlainTextEntryEvent
   object NotifyEntryDeleted : PlainTextEntryEvent
+  object MasterPasswordNull : PlainTextEntryEvent
   
   sealed interface UpdatedPlainTextEntry : PlainTextEntryEvent {
     class UpdatedTitle(val plainTextEntry: PlainTextEntry) : UpdatedPlainTextEntry
@@ -42,12 +43,15 @@ sealed interface PlainTextEntryCommand {
   
   class Copy(val labelRes: Int, val text: String) : PlainTextEntryCommand
   
-  object GoBack : PlainTextEntryCommand
-  
   sealed class UpdatePlainTextEntry(val plainTextEntry: PlainTextEntry) : PlainTextEntryCommand {
     class UpdateText(item: PlainTextEntry) : UpdatePlainTextEntry(item)
     class UpdateTitle(item: PlainTextEntry) : UpdatePlainTextEntry(item)
     class UpdateIsFavorite(item: PlainTextEntry) : UpdatePlainTextEntry(item)
+  }
+  
+  sealed interface RouterCommand : PlainTextEntryCommand {
+    object GoBack : RouterCommand
+    object SwitchBackToLogin : RouterCommand
   }
 }
 

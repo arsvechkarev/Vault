@@ -13,6 +13,7 @@ import com.arsvechkarev.vault.features.password_entry.PasswordEntryCommand.Delet
 import com.arsvechkarev.vault.features.password_entry.PasswordEntryCommand.FetchPasswordEntry
 import com.arsvechkarev.vault.features.password_entry.PasswordEntryCommand.RouterCommand.GoBack
 import com.arsvechkarev.vault.features.password_entry.PasswordEntryCommand.RouterCommand.GoToCreatingPasswordScreen
+import com.arsvechkarev.vault.features.password_entry.PasswordEntryCommand.RouterCommand.SwitchBackToLogin
 import com.arsvechkarev.vault.features.password_entry.PasswordEntryCommand.SavePassword
 import com.arsvechkarev.vault.features.password_entry.PasswordEntryCommand.SetupPasswordCreatingScreen
 import com.arsvechkarev.vault.features.password_entry.PasswordEntryCommand.UpdatePasswordEntry.UpdateIsFavorite
@@ -23,6 +24,7 @@ import com.arsvechkarev.vault.features.password_entry.PasswordEntryCommand.Updat
 import com.arsvechkarev.vault.features.password_entry.PasswordEntryCommand.UpdatePasswordEntry.UpdateUsername
 import com.arsvechkarev.vault.features.password_entry.PasswordEntryEvent.CreatedPasswordEntry
 import com.arsvechkarev.vault.features.password_entry.PasswordEntryEvent.DeletedPasswordEntry
+import com.arsvechkarev.vault.features.password_entry.PasswordEntryEvent.MasterPasswordNull
 import com.arsvechkarev.vault.features.password_entry.PasswordEntryEvent.NetworkAvailable
 import com.arsvechkarev.vault.features.password_entry.PasswordEntryEvent.PasswordUpdated
 import com.arsvechkarev.vault.features.password_entry.PasswordEntryEvent.ReceivedPasswordEntry
@@ -335,6 +337,9 @@ class PasswordEntryReducer :
             news(ReloadTitleIcon(state.titleState.editedText))
           }
         }
+      }
+      MasterPasswordNull -> {
+        commands(SwitchBackToLogin)
       }
     }
   }

@@ -38,6 +38,7 @@ class SettingsItem(context: Context) : ConstraintLayout(context) {
   
   init {
     withViewBuilder {
+      isSaveFromParentEnabled = false
       TextView(WrapContent, WrapContent, style = AccentTextView) {
         id(TextTitle)
         textSize(TextSizes.H5)

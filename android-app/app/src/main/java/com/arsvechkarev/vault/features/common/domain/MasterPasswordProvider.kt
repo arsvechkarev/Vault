@@ -11,6 +11,7 @@ interface MasterPasswordProvider {
 }
 
 object MasterPasswordProviderImpl : MasterPasswordProvider {
+  
   override fun provideMasterPasswordIfSet(): Password? {
     return MasterPasswordHolder.masterPassword
   }

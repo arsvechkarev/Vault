@@ -11,6 +11,7 @@ sealed interface MainListEvent {
   object ShowUsernamesChanged : MainListEvent
   object RequestReloadImages : MainListEvent
   object NetworkAvailable : MainListEvent
+  object MasterPasswordNull : MainListEvent
 }
 
 sealed interface MainListUiEvent : MainListEvent {
@@ -35,6 +36,7 @@ sealed interface MainListCommand {
   
   sealed interface RouterCommand : MainListCommand {
     class OpenScreen(val info: ScreenInfo) : RouterCommand
+    object SwitchBackToLogin : RouterCommand
     object GoBack : RouterCommand
   }
 }

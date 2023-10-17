@@ -13,6 +13,7 @@ sealed interface PasswordEntryEvent {
   class PasswordUpdated(val password: Password) : PasswordEntryEvent
   object DeletedPasswordEntry : PasswordEntryEvent
   object NetworkAvailable : PasswordEntryEvent
+  object MasterPasswordNull : PasswordEntryEvent
   
   sealed interface UpdatedPasswordEntry : PasswordEntryEvent {
     class UpdatedTitle(val passwordEntry: PasswordEntry) : UpdatedPasswordEntry
@@ -75,6 +76,7 @@ sealed interface PasswordEntryCommand {
   
   sealed interface RouterCommand : PasswordEntryCommand {
     object GoToCreatingPasswordScreen : RouterCommand
+    object SwitchBackToLogin : RouterCommand
     object GoBack : RouterCommand
   }
 }

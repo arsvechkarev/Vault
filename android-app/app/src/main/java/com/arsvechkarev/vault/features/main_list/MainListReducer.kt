@@ -7,7 +7,9 @@ import com.arsvechkarev.vault.features.main_list.MainListCommand.ExportPasswords
 import com.arsvechkarev.vault.features.main_list.MainListCommand.LoadData
 import com.arsvechkarev.vault.features.main_list.MainListCommand.RouterCommand.GoBack
 import com.arsvechkarev.vault.features.main_list.MainListCommand.RouterCommand.OpenScreen
+import com.arsvechkarev.vault.features.main_list.MainListCommand.RouterCommand.SwitchBackToLogin
 import com.arsvechkarev.vault.features.main_list.MainListEvent.ExportedPasswords
+import com.arsvechkarev.vault.features.main_list.MainListEvent.MasterPasswordNull
 import com.arsvechkarev.vault.features.main_list.MainListEvent.NetworkAvailable
 import com.arsvechkarev.vault.features.main_list.MainListEvent.RequestReloadImages
 import com.arsvechkarev.vault.features.main_list.MainListEvent.ShowUsernamesChanged
@@ -119,6 +121,9 @@ class MainListReducer : DslReducer<MainListState, MainListEvent, MainListCommand
           state { copy(errorLoadingImagesHappened = false) }
           news(NotifyDatasetChanged)
         }
+      }
+      MasterPasswordNull -> {
+        commands(SwitchBackToLogin)
       }
     }
   }

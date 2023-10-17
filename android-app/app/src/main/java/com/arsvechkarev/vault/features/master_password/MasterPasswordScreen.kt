@@ -169,7 +169,7 @@ class MasterPasswordScreen : BaseFragmentScreen() {
   
   override fun onAppearedOnScreen() {
     requireView().postDelayed({
-      viewAs<EditTextPassword>(EditTextEnterPassword).showKeyboard()
+      viewAsNullable<EditTextPassword>(EditTextEnterPassword)?.showKeyboard()
     }, Durations.DelayOpenKeyboard)
   }
   

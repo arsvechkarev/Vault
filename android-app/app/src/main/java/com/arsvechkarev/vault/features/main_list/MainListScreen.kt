@@ -51,9 +51,9 @@ import com.arsvechkarev.vault.viewbuilding.Dimens.MarginSmall
 import com.arsvechkarev.vault.viewbuilding.Styles.BoldTextView
 import com.arsvechkarev.vault.viewbuilding.Styles.TitleTextView
 import com.arsvechkarev.vault.viewbuilding.TextSizes
+import domain.CONTENT_TYPE_UNKNOWN
 import domain.DEFAULT_EXPORT_FILENAME
-import domain.EXPORT_CONTENT_TYPE
-import domain.IMPORT_CONTENT_TYPE
+import domain.MIME_TYPE_ALL
 import navigation.BaseFragmentScreen
 import viewdsl.Size.Companion.MatchParent
 import viewdsl.Size.Companion.WrapContent
@@ -140,7 +140,7 @@ class MainListScreen : BaseFragmentScreen() {
   }
   
   private val selectExportFileLauncher = coreComponent.activityResultWrapper
-      .wrapCreateFileLauncher(this, EXPORT_CONTENT_TYPE) { uri ->
+      .wrapCreateFileLauncher(this, CONTENT_TYPE_UNKNOWN) { uri ->
         store.tryDispatch(OnExportFileSelected(uri))
       }
   
@@ -173,7 +173,7 @@ class MainListScreen : BaseFragmentScreen() {
         selectExportFileLauncher.launch(DEFAULT_EXPORT_FILENAME)
       }
       LaunchSelectImportFileActivity -> {
-        selectImportFileLauncher.launch(IMPORT_CONTENT_TYPE)
+        selectImportFileLauncher.launch(MIME_TYPE_ALL)
       }
     }
   }
@@ -224,7 +224,7 @@ class MainListScreen : BaseFragmentScreen() {
     val shareIntent = Intent().apply {
       action = Intent.ACTION_SEND
       putExtra(Intent.EXTRA_STREAM, exportedFileUri)
-      type = EXPORT_CONTENT_TYPE
+      type = CONTENT_TYPE_UNKNOWN
     }
     startActivity(Intent.createChooser(shareIntent, getString(R.string.text_export_share)))
   }

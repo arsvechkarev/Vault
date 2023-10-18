@@ -6,8 +6,8 @@ import com.arsvechkarev.vault.features.common.data.files.ContextExternalFileRead
 import com.arsvechkarev.vault.features.common.data.files.ExternalFileReader
 import com.arsvechkarev.vault.features.common.data.files.PasswordsFileExporter
 import com.arsvechkarev.vault.features.common.data.files.RealPasswordsFileExporter
-import com.arsvechkarev.vault.features.common.navigation.ActivityResultWrapper
-import com.arsvechkarev.vault.features.common.navigation.RealActivityResultWrapper
+import com.arsvechkarev.vault.features.common.navigation.result_contracts.ActivityResultWrapper
+import com.arsvechkarev.vault.features.common.navigation.result_contracts.RealActivityResultWrapper
 
 object CoreComponentHolder {
   

@@ -1,4 +1,4 @@
-package com.arsvechkarev.vault.features.common.navigation
+package com.arsvechkarev.vault.features.common.navigation.result_contracts
 
 import android.net.Uri
 import androidx.activity.result.ActivityResultLauncher
@@ -18,6 +18,11 @@ interface ActivityResultWrapper {
     fragment: Fragment,
     onSuccess: (Uri) -> Unit
   ): ActivityResultLauncher<String>
+  
+  fun wrapSelectFolderLauncher(
+    fragment: Fragment,
+    onSuccess: (Uri) -> Unit
+  ): ActivityResultLauncher<Uri?>
 }
 
 class RealActivityResultWrapper : ActivityResultWrapper {
@@ -35,5 +40,12 @@ class RealActivityResultWrapper : ActivityResultWrapper {
     onSuccess: (Uri) -> Unit
   ): ActivityResultLauncher<String> {
     return fragment.registerForActivityResult(GetContent()) { it?.apply(onSuccess) }
+  }
+  
+  override fun wrapSelectFolderLauncher(
+    fragment: Fragment,
+    onSuccess: (Uri) -> Unit
+  ): ActivityResultLauncher<Uri?> {
+    return fragment.registerForActivityResult(SelectFolder()) { it?.apply(onSuccess) }
   }
 }

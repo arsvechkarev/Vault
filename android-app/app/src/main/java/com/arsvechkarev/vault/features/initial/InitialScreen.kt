@@ -16,7 +16,7 @@ import com.arsvechkarev.vault.viewbuilding.Styles.BaseTextView
 import com.arsvechkarev.vault.viewbuilding.Styles.BoldTextView
 import com.arsvechkarev.vault.viewbuilding.Styles.Button
 import com.arsvechkarev.vault.viewbuilding.TextSizes
-import domain.IMPORT_CONTENT_TYPE
+import domain.MIME_TYPE_ALL
 import navigation.BaseFragmentScreen
 import viewdsl.Size.Companion.MatchParent
 import viewdsl.Size.Companion.WrapContent
@@ -70,7 +70,7 @@ class InitialScreen : BaseFragmentScreen() {
         TextView(MatchParent, WrapContent, style = Button()) {
           id(ButtonImportPasswords)
           text(R.string.text_import_existing_vault)
-          onClick { importFileLauncher.launch(IMPORT_CONTENT_TYPE) }
+          onClick { importFileLauncher.launch(MIME_TYPE_ALL) }
         }
       }
     }

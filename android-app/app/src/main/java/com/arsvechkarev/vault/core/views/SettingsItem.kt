@@ -27,6 +27,7 @@ import viewdsl.rippleBackground
 import viewdsl.setCheckedSilently
 import viewdsl.size
 import viewdsl.text
+import viewdsl.textColor
 import viewdsl.textSize
 import viewdsl.textView
 import viewdsl.view
@@ -70,14 +71,14 @@ class SettingsItem(context: Context) : ConstraintLayout(context) {
     }
   }
   
-  private fun init(
+  private fun setup(
     id: Int,
     @StringRes title: Int,
     @StringRes description: Int,
-    clickable: Boolean = false,
-    onClick: () -> Unit = {},
-    switchEnabled: Boolean = false,
-    onSwitchChecked: (Boolean) -> Unit = {}
+    clickable: Boolean,
+    onClick: () -> Unit,
+    switchEnabled: Boolean,
+    onSwitchChecked: (Boolean) -> Unit
   ) {
     id(id)
     textView(TextTitle).text(title)
@@ -108,15 +109,30 @@ class SettingsItem(context: Context) : ConstraintLayout(context) {
     }
   }
   
+  override fun setEnabled(enabled: Boolean) {
+    super.setEnabled(enabled)
+    if (enabled) {
+      textView(TextTitle).textColor(Colors.Accent)
+      textView(TextDescription).textColor(Colors.TextSecondary)
+    } else {
+      textView(TextTitle).textColor(Colors.AccentDisabled)
+      textView(TextDescription).textColor(Colors.TextDisabled)
+    }
+  }
+  
+  fun setDescription(text: CharSequence) {
+    textView(TextDescription).text(text)
+  }
+  
   fun setCheckedSilently(checked: Boolean, animate: Boolean, onChecked: (Boolean) -> Unit) {
     viewAs<SwitchCompat>(Switch).setCheckedSilently(checked, animate, onChecked)
   }
   
   companion object {
     
-    val TextTitle = View.generateViewId()
-    val TextDescription = View.generateViewId()
-    val Switch = View.generateViewId()
+    private val TextTitle = View.generateViewId()
+    private val TextDescription = View.generateViewId()
+    private val Switch = View.generateViewId()
     
     fun ViewGroup.SettingsItem(
       id: Int,
@@ -130,7 +146,7 @@ class SettingsItem(context: Context) : ConstraintLayout(context) {
       val settingsItem = SettingsItem(context)
       settingsItem.size(MatchParent, WrapContent)
       addView(settingsItem)
-      settingsItem.init(id, title, description, clickable, onClick, switchEnabled, onSwitchChecked)
+      settingsItem.setup(id, title, description, clickable, onClick, switchEnabled, onSwitchChecked)
       return settingsItem
     }
   }

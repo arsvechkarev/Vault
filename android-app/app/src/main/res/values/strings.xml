@@ -146,6 +146,11 @@
   <string name="text_biometrics_add">Set up biometric unlock</string>
   <string name="text_biometrics_cancel">Cancel</string>
   <string name="text_biometrics_added">Biometrics successfully added</string>
+  <string name="text_storage_backup_title">Automatic backup</string>
+  <string name="text_storage_backup_description">Periodically backup passwords to the file system</string>
+  <string name="text_storage_backup_enabled">Automatic backup enabled</string>
+  <string name="text_storage_backup_folder_title">Backup folder</string>
+  <string name="text_storage_backup_folder_none_selected">None selected</string>
   <string name="text_clear_images_cache">Clear images cache</string>
   <string name="text_clear_images_cache_description">Clear all cached images of password entries</string>
   <string name="text_clear_images_cache_cleared">Images cache successfully cleared</string>

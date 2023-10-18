@@ -2,12 +2,12 @@ package com.arsvechkarev.vault.features.import_passwords
 
 import android.content.Context
 import android.net.Uri
-import android.os.Environment
 import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.arsvechkarev.vault.R
 import com.arsvechkarev.vault.core.extensions.arg
 import com.arsvechkarev.vault.core.extensions.booleanArg
+import com.arsvechkarev.vault.core.extensions.toReadablePath
 import com.arsvechkarev.vault.core.mvi.ext.subscribe
 import com.arsvechkarev.vault.core.mvi.ext.viewModelStore
 import com.arsvechkarev.vault.features.common.di.CoreComponentHolder.coreComponent
@@ -36,7 +36,7 @@ import com.arsvechkarev.vault.viewbuilding.Styles.BoldTextView
 import com.arsvechkarev.vault.viewbuilding.Styles.Button
 import com.arsvechkarev.vault.viewbuilding.Styles.SecondaryTextView
 import com.arsvechkarev.vault.viewbuilding.TextSizes
-import domain.IMPORT_CONTENT_TYPE
+import domain.MIME_TYPE_ALL
 import navigation.BaseFragmentScreen
 import viewdsl.Size.Companion.MatchParent
 import viewdsl.Size.Companion.WrapContent
@@ -47,8 +47,6 @@ import viewdsl.onClick
 import viewdsl.text
 import viewdsl.textSize
 import viewdsl.withViewBuilder
-import java.io.File
-import java.net.URLDecoder
 
 class ImportPasswordsScreen : BaseFragmentScreen() {
   
@@ -78,7 +76,7 @@ class ImportPasswordsScreen : BaseFragmentScreen() {
         VerticalLayout(MatchParent, WrapContent) {
           id(LayoutSelectFile)
           margins(start = MarginNormal, top = GradientDrawableHeight)
-          onClick { selectFileResultLauncher.launch(IMPORT_CONTENT_TYPE) }
+          onClick { selectFileResultLauncher.launch(MIME_TYPE_ALL) }
           constraints {
             topToTopOf(parent)
           }
@@ -124,7 +122,7 @@ class ImportPasswordsScreen : BaseFragmentScreen() {
   }
   
   private fun render(state: ImportPasswordsState) {
-    textView(TextSelectFile).text(getReadablePath(state.selectedFileUri))
+    textView(TextSelectFile).text(state.selectedFileUri.toReadablePath())
     if (state.showLoading) {
       loadingDialog.show()
     } else {
@@ -161,18 +159,6 @@ class ImportPasswordsScreen : BaseFragmentScreen() {
   override fun handleBackPress(): Boolean {
     store.tryDispatch(OnBackPressed)
     return true
-  }
-  
-  // Pretty much copied from https://github.com/SimpleMobileTools/Simple-File-Manager
-  private fun getReadablePath(uri: Uri): String {
-    val uriString = uri.toString()
-    val internalStorageBasePath = if (File("/storage/emulated/0").exists()) {
-      "/storage/emulated/0"
-    } else {
-      Environment.getExternalStorageDirectory().absolutePath.trimEnd('/')
-    }
-    val filePath = uriString.substring(uriString.lastIndexOf("/") + 1)
-    return internalStorageBasePath + "/" + URLDecoder.decode(filePath, "UTF-8")
   }
   
   companion object {

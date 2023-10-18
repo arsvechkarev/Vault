@@ -12,7 +12,7 @@ class AndroidSharedPreferences(
   }
   
   @Suppress("UNCHECKED_CAST")
-  override suspend fun saveAll(map: Map<String, Any?>) {
+  override suspend fun putAll(map: Map<String, Any?>) {
     sharedPreferences.edit(commit = true) {
       map.forEach { (key, value) ->
         when (value) {
@@ -27,7 +27,7 @@ class AndroidSharedPreferences(
     }
   }
   
-  override suspend fun saveBoolean(key: String, value: Boolean) {
+  override suspend fun putBoolean(key: String, value: Boolean) {
     sharedPreferences.edit(commit = true) { putBoolean(key, value) }
   }
   
@@ -39,23 +39,31 @@ class AndroidSharedPreferences(
     return sharedPreferences.getString(key, null)
   }
   
-  override suspend fun saveString(key: String, value: String) {
+  override suspend fun putString(key: String, value: String) {
     sharedPreferences.edit(commit = true) { putString(key, value) }
   }
   
   override suspend fun getLong(key: String): Long {
-    return sharedPreferences.getLong(key, -1)
+    return sharedPreferences.getLong(key, 0L)
   }
   
-  override suspend fun saveLong(key: String, value: Long) {
+  override suspend fun putLong(key: String, value: Long) {
     sharedPreferences.edit(commit = true) { putLong(key, value) }
+  }
+  
+  override suspend fun getInt(key: String): Int {
+    return sharedPreferences.getInt(key, 0)
+  }
+  
+  override suspend fun putInt(key: String, value: Int) {
+    sharedPreferences.edit(commit = true) { putInt(key, value) }
   }
   
   override suspend fun getStringSet(key: String): Set<String>? {
     return sharedPreferences.getStringSet(key, null)
   }
   
-  override suspend fun saveStringSet(key: String, value: Set<String>) {
+  override suspend fun putStringSet(key: String, value: Set<String>) {
     sharedPreferences.edit(commit = true) { putStringSet(key, value) }
   }
   

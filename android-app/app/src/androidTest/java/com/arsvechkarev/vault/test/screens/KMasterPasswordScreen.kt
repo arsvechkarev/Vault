@@ -7,10 +7,8 @@ import com.arsvechkarev.vault.features.master_password.MasterPasswordScreen
 import com.arsvechkarev.vault.features.master_password.MasterPasswordScreen.Companion.EditTextEnterPassword
 import com.arsvechkarev.vault.features.master_password.MasterPasswordScreen.Companion.EditTextRepeatPassword
 import com.arsvechkarev.vault.features.master_password.MasterPasswordScreen.Companion.MasterPasswordScreenRoot
-import com.arsvechkarev.vault.features.master_password.MasterPasswordScreen.Companion.RepeatPasswordLayout
 import com.arsvechkarev.vault.features.master_password.MasterPasswordScreen.Companion.TextContinue
 import com.arsvechkarev.vault.features.master_password.MasterPasswordScreen.Companion.TextPasswordStrength
-import com.arsvechkarev.vault.features.master_password.MasterPasswordScreen.Companion.TextTitle
 import com.arsvechkarev.vault.test.core.base.BaseScreen
 import com.arsvechkarev.vault.test.core.views.dialog.KInfoDialog
 import com.arsvechkarev.vault.test.core.views.dialog.KPasswordStrengthDialog
@@ -24,7 +22,7 @@ object KMasterPasswordScreen : BaseScreen<KMasterPasswordScreen>() {
   
   override val viewClass = MasterPasswordScreen::class.java
   
-  val title = KTextView { withId(TextTitle) }
+  val title = KTextView { withId(EditTextEnterPassword) }
   val imageBack = KImageView { withDrawable(R.drawable.ic_back) }
   val editTextEnterPassword = KEditTextPassword { withId(EditTextEnterPassword) }
   val editTextRepeatPassword = KEditTextPassword { withId(EditTextRepeatPassword) }
@@ -36,9 +34,9 @@ object KMasterPasswordScreen : BaseScreen<KMasterPasswordScreen>() {
     withId(TextContinue)
     withText("Continue")
   }
-  val repeatPasswordLayout = KView { withId(RepeatPasswordLayout) }
+  val repeatPasswordLayout = KView { withId(EditTextEnterPassword) }
   val repeatPasswordTitle = KTextView {
-    withParent { withId(RepeatPasswordLayout) }
+    withParent { withId(EditTextEnterPassword) }
     withText("Repeat password")
   }
   val passwordStrengthDialog = KPasswordStrengthDialog()

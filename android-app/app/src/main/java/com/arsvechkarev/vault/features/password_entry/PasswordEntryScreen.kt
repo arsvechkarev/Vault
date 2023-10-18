@@ -140,7 +140,6 @@ class PasswordEntryScreen : BaseFragmentScreen() {
       id(PasswordEntryScreenRoot)
       ScrollableConstraintLayout(MatchParent, MatchParent) {
         id(ScrollableConstraintLayoutId)
-        apply(Styles.BaseRootBackground)
         paddings(
           top = MarginMedium + StatusBarHeight,
           start = MarginNormal,

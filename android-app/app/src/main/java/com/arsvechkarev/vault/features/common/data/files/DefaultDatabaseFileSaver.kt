@@ -18,13 +18,13 @@ import java.util.concurrent.locks.ReentrantReadWriteLock
 import kotlin.concurrent.read
 import kotlin.concurrent.write
 
-class DatabaseFileSaverImpl(
+class DefaultDatabaseFileSaver(
   private val filename: String,
   private val context: Context,
   private val dispatchersFacade: DispatchersFacade,
+  private val scope: CoroutineScope
 ) : DatabaseFileSaver {
   
-  private val scope = CoroutineScope(dispatchersFacade.IO)
   private val lock = ReentrantReadWriteLock()
   
   override fun doesDatabaseExist(): Boolean {

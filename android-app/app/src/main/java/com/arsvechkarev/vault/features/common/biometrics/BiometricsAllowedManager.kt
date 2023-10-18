@@ -30,16 +30,12 @@ class BiometricsAllowedManagerImpl(
   
   override suspend fun markBiometricsEnter() {
     var enterCount = preferences.getLong(KEY_SUCCESSIVE_ENTER_COUNT)
-    if (enterCount == -1L) {
-      // Enter count has never been incremented before
-      enterCount = 0
-    }
-    preferences.saveLong(KEY_SUCCESSIVE_ENTER_COUNT, ++enterCount)
+    preferences.putLong(KEY_SUCCESSIVE_ENTER_COUNT, ++enterCount)
   }
   
   override suspend fun resetBiometricsStats() {
-    preferences.saveLong(KEY_LAST_PASSWORD_ENTER_TIMESTAMP, timestampProvider.now())
-    preferences.saveLong(KEY_SUCCESSIVE_ENTER_COUNT, 0L)
+    preferences.putLong(KEY_LAST_PASSWORD_ENTER_TIMESTAMP, timestampProvider.now())
+    preferences.putLong(KEY_SUCCESSIVE_ENTER_COUNT, 0L)
   }
   
   private companion object {

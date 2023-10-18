@@ -14,7 +14,7 @@ import com.arsvechkarev.vault.test.core.stub.StubActivityResultWrapper
 import com.arsvechkarev.vault.test.core.stub.StubPasswordsFileExporter
 import com.arsvechkarev.vault.test.screens.KLoginScreen
 import com.arsvechkarev.vault.test.screens.KMainListScreen
-import domain.EXPORT_CONTENT_TYPE
+import domain.CONTENT_TYPE_UNKNOWN
 import org.hamcrest.Matchers.allOf
 import org.hamcrest.Matchers.`is`
 import org.junit.Rule
@@ -62,7 +62,7 @@ class ExportPasswordsTest : VaultTestCase() {
                 `is`(Intent.EXTRA_INTENT),
                 allOf(
                   hasAction(Intent.ACTION_SEND),
-                  hasType(EXPORT_CONTENT_TYPE),
+                  hasType(CONTENT_TYPE_UNKNOWN),
                   hasExtra(Intent.EXTRA_STREAM, stubPasswordsFileExporter.exportingUri)
                 )
               )

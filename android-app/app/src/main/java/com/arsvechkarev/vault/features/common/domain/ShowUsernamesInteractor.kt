@@ -14,7 +14,7 @@ class ShowUsernamesInteractor(private val preferences: Preferences) {
   }
   
   suspend fun setShowUsernames(value: Boolean) {
-    preferences.saveBoolean(KEY, value)
+    preferences.putBoolean(KEY, value)
     _showUsernamesFlow.emit(value)
   }
   

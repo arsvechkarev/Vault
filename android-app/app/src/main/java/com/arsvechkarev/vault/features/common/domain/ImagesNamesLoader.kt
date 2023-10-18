@@ -16,7 +16,7 @@ class ImagesNamesLoader(
   
   suspend fun getFromCacheIfExists(): Set<String>? {
     val lastLoadedTime = preferences.getLong(KEY_LAST_LOADED_TIMESTAMP)
-    if (lastLoadedTime == -1L) {
+    if (lastLoadedTime == 0L) {
       // No saved timestamp, network has never been loaded, return null
       return null
     }
@@ -32,7 +32,7 @@ class ImagesNamesLoader(
     return result
         .map(List<String>::toSet)
         .onSuccess { names ->
-          preferences.saveAll(mapOf(
+          preferences.putAll(mapOf(
             KEY_IMAGES_NAMES to names,
             KEY_LAST_LOADED_TIMESTAMP to timestampProvider.now()
           ))

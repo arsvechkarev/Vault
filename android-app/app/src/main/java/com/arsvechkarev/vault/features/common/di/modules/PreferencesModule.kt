@@ -3,14 +3,12 @@ package com.arsvechkarev.vault.features.common.di.modules
 import android.content.Context
 import com.arsvechkarev.vault.features.common.data.preferences.AndroidSharedPreferences
 import com.arsvechkarev.vault.features.common.data.preferences.Preferences
-import com.arsvechkarev.vault.features.common.domain.ShowUsernamesInteractor
 
 interface PreferencesModule {
   val settingsPreferences: Preferences
   val imagesNamesPreferences: Preferences
   val biometricsDataPreferences: Preferences
   val biometricsMetadataPreferences: Preferences
-  val showUsernamesInteractor: ShowUsernamesInteractor
 }
 
 class PreferencesModuleImpl(
@@ -32,8 +30,6 @@ class PreferencesModuleImpl(
   override val biometricsMetadataPreferences = AndroidSharedPreferences(
     coreModule.application.getSharedPreferences(BIOMETRICS_METADATA_FILENAME, Context.MODE_PRIVATE)
   )
-  
-  override val showUsernamesInteractor = ShowUsernamesInteractor(settingsPreferences)
   
   companion object {
     

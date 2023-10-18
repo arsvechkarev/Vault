@@ -5,7 +5,7 @@ import com.arsvechkarev.vault.features.common.domain.ShowUsernamesInteractor
 import com.arsvechkarev.vault.features.settings.SettingsCommand
 import com.arsvechkarev.vault.features.settings.SettingsCommand.FetchData
 import com.arsvechkarev.vault.features.settings.SettingsEvent
-import com.arsvechkarev.vault.features.settings.SettingsEvent.ShowUsernamesReceived
+import com.arsvechkarev.vault.features.settings.SettingsEvent.ReceivedShowUsernames
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.filterIsInstance
@@ -19,7 +19,7 @@ class GetShowUsernamesActor(
   override fun handle(commands: Flow<SettingsCommand>): Flow<SettingsEvent> {
     return commands.filterIsInstance<FetchData>()
         .mapLatest {
-          ShowUsernamesReceived(interactor.getShowUsernames())
+          ReceivedShowUsernames(interactor.getShowUsernames())
         }
   }
 }

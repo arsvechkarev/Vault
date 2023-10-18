@@ -14,10 +14,7 @@ interface ObserversModule {
 }
 
 class ObserversModuleImpl : ObserversModule {
-  
   override val changeMasterPasswordObserver = ChangeMasterPasswordObserverImpl()
-  
   override val passwordObserver = PasswordObserverImpl()
-  
   override val creatingPasswordSetupObserver = CreatingPasswordSetupObserverImpl()
 }

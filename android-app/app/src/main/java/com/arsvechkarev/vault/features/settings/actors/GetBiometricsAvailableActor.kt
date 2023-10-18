@@ -5,7 +5,7 @@ import com.arsvechkarev.vault.features.common.biometrics.BiometricsAvailabilityP
 import com.arsvechkarev.vault.features.settings.SettingsCommand
 import com.arsvechkarev.vault.features.settings.SettingsCommand.FetchData
 import com.arsvechkarev.vault.features.settings.SettingsEvent
-import com.arsvechkarev.vault.features.settings.SettingsEvent.ShowBiometricsAvailable
+import com.arsvechkarev.vault.features.settings.SettingsEvent.ReceivedBiometricsAvailable
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.filterIsInstance
@@ -20,7 +20,7 @@ class GetBiometricsAvailableActor(
     return commands.filterIsInstance<FetchData>()
         .mapLatest {
           val available = biometricsAvailabilityProvider.isAvailable()
-          ShowBiometricsAvailable(available)
+          ReceivedBiometricsAvailable(available)
         }
   }
 }

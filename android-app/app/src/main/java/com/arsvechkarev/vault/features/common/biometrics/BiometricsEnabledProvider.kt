@@ -29,7 +29,7 @@ class BiometricsStorageImpl(
     encryptedPassword: ByteArray,
     initializationVector: ByteArray
   ) {
-    prefs.saveAll(
+    prefs.putAll(
       mapOf(
         KEY_PASSWORD to String(Base64.getEncoder().encode(encryptedPassword)),
         KEY_IV to String(Base64.getEncoder().encode(initializationVector))

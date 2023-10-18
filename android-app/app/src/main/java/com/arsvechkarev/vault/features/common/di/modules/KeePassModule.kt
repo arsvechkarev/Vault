@@ -3,7 +3,8 @@ package com.arsvechkarev.vault.features.common.di.modules
 import com.arsvechkarev.vault.features.common.data.database.BasicDatabaseStorage
 import com.arsvechkarev.vault.features.common.data.database.CachedDatabaseStorage
 import com.arsvechkarev.vault.features.common.data.database.ObservableCachedDatabaseStorage
-import com.arsvechkarev.vault.features.common.data.files.DatabaseFileSaverImpl
+import com.arsvechkarev.vault.features.common.data.files.DefaultDatabaseFileSaver
+import com.arsvechkarev.vault.features.common.data.files.StorageBackupDatabaseFileSaver
 import com.arsvechkarev.vault.features.main_list.domain.EntriesListUiMapper
 import domain.DEFAULT_INTERNAL_FILENAME
 import domain.DatabaseCache
@@ -26,7 +27,10 @@ interface KeePassModule {
   val entriesListUiMapper: EntriesListUiMapper
 }
 
-class KeePassModuleImpl(coreModule: CoreModule) : KeePassModule {
+class KeePassModuleImpl(
+  coreModule: CoreModule,
+  domainModule: DomainModule
+) : KeePassModule {
   
   private val generator = UniqueIdProvideImpl(IdGeneratorImpl)
   
@@ -40,10 +44,16 @@ class KeePassModuleImpl(coreModule: CoreModule) : KeePassModule {
     RealInstantProvider
   )
   
-  override val databaseFileSaver = DatabaseFileSaverImpl(
-    DEFAULT_INTERNAL_FILENAME,
-    coreModule.application,
-    coreModule.dispatchers
+  override val databaseFileSaver = StorageBackupDatabaseFileSaver(
+    databaseFileSaver = DefaultDatabaseFileSaver(
+      DEFAULT_INTERNAL_FILENAME,
+      coreModule.application,
+      coreModule.dispatchers,
+      coreModule.globalIOScope,
+    ),
+    databaseChangesJournal = domainModule.databaseChangesJournal,
+    storageBackupInteractor = domainModule.storageBackupInteractor,
+    scope = coreModule.globalIOScope
   )
   
   private val cachedDatabaseStorage = CachedDatabaseStorage(

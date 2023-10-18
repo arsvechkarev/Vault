@@ -15,12 +15,14 @@ object Colors {
   val AccentLight = "69ACD8".color
   val AccentRipple = "70307FB5".color
   val AccentHeavy = "235575".color
+  val AccentDisabled = "436074".color
   val WhiteCircle = "FFFFFF".color
   val Correct = "29B500".color
   val Error = "D5301E".color
   val ErrorRipple = "70E64545".color
   val TextPrimary = "FFFFFF".color
   val TextSecondary = "A3A3A3".color
+  val TextDisabled = "616161".color
   val PasswordWeak = "C80505".color
   val PasswordMedium = "DA6314".color
   val PasswordStrong = "DAAF14".color

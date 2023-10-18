@@ -83,6 +83,7 @@ dependencies {
   implementation appDependencies.lifecycleRuntime
   implementation appDependencies.coil
   implementation appDependencies.biometrics
+  implementation appDependencies.documentfile
 
   def testDependencies = rootProject.ext.testDependencies
 

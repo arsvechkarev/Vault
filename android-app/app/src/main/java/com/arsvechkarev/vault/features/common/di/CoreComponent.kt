@@ -7,6 +7,8 @@ import com.arsvechkarev.vault.features.common.di.modules.BiometricsModule
 import com.arsvechkarev.vault.features.common.di.modules.BiometricsModuleImpl
 import com.arsvechkarev.vault.features.common.di.modules.CoreModule
 import com.arsvechkarev.vault.features.common.di.modules.CoreModuleImpl
+import com.arsvechkarev.vault.features.common.di.modules.DomainModule
+import com.arsvechkarev.vault.features.common.di.modules.DomainModuleImpl
 import com.arsvechkarev.vault.features.common.di.modules.ImagesLoadingModule
 import com.arsvechkarev.vault.features.common.di.modules.ImagesLoadingModuleImpl
 import com.arsvechkarev.vault.features.common.di.modules.IoModule
@@ -21,18 +23,19 @@ import com.arsvechkarev.vault.features.common.di.modules.PasswordsModule
 import com.arsvechkarev.vault.features.common.di.modules.PasswordsModuleImpl
 import com.arsvechkarev.vault.features.common.di.modules.PreferencesModule
 import com.arsvechkarev.vault.features.common.di.modules.PreferencesModuleImpl
-import com.arsvechkarev.vault.features.common.navigation.ActivityResultWrapper
+import com.arsvechkarev.vault.features.common.navigation.result_contracts.ActivityResultWrapper
 
 interface CoreComponent :
   CoreModule,
-  KeePassModule,
+  PreferencesModule,
   IoModule,
   PasswordsModule,
   NavigationModule,
   ObserversModule,
-  PreferencesModule,
   ImagesLoadingModule,
-  BiometricsModule {
+  BiometricsModule,
+  DomainModule,
+  KeePassModule {
   
   companion object {
     
@@ -43,19 +46,21 @@ interface CoreComponent :
       externalFileReader: ExternalFileReader,
     ): CoreComponent {
       val coreModule = CoreModuleImpl(application)
-      val keePassModule = KeePassModuleImpl(coreModule)
-      val ioModule = IoModuleImpl(coreModule, externalFileReader, passwordsFileExporter)
       val preferencesModule = PreferencesModuleImpl(coreModule)
+      val ioModule = IoModuleImpl(coreModule, externalFileReader, passwordsFileExporter)
+      val domainModule = DomainModuleImpl(coreModule, preferencesModule)
+      val keePassModule = KeePassModuleImpl(coreModule, domainModule)
       return CoreComponentImpl(
         coreModule = coreModule,
-        keePassModule = keePassModule,
+        preferencesModule = preferencesModule,
         ioModule = ioModule,
         passwordsModule = PasswordsModuleImpl(keePassModule),
         navigationModule = NavigationModuleImpl(activityResultWrapper),
         observersModule = ObserversModuleImpl(),
-        preferencesModule = preferencesModule,
         imagesLoadingModule = ImagesLoadingModuleImpl(coreModule, ioModule, preferencesModule),
-        biometricsModule = BiometricsModuleImpl(coreModule, preferencesModule)
+        biometricsModule = BiometricsModuleImpl(coreModule, preferencesModule),
+        domainModule = domainModule,
+        keePassModule = keePassModule,
       )
     }
   }
@@ -63,21 +68,23 @@ interface CoreComponent :
 
 class CoreComponentImpl(
   private val coreModule: CoreModule,
-  private val keePassModule: KeePassModule,
+  private val preferencesModule: PreferencesModule,
   private val ioModule: IoModule,
   private val passwordsModule: PasswordsModule,
   private val navigationModule: NavigationModule,
   private val observersModule: ObserversModule,
-  private val preferencesModule: PreferencesModule,
   private val imagesLoadingModule: ImagesLoadingModule,
   private val biometricsModule: BiometricsModule,
+  private val domainModule: DomainModule,
+  private val keePassModule: KeePassModule,
 ) : CoreComponent,
   CoreModule by coreModule,
-  KeePassModule by keePassModule,
+  PreferencesModule by preferencesModule,
   IoModule by ioModule,
   PasswordsModule by passwordsModule,
   NavigationModule by navigationModule,
   ObserversModule by observersModule,
-  PreferencesModule by preferencesModule,
   ImagesLoadingModule by imagesLoadingModule,
-  BiometricsModule by biometricsModule
+  BiometricsModule by biometricsModule,
+  DomainModule by domainModule,
+  KeePassModule by keePassModule

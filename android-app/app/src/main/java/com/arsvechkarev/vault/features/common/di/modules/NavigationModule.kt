@@ -1,7 +1,7 @@
 package com.arsvechkarev.vault.features.common.di.modules
 
 import com.arsvechkarev.vault.features.common.Router
-import com.arsvechkarev.vault.features.common.navigation.ActivityResultWrapper
+import com.arsvechkarev.vault.features.common.navigation.result_contracts.ActivityResultWrapper
 import navigation.NavigationController
 
 interface NavigationModule {

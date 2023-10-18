@@ -1,11 +1,12 @@
 package com.arsvechkarev.vault.features.settings
 
 import android.content.Context
+import android.content.Intent
 import android.view.Gravity
 import android.view.View
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.lifecycle.lifecycleScope
 import com.arsvechkarev.vault.R
+import com.arsvechkarev.vault.core.extensions.toReadablePath
 import com.arsvechkarev.vault.core.mvi.ext.subscribe
 import com.arsvechkarev.vault.core.mvi.ext.viewModelStore
 import com.arsvechkarev.vault.core.views.SettingsItem
@@ -27,21 +28,27 @@ import com.arsvechkarev.vault.features.settings.EnterPasswordDialogState.SHOWN
 import com.arsvechkarev.vault.features.settings.SettingsBiometricsError.LOCKOUT
 import com.arsvechkarev.vault.features.settings.SettingsBiometricsError.LOCKOUT_PERMANENT
 import com.arsvechkarev.vault.features.settings.SettingsBiometricsError.OTHER
+import com.arsvechkarev.vault.features.settings.SettingsNews.LaunchFolderSelection
 import com.arsvechkarev.vault.features.settings.SettingsNews.SetBiometricsEnabled
 import com.arsvechkarev.vault.features.settings.SettingsNews.SetShowUsernames
+import com.arsvechkarev.vault.features.settings.SettingsNews.SetStorageBackupEnabled
 import com.arsvechkarev.vault.features.settings.SettingsNews.ShowBiometricsAdded
 import com.arsvechkarev.vault.features.settings.SettingsNews.ShowBiometricsError
 import com.arsvechkarev.vault.features.settings.SettingsNews.ShowBiometricsPrompt
 import com.arsvechkarev.vault.features.settings.SettingsNews.ShowImagesCacheCleared
 import com.arsvechkarev.vault.features.settings.SettingsNews.ShowMasterPasswordChanged
+import com.arsvechkarev.vault.features.settings.SettingsNews.ShowStorageBackupEnabled
 import com.arsvechkarev.vault.features.settings.SettingsUiEvent.OnBackPressed
 import com.arsvechkarev.vault.features.settings.SettingsUiEvent.OnBiometricsEvent
 import com.arsvechkarev.vault.features.settings.SettingsUiEvent.OnChangeMasterPasswordClicked
 import com.arsvechkarev.vault.features.settings.SettingsUiEvent.OnClearImagesCacheClicked
 import com.arsvechkarev.vault.features.settings.SettingsUiEvent.OnEnableBiometricsChanged
+import com.arsvechkarev.vault.features.settings.SettingsUiEvent.OnEnableStorageBackupChanged
 import com.arsvechkarev.vault.features.settings.SettingsUiEvent.OnEnteredPasswordToChangeMasterPassword
 import com.arsvechkarev.vault.features.settings.SettingsUiEvent.OnHideEnterPasswordDialog
 import com.arsvechkarev.vault.features.settings.SettingsUiEvent.OnInit
+import com.arsvechkarev.vault.features.settings.SettingsUiEvent.OnSelectBackupFolderClicked
+import com.arsvechkarev.vault.features.settings.SettingsUiEvent.OnSelectedBackupFolder
 import com.arsvechkarev.vault.features.settings.SettingsUiEvent.OnShowUsernamesChanged
 import com.arsvechkarev.vault.viewbuilding.Colors
 import com.arsvechkarev.vault.viewbuilding.Dimens.DividerHeight
@@ -77,7 +84,7 @@ class SettingsScreen : BaseFragmentScreen() {
   
   override fun buildLayout(context: Context) = context.withViewBuilder {
     RootCoordinatorLayout {
-      child<ConstraintLayout>(MatchParent, WrapContent) {
+      ScrollableConstraintLayout {
         paddings(top = StatusBarHeight + MarginMedium)
         ImageView(WrapContent, WrapContent, style = Styles.ImageBack) {
           id(ImageBack)
@@ -140,6 +147,23 @@ class SettingsScreen : BaseFragmentScreen() {
             backgroundColor(Colors.Divider)
           }
           SettingsItem(
+            id = ItemStorageBackup,
+            title = R.string.text_storage_backup_title,
+            description = R.string.text_storage_backup_description,
+            switchEnabled = true,
+            onSwitchChecked = onEnableStorageBackupChanged,
+          )
+          SettingsItem(
+            id = ItemStorageBackupFolder,
+            title = R.string.text_storage_backup_folder_title,
+            description = R.string.text_storage_backup_folder_none_selected,
+            clickable = true,
+            onClick = { store.tryDispatch(OnSelectBackupFolderClicked) },
+          )
+          View(MatchParent, IntSize(DividerHeight)) {
+            backgroundColor(Colors.Divider)
+          }
+          SettingsItem(
             id = ItemClearImagesCache,
             title = R.string.text_clear_images_cache,
             description = R.string.text_clear_images_cache_description,
@@ -171,6 +195,18 @@ class SettingsScreen : BaseFragmentScreen() {
     store.tryDispatch(OnEnableBiometricsChanged(it))
   }
   
+  private val onEnableStorageBackupChanged: (Boolean) -> Unit = {
+    store.tryDispatch(OnEnableStorageBackupChanged(it))
+  }
+  
+  private val selectFolderResultLauncher = coreComponent.activityResultWrapper
+      .wrapSelectFolderLauncher(this) { uri ->
+        context?.contentResolver?.takePersistableUriPermission(
+          uri, Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION
+        )
+        store.tryDispatch(OnSelectedBackupFolder(uri))
+      }
+  
   private val biometricsDialog by lazy {
     BiometricsDialog.create(this, R.string.text_biometrics_add)
   }
@@ -191,6 +227,10 @@ class SettingsScreen : BaseFragmentScreen() {
   private fun render(state: SettingsState) {
     view(ItemBiometrics).isVisible = state.biometricsAvailable
     view(FourthDivider).isVisible = state.biometricsAvailable
+    viewAs<SettingsItem>(ItemStorageBackupFolder).isEnabled = state.storageBackupEnabled
+    val text = state.storageBackupFolderUri?.toReadablePath()
+        ?: getText(R.string.text_storage_backup_folder_none_selected)
+    viewAs<SettingsItem>(ItemStorageBackupFolder).setDescription(text)
     when (state.enterPasswordDialogState) {
       SHOWN -> enterPasswordDialog.show()
       HIDDEN -> enterPasswordDialog.hide()
@@ -214,6 +254,13 @@ class SettingsScreen : BaseFragmentScreen() {
           onChecked = onEnableBiometricsChanged
         )
       }
+      is SetStorageBackupEnabled -> {
+        viewAs<SettingsItem>(ItemStorageBackup).setCheckedSilently(
+          checked = news.enabled,
+          animate = false,
+          onChecked = onEnableStorageBackupChanged
+        )
+      }
       ShowMasterPasswordChanged -> {
         lifecycleScope.launch {
           delay(Durations.Default)
@@ -235,6 +282,12 @@ class SettingsScreen : BaseFragmentScreen() {
         }
         snackbar.show(ERROR, textRes)
       }
+      is LaunchFolderSelection -> {
+        selectFolderResultLauncher.launch(news.initialUri)
+      }
+      ShowStorageBackupEnabled -> {
+        snackbar.show(CHECKMARK, R.string.text_storage_backup_enabled)
+      }
       ShowImagesCacheCleared -> {
         snackbar.show(CHECKMARK, R.string.text_clear_images_cache_cleared)
       }
@@ -255,6 +308,8 @@ class SettingsScreen : BaseFragmentScreen() {
     val ItemShowUsernames = View.generateViewId()
     val ItemBiometrics = View.generateViewId()
     val FourthDivider = View.generateViewId()
+    val ItemStorageBackup = View.generateViewId()
+    val ItemStorageBackupFolder = View.generateViewId()
     val ItemClearImagesCache = View.generateViewId()
   }
 }

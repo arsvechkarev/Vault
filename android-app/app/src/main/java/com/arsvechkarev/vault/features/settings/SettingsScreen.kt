@@ -38,6 +38,7 @@ import com.arsvechkarev.vault.features.settings.SettingsNews.ShowBiometricsPromp
 import com.arsvechkarev.vault.features.settings.SettingsNews.ShowImagesCacheCleared
 import com.arsvechkarev.vault.features.settings.SettingsNews.ShowMasterPasswordChanged
 import com.arsvechkarev.vault.features.settings.SettingsNews.ShowStorageBackupEnabled
+import com.arsvechkarev.vault.features.settings.SettingsUiEvent.OnAppearedOnScreen
 import com.arsvechkarev.vault.features.settings.SettingsUiEvent.OnBackPressed
 import com.arsvechkarev.vault.features.settings.SettingsUiEvent.OnBiometricsEvent
 import com.arsvechkarev.vault.features.settings.SettingsUiEvent.OnChangeMasterPasswordClicked
@@ -222,6 +223,12 @@ class SettingsScreen : BaseFragmentScreen() {
     biometricsDialog.openedStatus
         .onEach { opened -> setStatusBarColor(if (opened) Colors.Black else Colors.Transparent) }
         .launchIn(lifecycleScope)
+  }
+  
+  override fun onAppearedOnScreen() {
+    // If user clicked on switch enabling storage backup, but hasn't actually select folder,
+    // we should re-request fetching storage backup preferences and disable switch if necessary
+    store.tryDispatch(OnAppearedOnScreen)
   }
   
   private fun render(state: SettingsState) {

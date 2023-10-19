@@ -10,7 +10,6 @@ import com.arsvechkarev.vault.core.DispatchersFacade
 import com.arsvechkarev.vault.features.common.model.BackupFileData
 import domain.MIME_TYPE_ALL
 import kotlinx.coroutines.withContext
-import java.io.File
 import java.util.concurrent.locks.ReentrantReadWriteLock
 import kotlin.concurrent.read
 import kotlin.concurrent.write
@@ -24,13 +23,21 @@ class StorageBackupFileSaver(
   
   suspend fun getAll(directory: String): List<BackupFileData> = withContext(dispatchers.IO) {
     lock.read {
-      File(directory).listFiles()?.map { BackupFileData(it.name, it.lastModified()) } ?: emptyList()
+      val tree = checkNotNull(DocumentFile.fromTreeUri(context, Uri.parse(directory)))
+      tree.listFiles().filter { it.name != null }
+          .map { BackupFileData(checkNotNull(it.name), it.lastModified()) }
     }
   }
   
-  suspend fun deleteAll(files: List<BackupFileData>) = withContext(dispatchers.IO) {
+  suspend fun deleteAll(
+    directory: String,
+    files: List<BackupFileData>
+  ) = withContext(dispatchers.IO) {
     lock.write {
-      files.forEach { File(it.name).delete() }
+      files.forEach {
+        val backupFileUri = getOrCreateBackupFileUri(Uri.parse(directory), it.name)
+        DocumentFile.fromSingleUri(context, backupFileUri)?.delete()
+      }
     }
   }
   
@@ -41,31 +48,19 @@ class StorageBackupFileSaver(
     database: KeePassDatabase
   ) = withContext(dispatchers.IO) {
     lock.write {
-      val newBackupFile = newBackupFile(Uri.parse(directory), filename)
+      val newBackupFile = getOrCreateBackupFileUri(Uri.parse(directory), filename)
       context.contentResolver.openOutputStream(newBackupFile)?.use(database::encode)
     }
   }
   
-  private fun newBackupFile(destination: Uri, filename: String): Uri {
-    return when (destination.scheme) {
-      "content" -> {
-        val tree = DocumentFile.fromTreeUri(context, destination)
-        val file = tree?.createFile(MIME_TYPE_ALL, filename) ?: error("Failed to create $filename")
-        file.uri
-      }
-      "file" -> {
-        val path = destination.path ?: error("No path found in $destination")
-        val dir = File(path)
-        if (!dir.exists() && !dir.mkdirs()) {
-          error("Failed to create ${dir.absolutePath}")
-        }
-        val file = File(dir.absolutePath, filename)
-        if (file.createNewFile()) {
-          return Uri.fromFile(file)
-        }
-        error("Failed to create $filename")
-      }
-      else -> error("Unknown URI scheme: " + destination.scheme)
+  private fun getOrCreateBackupFileUri(directory: Uri, filename: String): Uri {
+    if (directory.scheme == "content") {
+      val tree = checkNotNull(DocumentFile.fromTreeUri(context, directory))
+      val file = tree.findFile(filename)
+          ?: tree.createFile(MIME_TYPE_ALL, filename) ?: error("Failed to create $filename")
+      return file.uri
+    } else {
+      error("Unsupported URI scheme: " + directory.scheme)
     }
   }
 }

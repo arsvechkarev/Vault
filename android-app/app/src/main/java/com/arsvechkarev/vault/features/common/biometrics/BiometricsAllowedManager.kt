@@ -1,9 +1,7 @@
 package com.arsvechkarev.vault.features.common.biometrics
 
-import com.arsvechkarev.vault.BuildConfig
 import com.arsvechkarev.vault.features.common.data.preferences.Preferences
 import com.arsvechkarev.vault.features.common.domain.TimestampProvider
-import java.util.concurrent.TimeUnit
 
 interface BiometricsAllowedManager {
   
@@ -16,16 +14,18 @@ interface BiometricsAllowedManager {
 
 class BiometricsAllowedManagerImpl(
   private val timestampProvider: TimestampProvider,
-  private val preferences: Preferences
+  private val preferences: Preferences,
+  private val timeSinceLastPasswordEnterThreshold: Long,
+  private val maxSuccessiveBiometricsEnters: Int,
 ) : BiometricsAllowedManager {
   
   
   override suspend fun isBiometricsEnterAllowed(): Boolean {
     val lastEnterTimestamp = preferences.getLong(KEY_LAST_PASSWORD_ENTER_TIMESTAMP)
-    if (timestampProvider.now() - lastEnterTimestamp > MAX_TIME_SINCE_LAST_PASSWORD_ENTER) {
+    if (timestampProvider.now() - lastEnterTimestamp > timeSinceLastPasswordEnterThreshold) {
       return false
     }
-    return preferences.getLong(KEY_SUCCESSIVE_ENTER_COUNT) < MAX_SUCCESSIVE_BIOMETRICS_ENTERS
+    return preferences.getLong(KEY_SUCCESSIVE_ENTER_COUNT) < maxSuccessiveBiometricsEnters
   }
   
   override suspend fun markBiometricsEnter() {
@@ -42,13 +42,5 @@ class BiometricsAllowedManagerImpl(
     
     const val KEY_LAST_PASSWORD_ENTER_TIMESTAMP = "last_password_enter_timestamp"
     const val KEY_SUCCESSIVE_ENTER_COUNT = "successive_biometrics_enter_count"
-    
-    val MAX_SUCCESSIVE_BIOMETRICS_ENTERS = if (BuildConfig.DEBUG) 5 else 15
-    
-    val MAX_TIME_SINCE_LAST_PASSWORD_ENTER = if (BuildConfig.DEBUG) {
-      TimeUnit.MINUTES.toMillis(1)
-    } else {
-      TimeUnit.DAYS.toMillis(7)
-    }
   }
 }

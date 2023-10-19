@@ -14,7 +14,7 @@ import com.arsvechkarev.vault.test.core.stub.StubActivityResultWrapper
 import com.arsvechkarev.vault.test.core.stub.StubPasswordsFileExporter
 import com.arsvechkarev.vault.test.screens.KLoginScreen
 import com.arsvechkarev.vault.test.screens.KMainListScreen
-import domain.CONTENT_TYPE_UNKNOWN
+import domain.CommonConstants.CONTENT_TYPE_UNKNOWN
 import org.hamcrest.Matchers.allOf
 import org.hamcrest.Matchers.`is`
 import org.junit.Rule

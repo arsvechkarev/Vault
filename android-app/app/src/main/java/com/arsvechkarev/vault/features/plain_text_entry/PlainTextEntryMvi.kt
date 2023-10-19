@@ -59,8 +59,6 @@ sealed interface PlainTextEntryNews {
   object ShowPlainTextEntryCreated : PlainTextEntryNews
   object ShowTitleCopied : PlainTextEntryNews
   object ShowTextCopied : PlainTextEntryNews
-  class SetTitle(val title: String) : PlainTextEntryNews
-  class SetText(val text: String) : PlainTextEntryNews
 }
 
 sealed interface PlainTextEntryState {

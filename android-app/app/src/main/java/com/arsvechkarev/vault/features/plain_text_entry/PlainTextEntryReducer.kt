@@ -22,8 +22,6 @@ import com.arsvechkarev.vault.features.plain_text_entry.PlainTextEntryEvent.Rece
 import com.arsvechkarev.vault.features.plain_text_entry.PlainTextEntryEvent.UpdatedPlainTextEntry.UpdatedIsFavorite
 import com.arsvechkarev.vault.features.plain_text_entry.PlainTextEntryEvent.UpdatedPlainTextEntry.UpdatedText
 import com.arsvechkarev.vault.features.plain_text_entry.PlainTextEntryEvent.UpdatedPlainTextEntry.UpdatedTitle
-import com.arsvechkarev.vault.features.plain_text_entry.PlainTextEntryNews.SetText
-import com.arsvechkarev.vault.features.plain_text_entry.PlainTextEntryNews.SetTitle
 import com.arsvechkarev.vault.features.plain_text_entry.PlainTextEntryNews.ShowPlainTextEntryCreated
 import com.arsvechkarev.vault.features.plain_text_entry.PlainTextEntryNews.ShowTextCopied
 import com.arsvechkarev.vault.features.plain_text_entry.PlainTextEntryNews.ShowTitleCopied
@@ -63,10 +61,6 @@ class PlainTextEntryReducer : DslReducer<PlainTextEntryState, PlainTextEntryEven
             textState = TextState(event.plainTextEntry.text),
           )
         }
-        news(
-          SetTitle(event.plainTextEntry.title),
-          SetText(event.plainTextEntry.text)
-        )
       }
       is OnTitleChanged -> when (state) {
         is NewEntry -> {
@@ -167,10 +161,6 @@ class PlainTextEntryReducer : DslReducer<PlainTextEntryState, PlainTextEntryEven
                     textState = state.textState.reset(),
                   )
                 }
-                news(
-                  SetTitle(state.titleState.initialText),
-                  SetText(state.textState.initialText)
-                )
               }
               else -> {
                 commands(GoBack)

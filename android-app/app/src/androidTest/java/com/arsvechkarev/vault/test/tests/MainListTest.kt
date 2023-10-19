@@ -17,8 +17,10 @@ import com.arsvechkarev.vault.test.screens.KLoginScreen
 import com.arsvechkarev.vault.test.screens.KMainListScreen
 import com.arsvechkarev.vault.test.screens.KMainListScreen.EmptyItem
 import com.arsvechkarev.vault.test.screens.KMainListScreen.PasswordItem
+import com.arsvechkarev.vault.test.screens.KMainListScreen.PlainTextItem
 import com.arsvechkarev.vault.test.screens.KMainListScreen.TitleItem
 import com.arsvechkarev.vault.test.screens.KPasswordEntryScreen
+import com.arsvechkarev.vault.test.screens.KPlainTextEntryScreen
 import org.junit.Rule
 import org.junit.Test
 
@@ -30,14 +32,14 @@ class MainListTest : VaultTestCase() {
   private val imageRequestsRecorder = TestImageRequestsRecorder()
   
   @Test
-  fun testMainListAndDeleting() = init {
+  fun testMainList() = init {
     CoreComponentHolder.initialize(
       application = ApplicationProvider.getApplicationContext(),
       factory = StubExtraDependenciesFactory(
         imagesRequestsRecorder = imageRequestsRecorder
       )
     )
-    rule.launchActivityWithDatabase("database_two_passwords")
+    rule.launchActivityWithDatabase("database_two_passwords_and_plain_text")
   }.run {
     KLoginScreen {
       textError.hasEmptyText()
@@ -57,7 +59,7 @@ class MainListTest : VaultTestCase() {
         currentScreenIs<MainListScreen>()
         recycler {
           isDisplayed()
-          hasSize(3)
+          hasSize(5)
           childAt<TitleItem>(0) {
             title.hasText("Passwords")
           }
@@ -69,8 +71,46 @@ class MainListTest : VaultTestCase() {
             text.hasText("test.com")
             image.hasDrawable(LetterInCircleDrawable("t"))
           }
+          childAt<TitleItem>(3) {
+            title.hasText("Plain texts")
+          }
+          childAt<PlainTextItem>(4) {
+            title.hasText("my title")
+          }
         }
+        
         recycler.emptyChildAt(1) { click() }
+        
+        KPasswordEntryScreen {
+          imageFavorite.click()
+          pressBack()
+        }
+        
+        recycler {
+          hasSize(6)
+          childAt<TitleItem>(0) {
+            title.hasText("Favorites")
+          }
+          childAt<PasswordItem>(1) {
+            text.hasText("google")
+            image.wasImageRequestWithUrlCalled(URL_IMAGE_GOOGLE, imageRequestsRecorder)
+          }
+          childAt<TitleItem>(2) {
+            title.hasText("Passwords")
+          }
+          childAt<PasswordItem>(3) {
+            text.hasText("test.com")
+            image.hasDrawable(LetterInCircleDrawable("t"))
+          }
+          childAt<TitleItem>(4) {
+            title.hasText("Plain texts")
+          }
+          childAt<PlainTextItem>(5) {
+            title.hasText("my title")
+          }
+        }
+        
+        recycler.emptyChildAt(3) { click() }
         
         KPasswordEntryScreen {
           imageDelete.click()
@@ -80,16 +120,41 @@ class MainListTest : VaultTestCase() {
         currentScreenIs<MainListScreen>()
         
         recycler {
-          hasSize(2)
+          hasSize(4)
+          childAt<TitleItem>(0) {
+            title.hasText("Favorites")
+          }
           childAt<PasswordItem>(1) {
-            text.hasText("test.com")
-            image.hasDrawable(LetterInCircleDrawable("t"))
+            text.hasText("google")
+          }
+          childAt<TitleItem>(2) {
+            title.hasText("Plain texts")
+          }
+          childAt<PlainTextItem>(3) {
+            title.hasText("my title")
           }
         }
         
         recycler.emptyChildAt(1) { click() }
         
         KPasswordEntryScreen {
+          imageDelete.click()
+          confirmationDialog.action2.click()
+        }
+        
+        recycler {
+          hasSize(2)
+          childAt<TitleItem>(0) {
+            title.hasText("Plain texts")
+          }
+          childAt<PlainTextItem>(1) {
+            title.hasText("my title")
+          }
+        }
+        
+        recycler.emptyChildAt(1) { click() }
+        
+        KPlainTextEntryScreen {
           imageDelete.click()
           confirmationDialog.action2.click()
         }

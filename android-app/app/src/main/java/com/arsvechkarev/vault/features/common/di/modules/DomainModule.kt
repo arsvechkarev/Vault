@@ -1,5 +1,6 @@
 package com.arsvechkarev.vault.features.common.di.modules
 
+import com.arsvechkarev.vault.BuildConfig
 import com.arsvechkarev.vault.features.common.data.StorageBackupFileSaver
 import com.arsvechkarev.vault.features.common.data.StorageBackupPreferences
 import com.arsvechkarev.vault.features.common.domain.DatabaseChangesJournal
@@ -7,6 +8,7 @@ import com.arsvechkarev.vault.features.common.domain.DatabaseChangesJournalImpl
 import com.arsvechkarev.vault.features.common.domain.ShowUsernamesInteractor
 import com.arsvechkarev.vault.features.common.domain.SimpleDateTimeFormatter
 import com.arsvechkarev.vault.features.common.domain.StorageBackupInteractor
+import java.util.concurrent.TimeUnit
 
 interface DomainModule {
   val databaseChangesJournal: DatabaseChangesJournal
@@ -28,14 +30,26 @@ class DomainModuleImpl(
     preferencesModule.settingsPreferences
   )
   
+  private val passedTimeSinceLastBackupThreshold = if (BuildConfig.DEBUG) {
+    TimeUnit.MINUTES.toMillis(3)
+  } else {
+    StorageBackupInteractor.THRESHOLD_PASSED_TIME_SINCE_LAST_BACKUP
+  }
+  
+  private val databaseChangesThreshold = if (BuildConfig.DEBUG) {
+    1
+  } else {
+    StorageBackupInteractor.THRESHOLD_DATABASE_CHANGES
+  }
+  
   override val storageBackupInteractor = StorageBackupInteractor(
     fileSaver = StorageBackupFileSaver(coreModule.application, coreModule.dispatchers),
     preferences = storageBackupPreferences,
     journal = DatabaseChangesJournalImpl(preferencesModule.settingsPreferences),
     timestampProvider = coreModule.timestampProvider,
     dateTimeFormatter = SimpleDateTimeFormatter(),
-    passedTimeSinceLastBackupThreshold = StorageBackupInteractor.THRESHOLD_PASSED_TIME_SINCE_LAST_BACKUP,
-    databaseChangesThreshold = StorageBackupInteractor.THRESHOLD_DATABASE_CHANGES,
+    passedTimeSinceLastBackupThreshold = passedTimeSinceLastBackupThreshold,
+    databaseChangesThreshold = databaseChangesThreshold,
   )
   
   override val showUsernamesInteractor =

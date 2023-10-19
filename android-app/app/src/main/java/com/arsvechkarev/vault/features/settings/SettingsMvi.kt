@@ -22,6 +22,7 @@ sealed interface SettingsEvent {
 
 sealed interface SettingsUiEvent : SettingsEvent {
   object OnInit : SettingsUiEvent
+  object OnAppearedOnScreen : SettingsUiEvent
   object OnChangeMasterPasswordClicked : SettingsUiEvent
   object OnEnteredPasswordToChangeMasterPassword : SettingsUiEvent
   object OnHideEnterPasswordDialog : SettingsUiEvent
@@ -38,6 +39,7 @@ sealed interface SettingsUiEvent : SettingsEvent {
 sealed interface SettingsCommand {
   
   object FetchData : SettingsCommand
+  object FetchStorageBackupEnabled : SettingsCommand
   class ChangeShowUsernames(val show: Boolean) : SettingsCommand
   class EnableBiometrics(val cryptography: BiometricsCryptography) : SettingsCommand
   object DisableBiometrics : SettingsCommand

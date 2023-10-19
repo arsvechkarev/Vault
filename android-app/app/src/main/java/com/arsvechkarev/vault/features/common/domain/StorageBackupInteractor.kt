@@ -24,7 +24,7 @@ class StorageBackupInteractor(
     val databaseChangesSinceLastBackup = journal.getChangeCount() - preferences.getBackupPerformedAt()
     if (timeSinceLastBackupPassedThreshold() && databaseChangesSinceLastBackup > 0) {
       performBackupInternal(backupFolder, database)
-    } else if (databaseChangesSinceLastBackup > databaseChangesThreshold) {
+    } else if (databaseChangesSinceLastBackup >= databaseChangesThreshold) {
       performBackupInternal(backupFolder, database)
     }
   }
@@ -35,24 +35,24 @@ class StorageBackupInteractor(
     return now - latestBackupTimestamp > passedTimeSinceLastBackupThreshold
   }
   
-  private suspend fun performBackupInternal(backupFolder: String, database: KeePassDatabase) {
-    val backupFiles: List<BackupFileData> = fileSaver.getAll(backupFolder)
+  private suspend fun performBackupInternal(directory: String, database: KeePassDatabase) {
+    val backupFiles = fileSaver.getAll(directory)
     if (backupFiles.size >= THRESHOLD_FILES_COUNT) {
-      removeAllOlderFiles(backupFiles)
+      removeAllOlderFiles(directory, backupFiles)
     }
     val newFilename = generateFilename()
-    fileSaver.saveDatabase(backupFolder, newFilename, database)
+    fileSaver.saveDatabase(directory, newFilename, database)
     preferences.saveBackupMetadata(journal.getChangeCount(), timestampProvider.now())
   }
   
   private fun generateFilename(): String {
-    return "file__${dateTimeFormatter.format(timestampProvider.now())}.kdbx"
+    return "file_${dateTimeFormatter.format(timestampProvider.now())}.kdbx"
   }
   
-  private suspend fun removeAllOlderFiles(backupFiles: List<BackupFileData>) {
+  private suspend fun removeAllOlderFiles(directory: String, backupFiles: List<BackupFileData>) {
     val extraFiles = backupFiles.sortedBy { it.lastModified }
         .take(backupFiles.size - THRESHOLD_FILES_COUNT + 1)
-    fileSaver.deleteAll(extraFiles)
+    fileSaver.deleteAll(directory, extraFiles)
   }
   
   companion object {

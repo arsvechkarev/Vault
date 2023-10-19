@@ -9,6 +9,8 @@ import com.arsvechkarev.vault.features.master_password.MasterPasswordScreen.Comp
 import com.arsvechkarev.vault.features.master_password.MasterPasswordScreen.Companion.MasterPasswordScreenRoot
 import com.arsvechkarev.vault.features.master_password.MasterPasswordScreen.Companion.TextContinue
 import com.arsvechkarev.vault.features.master_password.MasterPasswordScreen.Companion.TextPasswordStrength
+import com.arsvechkarev.vault.features.master_password.MasterPasswordScreen.Companion.TitleFirst
+import com.arsvechkarev.vault.features.master_password.MasterPasswordScreen.Companion.TitleSecond
 import com.arsvechkarev.vault.test.core.base.BaseScreen
 import com.arsvechkarev.vault.test.core.views.dialog.KInfoDialog
 import com.arsvechkarev.vault.test.core.views.dialog.KPasswordStrengthDialog
@@ -22,8 +24,9 @@ object KMasterPasswordScreen : BaseScreen<KMasterPasswordScreen>() {
   
   override val viewClass = MasterPasswordScreen::class.java
   
-  val title = KTextView { withId(EditTextEnterPassword) }
   val imageBack = KImageView { withDrawable(R.drawable.ic_back) }
+  val titleFirst = KTextView { withId(TitleFirst) }
+  val titleSecond = KTextView { withId(TitleSecond) }
   val editTextEnterPassword = KEditTextPassword { withId(EditTextEnterPassword) }
   val editTextRepeatPassword = KEditTextPassword { withId(EditTextRepeatPassword) }
   val textPasswordStrength = KTextView { withId(TextPasswordStrength) }
@@ -33,11 +36,6 @@ object KMasterPasswordScreen : BaseScreen<KMasterPasswordScreen>() {
   val buttonContinue = KTextView {
     withId(TextContinue)
     withText("Continue")
-  }
-  val repeatPasswordLayout = KView { withId(EditTextEnterPassword) }
-  val repeatPasswordTitle = KTextView {
-    withParent { withId(EditTextEnterPassword) }
-    withText("Repeat password")
   }
   val passwordStrengthDialog = KPasswordStrengthDialog()
   val confirmationDialog = KInfoDialog(MasterPasswordScreenRoot)

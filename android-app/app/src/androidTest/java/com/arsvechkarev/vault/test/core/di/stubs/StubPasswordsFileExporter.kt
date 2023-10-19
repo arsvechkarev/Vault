@@ -1,4 +1,4 @@
-package com.arsvechkarev.vault.test.core.stub
+package com.arsvechkarev.vault.test.core.di.stubs
 
 import android.net.Uri
 import app.keemobile.kotpass.database.KeePassDatabase

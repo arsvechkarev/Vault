@@ -7,12 +7,13 @@ import com.arsvechkarev.vault.features.common.di.CoreComponentHolder
 import com.arsvechkarev.vault.features.import_passwords.ImportPasswordsScreen
 import com.arsvechkarev.vault.features.main_list.MainListScreen
 import com.arsvechkarev.vault.test.core.base.VaultTestCase
+import com.arsvechkarev.vault.test.core.di.StubExtraDependenciesFactory
+import com.arsvechkarev.vault.test.core.di.stubs.StubActivityResultWrapper
+import com.arsvechkarev.vault.test.core.di.stubs.StubExternalFileReader
 import com.arsvechkarev.vault.test.core.ext.context
 import com.arsvechkarev.vault.test.core.ext.currentScreenIs
 import com.arsvechkarev.vault.test.core.ext.launchActivityWithDatabase
 import com.arsvechkarev.vault.test.core.rule.VaultAutotestRule
-import com.arsvechkarev.vault.test.core.stub.StubActivityResultWrapper
-import com.arsvechkarev.vault.test.core.stub.StubExternalFileReader
 import com.arsvechkarev.vault.test.screens.KImportPasswordsScreen
 import com.arsvechkarev.vault.test.screens.KInitialScreen
 import com.arsvechkarev.vault.test.screens.KLoginScreen
@@ -21,6 +22,7 @@ import com.arsvechkarev.vault.test.screens.KMainListScreen.PasswordItem
 import kotlinx.coroutines.runBlocking
 import org.junit.Rule
 import org.junit.Test
+import java.io.InputStream
 
 class ImportPasswordsTest : VaultTestCase() {
   
@@ -29,17 +31,21 @@ class ImportPasswordsTest : VaultTestCase() {
   
   private val stubFileReader = StubExternalFileReader(
     uriToMatch = "content://myfolder/passwords.kdbx",
-    bytesToRead = { context.assets.open("database_two_passwords").readBytes() }
+    bytesToRead = {
+      context.assets.open("database_two_passwords").use(InputStream::readBytes)
+    }
   )
   
   @Test
   fun testImportingPasswordsFromInitialScreen() = init {
     CoreComponentHolder.initialize(
       application = ApplicationProvider.getApplicationContext(),
-      activityResultWrapper = StubActivityResultWrapper(
-        stubGetFileUri = "content://myfolder/passwords.kdbx"
-      ),
-      externalFileReader = stubFileReader
+      factory = StubExtraDependenciesFactory(
+        activityResultWrapper = StubActivityResultWrapper(
+          stubGetFileUri = "content://myfolder/passwords.kdbx"
+        ),
+        externalFileReader = stubFileReader
+      )
     )
     rule.launchActivity()
   }.run {
@@ -76,10 +82,12 @@ class ImportPasswordsTest : VaultTestCase() {
     runBlocking {
       CoreComponentHolder.initialize(
         application = ApplicationProvider.getApplicationContext(),
-        activityResultWrapper = StubActivityResultWrapper(
-          stubGetFileUri = "content://myfolder/passwords.kdbx"
+        factory = StubExtraDependenciesFactory(
+          activityResultWrapper = StubActivityResultWrapper(
+            stubGetFileUri = "content://myfolder/passwords.kdbx"
+          ),
+          externalFileReader = stubFileReader
         ),
-        externalFileReader = stubFileReader
       )
       rule.launchActivityWithDatabase("database_one_password")
     }

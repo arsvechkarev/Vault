@@ -32,10 +32,12 @@ class ImagesNamesLoader(
     return result
         .map(List<String>::toSet)
         .onSuccess { names ->
-          preferences.putAll(mapOf(
-            KEY_IMAGES_NAMES to names,
-            KEY_LAST_LOADED_TIMESTAMP to timestampProvider.now()
-          ))
+          preferences.putAll(
+            mapOf(
+              KEY_IMAGES_NAMES to names,
+              KEY_LAST_LOADED_TIMESTAMP to timestampProvider.now()
+            )
+          )
         }
   }
   

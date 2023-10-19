@@ -278,10 +278,10 @@ class MasterPasswordScreen : BaseFragmentScreen() {
   companion object {
     
     val MasterPasswordScreenRoot = View.generateViewId()
-    val TextPasswordStrength = View.generateViewId()
     val TitleSwitcher = View.generateViewId()
     val TitleFirst = View.generateViewId()
     val TitleSecond = View.generateViewId()
+    val TextPasswordStrength = View.generateViewId()
     val TextContinue = View.generateViewId()
     val EditTextEnterPassword = View.generateViewId()
     val EditTextRepeatPassword = View.generateViewId()

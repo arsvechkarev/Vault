@@ -1,12 +1,18 @@
 package com.arsvechkarev.vault.test.tests
 
+import androidx.test.core.app.ApplicationProvider
 import com.arsvechkarev.vault.R
 import com.arsvechkarev.vault.core.views.drawables.LetterInCircleDrawable
+import com.arsvechkarev.vault.features.common.di.CoreComponentHolder
 import com.arsvechkarev.vault.features.initial.InitialScreen
 import com.arsvechkarev.vault.features.main_list.MainListScreen
 import com.arsvechkarev.vault.features.settings.SettingsScreen
+import com.arsvechkarev.vault.test.core.di.StubExtraDependenciesFactory
+import com.arsvechkarev.vault.test.core.di.stubs.TestImageRequestsRecorder
+import com.arsvechkarev.vault.test.core.di.stubs.URL_IMAGE_GOOGLE
 import com.arsvechkarev.vault.test.core.ext.currentScreenIs
 import com.arsvechkarev.vault.test.core.ext.launchActivityWithDatabase
+import com.arsvechkarev.vault.test.core.ext.wasImageRequestWithUrlCalled
 import com.arsvechkarev.vault.test.core.rule.VaultAutotestRule
 import com.arsvechkarev.vault.test.screens.KInitialScreen
 import com.arsvechkarev.vault.test.screens.KLoginScreen
@@ -16,6 +22,7 @@ import com.arsvechkarev.vault.test.screens.KMasterPasswordScreen
 import com.arsvechkarev.vault.test.screens.KSettingsScreen
 import com.kaspersky.kaspresso.testcases.api.testcase.TestCase
 import domain.PasswordStrength
+import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 
@@ -23,6 +30,18 @@ class MasterPasswordTest : TestCase() {
   
   @get:Rule
   val rule = VaultAutotestRule()
+  
+  private val imageRequestsRecorder = TestImageRequestsRecorder()
+  
+  @Before
+  fun setup() {
+    CoreComponentHolder.initialize(
+      application = ApplicationProvider.getApplicationContext(),
+      factory = StubExtraDependenciesFactory(
+        imagesRequestsRecorder = imageRequestsRecorder
+      )
+    )
+  }
   
   @Test
   fun testCreatingNewMasterPassword() = init {
@@ -43,7 +62,11 @@ class MasterPasswordTest : TestCase() {
     }
     
     KMasterPasswordScreen {
-      title.hasText("Create master password")
+      titleFirst {
+        isDisplayed()
+        hasText("Create master password")
+      }
+      titleSecond.isNotDisplayed()
       buttonContinue.isCompletelyDisplayed()
       textPasswordStrength.isNotDisplayed()
       passwordStrengthMeter.isNotShowingStrength()
@@ -97,11 +120,13 @@ class MasterPasswordTest : TestCase() {
       
       textError.isNotDisplayed()
       iconError.isNotDisplayed()
-      repeatPasswordLayout.isDisplayed()
+      titleFirst.isNotDisplayed()
+      titleSecond.isDisplayed()
       
       pressBack()
       
-      repeatPasswordLayout.isNotDisplayed()
+      titleFirst.isDisplayed()
+      titleSecond.isNotDisplayed()
       
       editTextEnterPassword.replaceText("qwetu123")
       passwordStrengthMeter.hasPasswordStrength(PasswordStrength.MEDIUM)
@@ -117,9 +142,11 @@ class MasterPasswordTest : TestCase() {
       
       buttonContinue.click()
       
-      repeatPasswordTitle.isDisplayed()
-      repeatPasswordLayout.isDisplayed()
-      title.isNotDisplayed()
+      titleFirst.isNotDisplayed()
+      titleSecond {
+        hasText("Repeat password")
+        isDisplayed()
+      }
       
       editTextEnterPassword.isNotDisplayed()
       imageBack.isDisplayed()
@@ -146,7 +173,11 @@ class MasterPasswordTest : TestCase() {
       imageBack.click()
       
       editTextRepeatPassword.isNotDisplayed()
-      title.isDisplayed()
+      titleSecond.isNotDisplayed()
+      titleFirst {
+        hasText("Create master password")
+        isDisplayed()
+      }
       editTextEnterPassword {
         isDisplayed()
         isPasswordVisible()
@@ -194,6 +225,8 @@ class MasterPasswordTest : TestCase() {
             buttonContinue.click()
             
             KMasterPasswordScreen {
+              titleFirst.hasText("Change master password")
+              
               editTextEnterPassword.replaceText("qwetu1233")
               
               buttonContinue.click()
@@ -267,7 +300,7 @@ class MasterPasswordTest : TestCase() {
           hasSize(3)
           childAt<PasswordItem>(1) {
             text.hasText("google")
-//            image.hasDrawable(R.drawable.icon_google)
+            image.wasImageRequestWithUrlCalled(URL_IMAGE_GOOGLE, imageRequestsRecorder)
           }
           childAt<PasswordItem>(2) {
             text.hasText("test.com")

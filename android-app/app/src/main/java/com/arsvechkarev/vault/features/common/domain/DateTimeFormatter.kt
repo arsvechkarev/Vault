@@ -10,7 +10,7 @@ interface DateTimeFormatter {
 
 class SimpleDateTimeFormatter : DateTimeFormatter {
   
-  private val format = SimpleDateFormat("yyyy-MM-dd_HH-mm-ss-SS")
+  private val format = SimpleDateFormat("yyyyMMddHHmmssSS")
   
   override fun format(timestamp: Long): String {
     return format.format(Date(timestamp))

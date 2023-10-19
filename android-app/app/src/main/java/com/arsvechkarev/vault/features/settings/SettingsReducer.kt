@@ -16,6 +16,7 @@ import com.arsvechkarev.vault.features.settings.SettingsCommand.ClearImagesCache
 import com.arsvechkarev.vault.features.settings.SettingsCommand.DisableBiometrics
 import com.arsvechkarev.vault.features.settings.SettingsCommand.EnableBiometrics
 import com.arsvechkarev.vault.features.settings.SettingsCommand.FetchData
+import com.arsvechkarev.vault.features.settings.SettingsCommand.FetchStorageBackupEnabled
 import com.arsvechkarev.vault.features.settings.SettingsCommand.RouterCommand.GoBack
 import com.arsvechkarev.vault.features.settings.SettingsCommand.RouterCommand.GoToMasterPasswordScreen
 import com.arsvechkarev.vault.features.settings.SettingsEvent.BiometricsAdded
@@ -37,6 +38,7 @@ import com.arsvechkarev.vault.features.settings.SettingsNews.ShowBiometricsPromp
 import com.arsvechkarev.vault.features.settings.SettingsNews.ShowImagesCacheCleared
 import com.arsvechkarev.vault.features.settings.SettingsNews.ShowMasterPasswordChanged
 import com.arsvechkarev.vault.features.settings.SettingsNews.ShowStorageBackupEnabled
+import com.arsvechkarev.vault.features.settings.SettingsUiEvent.OnAppearedOnScreen
 import com.arsvechkarev.vault.features.settings.SettingsUiEvent.OnBackPressed
 import com.arsvechkarev.vault.features.settings.SettingsUiEvent.OnBiometricsEvent
 import com.arsvechkarev.vault.features.settings.SettingsUiEvent.OnChangeMasterPasswordClicked
@@ -57,6 +59,9 @@ class SettingsReducer : DslReducer<SettingsState, SettingsEvent,
     when (event) {
       OnInit -> {
         commands(FetchData)
+      }
+      OnAppearedOnScreen -> {
+        commands(FetchStorageBackupEnabled)
       }
       is ReceivedShowUsernames -> {
         news(SetShowUsernames(event.showUsernames))
@@ -115,7 +120,6 @@ class SettingsReducer : DslReducer<SettingsState, SettingsEvent,
         }
       }
       is OnEnableStorageBackupChanged -> {
-        state { copy(storageBackupEnabled = event.enabled) }
         if (event.enabled) {
           val backupFolderUri = state.storageBackupFolderUri
           if (backupFolderUri != null) {

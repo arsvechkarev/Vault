@@ -4,7 +4,6 @@ import app.keemobile.kotpass.database.KeePassDatabase
 import com.arsvechkarev.vault.features.common.data.StorageBackupFileSaver
 import com.arsvechkarev.vault.features.common.data.StorageBackupPreferences
 import com.arsvechkarev.vault.features.common.model.BackupFileData
-import java.util.concurrent.TimeUnit
 
 class StorageBackupInteractor(
   private val fileSaver: StorageBackupFileSaver,
@@ -54,14 +53,5 @@ class StorageBackupInteractor(
     val extraFiles = backupFiles.sortedBy { it.lastModified }
         .take(backupFiles.size - backupFileCountThreshold + 1)
     fileSaver.deleteAll(directory, extraFiles)
-  }
-  
-  companion object {
-    
-    const val THRESHOLD_BACKUP_FILE_COUNT = 100
-    
-    const val THRESHOLD_DATABASE_CHANGES = 5
-    
-    val THRESHOLD_PASSED_TIME_SINCE_LAST_BACKUP = TimeUnit.DAYS.toMillis(7)
   }
 }

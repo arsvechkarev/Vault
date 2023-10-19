@@ -16,6 +16,8 @@ import com.arsvechkarev.vault.core.views.behaviors.BottomSheetBehavior
 import com.arsvechkarev.vault.core.views.behaviors.BottomSheetBehavior.Companion.asBottomSheet
 import com.arsvechkarev.vault.core.views.menu.MenuItemModel
 import com.arsvechkarev.vault.core.views.menu.MenuView
+import com.arsvechkarev.vault.features.common.AppConstants.CONTENT_TYPE_UNKNOWN
+import com.arsvechkarev.vault.features.common.AppConstants.MIME_TYPE_ALL
 import com.arsvechkarev.vault.features.common.di.CoreComponentHolder.coreComponent
 import com.arsvechkarev.vault.features.common.dialogs.InfoDialog.Companion.InfoDialog
 import com.arsvechkarev.vault.features.common.dialogs.InfoDialog.Companion.infoDialog
@@ -51,9 +53,7 @@ import com.arsvechkarev.vault.viewbuilding.Dimens.MarginSmall
 import com.arsvechkarev.vault.viewbuilding.Styles.BoldTextView
 import com.arsvechkarev.vault.viewbuilding.Styles.TitleTextView
 import com.arsvechkarev.vault.viewbuilding.TextSizes
-import domain.CONTENT_TYPE_UNKNOWN
-import domain.DEFAULT_EXPORT_FILENAME
-import domain.MIME_TYPE_ALL
+import domain.CommonConstants.DEFAULT_EXPORT_FILENAME
 import navigation.BaseFragmentScreen
 import viewdsl.Size.Companion.MatchParent
 import viewdsl.Size.Companion.WrapContent

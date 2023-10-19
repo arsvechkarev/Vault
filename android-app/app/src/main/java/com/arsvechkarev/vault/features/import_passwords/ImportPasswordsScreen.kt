@@ -10,6 +10,7 @@ import com.arsvechkarev.vault.core.extensions.booleanArg
 import com.arsvechkarev.vault.core.extensions.toReadablePath
 import com.arsvechkarev.vault.core.mvi.ext.subscribe
 import com.arsvechkarev.vault.core.mvi.ext.viewModelStore
+import com.arsvechkarev.vault.features.common.AppConstants.MIME_TYPE_ALL
 import com.arsvechkarev.vault.features.common.di.CoreComponentHolder.coreComponent
 import com.arsvechkarev.vault.features.common.dialogs.EnterPasswordDialog.Companion.EnterPasswordDialog
 import com.arsvechkarev.vault.features.common.dialogs.EnterPasswordDialog.Companion.enterPasswordDialog
@@ -36,7 +37,6 @@ import com.arsvechkarev.vault.viewbuilding.Styles.BoldTextView
 import com.arsvechkarev.vault.viewbuilding.Styles.Button
 import com.arsvechkarev.vault.viewbuilding.Styles.SecondaryTextView
 import com.arsvechkarev.vault.viewbuilding.TextSizes
-import domain.MIME_TYPE_ALL
 import navigation.BaseFragmentScreen
 import viewdsl.Size.Companion.MatchParent
 import viewdsl.Size.Companion.WrapContent

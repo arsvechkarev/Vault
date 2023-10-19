@@ -15,7 +15,7 @@ class DefaultDatabaseInitializer(
   
   override suspend fun initializeDatabase(masterPassword: Password) {
     val database: KeePassDatabase = KeePassDatabase.Ver4x.create(
-      rootName = DEFAULT_DATABASE_NAME,
+      rootName = CommonConstants.DEFAULT_DATABASE_NAME,
       meta = Meta(),
       credentials = Credentials.from(masterPassword)
     )

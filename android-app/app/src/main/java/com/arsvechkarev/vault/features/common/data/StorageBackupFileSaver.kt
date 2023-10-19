@@ -7,8 +7,8 @@ import androidx.documentfile.provider.DocumentFile
 import app.keemobile.kotpass.database.KeePassDatabase
 import app.keemobile.kotpass.database.encode
 import com.arsvechkarev.vault.core.DispatchersFacade
+import com.arsvechkarev.vault.features.common.AppConstants.MIME_TYPE_ALL
 import com.arsvechkarev.vault.features.common.model.BackupFileData
-import domain.MIME_TYPE_ALL
 import kotlinx.coroutines.withContext
 
 class StorageBackupFileSaver(

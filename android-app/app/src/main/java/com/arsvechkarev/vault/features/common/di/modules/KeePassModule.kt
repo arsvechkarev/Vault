@@ -1,12 +1,12 @@
 package com.arsvechkarev.vault.features.common.di.modules
 
+import com.arsvechkarev.vault.features.common.AppConstants.DEFAULT_INTERNAL_FILENAME
 import com.arsvechkarev.vault.features.common.data.database.BasicDatabaseStorage
 import com.arsvechkarev.vault.features.common.data.database.CachedDatabaseStorage
 import com.arsvechkarev.vault.features.common.data.database.ObservableCachedDatabaseStorage
 import com.arsvechkarev.vault.features.common.data.files.DefaultDatabaseFileSaver
 import com.arsvechkarev.vault.features.common.data.files.StorageBackupDatabaseFileSaver
 import com.arsvechkarev.vault.features.main_list.domain.EntriesListUiMapper
-import domain.DEFAULT_INTERNAL_FILENAME
 import domain.DatabaseCache
 import domain.DatabaseFileSaver
 import domain.DatabaseInitializer

@@ -36,12 +36,6 @@ class DomainModuleImpl(
     StorageBackupInteractor.THRESHOLD_PASSED_TIME_SINCE_LAST_BACKUP
   }
   
-  private val databaseChangesThreshold = if (BuildConfig.DEBUG) {
-    1
-  } else {
-    StorageBackupInteractor.THRESHOLD_DATABASE_CHANGES
-  }
-  
   private val backupFileCountThreshold = if (BuildConfig.DEBUG) {
     5
   } else {
@@ -55,7 +49,7 @@ class DomainModuleImpl(
     timestampProvider = coreModule.timestampProvider,
     dateTimeFormatter = SimpleDateTimeFormatter(),
     passedTimeSinceLastBackupThreshold = passedTimeSinceLastBackupThreshold,
-    databaseChangesThreshold = databaseChangesThreshold,
+    databaseChangesThreshold = StorageBackupInteractor.THRESHOLD_DATABASE_CHANGES,
     backupFileCountThreshold = backupFileCountThreshold,
   )
   

@@ -10,34 +10,25 @@ import com.arsvechkarev.vault.core.DispatchersFacade
 import com.arsvechkarev.vault.features.common.model.BackupFileData
 import domain.MIME_TYPE_ALL
 import kotlinx.coroutines.withContext
-import java.util.concurrent.locks.ReentrantReadWriteLock
-import kotlin.concurrent.read
-import kotlin.concurrent.write
 
 class StorageBackupFileSaver(
   private val context: Context,
   private val dispatchers: DispatchersFacade
 ) {
   
-  private val lock = ReentrantReadWriteLock()
-  
   suspend fun getAll(directory: String): List<BackupFileData> = withContext(dispatchers.IO) {
-    lock.read {
-      val tree = checkNotNull(DocumentFile.fromTreeUri(context, Uri.parse(directory)))
-      tree.listFiles().filter { it.name != null }
-          .map { BackupFileData(checkNotNull(it.name), it.lastModified()) }
-    }
+    val tree = checkNotNull(DocumentFile.fromTreeUri(context, Uri.parse(directory)))
+    tree.listFiles().filter { it.name != null }
+        .map { BackupFileData(checkNotNull(it.name), it.lastModified()) }
   }
   
   suspend fun deleteAll(
     directory: String,
     files: List<BackupFileData>
   ) = withContext(dispatchers.IO) {
-    lock.write {
-      files.forEach {
-        val backupFileUri = getOrCreateBackupFileUri(Uri.parse(directory), it.name)
-        DocumentFile.fromSingleUri(context, backupFileUri)?.delete()
-      }
+    files.forEach {
+      val backupFileUri = getOrCreateBackupFileUri(Uri.parse(directory), it.name)
+      DocumentFile.fromSingleUri(context, backupFileUri)?.delete()
     }
   }
   
@@ -47,10 +38,8 @@ class StorageBackupFileSaver(
     filename: String,
     database: KeePassDatabase
   ) = withContext(dispatchers.IO) {
-    lock.write {
-      val newBackupFile = getOrCreateBackupFileUri(Uri.parse(directory), filename)
-      context.contentResolver.openOutputStream(newBackupFile)?.use(database::encode)
-    }
+    val newBackupFile = getOrCreateBackupFileUri(Uri.parse(directory), filename)
+    context.contentResolver.openOutputStream(newBackupFile)?.use(database::encode)
   }
   
   private fun getOrCreateBackupFileUri(directory: Uri, filename: String): Uri {

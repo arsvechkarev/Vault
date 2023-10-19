@@ -5,12 +5,17 @@ import kotlinx.coroutines.withContext
 import okhttp3.OkHttpClient
 import okhttp3.Request
 
-class NetworkUrlLoader(
+interface NetworkUrlLoader {
+  
+  suspend fun loadUrl(url: String): Result<String>
+}
+
+class OkHttpNetworkUrlLoader(
   private val client: OkHttpClient,
   private val dispatchers: DispatchersFacade
-) {
+) : NetworkUrlLoader {
   
-  suspend fun loadUrl(url: String): Result<String> = withContext(dispatchers.IO) {
+  override suspend fun loadUrl(url: String): Result<String> = withContext(dispatchers.IO) {
     runCatching {
       client.newCall(Request.Builder().url(url).build()).execute().body!!.string()
     }

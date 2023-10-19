@@ -54,8 +54,8 @@ class DiskImagesCache(
   
   override suspend fun clearAll() {
     withContext(dispatchers.IO) {
-      locks.entries.forEach { (key, value) ->
-        value.write {
+      locks.entries.forEach { (key, lock) ->
+        lock.write {
           val imagesDir = File(context.cacheDir, imagesDirectory)
           if (!imagesDir.exists()) {
             return@withContext

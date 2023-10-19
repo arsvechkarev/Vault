@@ -1,11 +1,17 @@
 package com.arsvechkarev.vault.test.tests
 
+import androidx.test.core.app.ApplicationProvider
 import com.arsvechkarev.vault.core.views.drawables.LetterInCircleDrawable
+import com.arsvechkarev.vault.features.common.di.CoreComponentHolder
 import com.arsvechkarev.vault.features.login.LoginScreen
 import com.arsvechkarev.vault.features.main_list.MainListScreen
 import com.arsvechkarev.vault.test.core.base.VaultTestCase
+import com.arsvechkarev.vault.test.core.di.StubExtraDependenciesFactory
+import com.arsvechkarev.vault.test.core.di.stubs.TestImageRequestsRecorder
+import com.arsvechkarev.vault.test.core.di.stubs.URL_IMAGE_GOOGLE
 import com.arsvechkarev.vault.test.core.ext.currentScreenIs
 import com.arsvechkarev.vault.test.core.ext.launchActivityWithDatabase
+import com.arsvechkarev.vault.test.core.ext.wasImageRequestWithUrlCalled
 import com.arsvechkarev.vault.test.core.rule.VaultAutotestRule
 import com.arsvechkarev.vault.test.screens.KLoginScreen
 import com.arsvechkarev.vault.test.screens.KMainListScreen
@@ -21,8 +27,16 @@ class MainListTest : VaultTestCase() {
   @get:Rule
   val rule = VaultAutotestRule()
   
+  private val imageRequestsRecorder = TestImageRequestsRecorder()
+  
   @Test
-  fun testMainList() = init {
+  fun testMainListAndDeleting() = init {
+    CoreComponentHolder.initialize(
+      application = ApplicationProvider.getApplicationContext(),
+      factory = StubExtraDependenciesFactory(
+        imagesRequestsRecorder = imageRequestsRecorder
+      )
+    )
     rule.launchActivityWithDatabase("database_two_passwords")
   }.run {
     KLoginScreen {
@@ -49,7 +63,7 @@ class MainListTest : VaultTestCase() {
           }
           childAt<PasswordItem>(1) {
             text.hasText("google")
-//            image.hasDrawable(R.drawable.icon_google)
+            image.wasImageRequestWithUrlCalled(URL_IMAGE_GOOGLE, imageRequestsRecorder)
           }
           childAt<PasswordItem>(2) {
             text.hasText("test.com")

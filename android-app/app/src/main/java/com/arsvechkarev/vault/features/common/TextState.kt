@@ -20,5 +20,5 @@ fun TextState.update(newText: String): TextState {
 }
 
 fun TextState.edit(newText: String): TextState {
-  return copy(editedText = newText.trim(), isEditingNow = true)
+  return copy(editedText = newText, isEditingNow = true)
 }

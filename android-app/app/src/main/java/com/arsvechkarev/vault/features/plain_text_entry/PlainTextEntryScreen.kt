@@ -20,8 +20,6 @@ import com.arsvechkarev.vault.features.common.dialogs.InfoDialog.Companion.infoD
 import com.arsvechkarev.vault.features.common.dialogs.LoadingDialog
 import com.arsvechkarev.vault.features.common.dialogs.loadingDialog
 import com.arsvechkarev.vault.features.common.model.PlainTextItem
-import com.arsvechkarev.vault.features.plain_text_entry.PlainTextEntryNews.SetText
-import com.arsvechkarev.vault.features.plain_text_entry.PlainTextEntryNews.SetTitle
 import com.arsvechkarev.vault.features.plain_text_entry.PlainTextEntryNews.ShowPlainTextEntryCreated
 import com.arsvechkarev.vault.features.plain_text_entry.PlainTextEntryNews.ShowTextCopied
 import com.arsvechkarev.vault.features.plain_text_entry.PlainTextEntryNews.ShowTitleCopied
@@ -257,6 +255,8 @@ class PlainTextEntryScreen : BaseFragmentScreen() {
   
   private fun renderNewEntry(state: NewEntry) {
     imageView(ImageFavorite).gone()
+    editText(EditTextTitle).setTextSilently(state.title, titleTextWatcher)
+    editText(EditTextText).setTextSilently(state.text, textTextWatcher)
     if (state.showTitleIsEmptyError) {
       showTitleViewError()
     } else {
@@ -270,8 +270,10 @@ class PlainTextEntryScreen : BaseFragmentScreen() {
     } else {
       imageView(ImageFavorite).image(R.drawable.ic_star_outline)
     }
-    renderTextState(EditTextTitle, state.titleState, ImageTitleAction)
-    renderTextState(EditTextText, state.textState, ImageTextAction)
+    editText(EditTextTitle).setTextSilently(state.titleState.editedText, titleTextWatcher)
+    editText(EditTextText).setTextSilently(state.textState.editedText, textTextWatcher)
+    renderActionIcons(EditTextTitle, state.titleState, ImageTitleAction)
+    renderActionIcons(EditTextText, state.textState, ImageTextAction)
     if (!state.isEditingSomething) {
       requireContext().hideKeyboard()
     }
@@ -297,7 +299,7 @@ class PlainTextEntryScreen : BaseFragmentScreen() {
     }
   }
   
-  private fun renderTextState(
+  private fun renderActionIcons(
     editTextId: Int,
     textState: TextState,
     actionImageId: Int
@@ -311,8 +313,6 @@ class PlainTextEntryScreen : BaseFragmentScreen() {
   
   private fun handleNews(news: PlainTextEntryNews) {
     when (news) {
-      is SetTitle -> editText(EditTextTitle).setTextSilently(news.title, titleTextWatcher)
-      is SetText -> editText(EditTextText).setTextSilently(news.text, textTextWatcher)
       ShowTitleCopied -> snackbar.show(CHECKMARK, R.string.text_title_copied)
       ShowTextCopied -> snackbar.show(CHECKMARK, R.string.text_text_copied)
       ShowPlainTextEntryCreated -> {

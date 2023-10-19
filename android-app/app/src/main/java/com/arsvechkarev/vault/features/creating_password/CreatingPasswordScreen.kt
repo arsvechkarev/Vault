@@ -41,9 +41,9 @@ import com.arsvechkarev.vault.viewbuilding.Styles.Button
 import com.arsvechkarev.vault.viewbuilding.Styles.ClickableTextView
 import com.arsvechkarev.vault.viewbuilding.Styles.ImageCross
 import com.arsvechkarev.vault.viewbuilding.TextSizes
-import domain.DEFAULT_PASSWORD_LENGTH
-import domain.MAX_PASSWORD_LENGTH
-import domain.MIN_PASSWORD_LENGTH
+import domain.CommonConstants.DEFAULT_PASSWORD_LENGTH
+import domain.CommonConstants.MAX_PASSWORD_LENGTH
+import domain.CommonConstants.MIN_PASSWORD_LENGTH
 import domain.Password
 import domain.PasswordStrength
 import kotlinx.coroutines.flow.launchIn

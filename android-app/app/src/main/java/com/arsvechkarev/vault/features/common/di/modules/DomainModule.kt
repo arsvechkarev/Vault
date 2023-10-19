@@ -1,6 +1,7 @@
 package com.arsvechkarev.vault.features.common.di.modules
 
 import com.arsvechkarev.vault.BuildConfig
+import com.arsvechkarev.vault.features.common.AppConfig
 import com.arsvechkarev.vault.features.common.data.StorageBackupFileSaver
 import com.arsvechkarev.vault.features.common.data.StorageBackupPreferences
 import com.arsvechkarev.vault.features.common.domain.DatabaseChangesJournal
@@ -8,7 +9,6 @@ import com.arsvechkarev.vault.features.common.domain.DatabaseChangesJournalImpl
 import com.arsvechkarev.vault.features.common.domain.ShowUsernamesInteractor
 import com.arsvechkarev.vault.features.common.domain.SimpleDateTimeFormatter
 import com.arsvechkarev.vault.features.common.domain.StorageBackupInteractor
-import java.util.concurrent.TimeUnit
 
 interface DomainModule {
   val databaseChangesJournal: DatabaseChangesJournal
@@ -31,15 +31,21 @@ class DomainModuleImpl(
   )
   
   private val passedTimeSinceLastBackupThreshold = if (BuildConfig.DEBUG) {
-    TimeUnit.MINUTES.toMillis(3)
+    AppConfig.Debug.TimePassedSinceLastBackupThreshold
   } else {
-    StorageBackupInteractor.THRESHOLD_PASSED_TIME_SINCE_LAST_BACKUP
+    AppConfig.Release.TimePassedSinceLastBackupThreshold
   }
   
-  private val backupFileCountThreshold = if (BuildConfig.DEBUG) {
-    5
+  private val maxBackupFileCount = if (BuildConfig.DEBUG) {
+    AppConfig.Debug.MaxBackupFileCount
   } else {
-    StorageBackupInteractor.THRESHOLD_BACKUP_FILE_COUNT
+    AppConfig.Release.MaxBackupFileCount
+  }
+  
+  private val databaseChangesForBackupThreshold = if (BuildConfig.DEBUG) {
+    AppConfig.Debug.DatabaseChangesForBackupThreshold
+  } else {
+    AppConfig.Release.DatabaseChangesForBackupThreshold
   }
   
   override val storageBackupInteractor = StorageBackupInteractor(
@@ -49,8 +55,8 @@ class DomainModuleImpl(
     timestampProvider = coreModule.timestampProvider,
     dateTimeFormatter = SimpleDateTimeFormatter(),
     passedTimeSinceLastBackupThreshold = passedTimeSinceLastBackupThreshold,
-    databaseChangesThreshold = StorageBackupInteractor.THRESHOLD_DATABASE_CHANGES,
-    backupFileCountThreshold = backupFileCountThreshold,
+    databaseChangesThreshold = databaseChangesForBackupThreshold,
+    backupFileCountThreshold = maxBackupFileCount,
   )
   
   override val showUsernamesInteractor =

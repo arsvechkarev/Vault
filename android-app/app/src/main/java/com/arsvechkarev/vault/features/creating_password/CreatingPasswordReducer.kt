@@ -24,7 +24,7 @@ import com.arsvechkarev.vault.features.creating_password.CreatingPasswordUiEvent
 import com.arsvechkarev.vault.features.creating_password.CreatingPasswordUiEvent.OnToggledUppercaseSymbols
 import com.arsvechkarev.vault.features.creating_password.CreatingPasswordUiEvent.Setup
 import com.arsvechkarev.vault.features.creating_password.CreatingPasswordUiEvent.SetupCompleted
-import domain.DEFAULT_PASSWORD_LENGTH
+import domain.CommonConstants.DEFAULT_PASSWORD_LENGTH
 import domain.model.PasswordCharacteristic
 import domain.model.PasswordCharacteristic.NUMBERS
 import domain.model.PasswordCharacteristic.SPECIAL_SYMBOLS

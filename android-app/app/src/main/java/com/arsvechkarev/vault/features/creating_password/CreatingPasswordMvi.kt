@@ -1,7 +1,7 @@
 package com.arsvechkarev.vault.features.creating_password
 
 import com.arsvechkarev.vault.features.common.domain.CreatingPasswordMode
-import domain.DEFAULT_PASSWORD_LENGTH
+import domain.CommonConstants.DEFAULT_PASSWORD_LENGTH
 import domain.Password
 import domain.PasswordStrength
 import domain.model.PasswordCharacteristic

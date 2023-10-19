@@ -1,8 +1,6 @@
 package com.arsvechkarev.vault.features.common.di
 
 import android.app.Application
-import com.arsvechkarev.vault.features.common.data.files.ExternalFileReader
-import com.arsvechkarev.vault.features.common.data.files.PasswordsFileExporter
 import com.arsvechkarev.vault.features.common.di.modules.BiometricsModule
 import com.arsvechkarev.vault.features.common.di.modules.BiometricsModuleImpl
 import com.arsvechkarev.vault.features.common.di.modules.CoreModule
@@ -23,7 +21,6 @@ import com.arsvechkarev.vault.features.common.di.modules.PasswordsModule
 import com.arsvechkarev.vault.features.common.di.modules.PasswordsModuleImpl
 import com.arsvechkarev.vault.features.common.di.modules.PreferencesModule
 import com.arsvechkarev.vault.features.common.di.modules.PreferencesModuleImpl
-import com.arsvechkarev.vault.features.common.navigation.result_contracts.ActivityResultWrapper
 
 interface CoreComponent :
   CoreModule,
@@ -41,23 +38,25 @@ interface CoreComponent :
     
     fun create(
       application: Application,
-      activityResultWrapper: ActivityResultWrapper,
-      passwordsFileExporter: PasswordsFileExporter,
-      externalFileReader: ExternalFileReader,
+      extraDependenciesFactory: ExtraDependenciesFactory,
     ): CoreComponent {
       val coreModule = CoreModuleImpl(application)
+      val extraDependencies = extraDependenciesFactory.getExtraDependencies()
       val preferencesModule = PreferencesModuleImpl(coreModule)
-      val ioModule = IoModuleImpl(coreModule, externalFileReader, passwordsFileExporter)
+      val ioModule = IoModuleImpl(coreModule, extraDependencies.okHttpClient,
+        extraDependencies.externalFileReader, extraDependencies.passwordsFileExporter)
       val domainModule = DomainModuleImpl(coreModule, preferencesModule)
       val keePassModule = KeePassModuleImpl(coreModule, domainModule)
+      val imagesLoadingModule = ImagesLoadingModuleImpl(coreModule, ioModule,
+        preferencesModule, extraDependencies.imageRequestsRecorder)
       return CoreComponentImpl(
         coreModule = coreModule,
         preferencesModule = preferencesModule,
         ioModule = ioModule,
         passwordsModule = PasswordsModuleImpl(keePassModule),
-        navigationModule = NavigationModuleImpl(activityResultWrapper),
+        navigationModule = NavigationModuleImpl(extraDependencies.activityResultWrapper),
         observersModule = ObserversModuleImpl(),
-        imagesLoadingModule = ImagesLoadingModuleImpl(coreModule, ioModule, preferencesModule),
+        imagesLoadingModule = imagesLoadingModule,
         biometricsModule = BiometricsModuleImpl(coreModule, preferencesModule),
         domainModule = domainModule,
         keePassModule = keePassModule,

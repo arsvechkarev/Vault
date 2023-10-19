@@ -4,6 +4,7 @@ import com.arsvechkarev.vault.features.common.AppConstants.IMAGES_CACHE_DIRECTOR
 import com.arsvechkarev.vault.features.common.data.images.DiskImagesCache
 import com.arsvechkarev.vault.features.common.data.images.ImagesCache
 import com.arsvechkarev.vault.features.common.data.network.ImagesNamesLoaderNetworkNotifier
+import com.arsvechkarev.vault.features.common.domain.ImageRequestsRecorder
 import com.arsvechkarev.vault.features.common.domain.ImagesNamesLoader
 import com.arsvechkarev.vault.features.common.domain.ReloadImagesObserver
 import com.arsvechkarev.vault.features.common.domain.ReloadImagesObserverImpl
@@ -11,6 +12,7 @@ import com.arsvechkarev.vault.features.common.domain.ReloadImagesObserverImpl
 interface ImagesLoadingModule {
   val imagesNamesLoader: ImagesNamesLoader
   val imagesCache: ImagesCache
+  val imageRequestsRecorder: ImageRequestsRecorder
   val imagesNamesLoaderNetworkNotifier: ImagesNamesLoaderNetworkNotifier
   val reloadImagesObserver: ReloadImagesObserver
 }
@@ -18,7 +20,8 @@ interface ImagesLoadingModule {
 class ImagesLoadingModuleImpl(
   coreModule: CoreModule,
   ioModule: IoModule,
-  preferencesModule: PreferencesModule
+  preferencesModule: PreferencesModule,
+  override val imageRequestsRecorder: ImageRequestsRecorder
 ) : ImagesLoadingModule {
   
   override val imagesNamesLoader = ImagesNamesLoader(

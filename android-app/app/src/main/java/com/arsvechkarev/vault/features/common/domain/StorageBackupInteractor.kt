@@ -14,6 +14,7 @@ class StorageBackupInteractor(
   private val dateTimeFormatter: DateTimeFormatter,
   private val passedTimeSinceLastBackupThreshold: Long,
   private val databaseChangesThreshold: Int,
+  private val backupFileCountThreshold: Int,
 ) {
   
   suspend fun performBackupIfNeeded(database: KeePassDatabase) {
@@ -37,7 +38,7 @@ class StorageBackupInteractor(
   
   private suspend fun performBackupInternal(directory: String, database: KeePassDatabase) {
     val backupFiles = fileSaver.getAll(directory)
-    if (backupFiles.size >= THRESHOLD_FILES_COUNT) {
+    if (backupFiles.size >= backupFileCountThreshold) {
       removeAllOlderFiles(directory, backupFiles)
     }
     val newFilename = generateFilename()
@@ -51,13 +52,13 @@ class StorageBackupInteractor(
   
   private suspend fun removeAllOlderFiles(directory: String, backupFiles: List<BackupFileData>) {
     val extraFiles = backupFiles.sortedBy { it.lastModified }
-        .take(backupFiles.size - THRESHOLD_FILES_COUNT + 1)
+        .take(backupFiles.size - backupFileCountThreshold + 1)
     fileSaver.deleteAll(directory, extraFiles)
   }
   
   companion object {
     
-    const val THRESHOLD_FILES_COUNT = 20
+    const val THRESHOLD_BACKUP_FILE_COUNT = 100
     
     const val THRESHOLD_DATABASE_CHANGES = 5
     

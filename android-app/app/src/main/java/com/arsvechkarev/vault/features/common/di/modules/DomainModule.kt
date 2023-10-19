@@ -42,6 +42,12 @@ class DomainModuleImpl(
     StorageBackupInteractor.THRESHOLD_DATABASE_CHANGES
   }
   
+  private val backupFileCountThreshold = if (BuildConfig.DEBUG) {
+    5
+  } else {
+    StorageBackupInteractor.THRESHOLD_BACKUP_FILE_COUNT
+  }
+  
   override val storageBackupInteractor = StorageBackupInteractor(
     fileSaver = StorageBackupFileSaver(coreModule.application, coreModule.dispatchers),
     preferences = storageBackupPreferences,
@@ -50,6 +56,7 @@ class DomainModuleImpl(
     dateTimeFormatter = SimpleDateTimeFormatter(),
     passedTimeSinceLastBackupThreshold = passedTimeSinceLastBackupThreshold,
     databaseChangesThreshold = databaseChangesThreshold,
+    backupFileCountThreshold = backupFileCountThreshold,
   )
   
   override val showUsernamesInteractor =

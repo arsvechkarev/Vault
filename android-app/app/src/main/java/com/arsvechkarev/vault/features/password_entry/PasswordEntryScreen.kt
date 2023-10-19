@@ -489,10 +489,10 @@ class PasswordEntryScreen : BaseFragmentScreen() {
     editText(EditTextUsername).setTextSilently(state.usernameState.editedText, usernameTextWatcher)
     editText(EditTextUrl).setTextSilently(state.urlState.editedText, urlTextWatcher)
     editText(EditTextNotes).setTextSilently(state.notesState.editedText, notesTextWatcher)
-    renderTextState(EditTextTitle, state.titleState, ImageTitleAction)
-    renderTextState(EditTextUsername, state.usernameState, ImageUsernameAction)
-    renderTextState(EditTextUrl, state.urlState, ImageUrlAction)
-    renderTextState(EditTextNotes, state.notesState, ImageNotesAction)
+    renderActionIcons(EditTextTitle, state.titleState, ImageTitleAction)
+    renderActionIcons(EditTextUsername, state.usernameState, ImageUsernameAction)
+    renderActionIcons(EditTextUrl, state.urlState, ImageUrlAction)
+    renderActionIcons(EditTextNotes, state.notesState, ImageNotesAction)
     renderPasswordText(state.passwordEntry?.password)
     val urlNotEmpty = state.urlState.editedText.isNotBlank()
     view(ImageOpenUrl).isVisible = urlNotEmpty
@@ -536,7 +536,7 @@ class PasswordEntryScreen : BaseFragmentScreen() {
     }
   }
   
-  private fun renderTextState(
+  private fun renderActionIcons(
     editTextId: Int,
     textState: TextState,
     actionImageId: Int

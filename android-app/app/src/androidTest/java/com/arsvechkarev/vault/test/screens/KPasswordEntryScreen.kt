@@ -8,6 +8,7 @@ import com.arsvechkarev.vault.features.password_entry.PasswordEntryScreen.Compan
 import com.arsvechkarev.vault.features.password_entry.PasswordEntryScreen.Companion.ImageCopyPassword
 import com.arsvechkarev.vault.features.password_entry.PasswordEntryScreen.Companion.ImageDelete
 import com.arsvechkarev.vault.features.password_entry.PasswordEntryScreen.Companion.ImageEditPassword
+import com.arsvechkarev.vault.features.password_entry.PasswordEntryScreen.Companion.ImageFavorite
 import com.arsvechkarev.vault.features.password_entry.PasswordEntryScreen.Companion.ImageNotesAction
 import com.arsvechkarev.vault.features.password_entry.PasswordEntryScreen.Companion.ImageTitle
 import com.arsvechkarev.vault.features.password_entry.PasswordEntryScreen.Companion.ImageTitleAction
@@ -31,6 +32,7 @@ object KPasswordEntryScreen : BaseScreen<KPasswordEntryScreen>() {
   
   val imageBack = KImageView { withId(ImageBack) }
   val imageDelete = KImageView { withId(ImageDelete) }
+  val imageFavorite = KImageView { withId(ImageFavorite) }
   val imageTitle = KImageView { withId(ImageTitle) }
   val title = KTextView { withId(Title) }
   val textTitle = KTextView { withId(EditTextTitle) }

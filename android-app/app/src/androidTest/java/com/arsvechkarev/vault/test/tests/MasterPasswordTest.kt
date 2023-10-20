@@ -107,10 +107,22 @@ class MasterPasswordTest : TestCase() {
       
       iconError.click()
       
-      passwordStrengthDialog.isShown()
+      passwordStrengthDialog {
+        isShown()
+        title.isDisplayed()
+        description.isDisplayed()
+        textContinueWithWeakPassword.isDisplayed()
+        textChangePassword.isDisplayed()
+      }
       
       closeSoftKeyboard()
       pressBack()
+      
+      passwordStrengthDialog.isNotShown()
+      
+      iconError.click()
+      
+      passwordStrengthDialog.hide()
       
       passwordStrengthDialog.isNotShown()
       

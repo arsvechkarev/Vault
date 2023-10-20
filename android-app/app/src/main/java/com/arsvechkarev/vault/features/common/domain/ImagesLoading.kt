@@ -55,6 +55,7 @@ suspend fun ImageView.trySetImageFromMatchingNames(
   dispose()
   val matchingName = imagesNames.find { name -> text.contains(name, ignoreCase = true) }
   if (matchingName == null) {
+    stopShimmerDrawable()
     setLetterInCircleDrawable(text.first().toString())
     return
   }
@@ -78,6 +79,15 @@ suspend fun ImageView.trySetImageFromMatchingNames(
       memoryCachePolicy(CachePolicy.DISABLED)
       diskCachePolicy(CachePolicy.DISABLED)
       error(LetterInCircleDrawable(text.first().toString()))
+      target(
+        onStart = {
+          setShimmerDrawable(LoadingPlaceholderDrawable(text.first().toString()))
+        }, onSuccess = { drawable ->
+          setImageDrawable(drawable)
+        }, onError = {
+          setLetterInCircleDrawable(text.first().toString())
+        }
+      )
       listener(
         onSuccess = { _, result ->
           (context as? MainActivity?)?.lifecycleScope?.launch {

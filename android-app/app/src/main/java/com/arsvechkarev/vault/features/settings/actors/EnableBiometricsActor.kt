@@ -7,7 +7,7 @@ import com.arsvechkarev.vault.features.common.domain.MasterPasswordProvider
 import com.arsvechkarev.vault.features.settings.SettingsCommand
 import com.arsvechkarev.vault.features.settings.SettingsCommand.EnableBiometrics
 import com.arsvechkarev.vault.features.settings.SettingsEvent
-import com.arsvechkarev.vault.features.settings.SettingsEvent.BiometricsAdded
+import com.arsvechkarev.vault.features.settings.SettingsEvent.BiometricsEnabled
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.filterIsInstance
@@ -28,7 +28,7 @@ class EnableBiometricsActor(
           val encryptedBytes = command.cryptography.perform(passwordBytes)
           biometricsStorage.saveBiometricsData(encryptedBytes, command.cryptography.iv)
           biometricsAllowedManager.resetBiometricsStats()
-          BiometricsAdded
+          BiometricsEnabled
         }
   }
   

@@ -44,7 +44,6 @@ class BiometricsDialog private constructor(
       @SuppressLint("RestrictedApi")
       override fun onAuthenticationError(errCode: Int, errString: CharSequence) {
         _openedStatus.tryEmit(false)
-        println("qqq: error $errCode, $errString")
         when (errCode) {
           ERROR_CANCELED, ERROR_USER_CANCELED, ERROR_NEGATIVE_BUTTON -> {
             _events.tryEmit(Error(CANCELLED))

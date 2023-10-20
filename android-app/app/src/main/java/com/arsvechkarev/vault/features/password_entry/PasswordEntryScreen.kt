@@ -464,7 +464,7 @@ class PasswordEntryScreen : BaseFragmentScreen() {
     })
     if (state.showTitleEmptyError) {
       textView(Title).text(R.string.text_title_is_empty)
-      textView(Title).textColor(Colors.Error)
+      textView(Title).textColor(Colors.TextError)
     } else {
       textView(Title).text(R.string.text_title)
       textView(Title).textColor(Colors.Accent)
@@ -502,7 +502,7 @@ class PasswordEntryScreen : BaseFragmentScreen() {
     }
     if (state.showTitleEmptyError) {
       textView(Title).text(R.string.text_title_is_empty)
-      textView(Title).textColor(Colors.Error)
+      textView(Title).textColor(Colors.TextError)
     } else {
       textView(Title).text(R.string.text_title)
       textView(Title).textColor(Colors.Accent)

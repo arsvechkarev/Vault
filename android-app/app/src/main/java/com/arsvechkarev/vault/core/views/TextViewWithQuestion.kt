@@ -31,7 +31,7 @@ class TextWithQuestion(context: Context) : LinearLayout(context) {
     withViewBuilder {
       child<FixedHeightTextView>(WrapContent, WrapContent, style = BaseTextView) {
         id(Text)
-        textColor(Colors.Error)
+        textColor(Colors.TextError)
       }
       ImageView(WrapContent, WrapContent) {
         id(Image)

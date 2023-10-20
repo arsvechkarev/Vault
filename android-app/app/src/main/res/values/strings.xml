@@ -29,8 +29,8 @@
 
   <!-- Initial -->
   <string name="text_welcome_description">Simple, secure and fast password manager</string>
-  <string name="text_create_new_encrypted_vault">Create new encrypted vault</string>
-  <string name="text_import_existing_vault">Import from existing vault</string>
+  <string name="text_create_new_encrypted_vault">Create new database</string>
+  <string name="text_import_existing_vault">Import existing database</string>
 
   <!-- Login -->
   <string name="text_enter_with_biometrics">Enter with biometrics</string>

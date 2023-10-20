@@ -90,7 +90,7 @@ class LoginReducer : DslReducer<LoginState, LoginEvent, LoginCommand, LoginNews>
         state { copy(showLoading = false, showPasswordIsIncorrect = true) }
       }
       ShowFailureCheckingBiometrics -> {
-        state { copy(showLoading = false) }
+        state { copy(showLoading = false, biometricsState = LoginBiometricsState.OTHER_ERROR) }
       }
     }
   }

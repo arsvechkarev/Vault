@@ -9,11 +9,12 @@ sealed interface SettingsEvent {
   class ReceivedShowUsernames(val showUsernames: Boolean) : SettingsEvent
   class ReceivedBiometricsAvailable(val available: Boolean) : SettingsEvent
   class ReceivedBiometricsEnabled(val enabled: Boolean) : SettingsEvent
-  class ReceivedStorageBackupEnabled(val enabled: Boolean, val backupFolderUri: Uri?) :
-    SettingsEvent
+  class ReceivedStorageBackupEnabled(
+    val enabled: Boolean,
+    val backupFolderUri: Uri?
+  ) : SettingsEvent
   
-  object MasterPasswordChanged : SettingsEvent
-  object BiometricsAdded : SettingsEvent
+  object BiometricsEnabled : SettingsEvent
   class StorageBackupEnabled(val backupFolderUri: Uri) : SettingsEvent
   
   object StorageBackupDisabled : SettingsEvent
@@ -26,9 +27,12 @@ sealed interface SettingsUiEvent : SettingsEvent {
   object OnChangeMasterPasswordClicked : SettingsUiEvent
   object OnEnteredPasswordToChangeMasterPassword : SettingsUiEvent
   object OnHideEnterPasswordDialog : SettingsUiEvent
+  object OnMasterPasswordChangedReceived : SettingsUiEvent
   class OnShowUsernamesChanged(val showUsernames: Boolean) : SettingsUiEvent
   class OnEnableBiometricsChanged(val enabled: Boolean) : SettingsUiEvent
   class OnBiometricsEvent(val event: BiometricsEvent) : SettingsUiEvent
+  object OnProceedEnableBiometricsDialog : SettingsUiEvent
+  object OnHideEnableBiometricsDialog : SettingsUiEvent
   class OnEnableStorageBackupChanged(val enabled: Boolean) : SettingsUiEvent
   object OnSelectBackupFolderClicked : SettingsUiEvent
   class OnSelectedBackupFolder(val uri: Uri) : SettingsUiEvent
@@ -75,7 +79,8 @@ data class SettingsState(
   val biometricsEnabled: Boolean = false,
   val storageBackupEnabled: Boolean = false,
   val storageBackupFolderUri: Uri? = null,
-  val enterPasswordDialogState: EnterPasswordDialogState = HIDDEN
+  val enterPasswordDialogState: EnterPasswordDialogState = HIDDEN,
+  val showEnableBiometricsDialog: Boolean = false
 )
 
 enum class EnterPasswordDialogState {

@@ -21,6 +21,8 @@ import com.arsvechkarev.vault.features.common.di.CoreComponentHolder.coreCompone
 import com.arsvechkarev.vault.features.common.dialogs.EnterPasswordDialog.Companion.EnterPasswordDialog
 import com.arsvechkarev.vault.features.common.dialogs.EnterPasswordDialog.Companion.enterPasswordDialog
 import com.arsvechkarev.vault.features.common.dialogs.EnterPasswordDialog.Mode.CheckingMasterPassword
+import com.arsvechkarev.vault.features.common.dialogs.InfoDialog.Companion.InfoDialog
+import com.arsvechkarev.vault.features.common.dialogs.InfoDialog.Companion.infoDialog
 import com.arsvechkarev.vault.features.common.extensions.setStatusBarColor
 import com.arsvechkarev.vault.features.settings.EnterPasswordDialogState.HIDDEN
 import com.arsvechkarev.vault.features.settings.EnterPasswordDialogState.HIDDEN_KEEPING_KEYBOARD
@@ -46,8 +48,11 @@ import com.arsvechkarev.vault.features.settings.SettingsUiEvent.OnClearImagesCac
 import com.arsvechkarev.vault.features.settings.SettingsUiEvent.OnEnableBiometricsChanged
 import com.arsvechkarev.vault.features.settings.SettingsUiEvent.OnEnableStorageBackupChanged
 import com.arsvechkarev.vault.features.settings.SettingsUiEvent.OnEnteredPasswordToChangeMasterPassword
+import com.arsvechkarev.vault.features.settings.SettingsUiEvent.OnHideEnableBiometricsDialog
 import com.arsvechkarev.vault.features.settings.SettingsUiEvent.OnHideEnterPasswordDialog
 import com.arsvechkarev.vault.features.settings.SettingsUiEvent.OnInit
+import com.arsvechkarev.vault.features.settings.SettingsUiEvent.OnMasterPasswordChangedReceived
+import com.arsvechkarev.vault.features.settings.SettingsUiEvent.OnProceedEnableBiometricsDialog
 import com.arsvechkarev.vault.features.settings.SettingsUiEvent.OnSelectBackupFolderClicked
 import com.arsvechkarev.vault.features.settings.SettingsUiEvent.OnSelectedBackupFolder
 import com.arsvechkarev.vault.features.settings.SettingsUiEvent.OnShowUsernamesChanged
@@ -176,6 +181,7 @@ class SettingsScreen : BaseFragmentScreen() {
           }
         }
       }
+      InfoDialog()
       Snackbar {
         layoutGravity(Gravity.BOTTOM or Gravity.CENTER_HORIZONTAL)
         margin(MarginNormal)
@@ -217,6 +223,9 @@ class SettingsScreen : BaseFragmentScreen() {
   override fun onInit() {
     store.subscribe(this, ::render, ::handleNews)
     store.tryDispatch(OnInit)
+    coreComponent.changeMasterPasswordObserver.masterPasswordChanges
+        .onEach { store.tryDispatch(OnMasterPasswordChangedReceived) }
+        .launchIn(lifecycleScope)
     biometricsDialog.events
         .onEach { event -> store.tryDispatch(OnBiometricsEvent(event)) }
         .launchIn(lifecycleScope)
@@ -242,6 +251,18 @@ class SettingsScreen : BaseFragmentScreen() {
       SHOWN -> enterPasswordDialog.show()
       HIDDEN -> enterPasswordDialog.hide()
       HIDDEN_KEEPING_KEYBOARD -> enterPasswordDialog.hide(hideKeyboard = false)
+    }
+    if (state.showEnableBiometricsDialog) {
+      infoDialog.showWithCancelAndProceedOption(
+        titleRes = R.string.text_master_password_changed_biometrics_dialog_title,
+        messageRes = getText(R.string.text_master_password_changed_biometrics_dialog_message),
+        proceedTextRes = R.string.text_biometrics_enable,
+        showProceedAsError = false,
+        onProceed = { store.tryDispatch(OnProceedEnableBiometricsDialog) },
+        onCancel = { store.tryDispatch(OnHideEnableBiometricsDialog) },
+      )
+    } else {
+      infoDialog.hide()
     }
   }
   

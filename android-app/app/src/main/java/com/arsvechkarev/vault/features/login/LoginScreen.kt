@@ -54,6 +54,7 @@ import viewdsl.gravity
 import viewdsl.hideKeyboard
 import viewdsl.id
 import viewdsl.image
+import viewdsl.imageTint
 import viewdsl.isVisible
 import viewdsl.margin
 import viewdsl.marginHorizontal
@@ -91,6 +92,7 @@ class LoginScreen : BaseFragmentScreen() {
         margins(top = MarginExtraLarge * 2)
         constraints {
           centeredWithin(parent)
+          setVerticalBias(0.4f)
         }
         child<EditTextPassword>(MatchParent, WrapContent) {
           id(EditTextPassword)
@@ -168,20 +170,24 @@ class LoginScreen : BaseFragmentScreen() {
   }
   
   private fun render(state: LoginState) {
-    view(LayoutBiometrics).isVisible = state.biometricsEnabled
     if (state.showPasswordIsIncorrect) {
       textView(TextError).text(R.string.text_password_is_incorrect)
     } else {
       textView(TextError).clearText()
     }
-    val textRes = when (state.biometricsState) {
-      OK -> R.string.text_biometrics_tap_here
-      NOT_ALLOWED -> R.string.text_biometrics_error_not_allowed
-      LOCKOUT -> R.string.text_biometrics_error_lockout
-      LOCKOUT_PERMANENT -> R.string.text_biometrics_error_lockout_permanent
-      OTHER_ERROR -> R.string.text_biometrics_error_other
+    view(LayoutBiometrics).isVisible = state.biometricsEnabled
+    view(LayoutBiometrics).isClickable = state.biometricsState == OK
+    val imageColor = if (state.biometricsState == OK) Colors.TextSecondary else Colors.TextDisabled
+    imageView(ImageBiometrics).imageTint(imageColor)
+    val textResToColor = when (state.biometricsState) {
+      OK -> R.string.text_biometrics_tap_here to Colors.TextSecondary
+      NOT_ALLOWED -> R.string.text_biometrics_error_not_allowed to Colors.TextSecondary
+      LOCKOUT -> R.string.text_biometrics_error_lockout to Colors.TextError
+      LOCKOUT_PERMANENT -> R.string.text_biometrics_error_lockout_permanent to Colors.TextError
+      OTHER_ERROR -> R.string.text_biometrics_error_other to Colors.TextError
     }
-    textView(TextBiometrics).text(textRes)
+    textView(TextBiometrics).text(textResToColor.first)
+    textView(TextBiometrics).textColor(textResToColor.second)
     if (state.showLoading) {
       loadingDialog.show()
     } else {

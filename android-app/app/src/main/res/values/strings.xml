@@ -33,11 +33,11 @@
   <string name="text_import_existing_vault">Import from existing vault</string>
 
   <!-- Login -->
-  <string name="text_enter_with_biometrics">Enter with biometric data</string>
+  <string name="text_enter_with_biometrics">Enter with biometrics</string>
   <string name="text_biometrics_tap_here">Tap here to enter with biometrics</string>
   <string name="text_biometrics_error_not_allowed">You haven\'t logged in with password for a while. Biometrics is disabled until you enter with password</string>
-  <string name="text_biometrics_error_lockout">Too many attempts. Try again later</string>
-  <string name="text_biometrics_error_lockout_permanent">Failed to authenticate. Enter with password instead</string>
+  <string name="text_biometrics_error_lockout">Too many failed attempts. Try using biometrics later</string>
+  <string name="text_biometrics_error_lockout_permanent">Failed to initialize biometrics. Enter with password instead</string>
   <string name="text_biometrics_error_other">Unknown error. Enter with password instead</string>
 
   <!-- Master password -->

@@ -14,6 +14,7 @@ import com.arsvechkarev.vault.R
 import com.arsvechkarev.vault.core.extensions.Paint
 import com.arsvechkarev.vault.features.common.Durations
 import com.arsvechkarev.vault.viewbuilding.Colors
+import com.arsvechkarev.vault.viewbuilding.Dimens
 import com.arsvechkarev.vault.viewbuilding.TextSizes
 import viewdsl.AccelerateDecelerateInterpolator
 import viewdsl.cancelIfRunning
@@ -29,7 +30,7 @@ import kotlin.math.hypot
 
 class MenuContentView(context: Context) : ViewGroup(context) {
   
-  private val crossBaseSize = 60.dp
+  private val crossBaseSize = Dimens.CircleButtonSize
   private val crossOpenedSize = 48.dp
   private val crossBasePadding = 16.dp
   private val crossOpenedPadding = 12.dp

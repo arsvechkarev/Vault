@@ -72,18 +72,18 @@ fun View.rippleBackground(
   background(RippleDrawable(ColorStateList.valueOf(rippleColor), backgroundDrawable, maskRect))
 }
 
-fun View.circleRippleBackground(rippleColor: Int) {
-  addRippleBackground(OvalShape(), rippleColor)
+fun View.circleRippleBackground(rippleColor: Int, backgroundColor: Int = Color.TRANSPARENT) {
+  addRippleBackground(OvalShape(), backgroundColor, rippleColor)
 }
 
 fun View.rippleBackground(rippleColor: Int) {
-  addRippleBackground(RectShape(), rippleColor)
+  addRippleBackground(RectShape(), Color.TRANSPARENT, rippleColor)
 }
 
-private fun View.addRippleBackground(shape: Shape, rippleColor: Int) {
+private fun View.addRippleBackground(shape: Shape, backgroundColor: Int, rippleColor: Int) {
   val background = ShapeDrawable().apply {
     this.shape = shape
-    paint.color = Color.TRANSPARENT
+    paint.color = backgroundColor
   }
   val mask = ShapeDrawable().apply {
     this.shape = shape

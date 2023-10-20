@@ -4,7 +4,12 @@ import android.widget.ImageView
 import androidx.test.espresso.assertion.ViewAssertions
 import com.arsvechkarev.vault.test.core.base.baseMatcher
 import com.arsvechkarev.vault.test.core.di.stubs.TestImageRequestsRecorder
+import io.github.kakaocup.kakao.common.matchers.DrawableMatcher
 import io.github.kakaocup.kakao.image.ImageViewAssertions
+
+fun ImageViewAssertions.hasNoDrawable() {
+  view.check(ViewAssertions.matches(DrawableMatcher(drawable = null)))
+}
 
 fun ImageViewAssertions.wasImageRequestWithUrlCalled(
   url: String,

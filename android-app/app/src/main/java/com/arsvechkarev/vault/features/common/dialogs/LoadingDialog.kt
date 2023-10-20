@@ -1,5 +1,6 @@
 package com.arsvechkarev.vault.features.common.dialogs
 
+import android.view.View
 import android.view.ViewGroup
 import com.arsvechkarev.vault.core.views.MaterialProgressBar
 import com.arsvechkarev.vault.core.views.SimpleDialog
@@ -7,6 +8,7 @@ import com.arsvechkarev.vault.viewbuilding.Dimens.ProgressBarSizeBig
 import navigation.BaseFragmentScreen
 import viewdsl.Size.Companion.MatchParent
 import viewdsl.addView
+import viewdsl.id
 import viewdsl.size
 import viewdsl.tag
 import viewdsl.withViewBuilder
@@ -20,6 +22,7 @@ fun ViewGroup.LoadingDialog(block: SimpleDialog.() -> Unit = {}) = withViewBuild
     SimpleDialog(context).apply {
       isCancellable = false
       size(MatchParent, MatchParent)
+      id(View.generateViewId())
       tag(DialogProgressBar)
       child<MaterialProgressBar>(ProgressBarSizeBig, ProgressBarSizeBig)
       apply(block)

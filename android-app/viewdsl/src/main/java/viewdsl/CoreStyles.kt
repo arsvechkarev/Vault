@@ -2,7 +2,7 @@ package viewdsl
 
 import android.view.View
 
-interface DefaultStyles {
+interface CoreStyles {
   
   val BaseRootBackground: Style<View>
 }

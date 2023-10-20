@@ -259,7 +259,7 @@ class PasswordEntryTest : VaultTestCase() {
         isDisplayed()
         hasSize(2)
         childAt<PasswordItem>(1) {
-          text.hasText("test.com")
+          title.hasText("test.com")
           image.hasDrawable(LetterInCircleDrawable("t"))
         }
       }
@@ -398,11 +398,11 @@ class PasswordEntryTest : VaultTestCase() {
               isDisplayed()
               hasSize(5)
               childAt<PasswordItem>(1) {
-                text.hasText("test.com")
+                title.hasText("test.com")
                 image.hasDrawable(LetterInCircleDrawable("t"))
               }
               childAt<PasswordItem>(2) {
-                text.hasText("yabcd")
+                title.hasText("yabcd")
                 image.hasDrawable(LetterInCircleDrawable("y"))
               }
               childAt<PlainTextItem>(4) {

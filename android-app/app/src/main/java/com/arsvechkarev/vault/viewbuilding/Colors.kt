@@ -22,7 +22,7 @@ object Colors {
   val ErrorRipple = "70E64545".color
   val TextPrimary = "FFFFFF".color
   val TextSecondary = "A3A3A3".color
-  val TextError = "EB4040".color
+  val TextError = "F24C4C".color
   val TextDisabled = "616161".color
   val PasswordWeak = "C80505".color
   val PasswordMedium = "DA6314".color

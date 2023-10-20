@@ -31,7 +31,7 @@ import com.arsvechkarev.vault.features.settings.SettingsNews.LaunchFolderSelecti
 import com.arsvechkarev.vault.features.settings.SettingsNews.SetBiometricsEnabled
 import com.arsvechkarev.vault.features.settings.SettingsNews.SetShowUsernames
 import com.arsvechkarev.vault.features.settings.SettingsNews.SetStorageBackupEnabled
-import com.arsvechkarev.vault.features.settings.SettingsNews.ShowBiometricsAdded
+import com.arsvechkarev.vault.features.settings.SettingsNews.ShowBiometricsEnabled
 import com.arsvechkarev.vault.features.settings.SettingsNews.ShowBiometricsError
 import com.arsvechkarev.vault.features.settings.SettingsNews.ShowBiometricsPrompt
 import com.arsvechkarev.vault.features.settings.SettingsNews.ShowImagesCacheCleared
@@ -169,7 +169,7 @@ class SettingsReducer : DslReducer<SettingsState, SettingsEvent,
       }
       BiometricsEnabled -> {
         state { copy(biometricsEnabled = true) }
-        news(SetBiometricsEnabled(enabled = true, animate = true), ShowBiometricsAdded)
+        news(SetBiometricsEnabled(enabled = true, animate = true), ShowBiometricsEnabled)
       }
       is StorageBackupEnabled -> {
         state { copy(storageBackupEnabled = true, storageBackupFolderUri = event.backupFolderUri) }

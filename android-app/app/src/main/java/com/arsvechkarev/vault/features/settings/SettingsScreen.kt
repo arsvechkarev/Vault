@@ -34,7 +34,7 @@ import com.arsvechkarev.vault.features.settings.SettingsNews.LaunchFolderSelecti
 import com.arsvechkarev.vault.features.settings.SettingsNews.SetBiometricsEnabled
 import com.arsvechkarev.vault.features.settings.SettingsNews.SetShowUsernames
 import com.arsvechkarev.vault.features.settings.SettingsNews.SetStorageBackupEnabled
-import com.arsvechkarev.vault.features.settings.SettingsNews.ShowBiometricsAdded
+import com.arsvechkarev.vault.features.settings.SettingsNews.ShowBiometricsEnabled
 import com.arsvechkarev.vault.features.settings.SettingsNews.ShowBiometricsError
 import com.arsvechkarev.vault.features.settings.SettingsNews.ShowBiometricsPrompt
 import com.arsvechkarev.vault.features.settings.SettingsNews.ShowImagesCacheCleared
@@ -215,7 +215,7 @@ class SettingsScreen : BaseFragmentScreen() {
       }
   
   private val biometricsDialog by lazy {
-    BiometricsDialog.create(this, R.string.text_biometrics_add)
+    BiometricsDialog.create(this, R.string.text_biometrics_set_up)
   }
   
   private val store by viewModelStore { SettingsStore(coreComponent) }
@@ -299,8 +299,8 @@ class SettingsScreen : BaseFragmentScreen() {
         val cipherProvider = coreComponent.biometricsCipherProvider
         biometricsDialog.launch(cipherProvider.getCipherForEncryption())
       }
-      ShowBiometricsAdded -> {
-        snackbar.show(CHECKMARK, R.string.text_biometrics_added)
+      ShowBiometricsEnabled -> {
+        snackbar.show(CHECKMARK, R.string.text_biometrics_enabled)
       }
       is ShowBiometricsError -> {
         val textRes = when (news.error) {

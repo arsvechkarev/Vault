@@ -23,7 +23,7 @@ import com.arsvechkarev.vault.core.views.drawables.GradientBackgroundDrawable
 import com.arsvechkarev.vault.viewbuilding.Dimens.CornerRadiusSmall
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginMedium
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginSmall
-import viewdsl.DefaultStyles
+import viewdsl.CoreStyles
 import viewdsl.Style
 import viewdsl.background
 import viewdsl.circleRippleBackground
@@ -39,7 +39,7 @@ import viewdsl.setColors
 import viewdsl.textColor
 import viewdsl.textSize
 
-object Styles : DefaultStyles {
+object Styles : CoreStyles {
   
   override val BaseRootBackground: Style<View> = {
     background = GradientBackgroundDrawable(context)

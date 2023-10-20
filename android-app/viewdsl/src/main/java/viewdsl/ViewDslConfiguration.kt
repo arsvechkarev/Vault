@@ -8,12 +8,12 @@ object ViewDslConfiguration {
   
   private var _application: Application? = null
   private var _statusBarHeight: Int = 0
-  private var _defaultStyles: DefaultStyles = object : DefaultStyles {}
-  private var _Animation_durations: AnimationDurations = object : AnimationDurations {}
+  private var _coreStyles: CoreStyles? = null
   
-  val DefaultStyles: DefaultStyles get() = _defaultStyles
-  val AnimationDurations: AnimationDurations get() = _Animation_durations
+  val CoreStyles: CoreStyles get() = checkNotNull(_coreStyles)
+  
   val statusBarHeight: Int get() = _statusBarHeight
+  
   val applicationContext: Context
     get() = checkNotNull(_application?.applicationContext) {
       "You should call 'initializeWithAppContext' before accessing applicationContext"
@@ -27,8 +27,8 @@ object ViewDslConfiguration {
     Densities.init(resources)
   }
   
-  fun setDefaultStyles(defaultStyles: DefaultStyles) {
-    _defaultStyles = defaultStyles
+  fun setCoreStyles(coreStyles: CoreStyles) {
+    _coreStyles = coreStyles
   }
   
   fun setStatusBarHeight(statusBarHeight: Int) {

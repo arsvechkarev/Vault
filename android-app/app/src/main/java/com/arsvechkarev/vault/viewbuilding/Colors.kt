@@ -2,13 +2,13 @@ package com.arsvechkarev.vault.viewbuilding
 
 import android.graphics.Color
 
-@Suppress("MayBeConstant")
+@Suppress("MayBeConstant", "SpellCheckingInspection")
 object Colors {
   
   val Transparent = Color.TRANSPARENT
   val Black = "000000".color
   val Background = "17212B".color
-  val Dialog = "17212B".color
+  val Dialog = Background
   val Icon = "FFFFFF".color
   val Ripple = "C6FFFFFF".color
   val Accent = "3C80AE".color
@@ -22,6 +22,7 @@ object Colors {
   val ErrorRipple = "70E64545".color
   val TextPrimary = "FFFFFF".color
   val TextSecondary = "A3A3A3".color
+  val TextError = "EB4040".color
   val TextDisabled = "616161".color
   val PasswordWeak = "C80505".color
   val PasswordMedium = "DA6314".color

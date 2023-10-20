@@ -106,7 +106,7 @@ class LoginScreen : BaseFragmentScreen() {
         child<FixedHeightTextView>(MatchParent, WrapContent, style = BaseTextView) {
           id(TextError)
           margins(start = MarginNormal + MarginTiny, top = MarginSmall)
-          textColor(Colors.Error)
+          textColor(Colors.TextError)
         }
       }
       VerticalLayout(WrapContent, WrapContent) {

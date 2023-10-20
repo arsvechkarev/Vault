@@ -2,6 +2,7 @@ package com.arsvechkarev.vault.features.login
 
 import android.content.Context
 import android.view.Gravity.CENTER
+import android.view.Gravity.CENTER_HORIZONTAL
 import android.view.View
 import androidx.lifecycle.lifecycleScope
 import com.arsvechkarev.vault.BuildConfig
@@ -128,9 +129,10 @@ class LoginScreen : BaseFragmentScreen() {
           image(R.drawable.ic_fingerprint)
           margins(bottom = MarginMedium)
         }
-        TextView(WrapContent, WrapContent, style = SecondaryTextView) {
+        child<FixedHeightTextView>(WrapContent, WrapContent, style = SecondaryTextView) {
+          minTextHeightTextRes = R.string.text_biometrics_error_lockout
           id(TextBiometrics)
-          gravity(CENTER)
+          gravity(CENTER_HORIZONTAL)
           marginHorizontal(MarginNormal)
         }
       }

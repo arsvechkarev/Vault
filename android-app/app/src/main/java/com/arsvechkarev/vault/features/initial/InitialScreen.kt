@@ -41,7 +41,7 @@ class InitialScreen : BaseFragmentScreen() {
         layoutGravity(CENTER)
         gravity(CENTER)
         ImageView(ImageLogoSize, ImageLogoSize) {
-          image(R.mipmap.ic_launcher)
+          image(R.mipmap.ic_launcher_round)
           onClick { rotate() }
         }
         TextView(WrapContent, WrapContent, style = BoldTextView) {

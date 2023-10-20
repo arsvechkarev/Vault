@@ -63,6 +63,7 @@ import viewdsl.margin
 import viewdsl.marginHorizontal
 import viewdsl.margins
 import viewdsl.onClick
+import viewdsl.rotate
 import viewdsl.text
 import viewdsl.textColor
 import viewdsl.textSize
@@ -82,8 +83,9 @@ class LoginScreen : BaseFragmentScreen() {
         }
         gravity(CENTER)
         ImageView(ImageLogoSize, ImageLogoSize) {
-          image(R.mipmap.ic_launcher)
+          image(R.mipmap.ic_launcher_round)
           margin(MarginNormal)
+          onClick { rotate() }
         }
         TextView(WrapContent, WrapContent, style = BoldTextView) {
           textSize(TextSizes.H0)

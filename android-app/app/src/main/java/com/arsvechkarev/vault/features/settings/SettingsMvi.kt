@@ -66,7 +66,7 @@ sealed interface SettingsNews {
   class SetStorageBackupEnabled(val enabled: Boolean) : SettingsNews
   object ShowMasterPasswordChanged : SettingsNews
   object ShowBiometricsPrompt : SettingsNews
-  object ShowBiometricsAdded : SettingsNews
+  object ShowBiometricsEnabled : SettingsNews
   class ShowBiometricsError(val error: SettingsBiometricsError) : SettingsNews
   class LaunchFolderSelection(val initialUri: Uri?) : SettingsNews
   object ShowStorageBackupEnabled : SettingsNews

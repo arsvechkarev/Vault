@@ -146,9 +146,9 @@
   <string name="text_biometrics_snackbar_error_lockout">Too many attempts. Try again later</string>
   <string name="text_biometrics_snackbar_error_lockout_permanent">An error occurred. Re-login with biometrics into your device and try again</string>
   <string name="text_biometrics_snackbar_error">Unknown error. Try again later</string>
-  <string name="text_biometrics_add">Set up biometric unlock</string>
+  <string name="text_biometrics_set_up">Set up biometric unlock</string>
   <string name="text_biometrics_cancel">Cancel</string>
-  <string name="text_biometrics_added">Biometrics successfully added</string>
+  <string name="text_biometrics_enabled">Biometrics enabled</string>
   <string name="text_storage_backup_title">Storage backup</string>
   <string name="text_storage_backup_description">Automatically backup passwords to the file system</string>
   <string name="text_storage_backup_enabled">Storage backup enabled</string>

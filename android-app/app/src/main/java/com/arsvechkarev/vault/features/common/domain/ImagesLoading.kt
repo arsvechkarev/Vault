@@ -6,14 +6,12 @@ import coil.dispose
 import coil.imageLoader
 import coil.load
 import coil.request.CachePolicy
-import com.arsvechkarev.vault.BuildConfig
 import com.arsvechkarev.vault.MainActivity
 import com.arsvechkarev.vault.core.views.drawables.BaseShimmerDrawable.Companion.setShimmerDrawable
 import com.arsvechkarev.vault.core.views.drawables.BaseShimmerDrawable.Companion.stopShimmerDrawable
 import com.arsvechkarev.vault.core.views.drawables.LetterInCircleDrawable
 import com.arsvechkarev.vault.core.views.drawables.LoadingPlaceholderDrawable
 import com.arsvechkarev.vault.features.common.di.CoreComponentHolder
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import okhttp3.OkHttpClient
 
@@ -30,14 +28,11 @@ fun ImageView.setIconForTitle(title: String, onImageLoadingFailed: () -> Unit) {
   val okHttpClient = CoreComponentHolder.coreComponent.okHttpClient
   val scope = (context as MainActivity).lifecycleScope
   scope.launch {
+    setShimmerDrawable(LoadingPlaceholderDrawable(title.first().toString()))
     val imagesNames = imagesNamesLoader.getFromCacheIfExists()
     if (imagesNames != null) {
       trySetImageFromMatchingNames(trimmedText, imagesNames, okHttpClient, onImageLoadingFailed)
     } else {
-      setShimmerDrawable(LoadingPlaceholderDrawable(title.first().toString()))
-      if (BuildConfig.DEBUG) {
-        delay(1000)
-      }
       imagesNamesLoader.loadFromNetwork()
           .onSuccess { loadedImagesNames ->
             trySetImageFromMatchingNames(trimmedText, loadedImagesNames,
@@ -82,7 +77,6 @@ suspend fun ImageView.trySetImageFromMatchingNames(
       crossfade(true)
       memoryCachePolicy(CachePolicy.DISABLED)
       diskCachePolicy(CachePolicy.DISABLED)
-      placeholder(LoadingPlaceholderDrawable(text.first().toString()).apply { start() })
       error(LetterInCircleDrawable(text.first().toString()))
       listener(
         onSuccess = { _, result ->

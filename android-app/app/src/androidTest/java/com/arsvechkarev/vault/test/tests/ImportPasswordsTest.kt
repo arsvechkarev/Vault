@@ -10,16 +10,19 @@ import com.arsvechkarev.vault.test.core.base.VaultTestCase
 import com.arsvechkarev.vault.test.core.di.StubExtraDependenciesFactory
 import com.arsvechkarev.vault.test.core.di.stubs.StubActivityResultWrapper
 import com.arsvechkarev.vault.test.core.di.stubs.StubExternalFileReader
+import com.arsvechkarev.vault.test.core.di.stubs.TestImageRequestsRecorder
+import com.arsvechkarev.vault.test.core.di.stubs.URL_IMAGE_GOOGLE
 import com.arsvechkarev.vault.test.core.ext.context
 import com.arsvechkarev.vault.test.core.ext.currentScreenIs
 import com.arsvechkarev.vault.test.core.ext.launchActivityWithDatabase
+import com.arsvechkarev.vault.test.core.ext.wasImageRequestWithUrlCalled
 import com.arsvechkarev.vault.test.core.rule.VaultAutotestRule
 import com.arsvechkarev.vault.test.screens.KImportPasswordsScreen
 import com.arsvechkarev.vault.test.screens.KInitialScreen
 import com.arsvechkarev.vault.test.screens.KLoginScreen
 import com.arsvechkarev.vault.test.screens.KMainListScreen
 import com.arsvechkarev.vault.test.screens.KMainListScreen.PasswordItem
-import kotlinx.coroutines.runBlocking
+import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import java.io.InputStream
@@ -36,39 +39,49 @@ class ImportPasswordsTest : VaultTestCase() {
     }
   )
   
-  @Test
-  fun testImportingPasswordsFromInitialScreen() = init {
+  private val testImageRequestsRecorder = TestImageRequestsRecorder()
+  
+  @Before
+  fun setup() {
     CoreComponentHolder.initialize(
       application = ApplicationProvider.getApplicationContext(),
       factory = StubExtraDependenciesFactory(
         activityResultWrapper = StubActivityResultWrapper(
           stubGetFileUri = "content://myfolder/passwords.kdbx"
         ),
-        externalFileReader = stubFileReader
-      )
+        externalFileReader = stubFileReader,
+        imagesRequestsRecorder = testImageRequestsRecorder
+      ),
     )
+    
+  }
+  
+  @Test
+  fun testImportingPasswordsFromInitialScreen() = init {
     rule.launchActivity()
   }.run {
     KInitialScreen {
       buttonImportPasswords.click()
+      
       KImportPasswordsScreen {
-        currentScreenIs<ImportPasswordsScreen>()
         layoutSelectFile.click()
         buttonImportPasswords.click()
+        
         enterPasswordDialog {
+          title.hasText("Enter password")
           editText.replaceText("qwetu1233")
           buttonContinue.click()
         }
+        
         KMainListScreen {
-          currentScreenIs<MainListScreen>()
           recycler {
             hasSize(3)
             childAt<PasswordItem>(1) {
-              text.hasText("google")
-//              image.hasDrawable(R.drawable.icon_google)
+              title.hasText("google")
+              image.wasImageRequestWithUrlCalled(URL_IMAGE_GOOGLE, testImageRequestsRecorder)
             }
             childAt<PasswordItem>(2) {
-              text.hasText("test.com")
+              title.hasText("test.com")
               image.hasDrawable(LetterInCircleDrawable("t"))
             }
           }
@@ -79,18 +92,7 @@ class ImportPasswordsTest : VaultTestCase() {
   
   @Test
   fun importingPasswordsFromMainMenuTest() = init {
-    runBlocking {
-      CoreComponentHolder.initialize(
-        application = ApplicationProvider.getApplicationContext(),
-        factory = StubExtraDependenciesFactory(
-          activityResultWrapper = StubActivityResultWrapper(
-            stubGetFileUri = "content://myfolder/passwords.kdbx"
-          ),
-          externalFileReader = stubFileReader
-        ),
-      )
-      rule.launchActivityWithDatabase("database_one_password")
-    }
+    rule.launchActivityWithDatabase("database_one_password")
   }.run {
     KLoginScreen {
       editTextEnterPassword.replaceText("qwetu1233")
@@ -100,7 +102,7 @@ class ImportPasswordsTest : VaultTestCase() {
         recycler {
           hasSize(2)
           childAt<PasswordItem>(1) {
-            text.hasText("abc")
+            title.hasText("abc")
           }
         }
         
@@ -199,11 +201,11 @@ class ImportPasswordsTest : VaultTestCase() {
         recycler {
           hasSize(3)
           childAt<PasswordItem>(1) {
-            text.hasText("google")
-            //            image.hasDrawable(R.drawable.icon_google)
+            title.hasText("google")
+            image.wasImageRequestWithUrlCalled(URL_IMAGE_GOOGLE, testImageRequestsRecorder)
           }
           childAt<PasswordItem>(2) {
-            text.hasText("test.com")
+            title.hasText("test.com")
             image.hasDrawable(LetterInCircleDrawable("t"))
           }
         }

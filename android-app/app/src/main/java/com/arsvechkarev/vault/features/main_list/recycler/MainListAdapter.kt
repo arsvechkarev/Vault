@@ -106,7 +106,7 @@ class MainListAdapter(
               id(ItemPasswordEntryVerticalGuideline)
             }
             TextView(ZERO, WrapContent, style = SecondaryTextView) {
-              id(ItemPasswordEntryUsername)
+              id(ItemPasswordEntrySubtitle)
               setSingleLine()
               margins(start = MarginNormal, end = MarginNormal, top = MarginTiny / 2)
               constraints {
@@ -125,8 +125,8 @@ class MainListAdapter(
             onImageLoadingFailed)
           itemView.viewAs<TextView>(ItemPasswordEntryTitle).text(item.title)
           if (item.username.isNotEmpty()) {
-            itemView.viewAs<TextView>(ItemPasswordEntryUsername).visible()
-            itemView.viewAs<TextView>(ItemPasswordEntryUsername).text(item.username)
+            itemView.viewAs<TextView>(ItemPasswordEntrySubtitle).visible()
+            itemView.viewAs<TextView>(ItemPasswordEntrySubtitle).text(item.username)
             itemView.viewAs<TextView>(ItemPasswordEntryTitle).constraints {
               startToEndOf(ItemPasswordEntryImage)
               endToEndOf(parent)
@@ -137,7 +137,7 @@ class MainListAdapter(
               bottomToBottomOf(parent)
             }
           } else {
-            itemView.viewAs<TextView>(ItemPasswordEntryUsername).gone()
+            itemView.viewAs<TextView>(ItemPasswordEntrySubtitle).gone()
             itemView.viewAs<TextView>(ItemPasswordEntryTitle).constraints {
               startToEndOf(ItemPasswordEntryImage)
               topToTopOf(parent)
@@ -227,7 +227,7 @@ class MainListAdapter(
     val ItemPasswordEntryImage = View.generateViewId()
     val ItemPasswordEntryTitle = View.generateViewId()
     val ItemPasswordEntryVerticalGuideline = View.generateViewId()
-    val ItemPasswordEntryUsername = View.generateViewId()
+    val ItemPasswordEntrySubtitle = View.generateViewId()
     val ItemPlainTextTitle = View.generateViewId()
   }
 }

@@ -43,6 +43,8 @@ import com.arsvechkarev.vault.viewbuilding.Styles.BoldTextView
 import com.arsvechkarev.vault.viewbuilding.Styles.Button
 import com.arsvechkarev.vault.viewbuilding.Styles.SecondaryTextView
 import com.arsvechkarev.vault.viewbuilding.TextSizes
+import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import navigation.BaseFragmentScreen
@@ -163,10 +165,17 @@ class LoginScreen : BaseFragmentScreen() {
   override fun onInit() {
     store.subscribe(this, ::render, ::handleNews)
     store.tryDispatch(OnInit)
+    initBiometricsDialog()
+  }
+  
+  @OptIn(FlowPreview::class)
+  private fun initBiometricsDialog() {
     biometricsDialog.events
         .onEach { event -> store.tryDispatch(OnBiometricsEvent(event)) }
         .launchIn(lifecycleScope)
     biometricsDialog.openedStatus
+        // In case dialog opens and closes very fast due to existing error
+        .debounce(100L)
         .onEach { opened -> setStatusBarColor(if (opened) Colors.Black else Colors.Transparent) }
         .launchIn(lifecycleScope)
   }

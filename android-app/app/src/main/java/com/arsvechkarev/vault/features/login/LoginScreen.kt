@@ -93,10 +93,6 @@ class LoginScreen : BaseFragmentScreen() {
       VerticalLayout(MatchParent, WrapContent) {
         id(LayoutContent)
         margins(top = MarginExtraLarge * 2)
-        constraints {
-          centeredWithin(parent)
-          setVerticalBias(0.4f)
-        }
         child<EditTextPassword>(MatchParent, WrapContent) {
           id(EditTextPassword)
           marginHorizontal(MarginNormal)
@@ -187,6 +183,10 @@ class LoginScreen : BaseFragmentScreen() {
       textView(TextError).clearText()
     }
     view(LayoutBiometrics).isVisible = state.biometricsEnabled
+    view(LayoutContent).constraints {
+      centeredWithin(parent)
+      setVerticalBias(if (state.biometricsEnabled) 0.43f else 0.5f)
+    }
     view(LayoutBiometrics).isClickable = state.biometricsState == OK
     val imageColor = if (state.biometricsState == OK) Colors.TextSecondary else Colors.TextDisabled
     imageView(ImageBiometrics).imageTint(imageColor)

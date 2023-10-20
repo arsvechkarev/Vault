@@ -272,6 +272,7 @@ class PasswordEntryReducer :
                     showTitleEmptyError = false,
                     titleState = state.titleState.reset(),
                     usernameState = state.usernameState.reset(),
+                    urlState = state.urlState.reset(),
                     notesState = state.notesState.reset()
                   )
                 }

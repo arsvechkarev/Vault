@@ -7,15 +7,16 @@ import io.github.kakaocup.kakao.common.views.KBaseView
 import io.github.kakaocup.kakao.text.KTextView
 
 class KPasswordStrengthDialog :
-  KBaseView<KInfoDialog>({ withClassNameTag<PasswordStrengthDialog>() }) {
+  KBaseView<KPasswordStrengthDialog>({ withClassNameTag<PasswordStrengthDialog>() }) {
   
-  private val title = KTextView {
+  val title = KTextView {
     withText("Password is too weak")
     withSibling { withText(R.string.text_password_should_be_strong) }
   }
-  private val description = KTextView { withText(R.string.text_password_should_be_strong) }
-  private val textContinueWithWeakPassword = KTextView { withText("CONTINUE WITH WEAK PASSWORD") }
-  private val textChangePassword = KTextView { withText("CHANGE PASSWORD") }
+  
+  val description = KTextView { withText(R.string.text_password_should_be_strong) }
+  val textContinueWithWeakPassword = KTextView { withText("CONTINUE WITH WEAK PASSWORD") }
+  val textChangePassword = KTextView { withText("CHANGE PASSWORD") }
   
   fun isShown() {
     title.isDisplayed()

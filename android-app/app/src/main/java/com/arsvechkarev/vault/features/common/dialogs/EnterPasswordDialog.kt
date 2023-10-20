@@ -100,7 +100,7 @@ class EnterPasswordDialog(context: Context) : FrameLayout(context) {
         }
         child<FixedHeightTextView>(MatchParent, WrapContent, style = BaseTextView) {
           id(TextError)
-          textColor(Colors.Error)
+          textColor(Colors.TextError)
           margins(start = MarginTiny, top = MarginSmall)
         }
         FrameLayout(MatchParent, WrapContent) {

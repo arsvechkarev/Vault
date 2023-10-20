@@ -83,7 +83,7 @@ object Styles : DefaultStyles {
   
   val ClickableErrorTextView: TextView.() -> Unit = {
     apply(ClickableTextView(Colors.ErrorRipple))
-    textColor(Colors.Error)
+    textColor(Colors.TextError)
   }
   
   fun ClickableGradientRoundRect(

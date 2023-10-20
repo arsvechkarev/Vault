@@ -344,7 +344,7 @@ class PlainTextEntryScreen : BaseFragmentScreen() {
   
   private fun showTitleViewError() {
     textView(Title).apply {
-      textColor(Colors.Error)
+      textColor(Colors.TextError)
       text(R.string.text_title_is_empty)
     }
   }

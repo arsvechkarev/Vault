@@ -14,7 +14,6 @@ class LoadingPlaceholderDrawable(
   backgroundColor: Int = Colors.WhiteCircle
 ) : BaseShimmerDrawable(backgroundColor) {
   
-  
   private val circlePaint = Paint(color = backgroundColor)
   private val textPaint = TextPaint(
     color = textColor,

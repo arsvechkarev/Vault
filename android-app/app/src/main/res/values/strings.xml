@@ -136,9 +136,12 @@
   <string name="text_settings">Settings</string>
   <string name="text_change_master_password_description">Change the password you use to enter the app</string>
   <string name="text_master_password_changed">Master password successfully changed</string>
+  <string name="text_master_password_changed_biometrics_dialog_title">Biometrics disabled</string>
+  <string name="text_master_password_changed_biometrics_dialog_message">Master password successfully changed, but biometrics was disabled, because it used old password. If you want, you can enable it back right now</string>
   <string name="text_show_passwords_usernames">Show usernames</string>
   <string name="text_show_password_usernames_description">Show usernames in password entries</string>
   <string name="text_biometrics_title">Biometric unlock</string>
+  <string name="text_biometrics_enable">ENABLE</string>
   <string name="text_biometrics_description">Enter the app with fingerprint or other biometric data</string>
   <string name="text_biometrics_snackbar_error_lockout">Too many attempts. Try again later</string>
   <string name="text_biometrics_snackbar_error_lockout_permanent">An error occurred. Re-login with biometrics into your device and try again</string>

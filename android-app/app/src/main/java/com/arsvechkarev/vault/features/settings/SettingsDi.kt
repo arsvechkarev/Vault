@@ -12,7 +12,6 @@ import com.arsvechkarev.vault.features.settings.actors.GetBiometricsAvailableAct
 import com.arsvechkarev.vault.features.settings.actors.GetBiometricsEnabledActor
 import com.arsvechkarev.vault.features.settings.actors.GetShowUsernamesActor
 import com.arsvechkarev.vault.features.settings.actors.GetStorageBackupEnabledActor
-import com.arsvechkarev.vault.features.settings.actors.ObserveMasterPasswordChangesActor
 import com.arsvechkarev.vault.features.settings.actors.SettingsRouterActor
 
 fun SettingsStore(
@@ -29,7 +28,6 @@ fun SettingsStore(
         coreComponent.biometricsAllowedManager, coreComponent.biometricsStorage),
       DisableBiometricsActor(coreComponent.biometricsStorage),
       ChangeStorageBackupEnabledActor(coreComponent.storageBackupPreferences),
-      ObserveMasterPasswordChangesActor(coreComponent.changeMasterPasswordObserver),
       ClearImagesCacheActor(coreComponent.imagesCache,
         coreComponent.imagesNamesLoader, coreComponent.reloadImagesObserver),
       SettingsRouterActor(coreComponent.router),

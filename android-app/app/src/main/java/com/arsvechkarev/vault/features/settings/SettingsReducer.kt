@@ -19,9 +19,8 @@ import com.arsvechkarev.vault.features.settings.SettingsCommand.FetchData
 import com.arsvechkarev.vault.features.settings.SettingsCommand.FetchStorageBackupEnabled
 import com.arsvechkarev.vault.features.settings.SettingsCommand.RouterCommand.GoBack
 import com.arsvechkarev.vault.features.settings.SettingsCommand.RouterCommand.GoToMasterPasswordScreen
-import com.arsvechkarev.vault.features.settings.SettingsEvent.BiometricsAdded
+import com.arsvechkarev.vault.features.settings.SettingsEvent.BiometricsEnabled
 import com.arsvechkarev.vault.features.settings.SettingsEvent.ImagesCacheCleared
-import com.arsvechkarev.vault.features.settings.SettingsEvent.MasterPasswordChanged
 import com.arsvechkarev.vault.features.settings.SettingsEvent.ReceivedBiometricsAvailable
 import com.arsvechkarev.vault.features.settings.SettingsEvent.ReceivedBiometricsEnabled
 import com.arsvechkarev.vault.features.settings.SettingsEvent.ReceivedShowUsernames
@@ -46,8 +45,11 @@ import com.arsvechkarev.vault.features.settings.SettingsUiEvent.OnClearImagesCac
 import com.arsvechkarev.vault.features.settings.SettingsUiEvent.OnEnableBiometricsChanged
 import com.arsvechkarev.vault.features.settings.SettingsUiEvent.OnEnableStorageBackupChanged
 import com.arsvechkarev.vault.features.settings.SettingsUiEvent.OnEnteredPasswordToChangeMasterPassword
+import com.arsvechkarev.vault.features.settings.SettingsUiEvent.OnHideEnableBiometricsDialog
 import com.arsvechkarev.vault.features.settings.SettingsUiEvent.OnHideEnterPasswordDialog
 import com.arsvechkarev.vault.features.settings.SettingsUiEvent.OnInit
+import com.arsvechkarev.vault.features.settings.SettingsUiEvent.OnMasterPasswordChangedReceived
+import com.arsvechkarev.vault.features.settings.SettingsUiEvent.OnProceedEnableBiometricsDialog
 import com.arsvechkarev.vault.features.settings.SettingsUiEvent.OnSelectBackupFolderClicked
 import com.arsvechkarev.vault.features.settings.SettingsUiEvent.OnSelectedBackupFolder
 import com.arsvechkarev.vault.features.settings.SettingsUiEvent.OnShowUsernamesChanged
@@ -89,6 +91,15 @@ class SettingsReducer : DslReducer<SettingsState, SettingsEvent,
       OnHideEnterPasswordDialog -> {
         state { copy(enterPasswordDialogState = HIDDEN) }
       }
+      OnMasterPasswordChangedReceived -> {
+        if (state.biometricsEnabled) {
+          state { copy(showEnableBiometricsDialog = true, biometricsEnabled = false) }
+          news(SetBiometricsEnabled(enabled = false, animate = false))
+          commands(DisableBiometrics)
+        } else {
+          news(ShowMasterPasswordChanged)
+        }
+      }
       is OnShowUsernamesChanged -> {
         commands(ChangeShowUsernames(event.showUsernames))
       }
@@ -118,6 +129,13 @@ class SettingsReducer : DslReducer<SettingsState, SettingsEvent,
             news(*news.toTypedArray())
           }
         }
+      }
+      OnProceedEnableBiometricsDialog -> {
+        state { copy(showEnableBiometricsDialog = false) }
+        news(ShowBiometricsPrompt)
+      }
+      OnHideEnableBiometricsDialog -> {
+        state { copy(showEnableBiometricsDialog = false) }
       }
       is OnEnableStorageBackupChanged -> {
         if (event.enabled) {
@@ -149,11 +167,9 @@ class SettingsReducer : DslReducer<SettingsState, SettingsEvent,
           commands(GoBack)
         }
       }
-      MasterPasswordChanged -> {
-        news(ShowMasterPasswordChanged)
-      }
-      BiometricsAdded -> {
-        news(ShowBiometricsAdded)
+      BiometricsEnabled -> {
+        state { copy(biometricsEnabled = true) }
+        news(SetBiometricsEnabled(enabled = true, animate = true), ShowBiometricsAdded)
       }
       is StorageBackupEnabled -> {
         state { copy(storageBackupEnabled = true, storageBackupFolderUri = event.backupFolderUri) }

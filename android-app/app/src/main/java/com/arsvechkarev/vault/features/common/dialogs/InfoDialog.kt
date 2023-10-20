@@ -88,6 +88,7 @@ class InfoDialog(context: Context) : SimpleDialog(context) {
     messageRes: CharSequence,
     cancelTextRes: Int = R.string.text_cancel,
     proceedTextRes: Int = R.string.text_delete,
+    showProceedAsError: Boolean = true,
     onCancel: () -> Unit = { hide() },
     onProceed: () -> Unit = {},
   ) {
@@ -99,7 +100,8 @@ class InfoDialog(context: Context) : SimpleDialog(context) {
     textView(DialogInfoText1).visible()
     textView(DialogInfoText1).text(cancelTextRes)
     textView(DialogInfoText1).onClick(onCancel)
-    textView(DialogInfoText2).apply(ClickableErrorTextView)
+    val style = if (showProceedAsError) ClickableErrorTextView else ClickableTextView()
+    textView(DialogInfoText2).apply(style)
     textView(DialogInfoText2).text(proceedTextRes)
     textView(DialogInfoText2).onClick(onProceed)
   }

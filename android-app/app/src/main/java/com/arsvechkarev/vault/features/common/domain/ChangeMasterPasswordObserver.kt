@@ -12,7 +12,7 @@ interface ChangeMasterPasswordObserver {
 
 class ChangeMasterPasswordObserverImpl : ChangeMasterPasswordObserver {
   
-  private val _masterPasswordChanges = MutableSharedFlow<Unit>(replay = 1)
+  private val _masterPasswordChanges = MutableSharedFlow<Unit>(extraBufferCapacity = 1)
   
   override val masterPasswordChanges = _masterPasswordChanges
   

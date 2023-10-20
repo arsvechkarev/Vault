@@ -75,7 +75,6 @@ class CreatingPasswordScreen : BaseFragmentScreen() {
   
   override fun buildLayout(context: Context) = context.withViewBuilder {
     RootFrameLayout {
-      id(CreatingPasswordScreenRoot)
       VerticalLayout(MatchParent, MatchParent) {
         FrameLayout(MatchParent, WrapContent) {
           margins(top = StatusBarHeight + MarginMedium)
@@ -134,6 +133,7 @@ class CreatingPasswordScreen : BaseFragmentScreen() {
           }
         }
         TextView(WrapContent, WrapContent, style = ClickableTextView()) {
+          id(ButtonGeneratePassword)
           margins(top = MarginNormal)
           layoutGravity(CENTER_HORIZONTAL)
           gravity(CENTER)
@@ -233,9 +233,9 @@ class CreatingPasswordScreen : BaseFragmentScreen() {
   
   companion object {
     
-    val CreatingPasswordScreenRoot = View.generateViewId()
     val Title = View.generateViewId()
     val TextPasswordLength = View.generateViewId()
     val EditTextPassword = View.generateViewId()
+    val ButtonGeneratePassword = View.generateViewId()
   }
 }

@@ -202,7 +202,7 @@ class PasswordEntryScreen : BaseFragmentScreen() {
           }
         }
         TextView(WrapContent, WrapContent, style = AccentTextView) {
-          id(Title)
+          id(TitleTitle)
           margins(top = MarginBig)
           text(R.string.text_title)
           constraints {
@@ -216,8 +216,8 @@ class PasswordEntryScreen : BaseFragmentScreen() {
           addTextChangedListener(titleTextWatcher)
           onSubmit { store.tryDispatch(OnEditTextTitleSubmitClicked) }
           constraints {
-            topToBottomOf(Title)
-            startToStartOf(Title)
+            topToBottomOf(TitleTitle)
+            startToStartOf(TitleTitle)
             endToStartOf(ImageTitleAction)
           }
         }
@@ -463,11 +463,11 @@ class PasswordEntryScreen : BaseFragmentScreen() {
       store.tryDispatch(OnImagesLoadingFailed)
     })
     if (state.showTitleEmptyError) {
-      textView(Title).text(R.string.text_title_is_empty)
-      textView(Title).textColor(Colors.TextError)
+      textView(TitleTitle).text(R.string.text_title_is_empty)
+      textView(TitleTitle).textColor(Colors.TextError)
     } else {
-      textView(Title).text(R.string.text_title)
-      textView(Title).textColor(Colors.Accent)
+      textView(TitleTitle).text(R.string.text_title)
+      textView(TitleTitle).textColor(Colors.Accent)
     }
     editText(EditTextTitle).setTextSilently(state.title, titleTextWatcher)
     editText(EditTextUsername).setTextSilently(state.username, usernameTextWatcher)
@@ -501,11 +501,11 @@ class PasswordEntryScreen : BaseFragmentScreen() {
       requireContext().hideKeyboard()
     }
     if (state.showTitleEmptyError) {
-      textView(Title).text(R.string.text_title_is_empty)
-      textView(Title).textColor(Colors.TextError)
+      textView(TitleTitle).text(R.string.text_title_is_empty)
+      textView(TitleTitle).textColor(Colors.TextError)
     } else {
-      textView(Title).text(R.string.text_title)
-      textView(Title).textColor(Colors.Accent)
+      textView(TitleTitle).text(R.string.text_title)
+      textView(TitleTitle).textColor(Colors.Accent)
     }
     if (state.showDeletePasswordDialog) {
       showInfoDialog(state)
@@ -615,12 +615,12 @@ class PasswordEntryScreen : BaseFragmentScreen() {
     
     val PasswordEntryScreenRoot = View.generateViewId()
     val ScrollableConstraintLayoutId = View.generateViewId()
-    val TitleNewPassword = View.generateViewId()
     val ImageBack = View.generateViewId()
     val ImageDelete = View.generateViewId()
     val ImageFavorite = View.generateViewId()
+    val TitleNewPassword = View.generateViewId()
     val ImageTitle = View.generateViewId()
-    val Title = View.generateViewId()
+    val TitleTitle = View.generateViewId()
     val EditTextTitle = View.generateViewId()
     val ImageTitleAction = View.generateViewId()
     val TitleUsername = View.generateViewId()

@@ -8,7 +8,12 @@ import com.arsvechkarev.vault.features.password_entry.PasswordEntryScreen
 import com.arsvechkarev.vault.test.core.base.VaultTestCase
 import com.arsvechkarev.vault.test.core.ext.currentScreenIs
 import com.arsvechkarev.vault.test.core.ext.hasClipboardText
+import com.arsvechkarev.vault.test.core.ext.hasNoDrawable
+import com.arsvechkarev.vault.test.core.ext.hasPasswordWithAllCharacteristics
+import com.arsvechkarev.vault.test.core.ext.hasPasswordWithCharacteristics
+import com.arsvechkarev.vault.test.core.ext.hasPasswordWithNoCharacteristics
 import com.arsvechkarev.vault.test.core.ext.hasTextColorInt
+import com.arsvechkarev.vault.test.core.ext.hasTextLength
 import com.arsvechkarev.vault.test.core.ext.launchActivityWithDatabase
 import com.arsvechkarev.vault.test.core.ext.waitForSnackbarToHide
 import com.arsvechkarev.vault.test.core.rule.VaultAutotestRule
@@ -20,6 +25,10 @@ import com.arsvechkarev.vault.test.screens.KMainListScreen.PasswordItem
 import com.arsvechkarev.vault.test.screens.KMainListScreen.PlainTextItem
 import com.arsvechkarev.vault.test.screens.KPasswordEntryScreen
 import com.arsvechkarev.vault.viewbuilding.Colors
+import domain.PasswordStrength.SECURE
+import domain.PasswordStrength.WEAK
+import domain.model.PasswordCharacteristic.NUMBERS
+import domain.model.PasswordCharacteristic.SPECIAL_SYMBOLS
 import org.junit.Rule
 import org.junit.Test
 
@@ -55,9 +64,9 @@ class PasswordEntryTest : VaultTestCase() {
       
       entryTypeDialog.passwordEntry.click()
       
-      //      KCreatingPasswordEntryScreen {
-      //        imageBack.click()
-      //      }
+      KPasswordEntryScreen {
+        imageBack.click()
+      }
       
       currentScreenIs<MainListScreen>()
       
@@ -72,169 +81,164 @@ class PasswordEntryTest : VaultTestCase() {
       
       entryTypeDialog.passwordEntry.click()
       
-      //      KCreatingPasswordEntryScreen {
-      //        title.isDisplayed()
-      //        textTitle.hasText("Title")
-      //        textUsername.hasText("Username")
-      //        buttonContinue.isDisplayed()
-      //
-      //        closeSoftKeyboard()
-      //        buttonContinue.click()
-      //
-      //        textTitle {
-      //          hasTextColorInt(Colors.Error)
-      //          hasText("Title is empty")
-      //        }
-      //
-      //        editTextTitle.typeText("test.com")
-      //
-      //        textTitle {
-      //          hasTextColorInt(Colors.Accent)
-      //          hasText("Title")
-      //        }
-      //
-      //        editTextUsername.replaceText("myusername")
-      //
-      //        buttonContinue.click()
-      //
-      //        KCreatingPasswordScreen {
-      //          iconCross.click()
-      //        }
-      //
-      //        buttonContinue.click()
-      //
-      //        KCreatingPasswordScreen {
-      //          title {
-      //            isDisplayed()
-      //            hasText("Password")
-      //          }
-      //          editTextPassword {
-      //            isDisplayed()
-      //            hasTextLength(16) // default password length
-      //            hasPasswordWithAllCharacteristics()
-      //          }
-      //          checkmarkUppercaseSymbols.isChecked()
-      //          checkmarkNumbers.isChecked()
-      //          checkmarkSpecialSymbols.isChecked()
-      //          textPasswordLength.hasText("Length: 16")
-      //          passwordLengthSpinner.hasProgress(8) // defaultPasswordLength - minPasswordLength
-      //          buttonGeneratePassword.isDisplayed()
-      //          buttonSavePassword.isDisplayed()
-      //
-      //          passwordLengthSpinner.setProgress(13)
-      //
-      //          buttonGeneratePassword.click()
-      //          buttonGeneratePassword.click()
-      //          buttonGeneratePassword.click()
-      //
-      //          textPasswordLength.hasText("Length: 21")
-      //          editTextPassword {
-      //            hasTextLength(21)
-      //            hasPasswordWithAllCharacteristics()
-      //          }
-      //          textPasswordStrength.hasText("Secure")
-      //          passwordStrengthMeter.hasPasswordStrength(PasswordStrength.SECURE)
-      //
-      //          checkmarkUppercaseSymbols.click()
-      //          buttonGeneratePassword.click()
-      //
-      //          checkmarkUppercaseSymbols.isNotChecked()
-      //          checkmarkNumbers.isChecked()
-      //          checkmarkSpecialSymbols.isChecked()
-      //          editTextPassword {
-      //            hasTextLength(21)
-      //            hasPasswordWithCharacteristics(
-      //              PasswordCharacteristic.NUMBERS, PasswordCharacteristic.SPECIAL_SYMBOLS)
-      //          }
-      //
-      //          checkmarkNumbers.click()
-      //          buttonGeneratePassword.click()
-      //
-      //          checkmarkUppercaseSymbols.isNotChecked()
-      //          checkmarkNumbers.isNotChecked()
-      //          checkmarkSpecialSymbols.isChecked()
-      //          editTextPassword {
-      //            hasTextLength(21)
-      //            hasPasswordWithCharacteristics(PasswordCharacteristic.SPECIAL_SYMBOLS)
-      //          }
-      //
-      //          checkmarkSpecialSymbols.click()
-      //          buttonGeneratePassword.click()
-      //
-      //          checkmarkUppercaseSymbols.isNotChecked()
-      //          checkmarkNumbers.isNotChecked()
-      //          checkmarkSpecialSymbols.isNotChecked()
-      //          editTextPassword {
-      //            hasTextLength(21)
-      //            hasPasswordWithNoCharacteristics()
-      //          }
-      //
-      //          checkmarkUppercaseSymbols.click()
-      //          checkmarkNumbers.click()
-      //          checkmarkSpecialSymbols.click()
-      //          buttonGeneratePassword.click()
-      //
-      //          editTextPassword {
-      //            hasTextLength(21)
-      //            hasPasswordWithAllCharacteristics()
-      //          }
-      //
-      //          editTextPassword.replaceText("abcabcabcabcabc")
-      //
-      //          checkmarkUppercaseSymbols.isNotChecked()
-      //          checkmarkNumbers.isNotChecked()
-      //          checkmarkUppercaseSymbols.isNotChecked()
-      //          textPasswordStrength.hasText("Weak")
-      //          passwordStrengthMeter.hasPasswordStrength(PasswordStrength.WEAK)
-      //
-      //          buttonSavePassword.click()
-      //
-      //          confirmationDialog {
-      //            isDisplayed()
-      //            title.hasText("Saving password")
-      //            message.hasText("Do you want to accept the password?")
-      //            action1.isNotDisplayed()
-      //            action2.hasText("YES")
-      //          }
-      //
-      //          pressBack()
-      //
-      //          confirmationDialog.isNotDisplayed()
-      //          title.isDisplayed()
-      //
-      //          buttonSavePassword.click()
-      //
-      //          confirmationDialog.isDisplayed()
-      //
-      //          confirmationDialog.hide()
-      //
-      //          confirmationDialog.isNotDisplayed()
-      //
-      //          buttonSavePassword.click()
-      //          confirmationDialog.action2.click()
-      //
-      //          KPasswordEntryScreen {
-      //            imageTitle {
-      //              isDisplayed()
-      //              hasDrawable(LetterInCircleDrawable("t"))
-      //            }
-      //            textTitle.hasText("test.com")
-      //            editTextTitle.hasText("test.com")
-      //            editTextUsername.hasText("myusername")
-      //            editTextNotes.hasEmptyText()
-      //
-      //            imageEditPassword.click()
-      //
-      //            currentScreenIs<CreatingPasswordScreen>()
-      //
-      //            pressBack()
-      //
-      //            currentScreenIs<PasswordEntryScreen>()
-      //
-      //            pressBack()
-      //          }
-      //        }
-      //      }
+      KPasswordEntryScreen {
+        imageFavorite.isNotDisplayed()
+        imageDelete.isNotDisplayed()
+        imageTitle.hasNoDrawable()
+        titleNewPassword {
+          isDisplayed()
+          hasText("New password")
+        }
+        titleTitle.hasText("Title")
+        titleUsername.hasText("Username")
+        titlePassword.hasText("Password")
+        titleUrl.hasText("Url")
+        titleNotes.hasText("Notes")
+        buttonSave.isDisplayed()
+        
+        closeSoftKeyboard()
+        buttonSave.click()
+        
+        titleTitle {
+          hasTextColorInt(Colors.TextError)
+          hasText("Title is empty")
+        }
+        
+        editTextTitle.replaceText("test.com")
+        
+        titleTitle {
+          hasTextColorInt(Colors.Accent)
+          hasText("Title")
+        }
+        imageTitle.hasDrawable(LetterInCircleDrawable("t"))
+        
+        editTextUsername.replaceText("myusername")
+        
+        imageEditPassword.click()
+        
+        KCreatingPasswordScreen {
+          iconCross.click()
+        }
+        
+        currentScreenIs<PasswordEntryScreen>()
+        
+        imageEditPassword.click()
+        
+        KCreatingPasswordScreen {
+          title {
+            isDisplayed()
+            hasText("Password")
+          }
+          editTextPassword {
+            isDisplayed()
+            hasTextLength(16) // default password length
+            hasPasswordWithAllCharacteristics()
+          }
+          checkmarkUppercaseSymbols.isChecked()
+          checkmarkNumbers.isChecked()
+          checkmarkSpecialSymbols.isChecked()
+          textPasswordLength.hasText("Length: 16")
+          passwordLengthSpinner.hasProgress(8) // defaultPasswordLength - minPasswordLength
+          buttonGeneratePassword {
+            hasText("Generate password")
+            isDisplayed()
+          }
+          buttonSavePassword.isDisplayed()
+          
+          passwordLengthSpinner.setProgress(13)
+          
+          buttonGeneratePassword.click()
+          buttonGeneratePassword.click()
+          buttonGeneratePassword.click()
+          
+          textPasswordLength.hasText("Length: 21")
+          editTextPassword {
+            hasTextLength(21)
+            hasPasswordWithAllCharacteristics()
+          }
+          textPasswordStrength.hasText("Secure")
+          passwordStrengthMeter.hasPasswordStrength(SECURE)
+          
+          checkmarkUppercaseSymbols.click()
+          buttonGeneratePassword.click()
+          
+          checkmarkUppercaseSymbols.isNotChecked()
+          checkmarkNumbers.isChecked()
+          checkmarkSpecialSymbols.isChecked()
+          editTextPassword {
+            hasTextLength(21)
+            hasPasswordWithCharacteristics(NUMBERS, SPECIAL_SYMBOLS)
+          }
+          
+          checkmarkNumbers.click()
+          buttonGeneratePassword.click()
+          
+          checkmarkUppercaseSymbols.isNotChecked()
+          checkmarkNumbers.isNotChecked()
+          checkmarkSpecialSymbols.isChecked()
+          editTextPassword {
+            hasTextLength(21)
+            hasPasswordWithCharacteristics(SPECIAL_SYMBOLS)
+          }
+          
+          checkmarkSpecialSymbols.click()
+          buttonGeneratePassword.click()
+          
+          checkmarkUppercaseSymbols.isNotChecked()
+          checkmarkNumbers.isNotChecked()
+          checkmarkSpecialSymbols.isNotChecked()
+          editTextPassword {
+            hasTextLength(21)
+            hasPasswordWithNoCharacteristics()
+          }
+          
+          checkmarkUppercaseSymbols.click()
+          checkmarkNumbers.click()
+          checkmarkSpecialSymbols.click()
+          buttonGeneratePassword.click()
+          
+          editTextPassword {
+            hasTextLength(21)
+            hasPasswordWithAllCharacteristics()
+          }
+          
+          editTextPassword.replaceText("abcabcabcabcabc")
+          
+          checkmarkUppercaseSymbols.isNotChecked()
+          checkmarkNumbers.isNotChecked()
+          checkmarkUppercaseSymbols.isNotChecked()
+          textPasswordStrength.hasText("Weak")
+          passwordStrengthMeter.hasPasswordStrength(WEAK)
+          
+          buttonSavePassword.click()
+        }
+        
+        editTextUrl.replaceText("example.com")
+        
+        buttonSave.click()
+        
+        imageFavorite.isDisplayed()
+        imageDelete.isDisplayed()
+        titleNewPassword.isNotDisplayed()
+        
+        imageTitle.hasDrawable(LetterInCircleDrawable("t"))
+        
+        editTextTitle.hasText("test.com")
+        editTextUsername.hasText("myusername")
+        textPassword.hasText(R.string.text_password_stub)
+        editTextUrl.hasText("example.com")
+        editTextNotes.hasEmptyText()
+        
+        imageEditPassword.click()
+        
+        currentScreenIs<CreatingPasswordScreen>()
+        
+        pressBack()
+        
+        currentScreenIs<PasswordEntryScreen>()
+        
+        pressBack()
+      }
       
       currentScreenIs<MainListScreen>()
       
@@ -262,17 +266,17 @@ class PasswordEntryTest : VaultTestCase() {
           imageBack.isDisplayed()
           imageTitle {
             isDisplayed()
-//            hasDrawable(R.drawable.icon_google)
+            //            hasDrawable(R.drawable.icon_google)
           }
-          textTitle.hasText("google")
-          title.hasText("Title")
+          //          textTitle.hasText("google")
+          titleTitle.hasText("Title")
           editTextTitle.hasText("google")
           imageTitleAction.hasDrawable(R.drawable.ic_copy)
           titleUsername.hasText("Username")
           editTextUsername.hasText("me@gmail.com")
           imageUsernameAction.hasDrawable(R.drawable.ic_copy)
           titlePassword.hasText("Password")
-          textHiddenPassword.hasText(R.string.text_password_stub)
+          textPassword.hasText(R.string.text_password_stub)
           titleNotes.hasText("Notes")
           editTextNotes.hasEmptyText()
           imageNotesAction.hasDrawable(R.drawable.ic_copy)
@@ -339,26 +343,26 @@ class PasswordEntryTest : VaultTestCase() {
           
           imageTitleAction.hasDrawable(R.drawable.ic_checmark)
           editTextTitle.hasText("googlea")
-          textTitle.hasText("googlea")
+          //          textTitle.hasText("googlea")
           //          imageTitle.hasDrawable(R.drawable.icon_google)
           
           imageBack.click()
           
           imageTitleAction.hasDrawable(R.drawable.ic_copy)
           editTextTitle.hasText("google")
-          textTitle.hasText("google")
+          //          textTitle.hasText("google")
           
           editTextTitle.clearText()
           imageTitleAction.click()
           
-          title.hasText("Title is empty")
-          title.hasTextColorInt(Colors.Error)
+          titleTitle.hasText("Title is empty")
+          titleTitle.hasTextColorInt(Colors.TextError)
           imageTitleAction.hasDrawable(R.drawable.ic_checmark)
           
           editTextTitle.replaceText("a")
           
-          title.hasText("Title")
-          title.hasTextColorInt(Colors.Accent)
+          titleTitle.hasText("Title")
+          titleTitle.hasTextColorInt(Colors.Accent)
           
           imageBack.click()
           
@@ -368,7 +372,7 @@ class PasswordEntryTest : VaultTestCase() {
           imageTitleAction.click()
           
           imageTitle.hasDrawable(LetterInCircleDrawable("y"))
-          textTitle.hasText("yabcd")
+          //          textTitle.hasText("yabcd")
           editTextTitle.hasText("yabcd")
           
           imageTitleAction.click()
@@ -457,9 +461,9 @@ class PasswordEntryTest : VaultTestCase() {
             
             buttonSavePassword.click()
             
-            confirmationDialog.isDisplayed()
-            
-            confirmationDialog.action2.click()
+            //            confirmationDialog.isDisplayed()
+            //
+            //            confirmationDialog.action2.click()
           }
           
           currentScreenIs<PasswordEntryScreen>()

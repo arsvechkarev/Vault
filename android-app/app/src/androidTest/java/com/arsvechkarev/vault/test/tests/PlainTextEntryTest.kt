@@ -215,10 +215,10 @@ class PlainTextEntryTest : VaultTestCase() {
         recycler {
           hasSize(3)
           childAt<PasswordItem>(1) {
-            text.hasText("google")
+            title.hasText("google")
           }
           childAt<PasswordItem>(2) {
-            text.hasText("test.com")
+            title.hasText("test.com")
           }
         }
       }

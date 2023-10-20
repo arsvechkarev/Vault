@@ -21,6 +21,7 @@ import com.arsvechkarev.vault.test.screens.KMainListScreen.PlainTextItem
 import com.arsvechkarev.vault.test.screens.KMainListScreen.TitleItem
 import com.arsvechkarev.vault.test.screens.KPasswordEntryScreen
 import com.arsvechkarev.vault.test.screens.KPlainTextEntryScreen
+import com.arsvechkarev.vault.test.screens.KSettingsScreen
 import org.junit.Rule
 import org.junit.Test
 
@@ -64,11 +65,12 @@ class MainListTest : VaultTestCase() {
             title.hasText("Passwords")
           }
           childAt<PasswordItem>(1) {
-            text.hasText("google")
+            title.hasText("google")
             image.wasImageRequestWithUrlCalled(URL_IMAGE_GOOGLE, imageRequestsRecorder)
+            subtitle.isNotDisplayed()
           }
           childAt<PasswordItem>(2) {
-            text.hasText("test.com")
+            title.hasText("test.com")
             image.hasDrawable(LetterInCircleDrawable("t"))
           }
           childAt<TitleItem>(3) {
@@ -76,6 +78,54 @@ class MainListTest : VaultTestCase() {
           }
           childAt<PlainTextItem>(4) {
             title.hasText("my title")
+          }
+        }
+        
+        menu {
+          open()
+          settingsMenuItem.click()
+        }
+        
+        KSettingsScreen {
+          switchShowUsernames.isNotChecked()
+          switchShowUsernames.click()
+          pressBack()
+        }
+        
+        recycler {
+          childAt<PasswordItem>(1) {
+            title.hasText("google")
+            subtitle {
+              isDisplayed()
+              hasText("me@gmail.com")
+            }
+          }
+          childAt<PasswordItem>(2) {
+            title.hasText("test.com")
+            subtitle {
+              isDisplayed()
+              hasText("abcd")
+            }
+          }
+        }
+        
+        menu {
+          open()
+          settingsMenuItem.click()
+        }
+        
+        KSettingsScreen {
+          switchShowUsernames.isChecked()
+          switchShowUsernames.click()
+          pressBack()
+        }
+        
+        recycler {
+          childAt<PasswordItem>(1) {
+            subtitle.isNotDisplayed()
+          }
+          childAt<PasswordItem>(2) {
+            subtitle.isNotDisplayed()
           }
         }
         
@@ -92,14 +142,14 @@ class MainListTest : VaultTestCase() {
             title.hasText("Favorites")
           }
           childAt<PasswordItem>(1) {
-            text.hasText("google")
+            title.hasText("google")
             image.wasImageRequestWithUrlCalled(URL_IMAGE_GOOGLE, imageRequestsRecorder)
           }
           childAt<TitleItem>(2) {
             title.hasText("Passwords")
           }
           childAt<PasswordItem>(3) {
-            text.hasText("test.com")
+            title.hasText("test.com")
             image.hasDrawable(LetterInCircleDrawable("t"))
           }
           childAt<TitleItem>(4) {
@@ -125,7 +175,7 @@ class MainListTest : VaultTestCase() {
             title.hasText("Favorites")
           }
           childAt<PasswordItem>(1) {
-            text.hasText("google")
+            title.hasText("google")
           }
           childAt<TitleItem>(2) {
             title.hasText("Plain texts")

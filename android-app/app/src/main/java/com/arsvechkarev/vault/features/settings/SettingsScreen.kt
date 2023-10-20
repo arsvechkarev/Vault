@@ -343,6 +343,7 @@ class SettingsScreen : BaseFragmentScreen() {
     val LayoutSettingsItems = View.generateViewId()
     val ItemChangePassword = View.generateViewId()
     val ItemShowUsernames = View.generateViewId()
+    val SwitchShowUsernames = View.generateViewId()
     val ItemBiometrics = View.generateViewId()
     val FourthDivider = View.generateViewId()
     val ItemStorageBackup = View.generateViewId()

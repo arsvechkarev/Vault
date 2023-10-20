@@ -17,7 +17,6 @@ import androidx.recyclerview.widget.RecyclerView
 import viewdsl.Size.Companion.MatchParent
 import viewdsl.Size.Companion.WrapContent
 import viewdsl.Size.IntSize
-import viewdsl.ViewDslConfiguration.DefaultStyles
 import android.view.ViewGroup.LayoutParams as ViewGroupLayoutParams
 import android.widget.FrameLayout.LayoutParams as FrameLayoutParams
 import android.widget.LinearLayout.LayoutParams as LinearLayoutParams
@@ -38,7 +37,7 @@ class ViewBuilder(val context: Context) {
   
   val StatusBarHeight get() = context.statusBarHeight
   
-  private inline val defaultRootStyle get() = DefaultStyles.BaseRootBackground
+  private inline val defaultRootStyle get() = ViewDslConfiguration.CoreStyles.BaseRootBackground
   
   fun Any.RootVerticalLayout(
     width: Size = MatchParent,
@@ -64,7 +63,7 @@ class ViewBuilder(val context: Context) {
     style: Style<LinearLayout> = {},
     block: Style<LinearLayout> = {}
   ) = ScrollView(context).size(width, height).apply {
-    val compositeStyle = DefaultStyles.BaseRootBackground thenApply style
+    val compositeStyle = defaultRootStyle thenApply style
     VerticalLayout(MatchParent, WrapContent, compositeStyle, block)
   }
   
@@ -74,7 +73,7 @@ class ViewBuilder(val context: Context) {
     style: Style<ConstraintLayout> = {},
     block: Style<ConstraintLayout> = {}
   ) = ScrollView(context).size(width, height).apply {
-    val compositeStyle = DefaultStyles.BaseRootBackground thenApply style
+    val compositeStyle = defaultRootStyle thenApply style
     child(MatchParent, MatchParent, compositeStyle, block)
   }
   

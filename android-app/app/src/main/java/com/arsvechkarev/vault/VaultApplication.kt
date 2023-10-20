@@ -15,7 +15,7 @@ class VaultApplication : Application() {
     super.onCreate()
     Timber.plant(Timber.DebugTree())
     ViewDslConfiguration.initializeWithAppContext(this)
-    ViewDslConfiguration.setDefaultStyles(Styles)
+    ViewDslConfiguration.setCoreStyles(Styles)
     Fonts.init(applicationContext)
     val extraDependenciesFactory = RealExtraDependenciesFactory(this, DefaultDispatchersFacade)
     CoreComponentHolder.initialize(this, extraDependenciesFactory)

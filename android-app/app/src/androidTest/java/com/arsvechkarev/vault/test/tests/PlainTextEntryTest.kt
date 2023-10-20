@@ -64,7 +64,7 @@ class PlainTextEntryTest : VaultTestCase() {
         buttonSave.click()
         
         title.hasText("Title is empty")
-        title.hasTextColorInt(Colors.Error)
+        title.hasTextColorInt(Colors.TextError)
         
         editTextTitle.typeText("abc")
         
@@ -153,7 +153,7 @@ class PlainTextEntryTest : VaultTestCase() {
           
           imageTitleAction.hasDrawable(R.drawable.ic_checmark)
           title.hasText("Title is empty")
-          title.hasTextColorInt(Colors.Error)
+          title.hasTextColorInt(Colors.TextError)
           
           editTextTitle.replaceText("a")
           

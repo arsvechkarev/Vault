@@ -1,11 +1,20 @@
 package com.arsvechkarev.vault.test.tests
 
+import android.content.Intent
+import androidx.test.core.app.ApplicationProvider
+import androidx.test.espresso.intent.Intents.intended
+import androidx.test.espresso.intent.matcher.IntentMatchers.hasAction
+import androidx.test.espresso.intent.matcher.IntentMatchers.hasData
 import com.arsvechkarev.vault.R
 import com.arsvechkarev.vault.core.views.drawables.LetterInCircleDrawable
+import com.arsvechkarev.vault.features.common.di.CoreComponentHolder
 import com.arsvechkarev.vault.features.creating_password.CreatingPasswordScreen
 import com.arsvechkarev.vault.features.main_list.MainListScreen
 import com.arsvechkarev.vault.features.password_entry.PasswordEntryScreen
 import com.arsvechkarev.vault.test.core.base.VaultTestCase
+import com.arsvechkarev.vault.test.core.di.StubExtraDependenciesFactory
+import com.arsvechkarev.vault.test.core.di.stubs.TestImageRequestsRecorder
+import com.arsvechkarev.vault.test.core.di.stubs.URL_IMAGE_GOOGLE
 import com.arsvechkarev.vault.test.core.ext.currentScreenIs
 import com.arsvechkarev.vault.test.core.ext.hasClipboardText
 import com.arsvechkarev.vault.test.core.ext.hasNoDrawable
@@ -16,6 +25,7 @@ import com.arsvechkarev.vault.test.core.ext.hasTextColorInt
 import com.arsvechkarev.vault.test.core.ext.hasTextLength
 import com.arsvechkarev.vault.test.core.ext.launchActivityWithDatabase
 import com.arsvechkarev.vault.test.core.ext.waitForSnackbarToHide
+import com.arsvechkarev.vault.test.core.ext.wasImageRequestWithUrlCalled
 import com.arsvechkarev.vault.test.core.rule.VaultAutotestRule
 import com.arsvechkarev.vault.test.screens.KCreatingPasswordScreen
 import com.arsvechkarev.vault.test.screens.KLoginScreen
@@ -29,6 +39,7 @@ import domain.PasswordStrength.SECURE
 import domain.PasswordStrength.WEAK
 import domain.model.PasswordCharacteristic.NUMBERS
 import domain.model.PasswordCharacteristic.SPECIAL_SYMBOLS
+import org.hamcrest.Matchers.allOf
 import org.junit.Rule
 import org.junit.Test
 
@@ -36,6 +47,8 @@ class PasswordEntryTest : VaultTestCase() {
   
   @get:Rule
   val rule = VaultAutotestRule()
+  
+  private val imageRequestsRecorder = TestImageRequestsRecorder()
   
   @Test
   fun testCreatingPasswordEntry() = init {
@@ -255,20 +268,30 @@ class PasswordEntryTest : VaultTestCase() {
   
   @Test
   fun testEditingPasswordEntry() = init {
+    CoreComponentHolder.initialize(
+      application = ApplicationProvider.getApplicationContext(),
+      factory = StubExtraDependenciesFactory(
+        imagesRequestsRecorder = imageRequestsRecorder
+      )
+    )
     rule.launchActivityWithDatabase("database_two_passwords_and_plain_text")
   }.run {
     KLoginScreen {
       editTextEnterPassword.replaceText("qwetu1233")
       buttonContinue.click()
+      
       KMainListScreen {
         recycler.emptyChildAt(1) { click() }
+        
         KPasswordEntryScreen {
+          
+          // -------- Testing general screen view --------
+          
           imageBack.isDisplayed()
           imageTitle {
             isDisplayed()
-            //            hasDrawable(R.drawable.icon_google)
+            wasImageRequestWithUrlCalled(URL_IMAGE_GOOGLE, imageRequestsRecorder)
           }
-          //          textTitle.hasText("google")
           titleTitle.hasText("Title")
           editTextTitle.hasText("google")
           imageTitleAction.hasDrawable(R.drawable.ic_copy)
@@ -277,9 +300,15 @@ class PasswordEntryTest : VaultTestCase() {
           imageUsernameAction.hasDrawable(R.drawable.ic_copy)
           titlePassword.hasText("Password")
           textPassword.hasText(R.string.text_password_stub)
+          textPassword.hasTextColorInt(Colors.TextPrimary)
+          titleUrl.hasText("Url")
+          editTextUrl.hasEmptyText()
+          imageUrlAction.hasDrawable(R.drawable.ic_copy)
+          imageOpenUrl.isNotDisplayed()
           titleNotes.hasText("Notes")
           editTextNotes.hasEmptyText()
           imageNotesAction.hasDrawable(R.drawable.ic_copy)
+          buttonSave.isNotDisplayed()
           snackbar.isNotDisplayed()
           
           imageBack.click()
@@ -289,7 +318,7 @@ class PasswordEntryTest : VaultTestCase() {
             recycler.emptyChildAt(1) { click() }
           }
           
-          currentScreenIs<PasswordEntryScreen>()
+          // -------- Testing copying --------
           
           imageTitleAction.click()
           hasClipboardText("google")
@@ -309,48 +338,30 @@ class PasswordEntryTest : VaultTestCase() {
           
           waitForSnackbarToHide()
           
+          imageUrlAction.click()
+          hasClipboardText("")
+          snackbar.isDisplayedWithText("Url successfully copied")
+          
+          waitForSnackbarToHide()
+          
           imageNotesAction.click()
           hasClipboardText("")
           snackbar.isDisplayedWithText("Notes successfully copied")
           
           waitForSnackbarToHide()
           
-          editTextNotes.replaceText("my notes")
-          
-          imageNotesAction.hasDrawable(R.drawable.ic_checmark)
-          
-          imageBack.click()
-          
-          currentScreenIs<PasswordEntryScreen>()
-          
-          imageNotesAction.hasDrawable(R.drawable.ic_copy)
-          editTextNotes.hasEmptyText()
-          
-          editTextNotes.replaceText("my notes2")
-          
-          imageNotesAction.click()
-          
-          editTextNotes.hasText("my notes2")
-          
-          imageNotesAction.click()
-          
-          hasClipboardText("my notes2")
-          snackbar.isDisplayedWithText("Notes successfully copied")
-          
-          waitForSnackbarToHide()
+          // -------- Testing title --------
           
           editTextTitle.typeText("a")
           
           imageTitleAction.hasDrawable(R.drawable.ic_checmark)
           editTextTitle.hasText("googlea")
-          //          textTitle.hasText("googlea")
-          //          imageTitle.hasDrawable(R.drawable.icon_google)
+          imageTitle.wasImageRequestWithUrlCalled(URL_IMAGE_GOOGLE, imageRequestsRecorder)
           
           imageBack.click()
           
           imageTitleAction.hasDrawable(R.drawable.ic_copy)
           editTextTitle.hasText("google")
-          //          textTitle.hasText("google")
           
           editTextTitle.clearText()
           imageTitleAction.click()
@@ -372,7 +383,6 @@ class PasswordEntryTest : VaultTestCase() {
           imageTitleAction.click()
           
           imageTitle.hasDrawable(LetterInCircleDrawable("y"))
-          //          textTitle.hasText("yabcd")
           editTextTitle.hasText("yabcd")
           
           imageTitleAction.click()
@@ -403,7 +413,7 @@ class PasswordEntryTest : VaultTestCase() {
             recycler.emptyChildAt(2) { click() }
           }
           
-          currentScreenIs<PasswordEntryScreen>()
+          // -------- Testing username --------
           
           editTextUsername.replaceText("qwerty")
           
@@ -433,6 +443,8 @@ class PasswordEntryTest : VaultTestCase() {
           hasClipboardText("kkk")
           snackbar.isDisplayedWithText("Username successfully copied")
           
+          // -------- Testing password --------
+          
           imageEditPassword.click()
           
           KCreatingPasswordScreen {
@@ -460,10 +472,6 @@ class PasswordEntryTest : VaultTestCase() {
             editTextPassword.replaceText("qwerty222;")
             
             buttonSavePassword.click()
-            
-            //            confirmationDialog.isDisplayed()
-            //
-            //            confirmationDialog.action2.click()
           }
           
           currentScreenIs<PasswordEntryScreen>()
@@ -478,8 +486,81 @@ class PasswordEntryTest : VaultTestCase() {
             checkmarkNumbers.isChecked()
             checkmarkSpecialSymbols.isChecked()
             
-            pressBack()
+            editTextPassword.clearText()
+            
+            buttonSavePassword.click()
           }
+          
+          textPassword.hasText("Generate password")
+          textPassword.hasTextColorInt(Colors.TextSecondary)
+          
+          imageEditPassword.click()
+          
+          KCreatingPasswordScreen {
+            checkmarkUppercaseSymbols.isNotChecked()
+            checkmarkNumbers.isNotChecked()
+            checkmarkSpecialSymbols.isNotChecked()
+            
+            buttonSavePassword.click()
+          }
+          
+          // -------- Testing url --------
+          
+          editTextUrl.replaceText("a")
+          
+          imageOpenUrl.isDisplayed()
+          
+          editTextUrl.clearText()
+          
+          imageOpenUrl.isNotDisplayed()
+          
+          editTextUrl.replaceText("b")
+          
+          imageUrlAction.hasDrawable(R.drawable.ic_checmark)
+          
+          imageBack.click()
+          
+          imageUrlAction.hasDrawable(R.drawable.ic_copy)
+          editTextUrl.hasEmptyText()
+          
+          editTextUrl.replaceText("example.com")
+          
+          imageUrlAction.click()
+          
+          editTextUrl.hasText("example.com")
+          
+          imageUrlAction.click()
+          
+          hasClipboardText("example.com")
+          snackbar.isDisplayedWithText("Url successfully copied")
+          
+          waitForSnackbarToHide()
+          
+          // -------- Testing notes --------
+          
+          editTextNotes.replaceText("my notes")
+          
+          imageNotesAction.hasDrawable(R.drawable.ic_checmark)
+          
+          imageBack.click()
+          
+          imageNotesAction.hasDrawable(R.drawable.ic_copy)
+          editTextNotes.hasEmptyText()
+          
+          editTextNotes.replaceText("my notes2")
+          
+          imageNotesAction.click()
+          
+          editTextNotes.hasText("my notes2")
+          
+          imageNotesAction.click()
+          
+          hasClipboardText("my notes2")
+          snackbar.isDisplayedWithText("Notes successfully copied")
+          
+          waitForSnackbarToHide()
+          
+          // -------- Testing deleting --------
           
           imageDelete.click()
           
@@ -501,16 +582,54 @@ class PasswordEntryTest : VaultTestCase() {
         }
         
         currentScreenIs<MainListScreen>()
+      }
+    }
+  }
+  
+  @Test
+  fun testUrlFieldWithOnlyDomain() = init {
+    rule.launchActivityWithDatabase("database_two_passwords_and_plain_text")
+  }.run {
+    KLoginScreen {
+      editTextEnterPassword.replaceText("qwetu1233")
+      buttonContinue.click()
+      
+      KMainListScreen {
+        recycler.emptyChildAt(1) { click() }
         
-        recycler {
-          isDisplayed()
-          hasSize(4)
-          childAt<PasswordItem>(1) {
-            text.hasText("test.com")
-            image.hasDrawable(LetterInCircleDrawable("t"))
+        KPasswordEntryScreen {
+          
+          editTextUrl.replaceText("example.com")
+          
+          imageOpenUrl.click()
+          
+          flakySafely {
+            intended(allOf(hasAction(Intent.ACTION_VIEW), hasData("https://example.com")))
           }
-          childAt<PlainTextItem>(3) {
-            title.hasText("my title")
+        }
+      }
+    }
+  }
+  
+  @Test
+  fun testUrlFieldWithFullLink() = init {
+    rule.launchActivityWithDatabase("database_two_passwords_and_plain_text")
+  }.run {
+    KLoginScreen {
+      editTextEnterPassword.replaceText("qwetu1233")
+      buttonContinue.click()
+      
+      KMainListScreen {
+        recycler.emptyChildAt(1) { click() }
+        
+        KPasswordEntryScreen {
+          
+          editTextUrl.replaceText("https://example.com")
+          
+          imageOpenUrl.click()
+          
+          flakySafely {
+            intended(allOf(hasAction(Intent.ACTION_VIEW), hasData("https://example.com")))
           }
         }
       }

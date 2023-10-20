@@ -63,14 +63,18 @@ suspend fun ImageView.trySetImageFromMatchingNames(
     setLetterInCircleDrawable(text.first().toString())
     return
   }
+  
+  val url = BASE_URL_ICON_FILES + matchingName + EXTENSION_PNG
+  
+  // Calling this so that we can test images request in ui tests
+  CoreComponentHolder.coreComponent.imageRequestsRecorder.recordUrlRequest(id, url)
+  
   val imagesCache = CoreComponentHolder.coreComponent.imagesCache
   val cachedImage = imagesCache.getImage(matchingName)
   if (cachedImage != null) {
     setImageDrawable(cachedImage)
     return
   }
-  val url = BASE_URL_ICON_FILES + matchingName + EXTENSION_PNG
-  CoreComponentHolder.coreComponent.imageRequestsRecorder.recordUrlRequest(id, url)
   load(
     data = url,
     imageLoader = context.imageLoader.newBuilder().okHttpClient(okHttpClient).build(),

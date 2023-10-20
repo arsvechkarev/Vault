@@ -4,6 +4,7 @@ import app.keemobile.kotpass.database.Credentials
 import app.keemobile.kotpass.database.KeePassDatabase
 import app.keemobile.kotpass.database.decode
 import com.arsvechkarev.vault.core.mvi.tea.Actor
+import com.arsvechkarev.vault.features.common.Durations
 import com.arsvechkarev.vault.features.common.data.database.ObservableCachedDatabaseStorage
 import com.arsvechkarev.vault.features.common.data.files.ExternalFileReader
 import com.arsvechkarev.vault.features.import_passwords.ImportPasswordsCommand
@@ -14,6 +15,7 @@ import com.arsvechkarev.vault.features.import_passwords.ImportPasswordsEvent.Pas
 import domain.MasterPasswordHolder
 import domain.from
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.flow.mapLatest
@@ -28,6 +30,7 @@ class ImportPasswordsActor(
   override fun handle(commands: Flow<ImportPasswordsCommand>): Flow<ImportPasswordsEvent> {
     return commands.filterIsInstance<TryImportPasswords>()
         .mapLatest { command ->
+          delay(Durations.StubDelay)
           val result = runCatching {
             val inputStream = externalFileReader.getInputStreamFrom(command.uri)
             val credentials = Credentials.from(command.password)

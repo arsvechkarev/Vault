@@ -285,7 +285,7 @@ class PlainTextEntryScreen : BaseFragmentScreen() {
     if (state.showConfirmDeleteDialog) {
       infoDialog.showWithCancelAndProceedOption(
         titleRes = R.string.text_delete_plain_text,
-        messageRes = getDeleteMessageText(state.titleState.initialText),
+        message = getDeleteMessageText(state.titleState.initialText),
         onCancel = { store.tryDispatch(OnDialogHidden) },
         onProceed = { store.tryDispatch(OnConfirmedDeleting) }
       )

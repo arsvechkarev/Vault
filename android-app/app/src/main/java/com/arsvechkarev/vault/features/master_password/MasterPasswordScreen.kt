@@ -188,7 +188,7 @@ class MasterPasswordScreen : BaseFragmentScreen() {
     if (state.showPasswordChangeConfirmationDialog) {
       infoDialog.showWithCancelAndProceedOption(
         titleRes = R.string.text_confirmation,
-        messageRes = getString(R.string.text_confirmation_message),
+        message = getString(R.string.text_confirmation_message),
         proceedTextRes = R.string.text_continue_caps,
         onCancel = { store.tryDispatch(OnCancelChangePassword) },
         onProceed = { store.tryDispatch(OnConfirmChangePassword) }

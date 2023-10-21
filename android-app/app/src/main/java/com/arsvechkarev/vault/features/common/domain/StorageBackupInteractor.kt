@@ -1,12 +1,12 @@
 package com.arsvechkarev.vault.features.common.domain
 
 import app.keemobile.kotpass.database.KeePassDatabase
-import com.arsvechkarev.vault.features.common.data.StorageBackupFileSaver
-import com.arsvechkarev.vault.features.common.data.StorageBackupPreferences
+import com.arsvechkarev.vault.features.common.data.files.StorageBackupExternalFileSaver
+import com.arsvechkarev.vault.features.common.data.files.StorageBackupPreferences
 import com.arsvechkarev.vault.features.common.model.BackupFileData
 
 class StorageBackupInteractor(
-  private val fileSaver: StorageBackupFileSaver,
+  private val storageBackupExternalFileSaver: StorageBackupExternalFileSaver,
   private val preferences: StorageBackupPreferences,
   private val journal: DatabaseChangesJournal,
   private val timestampProvider: TimestampProvider,
@@ -44,12 +44,12 @@ class StorageBackupInteractor(
   }
   
   private suspend fun performBackupInternal(directory: String, database: KeePassDatabase) {
-    val backupFiles = fileSaver.getAll(directory)
+    val backupFiles = storageBackupExternalFileSaver.getAll(directory)
     if (backupFiles.size >= backupFileCountThreshold) {
       removeAllOlderFiles(directory, backupFiles)
     }
     val newFilename = generateFilename()
-    fileSaver.saveDatabase(directory, newFilename, database)
+    storageBackupExternalFileSaver.saveDatabase(directory, newFilename, database)
     preferences.saveBackupMetadata(timestampProvider.now(), journal.getChangeCount())
   }
   
@@ -60,6 +60,6 @@ class StorageBackupInteractor(
   private suspend fun removeAllOlderFiles(directory: String, backupFiles: List<BackupFileData>) {
     val extraFiles = backupFiles.sortedBy { it.lastModified }
         .take(backupFiles.size - backupFileCountThreshold + 1)
-    fileSaver.deleteAll(directory, extraFiles)
+    storageBackupExternalFileSaver.deleteAll(directory, extraFiles)
   }
 }

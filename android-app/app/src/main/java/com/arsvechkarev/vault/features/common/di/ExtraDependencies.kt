@@ -2,12 +2,12 @@ package com.arsvechkarev.vault.features.common.di
 
 import android.app.Application
 import com.arsvechkarev.vault.core.DispatchersFacade
-import com.arsvechkarev.vault.features.common.data.ContextResolverUriPersistedMaker
-import com.arsvechkarev.vault.features.common.data.UriPersistedMaker
 import com.arsvechkarev.vault.features.common.data.files.ContextExternalFileReader
+import com.arsvechkarev.vault.features.common.data.files.ContextResolverUriPersistedMaker
 import com.arsvechkarev.vault.features.common.data.files.ExternalFileReader
 import com.arsvechkarev.vault.features.common.data.files.PasswordsFileExporter
 import com.arsvechkarev.vault.features.common.data.files.RealPasswordsFileExporter
+import com.arsvechkarev.vault.features.common.data.files.UriPersistedMaker
 import com.arsvechkarev.vault.features.common.domain.BackupInterceptor
 import com.arsvechkarev.vault.features.common.domain.ImageRequestsRecorder
 import com.arsvechkarev.vault.features.common.domain.NoOpBackupInterceptor

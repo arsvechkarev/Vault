@@ -2,7 +2,7 @@ package com.arsvechkarev.vault.features.settings.actors
 
 import android.net.Uri
 import com.arsvechkarev.vault.core.mvi.tea.Actor
-import com.arsvechkarev.vault.features.common.data.StorageBackupPreferences
+import com.arsvechkarev.vault.features.common.data.files.StorageBackupPreferences
 import com.arsvechkarev.vault.features.common.domain.DateTimeFormatter
 import com.arsvechkarev.vault.features.settings.SettingsCommand
 import com.arsvechkarev.vault.features.settings.SettingsCommand.FetchData

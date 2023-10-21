@@ -4,6 +4,7 @@ import com.arsvechkarev.vault.BuildConfig
 import com.arsvechkarev.vault.features.common.AppConfig
 import com.arsvechkarev.vault.features.common.data.StorageBackupFileSaver
 import com.arsvechkarev.vault.features.common.data.StorageBackupPreferences
+import com.arsvechkarev.vault.features.common.domain.BackupInterceptor
 import com.arsvechkarev.vault.features.common.domain.DatabaseChangesJournal
 import com.arsvechkarev.vault.features.common.domain.DatabaseChangesJournalImpl
 import com.arsvechkarev.vault.features.common.domain.ShowUsernamesInteractor
@@ -18,7 +19,8 @@ interface DomainModule {
 
 class DomainModuleImpl(
   coreModule: CoreModule,
-  preferencesModule: PreferencesModule
+  preferencesModule: PreferencesModule,
+  backupInterceptor: BackupInterceptor,
 ) : DomainModule {
   
   override val databaseChangesJournal = DatabaseChangesJournalImpl(
@@ -48,7 +50,11 @@ class DomainModuleImpl(
   }
   
   override val storageBackupInteractor = StorageBackupInteractor(
-    fileSaver = StorageBackupFileSaver(coreModule.application, coreModule.dispatchers),
+    fileSaver = StorageBackupFileSaver(
+      coreModule.application,
+      coreModule.dispatchers,
+      backupInterceptor
+    ),
     preferences = storageBackupPreferences,
     journal = DatabaseChangesJournalImpl(preferencesModule.settingsPreferences),
     timestampProvider = coreModule.timestampProvider,

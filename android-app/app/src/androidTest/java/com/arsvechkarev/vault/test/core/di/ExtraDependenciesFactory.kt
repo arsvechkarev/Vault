@@ -6,6 +6,8 @@ import com.arsvechkarev.vault.test.core.di.stubs.StubActivityResultWrapper
 import com.arsvechkarev.vault.test.core.di.stubs.StubExternalFileReader
 import com.arsvechkarev.vault.test.core.di.stubs.StubInterceptor
 import com.arsvechkarev.vault.test.core.di.stubs.StubPasswordsFileExporter
+import com.arsvechkarev.vault.test.core.di.stubs.StubUriPersistentMaker
+import com.arsvechkarev.vault.test.core.di.stubs.TestBackupInterceptor
 import com.arsvechkarev.vault.test.core.di.stubs.TestImageRequestsRecorder
 import com.arsvechkarev.vault.test.core.ext.context
 import okhttp3.OkHttpClient
@@ -15,6 +17,7 @@ fun StubExtraDependenciesFactory(
   passwordsFileExporter: StubPasswordsFileExporter = StubPasswordsFileExporter(),
   externalFileReader: StubExternalFileReader = StubExternalFileReader(),
   imagesRequestsRecorder: TestImageRequestsRecorder = TestImageRequestsRecorder(),
+  backupInterceptor: TestBackupInterceptor = TestBackupInterceptor(),
 ): ExtraDependenciesFactory {
   return object : ExtraDependenciesFactory {
     override fun getExtraDependencies(): ExtraDependencies {
@@ -26,6 +29,8 @@ fun StubExtraDependenciesFactory(
         override val passwordsFileExporter = passwordsFileExporter
         override val externalFileReader = externalFileReader
         override val imageRequestsRecorder = imagesRequestsRecorder
+        override val backupInterceptor = backupInterceptor
+        override val uriPersistedMaker = StubUriPersistentMaker()
       }
     }
   }

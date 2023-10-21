@@ -2,11 +2,15 @@ package com.arsvechkarev.vault.features.common.di
 
 import android.app.Application
 import com.arsvechkarev.vault.core.DispatchersFacade
+import com.arsvechkarev.vault.features.common.data.ContextResolverUriPersistedMaker
+import com.arsvechkarev.vault.features.common.data.UriPersistedMaker
 import com.arsvechkarev.vault.features.common.data.files.ContextExternalFileReader
 import com.arsvechkarev.vault.features.common.data.files.ExternalFileReader
 import com.arsvechkarev.vault.features.common.data.files.PasswordsFileExporter
 import com.arsvechkarev.vault.features.common.data.files.RealPasswordsFileExporter
+import com.arsvechkarev.vault.features.common.domain.BackupInterceptor
 import com.arsvechkarev.vault.features.common.domain.ImageRequestsRecorder
+import com.arsvechkarev.vault.features.common.domain.NoOpBackupInterceptor
 import com.arsvechkarev.vault.features.common.domain.NoOpImageRequestsRecorder
 import com.arsvechkarev.vault.features.common.navigation.result_contracts.ActivityResultWrapper
 import com.arsvechkarev.vault.features.common.navigation.result_contracts.RealActivityResultWrapper
@@ -18,6 +22,8 @@ interface ExtraDependencies {
   val passwordsFileExporter: PasswordsFileExporter
   val externalFileReader: ExternalFileReader
   val imageRequestsRecorder: ImageRequestsRecorder
+  val backupInterceptor: BackupInterceptor
+  val uriPersistedMaker: UriPersistedMaker
 }
 
 class RealExtraDependencies(
@@ -34,4 +40,8 @@ class RealExtraDependencies(
   override val externalFileReader = ContextExternalFileReader(application)
   
   override val imageRequestsRecorder = NoOpImageRequestsRecorder
+  
+  override val backupInterceptor = NoOpBackupInterceptor
+  
+  override val uriPersistedMaker = ContextResolverUriPersistedMaker()
 }

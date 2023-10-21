@@ -1,5 +1,6 @@
 package com.arsvechkarev.vault.features.common.di.modules
 
+import com.arsvechkarev.vault.features.common.data.UriPersistedMaker
 import com.arsvechkarev.vault.features.common.data.files.ExternalFileReader
 import com.arsvechkarev.vault.features.common.data.files.PasswordsFileExporter
 import com.arsvechkarev.vault.features.common.data.network.AndroidNetworkAvailabilityProvider
@@ -14,6 +15,7 @@ interface IoModule {
   val passwordsFileExporter: PasswordsFileExporter
   val networkUrlLoader: NetworkUrlLoader
   val networkAvailabilityProvider: NetworkAvailabilityProvider
+  val uriPersistedMaker: UriPersistedMaker
 }
 
 class IoModuleImpl(
@@ -21,6 +23,7 @@ class IoModuleImpl(
   override val okHttpClient: OkHttpClient,
   override val externalFileReader: ExternalFileReader,
   override val passwordsFileExporter: PasswordsFileExporter,
+  override val uriPersistedMaker: UriPersistedMaker
 ) : IoModule {
   
   override val networkUrlLoader = OkHttpNetworkUrlLoader(okHttpClient, coreModule.dispatchers)

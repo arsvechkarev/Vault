@@ -272,7 +272,7 @@ class SettingsScreen : BaseFragmentScreen() {
     if (state.showEnableBiometricsDialog) {
       infoDialog.showWithCancelAndProceedOption(
         titleRes = R.string.text_master_password_changed_biometrics_dialog_title,
-        messageRes = getText(R.string.text_master_password_changed_biometrics_dialog_message),
+        message = getText(R.string.text_master_password_changed_biometrics_dialog_message),
         proceedTextRes = R.string.text_biometrics_enable,
         showProceedAsError = false,
         onProceed = { store.tryDispatch(OnProceedEnableBiometricsDialog) },

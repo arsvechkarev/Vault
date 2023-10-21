@@ -52,6 +52,7 @@ class ExportPasswordsTest : VaultTestCase() {
         infoDialog {
           title.hasText("Done")
           message.hasText("Exported passwords successfully!")
+          action1.hasText("OK")
           action2.hasText("SHARE FILE")
           action2.click()
         }

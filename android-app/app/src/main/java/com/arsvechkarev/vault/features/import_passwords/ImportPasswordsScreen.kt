@@ -137,7 +137,7 @@ class ImportPasswordsScreen : BaseFragmentScreen() {
       ImportPasswordsInfoDialog.CONFIRMATION -> {
         infoDialog.showWithCancelAndProceedOption(
           titleRes = R.string.text_confirmation,
-          messageRes = getString(R.string.text_confirm_import_passwords_message),
+          message = getString(R.string.text_confirm_import_passwords_message),
           proceedTextRes = R.string.text_confirm,
           onCancel = { store.tryDispatch(OnHideInfoDialog) },
           onProceed = { store.tryDispatch(OnConfirmedImportClicked) }

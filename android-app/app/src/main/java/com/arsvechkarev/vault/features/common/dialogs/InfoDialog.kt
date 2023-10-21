@@ -85,7 +85,7 @@ class InfoDialog(context: Context) : SimpleDialog(context) {
   
   fun showWithCancelAndProceedOption(
     titleRes: Int,
-    messageRes: CharSequence,
+    message: CharSequence,
     cancelTextRes: Int = R.string.text_cancel,
     proceedTextRes: Int = R.string.text_delete,
     showProceedAsError: Boolean = true,
@@ -95,7 +95,7 @@ class InfoDialog(context: Context) : SimpleDialog(context) {
     show()
     this.onHide = onCancel
     textView(DialogInfoTitle).text(titleRes)
-    textView(DialogInfoMessage).text(messageRes)
+    textView(DialogInfoMessage).text(message)
     textView(DialogInfoText1).apply(ClickableTextView())
     textView(DialogInfoText1).visible()
     textView(DialogInfoText1).text(cancelTextRes)

@@ -195,12 +195,13 @@ class MainListScreen : BaseFragmentScreen() {
       loadingDialog.hide()
     }
     if (state.showShareExportedFileDialog) {
-      infoDialog.showWithOkOption(
+      infoDialog.showWithCancelAndProceedOption(
         titleRes = R.string.text_done,
-        messageRes = R.string.text_export_successful,
-        textPositiveRes = R.string.text_export_share_file,
+        message = getString(R.string.text_export_successful),
+        cancelTextRes = R.string.text_ok,
+        proceedTextRes = R.string.text_export_share_file,
         onCancel = { store.tryDispatch(OnHideShareExportedFileDialog) },
-        onOkClicked = { shareExportedFile(state.exportedFileUri) }
+        onProceed = { shareExportedFile(state.exportedFileUri) }
       )
     } else {
       infoDialog.hide()

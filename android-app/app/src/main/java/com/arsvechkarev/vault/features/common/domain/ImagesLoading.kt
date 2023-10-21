@@ -7,6 +7,7 @@ import coil.imageLoader
 import coil.load
 import coil.request.CachePolicy
 import com.arsvechkarev.vault.MainActivity
+import com.arsvechkarev.vault.core.views.drawables.BaseShimmerDrawable
 import com.arsvechkarev.vault.core.views.drawables.BaseShimmerDrawable.Companion.setShimmerDrawable
 import com.arsvechkarev.vault.core.views.drawables.BaseShimmerDrawable.Companion.stopShimmerDrawable
 import com.arsvechkarev.vault.core.views.drawables.LetterInCircleDrawable
@@ -28,11 +29,11 @@ fun ImageView.setIconForTitle(title: String, onImageLoadingFailed: () -> Unit) {
   val okHttpClient = CoreComponentHolder.coreComponent.okHttpClient
   val scope = (context as MainActivity).lifecycleScope
   scope.launch {
-    setShimmerDrawable(LoadingPlaceholderDrawable(title.first().toString()))
     val imagesNames = imagesNamesLoader.getFromCacheIfExists()
     if (imagesNames != null) {
       trySetImageFromMatchingNames(trimmedText, imagesNames, okHttpClient, onImageLoadingFailed)
     } else {
+      setShimmerDrawable(LoadingPlaceholderDrawable(title.first().toString()))
       imagesNamesLoader.loadFromNetwork()
           .onSuccess { loadedImagesNames ->
             trySetImageFromMatchingNames(trimmedText, loadedImagesNames,
@@ -71,6 +72,9 @@ suspend fun ImageView.trySetImageFromMatchingNames(
     setImageDrawable(cachedImage)
     return
   }
+  if (drawable !is BaseShimmerDrawable) {
+    setShimmerDrawable(LoadingPlaceholderDrawable(text.first().toString()))
+  }
   load(
     data = url,
     imageLoader = context.imageLoader.newBuilder().okHttpClient(okHttpClient).build(),
@@ -80,13 +84,8 @@ suspend fun ImageView.trySetImageFromMatchingNames(
       diskCachePolicy(CachePolicy.DISABLED)
       error(LetterInCircleDrawable(text.first().toString()))
       target(
-        onStart = {
-          setShimmerDrawable(LoadingPlaceholderDrawable(text.first().toString()))
-        }, onSuccess = { drawable ->
-          setImageDrawable(drawable)
-        }, onError = {
-          setLetterInCircleDrawable(text.first().toString())
-        }
+        onSuccess = ::setImageDrawable,
+        onError = { setLetterInCircleDrawable(text.first().toString()) }
       )
       listener(
         onSuccess = { _, result ->

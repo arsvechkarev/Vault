@@ -30,7 +30,9 @@ class StorageBackupDatabaseFileSaver(
   }
   
   override suspend fun read(masterPassword: Password): KeePassDatabase? {
-    return databaseFileSaver.read(masterPassword)
+    return databaseFileSaver.read(masterPassword)?.also { database ->
+      storageBackupInteractor.performBackupIfNeeded(database)
+    }
   }
   
   private suspend fun markChangeAndTryBackup(database: KeePassDatabase) {

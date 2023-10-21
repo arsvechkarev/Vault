@@ -11,13 +11,14 @@ sealed interface SettingsEvent {
   class ReceivedBiometricsEnabled(val enabled: Boolean) : SettingsEvent
   class ReceivedStorageBackupEnabled(
     val enabled: Boolean,
-    val backupFolderUri: Uri?
+    val backupFolderUri: Uri?,
+    val latestBackupDate: String?
   ) : SettingsEvent
   
   object BiometricsEnabled : SettingsEvent
   class StorageBackupEnabled(val backupFolderUri: Uri) : SettingsEvent
-  
   object StorageBackupDisabled : SettingsEvent
+  object PerformedBackup : SettingsEvent
   object ImagesCacheCleared : SettingsEvent
 }
 
@@ -36,6 +37,7 @@ sealed interface SettingsUiEvent : SettingsEvent {
   class OnEnableStorageBackupChanged(val enabled: Boolean) : SettingsUiEvent
   object OnSelectBackupFolderClicked : SettingsUiEvent
   class OnSelectedBackupFolder(val uri: Uri) : SettingsUiEvent
+  object OnBackupNowClicked : SettingsUiEvent
   object OnClearImagesCacheClicked : SettingsUiEvent
   object OnBackPressed : SettingsUiEvent
 }
@@ -43,7 +45,7 @@ sealed interface SettingsUiEvent : SettingsEvent {
 sealed interface SettingsCommand {
   
   object FetchData : SettingsCommand
-  object FetchStorageBackupEnabled : SettingsCommand
+  object FetchStorageBackupInfo : SettingsCommand
   class ChangeShowUsernames(val show: Boolean) : SettingsCommand
   class EnableBiometrics(val cryptography: BiometricsCryptography) : SettingsCommand
   object DisableBiometrics : SettingsCommand
@@ -52,6 +54,7 @@ sealed interface SettingsCommand {
   sealed interface BackupCommand : SettingsCommand {
     class EnableStorageBackup(val backupFolderUri: Uri) : BackupCommand
     object DisableStorageBackup : BackupCommand
+    object PerformBackup : BackupCommand
   }
   
   sealed interface RouterCommand : SettingsCommand {
@@ -70,6 +73,7 @@ sealed interface SettingsNews {
   class ShowBiometricsError(val error: SettingsBiometricsError) : SettingsNews
   class LaunchFolderSelection(val initialUri: Uri?) : SettingsNews
   object ShowStorageBackupEnabled : SettingsNews
+  object ShowBackupPerformed : SettingsNews
   object ShowImagesCacheCleared : SettingsNews
 }
 
@@ -79,6 +83,8 @@ data class SettingsState(
   val biometricsEnabled: Boolean = false,
   val storageBackupEnabled: Boolean = false,
   val storageBackupFolderUri: Uri? = null,
+  val storageBackupLatestDate: String? = null,
+  val showLoadingBackingUp: Boolean = false,
   val enterPasswordDialogState: EnterPasswordDialogState = HIDDEN,
   val showEnableBiometricsDialog: Boolean = false
 )

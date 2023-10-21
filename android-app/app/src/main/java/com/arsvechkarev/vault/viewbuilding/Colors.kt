@@ -12,7 +12,7 @@ object Colors {
   val Icon = "FFFFFF".color
   val Ripple = "C6FFFFFF".color
   val Accent = "3C80AE".color
-  val AccentLight = "69ACD8".color
+  val AccentLight = "4B95C6".color
   val AccentRipple = "70307FB5".color
   val AccentHeavy = "235575".color
   val AccentDisabled = "436074".color

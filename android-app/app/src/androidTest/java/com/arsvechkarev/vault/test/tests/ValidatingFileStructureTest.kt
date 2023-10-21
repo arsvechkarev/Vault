@@ -27,7 +27,6 @@ import domain.CUSTOM_DATA_PASSWORD
 import domain.CUSTOM_DATA_PLAIN_TEXT
 import domain.CUSTOM_DATA_TYPE_KEY
 import junit.framework.Assert.assertEquals
-import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import java.io.ByteArrayInputStream
@@ -39,12 +38,6 @@ class ValidatingFileStructureTest : TestCase() {
   val rule = VaultAutotestRule()
   
   private val stubPasswordsFileExporter = StubPasswordsFileExporter()
-  
-  @Before
-  fun setup() {
-  
-  }
-  
   
   @Test
   fun testValidatingFileStructure() = init {
@@ -104,6 +97,41 @@ class ValidatingFileStructureTest : TestCase() {
           checkEqualExceptIds()
         }
       }
+    }
+  }
+  
+  private fun checkEqualExceptIds() {
+    val expectedBytes = context.assets.open("file_one_password_and_plain_text")
+        .use(InputStream::readBytes)
+    val expectedDatabase = KeePassDatabase.decode(ByteArrayInputStream(expectedBytes),
+      Credentials.from(EncryptedValue.fromString("qwetu1233")))
+    val actualDatabase = checkNotNull(stubPasswordsFileExporter.exportedDatabase)
+    
+    val expectedEntriesList = expectedDatabase.findEntries { true }.flatMap { it.second }
+    val actualEntriesList = actualDatabase.findEntries { true }.flatMap { it.second }
+    assertEquals(expectedEntriesList.size, actualEntriesList.size)
+    expectedEntriesList.forEach { expectedEntry ->
+      checkNotNull(actualEntriesList.find { it.fields.title == expectedEntry.fields.title })
+          .let { actualEntry ->
+            assertEquals(expectedEntry.fields.userName?.content,
+              actualEntry.fields.userName?.content)
+            assertEquals(expectedEntry.fields.password?.content,
+              actualEntry.fields.password?.content)
+            assertEquals(expectedEntry.fields.notes?.content, actualEntry.fields.notes?.content)
+            
+            assertEquals(expectedEntry.customData.getValue(CUSTOM_DATA_FAVORITE_KEY).value,
+              actualEntry.customData.getValue(CUSTOM_DATA_FAVORITE_KEY).value)
+            
+            val expectedEntryType = expectedEntry.customData.getValue(CUSTOM_DATA_TYPE_KEY).value
+            val actualEntryType = actualEntry.customData.getValue(CUSTOM_DATA_TYPE_KEY).value
+            if (expectedEntryType != CUSTOM_DATA_PASSWORD
+                && expectedEntryType != CUSTOM_DATA_PLAIN_TEXT) {
+              throw AssertionError(
+                "Custom data type of entry $expectedEntry is [$expectedEntryType]"
+              )
+            }
+            assertEquals(expectedEntryType, actualEntryType)
+          }
     }
   }
   
@@ -170,41 +198,6 @@ class ValidatingFileStructureTest : TestCase() {
           editTextNotes.hasEmptyText()
         }
       }
-    }
-  }
-  
-  private fun checkEqualExceptIds() {
-    val expectedBytes = context.assets.open("file_password_and_plain_text")
-        .use(InputStream::readBytes)
-    val expectedDatabase = KeePassDatabase.decode(ByteArrayInputStream(expectedBytes),
-      Credentials.from(EncryptedValue.fromString("qwetu1233")))
-    val actualDatabase = checkNotNull(stubPasswordsFileExporter.exportedDatabase)
-    
-    val expectedEntriesList = expectedDatabase.findEntries { true }.flatMap { it.second }
-    val actualEntriesList = actualDatabase.findEntries { true }.flatMap { it.second }
-    assertEquals(expectedEntriesList.size, actualEntriesList.size)
-    expectedEntriesList.forEach { expectedEntry ->
-      checkNotNull(actualEntriesList.find { it.fields.title == expectedEntry.fields.title })
-          .let { actualEntry ->
-            assertEquals(expectedEntry.fields.userName?.content,
-              actualEntry.fields.userName?.content)
-            assertEquals(expectedEntry.fields.password?.content,
-              actualEntry.fields.password?.content)
-            assertEquals(expectedEntry.fields.notes?.content, actualEntry.fields.notes?.content)
-            
-            assertEquals(expectedEntry.customData.getValue(CUSTOM_DATA_FAVORITE_KEY).value,
-              actualEntry.customData.getValue(CUSTOM_DATA_FAVORITE_KEY).value)
-            
-            val expectedEntryType = expectedEntry.customData.getValue(CUSTOM_DATA_TYPE_KEY).value
-            val actualEntryType = actualEntry.customData.getValue(CUSTOM_DATA_TYPE_KEY).value
-            if (expectedEntryType != CUSTOM_DATA_PASSWORD
-                && expectedEntryType != CUSTOM_DATA_PLAIN_TEXT) {
-              throw AssertionError(
-                "Custom data type of entry $expectedEntry is [$expectedEntryType]"
-              )
-            }
-            assertEquals(expectedEntryType, actualEntryType)
-          }
     }
   }
 }

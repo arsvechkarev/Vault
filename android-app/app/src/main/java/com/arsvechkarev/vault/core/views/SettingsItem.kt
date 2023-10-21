@@ -130,9 +130,9 @@ class SettingsItem(context: Context) : ConstraintLayout(context) {
   
   companion object {
     
-    private val TextTitle = View.generateViewId()
-    private val TextDescription = View.generateViewId()
-    private val Switch = View.generateViewId()
+    val TextTitle = View.generateViewId()
+    val TextDescription = View.generateViewId()
+    val Switch = View.generateViewId()
     
     fun ViewGroup.SettingsItem(
       id: Int,

@@ -11,16 +11,18 @@ import com.arsvechkarev.vault.features.settings.SettingsBiometricsError.LOCKOUT_
 import com.arsvechkarev.vault.features.settings.SettingsBiometricsError.OTHER
 import com.arsvechkarev.vault.features.settings.SettingsCommand.BackupCommand.DisableStorageBackup
 import com.arsvechkarev.vault.features.settings.SettingsCommand.BackupCommand.EnableStorageBackup
+import com.arsvechkarev.vault.features.settings.SettingsCommand.BackupCommand.PerformBackup
 import com.arsvechkarev.vault.features.settings.SettingsCommand.ChangeShowUsernames
 import com.arsvechkarev.vault.features.settings.SettingsCommand.ClearImagesCache
 import com.arsvechkarev.vault.features.settings.SettingsCommand.DisableBiometrics
 import com.arsvechkarev.vault.features.settings.SettingsCommand.EnableBiometrics
 import com.arsvechkarev.vault.features.settings.SettingsCommand.FetchData
-import com.arsvechkarev.vault.features.settings.SettingsCommand.FetchStorageBackupEnabled
+import com.arsvechkarev.vault.features.settings.SettingsCommand.FetchStorageBackupInfo
 import com.arsvechkarev.vault.features.settings.SettingsCommand.RouterCommand.GoBack
 import com.arsvechkarev.vault.features.settings.SettingsCommand.RouterCommand.GoToMasterPasswordScreen
 import com.arsvechkarev.vault.features.settings.SettingsEvent.BiometricsEnabled
 import com.arsvechkarev.vault.features.settings.SettingsEvent.ImagesCacheCleared
+import com.arsvechkarev.vault.features.settings.SettingsEvent.PerformedBackup
 import com.arsvechkarev.vault.features.settings.SettingsEvent.ReceivedBiometricsAvailable
 import com.arsvechkarev.vault.features.settings.SettingsEvent.ReceivedBiometricsEnabled
 import com.arsvechkarev.vault.features.settings.SettingsEvent.ReceivedShowUsernames
@@ -31,6 +33,7 @@ import com.arsvechkarev.vault.features.settings.SettingsNews.LaunchFolderSelecti
 import com.arsvechkarev.vault.features.settings.SettingsNews.SetBiometricsEnabled
 import com.arsvechkarev.vault.features.settings.SettingsNews.SetShowUsernames
 import com.arsvechkarev.vault.features.settings.SettingsNews.SetStorageBackupEnabled
+import com.arsvechkarev.vault.features.settings.SettingsNews.ShowBackupPerformed
 import com.arsvechkarev.vault.features.settings.SettingsNews.ShowBiometricsEnabled
 import com.arsvechkarev.vault.features.settings.SettingsNews.ShowBiometricsError
 import com.arsvechkarev.vault.features.settings.SettingsNews.ShowBiometricsPrompt
@@ -39,6 +42,7 @@ import com.arsvechkarev.vault.features.settings.SettingsNews.ShowMasterPasswordC
 import com.arsvechkarev.vault.features.settings.SettingsNews.ShowStorageBackupEnabled
 import com.arsvechkarev.vault.features.settings.SettingsUiEvent.OnAppearedOnScreen
 import com.arsvechkarev.vault.features.settings.SettingsUiEvent.OnBackPressed
+import com.arsvechkarev.vault.features.settings.SettingsUiEvent.OnBackupNowClicked
 import com.arsvechkarev.vault.features.settings.SettingsUiEvent.OnBiometricsEvent
 import com.arsvechkarev.vault.features.settings.SettingsUiEvent.OnChangeMasterPasswordClicked
 import com.arsvechkarev.vault.features.settings.SettingsUiEvent.OnClearImagesCacheClicked
@@ -63,7 +67,7 @@ class SettingsReducer : DslReducer<SettingsState, SettingsEvent,
         commands(FetchData)
       }
       OnAppearedOnScreen -> {
-        commands(FetchStorageBackupEnabled)
+        commands(FetchStorageBackupInfo)
       }
       is ReceivedShowUsernames -> {
         news(SetShowUsernames(event.showUsernames))
@@ -77,7 +81,11 @@ class SettingsReducer : DslReducer<SettingsState, SettingsEvent,
       }
       is ReceivedStorageBackupEnabled -> {
         state {
-          copy(storageBackupEnabled = event.enabled, storageBackupFolderUri = event.backupFolderUri)
+          copy(
+            storageBackupEnabled = event.enabled,
+            storageBackupFolderUri = event.backupFolderUri,
+            storageBackupLatestDate = event.latestBackupDate
+          )
         }
         news(SetStorageBackupEnabled(event.enabled))
       }
@@ -157,6 +165,12 @@ class SettingsReducer : DslReducer<SettingsState, SettingsEvent,
       is OnSelectedBackupFolder -> {
         commands(EnableStorageBackup(event.uri))
       }
+      OnBackupNowClicked -> {
+        if (state.storageBackupEnabled) {
+          commands(PerformBackup)
+          state { copy(showLoadingBackingUp = true) }
+        }
+      }
       OnClearImagesCacheClicked -> {
         commands(ClearImagesCache)
       }
@@ -177,6 +191,11 @@ class SettingsReducer : DslReducer<SettingsState, SettingsEvent,
       }
       StorageBackupDisabled -> {
         state { copy(storageBackupEnabled = false) }
+      }
+      PerformedBackup -> {
+        state { copy(showLoadingBackingUp = false) }
+        commands(FetchStorageBackupInfo)
+        news(ShowBackupPerformed)
       }
       ImagesCacheCleared -> {
         news(ShowImagesCacheCleared)

@@ -1,6 +1,7 @@
 package com.arsvechkarev.vault.core.views
 
 import android.animation.ValueAnimator
+import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Color
 import android.view.Gravity
@@ -103,6 +104,7 @@ open class SimpleDialog(context: Context) : FrameLayout(context) {
     return isOpened && ev !in dialogView
   }
   
+  @SuppressLint("ClickableViewAccessibility")
   override fun onTouchEvent(event: MotionEvent): Boolean {
     when (event.action) {
       ACTION_DOWN -> {

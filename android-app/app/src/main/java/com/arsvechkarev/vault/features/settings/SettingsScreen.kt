@@ -23,6 +23,8 @@ import com.arsvechkarev.vault.features.common.dialogs.EnterPasswordDialog.Compan
 import com.arsvechkarev.vault.features.common.dialogs.EnterPasswordDialog.Mode.CheckingMasterPassword
 import com.arsvechkarev.vault.features.common.dialogs.InfoDialog.Companion.InfoDialog
 import com.arsvechkarev.vault.features.common.dialogs.InfoDialog.Companion.infoDialog
+import com.arsvechkarev.vault.features.common.dialogs.LoadingDialog
+import com.arsvechkarev.vault.features.common.dialogs.loadingDialog
 import com.arsvechkarev.vault.features.common.extensions.setStatusBarColor
 import com.arsvechkarev.vault.features.settings.EnterPasswordDialogState.HIDDEN
 import com.arsvechkarev.vault.features.settings.EnterPasswordDialogState.HIDDEN_KEEPING_KEYBOARD
@@ -34,6 +36,7 @@ import com.arsvechkarev.vault.features.settings.SettingsNews.LaunchFolderSelecti
 import com.arsvechkarev.vault.features.settings.SettingsNews.SetBiometricsEnabled
 import com.arsvechkarev.vault.features.settings.SettingsNews.SetShowUsernames
 import com.arsvechkarev.vault.features.settings.SettingsNews.SetStorageBackupEnabled
+import com.arsvechkarev.vault.features.settings.SettingsNews.ShowBackupPerformed
 import com.arsvechkarev.vault.features.settings.SettingsNews.ShowBiometricsEnabled
 import com.arsvechkarev.vault.features.settings.SettingsNews.ShowBiometricsError
 import com.arsvechkarev.vault.features.settings.SettingsNews.ShowBiometricsPrompt
@@ -42,6 +45,7 @@ import com.arsvechkarev.vault.features.settings.SettingsNews.ShowMasterPasswordC
 import com.arsvechkarev.vault.features.settings.SettingsNews.ShowStorageBackupEnabled
 import com.arsvechkarev.vault.features.settings.SettingsUiEvent.OnAppearedOnScreen
 import com.arsvechkarev.vault.features.settings.SettingsUiEvent.OnBackPressed
+import com.arsvechkarev.vault.features.settings.SettingsUiEvent.OnBackupNowClicked
 import com.arsvechkarev.vault.features.settings.SettingsUiEvent.OnBiometricsEvent
 import com.arsvechkarev.vault.features.settings.SettingsUiEvent.OnChangeMasterPasswordClicked
 import com.arsvechkarev.vault.features.settings.SettingsUiEvent.OnClearImagesCacheClicked
@@ -168,6 +172,13 @@ class SettingsScreen : BaseFragmentScreen() {
             clickable = true,
             onClick = { store.tryDispatch(OnSelectBackupFolderClicked) },
           )
+          SettingsItem(
+            id = ItemStorageBackupNow,
+            title = R.string.text_storage_backup_backup_now,
+            description = R.string.text_storage_backup_last_backup_never,
+            clickable = true,
+            onClick = { store.tryDispatch(OnBackupNowClicked) },
+          )
           View(MatchParent, IntSize(DividerHeight)) {
             backgroundColor(Colors.Divider)
           }
@@ -193,6 +204,7 @@ class SettingsScreen : BaseFragmentScreen() {
         onDialogClosed = { store.tryDispatch(OnHideEnterPasswordDialog) },
         onCheckSuccessful = { store.tryDispatch(OnEnteredPasswordToChangeMasterPassword) },
       )
+      LoadingDialog()
     }
   }
   
@@ -252,10 +264,6 @@ class SettingsScreen : BaseFragmentScreen() {
   private fun render(state: SettingsState) {
     view(ItemBiometrics).isVisible = state.biometricsAvailable
     view(FourthDivider).isVisible = state.biometricsAvailable
-    viewAs<SettingsItem>(ItemStorageBackupFolder).isEnabled = state.storageBackupEnabled
-    val text = state.storageBackupFolderUri?.toReadablePath()
-        ?: getText(R.string.text_storage_backup_folder_none_selected)
-    viewAs<SettingsItem>(ItemStorageBackupFolder).setDescription(text)
     when (state.enterPasswordDialogState) {
       SHOWN -> enterPasswordDialog.show()
       HIDDEN -> enterPasswordDialog.hide()
@@ -272,6 +280,26 @@ class SettingsScreen : BaseFragmentScreen() {
       )
     } else {
       infoDialog.hide()
+    }
+    viewAs<SettingsItem>(ItemStorageBackupFolder).apply {
+      isEnabled = state.storageBackupEnabled
+      val text = state.storageBackupFolderUri?.toReadablePath()
+          ?: getText(R.string.text_storage_backup_folder_none_selected)
+      setDescription(text)
+    }
+    viewAs<SettingsItem>(ItemStorageBackupNow).apply {
+      isEnabled = state.storageBackupEnabled
+      val text = if (state.storageBackupLatestDate != null) {
+        getString(R.string.text_storage_backup_latest_backup_prefix, state.storageBackupLatestDate)
+      } else {
+        getString(R.string.text_storage_backup_last_backup_never)
+      }
+      setDescription(text)
+    }
+    if (state.showLoadingBackingUp) {
+      loadingDialog.show()
+    } else {
+      loadingDialog.hide()
     }
   }
   
@@ -325,6 +353,9 @@ class SettingsScreen : BaseFragmentScreen() {
       ShowStorageBackupEnabled -> {
         snackbar.show(CHECKMARK, R.string.text_storage_backup_enabled)
       }
+      ShowBackupPerformed -> {
+        snackbar.show(CHECKMARK, R.string.text_storage_backup_performed)
+      }
       ShowImagesCacheCleared -> {
         snackbar.show(CHECKMARK, R.string.text_clear_images_cache_cleared)
       }
@@ -343,11 +374,11 @@ class SettingsScreen : BaseFragmentScreen() {
     val LayoutSettingsItems = View.generateViewId()
     val ItemChangePassword = View.generateViewId()
     val ItemShowUsernames = View.generateViewId()
-    val SwitchShowUsernames = View.generateViewId()
     val ItemBiometrics = View.generateViewId()
     val FourthDivider = View.generateViewId()
     val ItemStorageBackup = View.generateViewId()
     val ItemStorageBackupFolder = View.generateViewId()
+    val ItemStorageBackupNow = View.generateViewId()
     val ItemClearImagesCache = View.generateViewId()
   }
 }

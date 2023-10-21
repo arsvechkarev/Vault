@@ -23,8 +23,8 @@ class StorageBackupPreferences(private val preferences: Preferences) {
     preferences.putBoolean(KEY_STORAGE_BACKUP_ENABLED, false)
   }
   
-  suspend fun getBackupTimestamp(): Long {
-    return preferences.getLong(KEY_STORAGE_BACKUP_TIMESTAMP)
+  suspend fun getLatestBackupTimestamp(): Long {
+    return preferences.getLong(KEY_STORAGE_BACKUP_LATEST_TIMESTAMP)
   }
   
   suspend fun getBackupPerformedAt(): Int {
@@ -34,7 +34,7 @@ class StorageBackupPreferences(private val preferences: Preferences) {
   suspend fun saveBackupMetadata(timestamp: Long, performedAtCount: Int) {
     preferences.putAll(
       mapOf(
-        KEY_STORAGE_BACKUP_TIMESTAMP to timestamp,
+        KEY_STORAGE_BACKUP_LATEST_TIMESTAMP to timestamp,
         KEY_STORAGE_BACKUP_PERFORMED_AT_COUNT to performedAtCount,
       )
     )
@@ -44,7 +44,7 @@ class StorageBackupPreferences(private val preferences: Preferences) {
     
     const val KEY_STORAGE_BACKUP_ENABLED = "storage_backup_enabled"
     const val KEY_STORAGE_BACKUP_FOLDER_URI = "storage_backup_folder_uri"
-    const val KEY_STORAGE_BACKUP_TIMESTAMP = "storage_backup_timestamp"
+    const val KEY_STORAGE_BACKUP_LATEST_TIMESTAMP = "storage_backup_latest_timestamp"
     const val KEY_STORAGE_BACKUP_PERFORMED_AT_COUNT = "storage_backup_performed_at_count"
   }
 }

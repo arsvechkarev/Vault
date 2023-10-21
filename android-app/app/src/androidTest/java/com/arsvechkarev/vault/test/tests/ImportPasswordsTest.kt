@@ -35,7 +35,7 @@ class ImportPasswordsTest : VaultTestCase() {
   private val stubFileReader = StubExternalFileReader(
     uriToMatch = "content://myfolder/passwords.kdbx",
     bytesToRead = {
-      context.assets.open("database_two_passwords").use(InputStream::readBytes)
+      context.assets.open("file_two_passwords").use(InputStream::readBytes)
     }
   )
   
@@ -92,7 +92,7 @@ class ImportPasswordsTest : VaultTestCase() {
   
   @Test
   fun importingPasswordsFromMainMenuTest() = init {
-    rule.launchActivityWithDatabase("database_one_password")
+    rule.launchActivityWithDatabase("file_one_password")
   }.run {
     KLoginScreen {
       editTextEnterPassword.replaceText("qwetu1233")

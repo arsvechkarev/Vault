@@ -40,7 +40,7 @@ class MainListTest : VaultTestCase() {
         imagesRequestsRecorder = imageRequestsRecorder
       )
     )
-    rule.launchActivityWithDatabase("database_two_passwords_and_plain_text")
+    rule.launchActivityWithDatabase("file_two_passwords_and_plain_text")
   }.run {
     KLoginScreen {
       textError.hasEmptyText()

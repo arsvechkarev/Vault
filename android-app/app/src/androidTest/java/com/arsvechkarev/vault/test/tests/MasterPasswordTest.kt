@@ -207,7 +207,7 @@ class MasterPasswordTest : TestCase() {
   
   @Test
   fun testChangeExistingMasterPassword() = init {
-    rule.launchActivityWithDatabase("database_two_passwords")
+    rule.launchActivityWithDatabase("file_two_passwords")
   }.run {
     KLoginScreen {
       editTextEnterPassword.replaceText("qwetu1233")

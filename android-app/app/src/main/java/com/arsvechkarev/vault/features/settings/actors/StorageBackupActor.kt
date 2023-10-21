@@ -1,7 +1,7 @@
 package com.arsvechkarev.vault.features.settings.actors
 
 import com.arsvechkarev.vault.core.mvi.tea.Actor
-import com.arsvechkarev.vault.features.common.data.StorageBackupPreferences
+import com.arsvechkarev.vault.features.common.data.files.StorageBackupPreferences
 import com.arsvechkarev.vault.features.common.domain.MasterPasswordProvider
 import com.arsvechkarev.vault.features.common.domain.StorageBackupInteractor
 import com.arsvechkarev.vault.features.settings.SettingsCommand

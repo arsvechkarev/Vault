@@ -1,7 +1,6 @@
 package com.arsvechkarev.vault.features.settings
 
 import android.content.Context
-import android.content.Intent
 import android.view.Gravity
 import android.view.View
 import androidx.lifecycle.lifecycleScope
@@ -222,10 +221,10 @@ class SettingsScreen : BaseFragmentScreen() {
   
   private val selectFolderResultLauncher = coreComponent.activityResultWrapper
       .wrapSelectFolderLauncher(this) { uri ->
-        context?.contentResolver?.takePersistableUriPermission(
-          uri, Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION
-        )
-        store.tryDispatch(OnSelectedBackupFolder(uri))
+        context?.let { context ->
+          coreComponent.uriPersistedMaker.takePersistableUriPermission(context, uri)
+          store.tryDispatch(OnSelectedBackupFolder(uri))
+        }
       }
   
   private val biometricsDialog by lazy {

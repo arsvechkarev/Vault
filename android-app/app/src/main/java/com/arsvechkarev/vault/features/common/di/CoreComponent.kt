@@ -43,12 +43,25 @@ interface CoreComponent :
       val coreModule = CoreModuleImpl(application)
       val extraDependencies = extraDependenciesFactory.getExtraDependencies()
       val preferencesModule = PreferencesModuleImpl(coreModule)
-      val ioModule = IoModuleImpl(coreModule, extraDependencies.okHttpClient,
-        extraDependencies.externalFileReader, extraDependencies.passwordsFileExporter)
-      val domainModule = DomainModuleImpl(coreModule, preferencesModule)
+      val ioModule = IoModuleImpl(
+        coreModule,
+        extraDependencies.okHttpClient,
+        extraDependencies.externalFileReader,
+        extraDependencies.passwordsFileExporter,
+        extraDependencies.uriPersistedMaker
+      )
+      val domainModule = DomainModuleImpl(
+        coreModule,
+        preferencesModule,
+        extraDependencies.backupInterceptor
+      )
       val keePassModule = KeePassModuleImpl(coreModule, domainModule)
-      val imagesLoadingModule = ImagesLoadingModuleImpl(coreModule, ioModule,
-        preferencesModule, extraDependencies.imageRequestsRecorder)
+      val imagesLoadingModule = ImagesLoadingModuleImpl(
+        coreModule,
+        ioModule,
+        preferencesModule,
+        extraDependencies.imageRequestsRecorder
+      )
       return CoreComponentImpl(
         coreModule = coreModule,
         preferencesModule = preferencesModule,

@@ -17,6 +17,7 @@ fun ImportPasswordsStore(
       ImportPasswordsActor(
         coreComponent.externalFileReader,
         coreComponent.observableCachedDatabaseStorage,
+        coreComponent.storageBackupInteractor
       ),
       ImportPasswordsRouterActor(coreComponent.router),
     ),

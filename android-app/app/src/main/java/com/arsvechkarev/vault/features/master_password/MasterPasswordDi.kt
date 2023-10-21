@@ -23,6 +23,7 @@ fun MasterPasswordStore(
       ChangeExistingMasterPasswordActor(
         coreComponent.masterPasswordProvider,
         coreComponent.observableCachedDatabaseStorage,
+        coreComponent.storageBackupInteractor,
         coreComponent.changeMasterPasswordObserver
       ),
       CreateNewMasterPasswordActor(coreComponent.databaseInitializer),

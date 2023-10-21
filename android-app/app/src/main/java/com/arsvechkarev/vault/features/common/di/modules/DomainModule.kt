@@ -7,7 +7,6 @@ import com.arsvechkarev.vault.features.common.data.StorageBackupPreferences
 import com.arsvechkarev.vault.features.common.domain.DatabaseChangesJournal
 import com.arsvechkarev.vault.features.common.domain.DatabaseChangesJournalImpl
 import com.arsvechkarev.vault.features.common.domain.ShowUsernamesInteractor
-import com.arsvechkarev.vault.features.common.domain.SimpleDateTimeFormatter
 import com.arsvechkarev.vault.features.common.domain.StorageBackupInteractor
 
 interface DomainModule {
@@ -53,7 +52,7 @@ class DomainModuleImpl(
     preferences = storageBackupPreferences,
     journal = DatabaseChangesJournalImpl(preferencesModule.settingsPreferences),
     timestampProvider = coreModule.timestampProvider,
-    dateTimeFormatter = SimpleDateTimeFormatter(),
+    dateTimeFormatter = coreModule.dateTimeFormatter,
     passedTimeSinceLastBackupThreshold = passedTimeSinceLastBackupThreshold,
     databaseChangesThreshold = databaseChangesForBackupThreshold,
     backupFileCountThreshold = maxBackupFileCount,

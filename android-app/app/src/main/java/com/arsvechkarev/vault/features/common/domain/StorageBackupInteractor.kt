@@ -38,7 +38,7 @@ class StorageBackupInteractor(
   }
   
   private suspend fun timeSinceLastBackupPassedThreshold(): Boolean {
-    val latestBackupTimestamp = preferences.getBackupTimestamp()
+    val latestBackupTimestamp = preferences.getLatestBackupTimestamp()
     val now = timestampProvider.now()
     return now - latestBackupTimestamp > passedTimeSinceLastBackupThreshold
   }
@@ -54,7 +54,7 @@ class StorageBackupInteractor(
   }
   
   private fun generateFilename(): String {
-    return "file_${dateTimeFormatter.format(timestampProvider.now())}.kdbx"
+    return "file_${dateTimeFormatter.formatSimple(timestampProvider.now())}.kdbx"
   }
   
   private suspend fun removeAllOlderFiles(directory: String, backupFiles: List<BackupFileData>) {

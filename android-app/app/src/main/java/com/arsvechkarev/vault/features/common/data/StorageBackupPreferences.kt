@@ -31,11 +31,11 @@ class StorageBackupPreferences(private val preferences: Preferences) {
     return preferences.getInt(KEY_STORAGE_BACKUP_PERFORMED_AT_COUNT)
   }
   
-  suspend fun saveBackupMetadata(performedAtCount: Int, timestamp: Long) {
+  suspend fun saveBackupMetadata(timestamp: Long, performedAtCount: Int) {
     preferences.putAll(
       mapOf(
         KEY_STORAGE_BACKUP_TIMESTAMP to timestamp,
-        KEY_STORAGE_BACKUP_PERFORMED_AT_COUNT to performedAtCount
+        KEY_STORAGE_BACKUP_PERFORMED_AT_COUNT to performedAtCount,
       )
     )
   }

@@ -7,6 +7,7 @@ import com.arsvechkarev.vault.core.mvi.tea.Actor
 import com.arsvechkarev.vault.features.common.Durations
 import com.arsvechkarev.vault.features.common.data.database.ObservableCachedDatabaseStorage
 import com.arsvechkarev.vault.features.common.data.files.ExternalFileReader
+import com.arsvechkarev.vault.features.common.domain.StorageBackupInteractor
 import com.arsvechkarev.vault.features.import_passwords.ImportPasswordsCommand
 import com.arsvechkarev.vault.features.import_passwords.ImportPasswordsCommand.TryImportPasswords
 import com.arsvechkarev.vault.features.import_passwords.ImportPasswordsEvent
@@ -24,6 +25,7 @@ import timber.log.Timber
 class ImportPasswordsActor(
   private val externalFileReader: ExternalFileReader,
   private val storage: ObservableCachedDatabaseStorage,
+  private val backupInteractor: StorageBackupInteractor,
 ) : Actor<ImportPasswordsCommand, ImportPasswordsEvent> {
   
   @OptIn(ExperimentalCoroutinesApi::class)
@@ -36,6 +38,7 @@ class ImportPasswordsActor(
             val credentials = Credentials.from(command.password)
             val newDatabase = KeePassDatabase.decode(inputStream, credentials)
             storage.saveDatabase(newDatabase)
+            backupInteractor.forceBackup(newDatabase)
           }.onSuccess {
             MasterPasswordHolder.setMasterPassword(command.password)
           }.onFailure { error ->

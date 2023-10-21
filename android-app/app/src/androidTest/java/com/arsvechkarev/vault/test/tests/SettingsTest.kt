@@ -19,7 +19,7 @@ class SettingsTest : VaultTestCase() {
   
   @Test
   fun testSettingsScreenFlow() = init {
-    rule.launchActivityWithDatabase("database_empty")
+    rule.launchActivityWithDatabase("file_empty")
   }.run {
     KLoginScreen {
       editTextEnterPassword.replaceText("qwetu1233")

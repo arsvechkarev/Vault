@@ -12,10 +12,12 @@ import com.arsvechkarev.vault.test.core.base.VaultTestCase
 import com.arsvechkarev.vault.test.core.di.StubExtraDependenciesFactory
 import com.arsvechkarev.vault.test.core.di.stubs.StubActivityResultWrapper
 import com.arsvechkarev.vault.test.core.di.stubs.StubPasswordsFileExporter
+import com.arsvechkarev.vault.test.core.ext.hasTextColorInt
 import com.arsvechkarev.vault.test.core.ext.launchActivityWithDatabase
 import com.arsvechkarev.vault.test.core.rule.VaultAutotestRule
 import com.arsvechkarev.vault.test.screens.KLoginScreen
 import com.arsvechkarev.vault.test.screens.KMainListScreen
+import com.arsvechkarev.vault.viewbuilding.Colors
 import org.hamcrest.Matchers.allOf
 import org.hamcrest.Matchers.`is`
 import org.junit.Rule
@@ -39,7 +41,7 @@ class ExportPasswordsTest : VaultTestCase() {
         passwordsFileExporter = stubPasswordsFileExporter,
       )
     )
-    rule.launchActivityWithDatabase("database_two_passwords")
+    rule.launchActivityWithDatabase("file_two_passwords")
   }.run {
     KLoginScreen {
       editTextEnterPassword.replaceText("qwetu1233")
@@ -54,6 +56,7 @@ class ExportPasswordsTest : VaultTestCase() {
           message.hasText("Exported passwords successfully!")
           action1.hasText("OK")
           action2.hasText("SHARE FILE")
+          action2.hasTextColorInt(Colors.AccentLight)
           action2.click()
         }
         flakySafely {

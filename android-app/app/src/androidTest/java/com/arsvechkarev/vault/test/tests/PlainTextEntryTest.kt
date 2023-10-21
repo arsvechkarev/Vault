@@ -25,7 +25,7 @@ class PlainTextEntryTest : VaultTestCase() {
   
   @Test
   fun testCreatingPlainText() = init {
-    rule.launchActivityWithDatabase("database_empty")
+    rule.launchActivityWithDatabase("file_empty")
   }.run {
     KLoginScreen {
       editTextEnterPassword.replaceText("qwetu1233")
@@ -91,7 +91,7 @@ class PlainTextEntryTest : VaultTestCase() {
   
   @Test
   fun testEditingPlainText() = init {
-    rule.launchActivityWithDatabase("database_two_passwords_and_plain_text")
+    rule.launchActivityWithDatabase("file_two_passwords_and_plain_text")
   }.run {
     KLoginScreen {
       editTextEnterPassword.replaceText("qwetu1233")

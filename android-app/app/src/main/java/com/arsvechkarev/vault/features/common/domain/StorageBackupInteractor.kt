@@ -16,6 +16,14 @@ class StorageBackupInteractor(
   private val backupFileCountThreshold: Int,
 ) {
   
+  suspend fun forceBackup(database: KeePassDatabase) {
+    val (enabled, backupFolder) = preferences.getStorageBackupEnabledPair()
+    if (!enabled || backupFolder == null) {
+      return
+    }
+    performBackupInternal(backupFolder, database)
+  }
+  
   suspend fun performBackupIfNeeded(database: KeePassDatabase) {
     val (enabled, backupFolder) = preferences.getStorageBackupEnabledPair()
     if (!enabled || backupFolder == null) {
@@ -42,7 +50,7 @@ class StorageBackupInteractor(
     }
     val newFilename = generateFilename()
     fileSaver.saveDatabase(directory, newFilename, database)
-    preferences.saveBackupMetadata(journal.getChangeCount(), timestampProvider.now())
+    preferences.saveBackupMetadata(timestampProvider.now(), journal.getChangeCount())
   }
   
   private fun generateFilename(): String {

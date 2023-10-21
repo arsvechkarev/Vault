@@ -7,6 +7,7 @@ import com.arsvechkarev.vault.features.common.Durations
 import com.arsvechkarev.vault.features.common.data.database.ObservableCachedDatabaseStorage
 import com.arsvechkarev.vault.features.common.domain.ChangeMasterPasswordObserver
 import com.arsvechkarev.vault.features.common.domain.MasterPasswordProvider
+import com.arsvechkarev.vault.features.common.domain.StorageBackupInteractor
 import com.arsvechkarev.vault.features.master_password.MasterPasswordCommand
 import com.arsvechkarev.vault.features.master_password.MasterPasswordCommand.ChangeExistingMasterPassword
 import com.arsvechkarev.vault.features.master_password.MasterPasswordEvent
@@ -21,12 +22,15 @@ import kotlinx.coroutines.flow.mapLatest
 class ChangeExistingMasterPasswordActor(
   private val masterPasswordProvider: MasterPasswordProvider,
   private val storage: ObservableCachedDatabaseStorage,
+  private val backupInteractor: StorageBackupInteractor,
   private val changeMasterPasswordObserver: ChangeMasterPasswordObserver,
 ) : Actor<MasterPasswordCommand, MasterPasswordEvent> {
+  
   @OptIn(ExperimentalCoroutinesApi::class)
   override fun handle(commands: Flow<MasterPasswordCommand>): Flow<MasterPasswordEvent> {
     return commands.filterIsInstance<ChangeExistingMasterPassword>()
         .mapLatest { command ->
+          delay(Durations.StubDelay)
           val newMasterPassword = command.password
           val currentMasterPassword = masterPasswordProvider.provideMasterPassword()
           require(currentMasterPassword != newMasterPassword)
@@ -34,8 +38,8 @@ class ChangeExistingMasterPasswordActor(
           val newDatabase = currentDatabase
               .modifyCredentials { Credentials.from(newMasterPassword.encryptedValueField) }
           storage.saveDatabase(newDatabase)
+          backupInteractor.forceBackup(newDatabase)
           MasterPasswordHolder.setMasterPassword(newMasterPassword)
-          delay(Durations.StubDelay)
           changeMasterPasswordObserver.sendMasterPasswordChangedEvent()
           FinishedMasterPasswordSaving
         }

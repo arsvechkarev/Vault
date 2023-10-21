@@ -551,7 +551,7 @@ class PasswordEntryScreen : BaseFragmentScreen() {
   private fun showInfoDialog(state: ExistingEntry) {
     infoDialog.showWithCancelAndProceedOption(
       titleRes = R.string.text_delete_password,
-      messageRes = getDeleteMessageText(state.titleState.initialText),
+      message = getDeleteMessageText(state.titleState.initialText),
       onCancel = { store.tryDispatch(OnHideDeleteDialog) },
       onProceed = { store.tryDispatch(OnConfirmedDeletion) }
     )

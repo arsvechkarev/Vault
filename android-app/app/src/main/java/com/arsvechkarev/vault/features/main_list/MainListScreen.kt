@@ -200,6 +200,7 @@ class MainListScreen : BaseFragmentScreen() {
         message = getString(R.string.text_export_successful),
         cancelTextRes = R.string.text_ok,
         proceedTextRes = R.string.text_export_share_file,
+        showProceedAsError = false,
         onCancel = { store.tryDispatch(OnHideShareExportedFileDialog) },
         onProceed = { shareExportedFile(state.exportedFileUri) }
       )

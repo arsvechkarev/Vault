@@ -27,6 +27,7 @@ ext {
 
   testDependencies = [
       junit             : "junit:junit:4.13.1",
+      coroutinesTest    : "org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutines_version",
       kaspresso         : "com.kaspersky.android-components:kaspresso:1.4.3",
       espressoIntents   : "androidx.test.espresso:espresso-intents:$espresso_version",
       androidTestRunner : "androidx.test:runner:$androidTest_version",

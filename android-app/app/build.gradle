@@ -88,6 +88,7 @@ dependencies {
   def testDependencies = rootProject.ext.testDependencies
 
   testImplementation testDependencies.junit
+  testImplementation testDependencies.coroutinesTest
 
   androidTestImplementation testDependencies.kaspresso
   androidTestImplementation testDependencies.espressoIntents

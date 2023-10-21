@@ -2,8 +2,8 @@ package com.arsvechkarev.vault.features.common.di.modules
 
 import com.arsvechkarev.vault.BuildConfig
 import com.arsvechkarev.vault.features.common.AppConfig
-import com.arsvechkarev.vault.features.common.data.StorageBackupFileSaver
-import com.arsvechkarev.vault.features.common.data.StorageBackupPreferences
+import com.arsvechkarev.vault.features.common.data.files.StorageBackupExternalFileSaverImpl
+import com.arsvechkarev.vault.features.common.data.files.StorageBackupPreferences
 import com.arsvechkarev.vault.features.common.domain.BackupInterceptor
 import com.arsvechkarev.vault.features.common.domain.DatabaseChangesJournal
 import com.arsvechkarev.vault.features.common.domain.DatabaseChangesJournalImpl
@@ -50,7 +50,7 @@ class DomainModuleImpl(
   }
   
   override val storageBackupInteractor = StorageBackupInteractor(
-    fileSaver = StorageBackupFileSaver(
+    storageBackupExternalFileSaver = StorageBackupExternalFileSaverImpl(
       coreModule.application,
       coreModule.dispatchers,
       backupInterceptor

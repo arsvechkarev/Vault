@@ -1,4 +1,4 @@
-package com.arsvechkarev.vault.features.common.data
+package com.arsvechkarev.vault.features.common.data.files
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -12,13 +12,15 @@ import com.arsvechkarev.vault.features.common.domain.BackupInterceptor
 import com.arsvechkarev.vault.features.common.model.BackupFileData
 import kotlinx.coroutines.withContext
 
-class StorageBackupFileSaver(
+class StorageBackupExternalFileSaverImpl(
   private val context: Context,
   private val dispatchers: DispatchersFacade,
   private val backupInterceptor: BackupInterceptor,
-) {
+) : StorageBackupExternalFileSaver {
   
-  suspend fun getAll(directory: String): List<BackupFileData> = withContext(dispatchers.IO) {
+  override suspend fun getAll(
+    directory: String
+  ): List<BackupFileData> = withContext(dispatchers.IO) {
     val interceptedList = backupInterceptor.interceptGetAll()
     if (interceptedList != null) {
       return@withContext interceptedList
@@ -28,7 +30,7 @@ class StorageBackupFileSaver(
         .map { BackupFileData(checkNotNull(it.name), it.lastModified()) }
   }
   
-  suspend fun deleteAll(
+  override suspend fun deleteAll(
     directory: String,
     files: List<BackupFileData>
   ) = withContext(dispatchers.IO) {
@@ -42,7 +44,7 @@ class StorageBackupFileSaver(
   }
   
   @SuppressLint("Recycle")
-  suspend fun saveDatabase(
+  override suspend fun saveDatabase(
     directory: String,
     filename: String,
     database: KeePassDatabase

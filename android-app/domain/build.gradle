@@ -15,7 +15,4 @@ dependencies {
   implementation appDependencies.zxcvbn
   implementation appDependencies.kotpass
   implementation appDependencies.okio
-
-  def testDependencies = rootProject.ext.testDependencies
-  testImplementation testDependencies.junit
 }

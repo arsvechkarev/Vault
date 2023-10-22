@@ -22,6 +22,7 @@ import domain.CUSTOM_DATA_PLAIN_TEXT
 import domain.CUSTOM_DATA_TYPE_KEY
 import domain.CommonConstants
 import domain.from
+import java.util.UUID
 
 private val PasswordQwetu1233 = domain.Password.create("qwetu1233")
 
@@ -31,9 +32,9 @@ val BasicDatabase = KeePassDatabase.Ver4x.create(
   credentials = Credentials.from(PasswordQwetu1233)
 ).run {
   modifyParentGroup {
-    val entries = buildList {
-      add(Entry(
-        uuid = uuid,
+    val entries = listOf(
+      Entry(
+        uuid = UUID.fromString("c13dde14-cb66-4f50-95c0-2d636bf05bcd"),
         fields = EntryFields.of(
           Title.key to Plain("google"),
           UserName.key to Plain("me@gmail.com"),
@@ -45,9 +46,9 @@ val BasicDatabase = KeePassDatabase.Ver4x.create(
           CUSTOM_DATA_TYPE_KEY to CustomDataValue(CUSTOM_DATA_PASSWORD),
           CUSTOM_DATA_FAVORITE_KEY to CustomDataValue("false"),
         )
-      ))
-      add(Entry(
-        uuid = uuid,
+      ),
+      Entry(
+        uuid = UUID.fromString("3d2f85f1-490a-4290-8d66-7de9f9769858"),
         fields = EntryFields.of(
           Title.key to Plain("test"),
           Notes.key to Plain("my text")
@@ -56,8 +57,8 @@ val BasicDatabase = KeePassDatabase.Ver4x.create(
           CUSTOM_DATA_TYPE_KEY to CustomDataValue(CUSTOM_DATA_PLAIN_TEXT),
           CUSTOM_DATA_FAVORITE_KEY to CustomDataValue("false"),
         )
-      ))
-    }
+      )
+    )
     copy(entries = entries)
   }
 }
@@ -73,5 +74,45 @@ val BasicDatabase2 = BasicDatabase.modifyEntries {
     })
   } else {
     this
+  }
+}
+
+val NonStandardDatabase = KeePassDatabase.Ver4x.create(
+  rootName = CommonConstants.DEFAULT_DATABASE_NAME,
+  meta = Meta(),
+  credentials = Credentials.from(PasswordQwetu1233)
+).run {
+  modifyParentGroup {
+    val entries = listOf(
+      Entry(
+        uuid = UUID.fromString("c13dde14-cb66-4f50-95c0-2d636bf05bcd"),
+        fields = EntryFields.of(
+          Title.key to Plain(""),
+          Password.key to Encrypted(fromString("qwerty")),
+        ),
+      ),
+      Entry(
+        uuid = UUID.fromString("fe674044-8e7b-4ba2-b316-20bf841d3bcd"),
+        fields = EntryFields.of(
+          Title.key to Plain(""),
+          UserName.key to Plain("lalala"),
+        ),
+      ),
+      Entry(
+        uuid = UUID.fromString("3d2f85f1-490a-4290-8d66-7de9f9769858"),
+        fields = EntryFields.of(
+          Title.key to Plain(""),
+          Notes.key to Plain("mynotes1"),
+        ),
+      ),
+      Entry(
+        uuid = UUID.fromString("86916deb-74b4-4b1c-9f52-517eaad3aad6"),
+        fields = EntryFields.of(
+          Title.key to Plain(""),
+          Notes.key to Plain("mynotes2"),
+        ),
+      )
+    )
+    copy(entries = entries)
   }
 }

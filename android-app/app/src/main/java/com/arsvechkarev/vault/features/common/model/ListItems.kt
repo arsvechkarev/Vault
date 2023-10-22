@@ -3,9 +3,13 @@ package com.arsvechkarev.vault.features.common.model
 import com.arsvechkarev.vault.recycler.DifferentiableItem
 
 data class Title(
-  val titleRes: Int
+  val type: Type
 ) : DifferentiableItem {
-  override val id = titleRes.toString()
+  override val id = type.toString()
+  
+  enum class Type {
+    FAVORITES, PASSWORDS, PLAIN_TEXTS
+  }
 }
 
 object Loading : DifferentiableItem {

@@ -1,5 +1,6 @@
 package com.arsvechkarev.vault.features.main_list.actors
 
+import com.arsvechkarev.vault.core.ListScreenState
 import com.arsvechkarev.vault.core.mvi.tea.Actor
 import com.arsvechkarev.vault.features.common.domain.MasterPasswordProvider
 import com.arsvechkarev.vault.features.main_list.MainListCommand
@@ -24,7 +25,12 @@ class LoadMainDataActor(
         .mapLatest {
           val masterPassword = masterPasswordProvider.provideMasterPasswordIfSet()
               ?: return@mapLatest MasterPasswordNull
-          val state = loadEntriesInteractor.loadEntries(masterPassword, filterQuery = "")
+          val entries = loadEntriesInteractor.loadEntries(masterPassword, filterQuery = "")
+          val state = if (entries.isNotEmpty()) {
+            ListScreenState.success(entries)
+          } else {
+            ListScreenState.empty()
+          }
           UpdateData(state)
         }
   }

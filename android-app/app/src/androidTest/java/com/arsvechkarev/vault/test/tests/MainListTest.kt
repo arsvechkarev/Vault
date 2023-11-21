@@ -1,6 +1,7 @@
 package com.arsvechkarev.vault.test.tests
 
 import androidx.test.core.app.ApplicationProvider
+import com.arsvechkarev.vault.R
 import com.arsvechkarev.vault.core.views.drawables.LetterInCircleDrawable
 import com.arsvechkarev.vault.features.common.di.CoreComponentHolder
 import com.arsvechkarev.vault.features.login.LoginScreen
@@ -13,9 +14,11 @@ import com.arsvechkarev.vault.test.core.ext.currentScreenIs
 import com.arsvechkarev.vault.test.core.ext.launchActivityWithDatabase
 import com.arsvechkarev.vault.test.core.ext.wasImageRequestWithUrlCalled
 import com.arsvechkarev.vault.test.core.rule.VaultAutotestRule
+import com.arsvechkarev.vault.test.screens.KImportPasswordsScreen
 import com.arsvechkarev.vault.test.screens.KLoginScreen
 import com.arsvechkarev.vault.test.screens.KMainListScreen
 import com.arsvechkarev.vault.test.screens.KMainListScreen.EmptyItem
+import com.arsvechkarev.vault.test.screens.KMainListScreen.EmptySearchItem
 import com.arsvechkarev.vault.test.screens.KMainListScreen.PasswordItem
 import com.arsvechkarev.vault.test.screens.KMainListScreen.PlainTextItem
 import com.arsvechkarev.vault.test.screens.KMainListScreen.TitleItem
@@ -58,6 +61,7 @@ class MainListTest : VaultTestCase() {
       
       KMainListScreen {
         currentScreenIs<MainListScreen>()
+        imageSearchAction.isDisplayed()
         recycler {
           isDisplayed()
           hasSize(5)
@@ -209,12 +213,160 @@ class MainListTest : VaultTestCase() {
           confirmationDialog.action2.click()
         }
         
+        imageSearchAction.isNotDisplayed()
         recycler {
           hasSize(1)
           firstChild<EmptyItem> {
             image.isDisplayed()
             title.isDisplayed()
             message.isDisplayed()
+          }
+        }
+      }
+    }
+  }
+  
+  @Test
+  fun testSearch() = init {
+    rule.launchActivityWithDatabase("file_two_passwords_and_plain_text")
+  }.run {
+    KLoginScreen {
+      editTextEnterPassword.replaceText("qwetu1233")
+      buttonContinue.click()
+      
+      KMainListScreen {
+        editTextSearch.isNotDisplayed()
+        imageSearchAction.hasDrawable(R.drawable.ic_search)
+        
+        imageSearchAction.click()
+        
+        imageSearchAction.hasDrawable(R.drawable.ic_cross)
+        title.isNotDisplayed()
+        editTextSearch {
+          isDisplayed()
+          hasHint("Search…")
+        }
+        
+        editTextSearch.replaceText("le")
+        
+        recycler {
+          hasSize(4)
+          childAt<TitleItem>(0) {
+            title.hasText("Passwords")
+          }
+          childAt<PasswordItem>(1) {
+            title.hasText("google")
+          }
+          childAt<TitleItem>(2) {
+            title.hasText("Plain texts")
+          }
+          childAt<PlainTextItem>(3) {
+            title.hasText("my title")
+          }
+        }
+        
+        editTextSearch.replaceText("gle")
+        
+        recycler {
+          hasSize(2)
+          childAt<TitleItem>(0) {
+            title.hasText("Passwords")
+          }
+          childAt<PasswordItem>(1) {
+            title.hasText("google")
+          }
+        }
+        
+        editTextSearch.replaceText("gmail.com")
+        
+        recycler {
+          hasSize(1)
+          firstChild<EmptySearchItem> {
+            textNoMatchingEntries.isDisplayed()
+          }
+        }
+        
+        imageSearchAction.click()
+        
+        editTextSearch {
+          isDisplayed()
+          hasEmptyText()
+        }
+        recycler.hasSize(5)
+        
+        editTextSearch.replaceText("google")
+        
+        recycler.hasSize(2)
+        
+        closeSoftKeyboard()
+        pressBack()
+        
+        imageSearchAction.hasDrawable(R.drawable.ic_search)
+        editTextSearch.isNotDisplayed()
+        title.isDisplayed()
+        
+        imageSearchAction.click()
+        menu {
+          open()
+          exportPasswordsMenuItem.click()
+        }
+        infoDialog.hide()
+        
+        editTextSearch.isNotDisplayed()
+        title.isDisplayed()
+        
+        imageSearchAction.click()
+        menu {
+          open()
+          importPasswordsMenuItem.click()
+        }
+        
+        KImportPasswordsScreen {
+          pressBack()
+        }
+        
+        editTextSearch.isNotDisplayed()
+        title.isDisplayed()
+        
+        imageSearchAction.click()
+        menu {
+          open()
+          newEntryMenuItem.click()
+        }
+        entryTypeDialog.passwordEntry.click()
+        KPasswordEntryScreen {
+          imageBack.click()
+        }
+        
+        editTextSearch.isNotDisplayed()
+        title.isDisplayed()
+        
+        imageSearchAction.click()
+        
+        menu {
+          open()
+          settingsMenuItem.click()
+        }
+        
+        KSettingsScreen {
+          switchShowUsernames.click()
+          imageBack.click()
+        }
+        
+        editTextSearch.isNotDisplayed()
+        title.isDisplayed()
+        
+        imageSearchAction.click()
+        editTextSearch.replaceText("gmail.com")
+        
+        recycler {
+          hasSize(2)
+          childAt<PasswordItem>(1) {
+            title.hasText("google")
+            subtitle {
+              isDisplayed()
+              hasText("me@gmail.com")
+            }
           }
         }
       }

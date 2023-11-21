@@ -14,20 +14,9 @@ class ScreenState<S> private constructor(
   private val type: Type
 ) {
   
-  /**
-   * Accepts [consumerLambda] and applies that lambda to result type that this result currently is
-   *
-   * @see ResultConsumer
-   */
-  @Suppress("UNCHECKED_CAST")
-  fun handle(consumerLambda: ResultConsumer<S>.() -> Unit) {
-    val consumer = ResultConsumer<S>().apply(consumerLambda)
-    when (type) {
-      Type.LOADING -> consumer.onLoading.invoke()
-      Type.EMPTY -> consumer.onEmpty.invoke()
-      Type.SUCCESS -> consumer.onSuccess.invoke(data as S)
-    }
-  }
+  val isEmpty get() = type == Type.EMPTY
+  
+  val isNotEmpty get() = !isEmpty
   
   @Suppress("UNCHECKED_CAST")
   fun <T> getItems(
@@ -57,23 +46,4 @@ class ScreenState<S> private constructor(
  */
 private enum class Type {
   SUCCESS, LOADING, EMPTY
-}
-
-class ResultConsumer<S> {
-  
-  internal var onLoading: () -> Unit = {}
-  internal var onEmpty: () -> Unit = {}
-  internal var onSuccess: (S) -> Unit = {}
-  
-  fun onLoading(action: () -> Unit) {
-    this.onLoading = action
-  }
-  
-  fun onEmpty(action: () -> Unit) {
-    this.onEmpty = action
-  }
-  
-  fun onSuccess(action: (S) -> Unit) {
-    this.onSuccess = action
-  }
 }

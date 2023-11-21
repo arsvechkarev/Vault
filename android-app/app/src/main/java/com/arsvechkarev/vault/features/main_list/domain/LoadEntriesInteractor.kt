@@ -1,6 +1,5 @@
 package com.arsvechkarev.vault.features.main_list.domain
 
-import com.arsvechkarev.vault.core.ScreenState
 import com.arsvechkarev.vault.features.common.data.database.ObservableCachedDatabaseStorage
 import com.arsvechkarev.vault.features.common.domain.ShowUsernamesInteractor
 import com.arsvechkarev.vault.recycler.DifferentiableItem
@@ -15,15 +14,9 @@ class LoadEntriesInteractor(
   suspend fun loadEntries(
     masterPassword: Password,
     filterQuery: String
-  ): ScreenState<List<DifferentiableItem>> {
+  ): List<DifferentiableItem> {
     val showUsernames = showUsernamesInteractor.getShowUsernames()
     val database = entriesStorage.getDatabase(masterPassword)
-    val entriesItems = entriesListUiMapper.mapItems(database, showUsernames, filterQuery)
-    val state = if (entriesItems.isNotEmpty()) {
-      ScreenState.success(entriesItems)
-    } else {
-      ScreenState.empty()
-    }
-    return state
+    return entriesListUiMapper.mapItems(database, showUsernames, filterQuery)
   }
 }

@@ -12,12 +12,14 @@ import com.arsvechkarev.vault.features.main_list.MainListCommand.RouterCommand.S
 import com.arsvechkarev.vault.features.main_list.MainListEvent.ExportedPasswords
 import com.arsvechkarev.vault.features.main_list.MainListEvent.MasterPasswordNull
 import com.arsvechkarev.vault.features.main_list.MainListEvent.NetworkAvailable
+import com.arsvechkarev.vault.features.main_list.MainListEvent.NotifyUsernamesChanged
 import com.arsvechkarev.vault.features.main_list.MainListEvent.RequestReloadImages
-import com.arsvechkarev.vault.features.main_list.MainListEvent.ShowUsernamesChanged
 import com.arsvechkarev.vault.features.main_list.MainListEvent.UpdateData
+import com.arsvechkarev.vault.features.main_list.MainListEvent.UpdateSearchResult
 import com.arsvechkarev.vault.features.main_list.MainListNews.LaunchSelectExportFileActivity
 import com.arsvechkarev.vault.features.main_list.MainListNews.LaunchSelectImportFileActivity
 import com.arsvechkarev.vault.features.main_list.MainListNews.NotifyDatasetChanged
+import com.arsvechkarev.vault.features.main_list.MainListNews.ShowKeyboard
 import com.arsvechkarev.vault.features.main_list.MainListUiEvent.OnBackPressed
 import com.arsvechkarev.vault.features.main_list.MainListUiEvent.OnCloseMenuClicked
 import com.arsvechkarev.vault.features.main_list.MainListUiEvent.OnEntryTypeDialogHidden
@@ -30,7 +32,7 @@ import com.arsvechkarev.vault.features.main_list.MainListUiEvent.OnInit
 import com.arsvechkarev.vault.features.main_list.MainListUiEvent.OnListItemClicked
 import com.arsvechkarev.vault.features.main_list.MainListUiEvent.OnMenuItemClicked
 import com.arsvechkarev.vault.features.main_list.MainListUiEvent.OnOpenMenuClicked
-import com.arsvechkarev.vault.features.main_list.MainListUiEvent.OnSearchClicked
+import com.arsvechkarev.vault.features.main_list.MainListUiEvent.OnSearchActionClicked
 import com.arsvechkarev.vault.features.main_list.MainListUiEvent.OnSearchTextChanged
 import com.arsvechkarev.vault.features.main_list.ScreenInfo.ImportPasswords
 import com.arsvechkarev.vault.features.main_list.ScreenInfo.NewPassword
@@ -46,11 +48,18 @@ class MainListReducer : DslReducer<MainListState, MainListEvent, MainListCommand
       OnInit -> {
         commands(LoadData)
       }
-      OnSearchClicked -> {
-        state { copy(inSearchMode = !inSearchMode) }
+      OnSearchActionClicked -> {
+        if (state.searchState.text.isNotEmpty()) {
+          state { copy(searchState = searchState.asInitial(data.getSuccessItemsOrEmpty())) }
+        } else if (state.searchState.inSearchMode) {
+          state { copy(searchState = searchState.reset()) }
+        } else {
+          news(ShowKeyboard)
+          state { copy(searchState = searchState.asInitial(data.getSuccessItemsOrEmpty())) }
+        }
       }
       is OnSearchTextChanged -> {
-        state { copy(searchText = event.text) }
+        state { copy(searchState = searchState.copy(text = event.text)) }
         commands(FilterEntries(searchText = event.text))
       }
       is OnListItemClicked -> {
@@ -67,7 +76,7 @@ class MainListReducer : DslReducer<MainListState, MainListEvent, MainListCommand
       }
       is OnMenuItemClicked -> {
         if (event.itemType != MenuItemType.NEW_ENTRY) {
-          state { copy(menuOpened = false) }
+          state { copy(menuOpened = false, searchState = searchState.reset()) }
         }
         when (event.itemType) {
           MenuItemType.IMPORT_PASSWORDS -> news(LaunchSelectImportFileActivity)
@@ -77,7 +86,13 @@ class MainListReducer : DslReducer<MainListState, MainListEvent, MainListCommand
         }
       }
       is OnEntryTypeSelected -> {
-        state { copy(showEntryTypeDialog = false, menuOpened = false) }
+        state {
+          copy(
+            showEntryTypeDialog = false,
+            menuOpened = false,
+            searchState = searchState.reset()
+          )
+        }
         when (event.type) {
           EntryType.PASSWORD -> commands(OpenScreen(NewPassword))
           EntryType.PLAIN_TEXT -> commands(OpenScreen(NewPlainText))
@@ -95,13 +110,17 @@ class MainListReducer : DslReducer<MainListState, MainListEvent, MainListCommand
           state.showShareExportedFileDialog -> state { copy(showShareExportedFileDialog = false) }
           state.showEntryTypeDialog -> state { copy(showEntryTypeDialog = false) }
           state.menuOpened -> state { copy(menuOpened = false) }
+          state.searchState.inSearchMode -> state { copy(searchState = searchState.reset()) }
           else -> commands(GoBack)
         }
       }
       is UpdateData -> {
         state { copy(data = event.data) }
       }
-      is ShowUsernamesChanged -> {
+      is UpdateSearchResult -> {
+        state { copy(searchState = searchState.copy(entries = event.searchEntries)) }
+      }
+      is NotifyUsernamesChanged -> {
         commands(LoadData)
       }
       RequestReloadImages -> {

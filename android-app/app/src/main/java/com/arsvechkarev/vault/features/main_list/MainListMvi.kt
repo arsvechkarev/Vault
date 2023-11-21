@@ -1,14 +1,15 @@
 package com.arsvechkarev.vault.features.main_list
 
 import android.net.Uri
-import com.arsvechkarev.vault.core.ScreenState
+import com.arsvechkarev.vault.core.ListScreenState
 import com.arsvechkarev.vault.features.common.model.EntryItem
 import com.arsvechkarev.vault.recycler.DifferentiableItem
 
 sealed interface MainListEvent {
-  class UpdateData(val data: ScreenState<List<DifferentiableItem>>) : MainListEvent
+  class UpdateData(val data: ListScreenState) : MainListEvent
+  class UpdateSearchResult(val searchEntries: List<DifferentiableItem>) : MainListEvent
   class ExportedPasswords(val uri: Uri) : MainListEvent
-  object ShowUsernamesChanged : MainListEvent
+  object NotifyUsernamesChanged : MainListEvent
   object RequestReloadImages : MainListEvent
   object NetworkAvailable : MainListEvent
   object MasterPasswordNull : MainListEvent
@@ -16,7 +17,7 @@ sealed interface MainListEvent {
 
 sealed interface MainListUiEvent : MainListEvent {
   object OnInit : MainListUiEvent
-  object OnSearchClicked : MainListUiEvent
+  object OnSearchActionClicked : MainListUiEvent
   class OnSearchTextChanged(val text: String) : MainListUiEvent
   object OnOpenMenuClicked : MainListUiEvent
   object OnCloseMenuClicked : MainListUiEvent
@@ -45,22 +46,35 @@ sealed interface MainListCommand {
 }
 
 sealed interface MainListNews {
+  object ShowKeyboard : MainListNews
   object NotifyDatasetChanged : MainListNews
   object LaunchSelectExportFileActivity : MainListNews
   object LaunchSelectImportFileActivity : MainListNews
 }
 
 data class MainListState(
-  val data: ScreenState<List<DifferentiableItem>> = ScreenState.loading(),
+  val data: ListScreenState = ListScreenState.loading(),
   val errorLoadingImagesHappened: Boolean = false,
-  val inSearchMode: Boolean = false,
-  val searchText: String = "",
+  val searchState: SearchState = SearchState(),
   val menuOpened: Boolean = false,
   val exportedFileUri: Uri? = null,
   val showEntryTypeDialog: Boolean = false,
   val showExportingFileDialog: Boolean = false,
   val showShareExportedFileDialog: Boolean = false,
 )
+
+data class SearchState(
+  val inSearchMode: Boolean = false,
+  val entries: List<DifferentiableItem> = emptyList(),
+  val text: String = "",
+) {
+  
+  fun asInitial(baseItems: List<DifferentiableItem>): SearchState {
+    return SearchState(inSearchMode = true, entries = baseItems)
+  }
+  
+  fun reset() = SearchState()
+}
 
 enum class MenuItemType {
   IMPORT_PASSWORDS,

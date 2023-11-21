@@ -25,10 +25,12 @@ import com.arsvechkarev.vault.features.common.dialogs.InfoDialog.Companion.infoD
 import com.arsvechkarev.vault.features.common.dialogs.LoadingDialog
 import com.arsvechkarev.vault.features.common.dialogs.loadingDialog
 import com.arsvechkarev.vault.features.common.model.Empty
+import com.arsvechkarev.vault.features.common.model.EmptySearch
 import com.arsvechkarev.vault.features.common.model.Loading
 import com.arsvechkarev.vault.features.main_list.MainListNews.LaunchSelectExportFileActivity
 import com.arsvechkarev.vault.features.main_list.MainListNews.LaunchSelectImportFileActivity
 import com.arsvechkarev.vault.features.main_list.MainListNews.NotifyDatasetChanged
+import com.arsvechkarev.vault.features.main_list.MainListNews.ShowKeyboard
 import com.arsvechkarev.vault.features.main_list.MainListUiEvent.OnBackPressed
 import com.arsvechkarev.vault.features.main_list.MainListUiEvent.OnCloseMenuClicked
 import com.arsvechkarev.vault.features.main_list.MainListUiEvent.OnEntryTypeDialogHidden
@@ -41,7 +43,7 @@ import com.arsvechkarev.vault.features.main_list.MainListUiEvent.OnInit
 import com.arsvechkarev.vault.features.main_list.MainListUiEvent.OnListItemClicked
 import com.arsvechkarev.vault.features.main_list.MainListUiEvent.OnMenuItemClicked
 import com.arsvechkarev.vault.features.main_list.MainListUiEvent.OnOpenMenuClicked
-import com.arsvechkarev.vault.features.main_list.MainListUiEvent.OnSearchClicked
+import com.arsvechkarev.vault.features.main_list.MainListUiEvent.OnSearchActionClicked
 import com.arsvechkarev.vault.features.main_list.MainListUiEvent.OnSearchTextChanged
 import com.arsvechkarev.vault.features.main_list.MenuItemType.EXPORT_PASSWORDS
 import com.arsvechkarev.vault.features.main_list.MenuItemType.IMPORT_PASSWORDS
@@ -64,8 +66,6 @@ import navigation.BaseFragmentScreen
 import viewdsl.BaseTextWatcher
 import viewdsl.Size.Companion.MatchParent
 import viewdsl.Size.Companion.WrapContent
-import viewdsl.animateInvisible
-import viewdsl.animateVisible
 import viewdsl.backgroundColor
 import viewdsl.backgroundTopRoundRect
 import viewdsl.behavior
@@ -134,7 +134,7 @@ class MainListScreen : BaseFragmentScreen() {
           margins(end = MarginNormal)
           padding(IconPadding)
           circleRippleBackground(Colors.Ripple)
-          onClick { store.tryDispatch(OnSearchClicked) }
+          onClick { store.tryDispatch(OnSearchActionClicked) }
           constraints {
             topToTopOf(parent)
             endToEndOf(parent)
@@ -218,21 +218,15 @@ class MainListScreen : BaseFragmentScreen() {
     } else {
       view(ImageSearchAction).visible()
     }
-    if (state.inSearchMode) {
-      editText(EditTextSearch).setTextSilently(state.searchText, searchTextWatcher)
+    if (state.searchState.inSearchMode) {
+      editText(EditTextSearch).setTextSilently(state.searchState.text, searchTextWatcher)
       imageView(ImageSearchAction).image(R.drawable.ic_cross)
-      view(MainTitle).animateInvisible()
-      view(EditTextSearch).animateVisible()
-      requireView().post {
-        viewAsNullable<EditText>(EditTextSearch)?.apply {
-          requestFocus()
-          requireContext().showKeyboard(this)
-        }
-      }
+      view(MainTitle).invisible()
+      view(EditTextSearch).visible()
     } else {
       imageView(ImageSearchAction).image(R.drawable.ic_search)
-      view(MainTitle).animateVisible()
-      view(EditTextSearch).animateInvisible()
+      view(MainTitle).visible()
+      view(EditTextSearch).invisible()
       view(EditTextSearch).clearFocus()
       requireContext().hideKeyboard()
     }
@@ -264,16 +258,31 @@ class MainListScreen : BaseFragmentScreen() {
     } else {
       infoDialog.hide()
     }
-    adapter.submitList(state.data.getItems(
-      successItems = { it },
-      loadingItems = { listOf(Loading) },
-      emptyItems = { listOf(Empty) }
-    ))
+    if (state.searchState.inSearchMode) {
+      if (state.searchState.entries.isNotEmpty()) {
+        adapter.submitList(state.searchState.entries)
+      } else {
+        adapter.submitList(listOf(EmptySearch))
+      }
+    } else {
+      adapter.submitList(state.data.getItems(
+        loadingItems = { listOf(Loading) },
+        emptyItems = { listOf(Empty) }
+      ))
+    }
   }
   
   @SuppressLint("NotifyDataSetChanged")
   private fun handleNews(news: MainListNews) {
     when (news) {
+      ShowKeyboard -> {
+        requireView().post {
+          viewAsNullable<EditText>(EditTextSearch)?.apply {
+            requestFocus()
+            requireContext().showKeyboard(this)
+          }
+        }
+      }
       NotifyDatasetChanged -> {
         adapter.notifyDataSetChanged()
       }

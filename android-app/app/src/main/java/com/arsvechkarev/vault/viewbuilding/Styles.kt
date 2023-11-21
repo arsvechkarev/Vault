@@ -34,6 +34,7 @@ import viewdsl.image
 import viewdsl.padding
 import viewdsl.paddingHorizontal
 import viewdsl.paddingVertical
+import viewdsl.paddings
 import viewdsl.rippleBackground
 import viewdsl.setColors
 import viewdsl.textColor
@@ -138,8 +139,7 @@ object Styles : CoreStyles {
     textSize(TextSizes.H4)
     setSingleLine()
     background = null
-    paddingHorizontal(0)
-    paddingVertical(MarginSmall)
+    paddings(start = 0, top = MarginSmall, end = 0, bottom = MarginSmall)
     imeOptions = EditorInfo.IME_ACTION_DONE
     setHintTextColor(Colors.TextSecondary)
     if (hint != 0) {

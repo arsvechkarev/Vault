@@ -55,7 +55,7 @@ interface CoreComponent :
         preferencesModule,
         extraDependencies.backupInterceptor
       )
-      val keePassModule = KeePassModuleImpl(coreModule, domainModule)
+      val keePassModule = KeePassModuleImpl()
       val imagesLoadingModule = ImagesLoadingModuleImpl(
         coreModule,
         ioModule,
@@ -66,7 +66,7 @@ interface CoreComponent :
         coreModule = coreModule,
         preferencesModule = preferencesModule,
         ioModule = ioModule,
-        passwordsModule = PasswordsModuleImpl(keePassModule),
+        passwordsModule = PasswordsModuleImpl(domainModule),
         navigationModule = NavigationModuleImpl(extraDependencies.activityResultWrapper),
         observersModule = ObserversModuleImpl(),
         imagesLoadingModule = imagesLoadingModule,

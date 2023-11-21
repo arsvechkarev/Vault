@@ -10,6 +10,7 @@ import com.arsvechkarev.vault.features.main_list.actors.ListenReloadPasswordImag
 import com.arsvechkarev.vault.features.main_list.actors.ListenShowUsernamesActor
 import com.arsvechkarev.vault.features.main_list.actors.LoadMainDataActor
 import com.arsvechkarev.vault.features.main_list.actors.MainListRouterActor
+import com.arsvechkarev.vault.features.main_list.actors.SearchEntriesActor
 
 fun MainListStore(
   coreComponent: CoreComponent
@@ -17,10 +18,12 @@ fun MainListStore(
   return TeaStoreImpl(
     actors = listOf(
       LoadMainDataActor(
-        coreComponent.observableCachedDatabaseStorage,
         coreComponent.masterPasswordProvider,
-        coreComponent.entriesListUiMapper,
-        coreComponent.showUsernamesInteractor
+        coreComponent.loadEntriesInteractor
+      ),
+      SearchEntriesActor(
+        coreComponent.masterPasswordProvider,
+        coreComponent.loadEntriesInteractor
       ),
       ListenEntriesChangesActor(
         coreComponent.observableCachedDatabaseStorage,

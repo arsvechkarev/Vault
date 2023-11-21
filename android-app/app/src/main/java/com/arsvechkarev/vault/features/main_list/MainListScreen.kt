@@ -5,8 +5,9 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.net.Uri
-import android.view.Gravity.CENTER_HORIZONTAL
 import android.view.View
+import android.widget.EditText
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.graphics.ColorUtils
 import com.arsvechkarev.vault.R
 import com.arsvechkarev.vault.core.mvi.ext.subscribe
@@ -40,6 +41,8 @@ import com.arsvechkarev.vault.features.main_list.MainListUiEvent.OnInit
 import com.arsvechkarev.vault.features.main_list.MainListUiEvent.OnListItemClicked
 import com.arsvechkarev.vault.features.main_list.MainListUiEvent.OnMenuItemClicked
 import com.arsvechkarev.vault.features.main_list.MainListUiEvent.OnOpenMenuClicked
+import com.arsvechkarev.vault.features.main_list.MainListUiEvent.OnSearchClicked
+import com.arsvechkarev.vault.features.main_list.MainListUiEvent.OnSearchTextChanged
 import com.arsvechkarev.vault.features.main_list.MenuItemType.EXPORT_PASSWORDS
 import com.arsvechkarev.vault.features.main_list.MenuItemType.IMPORT_PASSWORDS
 import com.arsvechkarev.vault.features.main_list.MenuItemType.NEW_ENTRY
@@ -47,29 +50,44 @@ import com.arsvechkarev.vault.features.main_list.MenuItemType.SETTINGS
 import com.arsvechkarev.vault.features.main_list.recycler.MainListAdapter
 import com.arsvechkarev.vault.viewbuilding.Colors
 import com.arsvechkarev.vault.viewbuilding.Dimens.GradientDrawableHeight
+import com.arsvechkarev.vault.viewbuilding.Dimens.IconPadding
+import com.arsvechkarev.vault.viewbuilding.Dimens.ImageSize
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginLarge
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginNormal
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginSmall
+import com.arsvechkarev.vault.viewbuilding.Dimens.MarginTiny
 import com.arsvechkarev.vault.viewbuilding.Styles.BoldTextView
 import com.arsvechkarev.vault.viewbuilding.Styles.TitleTextView
 import com.arsvechkarev.vault.viewbuilding.TextSizes
 import domain.CommonConstants.DEFAULT_EXPORT_FILENAME
 import navigation.BaseFragmentScreen
+import viewdsl.BaseTextWatcher
 import viewdsl.Size.Companion.MatchParent
 import viewdsl.Size.Companion.WrapContent
+import viewdsl.animateInvisible
+import viewdsl.animateVisible
 import viewdsl.backgroundColor
 import viewdsl.backgroundTopRoundRect
 import viewdsl.behavior
+import viewdsl.circleRippleBackground
 import viewdsl.classNameTag
+import viewdsl.constraints
 import viewdsl.dp
+import viewdsl.gone
+import viewdsl.hideKeyboard
 import viewdsl.id
 import viewdsl.image
-import viewdsl.layoutGravity
+import viewdsl.invisible
 import viewdsl.margins
+import viewdsl.onClick
+import viewdsl.padding
 import viewdsl.paddings
+import viewdsl.setTextSilently
 import viewdsl.setupWith
+import viewdsl.showKeyboard
 import viewdsl.text
 import viewdsl.textSize
+import viewdsl.visible
 import viewdsl.withViewBuilder
 
 class MainListScreen : BaseFragmentScreen() {
@@ -80,9 +98,9 @@ class MainListScreen : BaseFragmentScreen() {
       backgroundColor(Colors.Background)
       clipChildren = false
       RecyclerView(MatchParent, MatchParent) {
-        clipChildren = false
         classNameTag()
         paddings(top = GradientDrawableHeight - MarginSmall, bottom = 80.dp)
+        clipChildren = false
         clipToPadding = false
         setupWith(this@MainListScreen.adapter)
       }
@@ -90,10 +108,39 @@ class MainListScreen : BaseFragmentScreen() {
         image(R.drawable.bg_gradient)
         scaleType = android.widget.ImageView.ScaleType.CENTER_CROP
       }
-      TextView(WrapContent, WrapContent, style = TitleTextView) {
+      child<ConstraintLayout>(MatchParent, WrapContent) {
         margins(top = MarginNormal + StatusBarHeight)
-        text(R.string.app_name)
-        layoutGravity(CENTER_HORIZONTAL)
+        TextView(WrapContent, WrapContent, style = TitleTextView) {
+          id(MainTitle)
+          text(R.string.app_name)
+          constraints {
+            centeredWithin(parent)
+          }
+        }
+        EditText(MatchParent, WrapContent) {
+          id(EditTextSearch)
+          invisible()
+          setHint(R.string.text_search)
+          setHintTextColor(Colors.TextSecondary)
+          margins(start = MarginNormal - MarginTiny, end = ImageSize + MarginLarge + MarginSmall)
+          addTextChangedListener(searchTextWatcher)
+          constraints {
+            centeredWithin(parent)
+          }
+        }
+        ImageView(WrapContent, WrapContent) {
+          id(ImageSearchAction)
+          image(R.drawable.ic_search)
+          margins(end = MarginNormal)
+          padding(IconPadding)
+          circleRippleBackground(Colors.Ripple)
+          onClick { store.tryDispatch(OnSearchClicked) }
+          constraints {
+            topToTopOf(parent)
+            endToEndOf(parent)
+            bottomToBottomOf(parent)
+          }
+        }
       }
       child<MenuView>(MatchParent, MatchParent) {
         classNameTag()
@@ -158,27 +205,37 @@ class MainListScreen : BaseFragmentScreen() {
     )
   }
   
+  private val searchTextWatcher = BaseTextWatcher { store.tryDispatch(OnSearchTextChanged(it)) }
+  
   override fun onInit() {
     store.subscribe(this, ::render, ::handleNews)
     store.tryDispatch(OnInit)
   }
   
-  @SuppressLint("NotifyDataSetChanged")
-  private fun handleNews(news: MainListNews) {
-    when (news) {
-      NotifyDatasetChanged -> {
-        adapter.notifyDataSetChanged()
-      }
-      is LaunchSelectExportFileActivity -> {
-        selectExportFileLauncher.launch(DEFAULT_EXPORT_FILENAME)
-      }
-      LaunchSelectImportFileActivity -> {
-        selectImportFileLauncher.launch(MIME_TYPE_ALL)
-      }
-    }
-  }
-  
   private fun render(state: MainListState) {
+    if (state.data.isEmpty) {
+      view(ImageSearchAction).gone()
+    } else {
+      view(ImageSearchAction).visible()
+    }
+    if (state.inSearchMode) {
+      editText(EditTextSearch).setTextSilently(state.searchText, searchTextWatcher)
+      imageView(ImageSearchAction).image(R.drawable.ic_cross)
+      view(MainTitle).animateInvisible()
+      view(EditTextSearch).animateVisible()
+      requireView().post {
+        viewAsNullable<EditText>(EditTextSearch)?.apply {
+          requestFocus()
+          requireContext().showKeyboard(this)
+        }
+      }
+    } else {
+      imageView(ImageSearchAction).image(R.drawable.ic_search)
+      view(MainTitle).animateVisible()
+      view(EditTextSearch).animateInvisible()
+      view(EditTextSearch).clearFocus()
+      requireContext().hideKeyboard()
+    }
     if (state.menuOpened) {
       viewAs<MenuView>().openMenu()
     } else {
@@ -214,6 +271,21 @@ class MainListScreen : BaseFragmentScreen() {
     ))
   }
   
+  @SuppressLint("NotifyDataSetChanged")
+  private fun handleNews(news: MainListNews) {
+    when (news) {
+      NotifyDatasetChanged -> {
+        adapter.notifyDataSetChanged()
+      }
+      is LaunchSelectExportFileActivity -> {
+        selectExportFileLauncher.launch(DEFAULT_EXPORT_FILENAME)
+      }
+      LaunchSelectImportFileActivity -> {
+        selectImportFileLauncher.launch(MIME_TYPE_ALL)
+      }
+    }
+  }
+  
   override fun handleBackPress(): Boolean {
     store.tryDispatch(OnBackPressed)
     return true
@@ -234,6 +306,9 @@ class MainListScreen : BaseFragmentScreen() {
   companion object {
     
     val MainListScreenRoot = View.generateViewId()
+    val MainTitle = View.generateViewId()
+    val EditTextSearch = View.generateViewId()
+    val ImageSearchAction = View.generateViewId()
     val ChooseEntryTypeBottomSheet = View.generateViewId()
   }
 }

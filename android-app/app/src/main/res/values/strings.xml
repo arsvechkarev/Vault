@@ -75,6 +75,7 @@
   <string name="text_passwords">Passwords</string>
   <string name="text_plain_texts">Plain texts</string>
   <string name="text_search">Search…</string>
+  <string name="text_no_matching_entries">No matching entries</string>
   <string name="text_new_entry">New entry</string>
   <string name="text_new_password">New password</string>
   <string name="text_new_plain_text">New plain text</string>

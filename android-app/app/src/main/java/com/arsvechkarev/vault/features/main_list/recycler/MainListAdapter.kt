@@ -227,10 +227,10 @@ class MainListAdapter(
       },
       delegate<EmptySearch> {
         buildView {
-          RootTextView(MatchParent, MatchParent, style = BaseTextView) {
+          RootTextView(MatchParent, MatchParent, style = BoldTextView) {
             gravity(CENTER)
             textSize(TextSizes.H3)
-            text("No matching entries")
+            text(R.string.text_no_matching_entries)
           }
         }
       }

@@ -171,7 +171,7 @@ class PlainTextEntryScreen : BaseFragmentScreen() {
             startToStartOf(parent)
           }
         }
-        EditText(ZERO, WrapContent, style = BaseEditText(hint = R.string.hint_text)) {
+        EditText(ZERO, WrapContent, style = BaseEditText(hint = R.string.text_enter_text)) {
           id(EditTextText)
           isSingleLine = false
           margins(start = MarginNormal, end = MarginNormal)

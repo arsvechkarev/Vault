@@ -98,7 +98,8 @@ class MainListReducer : DslReducer<MainListState, MainListEvent, MainListCommand
         news(NotifyDatasetChanged)
       }
       is OnImportFileSelected -> {
-        commands(OpenScreen(ImportPasswords(event.fileUri)))
+        val info = ImportPasswords(event.fileUri, askForConfirmation = state.data.isNotEmpty)
+        commands(OpenScreen(info))
       }
       is OnExportFileSelected -> {
         commands(ExportPasswordsFile(event.fileUri))

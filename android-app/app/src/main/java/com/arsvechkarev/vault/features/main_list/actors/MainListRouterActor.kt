@@ -31,8 +31,15 @@ fun MainListRouterActor(router: Router): Actor<MainListCommand, MainListEvent> {
         when (val info = command.info) {
           is Password -> goForward(PasswordEntryScreen(info.passwordEntry.id))
           is PlainText -> goForward(PlainTextScreen(info.plainTextEntry.id))
-          is ImportPasswords -> goForward(ImportPasswordsScreen(info.selectedFileUri),
-            animate = false)
+          is ImportPasswords -> {
+            goForward(
+              screenInfo = ImportPasswordsScreen(
+                info.selectedFileUri,
+                askForConfirmation = info.askForConfirmation
+              ),
+              animate = false
+            )
+          }
           NewPassword -> goForwardWithDelay(PasswordEntryScreen())
           NewPlainText -> goForwardWithDelay(PlainTextScreen())
           Settings -> goForwardWithDelay(SettingsScreen)

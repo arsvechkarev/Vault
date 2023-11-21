@@ -4,6 +4,7 @@ import com.arsvechkarev.vault.core.mvi.tea.DslReducer
 import com.arsvechkarev.vault.features.common.model.PasswordItem
 import com.arsvechkarev.vault.features.common.model.PlainTextItem
 import com.arsvechkarev.vault.features.main_list.MainListCommand.ExportPasswordsFile
+import com.arsvechkarev.vault.features.main_list.MainListCommand.FilterEntries
 import com.arsvechkarev.vault.features.main_list.MainListCommand.LoadData
 import com.arsvechkarev.vault.features.main_list.MainListCommand.RouterCommand.GoBack
 import com.arsvechkarev.vault.features.main_list.MainListCommand.RouterCommand.OpenScreen
@@ -29,6 +30,8 @@ import com.arsvechkarev.vault.features.main_list.MainListUiEvent.OnInit
 import com.arsvechkarev.vault.features.main_list.MainListUiEvent.OnListItemClicked
 import com.arsvechkarev.vault.features.main_list.MainListUiEvent.OnMenuItemClicked
 import com.arsvechkarev.vault.features.main_list.MainListUiEvent.OnOpenMenuClicked
+import com.arsvechkarev.vault.features.main_list.MainListUiEvent.OnSearchClicked
+import com.arsvechkarev.vault.features.main_list.MainListUiEvent.OnSearchTextChanged
 import com.arsvechkarev.vault.features.main_list.ScreenInfo.ImportPasswords
 import com.arsvechkarev.vault.features.main_list.ScreenInfo.NewPassword
 import com.arsvechkarev.vault.features.main_list.ScreenInfo.NewPlainText
@@ -42,6 +45,13 @@ class MainListReducer : DslReducer<MainListState, MainListEvent, MainListCommand
     when (event) {
       OnInit -> {
         commands(LoadData)
+      }
+      OnSearchClicked -> {
+        state { copy(inSearchMode = !inSearchMode) }
+      }
+      is OnSearchTextChanged -> {
+        state { copy(searchText = event.text) }
+        commands(FilterEntries(searchText = event.text))
       }
       is OnListItemClicked -> {
         when (event.item) {

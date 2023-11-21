@@ -74,6 +74,7 @@
   <string name="text_favorites">Favorites</string>
   <string name="text_passwords">Passwords</string>
   <string name="text_plain_texts">Plain texts</string>
+  <string name="text_search">Search…</string>
   <string name="text_new_entry">New entry</string>
   <string name="text_new_password">New password</string>
   <string name="text_new_plain_text">New plain text</string>
@@ -103,7 +104,7 @@
 
   <!-- Plain text -->
   <string name="text_plain_text">Plain text</string>
-  <string name="hint_text">Enter text</string>
+  <string name="text_enter_text">Enter text</string>
   <string name="text_text">Text</string>
   <string name="text_plain_text_created">Plain text entry created</string>
   <string name="text_delete_plain_text">Delete plain text</string>

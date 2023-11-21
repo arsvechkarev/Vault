@@ -14,7 +14,11 @@ import domain.isProbablePlainText
 
 class EntriesListUiMapper {
   
-  fun mapItems(database: KeePassDatabase, addUsernames: Boolean): List<DifferentiableItem> {
+  fun mapItems(
+    database: KeePassDatabase,
+    showUsernames: Boolean,
+    filterQuery: String
+  ): List<DifferentiableItem> {
     val allEntries = database.getEntries { true }.flatMap { pair -> pair.second }
     val plainTexts = allEntries.filter { it.isDefinitePlainText || it.isProbablePlainText }
     val groupedPasswords = (allEntries - plainTexts.toSet()).groupBy { it.isFavorite }
@@ -24,18 +28,26 @@ class EntriesListUiMapper {
     val favoritePlainTexts = groupedPlainTexts[true].orEmpty()
     val nonFavoritePlainTexts = groupedPlainTexts[false].orEmpty()
     return buildList {
-      if (favoritePasswords.isNotEmpty() || favoritePlainTexts.isNotEmpty()) {
+      val filteredFavoritePasswords = favoritePasswords.toPasswordItems(showUsernames)
+          .sortedBy { it.title.lowercase() }.filterByQuery(filterQuery, showUsernames)
+      val filteredFavoritePlainTexts = favoritePlainTexts.toPlainTextItems()
+          .sortedBy { it.title.lowercase() }.filterByQuery(filterQuery)
+      val filteredFavoriteItems = filteredFavoritePasswords + filteredFavoritePlainTexts
+      if (filteredFavoriteItems.isNotEmpty()) {
         add(Title(Type.FAVORITES))
-        addAll(favoritePasswords.toPasswordItems(addUsernames).sortedBy { it.title.lowercase() })
-        addAll(favoritePlainTexts.toPlainTextItems().sortedBy { it.title.lowercase() })
+        addAll(filteredFavoriteItems)
       }
-      if (nonFavoritePasswords.isNotEmpty()) {
+      val filteredNonFavoritePasswords = nonFavoritePasswords.toPasswordItems(showUsernames)
+          .sortedBy { it.title.lowercase() }.filterByQuery(filterQuery, showUsernames)
+      if (filteredNonFavoritePasswords.isNotEmpty()) {
         add(Title(Type.PASSWORDS))
-        addAll(nonFavoritePasswords.toPasswordItems(addUsernames).sortedBy { it.title.lowercase() })
+        addAll(filteredNonFavoritePasswords)
       }
-      if (nonFavoritePlainTexts.isNotEmpty()) {
+      val filteredNonFavoritePlainTexts = nonFavoritePlainTexts.toPlainTextItems()
+          .sortedBy { it.title.lowercase() }.filterByQuery(filterQuery)
+      if (filteredNonFavoritePlainTexts.isNotEmpty()) {
         add(Title(Type.PLAIN_TEXTS))
-        addAll(nonFavoritePlainTexts.toPlainTextItems().sortedBy { it.title.lowercase() })
+        addAll(filteredNonFavoritePlainTexts)
       }
     }
   }
@@ -80,5 +92,26 @@ class EntriesListUiMapper {
         hasActualTitle = hasActualTitle
       )
     }
+  }
+  
+  private fun List<PasswordItem>.filterByQuery(
+    filterQuery: String,
+    searchInUsernames: Boolean
+  ): List<PasswordItem> {
+    if (filterQuery.isEmpty()) {
+      return this
+    }
+    return filter {
+      val trimmedQuery = filterQuery.trim()
+      it.title.contains(trimmedQuery, ignoreCase = true)
+          || (searchInUsernames && it.username.contains(trimmedQuery, ignoreCase = true))
+    }
+  }
+  
+  private fun List<PlainTextItem>.filterByQuery(filterQuery: String): List<PlainTextItem> {
+    if (filterQuery.isEmpty()) {
+      return this
+    }
+    return filter { it.title.contains(filterQuery.trim(), ignoreCase = true) }
   }
 }

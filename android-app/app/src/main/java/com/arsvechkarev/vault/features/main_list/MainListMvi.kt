@@ -16,6 +16,8 @@ sealed interface MainListEvent {
 
 sealed interface MainListUiEvent : MainListEvent {
   object OnInit : MainListUiEvent
+  object OnSearchClicked : MainListUiEvent
+  class OnSearchTextChanged(val text: String) : MainListUiEvent
   object OnOpenMenuClicked : MainListUiEvent
   object OnCloseMenuClicked : MainListUiEvent
   object OnEntryTypeDialogHidden : MainListUiEvent
@@ -32,6 +34,7 @@ sealed interface MainListUiEvent : MainListEvent {
 sealed interface MainListCommand {
   
   object LoadData : MainListCommand
+  class FilterEntries(val searchText: String) : MainListCommand
   class ExportPasswordsFile(val fileUriForExporting: Uri) : MainListCommand
   
   sealed interface RouterCommand : MainListCommand {
@@ -50,6 +53,8 @@ sealed interface MainListNews {
 data class MainListState(
   val data: ScreenState<List<DifferentiableItem>> = ScreenState.loading(),
   val errorLoadingImagesHappened: Boolean = false,
+  val inSearchMode: Boolean = false,
+  val searchText: String = "",
   val menuOpened: Boolean = false,
   val exportedFileUri: Uri? = null,
   val showEntryTypeDialog: Boolean = false,

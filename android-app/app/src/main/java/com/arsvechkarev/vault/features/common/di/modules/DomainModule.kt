@@ -2,19 +2,35 @@ package com.arsvechkarev.vault.features.common.di.modules
 
 import com.arsvechkarev.vault.BuildConfig
 import com.arsvechkarev.vault.features.common.AppConfig
+import com.arsvechkarev.vault.features.common.AppConstants
+import com.arsvechkarev.vault.features.common.data.database.BasicDatabaseStorage
+import com.arsvechkarev.vault.features.common.data.database.CachedDatabaseStorage
+import com.arsvechkarev.vault.features.common.data.database.ObservableCachedDatabaseStorage
+import com.arsvechkarev.vault.features.common.data.files.DefaultDatabaseFileSaver
+import com.arsvechkarev.vault.features.common.data.files.StorageBackupDatabaseFileSaver
 import com.arsvechkarev.vault.features.common.data.files.StorageBackupExternalFileSaverImpl
 import com.arsvechkarev.vault.features.common.data.files.StorageBackupPreferences
 import com.arsvechkarev.vault.features.common.domain.BackupInterceptor
-import com.arsvechkarev.vault.features.common.domain.DatabaseChangesJournal
 import com.arsvechkarev.vault.features.common.domain.DatabaseChangesJournalImpl
 import com.arsvechkarev.vault.features.common.domain.ShowUsernamesInteractor
 import com.arsvechkarev.vault.features.common.domain.StorageBackupInteractor
+import com.arsvechkarev.vault.features.main_list.domain.EntriesListUiMapper
+import com.arsvechkarev.vault.features.main_list.domain.LoadEntriesInteractor
+import domain.DatabaseCache
+import domain.DatabaseFileSaver
+import domain.DatabaseInitializer
+import domain.DefaultDatabaseInitializer
 
 interface DomainModule {
-  val databaseChangesJournal: DatabaseChangesJournal
   val storageBackupPreferences: StorageBackupPreferences
   val storageBackupInteractor: StorageBackupInteractor
+  val databaseFileSaver: DatabaseFileSaver
+  val databaseCache: DatabaseCache
+  val databaseInitializer: DatabaseInitializer
+  val observableCachedDatabaseStorage: ObservableCachedDatabaseStorage
   val showUsernamesInteractor: ShowUsernamesInteractor
+  val entriesListUiMapper: EntriesListUiMapper
+  val loadEntriesInteractor: LoadEntriesInteractor
 }
 
 class DomainModuleImpl(
@@ -22,14 +38,6 @@ class DomainModuleImpl(
   preferencesModule: PreferencesModule,
   backupInterceptor: BackupInterceptor,
 ) : DomainModule {
-  
-  override val databaseChangesJournal = DatabaseChangesJournalImpl(
-    preferencesModule.settingsPreferences
-  )
-  
-  override val storageBackupPreferences = StorageBackupPreferences(
-    preferencesModule.settingsPreferences
-  )
   
   private val passedTimeSinceLastBackupThreshold = if (BuildConfig.DEBUG) {
     AppConfig.Debug.TimePassedSinceLastBackupThreshold
@@ -49,6 +57,10 @@ class DomainModuleImpl(
     AppConfig.Release.DatabaseChangesForBackupThreshold
   }
   
+  override val storageBackupPreferences = StorageBackupPreferences(
+    preferencesModule.settingsPreferences
+  )
+  
   override val storageBackupInteractor = StorageBackupInteractor(
     storageBackupExternalFileSaver = StorageBackupExternalFileSaverImpl(
       coreModule.application,
@@ -64,6 +76,37 @@ class DomainModuleImpl(
     backupFileCountThreshold = maxBackupFileCount,
   )
   
+  override val databaseFileSaver = StorageBackupDatabaseFileSaver(
+    databaseFileSaver = DefaultDatabaseFileSaver(
+      AppConstants.DEFAULT_INTERNAL_FILENAME,
+      coreModule.application,
+      coreModule.dispatchers,
+      coreModule.globalIOScope,
+    ),
+    databaseChangesJournal = DatabaseChangesJournalImpl(preferencesModule.settingsPreferences),
+    storageBackupInteractor = storageBackupInteractor,
+    scope = coreModule.globalIOScope
+  )
+  
+  private val cachedDatabaseStorage = CachedDatabaseStorage(
+    BasicDatabaseStorage(databaseFileSaver)
+  )
+  
+  override val databaseCache = cachedDatabaseStorage
+  
+  override val databaseInitializer = DefaultDatabaseInitializer(databaseCache, databaseFileSaver)
+  
+  override val observableCachedDatabaseStorage =
+      ObservableCachedDatabaseStorage(cachedDatabaseStorage)
+  
   override val showUsernamesInteractor =
       ShowUsernamesInteractor(preferencesModule.settingsPreferences)
+  
+  override val entriesListUiMapper = EntriesListUiMapper()
+  
+  override val loadEntriesInteractor = LoadEntriesInteractor(
+    observableCachedDatabaseStorage,
+    entriesListUiMapper,
+    showUsernamesInteractor
+  )
 }

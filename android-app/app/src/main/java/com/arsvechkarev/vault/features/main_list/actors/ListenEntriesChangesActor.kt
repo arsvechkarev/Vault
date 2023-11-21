@@ -23,7 +23,7 @@ class ListenEntriesChangesActor(
     return passwordStorage.databaseFlow
         .mapLatest { database ->
           val showUsernames = showUsernamesInteractor.getShowUsernames()
-          val entriesItems = entriesListUiMapper.mapItems(database, showUsernames)
+          val entriesItems = entriesListUiMapper.mapItems(database, showUsernames, filterQuery = "")
           val state = if (entriesItems.isNotEmpty()) {
             ScreenState.success(entriesItems)
           } else {

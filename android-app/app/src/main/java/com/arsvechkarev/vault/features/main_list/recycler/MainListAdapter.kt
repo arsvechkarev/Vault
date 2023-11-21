@@ -12,6 +12,7 @@ import com.arsvechkarev.vault.core.TypefaceSpan
 import com.arsvechkarev.vault.core.views.MaterialProgressBar
 import com.arsvechkarev.vault.features.common.domain.setIconForTitle
 import com.arsvechkarev.vault.features.common.model.Empty
+import com.arsvechkarev.vault.features.common.model.EmptySearch
 import com.arsvechkarev.vault.features.common.model.EntryItem
 import com.arsvechkarev.vault.features.common.model.Loading
 import com.arsvechkarev.vault.features.common.model.PasswordItem
@@ -221,6 +222,15 @@ class MainListAdapter(
               spannableString.setSpan(RelativeSizeSpan(1.3f), index, index + 1, 0)
               text(spannableString)
             }
+          }
+        }
+      },
+      delegate<EmptySearch> {
+        buildView {
+          RootTextView(MatchParent, MatchParent, style = BaseTextView) {
+            gravity(CENTER)
+            textSize(TextSizes.H3)
+            text("No matching entries")
           }
         }
       }

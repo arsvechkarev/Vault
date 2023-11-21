@@ -1,6 +1,6 @@
 package com.arsvechkarev.vault.features.main_list.actors
 
-import com.arsvechkarev.vault.core.ScreenState
+import com.arsvechkarev.vault.core.ListScreenState
 import com.arsvechkarev.vault.core.mvi.tea.Actor
 import com.arsvechkarev.vault.features.common.data.database.ObservableCachedDatabaseStorage
 import com.arsvechkarev.vault.features.common.domain.ShowUsernamesInteractor
@@ -25,9 +25,9 @@ class ListenEntriesChangesActor(
           val showUsernames = showUsernamesInteractor.getShowUsernames()
           val entriesItems = entriesListUiMapper.mapItems(database, showUsernames, filterQuery = "")
           val state = if (entriesItems.isNotEmpty()) {
-            ScreenState.success(entriesItems)
+            ListScreenState.success(entriesItems)
           } else {
-            ScreenState.empty()
+            ListScreenState.empty()
           }
           UpdateData(state)
         }

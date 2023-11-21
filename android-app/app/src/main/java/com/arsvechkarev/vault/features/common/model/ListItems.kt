@@ -25,3 +25,10 @@ object Empty : DifferentiableItem {
     return other is Empty
   }
 }
+
+object EmptySearch : DifferentiableItem {
+  override val id: String = javaClass.name
+  override fun equals(other: Any?): Boolean {
+    return other is EmptySearch
+  }
+}

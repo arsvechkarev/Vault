@@ -369,6 +369,41 @@ class MainListTest : VaultTestCase() {
             }
           }
         }
+        
+        recycler.emptyChildAt(1) { click() }
+        
+        KPasswordEntryScreen {
+          editTextTitle.replaceText("ggg")
+          imageTitleAction.click()
+          imageBack.click()
+        }
+        
+        recycler.childAt<PasswordItem>(1) {
+          title.hasText("ggg")
+        }
+        
+        recycler.emptyChildAt(1) { click() }
+        
+        KPasswordEntryScreen {
+          editTextUsername.replaceText("test")
+          imageUsernameAction.click()
+          imageBack.click()
+        }
+        
+        recycler.firstChild<EmptySearchItem> { textNoMatchingEntries.isDisplayed() }
+        
+        editTextSearch.replaceText("g")
+        
+        recycler.emptyChildAt(1) { click() }
+        
+        KPasswordEntryScreen {
+          imageDelete.click()
+          confirmationDialog.action2.click()
+        }
+        
+        currentScreenIs<MainListScreen>()
+        
+        recycler.firstChild<EmptySearchItem> { textNoMatchingEntries.isDisplayed() }
       }
     }
   }

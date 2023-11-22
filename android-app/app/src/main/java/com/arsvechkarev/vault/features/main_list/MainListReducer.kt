@@ -116,6 +116,7 @@ class MainListReducer : DslReducer<MainListState, MainListEvent, MainListCommand
       }
       is UpdateData -> {
         state { copy(data = event.data) }
+        commands(FilterEntries(searchText = state.searchState.text))
       }
       is UpdateSearchResult -> {
         state { copy(searchState = searchState.copy(entries = event.searchEntries)) }

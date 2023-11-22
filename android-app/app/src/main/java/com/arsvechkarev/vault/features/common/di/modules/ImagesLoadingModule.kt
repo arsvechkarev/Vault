@@ -5,7 +5,7 @@ import com.arsvechkarev.vault.features.common.data.images.DiskImagesCache
 import com.arsvechkarev.vault.features.common.data.images.ImagesCache
 import com.arsvechkarev.vault.features.common.data.network.ImagesNamesLoaderNetworkNotifier
 import com.arsvechkarev.vault.features.common.domain.ImageRequestsRecorder
-import com.arsvechkarev.vault.features.common.domain.ImagesNamesLoader
+import com.arsvechkarev.vault.features.common.domain.images_names.ImagesNamesLoader
 import com.arsvechkarev.vault.features.common.domain.ReloadImagesObserver
 import com.arsvechkarev.vault.features.common.domain.ReloadImagesObserverImpl
 

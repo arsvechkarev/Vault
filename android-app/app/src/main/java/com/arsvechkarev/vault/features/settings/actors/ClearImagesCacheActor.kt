@@ -2,7 +2,7 @@ package com.arsvechkarev.vault.features.settings.actors
 
 import com.arsvechkarev.vault.core.mvi.tea.Actor
 import com.arsvechkarev.vault.features.common.data.images.ImagesCache
-import com.arsvechkarev.vault.features.common.domain.ImagesNamesLoader
+import com.arsvechkarev.vault.features.common.domain.images_names.ImagesNamesLoader
 import com.arsvechkarev.vault.features.common.domain.ReloadImagesObserver
 import com.arsvechkarev.vault.features.settings.SettingsCommand
 import com.arsvechkarev.vault.features.settings.SettingsCommand.ClearImagesCache

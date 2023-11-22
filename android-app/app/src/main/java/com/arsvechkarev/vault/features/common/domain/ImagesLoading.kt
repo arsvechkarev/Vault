@@ -13,6 +13,9 @@ import com.arsvechkarev.vault.core.views.drawables.BaseShimmerDrawable.Companion
 import com.arsvechkarev.vault.core.views.drawables.LetterInCircleDrawable
 import com.arsvechkarev.vault.core.views.drawables.LoadingPlaceholderDrawable
 import com.arsvechkarev.vault.features.common.di.CoreComponentHolder
+import com.arsvechkarev.vault.features.common.domain.images_names.ImageNameData
+import com.arsvechkarev.vault.features.common.domain.images_names.ImageNameData.Basic
+import com.arsvechkarev.vault.features.common.domain.images_names.ImageNameData.Compound
 import kotlinx.coroutines.launch
 import okhttp3.OkHttpClient
 
@@ -49,25 +52,34 @@ fun ImageView.setIconForTitle(title: String, onImageLoadingFailed: () -> Unit) {
 
 suspend fun ImageView.trySetImageFromMatchingNames(
   text: String,
-  imagesNames: Set<String>,
+  imagesNames: List<ImageNameData>,
   okHttpClient: OkHttpClient,
   onImageLoadingFailed: () -> Unit
 ) {
   dispose()
-  val matchingName = imagesNames.find { name -> text.contains(name, ignoreCase = true) }
+  val matchingName = imagesNames.find { imageNameData ->
+    when (imageNameData) {
+      is Basic -> text.contains(imageNameData.imageName, ignoreCase = true)
+      is Compound -> {
+        imageNameData.possibleNames.any { possibleName ->
+          text.contains(possibleName, ignoreCase = true)
+        }
+      }
+    }
+  }
   if (matchingName == null) {
     stopShimmerDrawable()
     setLetterInCircleDrawable(text.first().toString())
     return
   }
   
-  val url = BASE_URL_ICON_FILES + matchingName + EXTENSION_PNG
+  val url = BASE_URL_ICON_FILES + matchingName.imageName + EXTENSION_PNG
   
   // Calling this so that we can test images request in ui tests
   CoreComponentHolder.coreComponent.imageRequestsRecorder.recordUrlRequest(id, url)
   
   val imagesCache = CoreComponentHolder.coreComponent.imagesCache
-  val cachedImage = imagesCache.getImage(matchingName)
+  val cachedImage = imagesCache.getImage(matchingName.imageName)
   if (cachedImage != null) {
     setImageDrawable(cachedImage)
     return
@@ -90,7 +102,7 @@ suspend fun ImageView.trySetImageFromMatchingNames(
       listener(
         onSuccess = { _, result ->
           (context as? MainActivity?)?.lifecycleScope?.launch {
-            imagesCache.saveImage(matchingName, result.drawable)
+            imagesCache.saveImage(matchingName.imageName, result.drawable)
           }
           stopShimmerDrawable()
         },

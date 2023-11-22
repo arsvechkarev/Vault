@@ -36,7 +36,7 @@ class EntriesListUiMapperTest {
           hasActualTitle = true,
         )
       ),
-      mapper.mapItems(BasicDatabase, showUsernames = true)
+      mapper.mapItems(BasicDatabase, showUsernames = true, filterQuery = "")
     )
   }
   
@@ -63,7 +63,7 @@ class EntriesListUiMapperTest {
           hasActualTitle = true,
         )
       ),
-      mapper.mapItems(BasicDatabase, showUsernames = false)
+      mapper.mapItems(BasicDatabase, showUsernames = false, filterQuery = "")
     )
   }
   
@@ -100,7 +100,7 @@ class EntriesListUiMapperTest {
           hasActualTitle = false,
         )
       ),
-      mapper.mapItems(NonStandardDatabase, showUsernames = true)
+      mapper.mapItems(NonStandardDatabase, showUsernames = true, filterQuery = "")
     )
   }
 }

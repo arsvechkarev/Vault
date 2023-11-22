@@ -6,7 +6,7 @@ google
 instagram
 microsoft
 netflix
-protonmail
+proton mail,protonmail|protonmail
 snapchat
 spotify
 telegram

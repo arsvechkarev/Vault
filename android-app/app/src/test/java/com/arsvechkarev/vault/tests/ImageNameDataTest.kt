@@ -24,7 +24,7 @@ class ImageNameDataTest {
   
   @Test
   fun testParsingString() {
-    assertEquals(imagesNames, ImageNameData.parse(stringData))
+    assertEquals(imagesNames.toString(), ImageNameData.parse(stringData).toString())
   }
   
   @Test

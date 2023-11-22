@@ -78,7 +78,7 @@ class MenuContentView(context: Context) : ViewGroup(context) {
   var onMenuClosed: () -> Unit = {}
   
   init {
-    val iconSize = (crossBaseSize * 0.75f).toInt()
+    val iconSize = (crossBaseSize * 0.65f).toInt()
     addView(
       AnimatableCircleIconView(
         context = context,

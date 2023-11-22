@@ -1,6 +1,6 @@
 package com.arsvechkarev.vault.features.common.data.network
 
-import com.arsvechkarev.vault.features.common.domain.ImagesNamesLoader
+import com.arsvechkarev.vault.features.common.domain.images_names.ImagesNamesLoader
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach

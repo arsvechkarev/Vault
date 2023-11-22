@@ -2,8 +2,8 @@ package com.arsvechkarev.vault.test.screens
 
 import android.view.View
 import android.widget.TextView
-import androidx.recyclerview.widget.RecyclerView
 import com.arsvechkarev.vault.R
+import com.arsvechkarev.vault.core.views.RecyclerTopClip
 import com.arsvechkarev.vault.features.main_list.MainListScreen
 import com.arsvechkarev.vault.features.main_list.MainListScreen.Companion.ChooseEntryTypeBottomSheet
 import com.arsvechkarev.vault.features.main_list.MainListScreen.Companion.EditTextSearch
@@ -38,7 +38,7 @@ object KMainListScreen : BaseScreen<KMainListScreen>() {
   val infoDialog = KInfoDialog(MainListScreenRoot)
   
   val recycler = KRecyclerView(
-    builder = { withClassNameTag<RecyclerView>() },
+    builder = { withClassNameTag<RecyclerTopClip>() },
     itemTypeBuilder = {
       itemType(KMainListScreen::TitleItem)
       itemType(KMainListScreen::PasswordItem)

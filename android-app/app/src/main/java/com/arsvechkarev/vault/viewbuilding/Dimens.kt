@@ -30,12 +30,13 @@ object Dimens {
   val ImageNoEntriesSize get() = adjust(90.dp)
   val ImageTitleSize get() = adjust(45.dp)
   val ImageBackMargin get() = adjust(16.dp)
-  val CornerRadiusSmall get() = (3.dp)
-  val CornerRadiusDefault get() = (6.dp)
+  val CornerRadiusSmall get() = 3.dp
+  val CornerRadiusDefault get() = 6.dp
   val DividerHeight get() = adjustDivider(2.dp)
   val PasswordStrengthMeterHeight get() = adjust(6.dp)
   val ProgressBarSizeSmall get() = adjust(20.dp)
   val ProgressBarSizeBig get() = adjust(60.dp)
+  val RecyclerBottomPadding get() = adjust(80.dp)
   
   val ViewBuilder.GradientDrawableHeight: Int
     get() {

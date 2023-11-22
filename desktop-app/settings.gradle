@@ -1,3 +1,0 @@
-rootProject.name = "desktop-app"
-include ":common-crypto"
-project(":common-crypto").projectDir = file("../common-crypto")

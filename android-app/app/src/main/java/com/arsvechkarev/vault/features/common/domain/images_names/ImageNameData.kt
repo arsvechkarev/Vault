@@ -2,9 +2,17 @@ package com.arsvechkarev.vault.features.common.domain.images_names
 
 sealed class ImageNameData(val imageName: String) {
   
-  class Basic(imageName: String) : ImageNameData(imageName)
+  class Basic(imageName: String) : ImageNameData(imageName) {
+    override fun toString(): String {
+      return "Basic(imageName=${imageName})"
+    }
+  }
   
-  class Compound(imageName: String, val possibleNames: List<String>) : ImageNameData(imageName)
+  class Compound(imageName: String, val possibleNames: List<String>) : ImageNameData(imageName) {
+    override fun toString(): String {
+      return "Compound(imageName=${imageName}, possibleNames=$possibleNames)"
+    }
+  }
   
   companion object {
     

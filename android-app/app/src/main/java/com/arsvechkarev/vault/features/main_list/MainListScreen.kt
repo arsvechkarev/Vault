@@ -13,6 +13,7 @@ import com.arsvechkarev.vault.R
 import com.arsvechkarev.vault.core.mvi.ext.subscribe
 import com.arsvechkarev.vault.core.mvi.ext.viewModelStore
 import com.arsvechkarev.vault.core.views.EntryTypeItemView
+import com.arsvechkarev.vault.core.views.RecyclerTopClip
 import com.arsvechkarev.vault.core.views.behaviors.BottomSheetBehavior
 import com.arsvechkarev.vault.core.views.behaviors.BottomSheetBehavior.Companion.asBottomSheet
 import com.arsvechkarev.vault.core.views.menu.MenuItemModel
@@ -58,6 +59,7 @@ import com.arsvechkarev.vault.viewbuilding.Dimens.MarginLarge
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginNormal
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginSmall
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginTiny
+import com.arsvechkarev.vault.viewbuilding.Dimens.RecyclerBottomPadding
 import com.arsvechkarev.vault.viewbuilding.Styles.BoldTextView
 import com.arsvechkarev.vault.viewbuilding.Styles.TitleTextView
 import com.arsvechkarev.vault.viewbuilding.TextSizes
@@ -72,12 +74,12 @@ import viewdsl.behavior
 import viewdsl.circleRippleBackground
 import viewdsl.classNameTag
 import viewdsl.constraints
-import viewdsl.dp
 import viewdsl.gone
 import viewdsl.hideKeyboard
 import viewdsl.id
 import viewdsl.image
 import viewdsl.invisible
+import viewdsl.marginHorizontal
 import viewdsl.margins
 import viewdsl.onClick
 import viewdsl.padding
@@ -97,9 +99,9 @@ class MainListScreen : BaseFragmentScreen() {
       id(MainListScreenRoot)
       backgroundColor(Colors.Background)
       clipChildren = false
-      RecyclerView(MatchParent, MatchParent) {
+      child<RecyclerTopClip>(MatchParent, MatchParent) {
         classNameTag()
-        paddings(top = GradientDrawableHeight - MarginSmall, bottom = 80.dp)
+        paddings(top = GradientDrawableHeight - MarginSmall, bottom = RecyclerBottomPadding)
         clipChildren = false
         clipToPadding = false
         setupWith(this@MainListScreen.adapter)
@@ -109,6 +111,7 @@ class MainListScreen : BaseFragmentScreen() {
         scaleType = android.widget.ImageView.ScaleType.CENTER_CROP
       }
       child<ConstraintLayout>(MatchParent, WrapContent) {
+        id(Toolbar)
         margins(top = MarginNormal + StatusBarHeight)
         TextView(WrapContent, WrapContent, style = TitleTextView) {
           id(MainTitle)
@@ -120,9 +123,11 @@ class MainListScreen : BaseFragmentScreen() {
         EditText(MatchParent, WrapContent) {
           id(EditTextSearch)
           invisible()
+          setSingleLine()
           setHint(R.string.text_search)
           setHintTextColor(Colors.TextSecondary)
-          margins(start = MarginNormal - MarginTiny, end = ImageSize + MarginLarge + MarginSmall)
+          marginHorizontal(MarginNormal - MarginTiny)
+          paddings(end = ImageSize + MarginSmall * 2)
           addTextChangedListener(searchTextWatcher)
           constraints {
             centeredWithin(parent)
@@ -219,11 +224,14 @@ class MainListScreen : BaseFragmentScreen() {
       view(ImageSearchAction).visible()
     }
     if (state.searchState.inSearchMode) {
+      val recyclerTopClip = view(Toolbar).top + view(EditTextSearch).bottom + MarginNormal
+      viewAs<RecyclerTopClip>().topClip = recyclerTopClip
       editText(EditTextSearch).setTextSilently(state.searchState.text, searchTextWatcher)
       imageView(ImageSearchAction).image(R.drawable.ic_cross)
       view(MainTitle).invisible()
       view(EditTextSearch).visible()
     } else {
+      viewAs<RecyclerTopClip>().topClip = 0
       imageView(ImageSearchAction).image(R.drawable.ic_search)
       view(MainTitle).visible()
       view(EditTextSearch).invisible()
@@ -315,6 +323,7 @@ class MainListScreen : BaseFragmentScreen() {
   companion object {
     
     val MainListScreenRoot = View.generateViewId()
+    val Toolbar = View.generateViewId()
     val MainTitle = View.generateViewId()
     val EditTextSearch = View.generateViewId()
     val ImageSearchAction = View.generateViewId()

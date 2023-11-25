@@ -20,10 +20,10 @@ import com.arsvechkarev.vault.test.screens.KMainListScreen
 import com.arsvechkarev.vault.test.screens.KMainListScreen.EmptyItem
 import com.arsvechkarev.vault.test.screens.KMainListScreen.EmptySearchItem
 import com.arsvechkarev.vault.test.screens.KMainListScreen.PasswordItem
-import com.arsvechkarev.vault.test.screens.KMainListScreen.PlainTextItem
+import com.arsvechkarev.vault.test.screens.KMainListScreen.NoteItem
 import com.arsvechkarev.vault.test.screens.KMainListScreen.TitleItem
 import com.arsvechkarev.vault.test.screens.KPasswordEntryScreen
-import com.arsvechkarev.vault.test.screens.KPlainTextEntryScreen
+import com.arsvechkarev.vault.test.screens.KNoteEntryScreen
 import com.arsvechkarev.vault.test.screens.KSettingsScreen
 import org.junit.Rule
 import org.junit.Test
@@ -43,7 +43,7 @@ class MainListTest : VaultTestCase() {
         imagesRequestsRecorder = imageRequestsRecorder
       )
     )
-    rule.launchActivityWithDatabase("file_two_passwords_and_plain_text")
+    rule.launchActivityWithDatabase("file_two_passwords_and_note")
   }.run {
     KLoginScreen {
       textError.hasEmptyText()
@@ -78,9 +78,9 @@ class MainListTest : VaultTestCase() {
             image.hasDrawable(LetterInCircleDrawable("t"))
           }
           childAt<TitleItem>(3) {
-            title.hasText("Plain texts")
+            title.hasText("Notes")
           }
-          childAt<PlainTextItem>(4) {
+          childAt<NoteItem>(4) {
             title.hasText("my title")
           }
         }
@@ -157,9 +157,9 @@ class MainListTest : VaultTestCase() {
             image.hasDrawable(LetterInCircleDrawable("t"))
           }
           childAt<TitleItem>(4) {
-            title.hasText("Plain texts")
+            title.hasText("Notes")
           }
-          childAt<PlainTextItem>(5) {
+          childAt<NoteItem>(5) {
             title.hasText("my title")
           }
         }
@@ -182,9 +182,9 @@ class MainListTest : VaultTestCase() {
             title.hasText("google")
           }
           childAt<TitleItem>(2) {
-            title.hasText("Plain texts")
+            title.hasText("Notes")
           }
-          childAt<PlainTextItem>(3) {
+          childAt<NoteItem>(3) {
             title.hasText("my title")
           }
         }
@@ -199,16 +199,16 @@ class MainListTest : VaultTestCase() {
         recycler {
           hasSize(2)
           childAt<TitleItem>(0) {
-            title.hasText("Plain texts")
+            title.hasText("Notes")
           }
-          childAt<PlainTextItem>(1) {
+          childAt<NoteItem>(1) {
             title.hasText("my title")
           }
         }
         
         recycler.emptyChildAt(1) { click() }
         
-        KPlainTextEntryScreen {
+        KNoteEntryScreen {
           imageDelete.click()
           confirmationDialog.action2.click()
         }
@@ -228,7 +228,7 @@ class MainListTest : VaultTestCase() {
   
   @Test
   fun testSearch() = init {
-    rule.launchActivityWithDatabase("file_two_passwords_and_plain_text")
+    rule.launchActivityWithDatabase("file_two_passwords_and_note")
   }.run {
     KLoginScreen {
       editTextEnterPassword.replaceText("qwetu1233")
@@ -258,9 +258,9 @@ class MainListTest : VaultTestCase() {
             title.hasText("google")
           }
           childAt<TitleItem>(2) {
-            title.hasText("Plain texts")
+            title.hasText("Notes")
           }
-          childAt<PlainTextItem>(3) {
+          childAt<NoteItem>(3) {
             title.hasText("my title")
           }
         }

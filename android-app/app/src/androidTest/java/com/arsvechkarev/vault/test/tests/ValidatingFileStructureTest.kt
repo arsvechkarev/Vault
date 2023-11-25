@@ -20,11 +20,11 @@ import com.arsvechkarev.vault.test.screens.KMainListScreen
 import com.arsvechkarev.vault.test.screens.KMainListScreen.PasswordItem
 import com.arsvechkarev.vault.test.screens.KMasterPasswordScreen
 import com.arsvechkarev.vault.test.screens.KPasswordEntryScreen
-import com.arsvechkarev.vault.test.screens.KPlainTextEntryScreen
+import com.arsvechkarev.vault.test.screens.KNoteEntryScreen
 import com.kaspersky.kaspresso.testcases.api.testcase.TestCase
 import domain.CUSTOM_DATA_FAVORITE_KEY
 import domain.CUSTOM_DATA_PASSWORD
-import domain.CUSTOM_DATA_PLAIN_TEXT
+import domain.CUSTOM_DATA_NOTE
 import domain.CUSTOM_DATA_TYPE_KEY
 import junit.framework.Assert.assertEquals
 import org.junit.Rule
@@ -83,8 +83,8 @@ class ValidatingFileStructureTest : TestCase() {
             open()
             newEntryMenuItem.click()
           }
-          entryTypeDialog.plainTextEntry.click()
-          KPlainTextEntryScreen {
+          entryTypeDialog.noteEntry.click()
+          KNoteEntryScreen {
             editTextTitle.replaceText("my title")
             editTextText.replaceText("my text")
             buttonSave.click()
@@ -101,7 +101,7 @@ class ValidatingFileStructureTest : TestCase() {
   }
   
   private fun checkEqualExceptIds() {
-    val expectedBytes = context.assets.open("file_one_password_and_plain_text")
+    val expectedBytes = context.assets.open("file_one_password_and_note")
         .use(InputStream::readBytes)
     val expectedDatabase = KeePassDatabase.decode(ByteArrayInputStream(expectedBytes),
       Credentials.from(EncryptedValue.fromString("qwetu1233")))
@@ -125,7 +125,7 @@ class ValidatingFileStructureTest : TestCase() {
             val expectedEntryType = expectedEntry.customData.getValue(CUSTOM_DATA_TYPE_KEY).value
             val actualEntryType = actualEntry.customData.getValue(CUSTOM_DATA_TYPE_KEY).value
             if (expectedEntryType != CUSTOM_DATA_PASSWORD
-                && expectedEntryType != CUSTOM_DATA_PLAIN_TEXT) {
+                && expectedEntryType != CUSTOM_DATA_NOTE) {
               throw AssertionError(
                 "Custom data type of entry $expectedEntry is [$expectedEntryType]"
               )

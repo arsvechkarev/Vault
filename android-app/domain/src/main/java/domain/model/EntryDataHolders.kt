@@ -11,7 +11,7 @@ class PasswordEntryData(
   val isFavorite: Boolean
 )
 
-class PlainTextEntryData(
+class NoteEntryData(
   val title: String,
   val text: String,
   val isFavorite: Boolean

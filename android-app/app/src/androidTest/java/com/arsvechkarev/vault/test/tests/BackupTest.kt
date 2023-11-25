@@ -19,11 +19,11 @@ import com.arsvechkarev.vault.test.screens.KSettingsScreen
 import com.kaspersky.kaspresso.testcases.api.testcase.TestCase
 import domain.CUSTOM_DATA_FAVORITE_KEY
 import domain.CUSTOM_DATA_PASSWORD
-import domain.CUSTOM_DATA_PLAIN_TEXT
+import domain.CUSTOM_DATA_NOTE
 import domain.CUSTOM_DATA_TYPE_KEY
 import domain.Password
 import domain.model.PasswordEntryData
-import domain.model.PlainTextEntryData
+import domain.model.NoteEntryData
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Rule
@@ -54,7 +54,7 @@ class BackupTest : TestCase() {
     isFavorite = false
   )
   
-  private val plainTextItemMyTitle = PlainTextEntryData(
+  private val noteItemMyTitle = NoteEntryData(
     title = "my title",
     text = "super secret content",
     isFavorite = false
@@ -71,7 +71,7 @@ class BackupTest : TestCase() {
         backupInterceptor = backupInterceptor,
       )
     )
-    rule.launchActivityWithDatabase("file_two_passwords_and_plain_text")
+    rule.launchActivityWithDatabase("file_two_passwords_and_note")
   }.run {
     KLoginScreen {
       editTextEnterPassword.replaceText("qwetu1233")
@@ -100,7 +100,7 @@ class BackupTest : TestCase() {
           assertEntriesCount(3, backup)
           assertHasPasswordEntry(passwordItemGoogle(), backup)
           assertHasPasswordEntry(passwordItemTest, backup)
-          assertHasPlainTextEntry(plainTextItemMyTitle, backup)
+          assertHasNoteEntry(noteItemMyTitle, backup)
           
           textBackupFolder.hasText("/storage/emulated/0/primary:Backups")
           textLatestBackupDate.hasText("Last backup: ${formattedNowDateTime()}")
@@ -195,12 +195,12 @@ class BackupTest : TestCase() {
       passwordEntry.customData[CUSTOM_DATA_FAVORITE_KEY]?.value.toBoolean())
   }
   
-  private fun assertHasPlainTextEntry(data: PlainTextEntryData, backup: TestBackup) {
+  private fun assertHasNoteEntry(data: NoteEntryData, backup: TestBackup) {
     val passwordEntries = backup.database.getEntries { true }
         .flatMap { it.second }
-        .filter { it.customData.getValue(CUSTOM_DATA_TYPE_KEY).value == CUSTOM_DATA_PLAIN_TEXT }
+        .filter { it.customData.getValue(CUSTOM_DATA_TYPE_KEY).value == CUSTOM_DATA_NOTE }
     val foundEntries = passwordEntries.filter { it.fields.title!!.content == data.title }
-    assertEquals("Found zero or more than one plain text entry", 1, foundEntries.size)
+    assertEquals("Found zero or more than one note entry", 1, foundEntries.size)
     val passwordEntry = foundEntries.first()
     assertEquals(data.text, passwordEntry.fields.notes!!.content)
     assertEquals(data.isFavorite,

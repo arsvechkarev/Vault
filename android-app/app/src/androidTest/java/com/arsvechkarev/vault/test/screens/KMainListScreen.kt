@@ -13,7 +13,7 @@ import com.arsvechkarev.vault.features.main_list.MainListScreen.Companion.MainTi
 import com.arsvechkarev.vault.features.main_list.recycler.MainListAdapter.Companion.ItemPasswordEntryImage
 import com.arsvechkarev.vault.features.main_list.recycler.MainListAdapter.Companion.ItemPasswordEntrySubtitle
 import com.arsvechkarev.vault.features.main_list.recycler.MainListAdapter.Companion.ItemPasswordEntryTitle
-import com.arsvechkarev.vault.features.main_list.recycler.MainListAdapter.Companion.ItemPlainTextTitle
+import com.arsvechkarev.vault.features.main_list.recycler.MainListAdapter.Companion.ItemNoteEntryTitle
 import com.arsvechkarev.vault.test.core.base.BaseScreen
 import com.arsvechkarev.vault.test.core.ext.withClassNameTag
 import com.arsvechkarev.vault.test.core.views.dialog.KEntryTypeDialog
@@ -42,7 +42,7 @@ object KMainListScreen : BaseScreen<KMainListScreen>() {
     itemTypeBuilder = {
       itemType(KMainListScreen::TitleItem)
       itemType(KMainListScreen::PasswordItem)
-      itemType(KMainListScreen::PlainTextItem)
+      itemType(KMainListScreen::NoteItem)
       itemType(KMainListScreen::EmptyItem)
       itemType(KMainListScreen::EmptySearchItem)
     })
@@ -60,8 +60,8 @@ object KMainListScreen : BaseScreen<KMainListScreen>() {
     val subtitle = KTextView(parent) { withId(ItemPasswordEntrySubtitle) }
   }
   
-  class PlainTextItem(parent: Matcher<View>) : KRecyclerItem<PlainTextItem>(parent) {
-    val title = KTextView(parent) { withId(ItemPlainTextTitle) }
+  class NoteItem(parent: Matcher<View>) : KRecyclerItem<NoteItem>(parent) {
+    val title = KTextView(parent) { withId(ItemNoteEntryTitle) }
   }
   
   class EmptyItem(parent: Matcher<View>) : KRecyclerItem<EmptyItem>(parent) {

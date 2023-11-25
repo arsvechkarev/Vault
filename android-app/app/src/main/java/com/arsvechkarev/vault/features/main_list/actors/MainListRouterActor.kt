@@ -6,7 +6,7 @@ import com.arsvechkarev.vault.features.common.Router
 import com.arsvechkarev.vault.features.common.Screens.ImportPasswordsScreen
 import com.arsvechkarev.vault.features.common.Screens.LoginScreen
 import com.arsvechkarev.vault.features.common.Screens.PasswordEntryScreen
-import com.arsvechkarev.vault.features.common.Screens.PlainTextScreen
+import com.arsvechkarev.vault.features.common.Screens.NoteScreen
 import com.arsvechkarev.vault.features.common.Screens.SettingsScreen
 import com.arsvechkarev.vault.features.common.navigation.RouterActor
 import com.arsvechkarev.vault.features.main_list.MainListCommand
@@ -17,9 +17,9 @@ import com.arsvechkarev.vault.features.main_list.MainListCommand.RouterCommand.S
 import com.arsvechkarev.vault.features.main_list.MainListEvent
 import com.arsvechkarev.vault.features.main_list.ScreenInfo.ImportPasswords
 import com.arsvechkarev.vault.features.main_list.ScreenInfo.NewPassword
-import com.arsvechkarev.vault.features.main_list.ScreenInfo.NewPlainText
+import com.arsvechkarev.vault.features.main_list.ScreenInfo.NewNote
 import com.arsvechkarev.vault.features.main_list.ScreenInfo.Password
-import com.arsvechkarev.vault.features.main_list.ScreenInfo.PlainText
+import com.arsvechkarev.vault.features.main_list.ScreenInfo.Note
 import com.arsvechkarev.vault.features.main_list.ScreenInfo.Settings
 import kotlinx.coroutines.delay
 import navigation.ScreenInfo
@@ -30,7 +30,7 @@ fun MainListRouterActor(router: Router): Actor<MainListCommand, MainListEvent> {
       is OpenScreen -> {
         when (val info = command.info) {
           is Password -> goForward(PasswordEntryScreen(info.passwordEntry.id))
-          is PlainText -> goForward(PlainTextScreen(info.plainTextEntry.id))
+          is Note -> goForward(NoteScreen(info.noteEntry.id))
           is ImportPasswords -> {
             goForward(
               screenInfo = ImportPasswordsScreen(
@@ -41,7 +41,7 @@ fun MainListRouterActor(router: Router): Actor<MainListCommand, MainListEvent> {
             )
           }
           NewPassword -> goForwardWithDelay(PasswordEntryScreen())
-          NewPlainText -> goForwardWithDelay(PlainTextScreen())
+          NewNote -> goForwardWithDelay(NoteScreen())
           Settings -> goForwardWithDelay(SettingsScreen)
         }
       }

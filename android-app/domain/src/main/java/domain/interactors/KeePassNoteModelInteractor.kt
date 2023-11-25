@@ -10,23 +10,23 @@ import app.keemobile.kotpass.models.Entry
 import app.keemobile.kotpass.models.EntryFields
 import app.keemobile.kotpass.models.EntryValue
 import domain.CUSTOM_DATA_FAVORITE_KEY
-import domain.CUSTOM_DATA_PLAIN_TEXT
+import domain.CUSTOM_DATA_NOTE
 import domain.CUSTOM_DATA_TYPE_KEY
 import domain.InstantProvider
 import domain.UniqueIdProvider
-import domain.model.PlainTextEntry
-import domain.model.PlainTextEntryData
+import domain.model.NoteEntry
+import domain.model.NoteEntryData
 import java.util.UUID
 
-class KeePassPlainTextModelInteractor(
+class KeePassNoteModelInteractor(
   private val idProvider: UniqueIdProvider,
   private val instantProvider: InstantProvider
 ) {
   
-  fun getPlainTextEntry(database: KeePassDatabase, uuid: String): PlainTextEntry {
+  fun getNoteEntry(database: KeePassDatabase, uuid: String): NoteEntry {
     return checkNotNull(database.findEntryBy { this.uuid.toString() == uuid })
         .run {
-          PlainTextEntry(
+          NoteEntry(
             id = uuid,
             title = fields.title?.content.orEmpty(),
             text = fields.notes?.content.orEmpty(),
@@ -35,21 +35,21 @@ class KeePassPlainTextModelInteractor(
         }
   }
   
-  fun addPlainText(
+  fun addNote(
     database: KeePassDatabase,
-    plainTextEntryData: PlainTextEntryData
+    noteEntryData: NoteEntryData
   ): Pair<KeePassDatabase, String> {
     val uuid = idProvider.generateUniqueId(database)
     val newDatabase = database.modifyParentGroup {
       val entry = Entry(
         uuid = uuid,
         fields = EntryFields.of(
-          BasicField.Title.key to EntryValue.Plain(plainTextEntryData.title),
-          BasicField.Notes.key to EntryValue.Plain(plainTextEntryData.text)
+          BasicField.Title.key to EntryValue.Plain(noteEntryData.title),
+          BasicField.Notes.key to EntryValue.Plain(noteEntryData.text)
         ),
         customData = mapOf(
-          CUSTOM_DATA_TYPE_KEY to CustomDataValue(CUSTOM_DATA_PLAIN_TEXT),
-          CUSTOM_DATA_FAVORITE_KEY to plainTextEntryData.isFavorite.toValue(instantProvider.now()),
+          CUSTOM_DATA_TYPE_KEY to CustomDataValue(CUSTOM_DATA_NOTE),
+          CUSTOM_DATA_FAVORITE_KEY to noteEntryData.isFavorite.toValue(instantProvider.now()),
         )
       )
       copy(entries = entries + entry)
@@ -57,18 +57,18 @@ class KeePassPlainTextModelInteractor(
     return newDatabase to uuid.toString()
   }
   
-  fun editPlainText(
+  fun editNote(
     database: KeePassDatabase,
-    plainTextEntry: PlainTextEntry
+    noteEntry: NoteEntry
   ): KeePassDatabase {
-    return database.modifyEntry(UUID.fromString(plainTextEntry.id)) {
+    return database.modifyEntry(UUID.fromString(noteEntry.id)) {
       copy(
         fields = EntryFields.of(
-          BasicField.Title.key to EntryValue.Plain(plainTextEntry.title),
-          BasicField.Notes.key to EntryValue.Plain(plainTextEntry.text)
+          BasicField.Title.key to EntryValue.Plain(noteEntry.title),
+          BasicField.Notes.key to EntryValue.Plain(noteEntry.text)
         ),
         customData = HashMap(customData).apply {
-          put(CUSTOM_DATA_FAVORITE_KEY, plainTextEntry.isFavorite.toValue(instantProvider.now()))
+          put(CUSTOM_DATA_FAVORITE_KEY, noteEntry.isFavorite.toValue(instantProvider.now()))
         }
       )
     }

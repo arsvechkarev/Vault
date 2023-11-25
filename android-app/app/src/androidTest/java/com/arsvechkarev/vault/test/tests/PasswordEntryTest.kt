@@ -32,7 +32,7 @@ import com.arsvechkarev.vault.test.screens.KLoginScreen
 import com.arsvechkarev.vault.test.screens.KMainListScreen
 import com.arsvechkarev.vault.test.screens.KMainListScreen.EmptyItem
 import com.arsvechkarev.vault.test.screens.KMainListScreen.PasswordItem
-import com.arsvechkarev.vault.test.screens.KMainListScreen.PlainTextItem
+import com.arsvechkarev.vault.test.screens.KMainListScreen.NoteItem
 import com.arsvechkarev.vault.test.screens.KPasswordEntryScreen
 import com.arsvechkarev.vault.viewbuilding.Colors
 import domain.PasswordStrength.SECURE
@@ -274,7 +274,7 @@ class PasswordEntryTest : VaultTestCase() {
         imagesRequestsRecorder = imageRequestsRecorder
       )
     )
-    rule.launchActivityWithDatabase("file_two_passwords_and_plain_text")
+    rule.launchActivityWithDatabase("file_two_passwords_and_note")
   }.run {
     KLoginScreen {
       editTextEnterPassword.replaceText("qwetu1233")
@@ -405,7 +405,7 @@ class PasswordEntryTest : VaultTestCase() {
                 title.hasText("yabcd")
                 image.hasDrawable(LetterInCircleDrawable("y"))
               }
-              childAt<PlainTextItem>(4) {
+              childAt<NoteItem>(4) {
                 title.hasText("my title")
               }
             }
@@ -588,7 +588,7 @@ class PasswordEntryTest : VaultTestCase() {
   
   @Test
   fun testUrlFieldWithOnlyDomain() = init {
-    rule.launchActivityWithDatabase("file_two_passwords_and_plain_text")
+    rule.launchActivityWithDatabase("file_two_passwords_and_note")
   }.run {
     KLoginScreen {
       editTextEnterPassword.replaceText("qwetu1233")
@@ -613,7 +613,7 @@ class PasswordEntryTest : VaultTestCase() {
   
   @Test
   fun testUrlFieldWithFullLink() = init {
-    rule.launchActivityWithDatabase("file_two_passwords_and_plain_text")
+    rule.launchActivityWithDatabase("file_two_passwords_and_note")
   }.run {
     KLoginScreen {
       editTextEnterPassword.replaceText("qwetu1233")

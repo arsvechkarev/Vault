@@ -86,13 +86,13 @@ enum class MenuItemType {
 sealed interface ScreenInfo {
   class ImportPasswords(val selectedFileUri: Uri, val askForConfirmation: Boolean) : ScreenInfo
   class Password(val passwordEntry: EntryItem) : ScreenInfo
-  class PlainText(val plainTextEntry: EntryItem) : ScreenInfo
+  class Note(val noteEntry: EntryItem) : ScreenInfo
   object Settings : ScreenInfo
   object NewPassword : ScreenInfo
-  object NewPlainText : ScreenInfo
+  object NewNote : ScreenInfo
 }
 
 enum class EntryType {
   PASSWORD,
-  PLAIN_TEXT
+  NOTE
 }

@@ -1,34 +1,34 @@
-package com.arsvechkarev.vault.features.plain_text_entry.actors
+package com.arsvechkarev.vault.features.note_entry.actors
 
 import com.arsvechkarev.vault.core.mvi.tea.Actor
 import com.arsvechkarev.vault.features.common.data.database.ObservableCachedDatabaseStorage
 import com.arsvechkarev.vault.features.common.domain.MasterPasswordProvider
-import com.arsvechkarev.vault.features.plain_text_entry.PlainTextEntryCommand
-import com.arsvechkarev.vault.features.plain_text_entry.PlainTextEntryCommand.SavePlainTextEntry
-import com.arsvechkarev.vault.features.plain_text_entry.PlainTextEntryEvent
-import com.arsvechkarev.vault.features.plain_text_entry.PlainTextEntryEvent.NotifyEntryCreated
-import domain.interactors.KeePassPlainTextModelInteractor
-import domain.model.PlainTextEntry
+import com.arsvechkarev.vault.features.note_entry.NoteEntryCommand
+import com.arsvechkarev.vault.features.note_entry.NoteEntryCommand.SaveNoteEntry
+import com.arsvechkarev.vault.features.note_entry.NoteEntryEvent
+import com.arsvechkarev.vault.features.note_entry.NoteEntryEvent.NotifyEntryCreated
+import domain.interactors.KeePassNoteModelInteractor
+import domain.model.NoteEntry
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.flow.mapLatest
 
-class SavePlainTextEntryActor(
+class SaveNoteEntryActor(
   private val masterPasswordProvider: MasterPasswordProvider,
   private val storage: ObservableCachedDatabaseStorage,
-  private val plainTextModelInteractor: KeePassPlainTextModelInteractor,
-) : Actor<PlainTextEntryCommand, PlainTextEntryEvent> {
+  private val noteModelInteractor: KeePassNoteModelInteractor,
+) : Actor<NoteEntryCommand, NoteEntryEvent> {
   
   @OptIn(ExperimentalCoroutinesApi::class)
-  override fun handle(commands: Flow<PlainTextEntryCommand>): Flow<PlainTextEntryEvent> {
-    return commands.filterIsInstance<SavePlainTextEntry>()
+  override fun handle(commands: Flow<NoteEntryCommand>): Flow<NoteEntryEvent> {
+    return commands.filterIsInstance<SaveNoteEntry>()
         .mapLatest { command ->
           val masterPassword = masterPasswordProvider.provideMasterPassword()
           val database = storage.getDatabase(masterPassword)
-          val databaseUUIDPair = plainTextModelInteractor.addPlainText(database, command.data)
+          val databaseUUIDPair = noteModelInteractor.addNote(database, command.data)
           storage.saveDatabase(databaseUUIDPair.first)
-          val createdEntry = PlainTextEntry(
+          val createdEntry = NoteEntry(
             id = databaseUUIDPair.second,
             title = command.data.title,
             text = command.data.text,

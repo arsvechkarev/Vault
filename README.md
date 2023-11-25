@@ -19,5 +19,5 @@ Vault is a password manager that hepls you keep your passwords and other sensiti
   <img src="android-app/screenshots/creating_new_password_entry.png" width="150" /> 
   <img src="android-app/screenshots/editing_password_screen.png" width="150" />
   <img src="android-app/screenshots/password_entry.png" width="150" />
-  <img src="android-app/screenshots/plaint_text_entry.png" width="150" /> 
+  <img src="android-app/screenshots/note_entry.png" width="150" /> 
 </p>

@@ -12,19 +12,19 @@ import com.arsvechkarev.vault.test.core.rule.VaultAutotestRule
 import com.arsvechkarev.vault.test.screens.KLoginScreen
 import com.arsvechkarev.vault.test.screens.KMainListScreen
 import com.arsvechkarev.vault.test.screens.KMainListScreen.PasswordItem
-import com.arsvechkarev.vault.test.screens.KMainListScreen.PlainTextItem
-import com.arsvechkarev.vault.test.screens.KPlainTextEntryScreen
+import com.arsvechkarev.vault.test.screens.KMainListScreen.NoteItem
+import com.arsvechkarev.vault.test.screens.KNoteEntryScreen
 import com.arsvechkarev.vault.viewbuilding.Colors
 import org.junit.Rule
 import org.junit.Test
 
-class PlainTextEntryTest : VaultTestCase() {
+class NoteEntryTest : VaultTestCase() {
   
   @get:Rule
   val rule = VaultAutotestRule()
   
   @Test
-  fun testCreatingPlainText() = init {
+  fun testCreatingNote() = init {
     rule.launchActivityWithDatabase("file_empty")
   }.run {
     KLoginScreen {
@@ -36,9 +36,9 @@ class PlainTextEntryTest : VaultTestCase() {
         open()
         newEntryMenuItem.click()
       }
-      entryTypeDialog.plainTextEntry.click()
+      entryTypeDialog.noteEntry.click()
       
-      KPlainTextEntryScreen {
+      KNoteEntryScreen {
         imageBack.click()
       }
       
@@ -48,10 +48,10 @@ class PlainTextEntryTest : VaultTestCase() {
         open()
         newEntryMenuItem.click()
       }
-      entryTypeDialog.plainTextEntry.click()
+      entryTypeDialog.noteEntry.click()
       
-      KPlainTextEntryScreen {
-        textMainTitle.hasText("New plain text")
+      KNoteEntryScreen {
+        textMainTitle.hasText("New Note")
         imageDelete.isNotDisplayed()
         imageTitleAction.isNotDisplayed()
         imageTextAction.isNotDisplayed()
@@ -75,14 +75,14 @@ class PlainTextEntryTest : VaultTestCase() {
         
         buttonSave.click()
         
-        snackbar.isDisplayedWithText("Plain text entry created")
+        snackbar.isDisplayedWithText("Note entry created")
         
         pressBack()
       }
       
       recycler {
         hasSize(2)
-        childAt<PlainTextItem>(1) {
+        childAt<NoteItem>(1) {
           title.hasText("abc")
         }
       }
@@ -90,8 +90,8 @@ class PlainTextEntryTest : VaultTestCase() {
   }
   
   @Test
-  fun testEditingPlainText() = init {
-    rule.launchActivityWithDatabase("file_two_passwords_and_plain_text")
+  fun testEditingNote() = init {
+    rule.launchActivityWithDatabase("file_two_passwords_and_note")
   }.run {
     KLoginScreen {
       editTextEnterPassword.replaceText("qwetu1233")
@@ -99,8 +99,8 @@ class PlainTextEntryTest : VaultTestCase() {
       KMainListScreen {
         recycler.emptyChildAt(4) { click() }
         
-        KPlainTextEntryScreen {
-          textMainTitle.hasText("Plain text")
+        KNoteEntryScreen {
+          textMainTitle.hasText("Note")
           imageDelete.isDisplayed()
           title.hasText("Title")
           editTextTitle.hasText("my title")
@@ -183,19 +183,19 @@ class PlainTextEntryTest : VaultTestCase() {
         currentScreenIs<MainListScreen>()
         
         recycler {
-          childAt<PlainTextItem>(4) {
+          childAt<NoteItem>(4) {
             title.hasText("my title2")
             click()
           }
         }
         
-        KPlainTextEntryScreen {
+        KNoteEntryScreen {
           editTextTitle.hasText("my title2")
           imageDelete.click()
           
           confirmationDialog {
             isDisplayed()
-            title.hasText("Delete plain text")
+            title.hasText("Delete note")
             message.hasText("Do you want to delete my title2?")
             action1.hasText("CANCEL")
             action2.hasText("DELETE")

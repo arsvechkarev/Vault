@@ -1,4 +1,4 @@
-package com.arsvechkarev.vault.features.plain_text_entry
+package com.arsvechkarev.vault.features.note_entry
 
 import android.content.Context
 import android.view.Gravity
@@ -19,23 +19,23 @@ import com.arsvechkarev.vault.features.common.dialogs.InfoDialog.Companion.InfoD
 import com.arsvechkarev.vault.features.common.dialogs.InfoDialog.Companion.infoDialog
 import com.arsvechkarev.vault.features.common.dialogs.LoadingDialog
 import com.arsvechkarev.vault.features.common.dialogs.loadingDialog
-import com.arsvechkarev.vault.features.common.model.PlainTextItem
-import com.arsvechkarev.vault.features.plain_text_entry.PlainTextEntryNews.ShowPlainTextEntryCreated
-import com.arsvechkarev.vault.features.plain_text_entry.PlainTextEntryNews.ShowTextCopied
-import com.arsvechkarev.vault.features.plain_text_entry.PlainTextEntryNews.ShowTitleCopied
-import com.arsvechkarev.vault.features.plain_text_entry.PlainTextEntryState.ExistingEntry
-import com.arsvechkarev.vault.features.plain_text_entry.PlainTextEntryState.NewEntry
-import com.arsvechkarev.vault.features.plain_text_entry.PlainTextEntryUiEvent.OnBackPressed
-import com.arsvechkarev.vault.features.plain_text_entry.PlainTextEntryUiEvent.OnConfirmedDeleting
-import com.arsvechkarev.vault.features.plain_text_entry.PlainTextEntryUiEvent.OnDeleteClicked
-import com.arsvechkarev.vault.features.plain_text_entry.PlainTextEntryUiEvent.OnDialogHidden
-import com.arsvechkarev.vault.features.plain_text_entry.PlainTextEntryUiEvent.OnFavoriteClicked
-import com.arsvechkarev.vault.features.plain_text_entry.PlainTextEntryUiEvent.OnInit
-import com.arsvechkarev.vault.features.plain_text_entry.PlainTextEntryUiEvent.OnSaveClicked
-import com.arsvechkarev.vault.features.plain_text_entry.PlainTextEntryUiEvent.OnTextActionClicked
-import com.arsvechkarev.vault.features.plain_text_entry.PlainTextEntryUiEvent.OnTextChanged
-import com.arsvechkarev.vault.features.plain_text_entry.PlainTextEntryUiEvent.OnTitleActionClicked
-import com.arsvechkarev.vault.features.plain_text_entry.PlainTextEntryUiEvent.OnTitleChanged
+import com.arsvechkarev.vault.features.common.model.NoteItem
+import com.arsvechkarev.vault.features.note_entry.NoteEntryNews.ShowNoteEntryCreated
+import com.arsvechkarev.vault.features.note_entry.NoteEntryNews.ShowTextCopied
+import com.arsvechkarev.vault.features.note_entry.NoteEntryNews.ShowTitleCopied
+import com.arsvechkarev.vault.features.note_entry.NoteEntryState.ExistingEntry
+import com.arsvechkarev.vault.features.note_entry.NoteEntryState.NewEntry
+import com.arsvechkarev.vault.features.note_entry.NoteEntryUiEvent.OnBackPressed
+import com.arsvechkarev.vault.features.note_entry.NoteEntryUiEvent.OnConfirmedDeleting
+import com.arsvechkarev.vault.features.note_entry.NoteEntryUiEvent.OnDeleteClicked
+import com.arsvechkarev.vault.features.note_entry.NoteEntryUiEvent.OnDialogHidden
+import com.arsvechkarev.vault.features.note_entry.NoteEntryUiEvent.OnFavoriteClicked
+import com.arsvechkarev.vault.features.note_entry.NoteEntryUiEvent.OnInit
+import com.arsvechkarev.vault.features.note_entry.NoteEntryUiEvent.OnSaveClicked
+import com.arsvechkarev.vault.features.note_entry.NoteEntryUiEvent.OnTextActionClicked
+import com.arsvechkarev.vault.features.note_entry.NoteEntryUiEvent.OnTextChanged
+import com.arsvechkarev.vault.features.note_entry.NoteEntryUiEvent.OnTitleActionClicked
+import com.arsvechkarev.vault.features.note_entry.NoteEntryUiEvent.OnTitleChanged
 import com.arsvechkarev.vault.viewbuilding.Colors
 import com.arsvechkarev.vault.viewbuilding.Dimens.CircleButtonSize
 import com.arsvechkarev.vault.viewbuilding.Dimens.GradientDrawableHeight
@@ -76,11 +76,11 @@ import viewdsl.textColor
 import viewdsl.textSize
 import viewdsl.withViewBuilder
 
-class PlainTextEntryScreen : BaseFragmentScreen() {
+class NoteEntryScreen : BaseFragmentScreen() {
   
   override fun buildLayout(context: Context) = context.withViewBuilder {
     RootFrameLayout {
-      id(PlainTextScreenRoot)
+      id(NoteScreenRoot)
       ScrollableConstraintLayout {
         paddings(bottom = MarginNormal + CircleButtonSize)
         ImageView(WrapContent, WrapContent, style = Styles.ImageBack) {
@@ -94,7 +94,7 @@ class PlainTextEntryScreen : BaseFragmentScreen() {
         }
         TextView(WrapContent, WrapContent, style = BoldTextView) {
           id(MainTitle)
-          text(R.string.text_new_plain_text)
+          text(R.string.text_new_note)
           textSize(TextSizes.H1)
           margins(start = MarginNormal)
           constraints {
@@ -220,7 +220,7 @@ class PlainTextEntryScreen : BaseFragmentScreen() {
   private val textTextWatcher = BaseTextWatcher { store.tryDispatch(OnTextChanged(it)) }
   
   private val store by viewModelStore {
-    PlainTextEntryStore(coreComponent, stringNullableArg(PlainTextItem::class.qualifiedName!!))
+    NoteEntryStore(coreComponent, stringNullableArg(NoteItem::class.qualifiedName!!))
   }
   
   override fun onInit() {
@@ -229,7 +229,7 @@ class PlainTextEntryScreen : BaseFragmentScreen() {
   }
   
   override fun onAppearedOnScreen() {
-    if (stringNullableArg(PlainTextItem::class.qualifiedName!!) == null) {
+    if (stringNullableArg(NoteItem::class.qualifiedName!!) == null) {
       requireView().postDelayed({
         viewAsNullable<EditText>(EditTextTitle)?.apply {
           requestFocus()
@@ -239,13 +239,13 @@ class PlainTextEntryScreen : BaseFragmentScreen() {
     }
   }
   
-  private fun render(state: PlainTextEntryState) {
+  private fun render(state: NoteEntryState) {
     view(ButtonSave).isVisible = state is NewEntry
     view(ImageTitleAction).isVisible = state is ExistingEntry
     view(ImageTextAction).isVisible = state is ExistingEntry
     view(ImageFavorite).isVisible = state is ExistingEntry
     view(ImageDelete).isVisible = state is ExistingEntry
-    val resId = if (state is NewEntry) R.string.text_new_plain_text else R.string.text_plain_text
+    val resId = if (state is NewEntry) R.string.text_new_note else R.string.text_note
     textView(MainTitle).text(resId)
     when (state) {
       is NewEntry -> renderNewEntry(state)
@@ -265,7 +265,7 @@ class PlainTextEntryScreen : BaseFragmentScreen() {
   }
   
   private fun renderExistingEntry(state: ExistingEntry) {
-    if (state.plainTextEntry?.isFavorite == true) {
+    if (state.noteEntry?.isFavorite == true) {
       imageView(ImageFavorite).image(R.drawable.ic_star_filled)
     } else {
       imageView(ImageFavorite).image(R.drawable.ic_star_outline)
@@ -284,7 +284,7 @@ class PlainTextEntryScreen : BaseFragmentScreen() {
     }
     if (state.showConfirmDeleteDialog) {
       infoDialog.showWithCancelAndProceedOption(
-        titleRes = R.string.text_delete_plain_text,
+        titleRes = R.string.text_delete_note,
         message = getDeleteMessageText(state.titleState.initialText),
         onCancel = { store.tryDispatch(OnDialogHidden) },
         onProceed = { store.tryDispatch(OnConfirmedDeleting) }
@@ -311,12 +311,12 @@ class PlainTextEntryScreen : BaseFragmentScreen() {
     }
   }
   
-  private fun handleNews(news: PlainTextEntryNews) {
+  private fun handleNews(news: NoteEntryNews) {
     when (news) {
       ShowTitleCopied -> snackbar.show(CHECKMARK, R.string.text_title_copied)
       ShowTextCopied -> snackbar.show(CHECKMARK, R.string.text_text_copied)
-      ShowPlainTextEntryCreated -> {
-        snackbar.show(CHECKMARK, R.string.text_plain_text_created)
+      ShowNoteEntryCreated -> {
+        snackbar.show(CHECKMARK, R.string.text_note_created)
         requireContext().hideKeyboard()
         editText(EditTextTitle).clearFocus()
         editText(EditTextText).clearFocus()
@@ -351,7 +351,7 @@ class PlainTextEntryScreen : BaseFragmentScreen() {
   
   companion object {
     
-    val PlainTextScreenRoot = View.generateViewId()
+    val NoteScreenRoot = View.generateViewId()
     val ImageBack = View.generateViewId()
     val MainTitle = View.generateViewId()
     val ImageDelete = View.generateViewId()

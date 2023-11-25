@@ -8,7 +8,7 @@ data class Title(
   override val id = type.toString()
   
   enum class Type {
-    FAVORITES, PASSWORDS, PLAIN_TEXTS
+    FAVORITES, PASSWORDS, NOTES
   }
 }
 

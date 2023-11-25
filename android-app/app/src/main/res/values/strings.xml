@@ -73,12 +73,12 @@
   <!-- Main list -->
   <string name="text_favorites">Favorites</string>
   <string name="text_passwords">Passwords</string>
-  <string name="text_plain_texts">Plain texts</string>
+  <string name="text_notes">Notes</string>
   <string name="text_search">Search…</string>
   <string name="text_no_matching_entries">No matching entries</string>
   <string name="text_new_entry">New entry</string>
   <string name="text_new_password">New password</string>
-  <string name="text_new_plain_text">New plain text</string>
+  <string name="text_new_note">New note</string>
   <string name="text_no_entries">Nothing yet</string>
   <string name="text_click_plus">Click on the + button below to create new entry</string>
   <string name="text_done">Done</string>
@@ -94,7 +94,6 @@
   <string name="text_enter_username">Enter username</string>
   <string name="text_email">Email</string>
   <string name="text_password_stub">•••••••••••••••••••</string>
-  <string name="text_notes">Notes</string>
   <string name="text_add_notes">Enter notes</string>
   <string name="text_delete_password">Delete password</string>
   <string name="text_username_copied">Username successfully copied</string>
@@ -103,12 +102,12 @@
   <string name="text_notes_copied">Notes successfully copied</string>
   <string name="text_browser_not_found">No browser found on the device</string>
 
-  <!-- Plain text -->
-  <string name="text_plain_text">Plain text</string>
+  <!-- Note -->
+  <string name="text_note">Note</string>
   <string name="text_enter_text">Enter text</string>
   <string name="text_text">Text</string>
-  <string name="text_plain_text_created">Plain text entry created</string>
-  <string name="text_delete_plain_text">Delete plain text</string>
+  <string name="text_note_created">Note entry created</string>
+  <string name="text_delete_note">Delete note</string>
   <string name="text_title_copied">Title successfully copied</string>
   <string name="text_text_copied">Text successfully copied</string>
 

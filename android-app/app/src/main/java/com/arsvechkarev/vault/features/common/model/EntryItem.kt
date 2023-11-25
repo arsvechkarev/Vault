@@ -11,7 +11,7 @@ data class PasswordItem(
   val hasActualTitle: Boolean
 ) : EntryItem
 
-data class PlainTextItem(
+data class NoteItem(
   override val id: String,
   val title: String,
   val hasActualTitle: Boolean

@@ -16,7 +16,7 @@ import com.arsvechkarev.vault.features.common.model.EmptySearch
 import com.arsvechkarev.vault.features.common.model.EntryItem
 import com.arsvechkarev.vault.features.common.model.Loading
 import com.arsvechkarev.vault.features.common.model.PasswordItem
-import com.arsvechkarev.vault.features.common.model.PlainTextItem
+import com.arsvechkarev.vault.features.common.model.NoteItem
 import com.arsvechkarev.vault.features.common.model.Title
 import com.arsvechkarev.vault.features.common.model.Title.Type
 import com.arsvechkarev.vault.recycler.BaseListAdapter
@@ -83,7 +83,7 @@ class MainListAdapter(
           (itemView as TextView).setText(when (item.type) {
             Type.FAVORITES -> R.string.text_favorites
             Type.PASSWORDS -> R.string.text_passwords
-            Type.PLAIN_TEXTS -> R.string.text_plain_texts
+            Type.NOTES -> R.string.text_notes
           })
         }
       },
@@ -156,7 +156,7 @@ class MainListAdapter(
           }
         }
       },
-      delegate<PlainTextItem> {
+      delegate<NoteItem> {
         buildView {
           RootHorizontalLayout(MatchParent, WrapContent) {
             rippleBackground(Colors.Ripple)
@@ -171,11 +171,11 @@ class MainListAdapter(
               }
               ImageView(ImageSize, ImageSize) {
                 layoutGravity(CENTER)
-                image(R.drawable.ic_plain_text)
+                image(R.drawable.ic_note)
               }
             }
             TextView(WrapContent, WrapContent, style = BaseTextView) {
-              id(ItemPlainTextTitle)
+              id(ItemNoteEntryTitle)
               maxLines = 2
               layoutGravity(CENTER)
             }
@@ -185,7 +185,7 @@ class MainListAdapter(
           itemView.onClick { onItemClick(item) }
         }
         onBind {
-          itemView.viewAs<TextView>(ItemPlainTextTitle).text(item.title)
+          itemView.viewAs<TextView>(ItemNoteEntryTitle).text(item.title)
         }
       },
       delegate<Loading> {
@@ -243,6 +243,6 @@ class MainListAdapter(
     val ItemPasswordEntryTitle = View.generateViewId()
     val ItemPasswordEntryVerticalGuideline = View.generateViewId()
     val ItemPasswordEntrySubtitle = View.generateViewId()
-    val ItemPlainTextTitle = View.generateViewId()
+    val ItemNoteEntryTitle = View.generateViewId()
   }
 }

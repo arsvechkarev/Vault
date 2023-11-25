@@ -14,7 +14,7 @@ data class PasswordEntry(
   val isFavorite: Boolean,
 ) : BaseEntry
 
-data class PlainTextEntry(
+data class NoteEntry(
   val id: String,
   val title: String,
   val text: String,

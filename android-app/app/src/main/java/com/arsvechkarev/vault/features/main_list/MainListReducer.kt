@@ -2,7 +2,7 @@ package com.arsvechkarev.vault.features.main_list
 
 import com.arsvechkarev.vault.core.mvi.tea.DslReducer
 import com.arsvechkarev.vault.features.common.model.PasswordItem
-import com.arsvechkarev.vault.features.common.model.PlainTextItem
+import com.arsvechkarev.vault.features.common.model.NoteItem
 import com.arsvechkarev.vault.features.main_list.MainListCommand.ExportPasswordsFile
 import com.arsvechkarev.vault.features.main_list.MainListCommand.FilterEntries
 import com.arsvechkarev.vault.features.main_list.MainListCommand.LoadData
@@ -36,9 +36,9 @@ import com.arsvechkarev.vault.features.main_list.MainListUiEvent.OnSearchActionC
 import com.arsvechkarev.vault.features.main_list.MainListUiEvent.OnSearchTextChanged
 import com.arsvechkarev.vault.features.main_list.ScreenInfo.ImportPasswords
 import com.arsvechkarev.vault.features.main_list.ScreenInfo.NewPassword
-import com.arsvechkarev.vault.features.main_list.ScreenInfo.NewPlainText
+import com.arsvechkarev.vault.features.main_list.ScreenInfo.NewNote
 import com.arsvechkarev.vault.features.main_list.ScreenInfo.Password
-import com.arsvechkarev.vault.features.main_list.ScreenInfo.PlainText
+import com.arsvechkarev.vault.features.main_list.ScreenInfo.Note
 import com.arsvechkarev.vault.features.main_list.ScreenInfo.Settings
 
 class MainListReducer : DslReducer<MainListState, MainListEvent, MainListCommand, MainListNews>() {
@@ -65,7 +65,7 @@ class MainListReducer : DslReducer<MainListState, MainListEvent, MainListCommand
       is OnListItemClicked -> {
         when (event.item) {
           is PasswordItem -> commands(OpenScreen(Password(event.item)))
-          is PlainTextItem -> commands(OpenScreen(PlainText(event.item)))
+          is NoteItem -> commands(OpenScreen(Note(event.item)))
         }
       }
       OnOpenMenuClicked -> {
@@ -95,7 +95,7 @@ class MainListReducer : DslReducer<MainListState, MainListEvent, MainListCommand
         }
         when (event.type) {
           EntryType.PASSWORD -> commands(OpenScreen(NewPassword))
-          EntryType.PLAIN_TEXT -> commands(OpenScreen(NewPlainText))
+          EntryType.NOTE -> commands(OpenScreen(NewNote))
         }
       }
       OnEntryTypeDialogHidden -> {

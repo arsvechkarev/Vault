@@ -4,11 +4,11 @@ import domain.IdGeneratorImpl
 import domain.RealInstantProvider
 import domain.UniqueIdProvideImpl
 import domain.interactors.KeePassPasswordModelInteractor
-import domain.interactors.KeePassPlainTextModelInteractor
+import domain.interactors.KeePassNoteModelInteractor
 
 interface KeePassModule {
   val keePassPasswordModelInteractor: KeePassPasswordModelInteractor
-  val keePassPlainTextModelInteractor: KeePassPlainTextModelInteractor
+  val keePassNoteModelInteractor: KeePassNoteModelInteractor
 }
 
 class KeePassModuleImpl : KeePassModule {
@@ -20,7 +20,7 @@ class KeePassModuleImpl : KeePassModule {
     RealInstantProvider
   )
   
-  override val keePassPlainTextModelInteractor = KeePassPlainTextModelInteractor(
+  override val keePassNoteModelInteractor = KeePassNoteModelInteractor(
     generator,
     RealInstantProvider
   )

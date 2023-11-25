@@ -4,13 +4,13 @@ import app.keemobile.kotpass.database.KeePassDatabase
 import app.keemobile.kotpass.database.getEntries
 import app.keemobile.kotpass.models.Entry
 import com.arsvechkarev.vault.features.common.model.PasswordItem
-import com.arsvechkarev.vault.features.common.model.PlainTextItem
+import com.arsvechkarev.vault.features.common.model.NoteItem
 import com.arsvechkarev.vault.features.common.model.Title
 import com.arsvechkarev.vault.features.common.model.Title.Type
 import com.arsvechkarev.vault.recycler.DifferentiableItem
-import domain.isDefinitePlainText
+import domain.isDefiniteNote
 import domain.isFavorite
-import domain.isProbablePlainText
+import domain.isProbableNote
 
 class EntriesListUiMapper {
   
@@ -20,19 +20,19 @@ class EntriesListUiMapper {
     filterQuery: String
   ): List<DifferentiableItem> {
     val allEntries = database.getEntries { true }.flatMap { pair -> pair.second }
-    val plainTexts = allEntries.filter { it.isDefinitePlainText || it.isProbablePlainText }
-    val groupedPasswords = (allEntries - plainTexts.toSet()).groupBy { it.isFavorite }
+    val notes = allEntries.filter { it.isDefiniteNote || it.isProbableNote }
+    val groupedPasswords = (allEntries - notes.toSet()).groupBy { it.isFavorite }
     val favoritePasswords = groupedPasswords[true].orEmpty()
     val nonFavoritePasswords = groupedPasswords[false].orEmpty()
-    val groupedPlainTexts = plainTexts.groupBy { it.isFavorite }
-    val favoritePlainTexts = groupedPlainTexts[true].orEmpty()
-    val nonFavoritePlainTexts = groupedPlainTexts[false].orEmpty()
+    val groupedNotes = notes.groupBy { it.isFavorite }
+    val favoriteNotes = groupedNotes[true].orEmpty()
+    val nonFavoriteNotes = groupedNotes[false].orEmpty()
     return buildList {
       val filteredFavoritePasswords = favoritePasswords.toPasswordItems(showUsernames)
           .sortedBy { it.title.lowercase() }.filterByQuery(filterQuery, showUsernames)
-      val filteredFavoritePlainTexts = favoritePlainTexts.toPlainTextItems()
+      val filteredFavoriteNotes = favoriteNotes.toNoteItems()
           .sortedBy { it.title.lowercase() }.filterByQuery(filterQuery)
-      val filteredFavoriteItems = filteredFavoritePasswords + filteredFavoritePlainTexts
+      val filteredFavoriteItems = filteredFavoritePasswords + filteredFavoriteNotes
       if (filteredFavoriteItems.isNotEmpty()) {
         add(Title(Type.FAVORITES))
         addAll(filteredFavoriteItems)
@@ -43,11 +43,11 @@ class EntriesListUiMapper {
         add(Title(Type.PASSWORDS))
         addAll(filteredNonFavoritePasswords)
       }
-      val filteredNonFavoritePlainTexts = nonFavoritePlainTexts.toPlainTextItems()
+      val filteredNonFavoriteNotes = nonFavoriteNotes.toNoteItems()
           .sortedBy { it.title.lowercase() }.filterByQuery(filterQuery)
-      if (filteredNonFavoritePlainTexts.isNotEmpty()) {
-        add(Title(Type.PLAIN_TEXTS))
-        addAll(filteredNonFavoritePlainTexts)
+      if (filteredNonFavoriteNotes.isNotEmpty()) {
+        add(Title(Type.NOTES))
+        addAll(filteredNonFavoriteNotes)
       }
     }
   }
@@ -74,7 +74,7 @@ class EntriesListUiMapper {
     }
   }
   
-  private fun List<Entry>.toPlainTextItems(): List<PlainTextItem> {
+  private fun List<Entry>.toNoteItems(): List<NoteItem> {
     return mapIndexed { i, entry ->
       val counter = i + 1
       val title = entry.fields.title?.content
@@ -86,7 +86,7 @@ class EntriesListUiMapper {
         hasActualTitle = false
         "note$counter"
       }
-      PlainTextItem(
+      NoteItem(
         id = entry.uuid.toString(),
         title = resultTitle,
         hasActualTitle = hasActualTitle
@@ -108,7 +108,7 @@ class EntriesListUiMapper {
     }
   }
   
-  private fun List<PlainTextItem>.filterByQuery(filterQuery: String): List<PlainTextItem> {
+  private fun List<NoteItem>.filterByQuery(filterQuery: String): List<NoteItem> {
     if (filterQuery.isEmpty()) {
       return this
     }

@@ -184,7 +184,7 @@ class MainListScreen : BaseFragmentScreen() {
           EntryTypeItemView(iconRes, textRes) { store.tryDispatch(OnEntryTypeSelected(entryType)) }
         }
         entryItem(EntryType.PASSWORD, R.drawable.ic_lock, R.string.text_password)
-        entryItem(EntryType.PLAIN_TEXT, R.drawable.ic_plain_text, R.string.text_plain_text)
+        entryItem(EntryType.NOTE, R.drawable.ic_note, R.string.text_note)
       }
       InfoDialog()
       LoadingDialog()

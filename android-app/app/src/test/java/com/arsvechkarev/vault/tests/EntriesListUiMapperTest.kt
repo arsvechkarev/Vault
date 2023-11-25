@@ -3,7 +3,7 @@ package com.arsvechkarev.vault.tests
 import com.arsvechkarev.vault.data.BasicDatabase
 import com.arsvechkarev.vault.data.NonStandardDatabase
 import com.arsvechkarev.vault.features.common.model.PasswordItem
-import com.arsvechkarev.vault.features.common.model.PlainTextItem
+import com.arsvechkarev.vault.features.common.model.NoteItem
 import com.arsvechkarev.vault.features.common.model.Title
 import com.arsvechkarev.vault.features.common.model.Title.Type
 import com.arsvechkarev.vault.features.main_list.domain.EntriesListUiMapper
@@ -29,9 +29,9 @@ class EntriesListUiMapperTest {
           hasActualTitle = true
         ),
         Title(
-          type = Type.PLAIN_TEXTS
+          type = Type.NOTES
         ),
-        PlainTextItem(
+        NoteItem(
           id = "3d2f85f1-490a-4290-8d66-7de9f9769858",
           title = "test",
           hasActualTitle = true,
@@ -56,9 +56,9 @@ class EntriesListUiMapperTest {
           hasActualTitle = true
         ),
         Title(
-          type = Type.PLAIN_TEXTS
+          type = Type.NOTES
         ),
-        PlainTextItem(
+        NoteItem(
           id = "3d2f85f1-490a-4290-8d66-7de9f9769858",
           title = "test",
           hasActualTitle = true,
@@ -88,14 +88,14 @@ class EntriesListUiMapperTest {
           hasActualTitle = false
         ),
         Title(
-          type = Type.PLAIN_TEXTS
+          type = Type.NOTES
         ),
-        PlainTextItem(
+        NoteItem(
           id = "3d2f85f1-490a-4290-8d66-7de9f9769858",
           title = "note1",
           hasActualTitle = false,
         ),
-        PlainTextItem(
+        NoteItem(
           id = "86916deb-74b4-4b1c-9f52-517eaad3aad6",
           title = "note2",
           hasActualTitle = false,

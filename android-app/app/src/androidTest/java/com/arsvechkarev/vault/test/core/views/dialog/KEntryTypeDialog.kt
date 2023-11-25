@@ -9,7 +9,7 @@ class KEntryTypeDialog(
 ) : KBaseView<KEntryTypeDialog>({ withId(id) }) {
   
   val passwordEntry = KEntryTypeItemView(id, R.drawable.ic_lock, "Password")
-  val plainTextEntry = KEntryTypeItemView(id, R.drawable.ic_plain_text, "Plain text")
+  val noteEntry = KEntryTypeItemView(id, R.drawable.ic_note, "Note")
   
   class KEntryTypeItemView(
     private val bottomSheetId: Int,

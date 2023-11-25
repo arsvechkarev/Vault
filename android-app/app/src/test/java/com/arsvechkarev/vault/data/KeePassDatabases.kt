@@ -18,7 +18,7 @@ import app.keemobile.kotpass.models.EntryValue.Plain
 import app.keemobile.kotpass.models.Meta
 import domain.CUSTOM_DATA_FAVORITE_KEY
 import domain.CUSTOM_DATA_PASSWORD
-import domain.CUSTOM_DATA_PLAIN_TEXT
+import domain.CUSTOM_DATA_NOTE
 import domain.CUSTOM_DATA_TYPE_KEY
 import domain.CommonConstants
 import domain.from
@@ -54,7 +54,7 @@ val BasicDatabase = KeePassDatabase.Ver4x.create(
           Notes.key to Plain("my text")
         ),
         customData = mapOf(
-          CUSTOM_DATA_TYPE_KEY to CustomDataValue(CUSTOM_DATA_PLAIN_TEXT),
+          CUSTOM_DATA_TYPE_KEY to CustomDataValue(CUSTOM_DATA_NOTE),
           CUSTOM_DATA_FAVORITE_KEY to CustomDataValue("false"),
         )
       )

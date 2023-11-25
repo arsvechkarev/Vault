@@ -3,7 +3,7 @@ package com.arsvechkarev.vault.features.common
 import android.net.Uri
 import com.arsvechkarev.vault.core.extensions.bundleOf
 import com.arsvechkarev.vault.features.common.model.PasswordItem
-import com.arsvechkarev.vault.features.common.model.PlainTextItem
+import com.arsvechkarev.vault.features.common.model.NoteItem
 import com.arsvechkarev.vault.features.creating_password.CreatingPasswordScreen
 import com.arsvechkarev.vault.features.import_passwords.ImportPasswordsScreen
 import com.arsvechkarev.vault.features.import_passwords.ImportPasswordsScreen.Companion.ASK_FOR_CONFIRMATION
@@ -13,7 +13,7 @@ import com.arsvechkarev.vault.features.main_list.MainListScreen
 import com.arsvechkarev.vault.features.master_password.MasterPasswordScreen
 import com.arsvechkarev.vault.features.master_password.MasterPasswordScreenMode
 import com.arsvechkarev.vault.features.password_entry.PasswordEntryScreen
-import com.arsvechkarev.vault.features.plain_text_entry.PlainTextEntryScreen
+import com.arsvechkarev.vault.features.note_entry.NoteEntryScreen
 import com.arsvechkarev.vault.features.settings.SettingsScreen
 import navigation.Screen
 import navigation.ScreenInfo
@@ -38,9 +38,9 @@ object Screens {
   
   val CreatingPasswordScreen = Screen { CreatingPasswordScreen::class }
   
-  fun PlainTextScreen(plainTextId: String? = null): ScreenInfo {
-    val pair = PlainTextItem::class.java.name to plainTextId
-    return Screen(arguments = bundleOf(pair)) { PlainTextEntryScreen::class }
+  fun NoteScreen(noteId: String? = null): ScreenInfo {
+    val pair = NoteItem::class.java.name to noteId
+    return Screen(arguments = bundleOf(pair)) { NoteEntryScreen::class }
   }
   
   val SettingsScreen = Screen { SettingsScreen::class }

@@ -21,6 +21,7 @@ import com.arsvechkarev.vault.test.screens.KImportPasswordsScreen
 import com.arsvechkarev.vault.test.screens.KInitialScreen
 import com.arsvechkarev.vault.test.screens.KLoginScreen
 import com.arsvechkarev.vault.test.screens.KMainListScreen
+import com.arsvechkarev.vault.test.screens.KMainListScreen.EmptyItem
 import com.arsvechkarev.vault.test.screens.KMainListScreen.PasswordItem
 import org.junit.Before
 import org.junit.Rule
@@ -64,7 +65,6 @@ class ImportPasswordsTest : VaultTestCase() {
       buttonImportPasswords.click()
       
       KImportPasswordsScreen {
-        layoutSelectFile.click()
         buttonImportPasswords.click()
         
         enterPasswordDialog {
@@ -91,7 +91,7 @@ class ImportPasswordsTest : VaultTestCase() {
   }
   
   @Test
-  fun importingPasswordsFromMainMenuTest() = init {
+  fun testImportingPasswordsFromMainMenu() = init {
     rule.launchActivityWithDatabase("file_one_password")
   }.run {
     KLoginScreen {
@@ -125,12 +125,6 @@ class ImportPasswordsTest : VaultTestCase() {
         
         KImportPasswordsScreen {
           titleSelectFile.hasText("File")
-          textSelectFile.hasText("/storage/emulated/0/passwords.kdbx")
-          
-          buttonImportPasswords.click()
-          
-          layoutSelectFile.click()
-          
           textSelectFile.hasText("/storage/emulated/0/passwords.kdbx")
           
           buttonImportPasswords.click()
@@ -191,6 +185,49 @@ class ImportPasswordsTest : VaultTestCase() {
           enterPasswordDialog.isDisplayed()
           
           enterPasswordDialog {
+            editText.replaceText("qwetu1233")
+            buttonContinue.click()
+          }
+        }
+        
+        currentScreenIs<MainListScreen>()
+        
+        recycler {
+          hasSize(3)
+          childAt<PasswordItem>(1) {
+            title.hasText("google")
+            image.wasImageRequestWithUrlCalled(URL_IMAGE_GOOGLE, testImageRequestsRecorder)
+          }
+          childAt<PasswordItem>(2) {
+            title.hasText("test.com")
+            image.hasDrawable(LetterInCircleDrawable("t"))
+          }
+        }
+      }
+    }
+  }
+  
+  @Test
+  fun testImportingPasswordsFromMainMenuWhenEmpty() = init {
+    rule.launchActivityWithDatabase("file_empty")
+  }.run {
+    KLoginScreen {
+      editTextEnterPassword.replaceText("qwetu1233")
+      buttonContinue.click()
+      
+      KMainListScreen {
+        
+        menu {
+          open()
+          importPasswordsMenuItem.click()
+        }
+        
+        KImportPasswordsScreen {
+          layoutSelectFile.click()
+          buttonImportPasswords.click()
+          
+          enterPasswordDialog {
+            title.hasText("Enter password")
             editText.replaceText("qwetu1233")
             buttonContinue.click()
           }

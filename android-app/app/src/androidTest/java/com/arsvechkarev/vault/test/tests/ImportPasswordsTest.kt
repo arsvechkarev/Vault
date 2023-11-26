@@ -1,18 +1,19 @@
 package com.arsvechkarev.vault.test.tests
 
 import androidx.test.core.app.ApplicationProvider
+import app.keemobile.kotpass.database.encode
 import com.arsvechkarev.vault.R
 import com.arsvechkarev.vault.core.views.drawables.LetterInCircleDrawable
 import com.arsvechkarev.vault.features.common.di.CoreComponentHolder
 import com.arsvechkarev.vault.features.import_passwords.ImportPasswordsScreen
 import com.arsvechkarev.vault.features.main_list.MainListScreen
 import com.arsvechkarev.vault.test.core.base.VaultTestCase
+import com.arsvechkarev.vault.test.core.data.Databases
 import com.arsvechkarev.vault.test.core.di.StubExtraDependenciesFactory
 import com.arsvechkarev.vault.test.core.di.stubs.StubActivityResultWrapper
 import com.arsvechkarev.vault.test.core.di.stubs.StubExternalFileReader
 import com.arsvechkarev.vault.test.core.di.stubs.TestImageRequestsRecorder
 import com.arsvechkarev.vault.test.core.di.stubs.URL_IMAGE_GOOGLE
-import com.arsvechkarev.vault.test.core.ext.context
 import com.arsvechkarev.vault.test.core.ext.currentScreenIs
 import com.arsvechkarev.vault.test.core.ext.launchActivityWithDatabase
 import com.arsvechkarev.vault.test.core.ext.wasImageRequestWithUrlCalled
@@ -21,12 +22,11 @@ import com.arsvechkarev.vault.test.screens.KImportPasswordsScreen
 import com.arsvechkarev.vault.test.screens.KInitialScreen
 import com.arsvechkarev.vault.test.screens.KLoginScreen
 import com.arsvechkarev.vault.test.screens.KMainListScreen
-import com.arsvechkarev.vault.test.screens.KMainListScreen.EmptyItem
 import com.arsvechkarev.vault.test.screens.KMainListScreen.PasswordItem
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
-import java.io.InputStream
+import java.io.ByteArrayOutputStream
 
 class ImportPasswordsTest : VaultTestCase() {
   
@@ -36,7 +36,9 @@ class ImportPasswordsTest : VaultTestCase() {
   private val stubFileReader = StubExternalFileReader(
     uriToMatch = "content://myfolder/passwords.kdbx",
     bytesToRead = {
-      context.assets.open("file_two_passwords").use(InputStream::readBytes)
+      val stream = ByteArrayOutputStream()
+      Databases.TwoPasswords.encode(stream)
+      stream.toByteArray()
     }
   )
   
@@ -92,19 +94,14 @@ class ImportPasswordsTest : VaultTestCase() {
   
   @Test
   fun testImportingPasswordsFromMainMenu() = init {
-    rule.launchActivityWithDatabase("file_one_password")
+    rule.launchActivityWithDatabase(Databases.TwoPasswords)
   }.run {
     KLoginScreen {
       editTextEnterPassword.replaceText("qwetu1233")
       buttonContinue.click()
       
       KMainListScreen {
-        recycler {
-          hasSize(2)
-          childAt<PasswordItem>(1) {
-            title.hasText("abc")
-          }
-        }
+        recycler.hasSize(3)
         
         menu {
           open()
@@ -209,7 +206,7 @@ class ImportPasswordsTest : VaultTestCase() {
   
   @Test
   fun testImportingPasswordsFromMainMenuWhenEmpty() = init {
-    rule.launchActivityWithDatabase("file_empty")
+    rule.launchActivityWithDatabase(Databases.Empty)
   }.run {
     KLoginScreen {
       editTextEnterPassword.replaceText("qwetu1233")

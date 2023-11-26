@@ -12,6 +12,7 @@ import com.arsvechkarev.vault.features.creating_password.CreatingPasswordScreen
 import com.arsvechkarev.vault.features.main_list.MainListScreen
 import com.arsvechkarev.vault.features.password_entry.PasswordEntryScreen
 import com.arsvechkarev.vault.test.core.base.VaultTestCase
+import com.arsvechkarev.vault.test.core.data.Databases
 import com.arsvechkarev.vault.test.core.di.StubExtraDependenciesFactory
 import com.arsvechkarev.vault.test.core.di.stubs.TestImageRequestsRecorder
 import com.arsvechkarev.vault.test.core.di.stubs.URL_IMAGE_GOOGLE
@@ -52,7 +53,7 @@ class PasswordEntryTest : VaultTestCase() {
   
   @Test
   fun testCreatingPasswordEntry() = init {
-    rule.launchActivityWithDatabase("file_empty")
+    rule.launchActivityWithDatabase(Databases.Empty)
   }.run {
     KLoginScreen {
       editTextEnterPassword.replaceText("qwetu1233")
@@ -274,7 +275,7 @@ class PasswordEntryTest : VaultTestCase() {
         imagesRequestsRecorder = imageRequestsRecorder
       )
     )
-    rule.launchActivityWithDatabase("file_two_passwords_and_note")
+    rule.launchActivityWithDatabase(Databases.TwoPasswordsAndNote)
   }.run {
     KLoginScreen {
       editTextEnterPassword.replaceText("qwetu1233")
@@ -588,7 +589,7 @@ class PasswordEntryTest : VaultTestCase() {
   
   @Test
   fun testUrlFieldWithOnlyDomain() = init {
-    rule.launchActivityWithDatabase("file_two_passwords_and_note")
+    rule.launchActivityWithDatabase(Databases.TwoPasswordsAndNote)
   }.run {
     KLoginScreen {
       editTextEnterPassword.replaceText("qwetu1233")
@@ -613,7 +614,7 @@ class PasswordEntryTest : VaultTestCase() {
   
   @Test
   fun testUrlFieldWithFullLink() = init {
-    rule.launchActivityWithDatabase("file_two_passwords_and_note")
+    rule.launchActivityWithDatabase(Databases.TwoPasswordsAndNote)
   }.run {
     KLoginScreen {
       editTextEnterPassword.replaceText("qwetu1233")

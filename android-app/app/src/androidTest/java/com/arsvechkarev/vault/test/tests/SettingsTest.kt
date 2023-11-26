@@ -3,6 +3,7 @@ package com.arsvechkarev.vault.test.tests
 import com.arsvechkarev.vault.features.main_list.MainListScreen
 import com.arsvechkarev.vault.features.settings.SettingsScreen
 import com.arsvechkarev.vault.test.core.base.VaultTestCase
+import com.arsvechkarev.vault.test.core.data.Databases
 import com.arsvechkarev.vault.test.core.ext.currentScreenIs
 import com.arsvechkarev.vault.test.core.ext.launchActivityWithDatabase
 import com.arsvechkarev.vault.test.core.rule.VaultAutotestRule
@@ -19,7 +20,7 @@ class SettingsTest : VaultTestCase() {
   
   @Test
   fun testSettingsScreenFlow() = init {
-    rule.launchActivityWithDatabase("file_empty")
+    rule.launchActivityWithDatabase(Databases.Empty)
   }.run {
     KLoginScreen {
       editTextEnterPassword.replaceText("qwetu1233")

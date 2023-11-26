@@ -7,6 +7,7 @@ import com.arsvechkarev.vault.features.common.di.CoreComponentHolder
 import com.arsvechkarev.vault.features.initial.InitialScreen
 import com.arsvechkarev.vault.features.main_list.MainListScreen
 import com.arsvechkarev.vault.features.settings.SettingsScreen
+import com.arsvechkarev.vault.test.core.data.Databases
 import com.arsvechkarev.vault.test.core.di.StubExtraDependenciesFactory
 import com.arsvechkarev.vault.test.core.di.stubs.TestImageRequestsRecorder
 import com.arsvechkarev.vault.test.core.di.stubs.URL_IMAGE_GOOGLE
@@ -207,7 +208,7 @@ class MasterPasswordTest : TestCase() {
   
   @Test
   fun testChangeExistingMasterPassword() = init {
-    rule.launchActivityWithDatabase("file_two_passwords")
+    rule.launchActivityWithDatabase(Databases.TwoPasswords)
   }.run {
     KLoginScreen {
       editTextEnterPassword.replaceText("qwetu1233")

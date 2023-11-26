@@ -7,6 +7,8 @@ import app.keemobile.kotpass.database.KeePassDatabase
 import app.keemobile.kotpass.database.decode
 import app.keemobile.kotpass.database.findEntries
 import com.arsvechkarev.vault.features.common.di.CoreComponentHolder
+import com.arsvechkarev.vault.test.core.data.Databases
+import com.arsvechkarev.vault.test.core.data.Databases.PasswordQwetu1233
 import com.arsvechkarev.vault.test.core.di.StubExtraDependenciesFactory
 import com.arsvechkarev.vault.test.core.di.stubs.StubActivityResultWrapper
 import com.arsvechkarev.vault.test.core.di.stubs.StubPasswordsFileExporter
@@ -26,11 +28,13 @@ import domain.CUSTOM_DATA_FAVORITE_KEY
 import domain.CUSTOM_DATA_PASSWORD
 import domain.CUSTOM_DATA_NOTE
 import domain.CUSTOM_DATA_TYPE_KEY
+import domain.from
 import junit.framework.Assert.assertEquals
 import org.junit.Rule
 import org.junit.Test
 import java.io.ByteArrayInputStream
 import java.io.InputStream
+import java.util.Base64
 
 class ValidatingFileStructureTest : TestCase() {
   
@@ -70,7 +74,6 @@ class ValidatingFileStructureTest : TestCase() {
             editTextTitle.replaceText("google")
             editTextUsername.replaceText("me@gmail.com")
             editTextUrl.replaceText("google.com")
-            editTextNotes.replaceText("lorem ipsum")
             imageEditPassword.click()
             KCreatingPasswordScreen {
               editTextPassword.replaceText("F/<1#E(J=\\51=k;")
@@ -86,7 +89,7 @@ class ValidatingFileStructureTest : TestCase() {
           entryTypeDialog.noteEntry.click()
           KNoteEntryScreen {
             editTextTitle.replaceText("my title")
-            editTextText.replaceText("my text")
+            editTextText.replaceText("super secret content")
             buttonSave.click()
             imageBack.click()
           }
@@ -101,13 +104,8 @@ class ValidatingFileStructureTest : TestCase() {
   }
   
   private fun checkEqualExceptIds() {
-    val expectedBytes = context.assets.open("file_one_password_and_note")
-        .use(InputStream::readBytes)
-    val expectedDatabase = KeePassDatabase.decode(ByteArrayInputStream(expectedBytes),
-      Credentials.from(EncryptedValue.fromString("qwetu1233")))
+    val expectedEntriesList = Databases.OnePasswordAndNote.findEntries { true }.flatMap { it.second }
     val actualDatabase = checkNotNull(stubPasswordsFileExporter.exportedDatabase)
-    
-    val expectedEntriesList = expectedDatabase.findEntries { true }.flatMap { it.second }
     val actualEntriesList = actualDatabase.findEntries { true }.flatMap { it.second }
     assertEquals(expectedEntriesList.size, actualEntriesList.size)
     expectedEntriesList.forEach { expectedEntry ->
@@ -137,7 +135,10 @@ class ValidatingFileStructureTest : TestCase() {
   
   @Test
   fun testingFileFromOneKeePass() = init {
-    rule.launchActivityWithDatabase("file_from_one_kee_pass")
+    val bytes = Base64.getDecoder().decode(Databases.EncodedDatabaseFromKeePass)
+    val credentials = Credentials.from(PasswordQwetu1233)
+    val database = KeePassDatabase.decode(ByteArrayInputStream(bytes), credentials)
+    rule.launchActivityWithDatabase(database)
   }.run {
     KLoginScreen {
       editTextEnterPassword.replaceText("qwetu1233")

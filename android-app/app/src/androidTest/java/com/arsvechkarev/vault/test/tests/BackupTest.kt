@@ -5,6 +5,7 @@ import app.keemobile.kotpass.database.getEntries
 import com.arsvechkarev.vault.features.common.di.CoreComponentHolder
 import com.arsvechkarev.vault.features.common.domain.DefaultTimestampProvider
 import com.arsvechkarev.vault.features.common.domain.SimpleDateTimeFormatter
+import com.arsvechkarev.vault.test.core.data.Databases
 import com.arsvechkarev.vault.test.core.di.StubExtraDependenciesFactory
 import com.arsvechkarev.vault.test.core.di.stubs.StubActivityResultWrapper
 import com.arsvechkarev.vault.test.core.di.stubs.TestBackup
@@ -71,7 +72,7 @@ class BackupTest : TestCase() {
         backupInterceptor = backupInterceptor,
       )
     )
-    rule.launchActivityWithDatabase("file_two_passwords_and_note")
+    rule.launchActivityWithDatabase(Databases.TwoPasswordsAndNote)
   }.run {
     KLoginScreen {
       editTextEnterPassword.replaceText("qwetu1233")

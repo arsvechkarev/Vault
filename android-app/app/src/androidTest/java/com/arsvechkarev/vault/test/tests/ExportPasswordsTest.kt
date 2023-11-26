@@ -9,6 +9,7 @@ import androidx.test.espresso.intent.matcher.IntentMatchers.hasType
 import com.arsvechkarev.vault.features.common.AppConstants.CONTENT_TYPE_UNKNOWN
 import com.arsvechkarev.vault.features.common.di.CoreComponentHolder
 import com.arsvechkarev.vault.test.core.base.VaultTestCase
+import com.arsvechkarev.vault.test.core.data.Databases
 import com.arsvechkarev.vault.test.core.di.StubExtraDependenciesFactory
 import com.arsvechkarev.vault.test.core.di.stubs.StubActivityResultWrapper
 import com.arsvechkarev.vault.test.core.di.stubs.StubPasswordsFileExporter
@@ -41,7 +42,7 @@ class ExportPasswordsTest : VaultTestCase() {
         passwordsFileExporter = stubPasswordsFileExporter,
       )
     )
-    rule.launchActivityWithDatabase("file_two_passwords")
+    rule.launchActivityWithDatabase(Databases.TwoPasswords)
   }.run {
     KLoginScreen {
       editTextEnterPassword.replaceText("qwetu1233")

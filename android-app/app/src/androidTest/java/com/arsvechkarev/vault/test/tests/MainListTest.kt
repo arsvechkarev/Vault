@@ -7,6 +7,7 @@ import com.arsvechkarev.vault.features.common.di.CoreComponentHolder
 import com.arsvechkarev.vault.features.login.LoginScreen
 import com.arsvechkarev.vault.features.main_list.MainListScreen
 import com.arsvechkarev.vault.test.core.base.VaultTestCase
+import com.arsvechkarev.vault.test.core.data.Databases
 import com.arsvechkarev.vault.test.core.di.StubExtraDependenciesFactory
 import com.arsvechkarev.vault.test.core.di.stubs.TestImageRequestsRecorder
 import com.arsvechkarev.vault.test.core.di.stubs.URL_IMAGE_GOOGLE
@@ -43,7 +44,7 @@ class MainListTest : VaultTestCase() {
         imagesRequestsRecorder = imageRequestsRecorder
       )
     )
-    rule.launchActivityWithDatabase("file_two_passwords_and_note")
+    rule.launchActivityWithDatabase(Databases.TwoPasswordsAndNote)
   }.run {
     KLoginScreen {
       textError.hasEmptyText()
@@ -228,7 +229,7 @@ class MainListTest : VaultTestCase() {
   
   @Test
   fun testSearch() = init {
-    rule.launchActivityWithDatabase("file_two_passwords_and_note")
+    rule.launchActivityWithDatabase(Databases.TwoPasswordsAndNote)
   }.run {
     KLoginScreen {
       editTextEnterPassword.replaceText("qwetu1233")

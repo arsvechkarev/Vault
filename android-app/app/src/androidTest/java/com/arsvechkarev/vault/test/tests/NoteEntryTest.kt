@@ -3,6 +3,7 @@ package com.arsvechkarev.vault.test.tests
 import com.arsvechkarev.vault.R
 import com.arsvechkarev.vault.features.main_list.MainListScreen
 import com.arsvechkarev.vault.test.core.base.VaultTestCase
+import com.arsvechkarev.vault.test.core.data.Databases
 import com.arsvechkarev.vault.test.core.ext.currentScreenIs
 import com.arsvechkarev.vault.test.core.ext.hasClipboardText
 import com.arsvechkarev.vault.test.core.ext.hasTextColorInt
@@ -25,7 +26,7 @@ class NoteEntryTest : VaultTestCase() {
   
   @Test
   fun testCreatingNote() = init {
-    rule.launchActivityWithDatabase("file_empty")
+    rule.launchActivityWithDatabase(Databases.Empty)
   }.run {
     KLoginScreen {
       editTextEnterPassword.replaceText("qwetu1233")
@@ -91,7 +92,7 @@ class NoteEntryTest : VaultTestCase() {
   
   @Test
   fun testEditingNote() = init {
-    rule.launchActivityWithDatabase("file_two_passwords_and_note")
+    rule.launchActivityWithDatabase(Databases.TwoPasswordsAndNote)
   }.run {
     KLoginScreen {
       editTextEnterPassword.replaceText("qwetu1233")

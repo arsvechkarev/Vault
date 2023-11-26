@@ -51,7 +51,7 @@ class NoteEntryTest : VaultTestCase() {
       entryTypeDialog.noteEntry.click()
       
       KNoteEntryScreen {
-        textMainTitle.hasText("New Note")
+        textMainTitle.hasText("New note")
         imageDelete.isNotDisplayed()
         imageTitleAction.isNotDisplayed()
         imageTextAction.isNotDisplayed()

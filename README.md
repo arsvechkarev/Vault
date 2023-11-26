@@ -9,15 +9,17 @@ Vault is a password manager that hepls you keep your passwords and other sensiti
 #### Screenshots:
 
 <p float="left">
-  <img src="android-app/screenshots/initial_screen.png" width="150" />
-  <img src="android-app/screenshots/creating_master_password.png" width="150" /> 
-  <img src="android-app/screenshots/login_biometrics.png" width="150" />
-  <img src="android-app/screenshots/main_list.png" width="150" />
-  <img src="android-app/screenshots/settings.png" width="150" /> 
+  <img src="android-app/screenshots/initial_screen.png" width="250" />
+  <img src="android-app/screenshots/creating_master_password.png" width="250" /> 
+  <img src="android-app/screenshots/login_biometrics.png" width="250" /> 
 </p>
 <p float="left">
-  <img src="android-app/screenshots/creating_new_password_entry.png" width="150" /> 
-  <img src="android-app/screenshots/editing_password_screen.png" width="150" />
-  <img src="android-app/screenshots/password_entry.png" width="150" />
-  <img src="android-app/screenshots/note_entry.png" width="150" /> 
+  <img src="android-app/screenshots/main_list.png" width="250" />
+  <img src="android-app/screenshots/settings.png" width="250" />
+  <img src="android-app/screenshots/creating_new_password_entry.png" width="250" />  
+</p>
+<p float="left">
+  <img src="android-app/screenshots/editing_password_screen.png" width="250" />
+  <img src="android-app/screenshots/password_entry.png" width="250" />
+  <img src="android-app/screenshots/note_entry.png" width="250" /> 
 </p>

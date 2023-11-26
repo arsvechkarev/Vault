@@ -35,8 +35,8 @@ android {
     applicationId ext.applicationId
     minSdkVersion ext.minSdkVersion
     targetSdkVersion ext.targetSdkVersion
-    versionCode ext.versionCode
-    versionName ext.versionName
+    versionCode 1
+    versionName '1.0.0'
     if (localProperties.exists()) {
       signingConfig signingConfigs.release
     } else {

@@ -1,0 +1,6 @@
+• All necessary features for creating, editing and deleting passwords and notes
+• Auto-backup to file system
+• Biometric login
+• Exporting and importing passwords
+• Search through items
+• Password icons for popular services

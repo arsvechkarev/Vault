@@ -1,0 +1,1 @@
+Simple, secure and fast password manager compatible with KeePass

@@ -1,0 +1,11 @@
+Vault is a password manager that helps you keep your passwords and other sensitive data organized. It is based on <b>kdbx</b> format that is used by <a href="https://keepass.info/index.html">KeePass</a>, which means that it is compatible with every KeePass-based password manager. It is fast, secure and has an intuitive UX – everything you need from a reliable password manager.
+
+Features:
+• Compatibility with KeePass
+• Creating, editing and deleting password and notes
+• Backing up passwords to file system
+• Biometric login
+• Search
+• Changing master password
+• Convenient import and export of passwords
+• Icons for most popular websites and services

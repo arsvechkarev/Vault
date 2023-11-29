@@ -1,6 +1,5 @@
 package com.arsvechkarev.vault.features.common
 
-import com.arsvechkarev.vault.R
 import com.arsvechkarev.vault.features.common.di.CoreComponentHolder
 
 /**
@@ -18,5 +17,5 @@ object Durations {
   
   val DelayOpenKeyboard
     get() = CoreComponentHolder.coreComponent.application.resources
-        .getInteger(R.integer.navigation_animation_duration).toLong()
+        .getInteger(navigation.R.integer.navigation_animation_duration).toLong()
 }

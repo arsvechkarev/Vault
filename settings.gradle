@@ -1,5 +1,0 @@
-rootProject.name = "Vault"
-include 'android-app:app'
-include 'android-app:navigation'
-include 'android-app:domain'
-include 'android-app:viewdsl'

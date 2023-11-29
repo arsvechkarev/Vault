@@ -35,10 +35,10 @@ android {
   compileSdk = rootProject.extra["compileSdk"].toString().toInt()
   defaultConfig {
     applicationId = "com.arsvechkarev.vault"
-    minSdk = rootProject.extra["minSdk"].toString().toInt()
-    targetSdk = rootProject.extra["targetSdk"].toString().toInt()
-    versionCode = rootProject.extra["versionCode"].toString().toInt()
-    versionName = rootProject.extra["versionName"].toString()
+    minSdk = 26
+    targetSdk = 34
+    versionCode = 1
+    versionName = "1.0.0"
     signingConfig = if (keystoreProperties.exists()) {
       signingConfigs.findByName("release")
     } else {

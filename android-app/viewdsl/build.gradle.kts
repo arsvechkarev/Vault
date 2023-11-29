@@ -10,6 +10,9 @@ kotlin {
 android {
   namespace = "com.arsvechkarev.viewdsl"
   compileSdk = rootProject.extra["compileSdk"].toString().toInt()
+  lint {
+    baseline = file("lint-baseline.xml")
+  }
 }
 
 dependencies {

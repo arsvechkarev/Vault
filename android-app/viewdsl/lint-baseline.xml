@@ -1,0 +1,851 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<issues format="6" by="lint 8.2.0-beta06" type="baseline" client="gradle" dependencies="false" name="AGP (8.2.0-beta06)" variant="all" version="8.2.0-beta06">
+
+    <issue
+        id="InlinedApi"
+        message="Field requires API level 17 (current min is 1): `android.view.View#LAYOUT_DIRECTION_LTR`"
+        errorLine1="  get() = TextUtils.getLayoutDirectionFromLocale(Locale.getDefault()) == View.LAYOUT_DIRECTION_LTR"
+        errorLine2="                                                                         ~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/viewdsl/ContextDsl.kt"
+            line="21"
+            column="74"/>
+    </issue>
+
+    <issue
+        id="InlinedApi"
+        message="Field requires API level 3 (current min is 1): `android.content.Context#INPUT_METHOD_SERVICE`"
+        errorLine1="      getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager?"
+        errorLine2="                       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/viewdsl/ContextDsl.kt"
+            line="44"
+            column="24"/>
+    </issue>
+
+    <issue
+        id="InlinedApi"
+        message="Field requires API level 3 (current min is 1): `android.content.Context#INPUT_METHOD_SERVICE`"
+        errorLine1="      getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager"
+        errorLine2="                       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/viewdsl/ContextDsl.kt"
+            line="51"
+            column="24"/>
+    </issue>
+
+    <issue
+        id="InlinedApi"
+        message="Field requires API level 4 (current min is 1): `android.util.DisplayMetrics#DENSITY_DEFAULT`"
+        errorLine1="  private var _densityDpi: Int = DisplayMetrics.DENSITY_DEFAULT"
+        errorLine2="                                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/viewdsl/Densities.kt"
+            line="10"
+            column="34"/>
+    </issue>
+
+    <issue
+        id="InlinedApi"
+        message="Field requires API level 3 (current min is 1): `android.view.inputmethod.EditorInfo#IME_ACTION_DONE`"
+        errorLine1="  imeOptions = IME_ACTION_DONE"
+        errorLine2="               ~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/viewdsl/EditTextDsl.kt"
+            line="29"
+            column="16"/>
+    </issue>
+
+    <issue
+        id="InlinedApi"
+        message="Field requires API level 3 (current min is 1): `android.view.inputmethod.EditorInfo#IME_ACTION_DONE`"
+        errorLine1="  imeOptions = IME_ACTION_DONE"
+        errorLine2="               ~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/viewdsl/EditTextDsl.kt"
+            line="29"
+            column="16"/>
+    </issue>
+
+    <issue
+        id="InternalInsetResource"
+        message="Using internal inset dimension resource `status_bar_height` is not supported"
+        errorLine1="    val resourceId = resources.getIdentifier(&quot;status_bar_height&quot;, &quot;dimen&quot;, &quot;android&quot;)"
+        errorLine2="                     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/viewdsl/ContextDsl.kt"
+            line="35"
+            column="22"/>
+    </issue>
+
+    <issue
+        id="NewApi"
+        message="Call requires API level 11 (current min is 1): `android.animation.Animator#cancel`"
+        errorLine1="  if (isRunning) cancel()"
+        errorLine2="                 ~~~~~~">
+        <location
+            file="src/main/java/viewdsl/AnimationsDsl.kt"
+            line="12"
+            column="18"/>
+    </issue>
+
+    <issue
+        id="NewApi"
+        message="Call requires API level 11 (current min is 1): `android.animation.Animator#isRunning`"
+        errorLine1="  if (isRunning) cancel()"
+        errorLine2="      ~~~~~~~~~">
+        <location
+            file="src/main/java/viewdsl/AnimationsDsl.kt"
+            line="12"
+            column="7"/>
+    </issue>
+
+    <issue
+        id="NewApi"
+        message="Call requires API level 4 (current min is 1): `android.graphics.drawable.Animatable#isRunning`"
+        errorLine1="  if (!isRunning) start()"
+        errorLine2="       ~~~~~~~~~">
+        <location
+            file="src/main/java/viewdsl/AnimationsDsl.kt"
+            line="16"
+            column="8"/>
+    </issue>
+
+    <issue
+        id="NewApi"
+        message="Call requires API level 4 (current min is 1): `android.graphics.drawable.Animatable#start`"
+        errorLine1="  if (!isRunning) start()"
+        errorLine2="                  ~~~~~">
+        <location
+            file="src/main/java/viewdsl/AnimationsDsl.kt"
+            line="16"
+            column="19"/>
+    </issue>
+
+    <issue
+        id="NewApi"
+        message="Call requires API level 4 (current min is 1): `android.graphics.drawable.Animatable#isRunning`"
+        errorLine1="  if (isRunning) stop()"
+        errorLine2="      ~~~~~~~~~">
+        <location
+            file="src/main/java/viewdsl/AnimationsDsl.kt"
+            line="20"
+            column="7"/>
+    </issue>
+
+    <issue
+        id="NewApi"
+        message="Call requires API level 4 (current min is 1): `android.graphics.drawable.Animatable#stop`"
+        errorLine1="  if (isRunning) stop()"
+        errorLine2="                 ~~~~">
+        <location
+            file="src/main/java/viewdsl/AnimationsDsl.kt"
+            line="20"
+            column="18"/>
+    </issue>
+
+    <issue
+        id="NewApi"
+        message="Call requires API level 11 (current min is 1): `android.animation.Animator#addListener`"
+        errorLine1="  addListener(object : AnimatorListenerAdapter() {"
+        errorLine2="  ~~~~~~~~~~~">
+        <location
+            file="src/main/java/viewdsl/AnimationsDsl.kt"
+            line="24"
+            column="3"/>
+    </issue>
+
+    <issue
+        id="NewApi"
+        message="Call requires API level 11 (current min is 1): `android.animation.AnimatorListenerAdapter()`"
+        errorLine1="  addListener(object : AnimatorListenerAdapter() {"
+        errorLine2="                       ~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/viewdsl/AnimationsDsl.kt"
+            line="24"
+            column="24"/>
+    </issue>
+
+    <issue
+        id="NewApi"
+        message="Cast from `AnimatorListenerAdapter` to `AnimatorListener` requires API level 11 (current min is 1)"
+        errorLine1="  addListener(object : AnimatorListenerAdapter() {"
+        errorLine2="              ^">
+        <location
+            file="src/main/java/viewdsl/AnimationsDsl.kt"
+            line="24"
+            column="15"/>
+    </issue>
+
+    <issue
+        id="NewApi"
+        message="Class requires API level 11 (current min is 1): `android.animation.AnimatorListenerAdapter`"
+        errorLine1="  addListener(object : AnimatorListenerAdapter() {"
+        errorLine2="                       ~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/viewdsl/AnimationsDsl.kt"
+            line="24"
+            column="24"/>
+    </issue>
+
+    <issue
+        id="NewApi"
+        message="Call requires API level 11 (current min is 1): `android.animation.Animator#removeListener`"
+        errorLine1="      removeListener(this)"
+        errorLine2="      ~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/viewdsl/AnimationsDsl.kt"
+            line="27"
+            column="7"/>
+    </issue>
+
+    <issue
+        id="NewApi"
+        message="Call requires API level 11 (current min is 1): `android.view.View#getAlpha`"
+        errorLine1="  if (visibility == View.VISIBLE &amp;&amp; alpha == 1f) return"
+        errorLine2="                                    ~~~~~">
+        <location
+            file="src/main/java/viewdsl/AnimationsDsl.kt"
+            line="36"
+            column="37"/>
+    </issue>
+
+    <issue
+        id="NewApi"
+        message="Call requires API level 11 (current min is 1): `android.view.View#setAlpha`"
+        errorLine1="  alpha = 0f"
+        errorLine2="  ~~~~~">
+        <location
+            file="src/main/java/viewdsl/AnimationsDsl.kt"
+            line="37"
+            column="3"/>
+    </issue>
+
+    <issue
+        id="NewApi"
+        message="Call requires API level 12 (current min is 1): `android.view.View#animate`"
+        errorLine1="  animate().alpha(1f).setDuration(duration)"
+        errorLine2="  ~~~~~~~">
+        <location
+            file="src/main/java/viewdsl/AnimationsDsl.kt"
+            line="39"
+            column="3"/>
+    </issue>
+
+    <issue
+        id="NewApi"
+        message="Call requires API level 12 (current min is 1): `android.view.ViewPropertyAnimator#alpha`"
+        errorLine1="  animate().alpha(1f).setDuration(duration)"
+        errorLine2="            ~~~~~">
+        <location
+            file="src/main/java/viewdsl/AnimationsDsl.kt"
+            line="39"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="NewApi"
+        message="Call requires API level 12 (current min is 1): `android.view.ViewPropertyAnimator#setDuration`"
+        errorLine1="  animate().alpha(1f).setDuration(duration)"
+        errorLine2="                      ~~~~~~~~~~~">
+        <location
+            file="src/main/java/viewdsl/AnimationsDsl.kt"
+            line="39"
+            column="23"/>
+    </issue>
+
+    <issue
+        id="NewApi"
+        message="Call requires API level 12 (current min is 1): `android.view.ViewPropertyAnimator#setInterpolator`"
+        errorLine1="      .setInterpolator(AccelerateDecelerateInterpolator)"
+        errorLine2="       ~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/viewdsl/AnimationsDsl.kt"
+            line="40"
+            column="8"/>
+    </issue>
+
+    <issue
+        id="NewApi"
+        message="Cast from `AccelerateDecelerateInterpolator` to `TimeInterpolator` requires API level 11 (current min is 1)"
+        errorLine1="      .setInterpolator(AccelerateDecelerateInterpolator)"
+        errorLine2="                       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/viewdsl/AnimationsDsl.kt"
+            line="40"
+            column="24"/>
+    </issue>
+
+    <issue
+        id="NewApi"
+        message="Call requires API level 16 (current min is 1): `android.view.ViewPropertyAnimator#withEndAction`"
+        errorLine1="      .withEndAction(andThen)"
+        errorLine2="       ~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/viewdsl/AnimationsDsl.kt"
+            line="41"
+            column="8"/>
+    </issue>
+
+    <issue
+        id="NewApi"
+        message="Call requires API level 14 (current min is 1): `android.view.ViewPropertyAnimator#start`"
+        errorLine1="      .start()"
+        errorLine2="       ~~~~~">
+        <location
+            file="src/main/java/viewdsl/AnimationsDsl.kt"
+            line="42"
+            column="8"/>
+    </issue>
+
+    <issue
+        id="NewApi"
+        message="Call requires API level 12 (current min is 1): `android.view.View#animate`"
+        errorLine1="  animate().alpha(0f).setDuration(duration)"
+        errorLine2="  ~~~~~~~">
+        <location
+            file="src/main/java/viewdsl/AnimationsDsl.kt"
+            line="50"
+            column="3"/>
+    </issue>
+
+    <issue
+        id="NewApi"
+        message="Call requires API level 12 (current min is 1): `android.view.ViewPropertyAnimator#alpha`"
+        errorLine1="  animate().alpha(0f).setDuration(duration)"
+        errorLine2="            ~~~~~">
+        <location
+            file="src/main/java/viewdsl/AnimationsDsl.kt"
+            line="50"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="NewApi"
+        message="Call requires API level 12 (current min is 1): `android.view.ViewPropertyAnimator#setDuration`"
+        errorLine1="  animate().alpha(0f).setDuration(duration)"
+        errorLine2="                      ~~~~~~~~~~~">
+        <location
+            file="src/main/java/viewdsl/AnimationsDsl.kt"
+            line="50"
+            column="23"/>
+    </issue>
+
+    <issue
+        id="NewApi"
+        message="Call requires API level 12 (current min is 1): `android.view.ViewPropertyAnimator#setInterpolator`"
+        errorLine1="      .setInterpolator(AccelerateDecelerateInterpolator)"
+        errorLine2="       ~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/viewdsl/AnimationsDsl.kt"
+            line="51"
+            column="8"/>
+    </issue>
+
+    <issue
+        id="NewApi"
+        message="Cast from `AccelerateDecelerateInterpolator` to `TimeInterpolator` requires API level 11 (current min is 1)"
+        errorLine1="      .setInterpolator(AccelerateDecelerateInterpolator)"
+        errorLine2="                       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/viewdsl/AnimationsDsl.kt"
+            line="51"
+            column="24"/>
+    </issue>
+
+    <issue
+        id="NewApi"
+        message="Call requires API level 16 (current min is 1): `android.view.ViewPropertyAnimator#withEndAction`"
+        errorLine1="      .withEndAction {"
+        errorLine2="       ~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/viewdsl/AnimationsDsl.kt"
+            line="52"
+            column="8"/>
+    </issue>
+
+    <issue
+        id="NewApi"
+        message="Call requires API level 14 (current min is 1): `android.view.ViewPropertyAnimator#start`"
+        errorLine1="      .start()"
+        errorLine2="       ~~~~~">
+        <location
+            file="src/main/java/viewdsl/AnimationsDsl.kt"
+            line="56"
+            column="8"/>
+    </issue>
+
+    <issue
+        id="NewApi"
+        message="Call requires API level 12 (current min is 1): `android.view.View#animate`"
+        errorLine1="  animate().alpha(0f).setDuration(duration)"
+        errorLine2="  ~~~~~~~">
+        <location
+            file="src/main/java/viewdsl/AnimationsDsl.kt"
+            line="64"
+            column="3"/>
+    </issue>
+
+    <issue
+        id="NewApi"
+        message="Call requires API level 12 (current min is 1): `android.view.ViewPropertyAnimator#alpha`"
+        errorLine1="  animate().alpha(0f).setDuration(duration)"
+        errorLine2="            ~~~~~">
+        <location
+            file="src/main/java/viewdsl/AnimationsDsl.kt"
+            line="64"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="NewApi"
+        message="Call requires API level 12 (current min is 1): `android.view.ViewPropertyAnimator#setDuration`"
+        errorLine1="  animate().alpha(0f).setDuration(duration)"
+        errorLine2="                      ~~~~~~~~~~~">
+        <location
+            file="src/main/java/viewdsl/AnimationsDsl.kt"
+            line="64"
+            column="23"/>
+    </issue>
+
+    <issue
+        id="NewApi"
+        message="Call requires API level 12 (current min is 1): `android.view.ViewPropertyAnimator#setInterpolator`"
+        errorLine1="      .setInterpolator(AccelerateDecelerateInterpolator)"
+        errorLine2="       ~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/viewdsl/AnimationsDsl.kt"
+            line="65"
+            column="8"/>
+    </issue>
+
+    <issue
+        id="NewApi"
+        message="Cast from `AccelerateDecelerateInterpolator` to `TimeInterpolator` requires API level 11 (current min is 1)"
+        errorLine1="      .setInterpolator(AccelerateDecelerateInterpolator)"
+        errorLine2="                       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/viewdsl/AnimationsDsl.kt"
+            line="65"
+            column="24"/>
+    </issue>
+
+    <issue
+        id="NewApi"
+        message="Call requires API level 16 (current min is 1): `android.view.ViewPropertyAnimator#withEndAction`"
+        errorLine1="      .withEndAction {"
+        errorLine2="       ~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/viewdsl/AnimationsDsl.kt"
+            line="66"
+            column="8"/>
+    </issue>
+
+    <issue
+        id="NewApi"
+        message="Call requires API level 14 (current min is 1): `android.view.ViewPropertyAnimator#start`"
+        errorLine1="      .start()"
+        errorLine2="       ~~~~~">
+        <location
+            file="src/main/java/viewdsl/AnimationsDsl.kt"
+            line="70"
+            column="8"/>
+    </issue>
+
+    <issue
+        id="NewApi"
+        message="Call requires API level 12 (current min is 1): `android.view.View#animate`"
+        errorLine1="  animate().rotation(540f)"
+        errorLine2="  ~~~~~~~">
+        <location
+            file="src/main/java/viewdsl/AnimationsDsl.kt"
+            line="78"
+            column="3"/>
+    </issue>
+
+    <issue
+        id="NewApi"
+        message="Call requires API level 12 (current min is 1): `android.view.ViewPropertyAnimator#rotation`"
+        errorLine1="  animate().rotation(540f)"
+        errorLine2="            ~~~~~~~~">
+        <location
+            file="src/main/java/viewdsl/AnimationsDsl.kt"
+            line="78"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="NewApi"
+        message="Call requires API level 16 (current min is 1): `android.view.ViewPropertyAnimator#withLayer`"
+        errorLine1="      .withLayer()"
+        errorLine2="       ~~~~~~~~~">
+        <location
+            file="src/main/java/viewdsl/AnimationsDsl.kt"
+            line="79"
+            column="8"/>
+    </issue>
+
+    <issue
+        id="NewApi"
+        message="Call requires API level 12 (current min is 1): `android.view.ViewPropertyAnimator#setDuration`"
+        errorLine1="      .setDuration(AnimationDurations.Rotation)"
+        errorLine2="       ~~~~~~~~~~~">
+        <location
+            file="src/main/java/viewdsl/AnimationsDsl.kt"
+            line="80"
+            column="8"/>
+    </issue>
+
+    <issue
+        id="NewApi"
+        message="Call requires API level 12 (current min is 1): `android.view.ViewPropertyAnimator#setInterpolator`"
+        errorLine1="      .setInterpolator(AccelerateDecelerateInterpolator)"
+        errorLine2="       ~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/viewdsl/AnimationsDsl.kt"
+            line="81"
+            column="8"/>
+    </issue>
+
+    <issue
+        id="NewApi"
+        message="Cast from `AccelerateDecelerateInterpolator` to `TimeInterpolator` requires API level 11 (current min is 1)"
+        errorLine1="      .setInterpolator(AccelerateDecelerateInterpolator)"
+        errorLine2="                       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/viewdsl/AnimationsDsl.kt"
+            line="81"
+            column="24"/>
+    </issue>
+
+    <issue
+        id="NewApi"
+        message="Call requires API level 16 (current min is 1): `android.view.ViewPropertyAnimator#withEndAction`"
+        errorLine1="      .withEndAction {"
+        errorLine2="       ~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/viewdsl/AnimationsDsl.kt"
+            line="82"
+            column="8"/>
+    </issue>
+
+    <issue
+        id="NewApi"
+        message="Call requires API level 11 (current min is 1): `android.view.View#setRotation`"
+        errorLine1="        rotation = 0f"
+        errorLine2="        ~~~~~~~~">
+        <location
+            file="src/main/java/viewdsl/AnimationsDsl.kt"
+            line="84"
+            column="9"/>
+    </issue>
+
+    <issue
+        id="NewApi"
+        message="Call requires API level 14 (current min is 1): `android.view.ViewPropertyAnimator#start`"
+        errorLine1="      .start()"
+        errorLine2="       ~~~~~">
+        <location
+            file="src/main/java/viewdsl/AnimationsDsl.kt"
+            line="86"
+            column="8"/>
+    </issue>
+
+    <issue
+        id="NewApi"
+        message="Call requires API level 17 (current min is 1): `android.text.TextUtils#getLayoutDirectionFromLocale`"
+        errorLine1="  get() = TextUtils.getLayoutDirectionFromLocale(Locale.getDefault()) == View.LAYOUT_DIRECTION_LTR"
+        errorLine2="                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/viewdsl/ContextDsl.kt"
+            line="21"
+            column="21"/>
+    </issue>
+
+    <issue
+        id="NewApi"
+        message="Class requires API level 3 (current min is 1): `android.view.inputmethod.InputMethodManager`"
+        errorLine1="      getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager?"
+        errorLine2="                                                        ~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/viewdsl/ContextDsl.kt"
+            line="44"
+            column="57"/>
+    </issue>
+
+    <issue
+        id="NewApi"
+        message="Call requires API level 3 (current min is 1): `android.view.inputmethod.InputMethodManager#showSoftInput`"
+        errorLine1="  inputMethodManager!!.showSoftInput(view, 0)"
+        errorLine2="                       ~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/viewdsl/ContextDsl.kt"
+            line="46"
+            column="24"/>
+    </issue>
+
+    <issue
+        id="NewApi"
+        message="Class requires API level 3 (current min is 1): `android.view.inputmethod.InputMethodManager`"
+        errorLine1="      getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager"
+        errorLine2="                                                        ~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/viewdsl/ContextDsl.kt"
+            line="51"
+            column="57"/>
+    </issue>
+
+    <issue
+        id="NewApi"
+        message="Call requires API level 3 (current min is 1): `android.view.inputmethod.InputMethodManager#hideSoftInputFromWindow`"
+        errorLine1="  inputMethodManager.hideSoftInputFromWindow(token, 0)"
+        errorLine2="                     ~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/viewdsl/ContextDsl.kt"
+            line="53"
+            column="22"/>
+    </issue>
+
+    <issue
+        id="NewApi"
+        message="Call requires API level 3 (current min is 1): `android.view.Window#setSoftInputMode`"
+        errorLine1="  (this as Activity).window.setSoftInputMode(mode)"
+        errorLine2="                            ~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/viewdsl/ContextDsl.kt"
+            line="57"
+            column="29"/>
+    </issue>
+
+    <issue
+        id="NewApi"
+        message="Field requires API level 4 (current min is 1): `android.util.DisplayMetrics#densityDpi`"
+        errorLine1="      _densityDpi = densityDpi"
+        errorLine2="                    ~~~~~~~~~~">
+        <location
+            file="src/main/java/viewdsl/Densities.kt"
+            line="20"
+            column="21"/>
+    </issue>
+
+    <issue
+        id="NewApi"
+        message="Call requires API level 21 (current min is 1): `android.graphics.drawable.RippleDrawable()`"
+        errorLine1="  background(RippleDrawable(ColorStateList.valueOf(rippleColor), backgroundDrawable, maskRect))"
+        errorLine2="             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/viewdsl/DrawableDsl.kt"
+            line="72"
+            column="14"/>
+    </issue>
+
+    <issue
+        id="NewApi"
+        message="Cast from `RippleDrawable` to `Drawable` requires API level 21 (current min is 1)"
+        errorLine1="  background(RippleDrawable(ColorStateList.valueOf(rippleColor), backgroundDrawable, maskRect))"
+        errorLine2="             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/viewdsl/DrawableDsl.kt"
+            line="72"
+            column="14"/>
+    </issue>
+
+    <issue
+        id="NewApi"
+        message="Call requires API level 21 (current min is 1): `android.graphics.drawable.RippleDrawable()`"
+        errorLine1="  background(RippleDrawable(ColorStateList.valueOf(rippleColor), background, mask))"
+        errorLine2="             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/viewdsl/DrawableDsl.kt"
+            line="94"
+            column="14"/>
+    </issue>
+
+    <issue
+        id="NewApi"
+        message="Cast from `RippleDrawable` to `Drawable` requires API level 21 (current min is 1)"
+        errorLine1="  background(RippleDrawable(ColorStateList.valueOf(rippleColor), background, mask))"
+        errorLine2="             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/viewdsl/DrawableDsl.kt"
+            line="94"
+            column="14"/>
+    </issue>
+
+    <issue
+        id="NewApi"
+        message="Call requires API level 3 (current min is 1): `android.widget.TextView#setImeOptions`"
+        errorLine1="  imeOptions = IME_ACTION_DONE"
+        errorLine2="  ~~~~~~~~~~">
+        <location
+            file="src/main/java/viewdsl/EditTextDsl.kt"
+            line="29"
+            column="3"/>
+    </issue>
+
+    <issue
+        id="NewApi"
+        message="Call requires API level 3 (current min is 1): `android.widget.TextView#setOnEditorActionListener`"
+        errorLine1="  setOnEditorActionListener { _, actionId, _ ->"
+        errorLine2="  ~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/viewdsl/EditTextDsl.kt"
+            line="30"
+            column="3"/>
+    </issue>
+
+    <issue
+        id="NewApi"
+        message="Call requires API level 21 (current min is 1): `android.widget.ImageView#setImageTintList`"
+        errorLine1="  imageTintList = ColorStateList.valueOf(color)"
+        errorLine2="  ~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/viewdsl/OtherViewsDsl.kt"
+            line="36"
+            column="3"/>
+    </issue>
+
+    <issue
+        id="NewApi"
+        message="Call requires API level 11 (current min is 1): `android.view.View#getTranslationX`"
+        errorLine1="  return x >= left + translationX"
+        errorLine2="                     ~~~~~~~~~~~~">
+        <location
+            file="src/main/java/viewdsl/ViewDsl.kt"
+            line="20"
+            column="22"/>
+    </issue>
+
+    <issue
+        id="NewApi"
+        message="Call requires API level 11 (current min is 1): `android.view.View#getTranslationY`"
+        errorLine1="      &amp;&amp; y >= top + translationY"
+        errorLine2="                    ~~~~~~~~~~~~">
+        <location
+            file="src/main/java/viewdsl/ViewDsl.kt"
+            line="21"
+            column="21"/>
+    </issue>
+
+    <issue
+        id="NewApi"
+        message="Call requires API level 11 (current min is 1): `android.view.View#getTranslationX`"
+        errorLine1="      &amp;&amp; x &lt;= right + translationX"
+        errorLine2="                      ~~~~~~~~~~~~">
+        <location
+            file="src/main/java/viewdsl/ViewDsl.kt"
+            line="22"
+            column="23"/>
+    </issue>
+
+    <issue
+        id="NewApi"
+        message="Call requires API level 11 (current min is 1): `android.view.View#getTranslationY`"
+        errorLine1="      &amp;&amp; y &lt;= bottom + translationY"
+        errorLine2="                       ~~~~~~~~~~~~">
+        <location
+            file="src/main/java/viewdsl/ViewDsl.kt"
+            line="23"
+            column="24"/>
+    </issue>
+
+    <issue
+        id="NewApi"
+        message="Call requires API level 17 (current min is 1): `android.view.ViewGroup.MarginLayoutParams#getMarginStart`"
+        errorLine1="val View.marginStart get() = (layoutParams as? MarginLayoutParams)?.marginStart ?: 0"
+        errorLine2="                                                                    ~~~~~~~~~~~">
+        <location
+            file="src/main/java/viewdsl/ViewDsl.kt"
+            line="92"
+            column="69"/>
+    </issue>
+
+    <issue
+        id="NewApi"
+        message="Call requires API level 17 (current min is 1): `android.view.ViewGroup.MarginLayoutParams#getMarginEnd`"
+        errorLine1="val View.marginEnd get() = (layoutParams as? MarginLayoutParams)?.marginEnd ?: 0"
+        errorLine2="                                                                  ~~~~~~~~~">
+        <location
+            file="src/main/java/viewdsl/ViewDsl.kt"
+            line="96"
+            column="67"/>
+    </issue>
+
+    <issue
+        id="NewApi"
+        message="Call requires API level 17 (current min is 1): `android.view.View#getPaddingEnd`"
+        errorLine1="  paddings(paddingStart, value, paddingEnd, value)"
+        errorLine2="                                ~~~~~~~~~~">
+        <location
+            file="src/main/java/viewdsl/ViewDsl.kt"
+            line="142"
+            column="33"/>
+    </issue>
+
+    <issue
+        id="NewApi"
+        message="Call requires API level 17 (current min is 1): `android.view.View#getPaddingStart`"
+        errorLine1="  paddings(paddingStart, value, paddingEnd, value)"
+        errorLine2="           ~~~~~~~~~~~~">
+        <location
+            file="src/main/java/viewdsl/ViewDsl.kt"
+            line="142"
+            column="12"/>
+    </issue>
+
+    <issue
+        id="NewApi"
+        message="Call requires API level 17 (current min is 1): `android.view.View#getPaddingStart`"
+        errorLine1="  start: Int = paddingStart,"
+        errorLine2="               ~~~~~~~~~~~~">
+        <location
+            file="src/main/java/viewdsl/ViewDsl.kt"
+            line="150"
+            column="16"/>
+    </issue>
+
+    <issue
+        id="NewApi"
+        message="Call requires API level 17 (current min is 1): `android.view.View#getPaddingEnd`"
+        errorLine1="  end: Int = paddingEnd,"
+        errorLine2="             ~~~~~~~~~~">
+        <location
+            file="src/main/java/viewdsl/ViewDsl.kt"
+            line="152"
+            column="14"/>
+    </issue>
+
+    <issue
+        id="NewApi"
+        message="Call requires API level 16 (current min is 1): `android.view.View#setBackground`"
+        errorLine1="  background = drawable"
+        errorLine2="  ~~~~~~~~~~">
+        <location
+            file="src/main/java/viewdsl/ViewDsl.kt"
+            line="195"
+            column="3"/>
+    </issue>
+
+    <issue
+        id="NewApi"
+        message="Call requires API level 11 (current min is 1): `android.view.View#addOnLayoutChangeListener`"
+        errorLine1="  addOnLayoutChangeListener { _, _, _, _, _, _, _, _, _ -> block() }"
+        errorLine2="  ~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/viewdsl/ViewDsl.kt"
+            line="215"
+            column="3"/>
+    </issue>
+
+    <issue
+        id="DiscouragedApi"
+        message="Use of this function is discouraged because resource reflection makes it harder to perform build optimizations and compile-time verification of code. It is much more efficient to retrieve resources by identifier (e.g. `R.foo.bar`) than by name (e.g. `getIdentifier(&quot;bar&quot;, &quot;foo&quot;, null)`)."
+        errorLine1="    val resourceId = resources.getIdentifier(&quot;status_bar_height&quot;, &quot;dimen&quot;, &quot;android&quot;)"
+        errorLine2="                               ~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/viewdsl/ContextDsl.kt"
+            line="35"
+            column="32"/>
+    </issue>
+
+</issues>

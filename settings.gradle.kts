@@ -1,5 +1,3 @@
-import java.net.URI
-
 pluginManagement {
   repositories {
     google()
@@ -12,7 +10,7 @@ dependencyResolutionManagement {
   repositories {
     google()
     mavenCentral()
-    maven { url = URI.create("https://jitpack.io") }
+    maven { setUrl("https://jitpack.io") }
   }
 }
 rootProject.name = "Vault"

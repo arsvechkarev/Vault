@@ -40,9 +40,9 @@ android {
     versionCode = rootProject.extra["versionCode"].toString().toInt()
     versionName = rootProject.extra["versionName"].toString()
     signingConfig = if (localProperties.exists()) {
-      signingConfigs.getByName("release")
+      signingConfigs.findByName("release")
     } else {
-      signingConfigs.getByName("debug")
+      signingConfigs.findByName("debug")
     }
     testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
   }

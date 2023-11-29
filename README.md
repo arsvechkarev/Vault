@@ -4,7 +4,7 @@
 
 Vault is a password manager that helps you keep your passwords and other sensitive data organized. It is based on **kdbx** format that is used by [KeePass](https://keepass.info/), which means that it is compatible with every KeePass-based password manager. It is fast, secure and has an intuitive UX – everything you need from a reliable password manager.
 
-### [Download latest apk](apks/vault-1.0.0.apk)
+### [Download latest apk](apk/vault.apk)
 
 #### Screenshots:
 

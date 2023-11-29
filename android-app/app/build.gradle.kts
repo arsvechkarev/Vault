@@ -19,11 +19,11 @@ android {
       excludes += listOf("META-INF/LICENSE", "META-INF/INDEX.LIST")
     }
   }
-  val localProperties = file("../../local.properties")
-  if (localProperties.exists()) {
+  val keystoreProperties = file("../../keystore.properties")
+  if (keystoreProperties.exists()) {
     signingConfigs {
       val properties = Properties()
-      properties.load(FileInputStream(localProperties))
+      properties.load(FileInputStream(keystoreProperties))
       create("release") {
         storeFile = file(properties.getProperty("keystoreFile"))
         storePassword = properties.getProperty("keystorePassword")
@@ -39,7 +39,7 @@ android {
     targetSdk = rootProject.extra["targetSdk"].toString().toInt()
     versionCode = rootProject.extra["versionCode"].toString().toInt()
     versionName = rootProject.extra["versionName"].toString()
-    signingConfig = if (localProperties.exists()) {
+    signingConfig = if (keystoreProperties.exists()) {
       signingConfigs.findByName("release")
     } else {
       signingConfigs.findByName("debug")

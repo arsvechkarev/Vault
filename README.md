@@ -4,6 +4,9 @@
 
 Vault is a password manager that helps you keep your passwords and other sensitive data organized. It is based on **kdbx** format that is used by [KeePass](https://keepass.info/), which means that it is compatible with every KeePass-based password manager. It is fast, secure and has an intuitive UX – everything you need from a reliable password manager.
 
+> [!NOTE]
+> Vault uses internet permission to download icons for passwords (you can find them [here](https://github.com/arsvechkarev/Vault/tree/master/icons/files)), but **no sensitive data like your master password or secret file is ever sent anywhere**. If for any reason you want this feature to be optional, please comment on [this issue](https://github.com/arsvechkarev/Vault/issues/45) and it might be implemented in one of the upcoming releases.
+
 ### [Download latest apk](apk/vault.apk)
 
 #### Screenshots:

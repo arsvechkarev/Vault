@@ -13,8 +13,6 @@ fun VaultAutotestRule.launchActivityWithDatabase(filename: String) {
   val bytes = context.assets.open(filename).use(InputStream::readBytes)
   val file = File(targetContext.filesDir, DEFAULT_INTERNAL_FILENAME)
   file.createNewFile()
-  val encodedBytes = Base64.getEncoder().encodeToString(bytes)
-  Timber.tag("qqq").d(encodedBytes)
   file.writeBytes(bytes)
   launchActivity()
 }

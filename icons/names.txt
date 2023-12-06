@@ -1,12 +1,26 @@
+aegis
 airbnb
 amazon
+binance
+booking.com
+bybit
+chess.com
+cloudflare
+discord
+duckduckgo
 facebook
 github
+gitlab
 google
+iherb
 instagram
 microsoft
 netflix
+nordvpn
+notesnook
+penpot
 proton mail,protonmail|protonmail
+reddit
 snapchat
 spotify
 telegram

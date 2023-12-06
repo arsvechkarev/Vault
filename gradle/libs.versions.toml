@@ -18,7 +18,7 @@ okioVersion = "3.2.0"
 coilVersion = "2.4.0"
 
 ########################################################
-# Not upgrate until found a way to Use BiometricConsants
+# Not upgrate until found a way to use BiometricConsants
 biometricsVersion = "1.0.1"
 ########################################################
 

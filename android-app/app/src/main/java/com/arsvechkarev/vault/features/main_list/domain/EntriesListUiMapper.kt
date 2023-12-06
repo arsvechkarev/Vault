@@ -3,8 +3,8 @@ package com.arsvechkarev.vault.features.main_list.domain
 import app.keemobile.kotpass.database.KeePassDatabase
 import app.keemobile.kotpass.database.getEntries
 import app.keemobile.kotpass.models.Entry
-import com.arsvechkarev.vault.features.common.model.PasswordItem
 import com.arsvechkarev.vault.features.common.model.NoteItem
+import com.arsvechkarev.vault.features.common.model.PasswordItem
 import com.arsvechkarev.vault.features.common.model.Title
 import com.arsvechkarev.vault.features.common.model.Title.Type
 import com.arsvechkarev.vault.recycler.DifferentiableItem

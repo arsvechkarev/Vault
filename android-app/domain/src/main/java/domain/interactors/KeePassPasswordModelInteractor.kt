@@ -2,7 +2,7 @@ package domain.interactors
 
 import app.keemobile.kotpass.constants.BasicField
 import app.keemobile.kotpass.database.KeePassDatabase
-import app.keemobile.kotpass.database.findEntryBy
+import app.keemobile.kotpass.database.getEntryBy
 import app.keemobile.kotpass.database.modifiers.modifyEntry
 import app.keemobile.kotpass.database.modifiers.modifyParentGroup
 import app.keemobile.kotpass.models.CustomDataValue
@@ -25,7 +25,7 @@ class KeePassPasswordModelInteractor(
 ) {
   
   fun getPasswordEntry(database: KeePassDatabase, uuid: String): PasswordEntry {
-    val entry = database.findEntryBy { this.uuid.toString() == uuid }
+    val entry = database.getEntryBy { this.uuid.toString() == uuid }
     return checkNotNull(entry).asPasswordEntry(uuid)
   }
   

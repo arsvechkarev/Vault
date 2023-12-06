@@ -8,7 +8,7 @@ import com.arsvechkarev.vault.features.note_entry.NoteEntryCommand.FetchNoteEntr
 import com.arsvechkarev.vault.features.note_entry.NoteEntryEvent
 import com.arsvechkarev.vault.features.note_entry.NoteEntryEvent.MasterPasswordNull
 import com.arsvechkarev.vault.features.note_entry.NoteEntryEvent.ReceivedNoteEntry
-import domain.interactors.KeePassNoteModelInteractor
+import domain.interactors.KeePassNoteEntryInteractor
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.filterIsInstance
@@ -17,7 +17,7 @@ import kotlinx.coroutines.flow.mapLatest
 class FetchNoteEntryActor(
   private val masterPasswordProvider: MasterPasswordProvider,
   private val storage: ObservableCachedDatabaseStorage,
-  private val noteModelInteractor: KeePassNoteModelInteractor,
+  private val noteEntryInteractor: KeePassNoteEntryInteractor,
 ) : Actor<NoteEntryCommand, NoteEntryEvent> {
   
   @OptIn(ExperimentalCoroutinesApi::class)
@@ -27,7 +27,7 @@ class FetchNoteEntryActor(
           val masterPassword = masterPasswordProvider.provideMasterPasswordIfSet()
               ?: return@mapLatest MasterPasswordNull
           val database = storage.getDatabase(masterPassword)
-          val noteEntry = noteModelInteractor.getNoteEntry(database, command.noteId)
+          val noteEntry = noteEntryInteractor.getNoteEntry(database, command.noteId)
           ReceivedNoteEntry(noteEntry)
         }
   }

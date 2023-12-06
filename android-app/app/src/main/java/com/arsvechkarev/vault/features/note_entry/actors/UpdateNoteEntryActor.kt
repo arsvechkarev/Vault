@@ -12,7 +12,7 @@ import com.arsvechkarev.vault.features.note_entry.NoteEntryEvent
 import com.arsvechkarev.vault.features.note_entry.NoteEntryEvent.UpdatedNoteEntry.UpdatedIsFavorite
 import com.arsvechkarev.vault.features.note_entry.NoteEntryEvent.UpdatedNoteEntry.UpdatedText
 import com.arsvechkarev.vault.features.note_entry.NoteEntryEvent.UpdatedNoteEntry.UpdatedTitle
-import domain.interactors.KeePassNoteModelInteractor
+import domain.interactors.KeePassNoteEntryInteractor
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.filterIsInstance
@@ -21,7 +21,7 @@ import kotlinx.coroutines.flow.mapLatest
 class UpdateNoteEntryActor(
   private val masterPasswordProvider: MasterPasswordProvider,
   private val storage: ObservableCachedDatabaseStorage,
-  private val noteModelInteractor: KeePassNoteModelInteractor
+  private val noteEntryInteractor: KeePassNoteEntryInteractor
 ) : Actor<NoteEntryCommand, NoteEntryEvent> {
   
   @OptIn(ExperimentalCoroutinesApi::class)
@@ -30,7 +30,7 @@ class UpdateNoteEntryActor(
         .mapLatest { command ->
           val masterPassword = masterPasswordProvider.provideMasterPassword()
           val database = storage.getDatabase(masterPassword)
-          val newDatabase = noteModelInteractor.editNote(database, command.noteEntry)
+          val newDatabase = noteEntryInteractor.editNote(database, command.noteEntry)
           storage.saveDatabase(newDatabase)
           when (command) {
             is UpdateTitle -> UpdatedTitle(command.noteEntry)

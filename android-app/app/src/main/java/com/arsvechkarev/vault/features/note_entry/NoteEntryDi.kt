@@ -21,17 +21,17 @@ fun NoteEntryStore(
       FetchNoteEntryActor(
         coreComponent.masterPasswordProvider,
         coreComponent.observableCachedDatabaseStorage,
-        coreComponent.keePassNoteModelInteractor
+        coreComponent.keePassNoteEntryInteractor
       ),
       SaveNoteEntryActor(
         coreComponent.masterPasswordProvider,
         coreComponent.observableCachedDatabaseStorage,
-        coreComponent.keePassNoteModelInteractor,
+        coreComponent.keePassNoteEntryInteractor,
       ),
       UpdateNoteEntryActor(
         coreComponent.masterPasswordProvider,
         coreComponent.observableCachedDatabaseStorage,
-        coreComponent.keePassNoteModelInteractor,
+        coreComponent.keePassNoteEntryInteractor,
       ),
       DeleteNoteEntryActor(
         coreComponent.masterPasswordProvider,

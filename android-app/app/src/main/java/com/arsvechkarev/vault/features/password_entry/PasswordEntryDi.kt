@@ -24,12 +24,12 @@ fun PasswordEntryStore(
       FetchPasswordEntryActor(
         coreComponent.masterPasswordProvider,
         coreComponent.observableCachedDatabaseStorage,
-        coreComponent.keePassPasswordModelInteractor,
+        coreComponent.keePassPasswordEntryInteractor,
       ),
       UpdatePasswordEntryActor(
         coreComponent.masterPasswordProvider,
         coreComponent.observableCachedDatabaseStorage,
-        coreComponent.keePassPasswordModelInteractor,
+        coreComponent.keePassPasswordEntryInteractor,
       ),
       DeletePasswordEntryActor(
         coreComponent.masterPasswordProvider,
@@ -38,7 +38,7 @@ fun PasswordEntryStore(
       SavingPasswordEntryActor(
         coreComponent.masterPasswordProvider,
         coreComponent.observableCachedDatabaseStorage,
-        coreComponent.keePassPasswordModelInteractor
+        coreComponent.keePassPasswordEntryInteractor
       ),
       SetupCreatingPasswordScreenActor(coreComponent.creatingPasswordSetupObserver),
       ListenPasswordChangesActor(coreComponent.passwordObserver),

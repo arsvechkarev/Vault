@@ -18,7 +18,7 @@ import com.arsvechkarev.vault.features.password_entry.PasswordEntryEvent.Updated
 import com.arsvechkarev.vault.features.password_entry.PasswordEntryEvent.UpdatedPasswordEntry.UpdatedTitle
 import com.arsvechkarev.vault.features.password_entry.PasswordEntryEvent.UpdatedPasswordEntry.UpdatedUrl
 import com.arsvechkarev.vault.features.password_entry.PasswordEntryEvent.UpdatedPasswordEntry.UpdatedUsername
-import domain.interactors.KeePassPasswordModelInteractor
+import domain.interactors.KeePassPasswordEntryInteractor
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.filterIsInstance
@@ -27,7 +27,7 @@ import kotlinx.coroutines.flow.mapLatest
 class UpdatePasswordEntryActor(
   private val masterPasswordProvider: MasterPasswordProvider,
   private val storage: ObservableCachedDatabaseStorage,
-  private val passwordModelInteractor: KeePassPasswordModelInteractor,
+  private val passwordEntryInteractor: KeePassPasswordEntryInteractor,
 ) : Actor<PasswordEntryCommand, PasswordEntryEvent> {
   
   @OptIn(ExperimentalCoroutinesApi::class)
@@ -36,7 +36,7 @@ class UpdatePasswordEntryActor(
         .mapLatest { command ->
           val masterPassword = masterPasswordProvider.provideMasterPassword()
           val database = storage.getDatabase(masterPassword)
-          val newDatabase = passwordModelInteractor.editPassword(database, command.passwordEntry)
+          val newDatabase = passwordEntryInteractor.editPassword(database, command.passwordEntry)
           storage.saveDatabase(newDatabase)
           when (command) {
             is UpdateTitle -> UpdatedTitle(command.passwordEntry)

@@ -14,6 +14,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.File
+import java.util.Base64
 import java.util.concurrent.locks.ReentrantReadWriteLock
 import kotlin.concurrent.read
 import kotlin.concurrent.write
@@ -46,6 +47,7 @@ class DefaultDatabaseFileSaver(
         if (!file.exists()) {
           return@withContext null
         }
+        println("qqq = ${Base64.getEncoder().encodeToString(file.readBytes())}")
         return@withContext file.inputStream()
             .use { inputStream ->
               KeePassDatabase.decode(inputStream, Credentials.from(masterPassword))

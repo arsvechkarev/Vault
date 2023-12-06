@@ -2,7 +2,7 @@ package domain.interactors
 
 import app.keemobile.kotpass.constants.BasicField
 import app.keemobile.kotpass.database.KeePassDatabase
-import app.keemobile.kotpass.database.findEntryBy
+import app.keemobile.kotpass.database.getEntryBy
 import app.keemobile.kotpass.database.modifiers.modifyEntry
 import app.keemobile.kotpass.database.modifiers.modifyParentGroup
 import app.keemobile.kotpass.models.CustomDataValue
@@ -18,13 +18,13 @@ import domain.model.NoteEntry
 import domain.model.NoteEntryData
 import java.util.UUID
 
-class KeePassNoteModelInteractor(
+class KeePassNoteEntryInteractor(
   private val idProvider: UniqueIdProvider,
   private val instantProvider: InstantProvider
 ) {
   
   fun getNoteEntry(database: KeePassDatabase, uuid: String): NoteEntry {
-    return checkNotNull(database.findEntryBy { this.uuid.toString() == uuid })
+    return checkNotNull(database.getEntryBy { this.uuid.toString() == uuid })
         .run {
           NoteEntry(
             id = uuid,

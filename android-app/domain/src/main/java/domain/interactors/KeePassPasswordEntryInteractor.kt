@@ -19,7 +19,7 @@ import domain.model.PasswordEntry
 import domain.model.PasswordEntryData
 import java.util.UUID
 
-class KeePassPasswordModelInteractor(
+class KeePassPasswordEntryInteractor(
   private val idProvider: UniqueIdProvider,
   private val instantProvider: InstantProvider
 ) {

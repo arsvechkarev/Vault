@@ -8,7 +8,7 @@ import com.arsvechkarev.vault.features.password_entry.PasswordEntryCommand.Fetch
 import com.arsvechkarev.vault.features.password_entry.PasswordEntryEvent
 import com.arsvechkarev.vault.features.password_entry.PasswordEntryEvent.MasterPasswordNull
 import com.arsvechkarev.vault.features.password_entry.PasswordEntryEvent.ReceivedPasswordEntry
-import domain.interactors.KeePassPasswordModelInteractor
+import domain.interactors.KeePassPasswordEntryInteractor
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.filterIsInstance
@@ -17,7 +17,7 @@ import kotlinx.coroutines.flow.mapLatest
 class FetchPasswordEntryActor(
   private val masterPasswordProvider: MasterPasswordProvider,
   private val storage: ObservableCachedDatabaseStorage,
-  private val passwordModelInteractor: KeePassPasswordModelInteractor,
+  private val passwordEntryInteractor: KeePassPasswordEntryInteractor,
 ) : Actor<PasswordEntryCommand, PasswordEntryEvent> {
   
   @OptIn(ExperimentalCoroutinesApi::class)
@@ -27,7 +27,7 @@ class FetchPasswordEntryActor(
           val masterPassword = masterPasswordProvider.provideMasterPasswordIfSet()
               ?: return@mapLatest MasterPasswordNull
           val database = storage.getDatabase(masterPassword)
-          val passwordEntry = passwordModelInteractor.getPasswordEntry(database, command.passwordId)
+          val passwordEntry = passwordEntryInteractor.getPasswordEntry(database, command.passwordId)
           ReceivedPasswordEntry(passwordEntry)
         }
   }

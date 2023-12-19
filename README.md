@@ -7,7 +7,14 @@ Vault is a password manager that helps you keep your passwords and other sensiti
 > [!NOTE]
 > Vault uses internet permission to download icons for passwords (you can find them [here](https://github.com/arsvechkarev/Vault/tree/master/icons/files)), but **no sensitive data like your master password or secret file is ever sent anywhere**. If for any reason you want this feature to be optional, please comment on [this issue](https://github.com/arsvechkarev/Vault/issues/45) and it might be implemented in one of the upcoming releases.
 
-### [Download latest apk](apk/vault.apk)
+[<img src="https://fdroid.gitlab.io/artwork/badge/get-it-on.png"
+     alt="Get it on F-Droid"
+     height="80">](https://f-droid.org/packages/com.arsvechkarev.vault/)
+[<img src="https://play.google.com/intl/en_us/badges/images/generic/en-play-badge.png"
+     alt="Get it on Google Play"
+     height="80">](https://play.google.com/store/apps/details?id=com.arsvechkarev.vault)
+
+Or download the latest APK from the [Releases Section](https://github.com/arsvechkarev/Vault/releases/latest).
 
 #### Screenshots:
 

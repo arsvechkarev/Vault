@@ -2,11 +2,6 @@
 
 ### Secure, simple and fast password manager
 
-Vault is a password manager that helps you keep your passwords and other sensitive data organized. It is based on **kdbx** format that is used by [KeePass](https://keepass.info/), which means that it is compatible with every KeePass-based password manager. It is fast, secure and has an intuitive UX – everything you need from a reliable password manager.
-
-> [!NOTE]
-> Vault uses internet permission to download icons for passwords (you can find them [here](https://github.com/arsvechkarev/Vault/tree/master/icons/files)), but **no sensitive data like your master password or secret file is ever sent anywhere**. If for any reason you want this feature to be optional, please comment on [this issue](https://github.com/arsvechkarev/Vault/issues/45) and it might be implemented in one of the upcoming releases.
-
 [<img src="https://fdroid.gitlab.io/artwork/badge/get-it-on.png"
      alt="Get it on F-Droid"
      height="80">](https://f-droid.org/packages/com.arsvechkarev.vault/)
@@ -14,7 +9,12 @@ Vault is a password manager that helps you keep your passwords and other sensiti
      alt="Get it on Google Play"
      height="80">](https://play.google.com/store/apps/details?id=com.arsvechkarev.vault)
 
-Or download the latest APK from the [Releases Section](https://github.com/arsvechkarev/Vault/releases/latest).
+#### Or download apk directly from [the latest release](https://github.com/arsvechkarev/Vault/releases/latest).
+
+Vault is a password manager that helps you keep your passwords and other sensitive data organized. It is based on **kdbx** format that is used by [KeePass](https://keepass.info/), which means that it is compatible with every KeePass-based password manager. It is fast, secure and has an intuitive UX – everything you need from a reliable password manager.
+
+> [!NOTE]
+> Vault uses internet permission to download icons for passwords (you can find them [here](https://github.com/arsvechkarev/Vault/tree/master/icons/files)), but **no sensitive data like your master password or secret file is ever sent anywhere**. If for any reason you want this feature to be optional, please comment on [this issue](https://github.com/arsvechkarev/Vault/issues/45) and it might be implemented in one of the upcoming releases.
 
 #### Screenshots:
 

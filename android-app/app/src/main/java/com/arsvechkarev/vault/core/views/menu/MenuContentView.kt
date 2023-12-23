@@ -84,8 +84,8 @@ class MenuContentView(context: Context) : ViewGroup(context) {
         context = context,
         size = iconSize,
         circleColor = Colors.Accent,
-        drawableRes1 = R.drawable.avd_plus_to_cross,
-        drawableRes2 = R.drawable.avd_cross_to_plus,
+        drawableRes1 = R.drawable.avd_menu_to_cross,
+        drawableRes2 = R.drawable.avd_cross_to_menu,
         iconColor = Colors.Icon
       )
     )

@@ -1,0 +1,65 @@
+<animated-vector xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:aapt="http://schemas.android.com/aapt">
+  <aapt:attr name="android:drawable">
+    <vector
+      android:name="vector"
+      android:width="24dp"
+      android:height="24dp"
+      android:viewportWidth="24"
+      android:viewportHeight="24">
+      <group android:name="menu">
+        <path
+          android:name="top"
+          android:pathData="M 4 7 L 20 7"
+          android:strokeWidth="2"
+          android:strokeColor="#000000"
+          android:strokeLineCap="round"/>
+        <path
+          android:name="middle"
+          android:pathData="M 4 12 L 20 12"
+          android:strokeWidth="2"
+          android:strokeColor="#000000"
+          android:strokeLineCap="round"/>
+        <path
+          android:name="bottom"
+          android:pathData="M 4 17 L 20 17"
+          android:strokeWidth="2"
+          android:strokeColor="#000000"
+          android:strokeLineCap="round"/>
+      </group>
+    </vector>
+  </aapt:attr>
+  <target android:name="top">
+    <aapt:attr name="android:animation">
+      <objectAnimator
+        android:duration="300"
+        android:interpolator="@android:interpolator/fast_out_slow_in"
+        android:propertyName="pathData"
+        android:valueFrom="M 6.5 6.5 L 17.5 17.5"
+        android:valueTo="M 5 7 L 19 7"
+        android:valueType="pathType"/>
+    </aapt:attr>
+  </target>
+  <target android:name="bottom">
+    <aapt:attr name="android:animation">
+      <objectAnimator
+        android:duration="300"
+        android:interpolator="@android:interpolator/fast_out_slow_in"
+        android:propertyName="pathData"
+        android:valueFrom="M 6.5 17.5 L 17.5 6.5"
+        android:valueTo="M 5 17 L 19 17"
+        android:valueType="pathType"/>
+    </aapt:attr>
+  </target>
+  <target android:name="middle">
+    <aapt:attr name="android:animation">
+      <objectAnimator
+        android:duration="300"
+        android:interpolator="@android:interpolator/fast_out_slow_in"
+        android:propertyName="pathData"
+        android:valueFrom="M 12 12 L 12 12"
+        android:valueTo="M 5 12 L 19 12"
+        android:valueType="pathType"/>
+    </aapt:attr>
+  </target>
+</animated-vector>

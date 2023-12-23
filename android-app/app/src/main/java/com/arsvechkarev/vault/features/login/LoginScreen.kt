@@ -83,7 +83,7 @@ class LoginScreen : BaseFragmentScreen() {
         }
         gravity(CENTER)
         ImageView(ImageLogoSize, ImageLogoSize) {
-          image(R.mipmap.ic_launcher_round)
+          image(R.mipmap.ic_launcher)
           margin(MarginNormal)
           onClick { rotate() }
         }

@@ -75,7 +75,7 @@ fun View.rotate() {
     return
   }
   tag = "isRotating"
-  animate().rotation(540f)
+  animate().rotation(-540f)
       .withLayer()
       .setDuration(AnimationDurations.Rotation)
       .setInterpolator(AccelerateDecelerateInterpolator)

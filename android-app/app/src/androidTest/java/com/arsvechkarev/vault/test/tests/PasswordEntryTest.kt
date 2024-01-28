@@ -26,7 +26,7 @@ import com.arsvechkarev.vault.test.core.ext.hasTextColorInt
 import com.arsvechkarev.vault.test.core.ext.hasTextLength
 import com.arsvechkarev.vault.test.core.ext.launchActivityWithDatabase
 import com.arsvechkarev.vault.test.core.ext.waitForSnackbarToHide
-import com.arsvechkarev.vault.test.core.ext.wasImageRequestWithUrlCalled
+import com.arsvechkarev.vault.test.core.ext.wasImageRequestWithUrlPerformed
 import com.arsvechkarev.vault.test.core.rule.VaultAutotestRule
 import com.arsvechkarev.vault.test.screens.KCreatingPasswordScreen
 import com.arsvechkarev.vault.test.screens.KLoginScreen
@@ -49,7 +49,7 @@ class PasswordEntryTest : VaultTestCase() {
   @get:Rule
   val rule = VaultAutotestRule()
   
-  private val imageRequestsRecorder = TestImageRequestsRecorder()
+  private val testImageRequestsRecorder = TestImageRequestsRecorder()
   
   @Test
   fun testCreatingPasswordEntry() = init {
@@ -272,7 +272,7 @@ class PasswordEntryTest : VaultTestCase() {
     CoreComponentHolder.initialize(
       application = ApplicationProvider.getApplicationContext(),
       factory = StubExtraDependenciesFactory(
-        imagesRequestsRecorder = imageRequestsRecorder
+        imagesRequestsRecorder = testImageRequestsRecorder
       )
     )
     rule.launchActivityWithDatabase(Databases.TwoPasswordsAndNote)
@@ -291,7 +291,7 @@ class PasswordEntryTest : VaultTestCase() {
           imageBack.isDisplayed()
           imageTitle {
             isDisplayed()
-            wasImageRequestWithUrlCalled(URL_IMAGE_GOOGLE, imageRequestsRecorder)
+            wasImageRequestWithUrlPerformed(URL_IMAGE_GOOGLE, testImageRequestsRecorder)
           }
           titleTitle.hasText("Title")
           editTextTitle.hasText("google")
@@ -357,7 +357,7 @@ class PasswordEntryTest : VaultTestCase() {
           
           imageTitleAction.hasDrawable(R.drawable.ic_checmark)
           editTextTitle.hasText("googlea")
-          imageTitle.wasImageRequestWithUrlCalled(URL_IMAGE_GOOGLE, imageRequestsRecorder)
+          imageTitle.wasImageRequestWithUrlPerformed(URL_IMAGE_GOOGLE, testImageRequestsRecorder)
           
           imageBack.click()
           

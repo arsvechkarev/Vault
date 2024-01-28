@@ -13,7 +13,7 @@ import com.arsvechkarev.vault.test.core.di.stubs.TestImageRequestsRecorder
 import com.arsvechkarev.vault.test.core.di.stubs.URL_IMAGE_GOOGLE
 import com.arsvechkarev.vault.test.core.ext.currentScreenIs
 import com.arsvechkarev.vault.test.core.ext.launchActivityWithDatabase
-import com.arsvechkarev.vault.test.core.ext.wasImageRequestWithUrlCalled
+import com.arsvechkarev.vault.test.core.ext.wasImageRequestWithUrlPerformed
 import com.arsvechkarev.vault.test.core.rule.VaultAutotestRule
 import com.arsvechkarev.vault.test.screens.KImportPasswordsScreen
 import com.arsvechkarev.vault.test.screens.KLoginScreen
@@ -34,14 +34,14 @@ class MainListTest : VaultTestCase() {
   @get:Rule
   val rule = VaultAutotestRule()
   
-  private val imageRequestsRecorder = TestImageRequestsRecorder()
+  private val testImageRequestsRecorder = TestImageRequestsRecorder()
   
   @Test
   fun testMainList() = init {
     CoreComponentHolder.initialize(
       application = ApplicationProvider.getApplicationContext(),
       factory = StubExtraDependenciesFactory(
-        imagesRequestsRecorder = imageRequestsRecorder
+        imagesRequestsRecorder = testImageRequestsRecorder
       )
     )
     rule.launchActivityWithDatabase(Databases.TwoPasswordsAndNote)
@@ -71,7 +71,7 @@ class MainListTest : VaultTestCase() {
           }
           childAt<PasswordItem>(1) {
             title.hasText("google")
-            image.wasImageRequestWithUrlCalled(URL_IMAGE_GOOGLE, imageRequestsRecorder)
+            image.wasImageRequestWithUrlPerformed(URL_IMAGE_GOOGLE, testImageRequestsRecorder)
             subtitle.isNotDisplayed()
           }
           childAt<PasswordItem>(2) {
@@ -148,7 +148,7 @@ class MainListTest : VaultTestCase() {
           }
           childAt<PasswordItem>(1) {
             title.hasText("google")
-            image.wasImageRequestWithUrlCalled(URL_IMAGE_GOOGLE, imageRequestsRecorder)
+            image.wasImageRequestWithUrlPerformed(URL_IMAGE_GOOGLE, testImageRequestsRecorder)
           }
           childAt<TitleItem>(2) {
             title.hasText("Passwords")

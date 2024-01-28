@@ -6,6 +6,7 @@ import com.arsvechkarev.vault.R
 import com.arsvechkarev.vault.core.views.SettingsItem.Companion.TextDescription
 import com.arsvechkarev.vault.features.settings.SettingsScreen
 import com.arsvechkarev.vault.features.settings.SettingsScreen.Companion.ItemChangePassword
+import com.arsvechkarev.vault.features.settings.SettingsScreen.Companion.ItemImagesLoading
 import com.arsvechkarev.vault.features.settings.SettingsScreen.Companion.ItemShowUsernames
 import com.arsvechkarev.vault.features.settings.SettingsScreen.Companion.ItemStorageBackup
 import com.arsvechkarev.vault.features.settings.SettingsScreen.Companion.ItemStorageBackupFolder
@@ -42,6 +43,10 @@ object KSettingsScreen : BaseScreen<KSettingsScreen>() {
     withParent { withId(ItemStorageBackupNow) }
     withId(TextDescription)
     isInstanceOf(TextView::class.java)
+  }
+  val switchImagesLoading = KSwitch {
+    withParent { withId(ItemImagesLoading) }
+    isInstanceOf(SwitchCompat::class.java)
   }
   val enterPasswordDialog = KEnterPasswordDialog()
   val snackbar = KSnackbar()

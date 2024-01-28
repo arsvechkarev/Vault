@@ -13,6 +13,7 @@ import com.arsvechkarev.vault.core.views.drawables.BaseShimmerDrawable.Companion
 import com.arsvechkarev.vault.core.views.drawables.LetterInCircleDrawable
 import com.arsvechkarev.vault.core.views.drawables.LoadingPlaceholderDrawable
 import com.arsvechkarev.vault.features.common.di.CoreComponentHolder
+import com.arsvechkarev.vault.features.common.domain.ImageRequestsRecorder.Companion.EMPTY_RECORD_STUB
 import com.arsvechkarev.vault.features.common.domain.images_names.ImageNameData
 import com.arsvechkarev.vault.features.common.domain.images_names.ImageNameData.Basic
 import com.arsvechkarev.vault.features.common.domain.images_names.ImageNameData.Compound
@@ -31,6 +32,11 @@ fun ImageView.setIconForTitle(title: String, onImageLoadingFailed: () -> Unit) {
   (context as MainActivity).lifecycleScope.launch {
     val coreComponent = CoreComponentHolder.coreComponent
     if (!coreComponent.imagesLoadingEnabledInteractor.isImagesLoadingEnabled()) {
+      
+      // Calling this so that we can test image requests in ui tests
+      CoreComponentHolder.coreComponent.imageRequestsRecorder
+          .recordUrlRequest(id, EMPTY_RECORD_STUB)
+      
       setLetterInCircleDrawable(trimmedTitle.first().toString())
       return@launch
     }
@@ -79,7 +85,7 @@ suspend fun ImageView.trySetImageFromMatchingNames(
   
   val url = BASE_URL_ICON_FILES + matchingName.imageName + EXTENSION_PNG
   
-  // Calling this so that we can test images request in ui tests
+  // Calling this so that we can test image requests in ui tests
   CoreComponentHolder.coreComponent.imageRequestsRecorder.recordUrlRequest(id, url)
   
   val imagesCache = CoreComponentHolder.coreComponent.imagesCache

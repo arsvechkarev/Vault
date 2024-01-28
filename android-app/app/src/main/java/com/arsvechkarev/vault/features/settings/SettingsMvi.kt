@@ -14,11 +14,12 @@ sealed interface SettingsEvent {
     val backupFolderUri: Uri?,
     val latestBackupDate: String?
   ) : SettingsEvent
-  
+  class ReceivedImagesLoadingEnabled(val enabled: Boolean) : SettingsEvent
   object BiometricsEnabled : SettingsEvent
   class StorageBackupEnabled(val backupFolderUri: Uri) : SettingsEvent
   object StorageBackupDisabled : SettingsEvent
   object PerformedBackup : SettingsEvent
+  class ImagesLoadingEnabledChanged(val enabled: Boolean) : SettingsEvent
   object ImagesCacheCleared : SettingsEvent
 }
 
@@ -38,6 +39,7 @@ sealed interface SettingsUiEvent : SettingsEvent {
   object OnSelectBackupFolderClicked : SettingsUiEvent
   class OnSelectedBackupFolder(val uri: Uri) : SettingsUiEvent
   object OnBackupNowClicked : SettingsUiEvent
+  class OnEnableImagesLoadingChanged(val enabled: Boolean) : SettingsUiEvent
   object OnClearImagesCacheClicked : SettingsUiEvent
   object OnBackPressed : SettingsUiEvent
 }
@@ -49,6 +51,7 @@ sealed interface SettingsCommand {
   class ChangeShowUsernames(val show: Boolean) : SettingsCommand
   class EnableBiometrics(val cryptography: BiometricsCryptography) : SettingsCommand
   object DisableBiometrics : SettingsCommand
+  class ChangeImagesLoadingEnabled(val enabled: Boolean) : SettingsCommand
   object ClearImagesCache : SettingsCommand
   
   sealed interface BackupCommand : SettingsCommand {
@@ -67,6 +70,7 @@ sealed interface SettingsNews {
   class SetShowUsernames(val showUsernames: Boolean) : SettingsNews
   class SetBiometricsEnabled(val enabled: Boolean, val animate: Boolean) : SettingsNews
   class SetStorageBackupEnabled(val enabled: Boolean) : SettingsNews
+  class SetImagesLoadingEnabled(val enabled: Boolean) : SettingsNews
   object ShowMasterPasswordChanged : SettingsNews
   object ShowBiometricsPrompt : SettingsNews
   object ShowBiometricsEnabled : SettingsNews
@@ -86,7 +90,8 @@ data class SettingsState(
   val storageBackupLatestDate: String? = null,
   val showLoadingBackingUp: Boolean = false,
   val enterPasswordDialogState: EnterPasswordDialogState = HIDDEN,
-  val showEnableBiometricsDialog: Boolean = false
+  val showEnableBiometricsDialog: Boolean = false,
+  val imagesLoadingEnabled: Boolean = false,
 )
 
 enum class EnterPasswordDialogState {

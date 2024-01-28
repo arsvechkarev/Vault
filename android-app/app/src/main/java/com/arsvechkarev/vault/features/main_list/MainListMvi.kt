@@ -9,7 +9,7 @@ sealed interface MainListEvent {
   class UpdateData(val data: ListScreenState) : MainListEvent
   class UpdateSearchResult(val searchEntries: List<DifferentiableItem>) : MainListEvent
   class ExportedPasswords(val uri: Uri) : MainListEvent
-  object NotifyUsernamesChanged : MainListEvent
+  object NotifyShowUsernamesChanged : MainListEvent
   object RequestReloadImages : MainListEvent
   object NetworkAvailable : MainListEvent
   object MasterPasswordNull : MainListEvent

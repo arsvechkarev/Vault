@@ -14,8 +14,8 @@ class StubPreferences : Preferences {
     prefs.putAll(map)
   }
   
-  override suspend fun getBoolean(key: String): Boolean {
-    return prefs[key] as? Boolean ?: false
+  override suspend fun getBoolean(key: String, defaultValue: Boolean): Boolean {
+    return prefs[key] as? Boolean ?: defaultValue
   }
   
   override suspend fun putBoolean(key: String, value: Boolean) {

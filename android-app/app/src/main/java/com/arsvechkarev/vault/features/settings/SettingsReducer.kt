@@ -12,6 +12,7 @@ import com.arsvechkarev.vault.features.settings.SettingsBiometricsError.OTHER
 import com.arsvechkarev.vault.features.settings.SettingsCommand.BackupCommand.DisableStorageBackup
 import com.arsvechkarev.vault.features.settings.SettingsCommand.BackupCommand.EnableStorageBackup
 import com.arsvechkarev.vault.features.settings.SettingsCommand.BackupCommand.PerformBackup
+import com.arsvechkarev.vault.features.settings.SettingsCommand.ChangeImagesLoadingEnabled
 import com.arsvechkarev.vault.features.settings.SettingsCommand.ChangeShowUsernames
 import com.arsvechkarev.vault.features.settings.SettingsCommand.ClearImagesCache
 import com.arsvechkarev.vault.features.settings.SettingsCommand.DisableBiometrics
@@ -22,15 +23,18 @@ import com.arsvechkarev.vault.features.settings.SettingsCommand.RouterCommand.Go
 import com.arsvechkarev.vault.features.settings.SettingsCommand.RouterCommand.GoToMasterPasswordScreen
 import com.arsvechkarev.vault.features.settings.SettingsEvent.BiometricsEnabled
 import com.arsvechkarev.vault.features.settings.SettingsEvent.ImagesCacheCleared
+import com.arsvechkarev.vault.features.settings.SettingsEvent.ImagesLoadingEnabledChanged
 import com.arsvechkarev.vault.features.settings.SettingsEvent.PerformedBackup
 import com.arsvechkarev.vault.features.settings.SettingsEvent.ReceivedBiometricsAvailable
 import com.arsvechkarev.vault.features.settings.SettingsEvent.ReceivedBiometricsEnabled
+import com.arsvechkarev.vault.features.settings.SettingsEvent.ReceivedImagesLoadingEnabled
 import com.arsvechkarev.vault.features.settings.SettingsEvent.ReceivedShowUsernames
 import com.arsvechkarev.vault.features.settings.SettingsEvent.ReceivedStorageBackupEnabled
 import com.arsvechkarev.vault.features.settings.SettingsEvent.StorageBackupDisabled
 import com.arsvechkarev.vault.features.settings.SettingsEvent.StorageBackupEnabled
 import com.arsvechkarev.vault.features.settings.SettingsNews.LaunchFolderSelection
 import com.arsvechkarev.vault.features.settings.SettingsNews.SetBiometricsEnabled
+import com.arsvechkarev.vault.features.settings.SettingsNews.SetImagesLoadingEnabled
 import com.arsvechkarev.vault.features.settings.SettingsNews.SetShowUsernames
 import com.arsvechkarev.vault.features.settings.SettingsNews.SetStorageBackupEnabled
 import com.arsvechkarev.vault.features.settings.SettingsNews.ShowBackupPerformed
@@ -47,6 +51,7 @@ import com.arsvechkarev.vault.features.settings.SettingsUiEvent.OnBiometricsEven
 import com.arsvechkarev.vault.features.settings.SettingsUiEvent.OnChangeMasterPasswordClicked
 import com.arsvechkarev.vault.features.settings.SettingsUiEvent.OnClearImagesCacheClicked
 import com.arsvechkarev.vault.features.settings.SettingsUiEvent.OnEnableBiometricsChanged
+import com.arsvechkarev.vault.features.settings.SettingsUiEvent.OnEnableImagesLoadingChanged
 import com.arsvechkarev.vault.features.settings.SettingsUiEvent.OnEnableStorageBackupChanged
 import com.arsvechkarev.vault.features.settings.SettingsUiEvent.OnEnteredPasswordToChangeMasterPassword
 import com.arsvechkarev.vault.features.settings.SettingsUiEvent.OnHideEnableBiometricsDialog
@@ -88,6 +93,12 @@ class SettingsReducer : DslReducer<SettingsState, SettingsEvent,
           )
         }
         news(SetStorageBackupEnabled(event.enabled))
+      }
+      is ReceivedImagesLoadingEnabled -> {
+        state {
+          copy(imagesLoadingEnabled = event.enabled)
+        }
+        news(SetImagesLoadingEnabled(event.enabled))
       }
       OnChangeMasterPasswordClicked -> {
         state { copy(enterPasswordDialogState = SHOWN) }
@@ -171,6 +182,9 @@ class SettingsReducer : DslReducer<SettingsState, SettingsEvent,
           state { copy(showLoadingBackingUp = true) }
         }
       }
+      is OnEnableImagesLoadingChanged -> {
+        commands(ChangeImagesLoadingEnabled(event.enabled))
+      }
       OnClearImagesCacheClicked -> {
         commands(ClearImagesCache)
       }
@@ -196,6 +210,9 @@ class SettingsReducer : DslReducer<SettingsState, SettingsEvent,
         state { copy(showLoadingBackingUp = false) }
         commands(FetchStorageBackupInfo)
         news(ShowBackupPerformed)
+      }
+      is ImagesLoadingEnabledChanged -> {
+        state { copy(imagesLoadingEnabled = event.enabled) }
       }
       ImagesCacheCleared -> {
         news(ShowImagesCacheCleared)

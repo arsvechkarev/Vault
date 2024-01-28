@@ -159,6 +159,8 @@
   <string name="text_storage_backup_latest_backup_prefix">Last backup: %s</string>
   <string name="text_storage_backup_last_backup_never">Last backup: never</string>
   <string name="text_storage_backup_performed">Successfully backed up</string>
+  <string name="text_images_loading">Show password icons</string>
+  <string name="text_images_loading_description">Automatically download icons for password entries if available</string>
   <string name="text_clear_images_cache">Clear images cache</string>
   <string name="text_clear_images_cache_description">Clear all cached images of password entries</string>
   <string name="text_clear_images_cache_cleared">Images cache successfully cleared</string>

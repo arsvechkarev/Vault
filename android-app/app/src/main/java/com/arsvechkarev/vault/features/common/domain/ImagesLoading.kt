@@ -23,28 +23,32 @@ private const val BASE_URL_ICON_FILES = "https://raw.githubusercontent.com/arsve
 private const val EXTENSION_PNG = ".png"
 
 fun ImageView.setIconForTitle(title: String, onImageLoadingFailed: () -> Unit) {
-  val trimmedText = title.trim()
-  if (trimmedText.isEmpty()) {
+  val trimmedTitle = title.trim()
+  if (trimmedTitle.isEmpty()) {
     setImageDrawable(null)
     return
   }
-  val imagesNamesLoader = CoreComponentHolder.coreComponent.imagesNamesLoader
-  val okHttpClient = CoreComponentHolder.coreComponent.okHttpClient
-  val scope = (context as MainActivity).lifecycleScope
-  scope.launch {
+  (context as MainActivity).lifecycleScope.launch {
+    val coreComponent = CoreComponentHolder.coreComponent
+    if (!coreComponent.imagesLoadingEnabledInteractor.isImagesLoadingEnabled()) {
+      setLetterInCircleDrawable(trimmedTitle.first().toString())
+      return@launch
+    }
+    val imagesNamesLoader = coreComponent.imagesNamesLoader
+    val okHttpClient = coreComponent.okHttpClient
     val imagesNames = imagesNamesLoader.getFromCacheIfExists()
     if (imagesNames != null) {
-      trySetImageFromMatchingNames(trimmedText, imagesNames, okHttpClient, onImageLoadingFailed)
+      trySetImageFromMatchingNames(trimmedTitle, imagesNames, okHttpClient, onImageLoadingFailed)
     } else {
       setShimmerDrawable(LoadingPlaceholderDrawable(title.first().toString()))
       imagesNamesLoader.loadFromNetwork()
           .onSuccess { loadedImagesNames ->
-            trySetImageFromMatchingNames(trimmedText, loadedImagesNames,
+            trySetImageFromMatchingNames(trimmedTitle, loadedImagesNames,
               okHttpClient, onImageLoadingFailed)
           }
           .onFailure {
             onImageLoadingFailed()
-            setLetterInCircleDrawable(trimmedText.first().toString())
+            setLetterInCircleDrawable(trimmedTitle.first().toString())
           }
     }
   }

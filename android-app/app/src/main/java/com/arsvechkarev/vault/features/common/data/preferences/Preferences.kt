@@ -6,7 +6,7 @@ interface Preferences {
   
   suspend fun putAll(map: Map<String, Any?>)
   
-  suspend fun getBoolean(key: String): Boolean
+  suspend fun getBoolean(key: String, defaultValue: Boolean = false): Boolean
   
   suspend fun putBoolean(key: String, value: Boolean)
   

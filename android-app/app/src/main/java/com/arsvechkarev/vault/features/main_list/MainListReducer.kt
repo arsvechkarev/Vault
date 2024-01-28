@@ -12,7 +12,7 @@ import com.arsvechkarev.vault.features.main_list.MainListCommand.RouterCommand.S
 import com.arsvechkarev.vault.features.main_list.MainListEvent.ExportedPasswords
 import com.arsvechkarev.vault.features.main_list.MainListEvent.MasterPasswordNull
 import com.arsvechkarev.vault.features.main_list.MainListEvent.NetworkAvailable
-import com.arsvechkarev.vault.features.main_list.MainListEvent.NotifyUsernamesChanged
+import com.arsvechkarev.vault.features.main_list.MainListEvent.NotifyShowUsernamesChanged
 import com.arsvechkarev.vault.features.main_list.MainListEvent.RequestReloadImages
 import com.arsvechkarev.vault.features.main_list.MainListEvent.UpdateData
 import com.arsvechkarev.vault.features.main_list.MainListEvent.UpdateSearchResult
@@ -121,7 +121,7 @@ class MainListReducer : DslReducer<MainListState, MainListEvent, MainListCommand
       is UpdateSearchResult -> {
         state { copy(searchState = searchState.copy(entries = event.searchEntries)) }
       }
-      is NotifyUsernamesChanged -> {
+      is NotifyShowUsernamesChanged -> {
         commands(LoadData)
       }
       RequestReloadImages -> {

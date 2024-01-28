@@ -33,6 +33,7 @@ import com.arsvechkarev.vault.features.settings.SettingsBiometricsError.LOCKOUT_
 import com.arsvechkarev.vault.features.settings.SettingsBiometricsError.OTHER
 import com.arsvechkarev.vault.features.settings.SettingsNews.LaunchFolderSelection
 import com.arsvechkarev.vault.features.settings.SettingsNews.SetBiometricsEnabled
+import com.arsvechkarev.vault.features.settings.SettingsNews.SetImagesLoadingEnabled
 import com.arsvechkarev.vault.features.settings.SettingsNews.SetShowUsernames
 import com.arsvechkarev.vault.features.settings.SettingsNews.SetStorageBackupEnabled
 import com.arsvechkarev.vault.features.settings.SettingsNews.ShowBackupPerformed
@@ -49,6 +50,7 @@ import com.arsvechkarev.vault.features.settings.SettingsUiEvent.OnBiometricsEven
 import com.arsvechkarev.vault.features.settings.SettingsUiEvent.OnChangeMasterPasswordClicked
 import com.arsvechkarev.vault.features.settings.SettingsUiEvent.OnClearImagesCacheClicked
 import com.arsvechkarev.vault.features.settings.SettingsUiEvent.OnEnableBiometricsChanged
+import com.arsvechkarev.vault.features.settings.SettingsUiEvent.OnEnableImagesLoadingChanged
 import com.arsvechkarev.vault.features.settings.SettingsUiEvent.OnEnableStorageBackupChanged
 import com.arsvechkarev.vault.features.settings.SettingsUiEvent.OnEnteredPasswordToChangeMasterPassword
 import com.arsvechkarev.vault.features.settings.SettingsUiEvent.OnHideEnableBiometricsDialog
@@ -182,6 +184,13 @@ class SettingsScreen : BaseFragmentScreen() {
             backgroundColor(Colors.Divider)
           }
           SettingsItem(
+            id = ItemImagesLoading,
+            title = R.string.text_images_loading,
+            description = R.string.text_images_loading_description,
+            switchEnabled = true,
+            onSwitchChecked = onImagesLoadingChanged,
+          )
+          SettingsItem(
             id = ItemClearImagesCache,
             title = R.string.text_clear_images_cache,
             description = R.string.text_clear_images_cache_description,
@@ -217,6 +226,10 @@ class SettingsScreen : BaseFragmentScreen() {
   
   private val onEnableStorageBackupChanged: (Boolean) -> Unit = {
     store.tryDispatch(OnEnableStorageBackupChanged(it))
+  }
+  
+  private val onImagesLoadingChanged: (Boolean) -> Unit = {
+    store.tryDispatch(OnEnableImagesLoadingChanged(it))
   }
   
   private val selectFolderResultLauncher = coreComponent.activityResultWrapper
@@ -295,6 +308,9 @@ class SettingsScreen : BaseFragmentScreen() {
       }
       setDescription(text)
     }
+    viewAs<SettingsItem>(ItemClearImagesCache).apply {
+      isEnabled = state.imagesLoadingEnabled
+    }
     if (state.showLoadingBackingUp) {
       loadingDialog.show()
     } else {
@@ -323,6 +339,13 @@ class SettingsScreen : BaseFragmentScreen() {
           checked = news.enabled,
           animate = false,
           onChecked = onEnableStorageBackupChanged
+        )
+      }
+      is SetImagesLoadingEnabled -> {
+        viewAs<SettingsItem>(ItemImagesLoading).setCheckedSilently(
+          checked = news.enabled,
+          animate = false,
+          onChecked = onImagesLoadingChanged
         )
       }
       ShowMasterPasswordChanged -> {
@@ -378,6 +401,7 @@ class SettingsScreen : BaseFragmentScreen() {
     val ItemStorageBackup = View.generateViewId()
     val ItemStorageBackupFolder = View.generateViewId()
     val ItemStorageBackupNow = View.generateViewId()
+    val ItemImagesLoading = View.generateViewId()
     val ItemClearImagesCache = View.generateViewId()
   }
 }

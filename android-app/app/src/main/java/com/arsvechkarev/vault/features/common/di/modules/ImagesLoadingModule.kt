@@ -5,9 +5,10 @@ import com.arsvechkarev.vault.features.common.data.images.DiskImagesCache
 import com.arsvechkarev.vault.features.common.data.images.ImagesCache
 import com.arsvechkarev.vault.features.common.data.network.ImagesNamesLoaderNetworkNotifier
 import com.arsvechkarev.vault.features.common.domain.ImageRequestsRecorder
-import com.arsvechkarev.vault.features.common.domain.images_names.ImagesNamesLoader
+import com.arsvechkarev.vault.features.common.domain.ImagesLoadingEnabledInteractor
 import com.arsvechkarev.vault.features.common.domain.ReloadImagesObserver
 import com.arsvechkarev.vault.features.common.domain.ReloadImagesObserverImpl
+import com.arsvechkarev.vault.features.common.domain.images_names.ImagesNamesLoader
 
 interface ImagesLoadingModule {
   val imagesNamesLoader: ImagesNamesLoader
@@ -15,6 +16,7 @@ interface ImagesLoadingModule {
   val imageRequestsRecorder: ImageRequestsRecorder
   val imagesNamesLoaderNetworkNotifier: ImagesNamesLoaderNetworkNotifier
   val reloadImagesObserver: ReloadImagesObserver
+  val imagesLoadingEnabledInteractor: ImagesLoadingEnabledInteractor
 }
 
 class ImagesLoadingModuleImpl(
@@ -40,4 +42,11 @@ class ImagesLoadingModuleImpl(
       ImagesNamesLoaderNetworkNotifier(imagesNamesLoader, ioModule.networkAvailabilityProvider)
   
   override val reloadImagesObserver = ReloadImagesObserverImpl()
+  
+  override val imagesLoadingEnabledInteractor = ImagesLoadingEnabledInteractor(
+    imagesCache,
+    imagesNamesLoader,
+    reloadImagesObserver,
+    preferencesModule.settingsPreferences
+  )
 }

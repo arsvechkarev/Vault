@@ -27,12 +27,12 @@ class AndroidSharedPreferences(
     }
   }
   
-  override suspend fun putBoolean(key: String, value: Boolean) {
-    sharedPreferences.edit(commit = true) { putBoolean(key, value) }
+  override suspend fun getBoolean(key: String, defaultValue: Boolean): Boolean {
+    return sharedPreferences.getBoolean(key, defaultValue)
   }
   
-  override suspend fun getBoolean(key: String): Boolean {
-    return sharedPreferences.getBoolean(key, false)
+  override suspend fun putBoolean(key: String, value: Boolean) {
+    sharedPreferences.edit(commit = true) { putBoolean(key, value) }
   }
   
   override suspend fun getString(key: String): String? {

@@ -35,6 +35,7 @@ interface DomainModule {
 
 class DomainModuleImpl(
   coreModule: CoreModule,
+  ioModule: IoModule,
   preferencesModule: PreferencesModule,
   backupInterceptor: BackupInterceptor,
 ) : DomainModule {
@@ -78,7 +79,8 @@ class DomainModuleImpl(
   
   override val databaseFileSaver = StorageBackupDatabaseFileSaver(
     databaseFileSaver = DefaultDatabaseFileSaver(
-      AppConstants.DEFAULT_INTERNAL_FILENAME,
+      AppConstants.DEFAULT_INTERNAL_PASSWORDS_FILE_NAME,
+      ioModule.keyFileSaver,
       coreModule.application,
       coreModule.dispatchers,
       coreModule.globalIOScope,

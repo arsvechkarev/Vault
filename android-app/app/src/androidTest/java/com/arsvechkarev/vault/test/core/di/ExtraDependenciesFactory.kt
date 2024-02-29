@@ -5,6 +5,7 @@ import com.arsvechkarev.vault.features.common.di.ExtraDependenciesFactory
 import com.arsvechkarev.vault.test.core.di.stubs.StubActivityResultWrapper
 import com.arsvechkarev.vault.test.core.di.stubs.StubExternalFileReader
 import com.arsvechkarev.vault.test.core.di.stubs.StubInterceptor
+import com.arsvechkarev.vault.test.core.di.stubs.StubKeyFileSaver
 import com.arsvechkarev.vault.test.core.di.stubs.StubPasswordsFileExporter
 import com.arsvechkarev.vault.test.core.di.stubs.StubUriPersistentMaker
 import com.arsvechkarev.vault.test.core.di.stubs.TestBackupInterceptor
@@ -16,6 +17,7 @@ fun StubExtraDependenciesFactory(
   activityResultWrapper: StubActivityResultWrapper = StubActivityResultWrapper(),
   passwordsFileExporter: StubPasswordsFileExporter = StubPasswordsFileExporter(),
   externalFileReader: StubExternalFileReader = StubExternalFileReader(),
+  stubKeyFileSaver: StubKeyFileSaver = StubKeyFileSaver(),
   imagesRequestsRecorder: TestImageRequestsRecorder = TestImageRequestsRecorder(),
   backupInterceptor: TestBackupInterceptor = TestBackupInterceptor(),
 ): ExtraDependenciesFactory {
@@ -28,6 +30,7 @@ fun StubExtraDependenciesFactory(
         override val activityResultWrapper = activityResultWrapper
         override val passwordsFileExporter = passwordsFileExporter
         override val externalFileReader = externalFileReader
+        override val keyFileSaver = stubKeyFileSaver
         override val imageRequestsRecorder = imagesRequestsRecorder
         override val backupInterceptor = backupInterceptor
         override val uriPersistedMaker = StubUriPersistentMaker()

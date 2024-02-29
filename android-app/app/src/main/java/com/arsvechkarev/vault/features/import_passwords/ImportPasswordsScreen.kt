@@ -20,14 +20,19 @@ import com.arsvechkarev.vault.features.common.dialogs.InfoDialog.Companion.infoD
 import com.arsvechkarev.vault.features.common.dialogs.LoadingDialog
 import com.arsvechkarev.vault.features.common.dialogs.loadingDialog
 import com.arsvechkarev.vault.features.import_passwords.ImportPasswordsUiEvent.OnBackPressed
+import com.arsvechkarev.vault.features.import_passwords.ImportPasswordsUiEvent.OnClearKeyFileClicked
 import com.arsvechkarev.vault.features.import_passwords.ImportPasswordsUiEvent.OnConfirmedImportClicked
 import com.arsvechkarev.vault.features.import_passwords.ImportPasswordsUiEvent.OnHideErrorDialog
 import com.arsvechkarev.vault.features.import_passwords.ImportPasswordsUiEvent.OnHideInfoDialog
 import com.arsvechkarev.vault.features.import_passwords.ImportPasswordsUiEvent.OnHidePasswordEnteringDialog
 import com.arsvechkarev.vault.features.import_passwords.ImportPasswordsUiEvent.OnImportPasswordsClicked
 import com.arsvechkarev.vault.features.import_passwords.ImportPasswordsUiEvent.OnPasswordEntered
-import com.arsvechkarev.vault.features.import_passwords.ImportPasswordsUiEvent.OnSelectedFile
+import com.arsvechkarev.vault.features.import_passwords.ImportPasswordsUiEvent.OnSelectedKeyFile
+import com.arsvechkarev.vault.features.import_passwords.ImportPasswordsUiEvent.OnSelectedPasswordsFile
+import com.arsvechkarev.vault.viewbuilding.Colors
 import com.arsvechkarev.vault.viewbuilding.Dimens.GradientDrawableHeight
+import com.arsvechkarev.vault.viewbuilding.Dimens.IconPadding
+import com.arsvechkarev.vault.viewbuilding.Dimens.MarginLarge
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginMedium
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginNormal
 import com.arsvechkarev.vault.viewbuilding.Dimens.MarginSmall
@@ -40,10 +45,15 @@ import com.arsvechkarev.vault.viewbuilding.TextSizes
 import navigation.BaseFragmentScreen
 import viewdsl.Size.Companion.MatchParent
 import viewdsl.Size.Companion.WrapContent
+import viewdsl.Size.Companion.ZERO
+import viewdsl.circleRippleBackground
 import viewdsl.constraints
 import viewdsl.id
+import viewdsl.image
+import viewdsl.isVisible
 import viewdsl.margins
 import viewdsl.onClick
+import viewdsl.padding
 import viewdsl.text
 import viewdsl.textSize
 import viewdsl.withViewBuilder
@@ -73,31 +83,82 @@ class ImportPasswordsScreen : BaseFragmentScreen() {
             topToTopOf(ImageBack)
           }
         }
-        VerticalLayout(MatchParent, WrapContent) {
-          id(LayoutSelectFile)
+        TextView(WrapContent, WrapContent, style = AccentTextView) {
+          id(TitleSelectPasswordsFile)
+          text(R.string.text_passwords_file)
           margins(start = MarginNormal, top = GradientDrawableHeight)
-          onClick { selectFileResultLauncher.launch(MIME_TYPE_ALL) }
           constraints {
             topToTopOf(parent)
+            startToStartOf(parent)
           }
-          TextView(WrapContent, WrapContent, style = AccentTextView) {
-            id(TitleSelectFile)
-            text(R.string.text_file)
+        }
+        TextView(MatchParent, WrapContent, style = SecondaryTextView) {
+          id(TextSelectPasswordsFile)
+          textSize(TextSizes.H4)
+          margins(start = MarginNormal, top = MarginSmall, end = MarginNormal)
+          constraints {
+            topToBottomOf(TitleSelectPasswordsFile)
+            startToStartOf(parent)
+            endToEndOf(parent)
           }
-          TextView(MatchParent, WrapContent, style = SecondaryTextView) {
-            id(TextSelectFile)
-            textSize(TextSizes.H4)
-            margins(top = MarginSmall, end = MarginNormal)
+        }
+        View(MatchParent, ZERO) {
+          id(ViewSelectPasswordsFile)
+          onClick { selectPasswordsFileResultLauncher.launch(MIME_TYPE_ALL) }
+          constraints {
+            topToTopOf(TitleSelectPasswordsFile)
+            bottomToBottomOf(TextSelectPasswordsFile)
+          }
+        }
+        TextView(WrapContent, WrapContent, style = AccentTextView) {
+          id(TitleSelectKeyFile)
+          text(R.string.text_key_file)
+          margins(top = MarginLarge)
+          constraints {
+            topToBottomOf(TextSelectPasswordsFile)
+            startToStartOf(TextSelectPasswordsFile)
+          }
+        }
+        TextView(ZERO, WrapContent, style = SecondaryTextView) {
+          id(TextSelectKeyFile)
+          text(R.string.text_key_file_stub)
+          textSize(TextSizes.H4)
+          margins(start = MarginNormal, top = MarginSmall, end = MarginNormal)
+          constraints {
+            topToBottomOf(TitleSelectKeyFile)
+            startToStartOf(parent)
+            endToStartOf(ImageClearKeyFile)
+          }
+        }
+        View(MatchParent, ZERO) {
+          id(ViewSelectKeyFile)
+          onClick { selectKeyFileResultLauncher.launch(MIME_TYPE_ALL) }
+          constraints {
+            topToTopOf(TitleSelectKeyFile)
+            bottomToBottomOf(TextSelectKeyFile)
+          }
+        }
+        ImageView(WrapContent, WrapContent) {
+          id(ImageClearKeyFile)
+          image(R.drawable.ic_cross)
+          margins(end = MarginNormal)
+          padding(IconPadding)
+          circleRippleBackground(Colors.Ripple)
+          onClick { store.tryDispatch(OnClearKeyFileClicked) }
+          constraints {
+            topToTopOf(TextSelectKeyFile)
+            endToEndOf(parent)
+            bottomToBottomOf(TextSelectKeyFile)
           }
         }
         TextView(MatchParent, WrapContent, style = Button()) {
           id(ButtonImportPasswords)
           margins(start = MarginNormal, end = MarginNormal, bottom = MarginNormal)
+          text(R.string.text_import_passwords)
+          onClick { store.tryDispatch(OnImportPasswordsClicked) }
           constraints {
             bottomToBottomOf(parent)
           }
-          text(R.string.text_import_passwords)
-          onClick { store.tryDispatch(OnImportPasswordsClicked) }
         }
       }
       EnterPasswordDialog(
@@ -110,8 +171,11 @@ class ImportPasswordsScreen : BaseFragmentScreen() {
     }
   }
   
-  private val selectFileResultLauncher = coreComponent.activityResultWrapper
-      .wrapGetFileLauncher(this) { uri -> store.tryDispatch(OnSelectedFile(uri)) }
+  private val selectPasswordsFileResultLauncher = coreComponent.activityResultWrapper
+      .wrapGetFileLauncher(this) { uri -> store.tryDispatch(OnSelectedPasswordsFile(uri)) }
+  
+  private val selectKeyFileResultLauncher = coreComponent.activityResultWrapper
+      .wrapGetFileLauncher(this) { uri -> store.tryDispatch(OnSelectedKeyFile(uri)) }
   
   private val store by viewModelStore {
     ImportPasswordsStore(coreComponent, arg(Uri::class), booleanArg(ASK_FOR_CONFIRMATION))
@@ -122,7 +186,10 @@ class ImportPasswordsScreen : BaseFragmentScreen() {
   }
   
   private fun render(state: ImportPasswordsState) {
-    textView(TextSelectFile).text(state.selectedFileUri.toReadablePath())
+    textView(TextSelectPasswordsFile).text(state.passwordsFileUri.toReadablePath())
+    state.keyFileUri?.toReadablePath()?.let { textView(TextSelectKeyFile).text(it) }
+        ?: textView(TextSelectKeyFile).text(R.string.text_key_file_stub)
+    view(ImageClearKeyFile).isVisible = state.keyFileUri != null
     if (state.showLoading) {
       loadingDialog.show()
     } else {
@@ -168,9 +235,13 @@ class ImportPasswordsScreen : BaseFragmentScreen() {
     val ImportPasswordsScreenRoot = View.generateViewId()
     val ImageBack = View.generateViewId()
     val Title = View.generateViewId()
-    val LayoutSelectFile = View.generateViewId()
-    val TitleSelectFile = View.generateViewId()
-    val TextSelectFile = View.generateViewId()
+    val ViewSelectPasswordsFile = View.generateViewId()
+    val TitleSelectPasswordsFile = View.generateViewId()
+    val TextSelectPasswordsFile = View.generateViewId()
+    val ViewSelectKeyFile = View.generateViewId()
+    val ImageClearKeyFile = View.generateViewId()
+    val TitleSelectKeyFile = View.generateViewId()
+    val TextSelectKeyFile = View.generateViewId()
     val ButtonImportPasswords = View.generateViewId()
   }
 }

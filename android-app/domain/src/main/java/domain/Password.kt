@@ -34,6 +34,9 @@ class Password(val encryptedValueField: EncryptedValue) {
 }
 
 
-fun Credentials.Companion.from(masterPassword: Password): Credentials {
+fun Credentials.Companion.from(masterPassword: Password, keyData: ByteArray? = null): Credentials {
+  if (keyData != null) {
+    return from(masterPassword.encryptedValueField, keyData)
+  }
   return from(masterPassword.encryptedValueField)
 }

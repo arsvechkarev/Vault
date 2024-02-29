@@ -4,9 +4,9 @@ import com.arsvechkarev.vault.R
 import com.arsvechkarev.vault.features.import_passwords.ImportPasswordsScreen
 import com.arsvechkarev.vault.features.import_passwords.ImportPasswordsScreen.Companion.ButtonImportPasswords
 import com.arsvechkarev.vault.features.import_passwords.ImportPasswordsScreen.Companion.ImportPasswordsScreenRoot
-import com.arsvechkarev.vault.features.import_passwords.ImportPasswordsScreen.Companion.LayoutSelectFile
-import com.arsvechkarev.vault.features.import_passwords.ImportPasswordsScreen.Companion.TextSelectFile
-import com.arsvechkarev.vault.features.import_passwords.ImportPasswordsScreen.Companion.TitleSelectFile
+import com.arsvechkarev.vault.features.import_passwords.ImportPasswordsScreen.Companion.ViewSelectPasswordsFile
+import com.arsvechkarev.vault.features.import_passwords.ImportPasswordsScreen.Companion.TextSelectPasswordsFile
+import com.arsvechkarev.vault.features.import_passwords.ImportPasswordsScreen.Companion.TitleSelectPasswordsFile
 import com.arsvechkarev.vault.test.core.base.BaseScreen
 import com.arsvechkarev.vault.test.core.views.dialog.KEnterPasswordDialog
 import com.arsvechkarev.vault.test.core.views.dialog.KInfoDialog
@@ -19,9 +19,9 @@ object KImportPasswordsScreen : BaseScreen<KImportPasswordsScreen>() {
   override val viewClass = ImportPasswordsScreen::class.java
   
   val imageBack = KImageView { withDrawable(R.drawable.ic_back) }
-  val layoutSelectFile = KView { withId(LayoutSelectFile) }
-  val titleSelectFile = KTextView { withId(TitleSelectFile) }
-  val textSelectFile = KTextView { withId(TextSelectFile) }
+  val layoutSelectFile = KView { withId(ViewSelectPasswordsFile) }
+  val titleSelectFile = KTextView { withId(TitleSelectPasswordsFile) }
+  val textSelectFile = KTextView { withId(TextSelectPasswordsFile) }
   val buttonImportPasswords = KTextView { withId(ButtonImportPasswords) }
   val infoDialog = KInfoDialog(ImportPasswordsScreenRoot)
   val enterPasswordDialog = KEnterPasswordDialog()

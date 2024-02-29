@@ -20,6 +20,7 @@ import kotlin.concurrent.write
 
 class DefaultDatabaseFileSaver(
   private val filename: String,
+  private val keyFileSaver: KeyFileSaver,
   private val context: Context,
   private val dispatchersFacade: DispatchersFacade,
   private val scope: CoroutineScope
@@ -48,7 +49,8 @@ class DefaultDatabaseFileSaver(
         }
         return@withContext file.inputStream()
             .use { inputStream ->
-              KeePassDatabase.decode(inputStream, Credentials.from(masterPassword))
+              val keyFileData = keyFileSaver.getKeyFileIfExists()
+              KeePassDatabase.decode(inputStream, Credentials.from(masterPassword, keyFileData))
             }
       }
     }

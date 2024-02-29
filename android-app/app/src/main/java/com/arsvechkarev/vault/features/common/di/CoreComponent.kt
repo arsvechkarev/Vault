@@ -48,10 +48,12 @@ interface CoreComponent :
         extraDependencies.okHttpClient,
         extraDependencies.externalFileReader,
         extraDependencies.passwordsFileExporter,
+        extraDependencies.keyFileSaver,
         extraDependencies.uriPersistedMaker
       )
       val domainModule = DomainModuleImpl(
         coreModule,
+        ioModule,
         preferencesModule,
         extraDependencies.backupInterceptor
       )

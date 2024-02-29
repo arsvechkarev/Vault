@@ -16,13 +16,14 @@ fun ImportPasswordsStore(
     actors = listOf(
       ImportPasswordsActor(
         coreComponent.externalFileReader,
+        coreComponent.keyFileSaver,
         coreComponent.observableCachedDatabaseStorage,
         coreComponent.storageBackupInteractor
       ),
       ImportPasswordsRouterActor(coreComponent.router),
     ),
     reducer = ImportPasswordsReducer(),
-    initialState = ImportPasswordsState(selectedFileUri, askForConfirmation)
+    initialState = ImportPasswordsState(selectedFileUri, askForConfirmation = askForConfirmation)
   )
 }
 

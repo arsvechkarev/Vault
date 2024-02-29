@@ -9,8 +9,10 @@ sealed interface ImportPasswordsEvent {
 }
 
 sealed interface ImportPasswordsUiEvent : ImportPasswordsEvent {
-  class OnSelectedFile(val uri: Uri) : ImportPasswordsUiEvent
+  class OnSelectedPasswordsFile(val uri: Uri) : ImportPasswordsUiEvent
+  class OnSelectedKeyFile(val uri: Uri) : ImportPasswordsUiEvent
   object OnImportPasswordsClicked : ImportPasswordsUiEvent
+  object OnClearKeyFileClicked : ImportPasswordsUiEvent
   object OnConfirmedImportClicked : ImportPasswordsUiEvent
   class OnPasswordEntered(val password: Password) : ImportPasswordsUiEvent
   object OnHideErrorDialog : ImportPasswordsUiEvent
@@ -20,7 +22,11 @@ sealed interface ImportPasswordsUiEvent : ImportPasswordsEvent {
 }
 
 sealed interface ImportPasswordsCommand {
-  class TryImportPasswords(val uri: Uri, val password: Password) : ImportPasswordsCommand
+  class TryImportPasswords(
+    val passwordsFileUri: Uri,
+    val keyFileUri: Uri?,
+    val password: Password
+  ) : ImportPasswordsCommand
   
   sealed interface RouterCommand : ImportPasswordsCommand {
     object GoBack : RouterCommand
@@ -29,7 +35,8 @@ sealed interface ImportPasswordsCommand {
 }
 
 data class ImportPasswordsState(
-  val selectedFileUri: Uri,
+  val passwordsFileUri: Uri,
+  val keyFileUri: Uri? = null,
   val askForConfirmation: Boolean = true,
   val enteredPassword: Password = Password.empty(),
   val showLoading: Boolean = false,

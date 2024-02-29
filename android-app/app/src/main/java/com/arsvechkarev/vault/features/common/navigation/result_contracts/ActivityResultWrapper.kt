@@ -14,7 +14,12 @@ interface ActivityResultWrapper {
     onSuccess: (Uri) -> Unit
   ): ActivityResultLauncher<String>
   
-  fun wrapGetFileLauncher(
+  fun wrapSelectPasswordsFileLauncher(
+    fragment: Fragment,
+    onSuccess: (Uri) -> Unit
+  ): ActivityResultLauncher<String>
+  
+  fun wrapSelectKeyFileLauncher(
     fragment: Fragment,
     onSuccess: (Uri) -> Unit
   ): ActivityResultLauncher<String>
@@ -35,7 +40,14 @@ class RealActivityResultWrapper : ActivityResultWrapper {
     return fragment.registerForActivityResult(CreateDocument(contentType)) { it?.apply(onSuccess) }
   }
   
-  override fun wrapGetFileLauncher(
+  override fun wrapSelectPasswordsFileLauncher(
+    fragment: Fragment,
+    onSuccess: (Uri) -> Unit
+  ): ActivityResultLauncher<String> {
+    return fragment.registerForActivityResult(GetContent()) { it?.apply(onSuccess) }
+  }
+  
+  override fun wrapSelectKeyFileLauncher(
     fragment: Fragment,
     onSuccess: (Uri) -> Unit
   ): ActivityResultLauncher<String> {

@@ -197,7 +197,7 @@ class MainListScreen : BaseFragmentScreen() {
       }
   
   private val selectImportFileLauncher = coreComponent.activityResultWrapper
-      .wrapGetFileLauncher(this@MainListScreen) { uri ->
+      .wrapSelectPasswordsFileLauncher(this@MainListScreen) { uri ->
         store.tryDispatch(OnImportFileSelected(uri))
       }
   

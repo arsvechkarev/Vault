@@ -172,10 +172,10 @@ class ImportPasswordsScreen : BaseFragmentScreen() {
   }
   
   private val selectPasswordsFileResultLauncher = coreComponent.activityResultWrapper
-      .wrapGetFileLauncher(this) { uri -> store.tryDispatch(OnSelectedPasswordsFile(uri)) }
+      .wrapSelectPasswordsFileLauncher(this) { uri -> store.tryDispatch(OnSelectedPasswordsFile(uri)) }
   
   private val selectKeyFileResultLauncher = coreComponent.activityResultWrapper
-      .wrapGetFileLauncher(this) { uri -> store.tryDispatch(OnSelectedKeyFile(uri)) }
+      .wrapSelectKeyFileLauncher(this) { uri -> store.tryDispatch(OnSelectedKeyFile(uri)) }
   
   private val store by viewModelStore {
     ImportPasswordsStore(coreComponent, arg(Uri::class), booleanArg(ASK_FOR_CONFIRMATION))

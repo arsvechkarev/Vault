@@ -6,13 +6,13 @@ import java.io.ByteArrayInputStream
 import java.io.InputStream
 
 class StubExternalFileReader(
-  private val uriToMatch: String = "",
-  private val bytesToRead: () -> ByteArray = { ByteArray(0) }
+  private val uriToMatch: String? = null,
+  private val bytesToRead: (uri: Uri) -> ByteArray = { ByteArray(0) }
 ) : ExternalFileReader {
   
   override fun getInputStreamFrom(uri: Uri): InputStream {
-    if (uri.toString() == uriToMatch) {
-      return ByteArrayInputStream(bytesToRead())
+    if (uri.toString() == uriToMatch || uriToMatch == null) {
+      return ByteArrayInputStream(bytesToRead(uri))
     }
     error("Unexpected url: $uri")
   }

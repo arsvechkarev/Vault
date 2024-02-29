@@ -87,6 +87,7 @@ class EnterPasswordDialog(context: Context) : FrameLayout(context) {
             layoutGravity(CENTER_VERTICAL)
           }
           ImageView(WrapContent, WrapContent, style = ImageCross) {
+            id(ImageCrossId)
             layoutGravity(CENTER_VERTICAL or END)
             onClick { hide() }
           }
@@ -216,6 +217,7 @@ class EnterPasswordDialog(context: Context) : FrameLayout(context) {
   
   companion object {
     
+    val ImageCrossId = View.generateViewId()
     val Title = View.generateViewId()
     val TextError = View.generateViewId()
     val ButtonContinue = View.generateViewId()

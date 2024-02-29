@@ -77,7 +77,7 @@ class InitialScreen : BaseFragmentScreen() {
   }
   
   private val importFileLauncher = coreComponent.activityResultWrapper
-      .wrapGetFileLauncher(this@InitialScreen) { uri ->
+      .wrapSelectPasswordsFileLauncher(this@InitialScreen) { uri ->
         coreComponent.router.goForward(
           screenInfo = ImportPasswordsScreen(uri, askForConfirmation = false),
           animate = false

@@ -13,7 +13,8 @@ import com.arsvechkarev.vault.features.common.navigation.result_contracts.Activi
 
 class StubActivityResultWrapper(
   private val stubCreatedFileUri: String = "",
-  private val stubGetFileUri: String = "",
+  private val stubSelectPasswordsFileUri: String = "",
+  private val stubSelectKeyFileUri: String = "",
   private val stubSelectedFolderUri: String = "",
 ) : ActivityResultWrapper {
   
@@ -45,13 +46,25 @@ class StubActivityResultWrapper(
     }
   }
   
-  override fun wrapGetFileLauncher(
+  override fun wrapSelectPasswordsFileLauncher(
     fragment: Fragment,
     onSuccess: (Uri) -> Unit
   ): ActivityResultLauncher<String> {
     return fragment.registerForActivityResult(
       GetContent(),
-      getReturningUriTestRegistry(stubGetFileUri)
+      getReturningUriTestRegistry(stubSelectPasswordsFileUri)
+    ) {
+      it?.apply(onSuccess)
+    }
+  }
+  
+  override fun wrapSelectKeyFileLauncher(
+    fragment: Fragment,
+    onSuccess: (Uri) -> Unit
+  ): ActivityResultLauncher<String> {
+    return fragment.registerForActivityResult(
+      GetContent(),
+      getReturningUriTestRegistry(stubSelectKeyFileUri)
     ) {
       it?.apply(onSuccess)
     }

@@ -37,7 +37,7 @@ class ExportPasswordsTest : VaultTestCase() {
       application = ApplicationProvider.getApplicationContext(),
       factory = StubExtraDependenciesFactory(
         activityResultWrapper = StubActivityResultWrapper(
-          stubGetFileUri = "content://myfolder/passwords.kdbx"
+          stubSelectPasswordsFileUri = "content://myfolder/passwords.kdbx"
         ),
         passwordsFileExporter = stubPasswordsFileExporter,
       )

@@ -27,6 +27,7 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import java.io.ByteArrayOutputStream
+import java.util.Base64
 
 class ImportPasswordsTest : VaultTestCase() {
   
@@ -50,13 +51,12 @@ class ImportPasswordsTest : VaultTestCase() {
       application = ApplicationProvider.getApplicationContext(),
       factory = StubExtraDependenciesFactory(
         activityResultWrapper = StubActivityResultWrapper(
-          stubGetFileUri = "content://myfolder/passwords.kdbx"
+          stubSelectPasswordsFileUri = "content://myfolder/passwords.kdbx",
         ),
         externalFileReader = stubFileReader,
         imagesRequestsRecorder = testImageRequestsRecorder
       ),
     )
-    
   }
   
   @Test
@@ -121,8 +121,8 @@ class ImportPasswordsTest : VaultTestCase() {
         }
         
         KImportPasswordsScreen {
-          titleSelectFile.hasText("File")
-          textSelectFile.hasText("/storage/emulated/0/passwords.kdbx")
+          titleSelectPasswordsFile.hasText("File")
+          textSelectPasswordsFile.hasText("/storage/emulated/0/passwords.kdbx")
           
           buttonImportPasswords.click()
           
@@ -220,7 +220,7 @@ class ImportPasswordsTest : VaultTestCase() {
         }
         
         KImportPasswordsScreen {
-          layoutSelectFile.click()
+          viewSelectPasswordsFile.click()
           buttonImportPasswords.click()
           
           enterPasswordDialog {
@@ -241,6 +241,94 @@ class ImportPasswordsTest : VaultTestCase() {
           childAt<PasswordItem>(2) {
             title.hasText("test.com")
             image.hasDrawable(LetterInCircleDrawable("t"))
+          }
+        }
+      }
+    }
+  }
+  
+  @Test
+  fun testImportingWithAKeyFile() = init {
+    CoreComponentHolder.initialize(
+      application = ApplicationProvider.getApplicationContext(),
+      factory = StubExtraDependenciesFactory(
+        activityResultWrapper = StubActivityResultWrapper(
+          stubSelectPasswordsFileUri = "content://myfolder/passwords.kdbx",
+          stubSelectKeyFileUri = "content://myfolder/keyfile.kf"
+        ),
+        externalFileReader = StubExternalFileReader(
+          bytesToRead = { uri ->
+            when {
+              uri.toString().endsWith("kf") -> {
+                Base64.getDecoder().decode(Databases.EncodedKeyFile)
+              }
+              uri.toString().endsWith("kdbx") -> {
+                Base64.getDecoder().decode(Databases.EncodedDatabaseFromKeePassWithKeyFile)
+              }
+              else -> error("Unknown uri: $uri")
+            }
+          }
+        ),
+        imagesRequestsRecorder = testImageRequestsRecorder
+      ),
+    )
+    rule.launchActivity()
+  }.run {
+    KInitialScreen {
+      buttonImportPasswords.click()
+      
+      KImportPasswordsScreen {
+        titleSelectKeyFile.hasText("Key file (optional)")
+        textSelectKeyFile.hasText("Select key file")
+        imageClearKeyFile.isNotDisplayed()
+        
+        buttonImportPasswords.click()
+        
+        enterPasswordDialog {
+          editText.replaceText("qwetu1233")
+          buttonContinue.click()
+        }
+        
+        infoDialog {
+          isDisplayed()
+          title.hasText("Error")
+        }
+        
+        infoDialog.action2.click()
+        
+        infoDialog.isNotDisplayed()
+        
+        enterPasswordDialog.imageCross.click()
+        
+        enterPasswordDialog.isNotDisplayed()
+        
+        viewSelectKeyFile.click()
+        
+        textSelectKeyFile.hasText("/storage/emulated/0/keyfile.kf")
+        
+        imageClearKeyFile.isDisplayed()
+        imageClearKeyFile.click()
+        
+        textSelectKeyFile.hasText("Select key file")
+        
+        viewSelectKeyFile.click()
+        
+        buttonImportPasswords.click()
+        
+        enterPasswordDialog {
+          editText.replaceText("qwetu1233")
+          buttonContinue.click()
+        }
+        
+        KMainListScreen {
+          recycler {
+            hasSize(3)
+            childAt<PasswordItem>(1) {
+              title.hasText("supertest")
+            }
+            childAt<PasswordItem>(2) {
+              title.hasText("title1")
+            }
           }
         }
       }

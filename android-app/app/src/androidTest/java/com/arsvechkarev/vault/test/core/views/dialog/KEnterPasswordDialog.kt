@@ -1,9 +1,9 @@
 package com.arsvechkarev.vault.test.core.views.dialog
 
-import com.arsvechkarev.vault.R
 import com.arsvechkarev.vault.core.views.EditTextPassword
 import com.arsvechkarev.vault.features.common.dialogs.EnterPasswordDialog
 import com.arsvechkarev.vault.features.common.dialogs.EnterPasswordDialog.Companion.ButtonContinue
+import com.arsvechkarev.vault.features.common.dialogs.EnterPasswordDialog.Companion.ImageCrossId
 import com.arsvechkarev.vault.features.common.dialogs.EnterPasswordDialog.Companion.TextError
 import com.arsvechkarev.vault.features.common.dialogs.EnterPasswordDialog.Companion.Title
 import com.arsvechkarev.vault.test.core.ext.withClassNameTag
@@ -16,7 +16,7 @@ class KEnterPasswordDialog :
   KBaseView<KEnterPasswordDialog>({ withClassNameTag<EnterPasswordDialog>() }) {
   
   val title = KTextView { withId(Title) }
-  val imageCross = KImageView { withDrawable(R.drawable.ic_cross) }
+  val imageCross = KImageView { withId(ImageCrossId) }
   val editText = KEditTextPassword {
     isDescendantOfA { withClassNameTag<EnterPasswordDialog>() }
     isInstanceOf(EditTextPassword::class.java)

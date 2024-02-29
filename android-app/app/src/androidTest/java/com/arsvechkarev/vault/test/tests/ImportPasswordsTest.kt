@@ -121,7 +121,7 @@ class ImportPasswordsTest : VaultTestCase() {
         }
         
         KImportPasswordsScreen {
-          titleSelectPasswordsFile.hasText("File")
+          titleSelectPasswordsFile.hasText("Passwords file")
           textSelectPasswordsFile.hasText("/storage/emulated/0/passwords.kdbx")
           
           buttonImportPasswords.click()

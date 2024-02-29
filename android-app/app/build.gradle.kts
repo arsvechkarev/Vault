@@ -37,8 +37,8 @@ android {
     applicationId = "com.arsvechkarev.vault"
     minSdk = 26
     targetSdk = 34
-    versionCode = 3
-    versionName = "1.0.2"
+    versionCode = 4
+    versionName = "1.0.3"
     signingConfig = if (keystoreProperties.exists()) {
       signingConfigs.findByName("release")
     } else {

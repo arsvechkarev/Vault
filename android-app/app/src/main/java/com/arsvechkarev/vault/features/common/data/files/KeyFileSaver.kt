@@ -23,6 +23,6 @@ class DefaultKeyFileSaver(
   }
   
   override suspend fun getKeyFileIfExists(): ByteArray? = withContext(dispatchersFacade.IO) {
-    File(context.filesDir, filename).readBytes()
+    File(context.filesDir, filename).takeIf(File::exists)?.readBytes()
   }
 }
